@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig.json",
+  "compilerOptions": {
+    "target": "ES5",
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "strict": true,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "lib": ["DOM", "ESNext", "DOM.Iterable"],
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "jsx": "react",
+    "skipLibCheck": true,
+    "noErrorTruncation": true
+  }
+}

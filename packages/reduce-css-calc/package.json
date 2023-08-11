@@ -1,0 +1,43 @@
+{
+  "name": "@easyblocks/reduce-css-calc",
+  "version": "1.5.2",
+  "private": true,
+  "description": "Reduce CSS calc() function to the maximum",
+  "keywords": [
+    "css",
+    "calculation",
+    "calc"
+  ],
+  "main": "dist/index.js",
+  "types": "index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepublish": "npm run build && del-cli dist/__tests__",
+    "build": "del-cli dist && cross-env BABEL_ENV=publish babel src --out-dir dist && jison parser.jison -o dist/parser.js",
+    "test": "ava dist/__tests__/"
+  },
+  "author": "Maxime Thirouin",
+  "license": "MIT",
+  "repository": "https://github.com/MoOx/reduce-css-calc.git",
+  "devDependencies": {
+    "@babel/cli": "^7.20.7",
+    "@babel/core": "^7.20.12",
+    "@babel/preset-env": "^7.19.1",
+    "ava": "^0.18.2",
+    "babel-register": "^6.18.0",
+    "cross-env": "^3.1.4",
+    "del-cli": "^0.2.1",
+    "jison-gho": "^0.6.1-216",
+    "process-nextick-args": "^2.0.1"
+  },
+  "dependencies": {
+    "css-unit-converter": "^1.1.1",
+    "postcss-value-parser": "^3.3.0"
+  },
+  "eslintConfig": {
+    "parser": "babel-eslint",
+    "extends": "eslint-config-i-am-meticulous"
+  }
+}

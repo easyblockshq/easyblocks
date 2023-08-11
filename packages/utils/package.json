@@ -1,0 +1,19 @@
+{
+  "name": "@easyblocks/utils",
+  "version": "1.5.2",
+  "private": true,
+  "main": "src/index.ts",
+  "sideEffects": false,
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@jest/types": "^26.6.2",
+    "@types/jest": "^26.0.20",
+    "@types/react": "^18.2.20",
+    "jest": "^26.6.3"
+  }
+}

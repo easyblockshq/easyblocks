@@ -1,0 +1,30 @@
+{
+  "name": "@easyblocks/shopify",
+  "version": "1.5.2",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "lint": "eslint src/",
+    "dev": "concurrently -n bundle,emit-declarations 'npm run bundle:watch' 'npm run emit-declarations:watch'",
+    "build": "npm run bundle && npm run emit-declarations",
+    "bundle": "NODE_ENV=production webpack",
+    "bundle:watch": "NODE_ENV=development webpack --watch",
+    "emit-declarations": "tsc",
+    "emit-declarations:watch": "npm run emit-declarations -- --watch --preserveWatchOutput",
+    "bundle-declarations": "api-extractor run --local"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.21.0",
+    "@easyblocks/core": "^1.5.2",
+    "graphql-request": "^3.4.0"
+  },
+  "devDependencies": {
+    "@easyblocks/build-tools": "^1.5.2"
+  },
+  "files": [
+    "dist/",
+    "package.json",
+    "LICENSE.md"
+  ]
+}

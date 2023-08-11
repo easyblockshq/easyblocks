@@ -1,0 +1,28 @@
+{
+  "name": "@easyblocks/design-system",
+  "private": true,
+  "version": "1.5.2",
+  "main": "src/index.ts",
+  "sideEffects": false,
+  "dependencies": {
+    "@babel/runtime": "^7.21.0",
+    "@radix-ui/react-dropdown-menu": "^2.0.5",
+    "@radix-ui/react-tabs": "^1.0.4",
+    "lodash": "^4.17.21",
+    "react": "^18.2.0",
+    "react-hot-toast": "^2.4.0",
+    "react-modal": "^3.16.1",
+    "react-select": "^5.7.0",
+    "styled-components": "^5.3.9"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.191",
+    "@types/react": "^18.2.20",
+    "@types/react-dom": "^18.2.7",
+    "@types/react-modal": "^3.13.1",
+    "@types/styled-components": "^5.1.26"
+  },
+  "peerDependencies": {
+    "react": ">=16.8"
+  }
+}

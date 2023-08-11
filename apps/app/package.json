@@ -1,0 +1,49 @@
+{
+  "name": "app",
+  "private": true,
+  "scripts": {
+    "build:scripts": "NODE_ENV=production webpack -c webpack.config.js",
+    "build:scripts:watch": "NODE_ENV=development webpack -c webpack.config.js --watch",
+    "dev": "concurrently -n next,scripts 'next dev -p 3100' 'npm run build:scripts:watch'",
+    "dev:debug": "concurrently -n next,scripts 'NODE_OPTIONS='--inspect' next dev -p 3100' 'npm run build:scripts:watch'",
+    "next:debug": "NODE_OPTIONS='--inspect' next dev -p 3100",
+    "build": "npm run build:scripts && next build",
+    "xxx": "next build",
+    "start": "next start -p 3100",
+    "lint": "next lint",
+    "check": "tsc && next lint",
+    "test": "playwright test ./tests",
+    "supabase:generate-ts-types": "supabase gen types typescript --local > ./src/infrastructure/supabaseSchema.ts"
+  },
+  "dependencies": {
+    "@easyblocks/app-utils": "workspace:*",
+    "@easyblocks/compiler": "workspace:*",
+    "@easyblocks/core": "workspace:*",
+    "@easyblocks/design-system": "workspace:*",
+    "@easyblocks/editor": "workspace:*",
+    "@easyblocks/utils": "workspace:*",
+    "@radix-ui/themes": "^1.0.0",
+    "@supabase/auth-helpers-nextjs": "^0.7.4",
+    "@supabase/supabase-js": "^2.32.0",
+    "formidable": "^3.4.0",
+    "image-size": "^1.0.2",
+    "next": "^13.4.13",
+    "njwt": "^1.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "styled-components": "^6.0.7",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@easyblocks/build-tools": "workspace:*",
+    "@playwright/test": "^1.22.1",
+    "@types/formidable": "^2",
+    "@types/react": "^18.2.20",
+    "@types/react-dom": "^18.2.7",
+    "eslint": "8.23.0",
+    "eslint-config-next": "^13.4.13",
+    "playwright": "^1.25.2",
+    "typescript": "^4.8.4"
+  },
+  "version": "1.5.2"
+}

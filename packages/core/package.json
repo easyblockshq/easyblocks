@@ -1,0 +1,69 @@
+{
+  "name": "@easyblocks/core",
+  "version": "1.5.2",
+  "description": "No-code ecommerce builder for headless CMS",
+  "scripts": {
+    "dev": "NODE_ENV=development concurrently -n bundle,emit-declarations 'rollup -c rollup.config.js --watch' 'tsc --watch --preserveWatchOutput'",
+    "build": "npm run bundle && npm run emit-declarations",
+    "bundle": "NODE_ENV=production rollup -c rollup.config.js",
+    "emit-declarations": "tsc",
+    "bundle-declarations": "api-extractor run --local",
+    "test": "jest && playwright test e2e/",
+    "check": "tsc && eslint --quiet src/"
+  },
+  "author": "Shopstory z o.o.",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/runtime": "^7.21.0",
+    "crypto-js": "^4.1.1",
+    "lodash": "^4.17.21",
+    "type-fest": "^3.0.0",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.12.8",
+    "@babel/core": "^7.12.10",
+    "@babel/plugin-transform-runtime": "^7.15.0",
+    "@jest/types": "^26.6.2",
+    "@playwright/test": "^1.31.2",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-commonjs": "^20.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@easyblocks/build-tools": "^1.5.2",
+    "@easyblocks/test-utils": "^1.5.2",
+    "@easyblocks/utils": "link:../utils",
+    "@types/crypto-js": "^4.1.1",
+    "@types/jest": "^26.0.20",
+    "@types/lodash": "^4.14.191",
+    "@types/react": "^18.2.20",
+    "color-string": "^1.5.3",
+    "dotenv": "^16.0.1",
+    "final-form": "^4.20.4",
+    "final-form-arrays": "^3.0.1",
+    "jest": "^26.6.3",
+    "playwright": "^1.31.2",
+    "rollup": "^2.79.1",
+    "rollup-plugin-visualizer": "^5.5.2",
+    "typescript": "4.8.4",
+    "webpack": "5.64.2",
+    "webpack-bundle-analyzer": "^4.4.2",
+    "webpack-cli": "^4.9.1"
+  },
+  "peerDependencies": {
+    "react": ">= 16.8"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/es/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "import": "./dist/es/index.js",
+    "require": "./dist/index.js"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist/",
+    "package.json",
+    "LICENSE.md"
+  ]
+}

@@ -1,0 +1,20 @@
+.root {
+  padding: 50px 0 100px 0;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.header {
+  color: var(--color-green);
+  margin-bottom: 28px;
+}
+
+.text {
+  color: var(--color-grey);
+}
+
+@media (max-width: 1023px) {
+  .root {
+    padding: 30px 0 30px 0;
+  }
+}

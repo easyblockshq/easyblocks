@@ -1,0 +1,44 @@
+{
+  "migrations": [
+    {
+      "cli": "nx",
+      "version": "15.8.2-beta.0",
+      "description": "Updates the nx wrapper.",
+      "implementation": "./src/migrations/update-15-8-2/update-nxw",
+      "package": "nx",
+      "name": "15.8.2-update-nx-wrapper"
+    },
+    {
+      "cli": "nx",
+      "version": "16.0.0-beta.0",
+      "description": "Remove @nrwl/cli.",
+      "implementation": "./src/migrations/update-16-0-0/remove-nrwl-cli",
+      "package": "nx",
+      "name": "16.0.0-remove-nrwl-cli"
+    },
+    {
+      "cli": "nx",
+      "version": "16.0.0-beta.9",
+      "description": "Replace `dependsOn.projects` and `inputs` definitions with new configuration format.",
+      "implementation": "./src/migrations/update-16-0-0/update-depends-on-to-tokens",
+      "package": "nx",
+      "name": "16.0.0-tokens-for-depends-on"
+    },
+    {
+      "cli": "nx",
+      "version": "16.0.0-beta.0",
+      "description": "Replace @nrwl/nx-cloud with nx-cloud",
+      "implementation": "./src/migrations/update-16-0-0/update-nx-cloud-runner",
+      "package": "nx",
+      "name": "16.0.0-update-nx-cloud-runner"
+    },
+    {
+      "cli": "nx",
+      "version": "16.2.0-beta.0",
+      "description": "Remove outputPath from run commands",
+      "implementation": "./src/migrations/update-16-2-0/remove-run-commands-output-path",
+      "package": "nx",
+      "name": "16.2.0-remove-output-path-from-run-commands"
+    }
+  ]
+}

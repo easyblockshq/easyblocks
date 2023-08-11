@@ -1,0 +1,12 @@
+{
+  "name": "@easyblocks/plugin-utils",
+  "version": "1.5.2",
+  "private": true,
+  "main": "src/index.ts",
+  "dependencies": {
+    "@easyblocks/core": "workspace:*"
+  },
+  "scripts": {
+    "test": "jest"
+  }
+}

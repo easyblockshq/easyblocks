@@ -1,0 +1,1363 @@
+-- INSERT INTO projects (id, name, tokens)
+-- VALUES('89ed48c6-dc0b-4936-9a97-4eb791396853', 'Shopstory', '{"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2NjE5NTM2NzMsImV4cCI6MTY5MzQ4OTY3MywiYXVkIjoiYXV0aGVudGljYXRlZCIsInN1YiI6IjEyMyIsImVtYWlsIjoibWljaGFsQHNob3BzdG9yeS5hcHAiLCJwcm9qZWN0X2lkIjoiODllZDQ4YzYtZGMwYi00OTM2LTlhOTctNGViNzkxMzk2ODUzIn0.3I9QMjhPkYHtzW19g-uIjattobPBiXEK0Fz4AwxEfQg"}'),
+-- ('04bc84cb-9204-4ede-aeb1-b0dde5e7d83d', 'Shopstory-Dev', '{"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2NjI2MjUyMzYsImV4cCI6MTY5NDE2MTIzNiwiYXVkIjoiYXV0aGVudGljYXRlZCIsInN1YiI6Im1pY2hhbEBzaG9wc3RvcnkuYXBwIiwicHJvamVjdF9pZCI6IjA0YmM4NGNiLTkyMDQtNGVkZS1hZWIxLWIwZGRlNWU3ZDgzZCJ9.CgoPHlke30wti_U7I8KT8nXXVK0fjRghnbhnGIfeYJI"}');
+
+-- INSERT INTO configs (id, config, project_id, created_at)
+-- VALUES(
+--   'cb64e93c-e123-4cf6-bd7e-a795b227758e',
+--   '{
+--     "_id": "cb64e93c-e123-4cf6-bd7e-a795b227758e",
+--     "_template": "$RootSections",
+--     "_variants": {},
+--     "traceId": "$RootSections-3a64b3b1",
+--     "data": [
+--         {
+--             "_id": "60733f9a-01e0-4002-8cb9-0526a5401d5f",
+--             "_template": "$TwoCards",
+--             "traceId": "$TwoCards-2dd8fbe7",
+--             "containerMargin": {
+--                 "$res": true,
+--                 "xl": {
+--                     "value": {
+--                         "$res": true,
+--                         "xs": 24,
+--                         "sm": 24,
+--                         "md": 40,
+--                         "lg": 50,
+--                         "xl": 64,
+--                         "2xl": 96
+--                     },
+--                     "ref": "containerMargin.default"
+--                 }
+--             },
+--             "escapeMargin": {
+--                 "$res": true,
+--                 "xl": true
+--             },
+--             "headerMode": "none",
+--             "layout1Stack": "left",
+--             "layout2Stacks": {
+--                 "$res": true,
+--                 "xl": "left-right"
+--             },
+--             "layout2StacksVerticalAlign": {
+--                 "$res": true,
+--                 "xl": "center"
+--             },
+--             "headerStacksGap": {
+--                 "$res": true,
+--                 "xl": {
+--                     "value": 12,
+--                     "ref": "12"
+--                 }
+--             },
+--             "headerSectionGap": {
+--                 "$res": true,
+--                 "xl": {
+--                     "value": 12,
+--                     "ref": "12"
+--                 }
+--             },
+--             "footerSectionGap": {
+--                 "$res": true,
+--                 "xl": {
+--                     "value": 12,
+--                     "ref": "12"
+--                 }
+--             },
+--             "HeaderStack": [
+--                 {
+--                     "_id": "e4025cee-16fa-4662-a7be-cb7408a9da25",
+--                     "_template": "$stack",
+--                     "traceId": "$stack-daa51d38",
+--                     "align": {
+--                         "$res": true,
+--                         "xl": "left"
+--                     },
+--                     "Items": []
+--                 }
+--             ],
+--             "HeaderSecondaryStack": [
+--                 {
+--                     "_id": "e907611f-4f2d-469c-8b16-0bee7c5f5b30",
+--                     "_template": "$stack",
+--                     "traceId": "$stack-848d9217",
+--                     "align": {
+--                         "$res": true,
+--                         "xl": "left"
+--                     },
+--                     "Items": []
+--                 }
+--             ],
+--             "Background__": [],
+--             "padding": {
+--                 "$res": true,
+--                 "xl": {
+--                     "value": 24,
+--                     "ref": "24"
+--                 }
+--             },
+--             "Component": [
+--                 {
+--                     "_id": "0bb9f92c-9519-4bbe-b0e0-fbd18c75c7c5",
+--                     "_template": "$TwoCardsCard",
+--                     "traceId": "$TwoCardsCard-972bd3f0",
+--                     "Card1": [
+--                         {
+--                             "_id": "ffc3398b-8292-4680-8096-dab04f1e06f2",
+--                             "_template": "$BannerCard",
+--                             "traceId": "$BannerCard-417592c8",
+--                             "cornerRadius": {
+--                                 "$res": true,
+--                                 "xl": "0"
+--                             },
+--                             "SideImage": [
+--                                 {
+--                                     "_id": "5d58d54f-cf29-4920-8074-5bfeb263b6dc",
+--                                     "_template": "$image",
+--                                     "traceId": "$image-9baa60f9",
+--                                     "image": {
+--                                         "$res": true,
+--                                         "xl": {
+--                                             "id": "woman"
+--                                         }
+--                                     },
+--                                     "aspectRatio": {
+--                                         "$res": true,
+--                                         "xl": {
+--                                             "value": "3:2",
+--                                             "ref": "$landscape"
+--                                         }
+--                                     },
+--                                     "action": [],
+--                                     "traceImpressions": false,
+--                                     "traceClicks": false
+--                                 }
+--                             ],
+--                             "sideImagePosition": {
+--                                 "$res": true,
+--                                 "xl": "top"
+--                             },
+--                             "sideImageSize": {
+--                                 "$res": true,
+--                                 "xl": {
+--                                     "value": "3:2",
+--                                     "ref": "$landscape"
+--                                 }
+--                             },
+--                             "size": {
+--                                 "$res": true,
+--                                 "xl": {
+--                                     "value": "3:2",
+--                                     "ref": "$landscape"
+--                                 }
+--                             },
+--                             "contentPositionInBackgroundMode": {
+--                                 "$res": true,
+--                                 "xl": "bottom-center"
+--                             },
+--                             "contentHorizontalMarginInBackgroundMode": {
+--                                 "$res": true,
+--                                 "xl": {
+--                                     "value": 24,
+--                                     "ref": "24"
+--                                 }
+--                             },
+--                             "contentVerticalMarginInBackgroundMode": {
+--                                 "$res": true,
+--                                 "xl": {
+--                                     "value": 24,
+--                                     "ref": "24"
+--                                 }
+--                             },
+--                             "Background": [],
+--                             "offsetHorizontal": {
+--                                 "$res": true,
+--                                 "xl": {
+--                                     "value": 24,
+--                                     "ref": "24"
+--                                 }
+--                             },
+--                             "offsetHorizontalForVerticalImagePosition": {
+--                                 "$res": true,
+--                                 "xl": {
+--                                     "value": 0,
+--                                     "ref": "0"
+--                                 }
+--                             },
+--                             "offsetVertical": {
+--                                 "$res": true,
+--                                 "xl": {
+--                                     "value": 24,
+--                                     "ref": "24"
+--                                 }
+--                             },
+--                             "Stack": [
+--                                 {
+--                                     "_id": "1bbfafa3-2f61-43e8-be2e-7224223152b1",
+--                                     "_template": "$stack",
+--                                     "traceId": "$stack-471c4b59",
+--                                     "align": {
+--                                         "$res": true,
+--                                         "xl": "left"
+--                                     },
+--                                     "Items": [
+--                                         {
+--                                             "_id": "1c11a2f0-f43a-484b-bd63-7e87ddce53b7",
+--                                             "_template": "$richText",
+--                                             "traceId": "$richText-cc11e866",
+--                                             "elements": {
+--                                                 "en": [
+--                                                     {
+--                                                         "_id": "ba770adb-6d14-441e-8897-988054d457f7",
+--                                                         "_template": "$richTextBlockElement",
+--                                                         "traceId": "$richTextBlockElement-a6b9ed34",
+--                                                         "type": "paragraph",
+--                                                         "elements": [
+--                                                             {
+--                                                                 "_id": "b168614b-a349-4418-9931-f5687d5e518b",
+--                                                                 "_template": "$richTextLineElement",
+--                                                                 "traceId": "$richTextLineElement-e1394d92",
+--                                                                 "elements": [
+--                                                                     {
+--                                                                         "_id": "ec81b2f4-9866-4af3-8b77-f4ecae553706",
+--                                                                         "_template": "$richTextPart",
+--                                                                         "traceId": "$richTextPart-b2679512",
+--                                                                         "value": "Supabase",
+--                                                                         "font": {
+--                                                                             "$res": true,
+--                                                                             "xl": {
+--                                                                                 "value": {
+--                                                                                     "$res": true,
+--                                                                                     "sm": {
+--                                                                                         "fontFamily": "\"Graphik Web\", sans-serif",
+--                                                                                         "fontWeight": 400,
+--                                                                                         "fontStyle": "normal",
+--                                                                                         "fontSize": "32px",
+--                                                                                         "letterSpacing": "-0.64px",
+--                                                                                         "lineHeight": 1.05
+--                                                                                     },
+--                                                                                     "2xl": {
+--                                                                                         "fontFamily": "\"Graphik Web\", sans-serif",
+--                                                                                         "fontWeight": 400,
+--                                                                                         "fontStyle": "normal",
+--                                                                                         "fontSize": "64px",
+--                                                                                         "letterSpacing": "-0.64px",
+--                                                                                         "lineHeight": 1.05
+--                                                                                     }
+--                                                                                 },
+--                                                                                 "ref": "headingBig"
+--                                                                             }
+--                                                                         },
+--                                                                         "color": {
+--                                                                             "$res": true,
+--                                                                             "xl": {
+--                                                                                 "value": "black",
+--                                                                                 "ref": "black"
+--                                                                             }
+--                                                                         }
+--                                                                     }
+--                                                                 ]
+--                                                             }
+--                                                         ]
+--                                                     }
+--                                                 ]
+--                                             },
+--                                             "accessibilityRole": "div",
+--                                             "isListStyleAuto": true,
+--                                             "mainFont": {
+--                                                 "$res": true,
+--                                                 "xl": {
+--                                                     "value": {
+--                                                         "$res": true,
+--                                                         "sm": {
+--                                                             "fontFamily": "\"Graphik Web\", sans-serif",
+--                                                             "fontWeight": 400,
+--                                                             "fontStyle": "normal",
+--                                                             "fontSize": "32px",
+--                                                             "letterSpacing": "-0.64px",
+--                                                             "lineHeight": 1.05
+--                                                         },
+--                                                         "2xl": {
+--                                                             "fontFamily": "\"Graphik Web\", sans-serif",
+--                                                             "fontWeight": 400,
+--                                                             "fontStyle": "normal",
+--                                                             "fontSize": "64px",
+--                                                             "letterSpacing": "-0.64px",
+--                                                             "lineHeight": 1.05
+--                                                         }
+--                                                     },
+--                                                     "ref": "headingBig"
+--                                                 }
+--                                             },
+--                                             "mainColor": {
+--                                                 "$res": true,
+--                                                 "xl": {
+--                                                     "value": "black",
+--                                                     "ref": "black"
+--                                                 }
+--                                             },
+--                                             "_itemProps": {
+--                                                 "$stack": {
+--                                                     "Items": {
+--                                                         "width": {
+--                                                             "$res": true,
+--                                                             "xl": "576px"
+--                                                         },
+--                                                         "marginBottom": {
+--                                                             "$res": true,
+--                                                             "xl": {
+--                                                                 "value": 0,
+--                                                                 "ref": "0"
+--                                                             }
+--                                                         }
+--                                                     }
+--                                                 }
+--                                             }
+--                                         }
+--                                     ]
+--                                 }
+--                             ],
+--                             "stackAlign": {
+--                                 "$res": true,
+--                                 "xl": "left"
+--                             },
+--                             "positionHorizontal": {
+--                                 "$res": true,
+--                                 "xl": "left"
+--                             },
+--                             "verticalAlign": {
+--                                 "$res": true,
+--                                 "xl": "top"
+--                             },
+--                             "action": [],
+--                             "traceImpressions": false,
+--                             "traceClicks": false,
+--                             "_itemProps": {
+--                                 "$TwoCardsCard": {
+--                                     "Card1": {}
+--                                 }
+--                             }
+--                         }
+--                     ],
+--                     "Card2": [
+--                         {
+--                             "_id": "29d2a40f-3196-4e83-af20-5a5269b98ac3",
+--                             "_template": "$BannerCard",
+--                             "traceId": "$BannerCard-332a952b",
+--                             "cornerRadius": {
+--                                 "$res": true,
+--                                 "xl": "0"
+--                             },
+--                             "SideImage": [
+--                                 {
+--                                     "_id": "64078ab1-8bff-4f71-af3e-aa91b72af1f1",
+--                                     "_template": "$image",
+--                                     "traceId": "$image-78fe5e2d",
+--                                     "image": {
+--                                         "$res": true,
+--                                         "xl": {
+--                                             "id": "building"
+--                                         }
+--                                     },
+--                                     "aspectRatio": {
+--                                         "$res": true,
+--                                         "xl": {
+--                                             "value": "3:2",
+--                                             "ref": "$landscape"
+--                                         }
+--                                     },
+--                                     "action": [],
+--                                     "traceImpressions": false,
+--                                     "traceClicks": false
+--                                 }
+--                             ],
+--                             "sideImagePosition": {
+--                                 "$res": true,
+--                                 "xl": "top"
+--                             },
+--                             "sideImageSize": {
+--                                 "$res": true,
+--                                 "xl": {
+--                                     "value": "3:2",
+--                                     "ref": "$landscape"
+--                                 }
+--                             },
+--                             "size": {
+--                                 "$res": true,
+--                                 "xl": {
+--                                     "value": "3:2",
+--                                     "ref": "$landscape"
+--                                 }
+--                             },
+--                             "contentPositionInBackgroundMode": {
+--                                 "$res": true,
+--                                 "xl": "bottom-center"
+--                             },
+--                             "contentHorizontalMarginInBackgroundMode": {
+--                                 "$res": true,
+--                                 "xl": {
+--                                     "value": 24,
+--                                     "ref": "24"
+--                                 }
+--                             },
+--                             "contentVerticalMarginInBackgroundMode": {
+--                                 "$res": true,
+--                                 "xl": {
+--                                     "value": 24,
+--                                     "ref": "24"
+--                                 }
+--                             },
+--                             "Background": [],
+--                             "offsetHorizontal": {
+--                                 "$res": true,
+--                                 "xl": {
+--                                     "value": 24,
+--                                     "ref": "24"
+--                                 }
+--                             },
+--                             "offsetHorizontalForVerticalImagePosition": {
+--                                 "$res": true,
+--                                 "xl": {
+--                                     "value": 0,
+--                                     "ref": "0"
+--                                 }
+--                             },
+--                             "offsetVertical": {
+--                                 "$res": true,
+--                                 "xl": {
+--                                     "value": 24,
+--                                     "ref": "24"
+--                                 }
+--                             },
+--                             "Stack": [
+--                                 {
+--                                     "_id": "68d73fcb-14e8-420a-8588-b62cf25188cd",
+--                                     "_template": "$stack",
+--                                     "traceId": "$stack-3df1f319",
+--                                     "align": {
+--                                         "$res": true,
+--                                         "xl": "left"
+--                                     },
+--                                     "Items": [
+--                                         {
+--                                             "_id": "31411030-b540-4bae-bae3-4e3a2cae1e69",
+--                                             "_template": "$richText",
+--                                             "traceId": "$richText-6790669b",
+--                                             "elements": {
+--                                                 "en": [
+--                                                     {
+--                                                         "_id": "b21ba32f-9c02-4c8b-a2ab-42d4a5dee3f7",
+--                                                         "_template": "$richTextBlockElement",
+--                                                         "traceId": "$richTextBlockElement-6ad96624",
+--                                                         "type": "paragraph",
+--                                                         "elements": [
+--                                                             {
+--                                                                 "_id": "822ba151-99e0-4017-af80-481794a38a6b",
+--                                                                 "_template": "$richTextLineElement",
+--                                                                 "traceId": "$richTextLineElement-99d4c879",
+--                                                                 "elements": [
+--                                                                     {
+--                                                                         "_id": "fa3391de-03f5-4b6e-9c31-26f8ef2b404b",
+--                                                                         "_template": "$richTextPart",
+--                                                                         "traceId": "$richTextPart-fb1d9413",
+--                                                                         "value": "Lorem ipsum",
+--                                                                         "font": {
+--                                                                             "$res": true,
+--                                                                             "xl": {
+--                                                                                 "value": {
+--                                                                                     "$res": true,
+--                                                                                     "sm": {
+--                                                                                         "fontFamily": "\"Graphik Web\", sans-serif",
+--                                                                                         "fontWeight": 400,
+--                                                                                         "fontStyle": "normal",
+--                                                                                         "fontSize": "32px",
+--                                                                                         "letterSpacing": "-0.64px",
+--                                                                                         "lineHeight": 1.05
+--                                                                                     },
+--                                                                                     "2xl": {
+--                                                                                         "fontFamily": "\"Graphik Web\", sans-serif",
+--                                                                                         "fontWeight": 400,
+--                                                                                         "fontStyle": "normal",
+--                                                                                         "fontSize": "64px",
+--                                                                                         "letterSpacing": "-0.64px",
+--                                                                                         "lineHeight": 1.05
+--                                                                                     }
+--                                                                                 },
+--                                                                                 "ref": "headingBig"
+--                                                                             }
+--                                                                         },
+--                                                                         "color": {
+--                                                                             "$res": true,
+--                                                                             "xl": {
+--                                                                                 "value": "black",
+--                                                                                 "ref": "black"
+--                                                                             }
+--                                                                         }
+--                                                                     }
+--                                                                 ]
+--                                                             }
+--                                                         ]
+--                                                     }
+--                                                 ]
+--                                             },
+--                                             "accessibilityRole": "div",
+--                                             "isListStyleAuto": true,
+--                                             "mainFont": {
+--                                                 "$res": true,
+--                                                 "xl": {
+--                                                     "value": {
+--                                                         "$res": true,
+--                                                         "sm": {
+--                                                             "fontFamily": "\"Graphik Web\", sans-serif",
+--                                                             "fontWeight": 400,
+--                                                             "fontStyle": "normal",
+--                                                             "fontSize": "32px",
+--                                                             "letterSpacing": "-0.64px",
+--                                                             "lineHeight": 1.05
+--                                                         },
+--                                                         "2xl": {
+--                                                             "fontFamily": "\"Graphik Web\", sans-serif",
+--                                                             "fontWeight": 400,
+--                                                             "fontStyle": "normal",
+--                                                             "fontSize": "64px",
+--                                                             "letterSpacing": "-0.64px",
+--                                                             "lineHeight": 1.05
+--                                                         }
+--                                                     },
+--                                                     "ref": "headingBig"
+--                                                 }
+--                                             },
+--                                             "mainColor": {
+--                                                 "$res": true,
+--                                                 "xl": {
+--                                                     "value": "black",
+--                                                     "ref": "black"
+--                                                 }
+--                                             },
+--                                             "_itemProps": {
+--                                                 "$stack": {
+--                                                     "Items": {
+--                                                         "width": {
+--                                                             "$res": true,
+--                                                             "xl": "576px"
+--                                                         },
+--                                                         "marginBottom": {
+--                                                             "$res": true,
+--                                                             "xl": {
+--                                                                 "value": 0,
+--                                                                 "ref": "0"
+--                                                             }
+--                                                         }
+--                                                     }
+--                                                 }
+--                                             }
+--                                         }
+--                                     ]
+--                                 }
+--                             ],
+--                             "stackAlign": {
+--                                 "$res": true,
+--                                 "xl": "left"
+--                             },
+--                             "positionHorizontal": {
+--                                 "$res": true,
+--                                 "xl": "left"
+--                             },
+--                             "verticalAlign": {
+--                                 "$res": true,
+--                                 "xl": "top"
+--                             },
+--                             "action": [],
+--                             "traceImpressions": false,
+--                             "traceClicks": false,
+--                             "_itemProps": {
+--                                 "$TwoCardsCard": {
+--                                     "Card2": {}
+--                                 }
+--                             }
+--                         }
+--                     ],
+--                     "card1Width": {
+--                         "$res": true,
+--                         "xl": "12"
+--                     },
+--                     "card1EscapeMargin": {
+--                         "$res": true,
+--                         "xl": false
+--                     },
+--                     "card2Width": {
+--                         "$res": true,
+--                         "xl": "12"
+--                     },
+--                     "card2EscapeMargin": {
+--                         "$res": true,
+--                         "xl": false
+--                     },
+--                     "verticalLayout": {
+--                         "$res": true,
+--                         "xl": "align-top"
+--                     },
+--                     "verticalOffset": {
+--                         "$res": true,
+--                         "xl": "-4"
+--                     },
+--                     "collapse": {
+--                         "$res": true,
+--                         "xl": false
+--                     },
+--                     "gap": {
+--                         "$res": true,
+--                         "xl": {
+--                             "value": 32,
+--                             "ref": "32"
+--                         }
+--                     },
+--                     "verticalGap": {
+--                         "$res": true,
+--                         "xl": {
+--                             "value": 24,
+--                             "ref": "24"
+--                         }
+--                     },
+--                     "traceImpressions": false,
+--                     "traceClicks": false
+--                 }
+--             ],
+--             "_itemProps": {
+--                 "$RootSections": {
+--                     "data": {
+--                         "topMargin": {
+--                             "$res": true,
+--                             "xl": {
+--                                 "value": 0,
+--                                 "ref": "0"
+--                             }
+--                         },
+--                         "bottomMargin": {
+--                             "$res": true,
+--                             "xl": {
+--                                 "value": 32,
+--                                 "ref": "32"
+--                             }
+--                         }
+--                     }
+--                 }
+--             }
+--         }
+--     ]
+--   }', 
+--   '89ed48c6-dc0b-4936-9a97-4eb791396853',
+--   '2022-09-02 00:00:00+00'),
+--   (
+--   'ed7c7891-1af7-43f6-b5e1-22bc64125a6a',
+--   '{
+--     "_id": "ef18753e-b454-49bb-960a-f880a7da45e1",
+--     "_template": "$RootSections",
+--     "traceId": "$RootSections-8ef166e6",
+--     "data": [
+--         {
+--         "_id": "e7a137c8-b326-4303-be6e-5faa59b68337",
+--         "_template": "$BannerSection",
+--         "traceId": "$BannerSection-ec41d489",
+--         "containerMargin": {
+--             "$res": true,
+--             "xl": {
+--             "value": {
+--                 "$res": true,
+--                 "xs": 24,
+--                 "sm": 24,
+--                 "md": 40,
+--                 "lg": 50,
+--                 "xl": 64,
+--                 "2xl": 96
+--             },
+--             "ref": "containerMargin.default"
+--             }
+--         },
+--         "escapeMargin": {
+--             "$res": true,
+--             "xl": false
+--         },
+--         "hide": {
+--             "$res": true,
+--             "xl": false
+--         },
+--         "headerMode": "none",
+--         "layout1Stack": "left",
+--         "layout2Stacks": {
+--             "$res": true,
+--             "xl": "left-right"
+--         },
+--         "layout2StacksVerticalAlign": {
+--             "$res": true,
+--             "xl": "center"
+--         },
+--         "headerStacksGap": {
+--             "$res": true,
+--             "xl": {
+--             "value": 12,
+--             "ref": "12"
+--             }
+--         },
+--         "headerSectionGap": {
+--             "$res": true,
+--             "xl": {
+--             "value": 12,
+--             "ref": "12"
+--             }
+--         },
+--         "footerSectionGap": {
+--             "$res": true,
+--             "xl": {
+--             "value": 12,
+--             "ref": "12"
+--             }
+--         },
+--         "HeaderStack": [
+--             {
+--             "_id": "7dfb86b8-a410-4548-82fe-a8b206015655",
+--             "_template": "$stack",
+--             "traceId": "$stack-8e3114d8",
+--             "align": {
+--                 "$res": true,
+--                 "xl": "left"
+--             },
+--             "Items": []
+--             }
+--         ],
+--         "HeaderSecondaryStack": [
+--             {
+--             "_id": "4bbdb80c-794e-4afe-8eba-0cffae8bd846",
+--             "_template": "$stack",
+--             "traceId": "$stack-e6aaae57",
+--             "align": {
+--                 "$res": true,
+--                 "xl": "left"
+--             },
+--             "Items": []
+--             }
+--         ],
+--         "Background__": [],
+--         "padding": {
+--             "$res": true,
+--             "xl": {
+--             "value": 24,
+--             "ref": "24"
+--             }
+--         },
+--         "Component": [
+--             {
+--             "_id": "7928acd4-6318-4ee1-8770-a3f9ce5a704b",
+--             "_template": "$BannerCard",
+--             "traceId": "$BannerCard-5c3e05c5",
+--             "cornerRadius": {
+--                 "$res": true,
+--                 "xl": "0"
+--             },
+--             "SideImage": [],
+--             "sideImagePosition": {
+--                 "$res": true,
+--                 "xl": "left"
+--             },
+--             "sideImageSize": {
+--                 "$res": true,
+--                 "xl": {
+--                 "value": "3:2",
+--                 "ref": "$landscape"
+--                 }
+--             },
+--             "size": {
+--                 "$res": true,
+--                 "xl": {
+--                 "value": "3:2",
+--                 "ref": "$landscape"
+--                 }
+--             },
+--             "contentPositionInBackgroundMode": {
+--                 "$res": true,
+--                 "xl": "bottom-center"
+--             },
+--             "contentHorizontalMarginInBackgroundMode": {
+--                 "$res": true,
+--                 "xl": {
+--                 "value": 24,
+--                 "ref": "24"
+--                 }
+--             },
+--             "contentVerticalMarginInBackgroundMode": {
+--                 "$res": true,
+--                 "xl": {
+--                 "value": 24,
+--                 "ref": "24"
+--                 }
+--             },
+--             "Background": [],
+--             "offsetHorizontal": {
+--                 "$res": true,
+--                 "xl": {
+--                 "value": 24,
+--                 "ref": "24"
+--                 }
+--             },
+--             "offsetHorizontalForVerticalImagePosition": {
+--                 "$res": true,
+--                 "xl": {
+--                 "value": 0,
+--                 "ref": "0"
+--                 }
+--             },
+--             "offsetVertical": {
+--                 "$res": true,
+--                 "xl": {
+--                 "value": 24,
+--                 "ref": "24"
+--                 }
+--             },
+--             "Stack": [
+--                 {
+--                 "_id": "3af86c7e-a96a-45db-816e-4a54e3dec166",
+--                 "_template": "$stack",
+--                 "traceId": "$stack-df40403a",
+--                 "align": {
+--                     "$res": true,
+--                     "xl": "left"
+--                 },
+--                 "Items": [
+--                     {
+--                     "_id": "6348c6d1-24c6-4e2b-a494-d347701f08e9",
+--                     "_template": "$richText",
+--                     "traceId": "$richText-f2e233df",
+--                     "elements": {
+--                         "__localized": true,
+--                         "en": [
+--                         {
+--                             "_id": "c804e87a-9fbb-45f1-953b-80896e1effb0",
+--                             "_template": "$richTextBlockElement",
+--                             "traceId": "$richTextBlockElement-c2200216",
+--                             "type": "paragraph",
+--                             "elements": [
+--                             {
+--                                 "_id": "b40d00c5-ad8b-477f-9333-b6d209985f6d",
+--                                 "_template": "$richTextLineElement",
+--                                 "traceId": "$richTextLineElement-24135ec4",
+--                                 "elements": [
+--                                 {
+--                                     "_id": "ccf7c9a9-861d-444d-b98c-794729b03bc8",
+--                                     "_template": "$richTextPart",
+--                                     "traceId": "$richTextPart-3c041046",
+--                                     "value": "English",
+--                                     "font": {
+--                                     "$res": true,
+--                                     "xl": {
+--                                         "value": {
+--                                         "$res": true,
+--                                         "sm": {
+--                                             "fontFamily": "\"Graphik Web\", sans-serif",
+--                                             "fontWeight": 400,
+--                                             "fontStyle": "normal",
+--                                             "fontSize": "32px",
+--                                             "letterSpacing": "-0.64px",
+--                                             "lineHeight": 1.05
+--                                         },
+--                                         "2xl": {
+--                                             "fontFamily": "\"Graphik Web\", sans-serif",
+--                                             "fontWeight": 400,
+--                                             "fontStyle": "normal",
+--                                             "fontSize": "64px",
+--                                             "letterSpacing": "-0.64px",
+--                                             "lineHeight": 1.05
+--                                         }
+--                                         },
+--                                         "ref": "headingBig"
+--                                     }
+--                                     },
+--                                     "color": {
+--                                     "$res": true,
+--                                     "xl": {
+--                                         "value": "black",
+--                                         "ref": "black"
+--                                     }
+--                                     }
+--                                 }
+--                                 ]
+--                             }
+--                             ]
+--                         }
+--                         ],
+--                         "pl": [
+--                         {
+--                             "_id": "c804e87a-9fbb-45f1-953b-80896e1effb0",
+--                             "_template": "$richTextBlockElement",
+--                             "traceId": "$richTextBlockElement-9852d0b1",
+--                             "type": "paragraph",
+--                             "elements": [
+--                             {
+--                                 "_id": "b40d00c5-ad8b-477f-9333-b6d209985f6d",
+--                                 "_template": "$richTextLineElement",
+--                                 "traceId": "$richTextLineElement-1c64c154",
+--                                 "elements": [
+--                                 {
+--                                     "_id": "ccf7c9a9-861d-444d-b98c-794729b03bc8",
+--                                     "_template": "$richTextPart",
+--                                     "traceId": "$richTextPart-5c1f86e1",
+--                                     "value": "Polski",
+--                                     "font": {
+--                                     "$res": true,
+--                                     "xl": {
+--                                         "value": {
+--                                         "$res": true,
+--                                         "sm": {
+--                                             "fontFamily": "\"Graphik Web\", sans-serif",
+--                                             "fontWeight": 400,
+--                                             "fontStyle": "normal",
+--                                             "fontSize": "32px",
+--                                             "letterSpacing": "-0.64px",
+--                                             "lineHeight": 1.05
+--                                         },
+--                                         "2xl": {
+--                                             "fontFamily": "\"Graphik Web\", sans-serif",
+--                                             "fontWeight": 400,
+--                                             "fontStyle": "normal",
+--                                             "fontSize": "64px",
+--                                             "letterSpacing": "-0.64px",
+--                                             "lineHeight": 1.05
+--                                         }
+--                                         },
+--                                         "ref": "headingBig"
+--                                     }
+--                                     },
+--                                     "color": {
+--                                     "$res": true,
+--                                     "xl": {
+--                                         "value": "black",
+--                                         "ref": "black"
+--                                     }
+--                                     }
+--                                 }
+--                                 ]
+--                             }
+--                             ]
+--                         }
+--                         ]
+--                     },
+--                     "accessibilityRole": "div",
+--                     "isListStyleAuto": true,
+--                     "mainFont": {
+--                         "$res": true,
+--                         "xl": {
+--                         "value": {
+--                             "$res": true,
+--                             "sm": {
+--                             "fontFamily": "\"Graphik Web\", sans-serif",
+--                             "fontWeight": 400,
+--                             "fontStyle": "normal",
+--                             "fontSize": "32px",
+--                             "letterSpacing": "-0.64px",
+--                             "lineHeight": 1.05
+--                             },
+--                             "2xl": {
+--                             "fontFamily": "\"Graphik Web\", sans-serif",
+--                             "fontWeight": 400,
+--                             "fontStyle": "normal",
+--                             "fontSize": "64px",
+--                             "letterSpacing": "-0.64px",
+--                             "lineHeight": 1.05
+--                             }
+--                         },
+--                         "ref": "headingBig"
+--                         }
+--                     },
+--                     "mainColor": {
+--                         "$res": true,
+--                         "xl": {
+--                         "value": "black",
+--                         "ref": "black"
+--                         }
+--                     },
+--                     "_itemProps": {
+--                         "$stack": {
+--                         "Items": {
+--                             "width": {
+--                             "$res": true,
+--                             "xl": "576px"
+--                             },
+--                             "marginBottom": {
+--                             "$res": true,
+--                             "xl": {
+--                                 "value": 0,
+--                                 "ref": "0"
+--                             }
+--                             }
+--                         }
+--                         }
+--                     }
+--                     }
+--                 ]
+--                 }
+--             ],
+--             "stackAlign": {
+--                 "$res": true,
+--                 "xl": "left"
+--             },
+--             "positionHorizontal": {
+--                 "$res": true,
+--                 "xl": "left"
+--             },
+--             "verticalAlign": {
+--                 "$res": true,
+--                 "xl": "top"
+--             },
+--             "action": [],
+--             "traceImpressions": false,
+--             "traceClicks": false
+--             }
+--         ],
+--         "_itemProps": {
+--             "$RootSections": {
+--             "data": {
+--                 "topMargin": {
+--                 "$res": true,
+--                 "xl": {
+--                     "value": 0,
+--                     "ref": "0"
+--                 }
+--                 },
+--                 "bottomMargin": {
+--                 "$res": true,
+--                 "xl": {
+--                     "value": 32,
+--                     "ref": "32"
+--                 }
+--                 }
+--             }
+--             }
+--         }
+--         },
+--         {
+--         "_id": "0da01766-f56e-4cbd-99f0-8ac67f31b5d0",
+--         "_template": "$BannerSection",
+--         "traceId": "$BannerSection-dc24ad22",
+--         "containerMargin": {
+--             "$res": true,
+--             "xl": {
+--             "value": {
+--                 "$res": true,
+--                 "xs": 24,
+--                 "sm": 24,
+--                 "md": 40,
+--                 "lg": 50,
+--                 "xl": 64,
+--                 "2xl": 96
+--             },
+--             "ref": "containerMargin.default"
+--             }
+--         },
+--         "escapeMargin": {
+--             "$res": true,
+--             "xl": false
+--         },
+--         "hide": {
+--             "$res": true,
+--             "xl": false
+--         },
+--         "headerMode": "none",
+--         "layout1Stack": "left",
+--         "layout2Stacks": {
+--             "$res": true,
+--             "xl": "left-right"
+--         },
+--         "layout2StacksVerticalAlign": {
+--             "$res": true,
+--             "xl": "center"
+--         },
+--         "headerStacksGap": {
+--             "$res": true,
+--             "xl": {
+--             "value": 12,
+--             "ref": "12"
+--             }
+--         },
+--         "headerSectionGap": {
+--             "$res": true,
+--             "xl": {
+--             "value": 12,
+--             "ref": "12"
+--             }
+--         },
+--         "footerSectionGap": {
+--             "$res": true,
+--             "xl": {
+--             "value": 12,
+--             "ref": "12"
+--             }
+--         },
+--         "HeaderStack": [
+--             {
+--             "_id": "feff5991-a949-4a9f-be17-f6be6cd8ba5b",
+--             "_template": "$stack",
+--             "traceId": "$stack-d0042869",
+--             "align": {
+--                 "$res": true,
+--                 "xl": "left"
+--             },
+--             "Items": []
+--             }
+--         ],
+--         "HeaderSecondaryStack": [
+--             {
+--             "_id": "431ec380-1502-4032-8561-3a3bc5f0a808",
+--             "_template": "$stack",
+--             "traceId": "$stack-0db3305f",
+--             "align": {
+--                 "$res": true,
+--                 "xl": "left"
+--             },
+--             "Items": []
+--             }
+--         ],
+--         "Background__": [],
+--         "padding": {
+--             "$res": true,
+--             "xl": {
+--             "value": 24,
+--             "ref": "24"
+--             }
+--         },
+--         "Component": [
+--             {
+--             "_id": "78a6437f-4f56-453b-97af-acd50ecd72f5",
+--             "_template": "$BannerCard",
+--             "traceId": "$BannerCard-4d242dd1",
+--             "cornerRadius": {
+--                 "$res": true,
+--                 "xl": "0"
+--             },
+--             "SideImage": [],
+--             "sideImagePosition": {
+--                 "$res": true,
+--                 "xl": "left"
+--             },
+--             "sideImageSize": {
+--                 "$res": true,
+--                 "xl": {
+--                 "value": "3:2",
+--                 "ref": "$landscape"
+--                 }
+--             },
+--             "size": {
+--                 "$res": true,
+--                 "xl": {
+--                 "value": "3:2",
+--                 "ref": "$landscape"
+--                 }
+--             },
+--             "contentPositionInBackgroundMode": {
+--                 "$res": true,
+--                 "xl": "bottom-center"
+--             },
+--             "contentHorizontalMarginInBackgroundMode": {
+--                 "$res": true,
+--                 "xl": {
+--                 "value": 24,
+--                 "ref": "24"
+--                 }
+--             },
+--             "contentVerticalMarginInBackgroundMode": {
+--                 "$res": true,
+--                 "xl": {
+--                 "value": 24,
+--                 "ref": "24"
+--                 }
+--             },
+--             "Background": [],
+--             "offsetHorizontal": {
+--                 "$res": true,
+--                 "xl": {
+--                 "value": 24,
+--                 "ref": "24"
+--                 }
+--             },
+--             "offsetHorizontalForVerticalImagePosition": {
+--                 "$res": true,
+--                 "xl": {
+--                 "value": 0,
+--                 "ref": "0"
+--                 }
+--             },
+--             "offsetVertical": {
+--                 "$res": true,
+--                 "xl": {
+--                 "value": 24,
+--                 "ref": "24"
+--                 }
+--             },
+--             "Stack": [
+--                 {
+--                 "_id": "e77b1c62-86ce-45c9-9c45-48d9f6e71a07",
+--                 "_template": "$stack",
+--                 "traceId": "$stack-fed603fd",
+--                 "align": {
+--                     "$res": true,
+--                     "xl": "left"
+--                 },
+--                 "Items": [
+--                     {
+--                     "_id": "01bd3ce7-002d-4137-abd6-8635d6cd1035",
+--                     "_template": "$richText",
+--                     "traceId": "$richText-38fea738",
+--                     "elements": {
+--                         "__localized": true,
+--                         "en": [
+--                         {
+--                             "_template": "$richTextBlockElement",
+--                             "elements": [
+--                             {
+--                                 "_template": "$richTextLineElement",
+--                                 "elements": [
+--                                 {
+--                                     "_id": "3f65707a-9101-4309-9d78-010aa27e6281",
+--                                     "_template": "$richTextPart",
+--                                     "color": {
+--                                     "$res": true,
+--                                     "xl": {
+--                                         "value": "black",
+--                                         "ref": "black"
+--                                     }
+--                                     },
+--                                     "font": {
+--                                     "$res": true,
+--                                     "xl": {
+--                                         "value": {
+--                                         "$res": true,
+--                                         "sm": {
+--                                             "fontFamily": "\"Graphik Web\", sans-serif",
+--                                             "fontWeight": 400,
+--                                             "fontStyle": "normal",
+--                                             "fontSize": "32px",
+--                                             "letterSpacing": "-0.64px",
+--                                             "lineHeight": 1.05
+--                                         },
+--                                         "2xl": {
+--                                             "fontFamily": "\"Graphik Web\", sans-serif",
+--                                             "fontWeight": 400,
+--                                             "fontStyle": "normal",
+--                                             "fontSize": "64px",
+--                                             "letterSpacing": "-0.64px",
+--                                             "lineHeight": 1.05
+--                                         }
+--                                         },
+--                                         "ref": "headingBig"
+--                                     }
+--                                     },
+--                                     "value": "English Fallback"
+--                                 }
+--                                 ],
+--                                 "_id": "9524a0a0-d472-4dc2-bfd8-50f0842a08aa"
+--                             }
+--                             ],
+--                             "type": "paragraph",
+--                             "_id": "d2d3fce7-ecfb-4dc6-b685-ef6c765cf81a"
+--                         }
+--                         ]
+--                     },
+--                     "accessibilityRole": "div",
+--                     "isListStyleAuto": true,
+--                     "mainFont": {
+--                         "$res": true,
+--                         "xl": {
+--                         "value": {
+--                             "$res": true,
+--                             "sm": {
+--                             "fontFamily": "\"Graphik Web\", sans-serif",
+--                             "fontWeight": 400,
+--                             "fontStyle": "normal",
+--                             "fontSize": "32px",
+--                             "letterSpacing": "-0.64px",
+--                             "lineHeight": 1.05
+--                             },
+--                             "2xl": {
+--                             "fontFamily": "\"Graphik Web\", sans-serif",
+--                             "fontWeight": 400,
+--                             "fontStyle": "normal",
+--                             "fontSize": "64px",
+--                             "letterSpacing": "-0.64px",
+--                             "lineHeight": 1.05
+--                             }
+--                         },
+--                         "ref": "headingBig"
+--                         }
+--                     },
+--                     "mainColor": {
+--                         "$res": true,
+--                         "xl": {
+--                         "value": "black",
+--                         "ref": "black"
+--                         }
+--                     },
+--                     "_itemProps": {
+--                         "$stack": {
+--                         "Items": {
+--                             "width": {
+--                             "$res": true,
+--                             "xl": "576px"
+--                             },
+--                             "marginBottom": {
+--                             "$res": true,
+--                             "xl": {
+--                                 "value": 0,
+--                                 "ref": "0"
+--                             }
+--                             }
+--                         }
+--                         }
+--                     }
+--                     }
+--                 ]
+--                 }
+--             ],
+--             "stackAlign": {
+--                 "$res": true,
+--                 "xl": "left"
+--             },
+--             "positionHorizontal": {
+--                 "$res": true,
+--                 "xl": "left"
+--             },
+--             "verticalAlign": {
+--                 "$res": true,
+--                 "xl": "top"
+--             },
+--             "action": [],
+--             "traceImpressions": false,
+--             "traceClicks": false
+--             }
+--         ],
+--         "_itemProps": {
+--             "$RootSections": {
+--             "data": {
+--                 "topMargin": {
+--                 "$res": true,
+--                 "xl": {
+--                     "value": 0,
+--                     "ref": "0"
+--                 }
+--                 },
+--                 "bottomMargin": {
+--                 "$res": true,
+--                 "xl": {
+--                     "value": 32,
+--                     "ref": "32"
+--                 }
+--                 }
+--             }
+--             }
+--         }
+--         }
+--     ]
+--   }', 
+--   '89ed48c6-dc0b-4936-9a97-4eb791396853',
+--   '2022-09-03 00:00:00+00');
+
+INSERT INTO storage.buckets(id, name, owner, public)
+VALUES ('assets', 'assets', NULL, true);

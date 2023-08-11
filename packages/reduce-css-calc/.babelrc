@@ -1,0 +1,21 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": 4,
+          "browsers": ["last 2 versions"]
+        }
+      }
+    ]
+  ],
+  "env": {
+    "development": {
+      "sourceMaps": "inline"
+    },
+    "test": {
+      "plugins": ["istanbul"]
+    }
+  }
+}

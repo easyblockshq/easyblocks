@@ -1,0 +1,32 @@
+{
+  "name": "example",
+  "version": "1.5.2",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@radix-ui/react-dialog": "^1.0.4",
+    "@easyblocks/next-editable-components": "link:../../packages/next-editable-components",
+    "@easyblocks/core": "workspace:*",
+    "@easyblocks/editable-components": "workspace:*",
+    "@easyblocks/nocms": "workspace:*",
+    "@easyblocks/react": "workspace:*",
+    "@types/node": "20.4.2",
+    "@types/react": "18.2.20",
+    "@types/react-dom": "18.2.7",
+    "autoprefixer": "10.4.14",
+    "date-fns": "^2.30.0",
+    "eslint": "8.45.0",
+    "eslint-config-next": "13.4.10",
+    "next": "13.4.12",
+    "postcss": "8.4.26",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "tailwindcss": "3.3.3",
+    "typescript": "5.1.6"
+  }
+}

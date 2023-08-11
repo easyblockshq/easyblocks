@@ -1,0 +1,56 @@
+{
+  "name": "@easyblocks/nocms",
+  "version": "1.5.2",
+  "main": "dist/cjs/index.js",
+  "module": "dist/es/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "react-server": {
+        "browser": "./dist/es/index.js",
+        "node": "./dist/cjs/index.react-server.js"
+      },
+      "default": {
+        "types": "./dist/index.d.ts",
+        "browser": "./dist/es/index.js",
+        "node": "./dist/cjs/index.js"
+      }
+    }
+  },
+  "sideEffects": false,
+  "scripts": {
+    "lint": "eslint src/",
+    "dev": "concurrently -n bundle,emit-declarations 'npm run bundle:watch' 'npm run emit-declarations:watch'",
+    "build": "npm run bundle && npm run emit-declarations",
+    "bundle": "NODE_ENV=production rollup -c rollup.config.js",
+    "bundle:watch": "NODE_ENV=development  rollup -c rollup.config.js --watch",
+    "emit-declarations": "tsc",
+    "emit-declarations:watch": "npm run emit-declarations -- --watch --preserveWatchOutput"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.21.0",
+    "@radix-ui/react-dropdown-menu": "^2.0.5",
+    "@easyblocks/core": "^1.5.2",
+    "contentful": "^9.1.4",
+    "react-modal": "^3.12.1",
+    "styled-components": "^5.3.3"
+  },
+  "peerDependencies": {
+    "react": ">= 16.8",
+    "react-dom": ">= 16.8"
+  },
+  "devDependencies": {
+    "@easyblocks/build-tools": "^1.5.2",
+    "@easyblocks/design-system": "link:../design-system",
+    "@easyblocks/utils": "link:../utils",
+    "@types/react": "^18.2.20",
+    "@types/react-dom": "^18.2.7",
+    "@types/react-modal": "^3.13.1",
+    "@types/styled-components": "^5.1.26"
+  },
+  "files": [
+    "dist/",
+    "package.json",
+    "LICENSE.md"
+  ]
+}

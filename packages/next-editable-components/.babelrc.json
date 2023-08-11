@@ -1,0 +1,4 @@
+{
+  "extends": "../../babel.config.json",
+  "plugins": ["@babel/plugin-transform-runtime"]
+}

@@ -1,0 +1,15 @@
+{
+  "extends": "../../base.tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationDir": "./dist"
+  },
+  "include": ["./src/"],
+  "exclude": [
+    "./src/**/*.test.ts",
+    "./src/**/*.test.tsx",
+    "./src/__tests__/",
+    "./src/testUtils.ts"
+  ]
+}

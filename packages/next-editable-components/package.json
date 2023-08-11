@@ -1,0 +1,33 @@
+{
+  "name": "@easyblocks/next-editable-components",
+  "main": "dist/cjs/index.js",
+  "module": "dist/es/index.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/es/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "scripts": {
+    "test": "jest",
+    "dev": "concurrently -n bundle,emit-declarations 'npm run bundle:watch' 'tsc --watch --preserveWatchOutput'",
+    "build": "npm run bundle && tsc",
+    "bundle": "NODE_ENV=production rollup -c rollup.config.js",
+    "bundle:watch": "NODE_ENV=development rollup -c rollup.config.js --watch",
+    "check": "tsc && eslint --quiet src/"
+  },
+  "dependencies": {
+    "@babel/plugin-transform-runtime": "^7.22.9",
+    "@easyblocks/editable-components": "^1.5.0"
+  },
+  "devDependencies": {
+    "@easyblocks/build-tools": "^1.5.0",
+    "@types/react": "^18.2.20"
+  },
+  "peerDependencies": {
+    "next": "^12 || ^13",
+    "react": ">=16.8"
+  }
+}

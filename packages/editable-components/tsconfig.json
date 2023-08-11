@@ -1,0 +1,14 @@
+{
+  "extends": "../../base.tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationDir": "./dist/types"
+  },
+  "include": ["./src", "./typings"],
+  "exclude": [
+    "./src/**/*.test.tsx",
+    "./src/**/*.test.ts",
+    "./src/test-utils/**/*"
+  ]
+}

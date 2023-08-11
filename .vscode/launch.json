@@ -1,0 +1,89 @@
+{
+  "configurations": [
+    {
+      "type": "node",
+      "name": "vscode-jest-tests",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "program": "${workspaceFolder}/node_modules/.bin/jest",
+      "cwd": "${workspaceFolder}/packages/core",
+      "args": ["jest", "--runInBand", "--watchAll=false"]
+    },
+    {
+      "name": "Debug Shopstory - Client",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:${input:variableID}/demos/away/nocms/shopstory-editor",
+      "webRoot": "${workspaceFolder}/packages/core"
+    },
+    {
+      "name": "Debug Shopstory - Server",
+      "type": "node",
+      "request": "launch",
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
+      "runtimeExecutable": "npm",
+      "cwd": "${workspaceFolder}/packages/core",
+      "args": ["run", "next", "--", "-p", "${input:variableID}"]
+    },
+    {
+      "name": "Debug Shopstory - Server (Attach)",
+      "type": "node",
+      "request": "attach",
+      "port": 9229
+    },
+    {
+      "name": "Debug API",
+      "type": "node",
+      "request": "launch",
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
+      "runtimeExecutable": "npm",
+      "cwd": "${workspaceFolder}/packages/api",
+      "args": ["run", "dev", "--", "-p", "3001"]
+    },
+    {
+      "type": "node",
+      "name": "Run Unit Tests in opened file",
+      "request": "launch",
+      "console": "internalConsole",
+      "internalConsoleOptions": "neverOpen",
+      "program": "${workspaceFolder}/node_modules/.bin/jest",
+      "cwd": "${workspaceFolder}/packages/core",
+      "args": ["--runInBand", "--watchAll=false", "${file}"]
+    },
+    {
+      "type": "node",
+      "name": "Run Unit Tests in corresponding test file",
+      "request": "launch",
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
+      "program": "${workspaceFolder}/node_modules/.bin/jest",
+      "cwd": "${workspaceFolder}/packages/core",
+      "args": [
+        "--runInBand",
+        "--watchAll=false",
+        "${fileBasenameNoExtension}.test.${fileExtname}"
+      ]
+    },
+    {
+      "type": "node",
+      "name": "Run Integration Tests in opened file",
+      "request": "launch",
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
+      "program": "${workspaceFolder}/node_modules/.bin/playwright",
+      "cwd": "${workspaceFolder}/packages/core",
+      "args": ["test", "${file}"]
+    }
+  ],
+  "inputs": [
+    {
+      "id": "variableID",
+      "type": "promptString",
+      "description": "",
+      "default": "3000"
+    }
+  ]
+}

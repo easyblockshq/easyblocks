@@ -1,0 +1,17 @@
+.root {
+  position: relative;
+  padding: 0 64px;
+  width: 100%;
+}
+
+@media (max-width: 1023px) {
+  .root {
+    padding: 0 16px;
+  }
+}
+
+.inner {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+}

@@ -1,0 +1,57 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "$(run) Shopstory (Core)",
+      "detail": "run dev",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "dev", "--", "-p", "${input:corePort}"],
+      "options": {
+        "cwd": "${workspaceFolder}/packages/core"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "$(run) Unit Tests in opened file",
+      "detail": "Run jest in opened file",
+      "type": "shell",
+      "command": "${workspaceFolder}/node_modules/.bin/jest",
+      "args": ["--watchAll=true", "${file}"],
+      "options": {
+        "cwd": "${workspaceFolder}/packages/core"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "$(run) Unit Tests in corresponding test file",
+      "detail": "Run jest in *.test.ts file",
+      "type": "shell",
+      "command": "${workspaceFolder}/node_modules/.bin/jest",
+      "args": ["--watchAll=true", "${fileBasenameNoExtension}.test.ts"],
+      "options": {
+        "cwd": "${workspaceFolder}/packages/core"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "$(run) Integration Tests in opened file",
+      "detail": "Run playwrite in opened file",
+      "type": "shell",
+      "command": "${workspaceFolder}/node_modules/.bin/playwright",
+      "args": ["test", "${file}"],
+      "options": {
+        "cwd": "${workspaceFolder}/packages/core"
+      },
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "corePort",
+      "type": "promptString",
+      "description": "Core Port",
+      "default": "3000"
+    }
+  ]
+}

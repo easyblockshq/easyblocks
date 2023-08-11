@@ -1,0 +1,40 @@
+.vercel
+node_modules/
+.next/
+
+.env
+.env.local
+
+# from tina
+*.log
+**/node_modules/
+
+# temporarily removed, build of tina modifications from context of shopstory to be done
+**/build/
+**/dist/
+**/dist-types/
+**/stats
+
+**/.rpt2_cache
+**/.rts2_cache
+**/.rts2_cache_cjs
+**/.rts2_cache_esm
+**/.rts2_cache_umd
+**/.rts2_cache_system
+*.swp
+packages/cli/forestry/.env
+*.tgz
+.DS_Store
+**/docs/
+.idea/
+**/.cache/
+**/yarn.lock
+
+# playwrite
+**/test-results
+**/tests-out
+
+*.tsbuildinfo
+
+# jest
+**/coverage/
