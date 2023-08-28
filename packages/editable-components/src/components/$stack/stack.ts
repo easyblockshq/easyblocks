@@ -48,7 +48,7 @@ const stackComponentDefinition: InternalRenderableComponentDefinition<"$stack"> 
             } else {
               const topMargin = {
                 ...items[index - 1].fields.find(
-                  (field) => field.path === "marginBottom"
+                  (field) => field.path === `Items.${index - 1}.marginBottom`
                 )!,
                 label: "Top",
               };

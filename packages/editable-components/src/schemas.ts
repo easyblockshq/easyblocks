@@ -756,7 +756,6 @@ export const components: InternalRenderableComponentDefinition[] = [
         prop: "Component",
         type: "component-fixed",
         componentType: "$GridCard",
-        importFields: true,
       },
       ...sectionWrapperFields.filter((x) => x.group !== "General"),
     ],
@@ -2026,7 +2025,6 @@ export const components: InternalRenderableComponentDefinition[] = [
         label: "Card2",
         type: "component-fixed",
         componentType: "$BasicCardBackground",
-        importFields: true,
       },
       {
         prop: "mode", // main image size

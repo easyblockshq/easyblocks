@@ -349,7 +349,6 @@ export type ComponentFixedSchemaProp = SchemaPropShared<
   picker?: ComponentPickerType;
   hideFields?: string[];
   passFields?: PassedField[];
-  importFields?: boolean;
 }; // we don't want to set default value for nested components
 
 export type TextResourceSchemaProp = SchemaPropShared<"text", string> & {

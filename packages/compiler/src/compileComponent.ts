@@ -1908,6 +1908,7 @@ function convertEditingFieldToInternalEditingField(
       };
     }
 
+    // FIXME
     const isAbsolutePath = field.path.split(".")[0] === "data";
 
     if (isAbsolutePath) {
@@ -1985,14 +1986,32 @@ function convertEditingFieldToInternalEditingField(
             );
 
             if (itemField) {
+              const componentItemIndex = +pathFragments[1];
               sourceInternalEditingInfoField = (
                 internalEditingInfo.components[
                   componentSchemaProp.prop
                 ] as EditingInfoComponentCollection
-              ).items[+pathFragments[1]].fields.find(
+              ).items[componentItemIndex].fields.find(
                 (f) => f.prop === itemField.prop
               );
             }
+          }
+
+          if (componentSchemaProp.type === "component-fixed") {
+            const absoluteFieldPath = toAbsolutePath(
+              pathFragments.slice(0, -1).join("."),
+              configPrefix
+            );
+
+            return {
+              portal: "field",
+              fieldName: pathFragments.at(-1)!,
+              source: absoluteFieldPath,
+              overrides: {
+                label: field.label,
+                group: field.group,
+              },
+            };
           }
         }
       }
