@@ -937,18 +937,11 @@ const EditorContent = ({
       handleSetBreakpoint(newBreakpointIndex);
     },
     actions,
-    save: async (localisedDocument, externals) => {
-      if (props.save) {
-        await props.save(localisedDocument, externals);
-      } else {
-        window.postMessage({
-          type: "@shopstory-editor/content-saved",
-          payload: {
-            localisedDocument,
-            references: externals,
-          },
-        });
-      }
+    save: async (documentData) => {
+      window.postMessage({
+        type: "@easyblocks/content-saved",
+        document: documentData,
+      });
     },
     text: undefined,
     locales: props.locales,
@@ -1138,12 +1131,15 @@ const EditorContent = ({
               saveNow().finally(() => {
                 setDataSaverOverlayOpen(false);
 
+                window.postMessage(
+                  {
+                    type: "@easyblocks/closed",
+                  },
+                  "*"
+                );
+
                 if (props.onClose) {
                   props.onClose();
-                } else {
-                  window.postMessage({
-                    type: "@shopstory-editor/closed",
-                  });
                 }
 
                 if (isDemoProject) {

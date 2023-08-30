@@ -8,8 +8,6 @@ import { CompilationCache } from "@easyblocks/compiler";
 import {
   CompiledComponentConfig,
   ConfigComponent,
-  ExternalReference,
-  LocalisedDocument,
   LocalizedText,
   Resource,
   ResourceDefinition,
@@ -27,10 +25,12 @@ export type EditorContextType = BaseEditorContextType & {
   isEditing?: boolean;
   actions: ActionsType;
   text?: ResourceDefinition<LocalizedText> & TextSyncers;
-  save: (
-    localisedDocument: LocalisedDocument,
-    externals: ExternalReference[]
-  ) => Promise<void>;
+  save: (document: {
+    id: string;
+    version: number;
+    updatedAt: number;
+    projectId: string;
+  }) => Promise<void>;
   compiledComponentConfig?: CompiledComponentConfig;
   configAfterAuto?: ConfigComponent;
   variantsManager?: VariantsManager;

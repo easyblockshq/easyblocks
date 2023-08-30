@@ -1,39 +1,12 @@
 "use client";
 
-import {
-  builtinEditableComponents,
-  builtinEditableComponentsDefinitions,
-} from "@easyblocks/editable-components";
-import { Canvas, ShopstoryProvider } from "@easyblocks/react";
-import { accessToken } from "../lib/apiClient";
-
+import { Canvas } from "@easyblocks/react";
+import { shopstoryConfig } from "@/app/shopstory/shopstory.config";
+import { AcmeShopstoryProvider } from "@/app/shopstory/AcmeShopstoryProvider";
 export default function ShopstoryCanvas() {
   return (
-    <ShopstoryProvider components={builtinEditableComponents()}>
-      <Canvas
-        config={{
-          accessToken,
-          locales: [
-            {
-              code: "en-US",
-              isDefault: true,
-            },
-            {
-              code: "de-DE",
-              fallback: "en-US",
-            },
-          ],
-          rootContainers: {
-            content: {
-              defaultConfig: {
-                _template: "$RootSections",
-                data: [],
-              },
-            },
-          },
-          components: builtinEditableComponentsDefinitions,
-        }}
-      />
-    </ShopstoryProvider>
+    <AcmeShopstoryProvider>
+      <Canvas config={shopstoryConfig} />
+    </AcmeShopstoryProvider>
   );
 }

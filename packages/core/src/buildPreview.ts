@@ -3,20 +3,24 @@ import { ShopstoryClient } from "./ShopstoryClient";
 import { Config, ContextParams } from "./types";
 
 export async function buildPreview(
-  configId: string,
+  documentId: string,
+  projectId: string,
   width: number | undefined,
   widthAuto: boolean | undefined,
   accessToken: string,
   config: Config,
   contextParams: ContextParams
 ) {
-  const response = await fetch(`${getAppUrlRoot()}/api/configs/${configId}`, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "x-shopstory-access-token": accessToken,
-    },
-  });
+  const response = await fetch(
+    `${getAppUrlRoot()}/api/projects/${projectId}/documents/${documentId}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "x-shopstory-access-token": accessToken,
+      },
+    }
+  );
 
   const data = await response.json();
 
@@ -26,7 +30,7 @@ export async function buildPreview(
     _template: "$ComponentContainer",
     widthAuto: widthAuto ?? false,
     width: width ?? 5000,
-    Component: [data.config],
+    Component: [data.config.config],
   });
   const meta = await client.build();
 

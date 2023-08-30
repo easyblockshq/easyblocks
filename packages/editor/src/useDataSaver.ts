@@ -388,31 +388,45 @@ export function useDataSaver(
         }
       }
 
-      const configAfterSplit = splitConfigIntoSingleLocaleConfigs(
-        configToSaveWithLocalisedFlag,
-        editorContext.locales
-      );
-      const localisedDocument: LocalisedDocument = {};
-      const previewData = getPreviewData(
-        configToSaveWithLocalisedFlag,
-        editorContext.rootContainer
-      );
+      const documentData = {
+        id: editorContext.isPlayground
+          ? "playground-document"
+          : remoteDocument.current!.id,
+        version: editorContext.isPlayground
+          ? 0
+          : remoteDocument.current!.version,
+        updatedAt: new Date().getTime(),
+        projectId: editorContext.project
+          ? editorContext.project.id
+          : "playground",
+      };
 
-      editorContext.locales.forEach((locale) => {
-        localisedDocument[locale.code] = {
-          documentId: editorContext.isPlayground
-            ? "playground-document"
-            : remoteDocument.current!.id,
-          config: configAfterSplit[locale.code],
-          preview: previewData,
-          projectId: editorContext.project
-            ? editorContext.project.id
-            : "playground",
-          rootContainer: editorContext.rootContainer,
-        };
-      });
+      // const configAfterSplit = splitConfigIntoSingleLocaleConfigs(
+      //   configToSaveWithLocalisedFlag,
+      //   editorContext.locales
+      // );
+      //
+      // const localisedDocument: LocalisedDocument = {};
+      // const previewData = getPreviewData(
+      //   configToSaveWithLocalisedFlag,
+      //   editorContext.rootContainer
+      // );
+      //
+      // editorContext.locales.forEach((locale) => {
+      //   localisedDocument[locale.code] = {
+      //     documentId: editorContext.isPlayground
+      //       ? "playground-document"
+      //       : remoteDocument.current!.id,
+      //     config: configAfterSplit[locale.code],
+      //     preview: previewData,
+      //     projectId: editorContext.project
+      //       ? editorContext.project.id
+      //       : "playground",
+      //     rootContainer: editorContext.rootContainer,
+      //   };
+      // });
 
-      await editorContext.save(localisedDocument, externalReferences);
+      await editorContext.save(documentData);
 
       if (Object.keys(externalsMap).length > 0) {
         const newFormValues = updateConfigExternals(
