@@ -16,10 +16,16 @@ export const PreviewRenderer: React.FC<TemplateRendererProps> = ({
 
   useEffect(() => {
     import("@easyblocks/core").then(({ buildPreview }) => {
-      const { configId, accessToken, width, widthAuto, contextParams } =
-        parseQueryParams();
+      const {
+        documentId,
+        projectId,
+        accessToken,
+        width,
+        widthAuto,
+        contextParams,
+      } = parseQueryParams();
 
-      if (!configId) {
+      if (!documentId || !projectId) {
         throw new Error("unreachable");
       }
 
@@ -32,7 +38,8 @@ export const PreviewRenderer: React.FC<TemplateRendererProps> = ({
       }
 
       buildPreview(
-        configId,
+        documentId,
+        projectId,
         width,
         widthAuto,
         accessToken,

@@ -1,19 +1,22 @@
 import type { ContextParams } from "@easyblocks/core";
 
 export function parseQueryParams(): {
-  configId: undefined | string;
+  documentId: undefined | string;
+  projectId: undefined | string;
   accessToken: undefined | string;
   mode: "playground" | "app";
   widthAuto: boolean;
   width: number | undefined;
   contextParams: ContextParams | undefined;
+  preview: boolean;
 } {
   const urlSearchParams = new URLSearchParams(window.location.search);
   const queryParams = Object.fromEntries(urlSearchParams.entries());
   const contextParams = parseContextParams(queryParams.contextParams);
 
   return {
-    configId: queryParams.configId,
+    documentId: queryParams.documentId,
+    projectId: queryParams.projectId,
     /**
      * We need shopstoryAccessToken for non-cloud versions - they rely on this query param.
      * It can be removed only when all clients move to cloud based version and 1.0.0 SDK.
@@ -23,6 +26,7 @@ export function parseQueryParams(): {
     widthAuto: queryParams.widthAuto === "true" ? true : false,
     width: queryParams.width ? parseInt(queryParams.width) : undefined,
     contextParams,
+    preview: queryParams.preview === "true",
   };
 }
 

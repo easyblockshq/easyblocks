@@ -64,6 +64,7 @@ export function launchEditor(props: EditorLauncherProps) {
     editorSearchParams.contextParams ??
     props.contextParams ??
     raiseError(`Missing "contextParams" value.`);
+
   const rootContainer =
     editorSearchParams.rootContainer ?? props.rootContainer ?? props.mode;
   const mode = editorSearchParams.mode ?? "playground";

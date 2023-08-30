@@ -20,7 +20,7 @@ export function Canvas(props: CanvasProps) {
   };
 
   useEffect(() => {
-    if (parseQueryParams().configId) {
+    if (parseQueryParams().preview) {
       setSelectedWindow("preview");
       return;
     }
