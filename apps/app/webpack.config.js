@@ -3,7 +3,7 @@ const {
   isDevelopment,
   DefineShopstoryEnvironmentVariablesPlugin,
   isProduction,
-} = require("@shopstory/build-tools");
+} = require("@easyblocks/build-tools");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const path = require("node:path");
 const babelConfiguration = require("../../babel.config.json");
