@@ -1,6 +1,8 @@
 import { Config } from "@easyblocks/core";
 import { builtinEditableComponentsDefinitions } from "@easyblocks/editable-components";
+
 import { simpleBannerDefinition } from "@/app/shopstory/SimpleBanner/SimpleBannerDefinition";
+import { simpleBanner2Definition } from "@/app/shopstory/SimpleBanner2/SimpleBanner2Definition";
 
 export const shopstoryConfig: Config = {
   accessToken: process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN,
@@ -74,5 +76,9 @@ export const shopstoryConfig: Config = {
       value: "#FF6969",
     },
   ],
-  components: [...builtinEditableComponentsDefinitions, simpleBannerDefinition],
+  components: [
+    ...builtinEditableComponentsDefinitions,
+    simpleBannerDefinition,
+    simpleBanner2Definition,
+  ],
 };

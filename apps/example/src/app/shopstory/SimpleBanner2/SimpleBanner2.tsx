@@ -1,19 +1,19 @@
 import React from "react";
-import Image from "next/image";
-import mountainImage from "./mountain-8187621_1280.jpg";
 
-export function SimpleBanner(props: any) {
-  const { Root, Stack, CoverContainer, TitleContainer, DescriptionContainer } =
-    props.__fromEditor.components;
+export function SimpleBanner2(props: any) {
+  const {
+    Root,
+    Stack,
+    CoverContainer,
+    Cover,
+    TitleContainer,
+    DescriptionContainer,
+  } = props.__fromEditor.components;
 
   return (
     <Root.type {...Root.props}>
       <CoverContainer.type {...CoverContainer.props}>
-        <Image
-          src={mountainImage}
-          alt={"some pic"}
-          style={{ width: "100%", height: "auto" }}
-        />
+        <Cover.type {...Cover.props} />
       </CoverContainer.type>
       <Stack.type {...Stack.props}>
         <TitleContainer.type {...TitleContainer.props}>

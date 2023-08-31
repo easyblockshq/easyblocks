@@ -336,6 +336,7 @@ function getCompiledSubcomponents(
         ? [schemaProp.componentType]
         : schemaProp.componentTypes;
     const type = getComponentMainType(componentTypes);
+
     elements = [
       <Placeholder
         type={type}

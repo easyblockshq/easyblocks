@@ -854,6 +854,15 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
   ): ComponentFixedSchemaPropDefinition => {
     const normalize = (x: any) => {
       if (!Array.isArray(x) || x.length === 0) {
+        console.log(
+          "@@@",
+          schemaProp,
+          normalizeComponent(
+            { _template: schemaProp.componentType },
+            compilationContext
+          )
+        );
+
         return [
           normalizeComponent(
             { _template: schemaProp.componentType },

@@ -1,7 +1,7 @@
 import { styled } from "@easyblocks/core";
 
-export const simpleBannerDefinition = {
-  id: "SimpleBanner",
+export const simpleBanner2Definition = {
+  id: "SimpleBanner2",
   tags: ["section"],
   schema: [
     {
@@ -40,6 +40,19 @@ export const simpleBannerDefinition = {
       visible: (values: any) => {
         return values.backgroundEnabled;
       },
+    },
+
+    /** children components **/
+    {
+      prop: "Cover",
+      type: "component",
+      componentTypes: ["image"],
+    },
+
+    {
+      prop: "Title",
+      type: "component-fixed",
+      componentType: "$richText",
     },
   ],
   styles: (values: any) => {
