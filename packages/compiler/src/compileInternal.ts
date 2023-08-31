@@ -60,7 +60,6 @@ export function compileInternal(
     compilationContextWithFullTheme,
     contextProps,
     meta,
-    {},
     cache
   );
 

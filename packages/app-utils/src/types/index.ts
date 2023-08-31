@@ -49,6 +49,7 @@ export type InternalRenderableComponentDefinition<
   pasteSlots?: string[];
   componentCode?: string | { client: string; editor?: string }; // optional because it might be also an action or built-in component
   styles?: any;
+  build?: any;
   editing?: EditingFunction;
   auto?: AutoFunction;
 };

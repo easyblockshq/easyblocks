@@ -23,6 +23,7 @@ import { GlobalStyles } from "./tinacms/styles";
 import { CMSInput } from "./types";
 import isPropValid from "@emotion/is-prop-valid";
 import { StyleSheetManager } from "styled-components";
+import { getDefaultLocale } from "@easyblocks/core";
 
 type EditorLauncherProps = {
   config: Config;
@@ -59,14 +60,14 @@ export function launchEditor(props: EditorLauncherProps) {
 
   const locales =
     props.config.locales ?? props.locales ?? raiseError("Missing locales");
+
   const editorSearchParams = parseEditorSearchParams();
-  const contextParams =
-    editorSearchParams.contextParams ??
-    props.contextParams ??
-    raiseError(`Missing "contextParams" value.`);
+  const contextParams = editorSearchParams.contextParams ??
+    props.contextParams ?? { locale: getDefaultLocale(locales).code };
 
   const rootContainer =
     editorSearchParams.rootContainer ?? props.rootContainer ?? props.mode;
+
   const mode = editorSearchParams.mode ?? "playground";
 
   if (!rootContainer) {

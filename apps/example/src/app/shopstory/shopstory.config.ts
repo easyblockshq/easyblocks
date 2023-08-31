@@ -1,5 +1,6 @@
 import { Config } from "@easyblocks/core";
 import { builtinEditableComponentsDefinitions } from "@easyblocks/editable-components";
+import { simpleBannerDefinition } from "@/app/shopstory/SimpleBanner/SimpleBannerDefinition";
 
 export const shopstoryConfig: Config = {
   accessToken: process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN,
@@ -21,5 +22,5 @@ export const shopstoryConfig: Config = {
       },
     },
   },
-  components: builtinEditableComponentsDefinitions,
+  components: [...builtinEditableComponentsDefinitions, simpleBannerDefinition],
 };

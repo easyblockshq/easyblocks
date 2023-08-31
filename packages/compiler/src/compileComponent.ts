@@ -49,7 +49,6 @@ import {
   EditingFunctionResult,
   EditingInfo,
   EventSourceType,
-  RefMap,
   SchemaProp,
   SerializedComponentDefinition,
   TrulyResponsiveValue,
@@ -95,7 +94,6 @@ export function compileComponent(
   compilationContext: CompilationContextType,
   contextProps: ContextProps, // contextProps are already compiled! They're result of compilation function.
   meta: any,
-  refMap: RefMap,
   cache: CompilationCache,
   parentComponentEditingInfo?:
     | EditingInfoComponent
@@ -114,10 +112,9 @@ export function compileComponent(
   }
 
   const cachedResult = cache.get(editableElement._id!);
-  const { name, ref } = splitTemplateName(editableElement._template);
 
   let componentDefinition = findComponentDefinitionById(
-    name,
+    editableElement._template,
     compilationContext
   );
 
@@ -136,8 +133,6 @@ export function compileComponent(
     parentComponentEditingInfo = undefined;
   }
 
-  refMap = { ...refMap, ...(editableElement.$$$refs || {}) };
-
   if (
     componentDefinition.tags.length > 0 &&
     componentDefinition.tags[0].startsWith("action")
@@ -150,8 +145,6 @@ export function compileComponent(
     contextProps,
     componentDefinition,
     compilationContext,
-    refMap,
-    ref,
   });
 
   let hasComponentConfigChanged = true;
@@ -192,9 +185,6 @@ export function compileComponent(
     "components",
     compilationContext
   );
-
-  const isCustomComponent = !editableElement._template.startsWith("$");
-  const isButton = componentDefinition.tags.includes("button");
 
   const { $width, $widthAuto } = calculateWidths(
     compilationContext,
@@ -305,8 +295,7 @@ export function compileComponent(
           compilationContext,
           cache,
           {},
-          meta,
-          refMap
+          meta
         );
 
         compiledValues[collectionSchemaProp.prop][itemIndex][
@@ -395,239 +384,21 @@ export function compileComponent(
       );
     }
 
-    // User-defined components don't need any more work
-    if (isCustomComponent) {
-      compiled.props = compiledValues; // for now we're not adding context values to custom components
+    compiled = {
+      ...compiled,
+      components: {},
+      styled: {},
+    };
 
-      const stylesOutput: Record<string, any> = {};
+    const renderableComponentDefinition =
+      componentDefinition as InternalRenderableComponentDefinition;
 
-      if (compilationContext.isEditing) {
-        editingInfo = buildDefaultEditingInfo(
-          componentDefinition,
-          configPrefix,
-          compilationContext as EditorContextType,
-          compiledValues,
-          editableElement._template
-        );
-      }
-
-      /**
-       * This is exception. If we have button we pass special context props to the symbol subcomponent (ignoreColor).
-       * Actually maybe custom components should also have compilation phase?
-       */
-
-      const isButton = componentDefinition.tags.includes("button");
-      if (isButton) {
-        stylesOutput.symbol = {
-          noInline: true,
-          ignoreColor: true,
-        };
-
-        if (
-          editingInfo?.components.symbol &&
-          "noInline" in editingInfo.components.symbol
-        ) {
-          editingInfo.components.symbol.noInline = true;
-        }
-      }
-
-      if (compilationContext.isEditing && editingInfo) {
-        applyEditingInfoToCompiledConfig(
-          compiled,
-          editingInfo,
-          parentComponentEditingInfo,
-          {
-            width: $width,
-            auto: $widthAuto,
-          }
-        );
-      }
-
-      subcomponentsContextProps = extractContextPropsFromStyles(stylesOutput);
-      // We are going to mutate this object so let's disconnect it from its source object
-      configAfterAuto = deepClone(ownProps);
-    } else {
-      compiled = {
-        ...compiled,
-        components: {},
-        styled: {},
-      };
-
-      const renderableComponentDefinition =
-        componentDefinition as InternalRenderableComponentDefinition;
-
-      if (compilationContext.isEditing) {
-        /**
-         * Let's build default editingOutput (fields and component output)
-         */
-
-        const editorContext = compilationContext as EditorContextType;
-
-        editingInfo = buildDefaultEditingInfo(
-          renderableComponentDefinition,
-          configPrefix,
-          editorContext,
-          compiledValues,
-          editableElement._template
-        );
-
-        /**
-         * Let's run custom editing function
-         */
-        if (renderableComponentDefinition.editing) {
-          const scalarizedConfig = scalarizeConfig(
-            compiledValues,
-            editorContext.breakpointIndex,
-            editorContext.devices,
-            renderableComponentDefinition.schema
-          );
-
-          const editingInfoInput = convertInternalEditingInfoToEditingInfo(
-            editingInfo,
-            configPrefix
-          );
-
-          const editingInfoResult = renderableComponentDefinition.editing({
-            values: scalarizedConfig,
-            editingInfo: editingInfoInput,
-            ...(componentDefinition.id === "$richText" ||
-            componentDefinition.id === "$richTextPart"
-              ? {
-                  __SECRET_INTERNALS__: {
-                    pathPrefix: configPrefix,
-                    editorContext,
-                  },
-                }
-              : {}),
-          });
-
-          if (editingInfoResult) {
-            const internalEditingInfo = convertEditingInfoToInternalEditingInfo(
-              editingInfoResult,
-              editingInfo,
-              componentDefinition,
-              editorContext,
-              configPrefix
-            );
-            deepObjectMergeWithoutArrays(editingInfo, internalEditingInfo);
-          }
-        }
-
-        /**
-         * Save to __editing
-         */
-
-        applyEditingInfoToCompiledConfig(
-          compiled,
-          editingInfo,
-          parentComponentEditingInfo,
-          {
-            width: $width,
-            auto: $widthAuto,
-          }
-        );
-
-        editingContextProps = editingInfo.components;
-      }
-
-      const { __props, ...stylesOutput } = resop2(
-        compiledValues,
-        (x, breakpointIndex) => {
-          if (!renderableComponentDefinition.styles) {
-            return {};
-          }
-
-          const device = compilationContext.devices.find(
-            (device) => device.id === breakpointIndex
-          )!;
-
-          return renderableComponentDefinition.styles(x, {
-            breakpointIndex,
-            device,
-            compilationContext,
-            $width: $width[breakpointIndex],
-            $widthAuto: $widthAuto[breakpointIndex],
-          });
-        },
-        compilationContext.devices,
-        renderableComponentDefinition
-      );
-
-      subcomponentsContextProps = extractContextPropsFromStyles(stylesOutput);
-
-      // Move all the boxes to _compiled
-      for (const key in stylesOutput) {
-        const value = stylesOutput[key];
-
-        const schemaProp = componentDefinition.schema.find(
-          (x) => x.prop === key
-        );
-
-        // Context props processed below
-        if (schemaProp) {
-          continue;
-        }
-
-        // If box
-
-        compiled.styled[key] = compileBoxes(value, compilationContext);
-      }
-
-      /**
-       * 1. We must move resources to props by default.
-       * 2. Compiled values at this point are "filled", all breakpoints are defined. It's OK for auto and compilation.
-       * 3. However, it's not OK for responsive resources (like image, video).
-       */
-      componentDefinition.schema.forEach((schemaProp: SchemaProp) => {
-        if (isResourceSchemaProp(schemaProp)) {
-          compiled.props[schemaProp.prop] = responsiveValueNormalize(
-            compiledValues[schemaProp.prop],
-            compilationContext.devices
-          );
-        }
-      });
-
-      // we also add __props to props
-      compiled.props = {
-        ...__props,
-        ...compiled.props,
-      };
-
-      // We are going to mutate this object so let's disconnect it from its source object
-      configAfterAuto = deepClone(ownPropsAfterAuto);
-    }
-  }
-
-  if (compilationContext.isEditing) {
-    if (isCustomComponent) {
-      editingInfo = buildDefaultEditingInfo(
-        componentDefinition,
-        configPrefix,
-        compilationContext as EditorContextType,
-        compiledValues,
-        editableElement._template
-      );
-
-      /**
-       * This is exception. If we have button we pass special context props to the symbol subcomponent (ignoreColor).
-       * Actually maybe custom components should also have compilation phase?
-       */
-      if (isButton) {
-        if (
-          editingInfo?.components.symbol &&
-          "noInline" in editingInfo.components.symbol
-        ) {
-          editingInfo.components.symbol.noInline = true;
-        }
-      }
-    } else {
+    if (compilationContext.isEditing) {
       /**
        * Let's build default editingOutput (fields and component output)
        */
 
       const editorContext = compilationContext as EditorContextType;
-      const renderableComponentDefinition =
-        componentDefinition as InternalRenderableComponentDefinition;
 
       editingInfo = buildDefaultEditingInfo(
         renderableComponentDefinition,
@@ -678,6 +449,146 @@ export function compileComponent(
           deepObjectMergeWithoutArrays(editingInfo, internalEditingInfo);
         }
       }
+
+      /**
+       * Save to __editing
+       */
+
+      applyEditingInfoToCompiledConfig(
+        compiled,
+        editingInfo,
+        parentComponentEditingInfo,
+        {
+          width: $width,
+          auto: $widthAuto,
+        }
+      );
+
+      editingContextProps = editingInfo.components;
+    }
+
+    const { __props, ...stylesOutput } = resop2(
+      compiledValues,
+      (x, breakpointIndex) => {
+        if (!renderableComponentDefinition.styles) {
+          return {};
+        }
+
+        const device = compilationContext.devices.find(
+          (device) => device.id === breakpointIndex
+        )!;
+
+        return renderableComponentDefinition.styles(x, {
+          breakpointIndex,
+          device,
+          compilationContext,
+          $width: $width[breakpointIndex],
+          $widthAuto: $widthAuto[breakpointIndex],
+        });
+      },
+      compilationContext.devices,
+      renderableComponentDefinition
+    );
+
+    subcomponentsContextProps = extractContextPropsFromStyles(stylesOutput);
+
+    // Move all the boxes to _compiled
+    for (const key in stylesOutput) {
+      const value = stylesOutput[key];
+
+      const schemaProp = componentDefinition.schema.find((x) => x.prop === key);
+
+      // Context props processed below
+      if (schemaProp) {
+        continue;
+      }
+
+      // If box
+
+      compiled.styled[key] = compileBoxes(value, compilationContext);
+    }
+
+    /**
+     * 1. We must move resources to props by default.
+     * 2. Compiled values at this point are "filled", all breakpoints are defined. It's OK for auto and compilation.
+     * 3. However, it's not OK for responsive resources (like image, video).
+     */
+    componentDefinition.schema.forEach((schemaProp: SchemaProp) => {
+      if (isResourceSchemaProp(schemaProp)) {
+        compiled.props[schemaProp.prop] = responsiveValueNormalize(
+          compiledValues[schemaProp.prop],
+          compilationContext.devices
+        );
+      }
+    });
+
+    // we also add __props to props
+    compiled.props = {
+      ...__props,
+      ...compiled.props,
+    };
+
+    // We are going to mutate this object so let's disconnect it from its source object
+    configAfterAuto = deepClone(ownPropsAfterAuto);
+  }
+
+  if (compilationContext.isEditing) {
+    /**
+     * Let's build default editingOutput (fields and component output)
+     */
+
+    const editorContext = compilationContext as EditorContextType;
+    const renderableComponentDefinition =
+      componentDefinition as InternalRenderableComponentDefinition;
+
+    editingInfo = buildDefaultEditingInfo(
+      renderableComponentDefinition,
+      configPrefix,
+      editorContext,
+      compiledValues,
+      editableElement._template
+    );
+
+    /**
+     * Let's run custom editing function
+     */
+    if (renderableComponentDefinition.editing) {
+      const scalarizedConfig = scalarizeConfig(
+        compiledValues,
+        editorContext.breakpointIndex,
+        editorContext.devices,
+        renderableComponentDefinition.schema
+      );
+
+      const editingInfoInput = convertInternalEditingInfoToEditingInfo(
+        editingInfo,
+        configPrefix
+      );
+
+      const editingInfoResult = renderableComponentDefinition.editing({
+        values: scalarizedConfig,
+        editingInfo: editingInfoInput,
+        ...(componentDefinition.id === "$richText" ||
+        componentDefinition.id === "$richTextPart"
+          ? {
+              __SECRET_INTERNALS__: {
+                pathPrefix: configPrefix,
+                editorContext,
+              },
+            }
+          : {}),
+      });
+
+      if (editingInfoResult) {
+        const internalEditingInfo = convertEditingInfoToInternalEditingInfo(
+          editingInfoResult,
+          editingInfo,
+          componentDefinition,
+          editorContext,
+          configPrefix
+        );
+        deepObjectMergeWithoutArrays(editingInfo, internalEditingInfo);
+      }
     }
 
     if (editingInfo)
@@ -699,12 +610,11 @@ export function compileComponent(
     editableElement,
     subcomponentsContextProps,
     compilationContext,
-    refMap,
     meta,
     editingContextProps,
     configPrefix,
     compiled,
-    isCustomComponent ? null : configAfterAuto,
+    configAfterAuto,
     cache
   );
 
@@ -762,15 +672,11 @@ function createOwnComponentProps({
   contextProps,
   componentDefinition,
   compilationContext,
-  refMap,
-  ref,
 }: {
   config: ConfigComponent;
   contextProps: ContextProps;
   componentDefinition: InternalComponentDefinition;
   compilationContext: CompilationContextType;
-  refMap: RefMap;
-  ref?: string;
 }) {
   // Copy all values and refs defined in schema, for component fields copy only _id, _template and its _itemProps but flattened
   const values = Object.fromEntries(
@@ -838,20 +744,6 @@ function createOwnComponentProps({
     // parent may want to override them.
     ...contextProps,
   };
-
-  if (ref) {
-    const refs = Object.fromEntries(
-      componentDefinition.schema
-        .filter((schemaProp) => {
-          return !isResourceSchemaProp(schemaProp);
-        })
-        .map((schemaProp) => {
-          return [schemaProp.prop, refMap[ref][schemaProp.prop]];
-        })
-    );
-
-    Object.assign(ownValues, refs);
-  }
 
   return ownValues;
 }
@@ -929,7 +821,6 @@ function compileSubcomponents(
   editableElement: ConfigComponent,
   subcomponentsContextProps: Record<string, Record<string, any>>,
   compilationContext: CompilationContextType,
-  refMap: RefMap,
   meta: any,
   editingInfoComponents: InternalEditingInfo["components"] | undefined,
   configPrefix: string,
@@ -986,7 +877,6 @@ function compileSubcomponents(
         cache,
         contextProps,
         meta,
-        refMap,
         editingInfoComponents?.[schemaProp.prop],
         `${configPrefix}${configPrefix === "" ? "" : "."}${schemaProp.prop}`
       ) as ConfigComponentCompilationOutput[];

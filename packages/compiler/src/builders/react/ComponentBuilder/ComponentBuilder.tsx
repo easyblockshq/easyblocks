@@ -420,42 +420,33 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
     definitions: meta.vars.definitions,
   })!;
 
-  const isComponentCustom = !componentDefinition.id.startsWith("$");
   const isButton = componentDefinition.tags.includes("button");
 
   let component: any;
-  if (isComponentCustom) {
-    if (isButton) {
-      component = meta.shopstoryProviderContext.buttons[componentDefinition.id];
-    } else {
-      component =
-        meta.shopstoryProviderContext.components[componentDefinition.id];
-    }
-  } else {
-    // We first try to find editor version of that component
-    if (compiled.__editing) {
-      component =
-        meta.code[componentDefinition.id + ".editor"] ??
-        meta.shopstoryProviderContext.components[
-          componentDefinition.id + ".editor"
-        ];
-    }
 
-    // If it still missing, we try to find client version of that component
-    if (!component) {
-      component =
-        meta.code[componentDefinition.id + ".client"] ??
-        meta.shopstoryProviderContext.components[
-          componentDefinition.id + ".client"
-        ];
-    }
+  // We first try to find editor version of that component
+  if (compiled.__editing) {
+    component =
+      meta.code[componentDefinition.id + ".editor"] ??
+      meta.shopstoryProviderContext.components[
+        componentDefinition.id + ".editor"
+      ];
+  }
 
-    if (!component) {
-      // In most cases we're going to pick component by its id
-      component =
-        meta.code[componentDefinition.id] ??
-        meta.shopstoryProviderContext.components[componentDefinition.id];
-    }
+  // If it still missing, we try to find client version of that component
+  if (!component) {
+    component =
+      meta.code[componentDefinition.id + ".client"] ??
+      meta.shopstoryProviderContext.components[
+        componentDefinition.id + ".client"
+      ];
+  }
+
+  if (!component) {
+    // In most cases we're going to pick component by its id
+    component =
+      meta.code[componentDefinition.id] ??
+      meta.shopstoryProviderContext.components[componentDefinition.id];
   }
 
   const isMissingComponent = compiled._template === "$MissingComponent";
@@ -632,77 +623,6 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
         )}
       </MissingComponent>
     );
-  }
-
-  // If custom component
-  if (isComponentCustom) {
-    const componentProps = {
-      ...passedProps,
-    };
-
-    componentDefinition.schema.forEach((schemaProp) => {
-      if (isSchemaPropCollection(schemaProp)) {
-        throw new Error(
-          "component collection in custom components not yet supported"
-        );
-      }
-
-      if (isTracingSchemaProp(schemaProp.prop)) {
-        return;
-      } else if (isSchemaPropComponent(schemaProp)) {
-        const item = compiled.components[schemaProp.prop]?.[0];
-
-        if (!item) {
-          componentProps[schemaProp.prop] = undefined;
-        } else {
-          const contextProps =
-            compiled.__editing?.components[schemaProp.prop] || {};
-          const compiledArray = compiled.components[schemaProp.prop];
-
-          componentProps[schemaProp.prop] = getCompiledSubcomponents(
-            compiledArray,
-            contextProps,
-            schemaProp,
-            `${path}${pathSeparator}${schemaProp.prop}`,
-            meta,
-            isEditing
-          );
-        }
-      } else if (isResourceSchemaProp(schemaProp)) {
-        if (
-          isLocalTextResource(compiled.props[schemaProp.prop], schemaProp.type)
-        ) {
-          componentProps[schemaProp.prop] =
-            compiled.props[schemaProp.prop].value;
-        } else {
-          const resolvedResourceProp = resolveResource(
-            compiled.props[schemaProp.prop],
-            schemaProp,
-            meta.resources,
-            imageAndVideo
-          );
-
-          if (isTrulyResponsiveValue(resolvedResourceProp)) {
-            throw new Error(
-              "Unexpected responsive value for resource within custom component"
-            );
-          }
-
-          componentProps[schemaProp.prop] = resolvedResourceProp?.value;
-        }
-      } else {
-        componentProps[schemaProp.prop] = compiled.props[schemaProp.prop];
-      }
-      // TODO: set componentProps.__fromEditor to all the props that are NOT from schema (all passed)
-    });
-
-    // for button we wrap with action wrapper
-    if (isButton) {
-      delete componentProps.action;
-      return actionWrappers["action"](Component, componentProps);
-    }
-
-    return <Component {...componentProps} />;
   }
 
   const shopstoryCompiledConfig = compiled as CompiledShopstoryComponentConfig;

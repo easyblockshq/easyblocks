@@ -19,3 +19,4 @@ export type {
 export { ShopstoryAccessTokenApiAuthenticationStrategy } from "./infrastructure/ShopstoryAccessTokenApiAuthenticationStrategy";
 export { createFetchingContext } from "./createFetchingContext";
 export type { FetchingContext } from "./createFetchingContext";
+export { box, styled } from "./box";

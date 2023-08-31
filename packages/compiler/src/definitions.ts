@@ -46,7 +46,6 @@ import {
   Option,
   RadioGroup$SchemaProp,
   RadioGroupSchemaProp,
-  RefMap,
   RefValue,
   ResponsiveValue,
   SchemaProp,
@@ -76,7 +75,6 @@ export type SchemaPropDefinition<Type, CompiledType> = {
     value: Type,
     contextProps: ContextProps,
     serializedDefinitions: SerializedComponentDefinitions,
-    refMap: RefMap,
     editingInfoComponent:
       | EditingInfoComponent
       | EditingInfoComponentCollection
@@ -802,7 +800,6 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         arg,
         contextProps,
         serializedDefinitions,
-        refMap,
         editingInfoComponent,
         configPrefix,
         cache
@@ -822,7 +819,6 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
             links: [],
             textModifiers: [],
           },
-          refMap,
           cache,
           editingInfoComponent,
           `${configPrefix}.0`
@@ -875,7 +871,6 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         arr,
         contextProps,
         serializedDefinitions,
-        refMap,
         editingInfoComponent,
         configPrefix,
         cache
@@ -885,7 +880,6 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
           compilationContext,
           contextProps,
           serializedDefinitions,
-          refMap,
           cache,
           editingInfoComponent,
           `${configPrefix}.0`
@@ -925,7 +919,6 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         arr,
         contextProps,
         serializedDefinitions,
-        refMap,
         editingInfoComponents,
         configPrefix,
         cache
@@ -941,7 +934,6 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
               length: arr.length,
             },
             serializedDefinitions,
-            refMap,
             cache,
             (
               editingInfoComponents as
@@ -987,7 +979,6 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         value,
         contextProps,
         serializedDefinitions,
-        refMap,
         editingInfoComponents,
         configPrefix,
         cache
@@ -1001,7 +992,6 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
           resolvedLocalisedValue?.value ?? [],
           contextProps,
           serializedDefinitions,
-          refMap,
           editingInfoComponents,
           `${configPrefix}.${
             resolvedLocalisedValue?.locale ??

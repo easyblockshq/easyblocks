@@ -17,7 +17,6 @@ export function compileFromSchema<T extends SchemaProp>(
   cache: CompilationCache,
   contextProps?: ContextProps,
   meta?: any,
-  refMap?: RefMap,
   editingInfoComponent?:
     | EditingInfoComponent
     | EditingInfoComponentCollection
@@ -29,7 +28,6 @@ export function compileFromSchema<T extends SchemaProp>(
     value,
     contextProps,
     meta,
-    refMap,
     editingInfoComponent,
     configPrefix,
     cache
