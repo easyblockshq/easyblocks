@@ -7,6 +7,7 @@ export default function styles(values: Record<string, any>) {
       display: "flex",
       justifyContent: mapAlignmentToFlexAlignment(values.align),
       textAlign: values.align,
+      fontSize: "initial",
     }),
     elements: {
       // We store values within $richText to allow for changing them from sidebar, but we use them inside of $richTextBlockElement.

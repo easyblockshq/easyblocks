@@ -672,7 +672,7 @@ function RichText(props: RichTextProps) {
     }
   }
 
-  const contentEditableClassname = useMemo(() => {
+  const contentEditableClassName = useMemo(() => {
     const responsiveAlignmentStyles = mapResponsiveAlignmentToStyles(
       props.__fromEditor.props.align,
       { devices: editorContext.devices, resop }
@@ -686,6 +686,7 @@ function RichText(props: RichTextProps) {
     // sometimes the browser selection changes and shows incorrectly selected chunks.
     const getStyles = stitches.css({
       display: "flex",
+      fontSize: "initial",
       ...responsiveAlignmentStyles,
       "& *::selection": {
         backgroundColor: "#b4d5fe",
@@ -718,7 +719,7 @@ function RichText(props: RichTextProps) {
       <div>
         {/* this wrapper div prevents from Chrome bug where "pointer-events: none" on contenteditable is ignored*/}
         <Editable
-          className={contentEditableClassname}
+          className={contentEditableClassName}
           placeholder="Here goes text content"
           decorate={decorate}
           renderElement={renderElement}
