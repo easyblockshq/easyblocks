@@ -31,6 +31,7 @@ const editing: RichTextEditingFunction = ({
   );
 
   resultFields.push(
+    editingInfo.fields[0],
     {
       type: "fields",
       path: richTextPath,
@@ -115,6 +116,7 @@ const editing: RichTextEditingFunction = ({
 const richTextPartEditableComponent: InternalRenderableComponentDefinition<"$richTextPart"> =
   {
     id: "$richTextPart",
+    label: "Text",
     schema: [
       {
         prop: "value",

@@ -159,6 +159,7 @@ const editing: RichTextEditingFunction = ({
 const richTextEditableComponent: InternalRenderableComponentDefinition<"$richText"> =
   {
     id: "$richText",
+    label: "Text",
     schema: [
       {
         prop: "elements",

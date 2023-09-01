@@ -52,9 +52,9 @@ function IdentityField({ input, field }: IdentityFieldProps) {
     ? parentSchemaProp.type === "component-fixed" ||
       (parentSchemaProp.type === "component" && parentSchemaProp.required)
     : true;
-  const isNonChangable = parentSchemaProp
-    ? parentSchemaProp.type === "component-fixed"
-    : true;
+  const isNonChangable =
+    parentSchemaProp?.type === "component-fixed" ||
+    componentDefinition?.id === "$richTextPart";
 
   function handleChangeComponentType() {
     if (isNonChangable) {
