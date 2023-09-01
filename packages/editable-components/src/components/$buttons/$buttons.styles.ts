@@ -1,7 +1,7 @@
 import { box } from "../../box";
 
 export function buttonsStyles(configProps: any) {
-  const align = configProps.align || "left";
+  const align = configProps.passed_align || "left";
   let flexAlign = "flex-start";
   if (align === "center") {
     flexAlign = "center";

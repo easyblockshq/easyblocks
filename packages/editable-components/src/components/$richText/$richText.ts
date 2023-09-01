@@ -38,6 +38,11 @@ const editing: RichTextEditingFunction = ({
   }
 
   const { pathPrefix, editorContext } = __SECRET_INTERNALS__;
+  const fields = Object.fromEntries(editingInfo.fields.map((f) => [f.path, f]));
+
+  if (values.passed_align) {
+    fields.align.visible = false;
+  }
 
   const richTextConfig = dotNotationGet(editorContext.form.values, pathPrefix);
 
@@ -160,6 +165,33 @@ const richTextEditableComponent: InternalRenderableComponentDefinition<"$richTex
         type: "component-collection-localised",
         componentTypes: [richTextBlockElementEditableComponent.id],
         visible: false,
+      },
+      {
+        prop: "align",
+        label: "Align",
+        type: "radio-group$",
+        options: [
+          {
+            value: "left",
+            label: "Left",
+            icon: "AlignLeft",
+            hideLabel: true,
+          },
+          {
+            value: "center",
+            label: "Center",
+            icon: "AlignCenter",
+            hideLabel: true,
+          },
+          {
+            value: "right",
+            label: "Right",
+            icon: "AlignRight",
+            hideLabel: true,
+          },
+        ],
+        defaultValue: "left",
+        group: "Layout",
       },
       {
         prop: "accessibilityRole",

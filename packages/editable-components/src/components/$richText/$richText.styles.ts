@@ -2,6 +2,8 @@ import { Alignment } from "@easyblocks/app-utils";
 import { box } from "../../box";
 
 export default function styles(values: Record<string, any>) {
+  const align = values.passed_align ?? values.align;
+
   return {
     Root: box({
       display: "flex",
@@ -16,11 +18,11 @@ export default function styles(values: Record<string, any>) {
         mainColor: values.mainColor,
         mainFont: values.mainFont,
         mainFontSize: values.mainFontSize,
-        align: values.align,
+        align,
       })),
     },
     __props: {
-      align: values.align,
+      align,
     },
   };
 }
