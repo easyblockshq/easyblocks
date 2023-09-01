@@ -8,6 +8,7 @@ export function SimpleBanner2(props: any) {
     Cover,
     TitleContainer,
     DescriptionContainer,
+    Title,
   } = props.__fromEditor.components;
 
   return (
@@ -17,7 +18,7 @@ export function SimpleBanner2(props: any) {
       </CoverContainer.type>
       <Stack.type {...Stack.props}>
         <TitleContainer.type {...TitleContainer.props}>
-          Hello world
+          <Title.type {...Title.props} />
         </TitleContainer.type>
         <DescriptionContainer.type {...DescriptionContainer.props}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do

@@ -1784,6 +1784,15 @@ function convertEditingFieldToInternalEditingField(
     // Even though the type definition for field doesn't allow `path` to be an array, $richText component
     // returns an array of paths.
     if (Array.isArray(field.path)) {
+      if (field.path.length === 0) {
+        return {
+          portal: "multi-field",
+          fieldName: "",
+          sources: [],
+          hidden: true,
+        };
+      }
+
       const fieldName =
         field.path[0].split(".").at(-1) ??
         raiseError("Expected field name to be present");
@@ -1823,6 +1832,7 @@ function convertEditingFieldToInternalEditingField(
         portal: "field",
         source,
         fieldName,
+        hidden: !field.visible,
       };
     }
 
