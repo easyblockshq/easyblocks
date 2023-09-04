@@ -35,8 +35,8 @@ const handler: AuthenticatedNextApiHandler = async (req, res, accessToken) => {
   const supabaseClient = createSupabaseClient(accessToken, projectId);
 
   // For some reason, the RLS policy doesn't work with authenticated users so we perform the check here instead
-  const { data: activeProjectId, error } = await supabaseClient.rpc(
-    "active_project_id"
+  const { data: projectIdFromToken, error } = await supabaseClient.rpc(
+    "project_id_from_access_token"
   );
 
   if (error) {
@@ -44,22 +44,27 @@ const handler: AuthenticatedNextApiHandler = async (req, res, accessToken) => {
     return internalServerErrorResponse(res);
   }
 
-  if (activeProjectId !== projectId) {
+  // For some reason, the RLS policy doesn't work with authenticated users so we perform the check here instead
+  if (projectIdFromToken !== projectId) {
     return res.status(403).json({ message: "Forbidden" });
   }
 
   if (req.method === "GET") {
-    let { data: files, error } = await supabaseClient.storage
+    let assetsQueryResult = await supabaseClient.storage
       .from("assets")
       .list(projectId);
 
-    if (error) {
+    if (assetsQueryResult.error) {
       console.error(error);
       return internalServerErrorResponse(res);
     }
 
+    let files = assetsQueryResult.data;
+
     if (req.query.ids) {
-      files = files.filter((file) => toArray(req.query.ids).includes(file.id));
+      files = assetsQueryResult.data.filter((file) =>
+        toArray(req.query.ids).includes(file.id)
+      );
     }
 
     if (req.query.type) {

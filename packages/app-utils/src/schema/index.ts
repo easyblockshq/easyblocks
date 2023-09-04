@@ -10,10 +10,7 @@ import {
 } from "@easyblocks/core";
 import { InternalComponentDefinition } from "../types";
 
-type SchemaProp =
-  | CoreSchemaProp
-  | Variants$$$SchemaProp
-  | Component$$$SchemaProp;
+type SchemaProp = CoreSchemaProp | Component$$$SchemaProp;
 
 type ComponentPickerType = "large" | "small";
 
@@ -23,10 +20,6 @@ export type Component$$$SchemaProp = SchemaPropShared<"component$$$", never> & {
   required?: boolean;
 };
 
-export type Variants$$$SchemaProp = SchemaPropShared<"variants$$$", never> & {
-  definition: InternalComponentDefinition;
-};
-
 export type InternalAnyField = InternalField & { [key: string]: any };
 
 export type InternalAnyTinaField = InternalAnyField;
@@ -34,10 +27,7 @@ export type InternalAnyTinaField = InternalAnyField;
 export type InternalField = Omit<Field, "schemaProp" | "parse" | "format"> & {
   parse?: (value: any, name: string, field: InternalAnyField) => any;
   format?: (value: any, name: string, field: InternalAnyField) => any;
-  schemaProp:
-    | Field["schemaProp"]
-    | Component$$$SchemaProp
-    | Variants$$$SchemaProp;
+  schemaProp: Field["schemaProp"] | Component$$$SchemaProp;
 };
 
 export function isSchemaPropComponentCollectionLocalised(

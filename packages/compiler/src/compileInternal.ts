@@ -94,11 +94,7 @@ export function compileInternal(
       vars: {
         ...meta.vars,
         devices: compilationContextWithFullTheme.devices,
-        image: compilationContextWithFullTheme.image,
-        video: compilationContextWithFullTheme.video,
         locale: compilationContextWithFullTheme.contextParams.locale,
-        imageVariants: compilationContextWithFullTheme.imageVariants,
-        videoVariants: compilationContextWithFullTheme.videoVariants,
       },
     },
   };

@@ -77,7 +77,7 @@ function createTestConfig(configOverrides: PartialDeep<Config> = {}): Config {
     },
     resources: {
       "test.image": {
-        defaultFetch: async (resources) => {
+        fetch: async (resources) => {
           return resources.map((r) => {
             return {
               ...r,

@@ -1,128 +1,64 @@
-import type { FetchingContext } from "./createFetchingContext";
 import { ResourcesStore } from "./createResourcesStore";
 import {
   getResourceFetchParams,
-  getResourceIdentifier,
-  getResourceTransformerHash,
   getResourceType,
-  getResourceVariant,
   isLocalTextResource,
 } from "./resourcesUtils";
-import type {
-  ResourceInfo,
-  ResourceParams,
-  ResourceSchemaProp,
-  ResourceVariant,
-  ResourceWithSchemaProp,
-  UnresolvedResource,
-  UnresolvedResourceNonEmpty,
-} from "./types";
+import type { ResourceSchemaProp, ResourceWithSchemaProp } from "./types";
 
 type PendingResource = {
+  id: string;
   schemaProp: ResourceSchemaProp;
   resource: {
     id: string;
-    info?: ResourceInfo;
     type: string;
+    widgetId: string;
     fetchParams?: Record<string, unknown>;
-    variant?: string;
   };
 };
 
-type PendingResources = Record<string, Array<PendingResource>>;
-
 export function findPendingResources(
   resourcesWithSchemaProps: ResourceWithSchemaProp[],
-  resourcesStore: ResourcesStore,
-  context: FetchingContext
-): PendingResources {
-  const stagedForMap: PendingResources = {};
+  resourcesStore: ResourcesStore
+): Array<PendingResource> {
+  const result: Array<PendingResource> = [];
 
-  resourcesWithSchemaProps.forEach(({ resource, schemaProp }) => {
-    const type = getResourceType(schemaProp, context, resource);
-    const fetchParams = getResourceFetchParams(resource, schemaProp, context);
-
-    if (!isSyncRequired(resource, type, fetchParams, resourcesStore)) {
-      return;
-    }
-
-    if (!stagedForMap[type]) {
-      stagedForMap[type] = [];
-    }
-
-    const variant = getResourceVariant(resource, schemaProp, context);
-    const transformHash = getResourceTransformerHash(
-      resource,
-      schemaProp,
-      variant
-    );
+  resourcesWithSchemaProps.forEach(({ id, resource, schemaProp }) => {
+    const type = getResourceType(schemaProp);
+    const fetchParams = getResourceFetchParams(schemaProp);
 
     if (
-      isResourceAlreadyStaged(
-        stagedForMap[type],
-        resource,
-        fetchParams,
-        transformHash,
-        variant
-      )
+      resource.id === null ||
+      isLocalTextResource(resource, type) ||
+      isResourceSettled(id, type, resourcesStore)
     ) {
       return;
     }
 
-    stagedForMap[type].push({
+    if (result.some((staged) => staged.id === id)) {
+      return;
+    }
+
+    result.push({
+      id,
       schemaProp,
       resource: {
         id: resource.id,
         type,
-        info: resource.info,
         fetchParams,
-        variant: resource.variant,
+        widgetId: resource.widgetId,
       },
     });
   });
 
-  return stagedForMap;
+  return result;
 }
 
-function isSyncRequired(
-  resourceValue: UnresolvedResource,
+function isResourceSettled(
+  id: string,
   type: string,
-  params: Record<string, any> | undefined,
   resourcesStore: ResourcesStore
-): resourceValue is UnresolvedResourceNonEmpty {
-  if (resourceValue.id === null || isLocalTextResource(resourceValue, type)) {
-    return false;
-  }
-
-  const resource = resourcesStore.get(
-    getResourceIdentifier(resourceValue.id, resourceValue.info, params),
-    type
-  );
-
-  return !resource || resource.status === "loading";
-}
-
-function isResourceAlreadyStaged(
-  stagedResources: Array<PendingResource>,
-  resource: UnresolvedResourceNonEmpty,
-  fetchParams: ResourceParams | undefined,
-  transformKey: string | undefined,
-  variant: ResourceVariant | undefined
 ) {
-  return stagedResources.some((staged) => {
-    const transformHash = getResourceTransformerHash(
-      staged.resource,
-      staged.schemaProp,
-      variant
-    );
-
-    return (
-      getResourceIdentifier(
-        staged.resource.id,
-        staged.resource.info,
-        staged.resource.fetchParams
-      ) === getResourceIdentifier(resource.id, resource.info, fetchParams) &&
-      transformKey === transformHash
-    );
-  });
+  const resource = resourcesStore.get(id, type);
+  return resource && resource.status !== "loading";
 }

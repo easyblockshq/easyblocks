@@ -19,37 +19,11 @@ test("returns new reference to compiled config that's empty at the beginning for
     data: [],
   });
 
-  const contentPieceRemoteInput = shopstoryClient.add({
-    id: "xxx",
-    hash: "total valid hash",
-  });
-
-  const contentPieceLocalInput = shopstoryClient.add({
-    content: {
-      _id: "321",
-      _template: "$RootSections",
-      data: [],
-    },
-  });
-
-  const contentPieceFullInput = shopstoryClient.add({
-    id: "yyy",
-    hash: "total valid hash",
-    content: {
-      _id: "456",
-      _template: "$RootSections",
-      data: [],
-    },
-  });
-
   const undefinedInput = shopstoryClient.add(undefined);
 
   const nullInput = shopstoryClient.add(null);
 
   expect(configComponentInput.renderableContent).toBeNull();
-  expect(contentPieceRemoteInput.renderableContent).toBeNull();
-  expect(contentPieceLocalInput.renderableContent).toBeNull();
-  expect(contentPieceFullInput.renderableContent).toBeNull();
   expect(undefinedInput.renderableContent).toBeNull();
   expect(nullInput.renderableContent).toBeNull();
 });
@@ -110,9 +84,9 @@ test("invokes configTransform method when given", () => {
   const launcherPlugin = getLauncherPlugin(testConfig);
 
   const launcherPluginWithTransform: LauncherPlugin = {
-    ...launcherPlugin,
+    ...launcherPlugin!,
     launcher: {
-      ...launcherPlugin.launcher,
+      ...launcherPlugin!.launcher,
       configTransform: configTransformMock,
     },
   };

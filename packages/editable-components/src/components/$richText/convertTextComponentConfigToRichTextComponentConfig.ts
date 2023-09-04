@@ -1,4 +1,4 @@
-import { Resource, TextResource, resourceByIdentity } from "@easyblocks/core";
+import { Resource, TextResource } from "@easyblocks/core";
 import { TextComponentConfig } from "../$text/$text";
 import {
   RichTextAccessibilityRole,
@@ -66,15 +66,10 @@ function getResourceValueForResource(
   }
 
   const textResource = resources.find<TextResource>(
-    resourceByIdentity<TextResource>(
-      unresolvedResource.id,
-      "text",
-      unresolvedResource.info,
-      undefined
-    )
+    (r): r is TextResource => true
   );
 
-  return textResource?.values?.default?.[locale];
+  return textResource?.value?.[locale];
 }
 
 function splitValueByLines(value: string) {

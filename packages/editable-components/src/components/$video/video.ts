@@ -1,18 +1,10 @@
 import {
-  findComponentDefinition,
-  getSchemaPropByProp,
   InternalRenderableComponentDefinition,
   responsiveValueForceGet,
 } from "@easyblocks/app-utils";
 import {
-  getResourceFetchParams,
-  getResourceTransformerHash,
-  getResourceType,
   getResourceValue,
-  getResourceVariant,
   Resource,
-  resourceByIdentity,
-  ResourceSchemaProp,
   UnresolvedResource,
   VideoSrc,
 } from "@easyblocks/core";
@@ -149,14 +141,7 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
       },
     ],
     getEditorSidebarPreview: (config, options) => {
-      const {
-        breakpointIndex,
-        resources,
-        video,
-        videoVariants,
-        image,
-        imageVariants,
-      } = options;
+      const { breakpointIndex, resources } = options;
       const activeVideoValue = responsiveValueForceGet<UnresolvedResource>(
         config.image,
         breakpointIndex
@@ -170,32 +155,9 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         };
       }
 
-      const schemaProp = getSchemaPropByProp(
-        // @ts-expect-error For now lets leave it, we will fix it later!
-        findComponentDefinition(config, options)!,
-        "image"
-      ) as ResourceSchemaProp;
-
       const videoResource = resources.find<Resource<VideoSrc>>(
         (resource): resource is Resource<VideoSrc> => {
-          const resourceType = getResourceType(
-            schemaProp,
-            options,
-            activeVideoValue
-          );
-
-          const fetchParams = getResourceFetchParams(
-            activeVideoValue,
-            schemaProp,
-            { image, imageVariants, video, videoVariants }
-          );
-
-          return resourceByIdentity(
-            activeVideoValue.id,
-            resourceType,
-            activeVideoValue.info,
-            fetchParams
-          )(resource);
+          return resource.id === `${config._id}.image`;
         }
       );
 
@@ -207,18 +169,7 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         };
       }
 
-      const transformHash = getResourceTransformerHash(
-        videoResource,
-        schemaProp,
-        getResourceVariant(activeVideoValue, schemaProp, {
-          image,
-          imageVariants,
-          video,
-          videoVariants,
-        })
-      );
-
-      const videoResourceValue = getResourceValue(videoResource, transformHash);
+      const videoResourceValue = getResourceValue(videoResource);
       const videoFileName = last(videoResourceValue.url.split("/"));
       const videoFileNameWithoutQueryParams = videoFileName.split("?")[0];
 

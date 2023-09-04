@@ -7,7 +7,6 @@ import { isCompiledComponentConfig } from "./isCompiledComponentConfig";
 
 export * from "./isComponentConfig";
 export * from "./getDefaultConfig";
-export * from "./normalizeCmsConfigInput";
 export * from "./configFindAllPaths";
 export * from "./configMap";
 export * from "./configTraverse";

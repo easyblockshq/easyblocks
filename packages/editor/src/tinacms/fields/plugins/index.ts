@@ -11,7 +11,6 @@ export * from "./TokenField/TokenFieldPlugin";
 export * from "./IdentityFieldPlugin";
 export * from "./ImageFieldPlugin";
 export { BlockFieldPlugin } from "./BlockFieldPlugin";
-export { VariantsPlugin } from "./VariantsPlugin";
 export { ExternalFieldPlugin } from "./ExternalField/ExternalField";
 export { ProductPickerFieldPlugin } from "./ProductFieldPlugin";
 export { ResponsiveFieldPlugin } from "./ResponsiveField/ResponsiveFieldPlugin";

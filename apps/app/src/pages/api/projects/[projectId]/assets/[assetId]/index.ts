@@ -14,8 +14,8 @@ const handler: AuthenticatedNextApiHandler = async (req, res, accessToken) => {
   const projectId = req.query.projectId as string;
   const supabaseClient = createSupabaseClient(accessToken, projectId);
 
-  const { data: activeProjectId, error } = await supabaseClient.rpc(
-    "active_project_id"
+  const { data: projectIdFromToken, error } = await supabaseClient.rpc(
+    "project_id_from_access_token"
   );
 
   if (error) {
@@ -24,7 +24,7 @@ const handler: AuthenticatedNextApiHandler = async (req, res, accessToken) => {
   }
 
   // For some reason, the RLS policy doesn't work with authenticated users so we perform the check here instead
-  if (activeProjectId !== projectId) {
+  if (projectIdFromToken !== projectId) {
     return res.status(403).json({ message: "Forbidden" });
   }
 

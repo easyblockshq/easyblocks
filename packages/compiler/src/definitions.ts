@@ -17,7 +17,6 @@ import {
   responsiveValueFlatten,
   responsiveValueMap,
   splitTemplateName,
-  Variants$$$SchemaProp,
 } from "@easyblocks/app-utils";
 import {
   Boolean$SchemaProp,
@@ -32,7 +31,6 @@ import {
   ComponentSchemaProp,
   ConfigComponent,
   CustomResourceSchemaProp,
-  CustomResourceWithVariantsSchemaProp,
   CustomSchemaProp,
   Devices,
   Font,
@@ -42,6 +40,7 @@ import {
   getResourceType,
   IconSchemaProp,
   ImageResourceSchemaProp,
+  LocalizedText,
   NumberSchemaProp,
   Option,
   RadioGroup$SchemaProp,
@@ -67,7 +66,6 @@ import {
   VideoResourceSchemaProp,
 } from "@easyblocks/core";
 import { uniqueId } from "@easyblocks/utils";
-import { OverrideProperties } from "type-fest";
 import { CompilationCache } from "./CompilationCache";
 import { compileComponent } from "./compileComponent";
 
@@ -93,9 +91,14 @@ export type SchemaPropDefinition<Type, CompiledType> = {
 };
 
 export type TextSchemaPropDefinition = SchemaPropDefinition<
-  UnresolvedResource,
-  | UnresolvedResourceEmpty
-  | OverrideProperties<UnresolvedResourceNonEmpty, { value: string }>
+  {
+    id: string;
+    value: LocalizedText;
+  },
+  {
+    id: string;
+    value: string;
+  }
 >;
 
 export type StringSchemaPropDefinition = SchemaPropDefinition<string, string>;
@@ -310,7 +313,7 @@ export type SchemaPropDefinitionProviders = {
   ) => CustomSchemaPropDefinition;
 
   resource: (
-    schemaProp: CustomResourceSchemaProp | CustomResourceWithVariantsSchemaProp,
+    schemaProp: CustomResourceSchemaProp,
     compilationContext: CompilationContextType
   ) => ResourceSchemaPropDefinition;
 };
@@ -1020,7 +1023,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
     };
   },
 
-  resource: (schemaProp, compilationContext) => {
+  resource: (schemaProp) => {
     return {
       normalize: (value) => {
         const normalized = resourceNormalize(value);
@@ -1037,11 +1040,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         return value;
       },
       getHash: (value) => {
-        const resourceType = getResourceType(
-          schemaProp,
-          compilationContext,
-          value
-        );
+        const resourceType = getResourceType(schemaProp);
 
         if (value.id === null) {
           return `${schemaProp.type}.${resourceType}`;
@@ -1366,16 +1365,10 @@ function getRef<T>(value: RefValue<T>): string {
 function resourceNormalize(x: any): UnresolvedResource | undefined {
   if (typeof x === "object" && x !== null) {
     if (typeof x.id === "string") {
-      const normalized: UnresolvedResourceNonEmpty = { id: x.id };
-
-      if (typeof x.info === "object") {
-        normalized.info = x.info;
-      }
-
-      if (typeof x.variant === "string") {
-        normalized.variant = x.variant;
-      }
-
+      const normalized: UnresolvedResourceNonEmpty = {
+        id: x.id,
+        widgetId: x.widgetId,
+      };
       return normalized;
     }
 
@@ -1383,8 +1376,8 @@ function resourceNormalize(x: any): UnresolvedResource | undefined {
       id: null,
     };
 
-    if (typeof x.variant === "string") {
-      normalized.variant = x.variant;
+    if (typeof x.widgetId === "string") {
+      normalized.widgetId = x.widgetId;
     }
 
     return normalized;
@@ -1407,15 +1400,7 @@ function resourceGetHash(
   }
 
   if (value.id) {
-    if (value.variant) {
-      return `${value.id}.${value.variant}`;
-    }
-
-    return value.id;
-  } else {
-    if (value.variant) {
-      return value.variant;
-    }
+    return `${value.id}.${value.widgetId}`;
   }
 }
 
@@ -1431,9 +1416,6 @@ export function normalizeComponent(
   const ret: ConfigComponent = {
     _id: configComponent._id,
     _template: configComponent._template,
-    _variantGroupId: configComponent._variantGroupId,
-    _audience: configComponent._audience,
-    _variants: configComponent._variants,
     _master: configComponent._master,
     $$$refs: configComponent.$$$refs,
     traceId: configComponent.traceId,
@@ -1528,7 +1510,7 @@ export function normalizeComponent(
 }
 
 export function getSchemaDefinition<
-  T extends SchemaProp | Variants$$$SchemaProp | Component$$$SchemaProp
+  T extends SchemaProp | Component$$$SchemaProp
 >(
   schemaProp: T,
   compilationContext: CompilationContextType

@@ -30,11 +30,7 @@ export const compile: ShopstoryClientDependencies["compile"] = (
           textModifiers: [],
         },
         devices: compilationContext.devices,
-        image: compilationContext.image,
-        video: compilationContext.video,
         locale: compilationContext.contextParams.locale,
-        imageVariants: compilationContext.imageVariants,
-        videoVariants: compilationContext.videoVariants,
       },
     };
 
@@ -57,6 +53,13 @@ export const compile: ShopstoryClientDependencies["compile"] = (
         contextParams,
         rootContainer
       );
+
+      if (!content) {
+        content = compilationContext.rootContainers.find(
+          (c) => c.id === rootContainer
+        )?.defaultConfig;
+      }
+
       const inputConfigComponent = normalizeInput(content, options.mode);
 
       const { meta, ...rest } = compileInternal(

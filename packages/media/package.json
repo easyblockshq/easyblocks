@@ -1,5 +1,5 @@
 {
-  "name": "@easyblocks/nocms",
+  "name": "@easyblocks/media",
   "version": "1.5.2",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",

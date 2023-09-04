@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect } from "react";
+import { Fragment } from "react";
 import { useMockService } from "@/data/MockData/useMockService";
 import Link from "next/link";
 

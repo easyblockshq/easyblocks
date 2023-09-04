@@ -8,7 +8,6 @@
 --   '{
 --     "_id": "cb64e93c-e123-4cf6-bd7e-a795b227758e",
 --     "_template": "$RootSections",
---     "_variants": {},
 --     "traceId": "$RootSections-3a64b3b1",
 --     "data": [
 --         {

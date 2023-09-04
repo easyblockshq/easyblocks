@@ -2,7 +2,6 @@ import {
   AnyField,
   AnyTinaField,
   CustomResourceSchemaProp,
-  CustomResourceWithVariantsSchemaProp,
   ExternalFieldCustom,
   ExternalFieldType,
   Field,
@@ -10,7 +9,6 @@ import {
 } from "@easyblocks/core";
 import { useToaster } from "@easyblocks/design-system";
 import { toArray } from "@easyblocks/utils";
-import { useUser } from "@supabase/auth-helpers-react";
 import React, { useEffect, useRef } from "react";
 import { css } from "styled-components";
 import { useEditorContext } from "../../../../EditorContext";
@@ -18,7 +16,7 @@ import { useApiClient } from "../../../../infrastructure/ApiClientProvider";
 import { FieldMixedValue } from "../../../../types";
 import { FieldBuilder, FieldRenderProps } from "../../../form-builder";
 import { isMixedFieldValue } from "../../components/isMixedFieldValue";
-import { ResourceVariantsMenu } from "../ResponsiveField/ResponsiveFieldPlugin";
+import { ResourceWidgetsMenu } from "../ResponsiveField/ResponsiveFieldPlugin";
 import { FieldMetaWrapper } from "../wrapFieldWithMeta";
 
 /**
@@ -38,7 +36,6 @@ function CustomFieldLauncher(props: {
 }) {
   const apiClient = useApiClient();
   const editorContext = useEditorContext();
-  const user = useUser();
   const toaster = useToaster();
 
   const externalField: ExternalFieldType = props.field.externalField;
@@ -59,9 +56,8 @@ function CustomFieldLauncher(props: {
           ...value,
         });
       },
-      apiClient:
-        user !== null && !editorContext.isPlayground ? apiClient : undefined,
-      projectId: editorContext.project?.id,
+      apiClient,
+      projectId: editorContext.project.id,
       notify: {
         error: (message) => {
           toaster.error(message);
@@ -86,11 +82,7 @@ function CustomFieldLauncher(props: {
   );
 }
 
-interface ExternalField
-  extends Field<
-    AnyField,
-    CustomResourceSchemaProp | CustomResourceWithVariantsSchemaProp
-  > {
+interface ExternalField extends Field<AnyField, CustomResourceSchemaProp> {
   externalField: ExternalFieldType;
 }
 
@@ -154,22 +146,27 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
       form={tinaForm}
       layout="column"
       renderDecoration={
-        !isMixedFieldValue(value) &&
-        "variants" in schemaProp &&
-        schemaProp.variants.length > 1
+        !isMixedFieldValue(value) && schemaProp.type === "resource"
           ? () => {
+              const widgets =
+                editorContext.resourceTypes[
+                  (schemaProp as CustomResourceSchemaProp).resourceType
+                ].widgets;
+
+              if (widgets.length === 1) {
+                return null;
+              }
+
               return (
-                <ResourceVariantsMenu
-                  resourceVariants={schemaProp.variants}
-                  selectedVariantId={
-                    value.variant ?? schemaProp.defaultVariantId
-                  }
-                  onChange={(variantId) => {
+                <ResourceWidgetsMenu
+                  widgets={widgets}
+                  selectedWidgetId={value.widgetId ?? widgets[0].id}
+                  onChange={(widgetId) => {
                     editorContext.actions.runChange(() => {
                       fieldNames.forEach((fieldName) => {
                         const newFieldValue: UnresolvedResource = {
                           id: null,
-                          variant: variantId,
+                          widgetId,
                         };
 
                         editorContext.form.change(fieldName, newFieldValue);

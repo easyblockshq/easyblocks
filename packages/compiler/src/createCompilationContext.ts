@@ -6,11 +6,9 @@ import {
   CompilationContextType,
   DEFAULT_DEVICES,
   InternalActionComponentDefinition,
-  InternalComponentDefinition,
   InternalLinkDefinition,
   InternalRenderableComponentDefinition,
   InternalTextModifierDefinition,
-  isResourceSchemaProp,
   parseSpacing,
   responsiveValueMap,
 } from "@easyblocks/app-utils";
@@ -21,8 +19,6 @@ import {
   createFetchingContext,
   Devices,
   EditorLauncherProps,
-  FetchingContext,
-  ResourceTransformer,
   ResponsiveValue,
   SchemaProp,
   Spacing,
@@ -32,7 +28,6 @@ import {
   actionTextModifier,
   StandardLink,
 } from "@easyblocks/editable-components";
-import { SHA1 as sha1 } from "crypto-js";
 import flow from "lodash/flow";
 import { buildFullTheme } from "./buildFullTheme";
 import {
@@ -259,17 +254,12 @@ export function createCompilationContext(
 
   const fetchingContext = createFetchingContext(config);
 
-  const addTransformHashToResourceSchemaPropsForConfig =
-    addTransformHashToResourceSchemaProps(fetchingContext);
-
   const actions: Array<InternalActionComponentDefinition> = (
     config.actions || []
-  ).map((action) =>
-    flow(addTransformHashToResourceSchemaPropsForConfig)({
-      ...action,
-      tags: ["action"],
-    })
-  );
+  ).map((action) => ({
+    ...action,
+    tags: ["action"],
+  }));
 
   const components: Array<InternalRenderableComponentDefinition> = [
     ...(config.components || []).map((component) => {
@@ -344,16 +334,14 @@ export function createCompilationContext(
 
       return customComponent;
     }),
-  ].map(flow(addTransformHashToResourceSchemaPropsForConfig, addTracingSchema));
+  ].map(flow(addTracingSchema));
 
   const links: Array<InternalLinkDefinition> = [
     StandardLink,
-    ...(config.links || []).map((linkConfig) =>
-      addTransformHashToResourceSchemaPropsForConfig({
-        ...linkConfig,
-        tags: ["actionLink"],
-      })
-    ),
+    ...(config.links || []).map((linkConfig) => ({
+      ...linkConfig,
+      tags: ["actionLink"],
+    })),
   ];
 
   const textModifiers: Array<InternalTextModifierDefinition> = [
@@ -367,14 +355,14 @@ export function createCompilationContext(
     },
     actionTextModifier,
     ...(config.textModifiers ?? []).map((modifier) => {
-      return addTransformHashToResourceSchemaPropsForConfig({
+      return {
         ...modifier,
         tags: [
           modifier.type === "text"
             ? "textModifier"
             : `${modifier.type}TextModifier`,
         ],
-      });
+      };
     }),
   ];
 
@@ -390,11 +378,6 @@ export function createCompilationContext(
       textModifiers,
     },
     resourceTypes: fetchingContext.resourceTypes,
-    image: fetchingContext.image,
-    imageVariants: fetchingContext.imageVariants,
-    video: fetchingContext.video,
-    videoVariants: fetchingContext.videoVariants,
-    text: fetchingContext.text,
     eventSink: config.eventSink,
     mainBreakpointIndex: mainDevice.id,
     contextParams,
@@ -405,57 +388,6 @@ export function createCompilationContext(
   };
 
   return compilationContext;
-}
-
-function addTransformHashToResourceSchemaProps(
-  fetchingContext: FetchingContext
-) {
-  return <InternalDefinitionType extends InternalComponentDefinition>(
-    componentDefinition: InternalDefinitionType
-  ): InternalDefinitionType => {
-    return {
-      ...componentDefinition,
-      schema: componentDefinition.schema.map((schemaProp) => {
-        if (isResourceSchemaProp(schemaProp)) {
-          if ("transform" in schemaProp) {
-            return {
-              ...schemaProp,
-              transformHash: getTransformHash(schemaProp.transform),
-            };
-          }
-
-          if (schemaProp.type === "image") {
-            return {
-              ...schemaProp,
-              transformHash: getTransformHash(fetchingContext.image.transform),
-            };
-          } else if (schemaProp.type === "video") {
-            return {
-              ...schemaProp,
-              transformHash: getTransformHash(fetchingContext.video.transform),
-            };
-          } else if (
-            schemaProp.type === "resource" &&
-            "variants" in schemaProp
-          ) {
-            return {
-              ...schemaProp,
-              variants: schemaProp.variants.map((variant) =>
-                variant.transform
-                  ? {
-                      ...variant,
-                      transformHash: getTransformHash(variant.transform),
-                    }
-                  : variant
-              ),
-            };
-          }
-        }
-
-        return schemaProp;
-      }),
-    };
-  };
 }
 
 function buildRootContainers(
@@ -495,8 +427,4 @@ function buildRootContainers(
   }
 
   return resultRootContainers;
-}
-
-function getTransformHash(transformer: ResourceTransformer<any, any>) {
-  return sha1(transformer.toString()).toString();
 }

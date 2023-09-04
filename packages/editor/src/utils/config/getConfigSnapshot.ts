@@ -6,7 +6,6 @@ import { deepClone } from "@easyblocks/utils";
  */
 function getConfigSnapshot(config: ConfigComponent): ConfigComponent {
   const strippedConfig = deepClone(config);
-  delete strippedConfig["_variants"];
   return strippedConfig;
 }
 export { getConfigSnapshot };

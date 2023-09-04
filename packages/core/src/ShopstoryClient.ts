@@ -1,42 +1,27 @@
 import { serialize } from "@easyblocks/utils";
-import { isDocument, isRawContentRemote } from "./checkers";
-import { createFetchingContext } from "./createFetchingContext";
+import { isDocument } from "./checkers";
 import { createResourcesStore, ResourcesStore } from "./createResourcesStore";
 import { findPendingResources } from "./findPendingResources";
 import {
   ApiClient,
-  ConfigDTO,
   DocumentWithResolvedConfigDTO,
   IApiClient,
 } from "./infrastructure/apiClient";
 import { ShopstoryAccessTokenApiAuthenticationStrategy } from "./infrastructure/ShopstoryAccessTokenApiAuthenticationStrategy";
 import { loadCompilerScript } from "./loadScripts";
 import { getFallbackLocaleForLocale } from "./locales";
-import { getLauncherPlugin, syncResources } from "./syncResources";
 import {
   Config,
   ContextParams,
   Document,
-  EditorMode,
+  FetchInputResources,
   Metadata,
-  RawContentLocal,
-  RawContentRemote,
   RenderableContent,
   ResourceWithSchemaProp,
   SerializableResource,
+  ShopstoryClientAddOptions,
   ShopstoryClientDependencies,
 } from "./types";
-
-/**
- * @internal
- */
-type ShopstoryClientAddOptions = {
-  /**
-   * @deprecated Please use `rootContainer` property instead.
-   */
-  mode?: EditorMode;
-  [key: string]: unknown;
-};
 
 type PendingContentEntry<T = any> = {
   value: T;
@@ -53,12 +38,22 @@ export class ShopstoryClient {
   private dependencies?: ShopstoryClientDependencies;
 
   constructor(
+    config: Config,
+    contextParams: ContextParams & { isEditing?: boolean }
+  );
+  constructor(
+    config: Config,
+    contextParams: ContextParams & { isEditing?: boolean },
+    resourcesStore: ResourcesStore
+  );
+  constructor(
     private config: Config,
-    private contextParams: ContextParams & { isEditing?: boolean }
+    private contextParams: ContextParams & { isEditing?: boolean },
+    resourcesStore?: ResourcesStore
   ) {
     this.config = config;
     this.contextParams = contextParams;
-    this.resourcesStore = createResourcesStore();
+    this.resourcesStore = resourcesStore ?? createResourcesStore();
     this.pendingContent = [];
 
     if (this.config.accessToken) {
@@ -70,20 +65,7 @@ export class ShopstoryClient {
     }
   }
 
-  add(
-    input: unknown,
-    options: ShopstoryClientAddOptions = { rootContainer: "content" }
-  ): RenderableContent {
-    // Transform input
-    const launcherPlugin = getLauncherPlugin(this.config);
-
-    if (
-      launcherPlugin?.launcher.configTransform &&
-      this.__applyConfigTransform
-    ) {
-      input = launcherPlugin.launcher.configTransform(input);
-    }
-
+  add(input: unknown, options: ShopstoryClientAddOptions): RenderableContent {
     const result: RenderableContent = {
       renderableContent: null,
     };
@@ -138,27 +120,75 @@ export class ShopstoryClient {
 
       this.pendingContent.length = 0;
 
-      const resourcesWithSchemas: ResourceWithSchemaProp[] = [];
-      syncedConfigs.forEach((syncedConfig) => {
-        resourcesWithSchemas.push(
-          ...findResources(syncedConfig.value, this.config, this.contextParams)
-        );
-      });
+      const resourcesWithSchemas =
+        syncedConfigs.flatMap<ResourceWithSchemaProp>((syncedConfig) => {
+          return findResources(
+            syncedConfig.value,
+            this.config,
+            this.contextParams
+          );
+        });
 
       const pendingResources = findPendingResources(
         resourcesWithSchemas,
-        this.resourcesStore,
-        createFetchingContext(this.config)
+        this.resourcesStore
       );
 
-      await syncResources({
-        config: this.config,
-        contextParams: this.contextParams,
-        isEditing: this.contextParams.isEditing,
-        resourcesStore: this.resourcesStore,
-        shopstoryClient: this,
-        apiClient: this.apiClient,
-        stagedForMap: pendingResources,
+      const fetchInput: FetchInputResources = Object.fromEntries(
+        pendingResources.map((r) => {
+          return [
+            r.id,
+            {
+              externalId: r.resource.id,
+              type: r.resource.type,
+              widgetId: r.resource.widgetId,
+              fetchParams: r.resource.fetchParams,
+            },
+          ];
+        })
+      );
+
+      if (this.contextParams.isEditing) {
+        pendingResources.forEach((r) => {
+          this.resourcesStore.set(r.id, {
+            id: r.id,
+            type: r.resource.type,
+            status: "loading",
+            error: null,
+            value: undefined,
+          });
+        });
+      }
+
+      const resources = await this.config.fetch(fetchInput, this.contextParams);
+
+      Object.entries(resources).forEach(([id, resource]) => {
+        const fetchInputResource = fetchInput[id];
+
+        if (!fetchInputResource) {
+          console.warn(
+            `Unknown resource with id "${id}" has been returned from the fetch function"`
+          );
+          return;
+        }
+
+        if ("value" in resource.value) {
+          this.resourcesStore.set(id, {
+            id,
+            type: fetchInputResource.type,
+            status: "success",
+            value: resource.value.value,
+            error: null,
+          });
+        } else {
+          this.resourcesStore.set(id, {
+            id,
+            type: fetchInputResource.type,
+            status: "error",
+            value: undefined,
+            error: resource.value.error,
+          });
+        }
       });
 
       isFirstIteration = false;
@@ -223,15 +253,10 @@ export class ShopstoryClient {
   }
   private getPendingRemoteContentItems() {
     return this.pendingContent.filter<
-      PendingContentEntry<RawContentRemote | Omit<Document, "config">>
+      PendingContentEntry<Omit<Document, "config">>
     >(
-      (
-        content
-      ): content is PendingContentEntry<
-        RawContentRemote | Omit<Document, "config">
-      > =>
-        isRawContentRemote(content.value) ||
-        (isDocument(content.value) && !content.value.config)
+      (content): content is PendingContentEntry<Omit<Document, "config">> =>
+        isDocument(content.value) && !content.value.config
     );
   }
 
@@ -258,35 +283,22 @@ export class ShopstoryClient {
       try {
         const configResponses = await Promise.allSettled(
           pendingRemoteContentItems.map((contentItem) =>
-            isRawContentRemote(contentItem.value)
-              ? this.apiClient.configs.getConfigById({
-                  configId: contentItem.value.id,
-                  projectId: contentItem.value.projectId,
-                  locales,
-                })
-              : this.apiClient.documents.getDocumentById({
-                  documentId: contentItem.value.documentId,
-                  projectId: contentItem.value.projectId,
-                  locales,
-                })
+            this.apiClient.documents.getDocumentById({
+              documentId: contentItem.value.documentId,
+              projectId: contentItem.value.projectId,
+              locales,
+            })
           )
         );
 
         for (const pendingRemoteContent of pendingRemoteContentItems) {
-          const remoteContentIdentifier = isRawContentRemote(
-            pendingRemoteContent.value
-          )
-            ? pendingRemoteContent.value.id
-            : pendingRemoteContent.value.documentId;
-
+          const remoteContentIdentifier = pendingRemoteContent.value.documentId;
           const rawContentResult = configResponses.find<
-            PromiseFulfilledResult<ConfigDTO | DocumentWithResolvedConfigDTO>
+            PromiseFulfilledResult<DocumentWithResolvedConfigDTO>
           >(
             (
               config
-            ): config is PromiseFulfilledResult<
-              ConfigDTO | DocumentWithResolvedConfigDTO
-            > =>
+            ): config is PromiseFulfilledResult<DocumentWithResolvedConfigDTO> =>
               config.status === "fulfilled" &&
               config.value !== null &&
               config.value.id === remoteContentIdentifier
@@ -299,26 +311,16 @@ export class ShopstoryClient {
             );
           }
 
-          if ("source" in rawContentResult.value) {
-            const document: Document = {
-              documentId: rawContentResult.value.id,
-              projectId: rawContentResult.value.project_id,
-              rootContainer:
-                rawContentResult.value.root_container ??
-                pendingRemoteContent.options.mode ??
-                "content",
-              config: rawContentResult.value.config.config,
-            };
+          const document: Document = {
+            documentId: rawContentResult.value.id,
+            projectId: rawContentResult.value.project_id,
+            rootContainer:
+              rawContentResult.value.root_container ??
+              pendingRemoteContent.options.rootContainer,
+            config: rawContentResult.value.config.config,
+          };
 
-            pendingRemoteContent.value = document;
-          } else {
-            const rawContentLocal: RawContentLocal = {
-              content: rawContentResult.value.config,
-            };
-
-            // @ts-ignore
-            pendingRemoteContent.value = rawContentLocal;
-          }
+          pendingRemoteContent.value = document;
         }
       } catch (error) {
         console.error(error);

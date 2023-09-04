@@ -1,20 +1,12 @@
 import {
   buttonActionSchemaProp,
-  findComponentDefinition,
-  getSchemaPropByProp,
   InternalRenderableComponentDefinition,
   responsiveValueForceGet,
 } from "@easyblocks/app-utils";
 import {
-  getResourceFetchParams,
-  getResourceTransformerHash,
-  getResourceType,
   getResourceValue,
-  getResourceVariant,
   ImageSrc,
   Resource,
-  resourceByIdentity,
-  ResourceSchemaProp,
   UnresolvedResource,
 } from "@easyblocks/core";
 import { last } from "@easyblocks/utils";
@@ -58,14 +50,7 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
       buttonActionSchemaProp,
     ],
     getEditorSidebarPreview(config, options) {
-      const {
-        breakpointIndex,
-        resources,
-        imageVariants,
-        image,
-        videoVariants,
-        video,
-      } = options;
+      const { breakpointIndex, resources } = options;
 
       const activeImageValue = responsiveValueForceGet<UnresolvedResource>(
         config.image,
@@ -80,32 +65,9 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
         };
       }
 
-      const schemaProp = getSchemaPropByProp(
-        // @ts-expect-error For now lets leave it, we will fix it later!
-        findComponentDefinition(config, options)!,
-        "image"
-      ) as ResourceSchemaProp;
-
       const imageResource = resources.find<Resource<ImageSrc>>(
         (resource): resource is Resource<ImageSrc> => {
-          const resourceType = getResourceType(
-            schemaProp,
-            options,
-            activeImageValue
-          );
-
-          const fetchParams = getResourceFetchParams(
-            activeImageValue,
-            schemaProp,
-            { image, imageVariants, video, videoVariants }
-          );
-
-          return resourceByIdentity(
-            activeImageValue.id,
-            resourceType,
-            activeImageValue.info,
-            fetchParams
-          )(resource);
+          return resource.id === `${config._id}.image`;
         }
       );
 
@@ -117,17 +79,7 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
         };
       }
 
-      const transformHash = getResourceTransformerHash(
-        imageResource,
-        schemaProp,
-        getResourceVariant(activeImageValue, schemaProp, {
-          image,
-          imageVariants,
-          video,
-          videoVariants,
-        })
-      );
-      const imageResourceValue = getResourceValue(imageResource, transformHash);
+      const imageResourceValue = getResourceValue(imageResource);
       const imageFileName = last(imageResourceValue.url.split("/"));
       const imageFileNameWithoutQueryParams = imageFileName.split("?")[0];
 

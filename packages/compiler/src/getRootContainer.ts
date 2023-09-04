@@ -1,4 +1,3 @@
-import { CompilationContextType } from "@easyblocks/app-utils";
 import {
   EditorLauncherProps,
   isDocument,
@@ -14,12 +13,7 @@ function getRootContainer(
     return content.rootContainer;
   }
 
-  // For backwards compatibility, use `mode` value if provided.
-  if (options.mode) {
-    return options.mode;
-  }
-
-  return "content";
+  return options.rootContainer;
 }
 
 export { getRootContainer };

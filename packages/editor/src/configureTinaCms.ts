@@ -1,6 +1,5 @@
 import {
   BlockFieldPlugin,
-  VariantsPlugin,
   FontTokenFieldPlugin,
   ExternalFieldPlugin,
   ProductPickerFieldPlugin,
@@ -17,7 +16,6 @@ function configureTinaCms() {
 
   tinaCms.fields.add(ProductPickerFieldPlugin);
   tinaCms.fields.add(BlockFieldPlugin);
-  tinaCms.fields.add(VariantsPlugin);
   tinaCms.fields.add(SliderFieldPlugin);
   tinaCms.fields.add(SVGPickerFieldPlugin);
   tinaCms.fields.add(ResponsiveFieldPlugin);

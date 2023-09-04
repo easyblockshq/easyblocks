@@ -1,23 +1,10 @@
-import {
-  Component$$$SchemaProp,
-  InternalField,
-  isResourceSchemaProp,
-  responsiveValueGet,
-  Variants$$$SchemaProp,
-} from "@easyblocks/app-utils";
-import {
-  getResourceFetchParams,
-  getResourceType,
-  ResolvedResource,
-  resourceByIdentity,
-  SchemaProp,
-} from "@easyblocks/core";
+import { InternalField, isResourceSchemaProp } from "@easyblocks/app-utils";
 import { SSFonts, Typography } from "@easyblocks/design-system";
 import { dotNotationGet, toArray } from "@easyblocks/utils";
 import React, { ReactNode } from "react";
 import styled, { css } from "styled-components";
 import { useConfigAfterAuto } from "../../../ConfigAfterAutoContext";
-import { EditorContextType, useEditorContext } from "../../../EditorContext";
+import { useEditorContext } from "../../../EditorContext";
 import { COMPONENTS_SUPPORTING_MIXED_VALUES } from "../components/constants";
 import { isMixedFieldValue } from "../components/isMixedFieldValue";
 import { FieldProps } from "./fieldProps";
@@ -117,52 +104,17 @@ export function FieldMetaWrapper<
   const label = field.label || input.name;
   const { schemaProp } = field;
   const isResource = isResourceSchemaProp(schemaProp);
-  const resolvedResource = isResource
-    ? resources.find(
-        resourceByIdentity(
-          input.value.id,
-          getResourceType(schemaProp, editorContext, input.value),
-          input.value.info,
-          getResourceFetchParams(
-            responsiveValueGet(input.value, editorContext.breakpointIndex),
-            schemaProp,
-            editorContext
-          )
-        )
-      )
-    : undefined;
+  const configPath = toArray(field.name)[0];
+  const config = dotNotationGet(configAfterAuto, configPath);
+
+  const resolvedResource =
+    isResource && schemaProp.type !== "text"
+      ? resources.find((r) => {
+          return r.id === `${config._id}.${schemaProp.prop}`;
+        })
+      : undefined;
 
   let icon: string | undefined;
-
-  if (
-    schemaProp.type === "image" ||
-    schemaProp.type === "video" ||
-    schemaProp.type === "resource"
-  ) {
-    const resourceFieldValue = dotNotationGet(
-      configAfterAuto,
-      toArray(field.name)[0]
-    );
-
-    const resourceValue = responsiveValueGet(
-      resourceFieldValue,
-      editorContext.breakpointIndex
-    );
-
-    const adjustedResourceValue = {
-      ...resourceValue,
-    };
-
-    if (
-      !adjustedResourceValue.variant &&
-      (field.schemaProp.type === "image" || field.schemaProp.type === "video")
-    ) {
-      adjustedResourceValue.variant =
-        editorContext[`${field.schemaProp.type}VariantsDisplay`][0];
-    }
-
-    icon = getLauncherIcon(adjustedResourceValue, schemaProp, editorContext);
-  }
 
   const renderDefaultDecoration = () => {
     if (icon !== undefined && !isMixedValue) {
@@ -234,24 +186,6 @@ function isMixedValueSupportedByComponent(
   }
 
   return false;
-}
-
-export function getLauncherIcon(
-  resource: ResolvedResource,
-  schemaProp: SchemaProp | Component$$$SchemaProp | Variants$$$SchemaProp,
-  editorContext: EditorContextType
-) {
-  if (!isResourceSchemaProp(schemaProp)) {
-    return;
-  }
-
-  const resolvedType = getResourceType(schemaProp, editorContext, resource);
-
-  return editorContext.launcher &&
-    resolvedType.startsWith(editorContext.launcher.id) &&
-    editorContext.launcher.icon !== undefined
-    ? editorContext.launcher.icon
-    : undefined;
 }
 
 const TextButton = styled(Typography)`

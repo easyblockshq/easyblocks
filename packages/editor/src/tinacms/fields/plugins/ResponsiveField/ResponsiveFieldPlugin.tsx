@@ -4,7 +4,10 @@ import {
   responsiveValueForceGet,
 } from "@easyblocks/app-utils";
 import {
-  ResourceVariant,
+  CustomResourceSchemaProp,
+  getResourceType,
+  isLocalTextResource,
+  ResourceDefinition,
   TrulyResponsiveValue,
   UnresolvedResource,
 } from "@easyblocks/core";
@@ -23,7 +26,7 @@ import { dotNotationGet, toArray } from "@easyblocks/utils";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useConfigAfterAuto } from "../../../../ConfigAfterAutoContext";
-import { EditorContextType, useEditorContext } from "../../../../EditorContext";
+import { useEditorContext } from "../../../../EditorContext";
 import { FieldBuilder } from "../../../form-builder";
 import { MIXED_VALUE } from "../../components/constants";
 import { getUniqueValues } from "../../components/getUniqueValues";
@@ -72,9 +75,18 @@ export const ResponsiveField = (props: ResponsivePluginProps) => {
   const isMixedValue = uniqueValues.length > 1;
   const value = isMixedValue ? MIXED_VALUE : uniqueValues[0];
 
-  const [selectedVariantId, setSelectedVariantId] = useState<
-    string | undefined
-  >(() => (isResourceSchemaProp(field.schemaProp) ? value.variant : undefined));
+  const [selectedWidgetId, setSelectedWidgetId] = useState<string | undefined>(
+    () =>
+      isResourceSchemaProp(field.schemaProp)
+        ? value.widgetId ??
+          editorContext.resourceTypes[
+            field.schemaProp.type === "image" ||
+            field.schemaProp.type === "video"
+              ? field.schemaProp.type
+              : field.schemaProp.resourceType
+          ].widgets[0].id
+        : undefined
+  );
 
   const controller = responsiveFieldController({
     field,
@@ -111,11 +123,6 @@ export const ResponsiveField = (props: ResponsivePluginProps) => {
     },
   });
 
-  const isImageSchemaProp = field.schemaProp.type === "image";
-  const mediaVariantsDisplay = isImageSchemaProp
-    ? editorContext.imageVariantsDisplay
-    : editorContext.videoVariantsDisplay;
-
   return (
     // @ts-expect-error
     <FieldMetaWrapper
@@ -138,45 +145,38 @@ export const ResponsiveField = (props: ResponsivePluginProps) => {
           : undefined
       }
       renderDecoration={
-        !isMixedValue
-          ? ({ launcherIcon, renderDefaultDecoration }) => {
-              const resourceVariants = isResourceSchemaProp(field.schemaProp)
-                ? getResourceVariantsForField(field, editorContext)
-                : [];
-              const mediaVariantsDisplay = isImageSchemaProp
-                ? editorContext.imageVariantsDisplay
-                : editorContext.videoVariantsDisplay;
-              const defaultLauncherVariantId = editorContext.launcher
-                ? `${editorContext.launcher.id}.default`
-                : undefined;
-              const sortedResourceVariants: Array<ResourceVariant> = [];
+        !isMixedValue && isResourceSchemaProp(field.schemaProp)
+          ? ({ renderDefaultDecoration }) => {
+              const availableWidgets =
+                editorContext.resourceTypes[
+                  field.schemaProp.type === "image" ||
+                  field.schemaProp.type === "video"
+                    ? field.schemaProp.type
+                    : (field.schemaProp as CustomResourceSchemaProp)
+                        .resourceType
+                ]?.widgets;
 
-              for (const variantId of mediaVariantsDisplay) {
-                const resourceVariant = resourceVariants.find(
-                  (v) => v.id === variantId
-                );
-
-                if (resourceVariant) {
-                  sortedResourceVariants.push(resourceVariant);
-                }
+              if (!availableWidgets) {
+                return null;
               }
 
-              if (sortedResourceVariants.length <= 1) {
+              if (availableWidgets.length === 1) {
                 return renderDefaultDecoration();
               }
 
-              const defaultVariant = resourceVariants.find((v) =>
-                field.schemaProp.type === "image" ||
-                field.schemaProp.type === "video"
-                  ? v.id === mediaVariantsDisplay[0]
-                  : false
+              const selectedWidget = availableWidgets.find((w) =>
+                value.widgetId ? w.id === value.widgetId : true
               );
 
+              if (!selectedWidget) {
+                return null;
+              }
+
               return (
-                <ResourceVariantsMenu
-                  resourceVariants={sortedResourceVariants}
-                  onChange={(sourceId) => {
-                    setSelectedVariantId(sourceId);
+                <ResourceWidgetsMenu
+                  widgets={availableWidgets}
+                  onChange={(widgetId) => {
+                    setSelectedWidgetId(widgetId);
 
                     editorContext.actions.runChange(() => {
                       normalizedFieldName.forEach((fieldName) => {
@@ -186,7 +186,7 @@ export const ResponsiveField = (props: ResponsivePluginProps) => {
                               ...input.value,
                               [editorContext.breakpointIndex]: {
                                 id: null,
-                                variant: sourceId,
+                                widgetId,
                               },
                             };
 
@@ -194,7 +194,7 @@ export const ResponsiveField = (props: ResponsivePluginProps) => {
                         } else {
                           const newFieldValue: UnresolvedResource = {
                             id: null,
-                            variant: sourceId,
+                            widgetId,
                           };
 
                           editorContext.form.change(fieldName, newFieldValue);
@@ -202,16 +202,7 @@ export const ResponsiveField = (props: ResponsivePluginProps) => {
                       });
                     });
                   }}
-                  selectedVariantId={selectedVariantId}
-                  icon={
-                    launcherIcon &&
-                    ((selectedVariantId === undefined &&
-                      defaultVariant &&
-                      defaultVariant.id === defaultLauncherVariantId) ||
-                      selectedVariantId === defaultLauncherVariantId)
-                      ? launcherIcon
-                      : undefined
-                  }
+                  selectedWidgetId={selectedWidgetId}
                 />
               );
             }
@@ -225,16 +216,38 @@ export const ResponsiveField = (props: ResponsivePluginProps) => {
             field={{
               ...controller.field,
               parse(value, name, field) {
-                if (isResourceSchemaProp(field.schemaProp) && !value.variant) {
-                  const nextValue: UnresolvedResource = {
-                    ...value,
-                    variant: selectedVariantId ?? mediaVariantsDisplay[0],
-                  };
+                if (isResourceSchemaProp(field.schemaProp)) {
+                  const resourceType = getResourceType(field.schemaProp);
+                  if (
+                    value.id !== null &&
+                    !isLocalTextResource(value, resourceType)
+                  ) {
+                    const componentConfigPath = name
+                      .split(".")
+                      .slice(0, -1)
+                      .join(".");
 
-                  return (
-                    controller.field.parse?.(nextValue, name, field) ??
-                    nextValue
-                  );
+                    const parentConfig = dotNotationGet(
+                      tinaForm.values,
+                      componentConfigPath
+                    );
+                    editorContext.resourcesStore.remove(
+                      `${parentConfig._id}.${field.schemaProp.prop}`,
+                      resourceType
+                    );
+                  }
+
+                  if (!value.widgetId) {
+                    const nextValue: UnresolvedResource = {
+                      ...value,
+                      widgetId: selectedWidgetId,
+                    };
+
+                    return (
+                      controller.field.parse?.(nextValue, name, field) ??
+                      nextValue
+                    );
+                  }
                 }
 
                 return controller.field.parse?.(value, name, field) ?? value;
@@ -324,42 +337,40 @@ function getAutoLabelButtonLabel(value: any): string {
   return `auto: ${value}`;
 }
 
-export function ResourceVariantsMenu({
-  selectedVariantId,
-  resourceVariants,
+export function ResourceWidgetsMenu({
+  selectedWidgetId,
+  widgets,
   onChange,
   icon,
 }: {
-  selectedVariantId: string | undefined;
-  resourceVariants: Array<ResourceVariant>;
-  onChange: (variant: string) => void;
+  selectedWidgetId: string | undefined;
+  widgets: Array<ResourceDefinition["widgets"][number]>;
+  onChange: (widgetId: string) => void;
   icon?: string;
 }) {
-  const [internalSelectedVariantId, setInternalSelectedVariantId] = useState<
+  const [internalSelectedWidgetId, setInternalSelectedWidgetId] = useState<
     string | undefined
   >(() => {
-    if (selectedVariantId !== undefined) {
-      return selectedVariantId;
+    if (selectedWidgetId !== undefined) {
+      return selectedWidgetId;
     }
 
-    return resourceVariants[0]?.id;
+    return widgets[0]?.id;
   });
 
-  const isControlled = selectedVariantId !== undefined;
+  const isControlled = selectedWidgetId !== undefined;
 
-  const variantId = isControlled
-    ? selectedVariantId
-    : internalSelectedVariantId;
+  const widgetId = isControlled ? selectedWidgetId : internalSelectedWidgetId;
 
-  function handleVariantIdChange(variantId: string) {
+  function handleWidgetIdChange(widgetId: string) {
     if (isControlled) {
-      setInternalSelectedVariantId(variantId);
+      setInternalSelectedWidgetId(widgetId);
     }
 
-    onChange(variantId);
+    onChange(widgetId);
   }
 
-  const selectedVariant = resourceVariants.find((v) => v.id === variantId);
+  const selectedWidget = widgets.find((v) => v.id === widgetId);
 
   return (
     <Menu>
@@ -381,34 +392,34 @@ export function ResourceVariantsMenu({
                 dangerouslySetInnerHTML={{ __html: icon }}
               ></span>
             )}
-            {selectedVariant
-              ? selectedVariant.label ?? selectedVariant.id
-              : "Select variant"}
+            {selectedWidget
+              ? selectedWidget.label ?? selectedWidget.id
+              : "Select widget"}
             <SSIcons.ChevronDown size={16} />
           </SSButtonGhost>
         </MenuTrigger>
       </FieldLabelIconWrapper>
       <MenuContent>
-        {resourceVariants.map((variant) => {
+        {widgets.map((widget) => {
           return (
             <MenuItem
-              key={variant.id}
+              key={widget.id}
               onClick={() => {
-                if (variant.id === selectedVariantId) {
+                if (widget.id === selectedWidgetId) {
                   return;
                 }
 
-                handleVariantIdChange(variant.id);
+                handleWidgetIdChange(widget.id);
               }}
             >
               <Typography
                 color={
-                  selectedVariant && selectedVariant.id === variant.id
+                  selectedWidget && selectedWidget.id === widget.id
                     ? "black20"
                     : "white"
                 }
               >
-                {variant.label ?? variant.id}
+                {widget.label ?? widget.id}
               </Typography>
             </MenuItem>
           );
@@ -416,13 +427,4 @@ export function ResourceVariantsMenu({
       </MenuContent>
     </Menu>
   );
-}
-
-function getResourceVariantsForField(
-  field: ResponsiveFieldDefinition,
-  editorContext: EditorContextType
-) {
-  return field.schemaProp.type === "image" || field.schemaProp.type === "video"
-    ? editorContext[`${field.schemaProp.type}Variants`]
-    : [];
 }

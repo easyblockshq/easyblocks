@@ -31,14 +31,10 @@ import {
   ComponentFixedSchemaProp,
   ComponentSchemaProp,
   CustomResourceSchemaProp,
-  getResourceFetchParams,
-  getResourceTransformerHash,
   getResourceType,
   getResourceValue,
-  getResourceVariant,
   isLocalTextResource,
   Resource,
-  resourceByIdentity,
   ResourceSchemaProp,
   ResponsiveValue,
   UnresolvedResource,
@@ -183,31 +179,12 @@ function getRenderabilityStatus(
       const compiledResourceProp: UnresolvedResourceNonEmpty =
         compiled.props[schema.prop];
 
-      const variant = getResourceVariant(
-        compiledResourceProp,
-        schema,
-        meta.vars
-      );
-
       if (schema.type === "image" || schema.type === "video") {
         const resourceSchemaProp: CustomResourceSchemaProp = {
           ...schema,
           type: "resource",
-          resourceType:
-            variant?.resourceType ??
-            (schema.type === "image"
-              ? meta.vars.image.resourceType
-              : meta.vars.video.resourceType),
+          resourceType: compiledResourceProp.widgetId,
           optional: true,
-        };
-
-        return resourceSchemaProp;
-      }
-
-      if (schema.type === "resource" && "variants" in schema) {
-        const resourceSchemaProp: CustomResourceSchemaProp = {
-          ...schema,
-          resourceType: variant!.resourceType,
         };
 
         return resourceSchemaProp;
@@ -233,26 +210,11 @@ function getRenderabilityStatus(
 
   for (let i = 0; i < requiredResourceFields.length; i++) {
     const resourceSchemaProp = requiredResourceFields[i];
-    const resourcePropValue: UnresolvedResourceNonEmpty =
-      compiled.props[resourceSchemaProp.prop];
-
     const resource = meta.resources.find(
-      resourceByIdentity(
-        resourcePropValue.id,
-        resourceSchemaProp.resourceType,
-        resourcePropValue.info,
-        getResourceFetchParams(resourcePropValue, resourceSchemaProp, {
-          image: meta.vars.image,
-          video: meta.vars.video,
-          imageVariants: meta.vars.imageVariants,
-          videoVariants: meta.vars.videoVariants,
-        })
-      )
+      (resource: Resource) =>
+        resource.id === `${compiled._id}.${resourceSchemaProp.prop}`
     );
-
-    const resourceValue = resource
-      ? getResourceValue(resource, resourceSchemaProp.transformHash)
-      : undefined;
+    const resourceValue = resource ? getResourceValue(resource) : undefined;
 
     const isLoading =
       status.isLoading ||
@@ -399,15 +361,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
    * The only case when compiled.__editing is set is when we're in Editor and for non-nested components.
    */
   const isEditing = compiled.__editing !== undefined;
-
-  const imageAndVideo = {
-    image: meta.vars.image,
-    video: meta.vars.video,
-    imageVariants: meta.vars.imageVariants,
-    videoVariants: meta.vars.videoVariants,
-  };
   const MissingComponent = meta.code.MissingComponent;
-
   const pathSeparator = path === "" ? "" : ".";
 
   if (compiled._template === "REPLACE_ME") {
@@ -545,9 +499,9 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
 
               const resolvedResourceProp = resolveResource(
                 unresolvedResourceValue,
+                actionConfig.props._id,
                 schemaProp,
-                meta.resources,
-                imageAndVideo
+                meta.resources
               );
 
               actionParams[schemaProp.prop] = resolvedResourceProp?.value;
@@ -677,9 +631,9 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
         } else {
           const resolvedResourceProp = resolveResource(
             compiled.props[schemaProp.prop],
+            compiled.props._id,
             schemaProp,
-            meta.resources,
-            imageAndVideo
+            meta.resources
           );
 
           if (isTrulyResponsiveValue(resolvedResourceProp)) {
@@ -763,6 +717,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
       _id: shopstoryCompiledConfig._id,
       props: mapResourceProps(
         shopstoryCompiledConfig.props,
+        shopstoryCompiledConfig._id,
         componentDefinition,
         meta
       ),
@@ -785,6 +740,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
 
 function mapResourceProps(
   props: Record<string, unknown>,
+  configId: string,
   componentDefinition: any,
   meta: any
 ) {
@@ -807,14 +763,9 @@ function mapResourceProps(
       } else {
         resultsProps[propName] = resolveResource(
           propValue,
+          configId,
           schemaProp,
-          meta.resources,
-          {
-            image: meta.vars.image,
-            video: meta.vars.video,
-            imageVariants: meta.vars.imageVariants,
-            videoVariants: meta.vars.videoVariants,
-          }
+          meta.resources
         );
       }
     } else {
@@ -827,17 +778,12 @@ function mapResourceProps(
 
 function resolveResource(
   responsiveResource: ResponsiveValue<UnresolvedResource>,
+  configId: string,
   schemaProp: ResourceSchemaProp,
-  resources: Array<Resource>,
-  imageAndVideo: {
-    image: any;
-    video: any;
-    imageVariants: any;
-    videoVariants: any;
-  }
+  resources: Array<Resource>
 ): ResponsiveValue<ResolvedResourceProp | null> {
   return responsiveValueMap(responsiveResource, (r) => {
-    const type = getResourceType(schemaProp, imageAndVideo, r);
+    const type = getResourceType(schemaProp);
 
     if (r.id) {
       if (isLocalTextResource(r, "text")) {
@@ -850,25 +796,13 @@ function resolveResource(
         };
       } else {
         const resource = resources.find(
-          resourceByIdentity(
-            r.id,
-            type,
-            r.info,
-            getResourceFetchParams(r, schemaProp, imageAndVideo)
-          )
+          (res) => res.id === `${configId}.${schemaProp.prop}`
         );
 
         let resourceValue = resource;
 
         if (resource) {
-          const variant = getResourceVariant(r, schemaProp, imageAndVideo);
-          const transformerHash = getResourceTransformerHash(
-            r,
-            schemaProp,
-            variant
-          );
-
-          resourceValue = getResourceValue(resource, transformerHash);
+          resourceValue = getResourceValue(resource);
         }
 
         /**

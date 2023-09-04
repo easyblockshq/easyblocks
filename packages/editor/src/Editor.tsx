@@ -3,11 +3,10 @@ import {
   CompilationContextType,
   componentPickerClosed,
   ComponentPickerOpenedEvent,
-  configMap,
   duplicateConfig,
   findComponentDefinitionById,
   ItemInsertedEvent,
-  normalizeNonDocumentCmsInput,
+  mergeCompilationMeta,
   useEditorGlobalKeyboardShortcuts,
 } from "@easyblocks/app-utils";
 import {
@@ -20,27 +19,20 @@ import {
   validate,
 } from "@easyblocks/compiler";
 import {
-  Audience,
   CompilationMetadata,
   ComponentConfig,
   Config,
   ConfigComponent,
   ContextParams,
+  createResourcesStore,
   DocumentWithResolvedConfigDTO,
   EditorLauncherProps,
   ExternalReference,
-  getLauncherPlugin,
   IApiClient,
-  isDocument,
-  isRawContentRemote,
   Locale,
   LocalisedDocument,
-  LocalisedRawContent,
   Metadata,
   NonEmptyRenderableContent,
-  RawContent,
-  RawContentFull,
-  RawContentLocal,
   RenderableContent,
   ShopstoryClient,
 } from "@easyblocks/core";
@@ -50,9 +42,11 @@ import {
   SSFonts,
   useToaster,
 } from "@easyblocks/design-system";
-import { entries, nonNullable, useForceRerender } from "@easyblocks/utils";
+import { entries, useForceRerender } from "@easyblocks/utils";
+import { useSession } from "@supabase/auth-helpers-react";
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import { ConfigAfterAutoContext } from "./ConfigAfterAutoContext";
 import {
@@ -64,14 +58,23 @@ import {
   replaceItems,
 } from "./editorActions";
 import { EditorContext, EditorContextType } from "./EditorContext";
+import { EditorIframe } from "./EditorIframe";
 import { EditorSidebar } from "./EditorSidebar";
 import { EditorTopBar, TOP_BAR_HEIGHT } from "./EditorTopBar";
 import { fillGridConfigWithPlaceholders } from "./fillGridConfigWithPlaceholders";
+import {
+  ApiClientProvider,
+  useApiClient,
+} from "./infrastructure/ApiClientProvider";
+import { createApiClient } from "./infrastructure/createApiClient";
+import { ProjectsApiService } from "./infrastructure/projectsApiService";
 import { StorageProvider } from "./infrastructure/StorageContext";
+import { supabaseClient } from "./infrastructure/supabaseClient";
 import { ModalPicker } from "./ModalPicker";
 import { destinationResolver } from "./paste/destinationResolver";
 import { pasteManager } from "./paste/manager";
 import { SelectionFrame } from "./selectionFrame/SelectionFrame";
+import { TemplateModal } from "./TemplateModal";
 import { getTemplates } from "./templates/getTemplates";
 import { TinaProvider } from "./tinacms";
 import { useForm, usePlugin } from "./tinacms/react-core";
@@ -80,48 +83,11 @@ import {
   CMSInput,
   OpenComponentPickerConfig,
   OpenTemplateModalAction,
-  VariantsRepository,
 } from "./types";
 import { useDataSaver } from "./useDataSaver";
 import { useEditorHistory } from "./useEditorHistory";
 import { checkLocalesCorrectness } from "./utils/locales/checkLocalesCorrectness";
-import { mergeSingleLocaleConfigsIntoConfig } from "./utils/locales/mergeConfigs";
 import { removeLocalizedFlag } from "./utils/locales/removeLocalizedFlag";
-import {
-  addVariant,
-  editVariant,
-  getAudiencesForVariantsGroup,
-  getVariant,
-  mapToVariant,
-  removeVariant,
-  reorderVariant,
-  selectVariant,
-  storeVariant,
-} from "./variants";
-import { AudienceModal } from "./variants/AudienceModal";
-import { firstMatchingVariantFor } from "./variants/matchers";
-
-import { mergeCompilationMeta } from "@easyblocks/app-utils";
-import { useSession } from "@supabase/auth-helpers-react";
-import {
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
-import { AuthModal } from "./auth/AuthModal";
-import { Dashboard } from "./dashboard/Dashboard";
-import { EditorIframe } from "./EditorIframe";
-import {
-  ApiClientProvider,
-  useApiClient,
-} from "./infrastructure/ApiClientProvider";
-import { createApiClient } from "./infrastructure/createApiClient";
-import { ProjectsApiService } from "./infrastructure/projectsApiService";
-import { supabaseClient } from "./infrastructure/supabaseClient";
-import { TemplateModal } from "./TemplateModal";
 
 const ContentContainer = styled.div`
   position: relative;
@@ -216,71 +182,15 @@ type EditorContainerProps = {
 function EditorContainer(props: EditorContainerProps) {
   const [enabled, setEnabled] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
-  const navigate = useNavigate();
   const session = useSession();
-  const location = useLocation();
   const [project, setProject] = useState<
     EditorContextType["project"] | undefined
   >(undefined);
   const [apiClient] = useState(() => createApiClient(props.config.accessToken));
 
-  const compilationContext = createCompilationContext(
-    props.config,
-    props.contextParams,
-    props.rootContainer
-  );
-
-  const launcherPlugin = getLauncherPlugin(props.config);
-  const isOpenedInCMS = launcherPlugin?.id !== "nocms";
   const isPlayground = props.mode === "playground";
 
   useEffect(() => {
-    async function handleSignedIn() {
-      // When coming from other browser tab, the signed in event occurs again.
-      // If the user is already authorized we don't need to do anything.
-      if (enabled) {
-        return;
-      }
-
-      if (!props.config.projectId) {
-        setError("Authorization error. Missing project ID.");
-        return;
-      }
-
-      const projectsApiService = new ProjectsApiService(apiClient);
-      const project = await projectsApiService.getProjectById(
-        props.config.projectId
-      );
-
-      if (project === null) {
-        setError("Authorization error. You don't have access to this project.");
-        return;
-      }
-
-      if (project.tokens.length > 0) {
-        setProject({
-          ...project,
-          token: project.tokens[0],
-        });
-      }
-
-      setEnabled(true);
-
-      if (location.hash === "#/auth") {
-        navigate("/");
-      }
-    }
-
-    function handleSignedOut() {
-      setError(undefined);
-      setEnabled(false);
-      navigate("/auth", {
-        state: {
-          view: "sign_in",
-        },
-      });
-    }
-
     async function handleAccessTokenAuthorization() {
       if (enabled) {
         return;
@@ -304,59 +214,22 @@ function EditorContainer(props: EditorContainerProps) {
       }
 
       setEnabled(true);
-      navigate("/editor" + location.search);
     }
 
     if (isPlayground) {
       console.debug(`Opening Shopstory in playground mode.`);
       setEnabled(true);
-      navigate("/editor" + location.search);
       return;
     }
 
-    if (props.config.accessToken) {
-      console.debug(
-        `Opening Shopstory with access token: ${props.config.accessToken}`
-      );
+    console.debug(
+      `Opening Shopstory with access token: ${props.config.accessToken}`
+    );
 
-      handleAccessTokenAuthorization();
-    } else {
-      console.debug("Opening Shopstory in user authenticated mode.");
+    handleAccessTokenAuthorization();
+  }, [apiClient, enabled, isPlayground, props.config.accessToken]);
 
-      const {
-        data: { subscription },
-      } = supabaseClient.auth.onAuthStateChange((event, session) => {
-        if (event === "INITIAL_SESSION") {
-          if (session) {
-            handleSignedIn();
-          } else {
-            navigate("/auth");
-          }
-        }
-
-        if (event === "SIGNED_IN") {
-          handleSignedIn();
-        }
-
-        if (event === "SIGNED_OUT") {
-          handleSignedOut();
-        }
-
-        if (event === "PASSWORD_RECOVERY") {
-          navigate("/auth", { state: { view: "password_update" } });
-        }
-      });
-
-      return () => {
-        subscription.unsubscribe();
-      };
-    }
-  }, [enabled, location.hash, navigate]);
-
-  const isShopstoryAccessTokenAuthenticationMethodUsed =
-    !!props.config.accessToken;
-
-  if (isShopstoryAccessTokenAuthenticationMethodUsed && !enabled) {
+  if (!enabled || !project) {
     return <AuthenticationScreen>Authenticating...</AuthenticationScreen>;
   }
 
@@ -386,42 +259,16 @@ function EditorContainer(props: EditorContainerProps) {
   return (
     <StorageProvider accessToken={project?.token}>
       <ApiClientProvider apiClient={apiClient}>
-        <Routes>
-          <Route
-            path="/auth"
-            element={isPlayground ? <Navigate to="/" /> : <AuthModal />}
-          />
-          <Route
-            path="/editor"
-            element={
-              <Editor
-                {...props}
-                locales={props.locales}
-                contextParams={props.contextParams}
-                documentId={props.documentId}
-                isPlayground={isPlayground}
-                rootContainer={props.rootContainer}
-                project={project}
-                isEnabled={enabled}
-              />
-            }
-          />
-          {!isOpenedInCMS && project !== undefined && (
-            <Route
-              path="/"
-              element={
-                <Dashboard
-                  normalizeConfig={(config) =>
-                    normalize(config, compilationContext)
-                  }
-                  project={project}
-                  locales={props.locales}
-                  contextParams={props.contextParams}
-                />
-              }
-            />
-          )}
-        </Routes>
+        <Editor
+          {...props}
+          locales={props.locales}
+          contextParams={props.contextParams}
+          documentId={props.documentId}
+          isPlayground={isPlayground}
+          rootContainer={props.rootContainer}
+          project={project}
+          isEnabled={enabled}
+        />
       </ApiClientProvider>
     </StorageProvider>
   );
@@ -479,10 +326,8 @@ const Editor = memo((props: EditorProps) => {
               apiClient,
               compilationContext
             )
-          : await resolveCMSInput({
-              cmsInput: props.configs,
+          : getDefaultInput({
               rootContainer: props.rootContainer,
-              apiClient,
               compilationContext,
             });
 
@@ -550,7 +395,8 @@ function useBuiltContent(
         projectId: editorContext.project?.id,
         accessToken: config.accessToken ?? editorContext.project?.token,
       },
-      contextParams
+      contextParams,
+      editorContext.resourcesStore
     )
   ).current;
   const { forceRerender } = useForceRerender();
@@ -568,7 +414,7 @@ function useBuiltContent(
 
       return {
         items: items.map(({ content, options }) => {
-          const normalizedContent = normalizeInput(content, options.mode);
+          const normalizedContent = normalizeInput(content);
 
           const { meta, ...rest } = options.nested
             ? compileInternal(normalizedContent, {
@@ -671,74 +517,8 @@ const EditorContent = ({
   const [breakpointIndex, setBreakpointIndex] = useState(
     compilationContext.mainBreakpointIndex
   );
-
-  const [editVariantRequest, setEditVariantRequest] = useState<
-    { id: string; groupId: string; path: string } | undefined
-  >();
-
-  const [addVariantRequest, setAddVariantRequest] = useState<
-    { config: ComponentConfig; path: string } | undefined
-  >();
-
-  const [allAudiences, setAllAudiences] = useState<Audience[]>([]);
-  const [audiences, setAudiences] = useState<string[]>(
-    compilationContext.contextParams.audiences ?? []
-  );
-
   const compilationCache = useRef(new CompilationCache());
-
-  const handleAudienceChange = (audienceId: string) => {
-    const set = new Set(audiences);
-    if (set.has(audienceId)) {
-      set.delete(audienceId);
-    } else {
-      set.add(audienceId);
-    }
-    setAudiences(Array.from(set));
-  };
-
-  useEffect(() => {
-    actions.runChange(() => {
-      let variantsRepositorySnapshot = form.values._variants ?? {};
-
-      const configMapper = mapToVariant((configComponent) => {
-        variantsRepositorySnapshot = storeVariant(
-          variantsRepositorySnapshot,
-          configComponent
-        );
-        return getVariant(
-          form.values._variants as VariantsRepository,
-          firstMatchingVariantFor(audiences),
-          configComponent
-        );
-      });
-
-      const configWithVariantsResolved = configMap(
-        form.values,
-        editorContext,
-        configMapper
-      );
-
-      form.finalForm.batch(() => {
-        form.change("", configWithVariantsResolved);
-        form.change("_variants", variantsRepositorySnapshot);
-      });
-    });
-  }, [audiences]);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const fetchedAudiences = await props.config.audiences?.();
-        setAllAudiences(fetchedAudiences ?? []);
-      } catch (e) {
-        console.error(e);
-      }
-    })();
-  }, []);
-
   const [isEditing, setEditing] = useState(true);
-
   const [componentPickerData, setComponentPickerData] = useState<
     | {
         promiseResolve: (config: ComponentConfig | undefined) => void;
@@ -782,10 +562,9 @@ const EditorContent = ({
   });
 
   const { undo, redo, push } = useEditorHistory({
-    onChange: ({ config, focusedField, audiences }) => {
+    onChange: ({ config, focusedField }) => {
       setFocussedField(focusedField);
       form.finalForm.change("", config);
-      setAudiences(audiences);
     },
   });
 
@@ -886,7 +665,6 @@ const EditorContent = ({
         push({
           config: form.values,
           focussedField: fieldsToFocus,
-          audiences,
         });
 
         setFocussedField(fieldsToFocus);
@@ -906,12 +684,10 @@ const EditorContent = ({
 
   const [isAdminMode, setAdminMode] = useState(false);
 
+  const [resourcesStore] = useState(() => createResourcesStore());
+
   const syncTemplates = () => {
-    getTemplates(
-      editorContext,
-      apiClient,
-      props.config.unstable_templates ?? []
-    ).then((newTemplates) => {
+    getTemplates(editorContext, apiClient).then((newTemplates) => {
       setTemplates(newTemplates);
     });
   };
@@ -919,8 +695,6 @@ const EditorContent = ({
   useEffect(() => {
     syncTemplates();
   }, []);
-
-  const launcherPlugin = getLauncherPlugin(props.config);
 
   const editorContext: EditorContextType = {
     ...compilationContext,
@@ -945,58 +719,11 @@ const EditorContent = ({
     },
     text: undefined,
     locales: props.locales,
-    variantsManager: {
-      removeVariant: (id, groupId, path) => {
-        actions.runChange(() => {
-          removeVariant({ form, id, groupId, path });
-        });
-      },
-      selectVariant: (id, path) => {
-        actions.runChange(() => {
-          selectVariant({ form, id, path });
-        });
-      },
-      reorderVariant: (groupId, sourceIndex, destinationIndex) => {
-        actions.runChange(() => {
-          reorderVariant(form, groupId, sourceIndex, destinationIndex);
-        });
-      },
-      getVariantsGroup: (groupId) => {
-        return getAudiencesForVariantsGroup(
-          form.values._variants ?? {},
-          allAudiences ?? [],
-          groupId
-        );
-      },
-      openAddVariantModal: (config, path) => {
-        setAddVariantRequest({ config, path });
-      },
-      openEditVariantModal: (id, groupId, path) => {
-        setEditVariantRequest({ id, groupId, path });
-      },
-    },
     resources: [],
     compilationCache: compilationCache.current,
-    launcher: launcherPlugin
-      ? {
-          id: launcherPlugin.id,
-          icon: launcherPlugin.icon,
-        }
-      : undefined,
     project: props.project,
-    imageVariantsDisplay:
-      props.config.imageVariantsDisplay ??
-      [
-        launcherPlugin && `${launcherPlugin.id}.default`,
-        ...(props.config.imageVariants?.map((v) => v.id) ?? []),
-      ].filter(nonNullable()),
-    videoVariantsDisplay:
-      props.config.videoVariantsDisplay ??
-      [
-        launcherPlugin && `${launcherPlugin.id}.default`,
-        ...(props.config.videoVariants?.map((v) => v.id) ?? []),
-      ].filter(nonNullable()),
     isPlayground,
+    resourcesStore,
   };
 
   const {
@@ -1036,7 +763,6 @@ const EditorContent = ({
     push({
       config: initialConfig,
       focussedField: [],
-      audiences: compilationContext.contextParams.audiences ?? [],
     });
   }, []);
 
@@ -1156,9 +882,6 @@ const EditorContent = ({
             locale={compilationContext.contextParams.locale}
             locales={editorContext.locales}
             onLocaleChange={() => {}}
-            allAudiences={allAudiences}
-            audiences={audiences}
-            onAudienceChange={handleAudienceChange}
             isFullScreen={isFullScreen}
             setFullScreen={setFullScreen}
             onAdminModeChange={(val) => {
@@ -1200,48 +923,6 @@ const EditorContent = ({
               <ModalPicker
                 onClose={closeComponentPickerModal}
                 config={componentPickerData.config}
-              />
-            )}
-            {addVariantRequest && (
-              <AudienceModal
-                onClose={() => {
-                  setAddVariantRequest(undefined);
-                }}
-                onAudienceChange={(audienceId) => {
-                  actions.runChange(() => {
-                    const { config, path } = addVariantRequest;
-                    addVariant({
-                      form,
-                      context: editorContext,
-                      audience: audienceId,
-                      variant: config,
-                      path,
-                    });
-                    setAddVariantRequest(undefined);
-                  });
-                }}
-                allAudiences={allAudiences ?? []}
-              />
-            )}
-            {editVariantRequest && (
-              <AudienceModal
-                onClose={() => {
-                  setEditVariantRequest(undefined);
-                }}
-                onAudienceChange={(newAudience) => {
-                  actions.runChange(() => {
-                    const { id, groupId, path } = editVariantRequest;
-                    editVariant({
-                      form,
-                      groupId,
-                      id,
-                      newAudience,
-                      path,
-                    });
-                    setEditVariantRequest(undefined);
-                  });
-                }}
-                allAudiences={allAudiences ?? []}
               />
             )}
           </SidebarAndContentContainer>
@@ -1325,119 +1006,46 @@ function useIframeSize({
   };
 }
 
-async function resolveCMSInput({
-  cmsInput,
+function getDefaultInput({
   rootContainer,
-  apiClient,
   compilationContext,
 }: {
-  cmsInput: CMSInput | undefined;
   rootContainer: EditorLauncherProps["rootContainer"];
-  apiClient: IApiClient;
   compilationContext: CompilationContextType;
-}): Promise<{
+}): {
   config: ConfigComponent;
   document: DocumentWithResolvedConfigDTO | null;
-}> {
-  if (!cmsInput) {
-    const rootContainerDefaultConfig = compilationContext.rootContainers.find(
-      (r) => r.id === rootContainer
-    )?.defaultConfig;
+} {
+  const rootContainerDefaultConfig = compilationContext.rootContainers.find(
+    (r) => r.id === rootContainer
+  )?.defaultConfig;
 
-    if (!rootContainerDefaultConfig) {
-      throw new Error(
-        `Missing default config for root container "${rootContainer}"`
-      );
-    }
-
-    if (
-      !findComponentDefinitionById(
-        rootContainerDefaultConfig._template,
-        compilationContext
-      )
-    ) {
-      throw new Error(
-        `Missing definition for root container component "${rootContainerDefaultConfig._template}"`
-      );
-    }
-
-    const defaultConfig = normalize(
-      rootContainerDefaultConfig,
-      compilationContext
-    );
-
-    return {
-      config: defaultConfig,
-      document: null,
-    };
-  }
-
-  const cmsInputValue = Object.values(cmsInput)[0] as CMSInput[keyof CMSInput];
-
-  if (!isDocument(cmsInputValue)) {
-    const localizedRawContent = normalizeNonDocumentCmsInput(
-      cmsInput as Exclude<CMSInput, LocalisedDocument>
-    );
-    const rawContent = Object.values(localizedRawContent)[0] as RawContent;
-
-    if (isRawContentRemote(rawContent)) {
-      const remoteConfig = await apiClient.configs.getConfigById({
-        configId: rawContent.id,
-        projectId: rawContent.projectId,
-      });
-
-      if (!remoteConfig) {
-        throw new Error(`Config with id ${rawContent.id} doesn't exist`);
-      }
-
-      const adaptedConfig = adaptRemoteConfig(
-        remoteConfig.config,
-        compilationContext
-      );
-
-      return {
-        config: adaptedConfig,
-        document: null,
-      };
-    }
-
-    const config = mergeSingleLocaleConfigsIntoConfig(
-      mapValues(
-        localizedRawContent as LocalisedRawContent<
-          RawContentFull | RawContentLocal
-        >,
-        (content) => content.content
-      ),
-      compilationContext
-    );
-
-    if (!config) {
-      throw new Error(
-        "Got empty config from non empty CMS input. This is unexpected error."
-      );
-    }
-
-    const normalizedConfig = normalize(config, compilationContext);
-    return { config: normalizedConfig, document: null };
-  }
-
-  const remoteDocument = await apiClient.documents.getDocumentById({
-    documentId: cmsInputValue.documentId,
-    projectId: cmsInputValue.projectId,
-  });
-
-  if (!remoteDocument) {
+  if (!rootContainerDefaultConfig) {
     throw new Error(
-      `Document with id ${cmsInputValue.documentId} doesn't exist for project with id: ${cmsInputValue.projectId}`
+      `Missing default config for root container "${rootContainer}"`
     );
   }
 
-  remoteDocument.config.config = adaptRemoteConfig(
-    remoteDocument.config.config,
+  if (
+    !findComponentDefinitionById(
+      rootContainerDefaultConfig._template,
+      compilationContext
+    )
+  ) {
+    throw new Error(
+      `Missing definition for root container component "${rootContainerDefaultConfig._template}"`
+    );
+  }
+
+  const defaultConfig = normalize(
+    rootContainerDefaultConfig,
     compilationContext
   );
 
-  return { config: remoteDocument.config.config, document: remoteDocument };
+  return {
+    config: defaultConfig,
+    document: null,
+  };
 }
 
 async function resolveDocumentId(

@@ -5,6 +5,7 @@ type ResourceStoreSubscriber = () => void;
 type ResourcesStore = {
   get(id: string, type: string): Resource | undefined;
   set(id: string, resource: Resource): void;
+  remove(id: string, type: string): void;
   values(): Array<Resource>;
   subscribe(listener: ResourceStoreSubscriber): () => void;
   batch(callback: () => void): void;
@@ -42,6 +43,24 @@ function createResourcesStore(): ResourcesStore {
       } else {
         resourcesForType.set(id, entry);
         store.set(entry.type, resourcesForType);
+      }
+
+      if (!isBatching) {
+        notify();
+      }
+    },
+
+    remove(id, type) {
+      const resourcesForType = store.get(type);
+
+      if (!resourcesForType) {
+        return;
+      }
+
+      resourcesForType.delete(id);
+
+      if (resourcesForType.size === 0) {
+        store.delete(type);
       }
 
       if (!isBatching) {

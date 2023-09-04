@@ -36,14 +36,14 @@ export function getAllExternals(
           }
 
           result.push({
-            type: getResourceType(schemaProp, context, value[key]),
+            type: getResourceType(schemaProp),
             value: { ...value[key] },
             path: path + "." + key,
           });
         }
       } else {
         result.push({
-          type: getResourceType(schemaProp, context, value),
+          type: getResourceType(schemaProp),
           value: { ...value },
           path: path,
         });

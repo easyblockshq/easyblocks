@@ -8,15 +8,12 @@ import {
   ComponentFixedSchemaProp,
   ComponentSchemaProp,
   CustomResourceSchemaProp,
-  CustomResourceWithVariantsSchemaProp,
   FontSchemaProp,
-  getResourceVariant,
   IconSchemaProp,
   ImageResourceSchemaProp,
   NumberSchemaProp,
   RadioGroup$SchemaProp,
   RadioGroupSchemaProp,
-  ResourceParams,
   ResponsiveValue,
   SchemaProp,
   Select$SchemaProp,
@@ -30,7 +27,6 @@ import {
   UnresolvedResource,
   VideoResourceSchemaProp,
 } from "@easyblocks/core";
-import { assertDefined } from "@easyblocks/utils";
 import { getMappedToken } from "../getMappedToken";
 import { EditorContextType } from "../types";
 import validateColor from "./validate-color";
@@ -133,11 +129,7 @@ export type TinaFieldProviders = {
   "component-collection-localised": FieldProvider<ComponentCollectionLocalisedSchemaProp>;
   "component-fixed": FieldProvider<ComponentFixedSchemaProp>;
   component$$$: FieldProvider<ComponentFixedSchemaProp>;
-  variants$$$: FieldProvider<ComponentFixedSchemaProp>;
-  resource: FieldProvider<
-    CustomResourceSchemaProp | CustomResourceWithVariantsSchemaProp,
-    UnresolvedResource
-  >;
+  resource: FieldProvider<CustomResourceSchemaProp, UnresolvedResource>;
 };
 
 const tinaFieldProviders: TinaFieldProviders = {
@@ -324,44 +316,33 @@ const tinaFieldProviders: TinaFieldProviders = {
   },
 
   image: (schemaProp, editorContext, value) => {
-    const imageVariant = getResourceVariant(
-      // In editor, if the value is not set, we set the first variant from display array as the default
-      {
-        ...(value ?? { id: null }),
-        variant: value?.variant ?? editorContext.imageVariantsDisplay[0],
-      },
-      schemaProp,
-      editorContext
-    );
+    const imageResourceDefinition = editorContext.resourceTypes["image"];
 
-    if (!imageVariant) {
-      if (!value?.variant) {
-        throw new Error(
-          `Can't find default image variant for image field named "${
-            schemaProp.label ?? schemaProp.prop
-          }"`
-        );
-      }
-
+    if (!imageResourceDefinition) {
       throw new Error(
-        `Can't find image variant "${value.variant}" for image field named "${
-          schemaProp.label ?? schemaProp.prop
-        }"`
+        `Can't find resource definition for resource type "image"`
       );
     }
 
-    const resourceType = imageVariant.resourceType;
-    const params = imageVariant.params ?? {};
-    const imageResource = getResourceDefinition(resourceType, editorContext);
-    const imageWidget = imageResource.widget;
+    const imageWidget = imageResourceDefinition.widgets.find((w) =>
+      value?.widgetId ? w.id === value.widgetId : true
+    );
+    const params = schemaProp.params ?? {};
 
     if (!imageWidget) {
-      throw new Error(`Can't find widget for resource type "${resourceType}"`);
+      if (value?.widgetId) {
+        throw new Error(
+          `Can't find widget for resource type "${value.widgetId}"`
+        );
+      }
+
+      throw new Error(`Can't find any widget for type "image"`);
     }
 
-    // Passing custom schemaProp parameters to the field if a function
     const imageField =
-      typeof imageWidget === "function" ? imageWidget(params) : imageWidget;
+      typeof imageWidget.component === "function"
+        ? imageWidget.component(params)
+        : imageWidget.component;
 
     return {
       ...getCommonFieldProps(schemaProp),
@@ -372,44 +353,32 @@ const tinaFieldProviders: TinaFieldProviders = {
   },
 
   video: (schemaProp, editorContext, value) => {
-    const videoVariant = getResourceVariant(
-      // In editor, if the value is not set, we set the first variant from display array as the default
-      {
-        ...(value ?? { id: null }),
-        variant: value?.variant ?? editorContext.videoVariantsDisplay[0],
-      },
-      schemaProp,
-      editorContext
-    );
+    const videoResourceDefinition = editorContext.resourceTypes["video"];
 
-    if (!videoVariant) {
-      if (!value?.variant) {
-        throw new Error(
-          `Can't find default video variant for video field named "${
-            schemaProp.label ?? schemaProp.prop
-          }"`
-        );
-      }
-
+    if (!videoResourceDefinition) {
       throw new Error(
-        `Can't find video variant "${value.variant}" for video field named "${
-          schemaProp.label ?? schemaProp.prop
-        }"`
+        `Can't find resource definition for resource type "video"`
       );
     }
 
-    const resourceType = videoVariant.resourceType;
-    const params = videoVariant.params ?? {};
-    const videoResource = getResourceDefinition(resourceType, editorContext);
-    const videoWidget = videoResource.widget;
+    const videoWidget = videoResourceDefinition.widgets.find((w) =>
+      value?.widgetId ? w.id === value.widgetId : true
+    );
+    const params = schemaProp.params ?? {};
 
     if (!videoWidget) {
-      throw new Error(`Can't find widget named "${resourceType}" for video`);
-    }
+      if (value?.widgetId) {
+        throw new Error(
+          `Can't find widget for resource type "${value.widgetId}"`
+        );
+      }
 
-    // Passing custom schemaProp parameters to the field if a function
+      throw new Error(`Can't find widget for type "video"`);
+    }
     const videoField =
-      typeof videoWidget === "function" ? videoWidget(params) : videoWidget;
+      typeof videoWidget.component === "function"
+        ? videoWidget.component(params)
+        : videoWidget.component;
 
     return {
       ...getCommonFieldProps(schemaProp),
@@ -449,44 +418,28 @@ const tinaFieldProviders: TinaFieldProviders = {
       schemaProp,
     };
   },
-  variants$$$: (schemaProp) => {
-    return {
-      ...getCommonFieldProps(schemaProp),
-      component: "variant",
-      schemaProp,
-    };
-  },
+  resource: (schemaProp, editorContext, value) => {
+    const resourceDefinition =
+      editorContext.resourceTypes[schemaProp.resourceType];
 
-  resource: (schemaProp, editorContext, resource) => {
-    const hasVariantsProp = "variants" in schemaProp;
-    let resourceType: string;
-    let params: ResourceParams | undefined;
-
-    if (hasVariantsProp) {
-      const variant = assertDefined(
-        getResourceVariant(resource, schemaProp, editorContext)
+    if (!resourceDefinition) {
+      throw new Error(
+        `Can't find resource definition for resource type "${schemaProp.resourceType}"`
       );
-      resourceType = variant.resourceType;
-      params = variant.params;
-    } else {
-      resourceType = schemaProp.resourceType;
-      params = schemaProp.params;
     }
 
-    const resourceDefinition = getResourceDefinition(
-      resourceType,
-      editorContext
+    const fieldWidget = resourceDefinition.widgets.find((w) =>
+      value?.widgetId ? w.id === value.widgetId : true
     );
-    const fieldWidget = resourceDefinition.widget;
 
     if (!fieldWidget) {
-      throw new Error(`Can't find widget named "${resourceType}"`);
+      throw new Error(`Can't find widget named "${schemaProp.resourceType}"`);
     }
 
     const field =
-      typeof fieldWidget === "function"
-        ? fieldWidget(params ?? {})
-        : fieldWidget;
+      typeof fieldWidget.component === "function"
+        ? fieldWidget.component(schemaProp.params ?? {})
+        : fieldWidget.component;
 
     return {
       component: "external",
@@ -505,19 +458,4 @@ export function getTinaField<T extends SchemaProp>(
     (tinaFieldProviders as any)[schemaProp.type] || tinaFieldProviders.resource;
 
   return fieldProvider(schemaProp, editorContext, value);
-}
-
-function getResourceDefinition(
-  resourceType: string,
-  editorContext: EditorContextType
-) {
-  const resourceDefinition = editorContext.resourceTypes[resourceType];
-
-  if (!resourceDefinition) {
-    throw new Error(
-      `Can't find resource definition for resource type "${resourceType}"`
-    );
-  }
-
-  return resourceDefinition;
 }

@@ -1,12 +1,9 @@
 import { ComponentType } from "react";
-import { PartialDeep, SetRequired } from "type-fest";
+import { PartialDeep } from "type-fest";
 import { IApiClient } from "./infrastructure/apiClient";
 import { Locale } from "./locales";
-import { ShopstoryClient } from "./ShopstoryClient";
 
 type ScalarOrCollection<T> = T | Array<T>;
-
-type VariantsRepository = Record<string, ConfigComponent[]>;
 
 export type RefMap = { [key: string]: ConfigComponent };
 
@@ -24,8 +21,6 @@ export type ConfigComponent = {
   _template: string; // instance of the component (unique id)
   _ref?: string; // ref of the component,
   _id?: string; // optional because template items don't have ids, we could have separate types later for this to distinguish between them statically
-  _variantGroupId?: string; // optional because not every cofig must have variants
-  _variants?: VariantsRepository; // optional because not every cofig must have variants
   _projectId?: string; // optional because of backward compatibility
   $$$refs?: RefMap;
   [key: string]: any; // props
@@ -35,47 +30,6 @@ export type ComponentConfig = ConfigComponent;
 
 export type LocalisedConfigs<
   T extends ConfigComponent | Array<ConfigComponent> = ConfigComponent
-> = {
-  [locale: string]: T;
-};
-
-/**
- * @deprecated
- * Old format deprecated in favor of RawContentRemote
- */
-export interface ContentPieceRemote {
-  id: string;
-  hash: string;
-}
-
-/**
- * @deprecated
- * Old format deprecated in favor of RawContentLocal
- */
-export interface ContentPieceLocal {
-  config: ConfigComponent;
-}
-
-/**
- * @deprecated
- * Old format deprecated in favor of RawContentFull
- */
-export interface ContentPieceFull {
-  id: string;
-  hash: string;
-  config: ConfigComponent;
-}
-
-/**
- * @deprecated
- */
-export type ContentPiece =
-  | ContentPieceRemote
-  | ContentPieceLocal
-  | ContentPieceFull;
-
-export type LocalisedContentPiece<
-  T extends ContentPiece | Array<ContentPiece> = ContentPiece
 > = {
   [locale: string]: T;
 };
@@ -94,33 +48,6 @@ export type Document = {
 };
 
 export type LocalisedDocument = Record<string, Document>;
-
-export interface RawContentRemote {
-  id: string;
-  hash: string;
-  projectId?: string;
-  preview?: PreviewMetadata;
-}
-export interface RawContentLocal {
-  content: ConfigComponent;
-  projectId?: string;
-  preview?: PreviewMetadata;
-}
-export interface RawContentFull {
-  id: string;
-  hash: string;
-  content: ConfigComponent;
-  projectId?: string;
-  preview?: PreviewMetadata;
-}
-
-export type RawContent = RawContentRemote | RawContentLocal | RawContentFull;
-
-export type LocalisedRawContent<
-  T extends RawContent | Array<RawContent> = RawContent
-> = {
-  [locale: string]: T;
-};
 
 export type ExternalReference = {
   type: string;
@@ -374,8 +301,7 @@ export type ResourceSchemaProp =
   | TextResourceSchemaProp
   | ImageResourceSchemaProp
   | VideoResourceSchemaProp
-  | CustomResourceSchemaProp
-  | CustomResourceWithVariantsSchemaProp;
+  | CustomResourceSchemaProp;
 
 export type SchemaProp =
   | StringSchemaProp
@@ -396,7 +322,6 @@ export type SchemaProp =
   | ImageResourceSchemaProp
   | VideoResourceSchemaProp
   | CustomResourceSchemaProp
-  | CustomResourceWithVariantsSchemaProp
   | ComponentSchemaProp
   | ComponentCollectionSchemaProp
   | ComponentCollectionLocalisedSchemaProp
@@ -505,24 +430,7 @@ type RuntimeConfigThemeValue<T> = {
   mapTo?: string | string[];
 };
 
-export type ResourceInfo = Record<string, unknown>;
-
 export type ResourceParams = Record<string, unknown>;
-
-export type FetchResourcesInput = {
-  id: string;
-  type: string;
-  fetchParams?: ResourceParams;
-  info?: ResourceInfo;
-};
-
-export type FetchResourcesOutput<Value = unknown> = FetchResourcesInput & {
-  value?: Value;
-  error?: Error;
-};
-
-/** @deprecated */
-export type EditorMode = "grid" | "content";
 
 export type ContextParams = {
   locale: string;
@@ -530,28 +438,6 @@ export type ContextParams = {
   // mode?: EditorMode;
   [key: string]: any;
 };
-
-export type FetchFunctionOptions = ContextParams & {
-  isEditing: boolean;
-  shopstoryClient: ShopstoryClient;
-  apiClient: IApiClient;
-  projectId?: string;
-};
-
-export type FetchFunction<T> = (
-  resources: Array<FetchResourcesInput>,
-  params: FetchFunctionOptions
-) => Promise<Array<FetchResourcesOutput<T> | FetchResourcesInput | undefined>>;
-
-export type DefaultFetchFunction = (
-  resources: Array<FetchResourcesInput>,
-  params: FetchFunctionOptions
-) => Promise<Array<FetchResourcesOutput>>;
-
-export type PostFetchFunction = (
-  resources: Array<FetchResourcesOutput>,
-  params: FetchFunctionOptions
-) => Promise<Array<FetchResourcesOutput>>;
 
 export type PickerItem = {
   id: string;
@@ -571,9 +457,9 @@ export type ExternalFieldItemPicker = {
 export type ExternalFieldCustomComponentProps = {
   root: HTMLElement;
   value: UnresolvedResource;
-  onChange: (newValue: UnresolvedResource) => void;
-  apiClient?: IApiClient;
-  projectId?: string;
+  onChange: (newValue: Omit<UnresolvedResource, "widgetId">) => void;
+  apiClient: IApiClient;
+  projectId: string;
   notify: {
     error: (message: string) => void;
   };
@@ -588,38 +474,24 @@ export type ExternalFieldCustom = {
   ) => void | CleanupFunction;
 };
 
-/**
- * @deprecated
- * Please use `ExternalFieldType` type instead
- */
-export type ExternalField = ExternalFieldType;
-
 export type ExternalFieldType = ExternalFieldItemPicker | ExternalFieldCustom;
 
-export type Widget =
+export type WidgetComponent =
   | ExternalFieldType
   | ((params: Record<string, any>) => ExternalFieldType);
 
-export type ResourceDefinition<T = any> = {
-  defaultFetch?: DefaultFetchFunction;
-  fetch?: FetchFunction<T>;
-  postFetch?: PostFetchFunction;
-  widget?: Widget;
+export type Widget = {
+  id: string;
+  label: string;
+  component: WidgetComponent;
+};
+
+export type ResourceDefinition = {
+  widgets: Array<Widget>;
 };
 
 export type LocalizedText = {
   [locale: string]: string;
-};
-
-export type ResourceVariant<Value = any, TransformedValue = any> = {
-  id: string;
-  label?: string;
-  resourceType: string;
-  transform?: ResourceTransformer<Value, TransformedValue>;
-  params?: ResourceParams;
-  fetchParams?: ResourceParams;
-  isHidden?: boolean;
-  transformHash?: string;
 };
 
 export type RootContainer = {
@@ -639,9 +511,10 @@ type EditableComponentDefinition = {
 };
 
 export type Config = {
+  accessToken: string;
   projectId?: string;
-  resourceTypes?: Record<string, ResourceDefinition<any>>;
-  text?: ResourceDefinition<LocalizedText>;
+  resourceTypes?: Record<string, ResourceDefinition>;
+  text?: ResourceDefinition;
   space?: RuntimeConfigThemeValue<ThemeSpace>[];
   colors?: RuntimeConfigThemeValue<ThemeColor>[];
   fonts?: RuntimeConfigThemeValue<ThemeFont>[];
@@ -658,20 +531,15 @@ export type Config = {
   devices?: ConfigDevices;
   eventSink?: EventSink;
   textModifiers?: Array<CustomTextModifier>;
-  accessToken?: string;
-  unstable_templates?: Template[];
   audiences?: () => Promise<Audience[]>;
-  plugins?: Plugin[];
   __masterEnvironment?: boolean;
   strict?: boolean;
-  image?: MediaSchemaPropTemplate<ImageSrc>;
-  imageVariants?: Array<ImageVariant>;
-  imageVariantsDisplay?: Array<string>;
-  video?: MediaSchemaPropTemplate<VideoSrc>;
-  videoVariants?: Array<VideoVariant>;
-  videoVariantsDisplay?: Array<string>;
   locales?: Array<Locale>;
   rootContainers?: Record<string, RootContainer>;
+  fetch: (
+    resources: FetchInputResources,
+    contextParams: ContextParams
+  ) => Promise<FetchOutputResources>;
 };
 
 export type PreviewMetadata =
@@ -685,11 +553,7 @@ export type PreviewMetadata =
     };
 
 type EditorProps = {
-  configs?:
-    | LocalisedConfigs
-    | LocalisedContentPiece
-    | LocalisedRawContent
-    | LocalisedDocument;
+  configs?: LocalisedConfigs | LocalisedDocument;
   uniqueSourceIdentifier?: string;
   save: (
     documents: LocalisedDocument,
@@ -699,10 +563,6 @@ type EditorProps = {
   config: Config;
   contextParams: ContextParams;
   onClose: () => void;
-  /**
-   * @deprecated Please use `rootContainer` property instead.
-   */
-  mode?: EditorMode;
   rootContainer: string;
   container?: HTMLElement;
   heightMode?: "viewport" | "parent";
@@ -735,34 +595,19 @@ export type UnresolvedResource =
 
 export type UnresolvedResourceNonEmpty = {
   id: string;
+  widgetId: string;
   /**
    * This property is an exception and it's only available within local text resource.
    * TODO: Move local text resources to other place
    */
   value?: LocalizedText;
-  info?: ResourceInfo;
-  variant?: string;
+  key?: string;
 };
 
 export type UnresolvedResourceEmpty = {
   id: null;
-  variant?: string;
+  widgetId?: string;
 };
-
-export type ImageVariant = SetRequired<
-  ResourceVariant<any, ImageSrc>,
-  "transform"
->;
-
-export type VideoVariant = SetRequired<
-  ResourceVariant<any, VideoSrc>,
-  "transform"
->;
-
-export type ResourceTransformer<ResourceValue, TransformedResourceValue> = (
-  value: ResourceValue,
-  fetchParams: FetchFunctionOptions
-) => TransformedResourceValue;
 
 export type CustomResourceSchemaProp<TransformResult = any> = SchemaPropShared<
   "resource",
@@ -784,30 +629,7 @@ export type CustomResourceSchemaProp<TransformResult = any> = SchemaPropShared<
    * If `true`, the resource becomes optional and the component using it can render without it.
    */
   optional?: boolean;
-  /**
-   * Transformer allows to transform the resource value from custom fetch function before storing it and passing to component.
-   */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  transform?: ResourceTransformer<any, TransformResult>;
-  /**
-   * @internal
-   * Unique identifier of the transform function which allows to distinguish the same resource value, but with different transforms.
-   */
-  transformHash?: string;
 };
-
-export type CustomResourceWithVariantsSchemaProp<TransformResult = any> = Omit<
-  CustomResourceSchemaProp<TransformResult>,
-  "resourceType" | "params" | "fetchParams" | "transform" | "transformHash"
-> & {
-  variants: Array<ResourceVariant>;
-  defaultVariantId: string;
-};
-
-export type MediaSchemaPropTemplate<TransformResult> = SetRequired<
-  Omit<CustomResourceSchemaProp<TransformResult>, "prop" | "type">,
-  "transform"
->;
 
 export type ImageSrcSetEntry = {
   w: number;
@@ -829,66 +651,26 @@ export type VideoSrc = {
   aspectRatio: number;
 };
 
-export type Launcher = {
-  canLoad?: () => boolean;
-  onInit?: () => void;
-  onEditorLoad: (
-    launchEditor: (props: EditorLauncherProps) => () => void
-  ) => void;
-  image: MediaSchemaPropTemplate<ImageSrc>;
-  video: MediaSchemaPropTemplate<VideoSrc>;
-  configTransform?: (inputConfig: any) => ConfigComponent;
-};
-
-export type PluginResourceDefinition = SetRequired<
-  Pick<ResourceDefinition, "defaultFetch" | "widget">,
-  "defaultFetch" | "widget"
->;
-
-export type Plugin = {
-  id: string;
-  /**
-   * @deprecated
-   */
-  launcher?: Launcher;
-  resources?: {
-    [id: string]: PluginResourceDefinition;
-  };
-  image?: MediaSchemaPropTemplate<ImageSrc>;
-  video?: MediaSchemaPropTemplate<VideoSrc>;
-  icon?: string;
-};
-
-export type LauncherPlugin = SetRequired<Plugin, "launcher" | "resources"> &
-  Pick<Plugin, "icon"> & {
-    playground?: boolean;
-  };
-
 export type ResourceIdentity = {
   id: string;
   type: string;
-  info?: ResourceInfo;
-  fetchParams?: ResourceParams;
 };
 
 export type PendingResource = ResourceIdentity & {
   status: "loading";
-  values: undefined;
+  value: undefined;
   error: null;
 };
 
 export type ResolvedResource<Value = unknown> = ResourceIdentity & {
   status: "success";
-  values: {
-    default?: Value;
-    [key: string]: unknown;
-  };
+  value?: Value;
   error: null;
 };
 
 export type RejectedResource = ResourceIdentity & {
   status: "error";
-  values: undefined;
+  value: undefined;
   error: Error;
 };
 
@@ -1126,34 +908,23 @@ export type ComponentPlaceholder = {
   label?: string;
 };
 
-export type SerializableResourceIdentifier = {
-  id: string;
-  info?: ResourceInfo;
-  fetchParams?: Record<string, unknown>;
-};
-
 /**
  * @public
  */
-export type ShopstoryClientInput =
-  | ComponentConfig
-  | ContentPiece
-  | RawContent
-  | null
-  | undefined;
+export type ShopstoryClientInput = ComponentConfig | null | undefined;
 
 /**
  * @public
  */
 export type ShopstoryClientAddOptions = {
-  mode?: EditorMode;
+  rootContainer: string;
   [key: string]: unknown;
 };
 
 export interface IShopstoryClient {
   add(
     config: ShopstoryClientInput,
-    options?: ShopstoryClientAddOptions
+    options: ShopstoryClientAddOptions
   ): RenderableContent;
   build(): Promise<Metadata>;
 }
@@ -1162,10 +933,6 @@ export type EditorSidebarPreviewOptions = {
   breakpointIndex: string;
   contextParams: ContextParams;
   resources: Array<Resource>;
-  image: MediaSchemaPropTemplate<ImageSrc>;
-  video: MediaSchemaPropTemplate<VideoSrc>;
-  imageVariants: Array<ImageVariant>;
-  videoVariants: Array<VideoVariant>;
 };
 
 export interface ConfigModel {
@@ -1176,11 +943,8 @@ export interface ConfigModel {
   created_at: string;
 }
 
-export type ImageTransformer = ResourceTransformer<any, ImageSrc>;
-
-export type VideoTransformer = ResourceTransformer<any, VideoSrc>;
-
 export type ResourceWithSchemaProp = {
+  id: string;
   resource: UnresolvedResource;
   schemaProp: ResourceSchemaProp;
 };
@@ -1237,13 +1001,7 @@ export type ShopstoryClientDependencies = {
   validate: (input: unknown) =>
     | {
         isValid: true;
-        input:
-          | Document
-          | ContentPiece
-          | RawContent
-          | ComponentConfig
-          | null
-          | undefined;
+        input: Document | ComponentConfig | null | undefined;
       }
     | { isValid: false };
 };
@@ -1291,3 +1049,37 @@ export type EditingFunctionResult = {
 export type EditingFunction = (
   input: EditingFunctionInput
 ) => EditingFunctionResult | undefined;
+
+export type FetchInputResource = {
+  externalId: string;
+  type: string;
+  widgetId: string;
+  fetchParams?: ResourceParams;
+};
+
+export type FetchInputResources = Record<string, FetchInputResource>;
+
+type FetchResourceResolvedResult<T> = { value: T };
+
+type FetchResourceRejectedResult = { error: Error };
+
+// {} in TS means any non nullish value and it's used on purpose here
+// eslint-disable-next-line @typescript-eslint/ban-types
+type NonNullable = {};
+
+export type FetchResourceResult<T extends NonNullable = NonNullable> =
+  | FetchResourceResolvedResult<T>
+  | FetchResourceRejectedResult;
+
+export type FetchOutputResources = Record<
+  string,
+  {
+    type: string;
+    value: FetchResourceResult;
+  }
+>;
+
+export type FetchFunction = (
+  resources: FetchInputResources,
+  contextParams: ContextParams
+) => Promise<FetchOutputResources>;

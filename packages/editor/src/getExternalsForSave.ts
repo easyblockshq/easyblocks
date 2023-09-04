@@ -13,29 +13,15 @@ export function getExternalsForSave(
       return;
     }
 
-    let newExternalReference: ExternalReference;
-
     // We don't treat local. as external references
     if (external.value.id.startsWith("local.")) {
       return;
     }
 
-    if (external.type === "image") {
-      newExternalReference = {
-        type: compilationContext.image.resourceType,
-        id: external.value.id,
-      };
-    } else if (external.type === "video") {
-      newExternalReference = {
-        type: compilationContext.image.resourceType,
-        id: external.value.id,
-      };
-    } else {
-      newExternalReference = {
-        type: external.type,
-        id: external.value.id,
-      };
-    }
+    const newExternalReference: ExternalReference = {
+      type: external.type,
+      id: external.value.id,
+    };
 
     // We don't want duplicates
     if (

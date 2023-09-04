@@ -20,32 +20,6 @@ class ProjectsApiService {
 
     return [];
   }
-
-  async getProjectById(projectId: string): Promise<Project | null> {
-    const response = await this.apiClient.get(`/projects/${projectId}`);
-
-    if (response.ok) {
-      const project = await response.json();
-      return project;
-    }
-
-    return null;
-  }
-
-  /**
-   * @deprecated
-   */
-  async getProjectByAccessToken(token: string) {
-    return this.apiClient.get(`/projects/${token}`);
-  }
-
-  async createToken(
-    projectId: string
-  ): Promise<{ token: Project["tokens"][number] }> {
-    const response = await this.apiClient.post(`/projects/${projectId}/tokens`);
-    const newTokenData = await response.json();
-    return newTokenData;
-  }
 }
 
 export { ProjectsApiService };

@@ -28,7 +28,6 @@ import {
   responsiveValueNormalize,
   scalarizeConfig,
   splitTemplateName,
-  Variants$$$SchemaProp,
   InternalEditingFunctionResult,
   InternalEditingField,
 } from "@easyblocks/app-utils";
@@ -49,6 +48,7 @@ import {
   EditingFunctionResult,
   EditingInfo,
   EventSourceType,
+  FieldPortal,
   RefMap,
   SchemaProp,
   SerializedComponentDefinition,
@@ -1106,7 +1106,7 @@ function compileAction(
     );
 
     compiled.__editing = {
-      // @ts-expect-error FIXME: field that holds Variant$$$ and Component$$$ schema prop
+      // @ts-expect-error FIXME: field that holds Component$$$ schema prop
       fields: editingInfo.fields,
     };
   }
@@ -1406,27 +1406,6 @@ function buildDefaultEditingInfo(
       prop: "$myself",
       schemaProp: headerSchemaProp,
     };
-
-    if (process.env.SHOPSTORY_FEATURE_VARIANTS === "enabled") {
-      const variantSchemaProp: Variants$$$SchemaProp = {
-        prop: "$myself",
-        label: "Variants",
-        type: "variants$$$",
-        group: "Variations",
-        definition: parentDefinition,
-      };
-
-      const variantsField: InternalEditingField = {
-        component: "variant",
-        group: "Variations",
-        hidden: false,
-        label: "Variants",
-        name: configPrefix,
-        prop: "$myself",
-        schemaProp: variantSchemaProp,
-      };
-      defaultFields.unshift(variantsField);
-    }
 
     defaultFields.unshift(headerField);
   }
@@ -2003,14 +1982,24 @@ function convertEditingFieldToInternalEditingField(
               configPrefix
             );
 
+            const overrides: Extract<
+              FieldPortal,
+              { portal: "field" }
+            >["overrides"] = {};
+
+            if (field.label !== undefined) {
+              overrides.label = field.label;
+            }
+
+            if (field.group !== undefined) {
+              overrides.group = field.group;
+            }
+
             return {
               portal: "field",
               fieldName: pathFragments.at(-1)!,
               source: absoluteFieldPath,
-              overrides: {
-                label: field.label,
-                group: field.group,
-              },
+              overrides,
             };
           }
         }

@@ -6,38 +6,29 @@ import {
   ComponentDefinitionShared,
   ConfigComponent,
   ContextParams,
-  CustomResourceSchemaProp,
   Devices,
   EditingFunction,
   EditingInfoBase,
   EventSink,
   FieldPortal,
-  ImageSrc,
-  ImageVariant,
   Locale,
-  LocalizedText,
   RefMap,
   Resource,
   ResourceDefinition,
-  ResourceTransformer,
   ResponsiveValue,
   SchemaProp,
   Template,
   TemplateBase,
   Theme,
   TrulyResponsiveValue,
-  VideoSrc,
-  VideoVariant,
 } from "@easyblocks/core";
-import type { SetRequired, PartialDeep } from "type-fest";
+import type { PartialDeep } from "type-fest";
 import { InternalAnyTinaField } from "../schema";
 import { Form } from "../tinacms";
 
 export * from "./ConfigComponentIdentifier";
 export * from "./ConfigModel";
 export * from "./ConfigOrConfigArray";
-export * from "./ContentPiece";
-export * from "./RawContent";
 
 export type UnwrapResponsiveValue<T> = T extends ResponsiveValue<infer Value>
   ? Value
@@ -78,13 +69,8 @@ export type CompilationContextType = {
   devices: Devices;
   theme: Theme;
   resourceTypes: {
-    [key: string]: ResourceDefinition<any>;
+    [key: string]: ResourceDefinition;
   };
-  text?: ResourceDefinition<LocalizedText>;
-  image: MediaSchemaPropTemplate<ImageSrc>;
-  imageVariants: Array<ImageVariant>;
-  video: MediaSchemaPropTemplate<VideoSrc>;
-  videoVariants: Array<VideoVariant>;
   definitions: InternalComponentDefinitions;
   mainBreakpointIndex: string;
   isEditing?: boolean;
@@ -101,15 +87,6 @@ export type CompilationRootContainer = {
   defaultConfig: ComponentConfig;
   widths?: Record<string, string | number>;
 };
-
-export type ImageTransformer = ResourceTransformer<any, ImageSrc>;
-
-export type VideoTransformer = ResourceTransformer<any, VideoSrc>;
-
-export type MediaSchemaPropTemplate<TransformResult> = SetRequired<
-  Omit<CustomResourceSchemaProp<TransformResult>, "prop" | "type">,
-  "transform"
->;
 
 export type ComponentConfigChangeFunction = (arg: {
   value: any;
@@ -201,8 +178,6 @@ export type EditorContextType = CompilationContextType & {
   focussedField: Array<string>;
   setFocussedField: (focusedFields: string | Array<string>) => void;
   actions: EditorActions;
-  imageVariantsDisplay: Array<string>;
-  videoVariantsDisplay: Array<string>;
 };
 
 export type InternalCompilationOutput = {

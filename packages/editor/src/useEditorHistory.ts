@@ -11,7 +11,6 @@ interface EditorHistoryChange {
   config?: ComponentConfig;
   focusedField: Array<string>;
   type: "undo" | "redo";
-  audiences: string[];
 }
 
 function useEditorHistory({ onChange }: UseEditorHistoryParameters) {

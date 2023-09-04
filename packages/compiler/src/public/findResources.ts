@@ -10,7 +10,6 @@ import {
   UnresolvedResource,
 } from "@easyblocks/core";
 import { normalizeInput } from "../normalizeInput";
-
 import { createCompilationContext } from "../createCompilationContext";
 import { normalize } from "../normalize";
 import { getRootContainer } from "../getRootContainer";
@@ -35,7 +34,7 @@ export const findResources: ShopstoryClientDependencies["findResources"] = (
   configTraverse(
     normalizedConfig,
     compilationContext,
-    ({ value, schemaProp }) => {
+    ({ config, value, schemaProp }) => {
       if (!isResourceSchemaProp(schemaProp)) {
         return;
       }
@@ -47,12 +46,14 @@ export const findResources: ShopstoryClientDependencies["findResources"] = (
           }
 
           resourcesWithSchemaProps.push({
+            id: `${config._id}.${schemaProp.prop}`,
             schemaProp,
             resource: currentValue,
           });
         });
       } else {
         resourcesWithSchemaProps.push({
+          id: `${config._id}.${schemaProp.prop}`,
           schemaProp,
           resource: value,
         });

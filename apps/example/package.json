@@ -13,7 +13,7 @@
     "@easyblocks/next-editable-components": "link:../../packages/next-editable-components",
     "@easyblocks/core": "workspace:*",
     "@easyblocks/editable-components": "workspace:*",
-    "@easyblocks/nocms": "workspace:*",
+    "@easyblocks/media": "workspace:*",
     "@easyblocks/react": "workspace:*",
     "@types/node": "20.4.2",
     "@types/react": "18.2.20",

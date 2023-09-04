@@ -29,7 +29,6 @@
   "dependencies": {
     "@babel/runtime": "^7.21.0",
     "@easyblocks/core": "workspace:*",
-    "@easyblocks/nocms": "workspace:*",
     "@stitches/core": "^1.2.5",
     "lodash": "^4.17.21"
   },
