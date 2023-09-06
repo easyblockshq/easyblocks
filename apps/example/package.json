@@ -9,12 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@radix-ui/react-dialog": "^1.0.4",
-    "@easyblocks/next-editable-components": "link:../../packages/next-editable-components",
     "@easyblocks/core": "workspace:*",
     "@easyblocks/editable-components": "workspace:*",
     "@easyblocks/media": "workspace:*",
+    "@easyblocks/next-editable-components": "link:../../packages/next-editable-components",
+    "@easyblocks/shopify": "workspace:*",
     "@easyblocks/react": "workspace:*",
+    "@radix-ui/react-dialog": "^1.0.4",
     "@types/node": "20.4.2",
     "@types/react": "18.2.20",
     "@types/react-dom": "18.2.7",
@@ -22,6 +23,7 @@
     "date-fns": "^2.30.0",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.10",
+    "graphql-request": "^3.4.0",
     "next": "13.4.12",
     "postcss": "8.4.26",
     "react": "18.2.0",

@@ -96,27 +96,7 @@ export function isSchemaPropTextModifier(schemaProp: SchemaProp) {
 export function isResourceSchemaProp(
   schemaProp: SchemaProp
 ): schemaProp is ResourceSchemaProp {
-  const nonExternal = [
-    "string",
-    "string$",
-    "number",
-    "boolean",
-    "boolean$",
-    "select",
-    "select$",
-    "radio-group",
-    "radio-group$",
-    "color",
-    "stringToken",
-    "space",
-    "font",
-    "icon",
-    "component",
-    "component-collection",
-    "component-fixed",
-    "component-collection-localised",
-  ];
-  return !nonExternal.includes(schemaProp.type);
+  return schemaProp.type === "resource" || schemaProp.type === "text";
 }
 
 export function isSchemaPropTokenized(schemaProp: SchemaProp) {

@@ -24,10 +24,7 @@ type ProductPickerProps = {
   value:
     | { id: string; variant?: string; info?: Record<string, unknown> }
     | { id: null; variant?: string };
-  onChange: (product: {
-    id: string | null;
-    info?: Record<string, unknown>;
-  }) => void;
+  onChange: (product: { id: string | null; key?: string }) => void;
   api: SSProductPickerAPI;
   clearable?: boolean;
 };
@@ -141,37 +138,10 @@ export const SSProductPicker: React.FC<ProductPickerProps> = ({
     };
   }, [value]);
 
-  let enhancer;
-
-  if (product) {
-    enhancer = (
-      <img
-        src={product.thumbnail}
-        style={{ width: "100%", height: "100%", objectFit: "contain" }}
-      />
-    );
-  } else {
-    if (state === "loading") {
-      enhancer = <LoadingIndicator>{loadingIcon}</LoadingIndicator>;
-    } else {
-      enhancer = (
-        <div
-          style={{
-            boxSizing: "border-box",
-            width: "100%",
-            height: "100%",
-            border: "1px solid " + SSColors.black10,
-          }}
-        />
-      );
-    }
-  }
-
   return (
     <div
       css={`
-        max-width: 100%;
-        flex-grow: 1;
+        width: 100%;
       `}
     >
       {state === "error" && (
@@ -209,7 +179,7 @@ export const SSProductPicker: React.FC<ProductPickerProps> = ({
             icon={SSIcons.Remove}
             hideLabel
             onClick={() => {
-              onChange({ id: null });
+              onChange({ id: null, key: undefined });
             }}
           >
             Clear

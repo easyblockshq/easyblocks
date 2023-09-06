@@ -27,11 +27,11 @@ import {
   CompiledShopstoryComponentConfig,
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
+  ComponentConfig,
   ComponentFixedSchemaProp,
   ComponentSchemaProp,
   ConfigComponent,
   CustomResourceSchemaProp,
-  CustomSchemaProp,
   Devices,
   Font,
   FontSchemaProp,
@@ -39,7 +39,6 @@ import {
   getFallbackLocaleForLocale,
   getResourceType,
   IconSchemaProp,
-  ImageResourceSchemaProp,
   LocalizedText,
   NumberSchemaProp,
   Option,
@@ -63,7 +62,6 @@ import {
   UnresolvedResource,
   UnresolvedResourceEmpty,
   UnresolvedResourceNonEmpty,
-  VideoResourceSchemaProp,
 } from "@easyblocks/core";
 import { uniqueId } from "@easyblocks/utils";
 import { CompilationCache } from "./CompilationCache";
@@ -201,14 +199,15 @@ export type ComponentFixedSchemaPropDefinition = SchemaPropDefinition<
 >;
 
 type ResourceSchemaPropDefinition = SchemaPropDefinition<
-  UnresolvedResource,
-  UnresolvedResource
+  ResponsiveValue<UnresolvedResource>,
+  ResponsiveValue<UnresolvedResource>
 >;
 
-export type CustomSchemaPropDefinition = SchemaPropDefinition<
-  UnresolvedResource,
-  UnresolvedResource
+export type Component$$$SchemaPropDefinition = SchemaPropDefinition<
+  ComponentConfig,
+  ComponentConfig
 >;
+
 export type SchemaPropDefinitionProviders = {
   text: (
     schemaProp: TextResourceSchemaProp,
@@ -218,12 +217,10 @@ export type SchemaPropDefinitionProviders = {
     schemaProp: StringSchemaProp,
     compilationContext: CompilationContextType
   ) => StringSchemaPropDefinition;
-
   string$: (
     schemaProp: String$SchemaProp,
     compilationContext: CompilationContextType
   ) => String$SchemaPropDefinition;
-
   number: (
     schemaProp: NumberSchemaProp,
     compilationContext: CompilationContextType
@@ -252,7 +249,6 @@ export type SchemaPropDefinitionProviders = {
     schemaProp: RadioGroup$SchemaProp,
     compilationContext: CompilationContextType
   ) => RadioGroup$SchemaPropDefinition;
-
   color: (
     schemaProp: ColorSchemaProp,
     compilationContext: CompilationContextType
@@ -261,7 +257,6 @@ export type SchemaPropDefinitionProviders = {
     schemaProp: StringTokenSchemaProp,
     compilationContext: CompilationContextType
   ) => StringTokenSchemaPropDefinition;
-
   space: (
     schemaProp: SpaceSchemaProp,
     compilationContext: CompilationContextType
@@ -274,17 +269,6 @@ export type SchemaPropDefinitionProviders = {
     schemaProp: IconSchemaProp,
     compilationContext: CompilationContextType
   ) => IconSchemaPropDefinition;
-
-  // product: (schemaProp: ProductSchemaProp, compilationContext: CompilationContextType) => ProductSchemaPropDefinition,
-  image: (
-    schemaProp: ImageResourceSchemaProp,
-    compilationContext: CompilationContextType
-  ) => ImageSchemaPropDefinition;
-  video: (
-    schemaProp: VideoResourceSchemaProp,
-    compilationContext: CompilationContextType
-  ) => VideoSchemaPropDefinition;
-
   component: (
     schemaProp: ComponentSchemaProp,
     compilationContext: CompilationContextType
@@ -301,17 +285,10 @@ export type SchemaPropDefinitionProviders = {
     schemaProp: ComponentFixedSchemaProp,
     compilationContext: CompilationContextType
   ) => ComponentFixedSchemaPropDefinition;
-
-  // component$$$: (
-  //   schemaProp: Component$$$SchemaProp,
-  //   compilationContext: CompilationContextType
-  // ) => Component$$$SchemaPropDefinition;
-
-  custom: (
-    schemaProp: CustomSchemaProp,
+  component$$$: (
+    schemaProp: Component$$$SchemaProp,
     compilationContext: CompilationContextType
-  ) => CustomSchemaPropDefinition;
-
+  ) => Component$$$SchemaPropDefinition;
   resource: (
     schemaProp: CustomResourceSchemaProp,
     compilationContext: CompilationContextType
@@ -737,53 +714,6 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
     };
   },
 
-  image: (_, compilationContext): ImageSchemaPropDefinition => {
-    const normalize = getResponsiveNormalize<UnresolvedResource>(
-      compilationContext,
-      {},
-      { id: null },
-      resourceNormalize
-    );
-
-    return {
-      normalize,
-      compile: (x) => x,
-      getHash: resourceGetHash,
-    };
-  },
-  video: (_, compilationContext): VideoSchemaPropDefinition => {
-    const normalize = getResponsiveNormalize<UnresolvedResource>(
-      compilationContext,
-      {},
-      { id: null },
-      resourceNormalize
-    );
-
-    return {
-      normalize,
-      compile: (x) => {
-        return x;
-      },
-      getHash: resourceGetHash,
-    };
-  },
-
-  custom: (): CustomSchemaPropDefinition => {
-    return {
-      normalize: (x) => {
-        const normalized = resourceNormalize(x);
-        if (!normalized) {
-          return {
-            id: null,
-          };
-        }
-        return normalized;
-      },
-      compile: (x) => x,
-      getHash: resourceGetHash,
-    };
-  },
-
   component: (
     _,
     compilationContext: CompilationContextType
@@ -1023,7 +953,38 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
     };
   },
 
-  resource: (schemaProp) => {
+  component$$$: () => {
+    return {
+      normalize: (x) => x,
+      compile: (x) => x,
+      getHash: (x) => x._template,
+    };
+  },
+
+  resource: (schemaProp, compilationContext) => {
+    if (
+      schemaProp.resourceType === "image" ||
+      schemaProp.resourceType === "video"
+    ) {
+      const normalize = getResponsiveNormalize<UnresolvedResource>(
+        compilationContext,
+        {},
+        {
+          id: null,
+          widgetId:
+            compilationContext.resourceTypes[schemaProp.resourceType]
+              ?.widgets[0]?.id,
+        },
+        resourceNormalize
+      );
+
+      return {
+        normalize,
+        compile: (x) => x,
+        getHash: resourceGetHash,
+      };
+    }
+
     return {
       normalize: (value) => {
         const normalized = resourceNormalize(value);
@@ -1368,6 +1329,7 @@ function resourceNormalize(x: any): UnresolvedResource | undefined {
       const normalized: UnresolvedResourceNonEmpty = {
         id: x.id,
         widgetId: x.widgetId,
+        key: x.key,
       };
       return normalized;
     }
@@ -1509,15 +1471,11 @@ export function normalizeComponent(
   return ret;
 }
 
-export function getSchemaDefinition<
-  T extends SchemaProp | Component$$$SchemaProp
->(
+export function getSchemaDefinition<T extends SchemaProp>(
   schemaProp: T,
   compilationContext: CompilationContextType
 ): ReturnType<SchemaPropDefinitionProvider> {
-  const provider: SchemaPropDefinitionProvider =
-    (schemaPropDefinitions as any)[schemaProp.type] ||
-    schemaPropDefinitions.custom;
+  const provider = schemaPropDefinitions[schemaProp.type];
 
   return provider(schemaProp as any, compilationContext);
 }

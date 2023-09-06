@@ -148,7 +148,7 @@ export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
           <FieldsGroupLabel>{groupName}</FieldsGroupLabel>
           {grouped[groupName].map((field, index, fields) => (
             <div
-              key={generateFieldKey(field.name, field.schemaProp.type)}
+              key={generateFieldKey(field)}
               css={css`
                 margin-bottom: ${index === fields.length - 1 ? "8px" : 0};
               `}
@@ -165,7 +165,7 @@ export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
       ))}
       {ungrouped.map((field, index, fields) => (
         <div
-          key={generateFieldKey(field.name, field.schemaProp.type)}
+          key={generateFieldKey(field)}
           css={css`
             margin-bottom: ${index === fields.length - 1 ? "8px" : 0};
           `}
@@ -182,8 +182,9 @@ export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
   );
 }
 
-function generateFieldKey(name: string | string[], type: string) {
-  return `${toArray(name).join("_")}_${type}`;
+function generateFieldKey(field: InternalField) {
+  const key = `${toArray(field.name).join("_")}_${field.schemaProp.type}`;
+  return key;
 }
 
 export const FieldsGroupLabel = styled.div`

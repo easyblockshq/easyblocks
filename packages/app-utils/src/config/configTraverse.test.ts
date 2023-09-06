@@ -66,7 +66,8 @@ test("invokes callback for each valid schema prop from config", () => {
             },
             {
               prop: "image",
-              type: "image",
+              type: "resource",
+              resourceType: "image",
             },
             {
               prop: "text",
@@ -95,7 +96,8 @@ test("invokes callback for each valid schema prop from config", () => {
             },
             {
               prop: "image",
-              type: "image",
+              type: "resource",
+              resourceType: "image",
             },
           ],
         },
@@ -130,7 +132,8 @@ test("invokes callback for each valid schema prop from config", () => {
     },
     schemaProp: {
       prop: "image",
-      type: "image",
+      type: "resource",
+      resourceType: "image",
     },
   });
   expect(callback).toHaveBeenNthCalledWith(3, {
@@ -164,7 +167,8 @@ test("invokes callback for each valid schema prop from config", () => {
     value: whiteCard.image,
     schemaProp: {
       prop: "image",
-      type: "image",
+      type: "resource",
+      resourceType: "image",
     },
   });
 
@@ -195,7 +199,8 @@ test("invokes callback for each valid schema prop from config", () => {
     value: redCard.image,
     schemaProp: {
       prop: "image",
-      type: "image",
+      type: "resource",
+      resourceType: "image",
     },
   });
 
@@ -213,7 +218,8 @@ test("invokes callback for each valid schema prop from config", () => {
     value: blueCard.image,
     schemaProp: {
       prop: "image",
-      type: "image",
+      type: "resource",
+      resourceType: "image",
     },
   });
 
@@ -231,7 +237,8 @@ test("invokes callback for each valid schema prop from config", () => {
     value: whiteCard.image,
     schemaProp: {
       prop: "image",
-      type: "image",
+      type: "resource",
+      resourceType: "image",
     },
   });
 });

@@ -3,8 +3,9 @@ import {
   responsiveValueForceGet,
 } from "@easyblocks/app-utils";
 import {
+  FetchCompoundResourceResultValues,
   getResourceValue,
-  Resource,
+  ResolvedResource,
   UnresolvedResource,
   VideoSrc,
 } from "@easyblocks/core";
@@ -33,7 +34,8 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
       {
         prop: "image",
         label: "Video",
-        type: "video",
+        type: "resource",
+        resourceType: "video",
       },
       {
         prop: "aspectRatio", // main image size
@@ -155,17 +157,48 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         };
       }
 
-      const videoResource = resources.find<Resource<VideoSrc>>(
-        (resource): resource is Resource<VideoSrc> => {
-          return resource.id === `${config._id}.image`;
-        }
-      );
+      const videoResource = resources.find((resource) => {
+        return resource.id === `${config._id}.image`;
+      });
 
       if (!videoResource || videoResource.status !== "success") {
         return {
           type: "icon",
           icon: "link",
           description: "None",
+        };
+      }
+
+      if (videoResource.type === "object") {
+        if (!activeVideoValue.key) {
+          return {
+            type: "icon",
+            icon: "link",
+            description: "None",
+          };
+        }
+
+        const resolvedCompoundResourceResult = (
+          videoResource as ResolvedResource<FetchCompoundResourceResultValues>
+        ).value?.[activeVideoValue.key];
+
+        if (!resolvedCompoundResourceResult) {
+          return {
+            type: "icon",
+            icon: "link",
+            description: "None",
+          };
+        }
+
+        const imageFileName = last(
+          (resolvedCompoundResourceResult.value as VideoSrc).url.split("/")
+        );
+        const imageFileNameWithoutQueryParams = imageFileName.split("?")[0];
+
+        return {
+          type: "image",
+          url: (resolvedCompoundResourceResult.value as VideoSrc).url,
+          description: imageFileNameWithoutQueryParams,
         };
       }
 

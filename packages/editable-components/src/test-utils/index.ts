@@ -1,6 +1,6 @@
 import { CompilationContextType } from "@easyblocks/app-utils";
 import { Devices } from "@easyblocks/core";
-import { schemas } from "../schemas";
+import { builtinEditableComponentsDefinitions } from "../schemas";
 
 export const testImage: CompilationContextType["image"] = {
   resourceType: "image",
@@ -53,7 +53,7 @@ export const testDevices: Devices = [
 
 export const testCompilationContext: CompilationContextType = {
   definitions: {
-    components: [...schemas],
+    components: [...builtinEditableComponentsDefinitions],
     links: [],
     actions: [],
     textModifiers: [],

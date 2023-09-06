@@ -99,7 +99,7 @@ export const SSBasicRow: React.FC<BasicRowProps> = (props) => {
   return (
     <Root onClick={props.onClick}>
       <ImageContainer {...props}>
-        {props.image && <Image src={props.image} />}
+        {props.image && <Image src={props.image} loading="lazy" />}
       </ImageContainer>
       <TextContainer>
         <TitleContainer>

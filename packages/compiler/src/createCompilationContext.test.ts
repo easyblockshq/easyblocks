@@ -148,11 +148,13 @@ describe("components", () => {
             },
             {
               prop: "image1",
-              type: "image",
+              type: "resource",
+              resourceType: "image",
             },
             {
               prop: "video1",
-              type: "video",
+              type: "resource",
+              resourceType: "video",
             },
             {
               prop: "resource1",

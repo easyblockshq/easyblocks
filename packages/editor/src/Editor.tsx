@@ -218,13 +218,11 @@ function EditorContainer(props: EditorContainerProps) {
 
     if (isPlayground) {
       console.debug(`Opening Shopstory in playground mode.`);
-      setEnabled(true);
-      return;
+    } else {
+      console.debug(
+        `Opening Shopstory with access token: ${props.config.accessToken}`
+      );
     }
-
-    console.debug(
-      `Opening Shopstory with access token: ${props.config.accessToken}`
-    );
 
     handleAccessTokenAuthorization();
   }, [apiClient, enabled, isPlayground, props.config.accessToken]);

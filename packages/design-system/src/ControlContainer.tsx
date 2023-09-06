@@ -101,12 +101,12 @@ const IconContainer = styled.div<ControlProps>`
 `;
 
 export const ControlContainer: React.FC<
-  ControlProps & { children: ReactNode }
-> = (props) => {
+  ControlProps & { children: ReactNode; className?: string }
+> = ({ className, ...props }) => {
   const Icon = props.icon;
 
   return (
-    <Root {...props}>
+    <Root className={className} {...props}>
       {Icon && (
         <IconContainer {...props}>
           <Icon />

@@ -4,9 +4,10 @@ import {
   responsiveValueForceGet,
 } from "@easyblocks/app-utils";
 import {
+  FetchCompoundResourceResultValues,
   getResourceValue,
   ImageSrc,
-  Resource,
+  ResolvedResource,
   UnresolvedResource,
 } from "@easyblocks/core";
 import { last } from "@easyblocks/utils";
@@ -37,7 +38,8 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
     schema: [
       {
         prop: "image",
-        type: "image",
+        type: "resource",
+        resourceType: "image",
         label: "Source",
       },
       {
@@ -65,17 +67,48 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
         };
       }
 
-      const imageResource = resources.find<Resource<ImageSrc>>(
-        (resource): resource is Resource<ImageSrc> => {
-          return resource.id === `${config._id}.image`;
-        }
-      );
+      const imageResource = resources.find((resource) => {
+        return resource.id === `${config._id}.image`;
+      });
 
       if (!imageResource || imageResource.status !== "success") {
         return {
           type: "icon",
           icon: "link",
           description: "None",
+        };
+      }
+
+      if (imageResource.type === "object") {
+        if (!activeImageValue.key) {
+          return {
+            type: "icon",
+            icon: "link",
+            description: "None",
+          };
+        }
+
+        const resolvedCompoundResourceResult = (
+          imageResource as ResolvedResource<FetchCompoundResourceResultValues>
+        ).value?.[activeImageValue.key];
+
+        if (!resolvedCompoundResourceResult) {
+          return {
+            type: "icon",
+            icon: "link",
+            description: "None",
+          };
+        }
+
+        const imageFileName = last(
+          (resolvedCompoundResourceResult.value as ImageSrc).url.split("/")
+        );
+        const imageFileNameWithoutQueryParams = imageFileName.split("?")[0];
+
+        return {
+          type: "image",
+          url: (resolvedCompoundResourceResult.value as ImageSrc).url,
+          description: imageFileNameWithoutQueryParams,
         };
       }
 

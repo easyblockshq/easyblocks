@@ -1,4 +1,5 @@
 import { serialize } from "@easyblocks/utils";
+import { Entries } from "type-fest";
 import { isDocument } from "./checkers";
 import { createResourcesStore, ResourcesStore } from "./createResourcesStore";
 import { findPendingResources } from "./findPendingResources";
@@ -148,48 +149,60 @@ export class ShopstoryClient {
         })
       );
 
-      if (this.contextParams.isEditing) {
-        pendingResources.forEach((r) => {
-          this.resourcesStore.set(r.id, {
-            id: r.id,
-            type: r.resource.type,
-            status: "loading",
-            error: null,
-            value: undefined,
-          });
-        });
-      }
+      // if (this.contextParams.isEditing) {
+      //   pendingResources.forEach((r) => {
+      //     this.resourcesStore.set(r.id, {
+      //       id: r.id,
+      //       type: r.resource.type,
+      //       status: "loading",
+      //       error: null,
+      //       value: undefined,
+      //     });
+      //   });
+      // }
 
       const resources = await this.config.fetch(fetchInput, this.contextParams);
 
-      Object.entries(resources).forEach(([id, resource]) => {
-        const fetchInputResource = fetchInput[id];
+      Object.entries(resources).forEach(
+        ([id, resource]: Entries<typeof resources>[number]) => {
+          const fetchInputResource = fetchInput[id];
 
-        if (!fetchInputResource) {
-          console.warn(
-            `Unknown resource with id "${id}" has been returned from the fetch function"`
-          );
-          return;
-        }
+          if (!fetchInputResource) {
+            console.warn(
+              `Unknown resource with id "${id}" has been returned from the fetch function"`
+            );
+            return;
+          }
 
-        if ("value" in resource.value) {
-          this.resourcesStore.set(id, {
-            id,
-            type: fetchInputResource.type,
-            status: "success",
-            value: resource.value.value,
-            error: null,
-          });
-        } else {
-          this.resourcesStore.set(id, {
-            id,
-            type: fetchInputResource.type,
-            status: "error",
-            value: undefined,
-            error: resource.value.error,
-          });
+          if ("values" in resource) {
+            this.resourcesStore.set(id, {
+              id,
+              type: resource.type,
+              status: "success",
+              error: null,
+              value: resource.values,
+            });
+          } else {
+            if (resource.value !== undefined) {
+              this.resourcesStore.set(id, {
+                id,
+                type: fetchInputResource.type,
+                status: "success",
+                value: resource.value,
+                error: null,
+              });
+            } else {
+              this.resourcesStore.set(id, {
+                id,
+                type: fetchInputResource.type,
+                status: "error",
+                value: undefined,
+                error: resource.error,
+              });
+            }
+          }
         }
-      });
+      );
 
       isFirstIteration = false;
     }

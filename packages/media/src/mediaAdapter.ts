@@ -1,5 +1,5 @@
 import type { AssetDTO } from "@easyblocks/core";
-import type { Media } from "./mockMediaPicker";
+import type { Media } from "./mediaPicker";
 
 function mediaAdapter(asset: AssetDTO): Media {
   const isVideo = asset.mediaType === "video";

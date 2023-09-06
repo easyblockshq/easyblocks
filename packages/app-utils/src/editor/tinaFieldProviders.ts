@@ -10,7 +10,6 @@ import {
   CustomResourceSchemaProp,
   FontSchemaProp,
   IconSchemaProp,
-  ImageResourceSchemaProp,
   NumberSchemaProp,
   RadioGroup$SchemaProp,
   RadioGroupSchemaProp,
@@ -25,7 +24,6 @@ import {
   TextResourceSchemaProp,
   ThemeRefValue,
   UnresolvedResource,
-  VideoResourceSchemaProp,
 } from "@easyblocks/core";
 import { getMappedToken } from "../getMappedToken";
 import { EditorContextType } from "../types";
@@ -122,8 +120,6 @@ export type TinaFieldProviders = {
   space: FieldProvider<SpaceSchemaProp>;
   font: FieldProvider<FontSchemaProp>;
   icon: FieldProvider<IconSchemaProp>;
-  image: FieldProvider<ImageResourceSchemaProp>;
-  video: FieldProvider<VideoResourceSchemaProp>;
   component: FieldProvider<ComponentSchemaProp>;
   "component-collection": FieldProvider<ComponentCollectionSchemaProp>;
   "component-collection-localised": FieldProvider<ComponentCollectionLocalisedSchemaProp>;
@@ -315,79 +311,6 @@ const tinaFieldProviders: TinaFieldProviders = {
     };
   },
 
-  image: (schemaProp, editorContext, value) => {
-    const imageResourceDefinition = editorContext.resourceTypes["image"];
-
-    if (!imageResourceDefinition) {
-      throw new Error(
-        `Can't find resource definition for resource type "image"`
-      );
-    }
-
-    const imageWidget = imageResourceDefinition.widgets.find((w) =>
-      value?.widgetId ? w.id === value.widgetId : true
-    );
-    const params = schemaProp.params ?? {};
-
-    if (!imageWidget) {
-      if (value?.widgetId) {
-        throw new Error(
-          `Can't find widget for resource type "${value.widgetId}"`
-        );
-      }
-
-      throw new Error(`Can't find any widget for type "image"`);
-    }
-
-    const imageField =
-      typeof imageWidget.component === "function"
-        ? imageWidget.component(params)
-        : imageWidget.component;
-
-    return {
-      ...getCommonFieldProps(schemaProp),
-      component: "responsive2",
-      subComponent: "external",
-      externalField: imageField,
-    };
-  },
-
-  video: (schemaProp, editorContext, value) => {
-    const videoResourceDefinition = editorContext.resourceTypes["video"];
-
-    if (!videoResourceDefinition) {
-      throw new Error(
-        `Can't find resource definition for resource type "video"`
-      );
-    }
-
-    const videoWidget = videoResourceDefinition.widgets.find((w) =>
-      value?.widgetId ? w.id === value.widgetId : true
-    );
-    const params = schemaProp.params ?? {};
-
-    if (!videoWidget) {
-      if (value?.widgetId) {
-        throw new Error(
-          `Can't find widget for resource type "${value.widgetId}"`
-        );
-      }
-
-      throw new Error(`Can't find widget for type "video"`);
-    }
-    const videoField =
-      typeof videoWidget.component === "function"
-        ? videoWidget.component(params)
-        : videoWidget.component;
-
-    return {
-      ...getCommonFieldProps(schemaProp),
-      component: "responsive2",
-      subComponent: "external",
-      externalField: videoField,
-    };
-  },
-
   component: (schemaProp) => {
     return {
       ...getCommonFieldProps(schemaProp),
@@ -441,10 +364,22 @@ const tinaFieldProviders: TinaFieldProviders = {
         ? fieldWidget.component(schemaProp.params ?? {})
         : fieldWidget.component;
 
+    if (
+      schemaProp.resourceType === "image" ||
+      schemaProp.resourceType === "video"
+    ) {
+      return {
+        ...getCommonFieldProps(schemaProp),
+        component: "responsive2",
+        subComponent: "external",
+        externalField: field,
+      };
+    }
+
     return {
+      ...getCommonFieldProps(schemaProp),
       component: "external",
       externalField: field,
-      ...getCommonFieldProps(schemaProp),
     };
   },
 };

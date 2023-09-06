@@ -1,12 +1,12 @@
 import {
+  ContextParams,
   EditorLauncherProps,
   isDocument,
-  ShopstoryClientAddOptions,
 } from "@easyblocks/core";
 
 function getRootContainer(
   content: unknown,
-  options: ShopstoryClientAddOptions
+  options: ContextParams
 ): EditorLauncherProps["rootContainer"] {
   // If this is a document and `rootContainer` is defined, let's use it.
   if (isDocument(content) && content.rootContainer !== null) {

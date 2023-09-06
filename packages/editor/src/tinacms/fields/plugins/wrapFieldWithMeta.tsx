@@ -78,7 +78,8 @@ export function FieldMetaWrapper<
       css={css`
         width: 100%;
         display: flex;
-        justify-content: ${layout === "row" ? "flex-end" : "flex-start"};
+        align-items: ${layout === "row" ? "flex-end" : "flex-start"};
+        flex-direction: column;
       `}
     >
       {!isMixedValue || (isMixedValue && isMixedValueSupported) ? (

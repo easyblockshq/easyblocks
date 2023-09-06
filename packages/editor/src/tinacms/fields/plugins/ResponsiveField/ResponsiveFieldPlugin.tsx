@@ -1,13 +1,14 @@
 import {
   isResourceSchemaProp,
   isTrulyResponsiveValue,
+  parsePath,
   responsiveValueForceGet,
 } from "@easyblocks/app-utils";
 import {
-  CustomResourceSchemaProp,
   getResourceType,
   isLocalTextResource,
   ResourceDefinition,
+  ResourceSchemaProp,
   TrulyResponsiveValue,
   UnresolvedResource,
 } from "@easyblocks/core";
@@ -78,13 +79,8 @@ export const ResponsiveField = (props: ResponsivePluginProps) => {
   const [selectedWidgetId, setSelectedWidgetId] = useState<string | undefined>(
     () =>
       isResourceSchemaProp(field.schemaProp)
-        ? value.widgetId ??
-          editorContext.resourceTypes[
-            field.schemaProp.type === "image" ||
-            field.schemaProp.type === "video"
-              ? field.schemaProp.type
-              : field.schemaProp.resourceType
-          ].widgets[0].id
+        ? (value as UnresolvedResource).widgetId ??
+          getDefaultWidgetIdForResource(field.schemaProp)
         : undefined
   );
 
@@ -123,6 +119,8 @@ export const ResponsiveField = (props: ResponsivePluginProps) => {
     },
   });
 
+  const schemaProp = field.schemaProp;
+
   return (
     // @ts-expect-error
     <FieldMetaWrapper
@@ -145,16 +143,12 @@ export const ResponsiveField = (props: ResponsivePluginProps) => {
           : undefined
       }
       renderDecoration={
-        !isMixedValue && isResourceSchemaProp(field.schemaProp)
+        !isMixedValue &&
+        isResourceSchemaProp(schemaProp) &&
+        schemaProp.type === "resource"
           ? ({ renderDefaultDecoration }) => {
               const availableWidgets =
-                editorContext.resourceTypes[
-                  field.schemaProp.type === "image" ||
-                  field.schemaProp.type === "video"
-                    ? field.schemaProp.type
-                    : (field.schemaProp as CustomResourceSchemaProp)
-                        .resourceType
-                ]?.widgets;
+                editorContext.resourceTypes[schemaProp.resourceType]?.widgets;
 
               if (!availableWidgets) {
                 return null;
@@ -201,6 +195,29 @@ export const ResponsiveField = (props: ResponsivePluginProps) => {
                         }
                       });
                     });
+
+                    const parsedPathResult = parsePath(
+                      toArray(field.name)[0],
+                      editorContext.form
+                    );
+
+                    if (parsedPathResult.parent) {
+                      const parentConfigPath = `${parsedPathResult.parent.path}.${parsedPathResult.parent.fieldName}.${parsedPathResult.index}`;
+                      const parentConfig = dotNotationGet(
+                        editorContext.form.values,
+                        parentConfigPath
+                      );
+
+                      if (parentConfig) {
+                        const resourceType = getResourceType(
+                          field.schemaProp as ResourceSchemaProp
+                        );
+                        editorContext.resourcesStore.remove(
+                          `${parentConfig._id}.${field.schemaProp.prop}`,
+                          resourceType
+                        );
+                      }
+                    }
                   }}
                   selectedWidgetId={selectedWidgetId}
                 />
@@ -218,10 +235,7 @@ export const ResponsiveField = (props: ResponsivePluginProps) => {
               parse(value, name, field) {
                 if (isResourceSchemaProp(field.schemaProp)) {
                   const resourceType = getResourceType(field.schemaProp);
-                  if (
-                    value.id !== null &&
-                    !isLocalTextResource(value, resourceType)
-                  ) {
+                  if (!isLocalTextResource(value, resourceType)) {
                     const componentConfigPath = name
                       .split(".")
                       .slice(0, -1)
@@ -267,6 +281,12 @@ export const ResponsiveField = (props: ResponsivePluginProps) => {
       </div>
     </FieldMetaWrapper>
   );
+
+  function getDefaultWidgetIdForResource(
+    schemaProp: ResourceSchemaProp
+  ): string | undefined {
+    return editorContext.resourceTypes[schemaProp.resourceType]?.widgets[0]?.id;
+  }
 };
 
 export const ResponsiveFieldPlugin = {

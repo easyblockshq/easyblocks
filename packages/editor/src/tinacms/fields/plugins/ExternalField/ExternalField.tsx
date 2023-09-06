@@ -1,16 +1,21 @@
 import {
   AnyField,
   AnyTinaField,
-  CustomResourceSchemaProp,
   ExternalFieldCustom,
   ExternalFieldType,
+  FetchCompoundResourceResultValues,
+  FetchOutputCompoundResources,
   Field,
+  ResolvedResource,
+  ResourceSchemaProp,
+  TextResourceSchemaProp,
   UnresolvedResource,
 } from "@easyblocks/core";
-import { useToaster } from "@easyblocks/design-system";
-import { toArray } from "@easyblocks/utils";
+import { SSSelect, useToaster } from "@easyblocks/design-system";
+import { dotNotationGet, toArray } from "@easyblocks/utils";
 import React, { useEffect, useRef } from "react";
 import { css } from "styled-components";
+import { SetRequired } from "type-fest";
 import { useEditorContext } from "../../../../EditorContext";
 import { useApiClient } from "../../../../infrastructure/ApiClientProvider";
 import { FieldMixedValue } from "../../../../types";
@@ -51,9 +56,18 @@ function CustomFieldLauncher(props: {
       root: rootNodeRef.current!,
       value: props.input.value,
       onChange: (value) => {
+        if (value.id === null) {
+          props.input.onChange({
+            id: null,
+            widgetId: props.input.value.widgetId,
+          });
+          return;
+        }
+
         props.input.onChange({
-          ...props.input.value,
-          ...value,
+          id: value.id,
+          key: value.key,
+          widgetId: props.input.value.widgetId!,
         });
       },
       apiClient,
@@ -82,7 +96,8 @@ function CustomFieldLauncher(props: {
   );
 }
 
-interface ExternalField extends Field<AnyField, CustomResourceSchemaProp> {
+interface ExternalField
+  extends Field<AnyField, Exclude<ResourceSchemaProp, TextResourceSchemaProp>> {
   externalField: ExternalFieldType;
 }
 
@@ -118,6 +133,8 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
     throw new Error("unknown type");
   }
 
+  const { value } = input;
+
   const content = (
     <FieldBuilder
       form={tinaForm}
@@ -133,11 +150,21 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
         },
       }}
       noWrap={props.noWrap}
+      {...(!isMixedFieldValue(value) && {
+        key: value.widgetId,
+      })}
     />
   );
 
-  const { value } = input;
   const { schemaProp } = field;
+  const isCustomResourceProp = schemaProp.type === "resource";
+
+  const resource = editorContext.resources.find((r) => {
+    const path = fieldNames[0].split(".").slice(0, -1).join(".");
+    const configId = dotNotationGet(editorContext.form.values, path)._id;
+
+    return r.id === `${configId}.${schemaProp.prop}`;
+  });
 
   return (
     // @ts-expect-error
@@ -146,12 +173,10 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
       form={tinaForm}
       layout="column"
       renderDecoration={
-        !isMixedFieldValue(value) && schemaProp.type === "resource"
+        !isMixedFieldValue(value) && isCustomResourceProp
           ? () => {
               const widgets =
-                editorContext.resourceTypes[
-                  (schemaProp as CustomResourceSchemaProp).resourceType
-                ].widgets;
+                editorContext.resourceTypes[schemaProp.resourceType].widgets;
 
               if (widgets.length === 1) {
                 return null;
@@ -180,6 +205,23 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
       }
     >
       {content}
+      {!isMixedFieldValue(value) &&
+        value.id !== null &&
+        resource &&
+        resource.status === "success" &&
+        isCompoundResource(resource) && (
+          <CompoundResourceValueSelect
+            resource={resource}
+            resourceType={schemaProp.resourceType}
+            resourceKey={value.key ?? ""}
+            onResourceKeyChange={(key) => {
+              props.input.onChange({
+                ...input.value,
+                key,
+              });
+            }}
+          />
+        )}
     </FieldMetaWrapper>
   );
 };
@@ -188,3 +230,50 @@ export const ExternalFieldPlugin = {
   name: "external",
   Component: ExternalFieldComponent,
 };
+
+function CompoundResourceValueSelect(props: {
+  resource: SetRequired<
+    ResolvedResource<FetchCompoundResourceResultValues>,
+    "value"
+  >;
+  resourceType: string;
+  resourceKey: string;
+  onResourceKeyChange: (value: string) => void;
+}) {
+  return (
+    <SSSelect
+      onChange={(event) => {
+        props.onResourceKeyChange(event.target.value);
+      }}
+      value={props.resourceKey}
+      css={css`
+        margin-top: 8px;
+        margin-left: 0;
+      `}
+    >
+      {!props.resourceKey && (
+        <option key="none" value="">
+          --Select resource field--
+        </option>
+      )}
+      {Object.entries(props.resource.value)
+        .filter(([, resource]) => resource.type === props.resourceType)
+        .map(([key, resource]) => {
+          return (
+            <option key={key} value={key}>
+              {resource.label ?? key}
+            </option>
+          );
+        })}
+    </SSSelect>
+  );
+}
+
+function isCompoundResource(
+  resource: ResolvedResource
+): resource is SetRequired<
+  ResolvedResource<FetchOutputCompoundResources[string]["values"]>,
+  "value"
+> {
+  return resource.type === "object";
+}

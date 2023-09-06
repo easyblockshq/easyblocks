@@ -6,6 +6,7 @@ import {
   ContextProps,
   findComponentDefinitionById,
   getComponentMainType,
+  InternalComponentDefinition,
   isEmptyRenderableContent,
   isNonEmptyRenderableContent,
   isRenderableContent,
@@ -31,16 +32,19 @@ import {
   ComponentFixedSchemaProp,
   ComponentSchemaProp,
   CustomResourceSchemaProp,
+  FetchOutputCompoundResources,
   getResourceType,
   getResourceValue,
   isLocalTextResource,
+  Metadata,
+  ResolvedResource,
   Resource,
   ResourceSchemaProp,
   ResponsiveValue,
   UnresolvedResource,
-  UnresolvedResourceNonEmpty,
 } from "@easyblocks/core";
 import React, { Fragment, ReactElement } from "react";
+import { SetRequired } from "type-fest";
 import { isTracingSchemaProp } from "../../../tracing";
 import { trace } from "./trace";
 import { withImpressionTracking } from "./withImpressionTracking";
@@ -176,14 +180,12 @@ function getRenderabilityStatus(
 
   const mappedSchema = componentDefinition.schema.map((schema) => {
     if (isResourceSchemaProp(schema)) {
-      const compiledResourceProp: UnresolvedResourceNonEmpty =
-        compiled.props[schema.prop];
-
-      if (schema.type === "image" || schema.type === "video") {
+      if (
+        schema.type === "resource" &&
+        (schema.resourceType === "image" || schema.resourceType === "video")
+      ) {
         const resourceSchemaProp: CustomResourceSchemaProp = {
           ...schema,
-          type: "resource",
-          resourceType: compiledResourceProp.widgetId,
           optional: true,
         };
 
@@ -705,8 +707,6 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
     resop: meta.shopstoryProviderContext.resop,
     Box: meta.code.Box,
     devices: meta.vars.devices,
-    image: meta.vars.image,
-    video: meta.vars.video,
     isEditing,
     locale: meta.vars.locale,
   };
@@ -741,14 +741,13 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
 function mapResourceProps(
   props: Record<string, unknown>,
   configId: string,
-  componentDefinition: any,
-  meta: any
+  componentDefinition: InternalComponentDefinition,
+  meta: Metadata
 ) {
   const resultsProps: Record<string, unknown> = {};
 
   for (const propName in props) {
     const schemaProp = componentDefinition.schema.find(
-      // @ts-ignore
       (currentSchema) => currentSchema.prop === propName
     );
 
@@ -823,6 +822,26 @@ function resolveResource(
         }
 
         if (resource.status === "success") {
+          if (isCompoundResource(resource)) {
+            if (!r.key) {
+              return null;
+            }
+
+            const resolvedResourceValue = resource.value[r.key].value;
+
+            if (!resolvedResourceValue) {
+              return null;
+            }
+
+            return {
+              id: r.id,
+              type,
+              status: "success",
+              value: resolvedResourceValue,
+              error: null,
+            };
+          }
+
           return {
             id: r.id,
             type,
@@ -844,6 +863,15 @@ function resolveResource(
 
     return null;
   });
+}
+
+function isCompoundResource(
+  resource: ResolvedResource
+): resource is SetRequired<
+  ResolvedResource<FetchOutputCompoundResources[string]["values"]>,
+  "value"
+> {
+  return resource.type === "object";
 }
 
 export default ComponentBuilder;

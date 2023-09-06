@@ -64,7 +64,8 @@ test("invokes callback for each valid schema prop from config", () => {
             },
             {
               prop: "image",
-              type: "image",
+              type: "resource",
+              resourceType: "image",
             },
             {
               prop: "text",
@@ -93,7 +94,8 @@ test("invokes callback for each valid schema prop from config", () => {
             },
             {
               prop: "image",
-              type: "image",
+              type: "resource",
+              resourceType: "image",
             },
           ],
         },

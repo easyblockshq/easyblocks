@@ -43,10 +43,11 @@ const StyledSelect = styled.select<SSSelectProps>`
 export const SSSelect: React.FC<SSSelectProps> = ({
   onChange,
   id,
+  className,
   ...restProps
 }) => {
   return (
-    <ControlContainer {...restProps}>
+    <ControlContainer className={className} {...restProps}>
       <StyledSelect {...restProps} id={id} onChange={onChange} />
       <ArrowIconContainer className={"ss-arrow"}>
         <SSIcons.Dropdown />

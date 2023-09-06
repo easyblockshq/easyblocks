@@ -1,17 +1,16 @@
 import type { Widget } from "@easyblocks/core";
-import { fetchImages, fetchVideos } from "./index.react-server";
-import { mockMediaPicker } from "./mockMediaPicker";
+import { mockMediaPicker } from "./mediaPicker";
 
-export { fetchBuiltinMediaResources } from "./index.react-server";
+export { fetchEasyblocksMediaResources } from "./index.react-server";
 
 export const easyblocksImageWidget: Widget = {
   id: "@easyblocks/image",
   label: "Easyblocks",
-  component: () => mockMediaPicker(fetchImages, "image"),
+  component: () => mockMediaPicker("image"),
 };
 
 export const easyblocksVideoWidget: Widget = {
   id: "@easyblocks/video",
   label: "Easyblocks",
-  component: () => mockMediaPicker(fetchVideos, "video"),
+  component: () => mockMediaPicker("video"),
 };

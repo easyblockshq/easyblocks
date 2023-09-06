@@ -283,24 +283,8 @@ export type TextResourceSchemaProp = SchemaPropShared<"text", string> & {
   [key: string]: any;
 };
 
-export type ImageResourceSchemaProp = SchemaPropShared<
-  "image",
-  UnresolvedResource
-> & {
-  [key: string]: any;
-};
-
-export type VideoResourceSchemaProp = SchemaPropShared<
-  "video",
-  UnresolvedResource
-> & {
-  [key: string]: any;
-};
-
 export type ResourceSchemaProp =
   | TextResourceSchemaProp
-  | ImageResourceSchemaProp
-  | VideoResourceSchemaProp
   | CustomResourceSchemaProp;
 
 export type SchemaProp =
@@ -319,8 +303,6 @@ export type SchemaProp =
   | StringTokenSchemaProp
   | IconSchemaProp
   | TextResourceSchemaProp
-  | ImageResourceSchemaProp
-  | VideoResourceSchemaProp
   | CustomResourceSchemaProp
   | ComponentSchemaProp
   | ComponentCollectionSchemaProp
@@ -457,7 +439,7 @@ export type ExternalFieldItemPicker = {
 export type ExternalFieldCustomComponentProps = {
   root: HTMLElement;
   value: UnresolvedResource;
-  onChange: (newValue: Omit<UnresolvedResource, "widgetId">) => void;
+  onChange: (newValue: { id: null } | { id: string; key?: string }) => void;
   apiClient: IApiClient;
   projectId: string;
   notify: {
@@ -536,10 +518,7 @@ export type Config = {
   strict?: boolean;
   locales?: Array<Locale>;
   rootContainers?: Record<string, RootContainer>;
-  fetch: (
-    resources: FetchInputResources,
-    contextParams: ContextParams
-  ) => Promise<FetchOutputResources>;
+  fetch: FetchFunction;
 };
 
 export type PreviewMetadata =
@@ -609,7 +588,7 @@ export type UnresolvedResourceEmpty = {
   widgetId?: string;
 };
 
-export type CustomResourceSchemaProp<TransformResult = any> = SchemaPropShared<
+export type CustomResourceSchemaProp = SchemaPropShared<
   "resource",
   UnresolvedResource
 > & {
@@ -666,6 +645,7 @@ export type ResolvedResource<Value = unknown> = ResourceIdentity & {
   status: "success";
   value?: Value;
   error: null;
+  key?: string;
 };
 
 export type RejectedResource = ResourceIdentity & {
@@ -1059,9 +1039,9 @@ export type FetchInputResource = {
 
 export type FetchInputResources = Record<string, FetchInputResource>;
 
-type FetchResourceResolvedResult<T> = { value: T };
+type FetchResourceResolvedResult<T> = { value: T; error: null };
 
-type FetchResourceRejectedResult = { error: Error };
+type FetchResourceRejectedResult = { value: undefined; error: Error };
 
 // {} in TS means any non nullish value and it's used on purpose here
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -1071,12 +1051,44 @@ export type FetchResourceResult<T extends NonNullable = NonNullable> =
   | FetchResourceResolvedResult<T>
   | FetchResourceRejectedResult;
 
-export type FetchOutputResources = Record<
+export type FetchOutputBasicResources = Record<
   string,
   {
-    type: string;
-    value: FetchResourceResult;
-  }
+    type: string & Record<never, never>;
+  } & FetchResourceResult
+>;
+
+export type FetchCompoundResourceResultValue = {
+  type: string;
+  value: NonNullable;
+  label?: string;
+};
+
+export type FetchCompoundResourceResultValues = Record<
+  string,
+  FetchCompoundResourceResultValue
+>;
+
+export type FetchCompoundResourceResult =
+  | {
+      values: FetchCompoundResourceResultValues;
+      error: null;
+    }
+  | {
+      values: undefined;
+      error: Error;
+    };
+
+export type FetchOutputCompoundResources = Record<
+  string,
+  {
+    type: "object";
+  } & FetchCompoundResourceResult
+>;
+
+export type FetchOutputResources = Record<
+  string,
+  (FetchOutputBasicResources | FetchOutputCompoundResources)[string]
 >;
 
 export type FetchFunction = (

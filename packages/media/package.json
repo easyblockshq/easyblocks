@@ -31,7 +31,6 @@
     "@babel/runtime": "^7.21.0",
     "@radix-ui/react-dropdown-menu": "^2.0.5",
     "@easyblocks/core": "^1.5.2",
-    "contentful": "^9.1.4",
     "react-modal": "^3.12.1",
     "styled-components": "^5.3.3"
   },
