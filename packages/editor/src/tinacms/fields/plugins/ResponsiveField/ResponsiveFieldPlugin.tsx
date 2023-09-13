@@ -1,12 +1,9 @@
 import {
   isResourceSchemaProp,
   isTrulyResponsiveValue,
-  parsePath,
   responsiveValueForceGet,
 } from "@easyblocks/app-utils";
 import {
-  getResourceType,
-  isLocalTextResource,
   ResourceDefinition,
   ResourceSchemaProp,
   TrulyResponsiveValue,
@@ -173,51 +170,26 @@ export const ResponsiveField = (props: ResponsivePluginProps) => {
                     setSelectedWidgetId(widgetId);
 
                     editorContext.actions.runChange(() => {
-                      normalizedFieldName.forEach((fieldName) => {
-                        if (isTrulyResponsiveValue(input.value)) {
-                          const newFieldValue: TrulyResponsiveValue<UnresolvedResource> =
-                            {
-                              ...input.value,
-                              [editorContext.breakpointIndex]: {
-                                id: null,
-                                widgetId,
-                              },
-                            };
-
-                          editorContext.form.change(fieldName, newFieldValue);
-                        } else {
-                          const newFieldValue: UnresolvedResource = {
-                            id: null,
-                            widgetId,
+                      if (isTrulyResponsiveValue(input.value)) {
+                        const newFieldValue: TrulyResponsiveValue<UnresolvedResource> =
+                          {
+                            ...input.value,
+                            [editorContext.breakpointIndex]: {
+                              id: null,
+                              widgetId,
+                            },
                           };
 
-                          editorContext.form.change(fieldName, newFieldValue);
-                        }
-                      });
-                    });
+                        input.onChange(newFieldValue);
+                      } else {
+                        const newFieldValue: UnresolvedResource = {
+                          id: null,
+                          widgetId,
+                        };
 
-                    const parsedPathResult = parsePath(
-                      toArray(field.name)[0],
-                      editorContext.form
-                    );
-
-                    if (parsedPathResult.parent) {
-                      const parentConfigPath = `${parsedPathResult.parent.path}.${parsedPathResult.parent.fieldName}.${parsedPathResult.index}`;
-                      const parentConfig = dotNotationGet(
-                        editorContext.form.values,
-                        parentConfigPath
-                      );
-
-                      if (parentConfig) {
-                        const resourceType = getResourceType(
-                          field.schemaProp as ResourceSchemaProp
-                        );
-                        editorContext.resourcesStore.remove(
-                          `${parentConfig._id}.${field.schemaProp.prop}`,
-                          resourceType
-                        );
+                        input.onChange(newFieldValue);
                       }
-                    }
+                    });
                   }}
                   selectedWidgetId={selectedWidgetId}
                 />
@@ -230,43 +202,7 @@ export const ResponsiveField = (props: ResponsivePluginProps) => {
         {isFieldVisible ? (
           <FieldBuilder
             form={tinaForm}
-            field={{
-              ...controller.field,
-              parse(value, name, field) {
-                if (isResourceSchemaProp(field.schemaProp)) {
-                  const resourceType = getResourceType(field.schemaProp);
-                  if (!isLocalTextResource(value, resourceType)) {
-                    const componentConfigPath = name
-                      .split(".")
-                      .slice(0, -1)
-                      .join(".");
-
-                    const parentConfig = dotNotationGet(
-                      tinaForm.values,
-                      componentConfigPath
-                    );
-                    editorContext.resourcesStore.remove(
-                      `${parentConfig._id}.${field.schemaProp.prop}`,
-                      resourceType
-                    );
-                  }
-
-                  if (!value.widgetId) {
-                    const nextValue: UnresolvedResource = {
-                      ...value,
-                      widgetId: selectedWidgetId,
-                    };
-
-                    return (
-                      controller.field.parse?.(nextValue, name, field) ??
-                      nextValue
-                    );
-                  }
-                }
-
-                return controller.field.parse?.(value, name, field) ?? value;
-              },
-            }}
+            field={controller.field}
             noWrap={true}
           />
         ) : (

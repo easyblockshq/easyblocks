@@ -13,14 +13,13 @@
     "react-hot-toast": "^2.4.0",
     "react-modal": "^3.16.1",
     "react-select": "^5.7.0",
-    "styled-components": "^5.3.9"
+    "styled-components": "^6.0.7"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.191",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
-    "@types/react-modal": "^3.13.1",
-    "@types/styled-components": "^5.1.26"
+    "@types/react-modal": "^3.13.1"
   },
   "peerDependencies": {
     "react": ">=16.8"

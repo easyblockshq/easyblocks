@@ -123,11 +123,10 @@ export class ShopstoryClient {
 
       const resourcesWithSchemas =
         syncedConfigs.flatMap<ResourceWithSchemaProp>((syncedConfig) => {
-          return findResources(
-            syncedConfig.value,
-            this.config,
-            this.contextParams
-          );
+          return findResources(syncedConfig.value, this.config, {
+            ...this.contextParams,
+            ...syncedConfig.options,
+          });
         });
 
       const pendingResources = findPendingResources(

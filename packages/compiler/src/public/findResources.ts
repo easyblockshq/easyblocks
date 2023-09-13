@@ -2,17 +2,19 @@ import {
   configTraverse,
   isResourceSchemaProp,
   isTrulyResponsiveValue,
-  responsiveValueValues,
+  responsiveValueEntries,
 } from "@easyblocks/app-utils";
 import {
+  getResourceId,
   ResourceWithSchemaProp,
   ShopstoryClientDependencies,
   UnresolvedResource,
 } from "@easyblocks/core";
-import { normalizeInput } from "../normalizeInput";
+import { assertDefined } from "@easyblocks/utils";
 import { createCompilationContext } from "../createCompilationContext";
-import { normalize } from "../normalize";
 import { getRootContainer } from "../getRootContainer";
+import { normalize } from "../normalize";
+import { normalizeInput } from "../normalizeInput";
 
 export const findResources: ShopstoryClientDependencies["findResources"] = (
   input,
@@ -39,21 +41,26 @@ export const findResources: ShopstoryClientDependencies["findResources"] = (
         return;
       }
 
+      const configId =
+        assertDefined(normalizedConfig._id) === assertDefined(config._id)
+          ? "$"
+          : assertDefined(config._id);
+
       if (isTrulyResponsiveValue<UnresolvedResource | undefined>(value)) {
-        responsiveValueValues(value).forEach((currentValue) => {
-          if (!currentValue) {
+        responsiveValueEntries(value).forEach(([breakpoint, currentValue]) => {
+          if (currentValue === undefined) {
             return;
           }
 
           resourcesWithSchemaProps.push({
-            id: `${config._id}.${schemaProp.prop}`,
+            id: getResourceId(configId, schemaProp.prop, breakpoint),
             schemaProp,
             resource: currentValue,
           });
         });
       } else {
         resourcesWithSchemaProps.push({
-          id: `${config._id}.${schemaProp.prop}`,
+          id: getResourceId(configId, schemaProp.prop),
           schemaProp,
           resource: value,
         });

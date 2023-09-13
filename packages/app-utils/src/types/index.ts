@@ -1,5 +1,6 @@
 import {
   CompilationMetadata,
+  CompiledComponentConfig,
   CompiledShopstoryComponentConfig,
   ComponentConfig,
   ComponentConfigBase,
@@ -12,6 +13,7 @@ import {
   EventSink,
   FieldPortal,
   Locale,
+  Metadata,
   RefMap,
   Resource,
   ResourceDefinition,
@@ -86,6 +88,9 @@ export type CompilationRootContainer = {
   id: string;
   defaultConfig: ComponentConfig;
   widths?: Record<string, string | number>;
+  resource?: {
+    type: string;
+  };
 };
 
 export type ComponentConfigChangeFunction = (arg: {
@@ -178,6 +183,7 @@ export type EditorContextType = CompilationContextType & {
   focussedField: Array<string>;
   setFocussedField: (focusedFields: string | Array<string>) => void;
   actions: EditorActions;
+  activeRootContainer: CompilationRootContainer;
 };
 
 export type InternalCompilationOutput = {
@@ -194,6 +200,8 @@ export type EditorWindowAPI = {
   editorContext: EditorContextType;
   compilationOutput: EditorCompilationOutput;
   onUpdate?: () => void; // this function will be called by parent window when data is changed, child should "subscribe" to this function
+  meta: Metadata;
+  compiled: CompiledComponentConfig;
 };
 
 export type EditableComponentToComponentConfig<

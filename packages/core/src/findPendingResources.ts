@@ -30,7 +30,7 @@ export function findPendingResources(
     if (
       resource.id === null ||
       isLocalTextResource(resource, type) ||
-      isResourceSettled(id, type, resourcesStore)
+      isResourceSettled(id, resourcesStore)
     ) {
       return;
     }
@@ -54,11 +54,7 @@ export function findPendingResources(
   return result;
 }
 
-function isResourceSettled(
-  id: string,
-  type: string,
-  resourcesStore: ResourcesStore
-) {
-  const resource = resourcesStore.get(id, type);
+function isResourceSettled(id: string, resourcesStore: ResourcesStore) {
+  const resource = resourcesStore.get(id);
   return resource && resource.status !== "loading";
 }

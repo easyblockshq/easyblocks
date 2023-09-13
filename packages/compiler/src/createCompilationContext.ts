@@ -19,6 +19,7 @@ import {
   createFetchingContext,
   Devices,
   EditorLauncherProps,
+  ResourceSchemaProp,
   ResponsiveValue,
   SchemaProp,
   Spacing,
@@ -253,6 +254,7 @@ export function createCompilationContext(
   }
 
   const fetchingContext = createFetchingContext(config);
+  const rootContainers = buildRootContainers(config.rootContainers, devices);
 
   const actions: Array<InternalActionComponentDefinition> = (
     config.actions || []
@@ -336,6 +338,40 @@ export function createCompilationContext(
     }),
   ].map(flow(addTracingSchema));
 
+  const activeRootContainer = rootContainers.find(
+    (r) => r.id === rootContainer
+  );
+
+  if (!activeRootContainer) {
+    throw new Error(`Root container "${rootContainer}" doesn't exist.`);
+  }
+
+  if (activeRootContainer.resource) {
+    const rootComponentDefinition = components.find(
+      (c) => c.id === activeRootContainer.defaultConfig._template
+    );
+
+    if (!rootComponentDefinition) {
+      throw new Error(
+        `Missing definition for component "${activeRootContainer.defaultConfig._template}".`
+      );
+    }
+
+    if (
+      !rootComponentDefinition.schema.some((s) => s.prop === "rootResource")
+    ) {
+      const rootResourceSchemaProp: ResourceSchemaProp = {
+        prop: "rootResource",
+        type: "resource",
+        resourceType: activeRootContainer.resource.type,
+        label: "Resource",
+        optional: true,
+      };
+
+      rootComponentDefinition.schema.push(rootResourceSchemaProp);
+    }
+  }
+
   const links: Array<InternalLinkDefinition> = [
     StandardLink,
     ...(config.links || []).map((linkConfig) => ({
@@ -365,8 +401,6 @@ export function createCompilationContext(
       };
     }),
   ];
-
-  const rootContainers = buildRootContainers(config.rootContainers, devices);
 
   const compilationContext: CompilationContextType = {
     devices,
@@ -401,6 +435,7 @@ function buildRootContainers(
       const resultRootContainer: CompilationContextType["rootContainers"][0] = {
         id,
         defaultConfig: rootContainer.defaultConfig,
+        resource: rootContainer.resource,
       };
 
       if (rootContainer.widths) {

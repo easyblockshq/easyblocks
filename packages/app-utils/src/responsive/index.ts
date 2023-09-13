@@ -12,3 +12,4 @@ export * from "./responsiveValueValues";
 export * from "./responsiveValueReduce";
 export * from "./responsiveValueNormalize";
 export * from "./responsiveValueGetHighestDefinedDevice";
+export * from "./responsiveValueEntries";

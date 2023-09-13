@@ -6,6 +6,7 @@ import {
   FetchCompoundResourceResultValues,
   FetchOutputCompoundResources,
   Field,
+  getResourceId,
   ResolvedResource,
   ResourceSchemaProp,
   TextResourceSchemaProp,
@@ -42,12 +43,6 @@ function CustomFieldLauncher(props: {
   const apiClient = useApiClient();
   const editorContext = useEditorContext();
   const toaster = useToaster();
-
-  const externalField: ExternalFieldType = props.field.externalField;
-
-  if (externalField.type !== "custom") {
-    throw new Error("should never happen"); // type narrowing
-  }
 
   const rootNodeRef = useRef<HTMLDivElement | null>(null);
 
@@ -158,12 +153,21 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
 
   const { schemaProp } = field;
   const isCustomResourceProp = schemaProp.type === "resource";
-
   const resource = editorContext.resources.find((r) => {
     const path = fieldNames[0].split(".").slice(0, -1).join(".");
     const configId = dotNotationGet(editorContext.form.values, path)._id;
 
-    return r.id === `${configId}.${schemaProp.prop}`;
+    return (
+      r.id ===
+      getResourceId(
+        configId,
+        schemaProp.prop,
+        schemaProp.resourceType === "image" ||
+          schemaProp.resourceType === "video"
+          ? editorContext.breakpointIndex
+          : undefined
+      )
+    );
   });
 
   return (
@@ -207,9 +211,10 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
       {content}
       {!isMixedFieldValue(value) &&
         value.id !== null &&
+        schemaProp.prop !== "rootResource" &&
         resource &&
         resource.status === "success" &&
-        isCompoundResource(resource) && (
+        isResolvedCompoundResource(resource) && (
           <CompoundResourceValueSelect
             resource={resource}
             resourceType={schemaProp.resourceType}
@@ -231,7 +236,7 @@ export const ExternalFieldPlugin = {
   Component: ExternalFieldComponent,
 };
 
-function CompoundResourceValueSelect(props: {
+export function CompoundResourceValueSelect(props: {
   resource: SetRequired<
     ResolvedResource<FetchCompoundResourceResultValues>,
     "value"
@@ -269,10 +274,10 @@ function CompoundResourceValueSelect(props: {
   );
 }
 
-function isCompoundResource(
+function isResolvedCompoundResource(
   resource: ResolvedResource
 ): resource is SetRequired<
-  ResolvedResource<FetchOutputCompoundResources[string]["values"]>,
+  ResolvedResource<NonNullable<FetchOutputCompoundResources[string]["values"]>>,
   "value"
 > {
   return resource.type === "object";

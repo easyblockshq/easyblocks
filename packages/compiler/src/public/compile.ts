@@ -41,6 +41,7 @@ export const compile: ShopstoryClientDependencies["compile"] = (
   }
 
   let resultMeta: CompilationMetadata = {
+    // @ts-expect-error We can leave `devices` and `locale` undefined because these values are set in `compileInternal`.
     vars: {},
     code: {},
   };
@@ -60,7 +61,7 @@ export const compile: ShopstoryClientDependencies["compile"] = (
         )?.defaultConfig;
       }
 
-      const inputConfigComponent = normalizeInput(content, options.mode);
+      const inputConfigComponent = normalizeInput(content);
 
       const { meta, ...rest } = compileInternal(
         inputConfigComponent,

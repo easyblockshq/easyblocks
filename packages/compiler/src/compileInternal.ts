@@ -43,6 +43,8 @@ export function compileInternal(
         components: [],
         textModifiers: [],
       },
+      devices: compilationContextWithFullTheme.devices,
+      locale: compilationContextWithFullTheme.contextParams.locale,
     },
   };
 
@@ -91,11 +93,7 @@ export function compileInternal(
         ...meta.code,
         ...builtinCode,
       },
-      vars: {
-        ...meta.vars,
-        devices: compilationContextWithFullTheme.devices,
-        locale: compilationContextWithFullTheme.contextParams.locale,
-      },
+      vars: meta.vars,
     },
   };
 

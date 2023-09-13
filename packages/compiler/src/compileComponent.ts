@@ -2,7 +2,7 @@ import {
   CompilationContextType,
   compileBox,
   Component$$$SchemaProp,
-  InternalEditingInfo,
+  ContextProps,
   EditingInfoComponent,
   EditingInfoComponentCollection,
   EditorContextType,
@@ -11,6 +11,9 @@ import {
   getDevicesWidths,
   getTinaField,
   InternalComponentDefinition,
+  InternalEditingField,
+  InternalEditingFunctionResult,
+  InternalEditingInfo,
   InternalRenderableComponentDefinition,
   isComponentConfig,
   isResourceSchemaProp,
@@ -25,11 +28,8 @@ import {
   parsePath,
   resop2,
   responsiveValueFill,
-  responsiveValueNormalize,
   scalarizeConfig,
   splitTemplateName,
-  InternalEditingFunctionResult,
-  InternalEditingField,
 } from "@easyblocks/app-utils";
 import {
   AnyEditingField,
@@ -54,7 +54,6 @@ import {
   SerializedComponentDefinition,
   TrulyResponsiveValue,
 } from "@easyblocks/core";
-import { ContextProps } from "@easyblocks/app-utils";
 import {
   RichTextComponentConfig,
   richTextInlineWrapperActionSchemaProp,
@@ -580,9 +579,11 @@ export function compileComponent(
        */
       componentDefinition.schema.forEach((schemaProp: SchemaProp) => {
         if (isResourceSchemaProp(schemaProp)) {
-          compiled.props[schemaProp.prop] = responsiveValueNormalize(
-            compiledValues[schemaProp.prop],
-            compilationContext.devices
+          // We simply copy ONLY the breakpoints which are defined in the raw data
+          compiled.props[schemaProp.prop] = Object.fromEntries(
+            Object.keys(editableElement[schemaProp.prop]).map((key) => {
+              return [key, compiledValues[schemaProp.prop][key]];
+            })
           );
         }
       });

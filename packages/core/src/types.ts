@@ -416,8 +416,7 @@ export type ResourceParams = Record<string, unknown>;
 
 export type ContextParams = {
   locale: string;
-  audiences?: string[];
-  // mode?: EditorMode;
+  rootContainer: string;
   [key: string]: any;
 };
 
@@ -479,6 +478,9 @@ export type LocalizedText = {
 export type RootContainer = {
   defaultConfig: ComponentConfig;
   widths?: Array<number>;
+  resource?: {
+    type: string;
+  };
 };
 
 type EditableComponentDefinition = {
@@ -643,7 +645,7 @@ export type PendingResource = ResourceIdentity & {
 
 export type ResolvedResource<Value = unknown> = ResourceIdentity & {
   status: "success";
-  value?: Value;
+  value: Value;
   error: null;
   key?: string;
 };
@@ -934,7 +936,11 @@ export type ResourceWithSchemaProp = {
  */
 
 export type CompilationMetadata = {
-  vars: Record<string, any>;
+  vars: {
+    devices: Devices;
+    locale: string;
+    [key: string]: any;
+  };
   code: {
     ComponentBuilder?: string;
     CanvasRoot?: string;

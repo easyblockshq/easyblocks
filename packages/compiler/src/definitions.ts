@@ -975,7 +975,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
             compilationContext.resourceTypes[schemaProp.resourceType]
               ?.widgets[0]?.id,
         },
-        resourceNormalize
+        resourceNormalize(schemaProp.resourceType)
       );
 
       return {
@@ -987,11 +987,17 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
 
     return {
       normalize: (value) => {
-        const normalized = resourceNormalize(value);
+        const normalized = resourceNormalize(schemaProp.type)(
+          value,
+          compilationContext
+        );
 
         if (!normalized) {
           return {
             id: null,
+            widgetId:
+              compilationContext.resourceTypes[schemaProp.resourceType]
+                ?.widgets[0]?.id,
           };
         }
 
@@ -1017,20 +1023,23 @@ function getNormalize<T>(
   compilationContext: CompilationContextType,
   defaultValue: any,
   fallbackDefaultValue: T,
-  normalize: (x: any) => T | undefined = (x) => x
+  normalize: (
+    x: any,
+    compilationContext: CompilationContextType
+  ) => T | undefined = (x) => x
 ) {
   return (val: any): T => {
-    const normalizedVal = normalize(val);
+    const normalizedVal = normalize(val, compilationContext);
     if (normalizedVal !== undefined) {
       return normalizedVal;
     }
 
-    const normalizedDefaultVal = normalize(defaultValue);
+    const normalizedDefaultVal = normalize(defaultValue, compilationContext);
     if (normalizedDefaultVal !== undefined) {
       return normalizedDefaultVal;
     }
 
-    return normalize(fallbackDefaultValue) as T;
+    return normalize(fallbackDefaultValue, compilationContext) as T;
   };
 }
 
@@ -1038,7 +1047,10 @@ function getResponsiveNormalize<ScalarType>(
   compilationContext: CompilationContextType,
   defaultValue: any,
   fallbackDefaultValue: ScalarType,
-  normalize: (x: any) => ScalarType | undefined = (x) => x
+  normalize: (
+    x: any,
+    compilationContext: CompilationContextType
+  ) => ScalarType | undefined = (x) => x
 ) {
   if (isTrulyResponsiveValue(defaultValue)) {
     /**
@@ -1065,7 +1077,7 @@ function getResponsiveNormalize<ScalarType>(
     }
 
     const responsiveVal = responsiveValueMap(val, (x) => {
-      return normalize(x);
+      return normalize(x, compilationContext);
     });
 
     // main breakpoint always set
@@ -1323,28 +1335,37 @@ function getRef<T>(value: RefValue<T>): string {
   throw new Error("unreachable");
 }
 
-function resourceNormalize(x: any): UnresolvedResource | undefined {
-  if (typeof x === "object" && x !== null) {
-    if (typeof x.id === "string") {
-      const normalized: UnresolvedResourceNonEmpty = {
-        id: x.id,
-        widgetId: x.widgetId,
-        key: x.key,
+function resourceNormalize(
+  resourceType: string
+): (
+  x: any,
+  compilationContext: CompilationContextType
+) => UnresolvedResource | undefined {
+  return (x, compilationContext) => {
+    if (typeof x === "object" && x !== null) {
+      if (typeof x.id === "string") {
+        const normalized: UnresolvedResourceNonEmpty = {
+          id: x.id,
+          widgetId: x.widgetId,
+          key: x.key,
+        };
+        return normalized;
+      }
+
+      const normalized: UnresolvedResourceEmpty = {
+        id: null,
       };
+
+      if (typeof x.widgetId === "string") {
+        normalized.widgetId = x.widgetId;
+      } else {
+        normalized.widgetId =
+          compilationContext.resourceTypes[resourceType]?.widgets[0]?.id;
+      }
+
       return normalized;
     }
-
-    const normalized: UnresolvedResourceEmpty = {
-      id: null,
-    };
-
-    if (typeof x.widgetId === "string") {
-      normalized.widgetId = x.widgetId;
-    }
-
-    return normalized;
-  }
-  return;
+  };
 }
 
 function resourceGetHash(
@@ -1471,7 +1492,9 @@ export function normalizeComponent(
   return ret;
 }
 
-export function getSchemaDefinition<T extends SchemaProp>(
+export function getSchemaDefinition<
+  T extends SchemaProp | Component$$$SchemaProp
+>(
   schemaProp: T,
   compilationContext: CompilationContextType
 ): ReturnType<SchemaPropDefinitionProvider> {

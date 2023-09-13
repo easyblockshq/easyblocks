@@ -32,6 +32,9 @@ export const shopstoryConfig: Config = {
         _template: "$RootSections",
         data: [],
       },
+      resource: {
+        type: "product",
+      },
     },
   },
   components: builtinEditableComponentsDefinitions,
@@ -55,6 +58,9 @@ export const shopstoryConfig: Config = {
     },
     video: {
       widgets: [easyblocksVideoWidget],
+    },
+    product: {
+      widgets: [productWidget],
     },
   },
 };

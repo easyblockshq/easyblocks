@@ -8,8 +8,6 @@ import {
   getComponentMainType,
   InternalComponentDefinition,
   isEmptyRenderableContent,
-  isNonEmptyRenderableContent,
-  isRenderableContent,
   isResourceSchemaProp,
   isSchemaPropAction,
   isSchemaPropActionTextModifier,
@@ -33,6 +31,7 @@ import {
   ComponentSchemaProp,
   CustomResourceSchemaProp,
   FetchOutputCompoundResources,
+  getResourceId,
   getResourceType,
   getResourceValue,
   isLocalTextResource,
@@ -44,7 +43,7 @@ import {
   UnresolvedResource,
 } from "@easyblocks/core";
 import React, { Fragment, ReactElement } from "react";
-import { SetRequired } from "type-fest";
+import { OverrideProperties } from "type-fest";
 import { isTracingSchemaProp } from "../../../tracing";
 import { trace } from "./trace";
 import { withImpressionTracking } from "./withImpressionTracking";
@@ -162,7 +161,7 @@ type RenderabilityStatus = {
 
 function getRenderabilityStatus(
   compiled: CompiledComponentConfig,
-  meta: any
+  meta: Metadata
 ): RenderabilityStatus {
   const status: RenderabilityStatus = {
     renderable: true,
@@ -210,29 +209,32 @@ function getRenderabilityStatus(
     return status;
   }
 
-  for (let i = 0; i < requiredResourceFields.length; i++) {
-    const resourceSchemaProp = requiredResourceFields[i];
-    const resource = meta.resources.find(
-      (resource: Resource) =>
-        resource.id === `${compiled._id}.${resourceSchemaProp.prop}`
+  for (const resourceSchemaProp of requiredResourceFields) {
+    const compiledResourceValue = compiled.props[resourceSchemaProp.prop];
+    const isResponsiveResource = isTrulyResponsiveValue(compiledResourceValue);
+    const resources = meta.resources.filter((resource: Resource) =>
+      isResponsiveResource
+        ? isResourceDefinedForAnyBreakpoint(resource, resourceSchemaProp)
+        : resource.id === getResourceId(compiled._id, resourceSchemaProp.prop)
     );
-    const resourceValue = resource ? getResourceValue(resource) : undefined;
+    // const resourceValues = resources.map((r) => getResourceValue(r));
 
-    const isLoading =
-      status.isLoading ||
-      (resource !== undefined &&
-        (resource.status === "loading" ||
-          (resource.status === "success" &&
-            isEmptyRenderableContent(resourceValue))));
+    // const isLoading =
+    //   status.isLoading ||
+    //   (resources !== undefined &&
+    //     (resources.status === "loading" ||
+    //       (resources.status === "success" &&
+    //         isEmptyRenderableContent(resourceValues))));
+    const isLoading = false;
 
     status.isLoading = isLoading;
 
     const isDefined =
-      resource !== undefined &&
-      resource.status === "success" &&
-      (isRenderableContent(resourceValue)
-        ? isNonEmptyRenderableContent(resourceValue)
-        : true);
+      resources.length > 0 &&
+      resources.every((r) => r.status === "success"); /*&&
+      (isRenderableContent(resourceValues)
+        ? isNonEmptyRenderableContent(resourceValues)
+        : true);*/
 
     status.renderable = status.renderable && isDefined;
 
@@ -244,6 +246,19 @@ function getRenderabilityStatus(
   }
 
   return status;
+
+  function isResourceDefinedForAnyBreakpoint(
+    resource: Resource<unknown>,
+    resourceSchemaProp: CustomResourceSchemaProp
+  ) {
+    return meta.vars.devices
+      .map((d) => d.id)
+      .some(
+        (deviceId) =>
+          resource.id ===
+          getResourceId(compiled._id, resourceSchemaProp.prop, deviceId)
+      );
+  }
 }
 
 function getCompiledSubcomponents(
@@ -258,7 +273,10 @@ function getCompiledSubcomponents(
     | ComponentCollectionSchemaProp
     | ComponentCollectionLocalisedSchemaProp,
   path: string,
-  meta: any,
+  meta: OverrideProperties<
+    Metadata,
+    { code: Record<string, React.ComponentType<any>> }
+  >,
   isEditing: boolean
 ) {
   const originalPath = path;
@@ -781,7 +799,7 @@ function resolveResource(
   schemaProp: ResourceSchemaProp,
   resources: Array<Resource>
 ): ResponsiveValue<ResolvedResourceProp | null> {
-  return responsiveValueMap(responsiveResource, (r) => {
+  return responsiveValueMap(responsiveResource, (r, breakpointIndex) => {
     const type = getResourceType(schemaProp);
 
     if (r.id) {
@@ -794,9 +812,24 @@ function resolveResource(
           error: null,
         };
       } else {
-        const resource = resources.find(
-          (res) => res.id === `${configId}.${schemaProp.prop}`
-        );
+        const resource = resources.find((res) => {
+          // If resource field has `key` defined and its `id` starts with "$.", it means that it's a reference to the
+          // root resource and we need to look for the resource with the same id as the root resource.
+          if (r.key && r.id.startsWith("$.")) {
+            return res.id === r.id;
+          }
+
+          // If `breakpointIndex` is defined, it means we're mapping over the truly responsive value and we need to look
+          // for the resource with the breakpoint index in its id.
+          if (breakpointIndex !== undefined) {
+            return (
+              res.id === `${configId}.${schemaProp.prop}.${breakpointIndex}`
+            );
+          }
+
+          // In any other case we look for the resource with the id that matches the id for the resource field.
+          return res.id === `${configId}.${schemaProp.prop}`;
+        });
 
         let resourceValue = resource;
 
@@ -867,9 +900,8 @@ function resolveResource(
 
 function isCompoundResource(
   resource: ResolvedResource
-): resource is SetRequired<
-  ResolvedResource<FetchOutputCompoundResources[string]["values"]>,
-  "value"
+): resource is ResolvedResource<
+  NonNullable<FetchOutputCompoundResources[string]["values"]>
 > {
   return resource.type === "object";
 }
