@@ -25,13 +25,18 @@ export async function buildPreview(
   const data = await response.json();
 
   const client = new ShopstoryClient({ ...config, accessToken }, contextParams);
-  const renderableContent = client.add({
-    _id: "root",
-    _template: "$ComponentContainer",
-    widthAuto: widthAuto ?? false,
-    width: width ?? 5000,
-    Component: [data.config.config],
-  });
+  const renderableContent = client.add(
+    {
+      _id: "root",
+      _template: "$ComponentContainer",
+      widthAuto: widthAuto ?? false,
+      width: width ?? 5000,
+      Component: [data.config.config],
+    },
+    {
+      rootContainer: contextParams.rootContainer,
+    }
+  );
   const meta = await client.build();
 
   return { renderableContent, meta };

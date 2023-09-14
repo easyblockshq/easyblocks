@@ -31,7 +31,7 @@ export function useFormPortal() {
   return useContext(FormPortalContext);
 }
 
-export const FormPortalProvider = styled(({ children, ...styleProps }) => {
+export const FormPortalProvider = styled(({ children, ...styleProps }: any) => {
   const wrapperRef = React.useRef<HTMLDivElement | null>(null);
 
   const FormPortal = React.useCallback(

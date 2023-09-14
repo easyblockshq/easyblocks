@@ -309,6 +309,7 @@ export const ColorPicker: React.FC<Props> = ({
 
   return (
     <ColorPickerWrapper ref={triggerRef}>
+      {/* @ts-ignore */}
       <Swatch
         onClick={toggleColorPicker}
         colorRGBA={getColorRGBA}

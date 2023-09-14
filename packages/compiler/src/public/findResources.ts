@@ -12,7 +12,6 @@ import {
 } from "@easyblocks/core";
 import { assertDefined } from "@easyblocks/utils";
 import { createCompilationContext } from "../createCompilationContext";
-import { getRootContainer } from "../getRootContainer";
 import { normalize } from "../normalize";
 import { normalizeInput } from "../normalizeInput";
 
@@ -21,15 +20,12 @@ export const findResources: ShopstoryClientDependencies["findResources"] = (
   config,
   contextParams
 ) => {
-  // We only obtain `rootContainer` here for purpose of `normalizeInput` and `createCompilationContext`.
-  // If these two methods would be removed from `findResources` dependencies, we could remove this.
-  const rootContainer = getRootContainer(input, contextParams);
   const inputConfigComponent = normalizeInput(input);
   const resourcesWithSchemaProps: ResourceWithSchemaProp[] = [];
   const compilationContext = createCompilationContext(
     config,
     contextParams,
-    rootContainer
+    "whatever"
   );
   const normalizedConfig = normalize(inputConfigComponent, compilationContext);
 

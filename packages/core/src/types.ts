@@ -416,7 +416,6 @@ export type ResourceParams = Record<string, unknown>;
 
 export type ContextParams = {
   locale: string;
-  rootContainer: string;
   [key: string]: any;
 };
 

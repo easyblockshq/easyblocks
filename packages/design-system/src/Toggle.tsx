@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes, useState } from "react";
+import React, { ChangeEvent, InputHTMLAttributes, useState } from "react";
 import styled from "styled-components";
 import { SSColors } from "./colors";
 
@@ -21,7 +21,7 @@ export const SSToggle: React.FC<SSToggleProps> = (props) => {
           type="checkbox"
           {...inputProps}
           checked={checked}
-          onChange={(e) => {
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
             setInternalChecked(e.target.checked);
             props.onChange?.(e);
           }}

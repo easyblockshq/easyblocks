@@ -46,7 +46,7 @@ export const SSToggleButton = (
       <StyledButton
         {...restProps}
         aria-label={props.children}
-        onClick={(e) => {
+        onClick={() => {
           props.onChange?.(!props.selected);
         }}
       >
