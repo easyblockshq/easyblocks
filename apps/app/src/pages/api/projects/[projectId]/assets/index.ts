@@ -91,7 +91,7 @@ const handler: AuthenticatedNextApiHandler = async (req, res, accessToken) => {
       );
 
     const assets = files.map((file) => {
-      const assetRecord = assetRecords.find(
+      const assetRecord = assetRecords!.find(
         (asset) => asset.asset_id === file.id
       );
 
@@ -103,7 +103,7 @@ const handler: AuthenticatedNextApiHandler = async (req, res, accessToken) => {
 
       if (file.metadata.mimetype.startsWith("image/")) {
         const assetMetadataParseResult = assetMetadataSchema.safeParse(
-          assetRecord.metadata
+          assetRecord!.metadata
         );
 
         if (assetMetadataParseResult.success === false) {
@@ -131,8 +131,8 @@ const handler: AuthenticatedNextApiHandler = async (req, res, accessToken) => {
           : {
               mediaType: "image",
               metadata: {
-                width: assetMetadata.width,
-                height: assetMetadata.height,
+                width: assetMetadata!.width,
+                height: assetMetadata!.height,
                 mimeType: file.metadata.mimetype,
               },
             }),

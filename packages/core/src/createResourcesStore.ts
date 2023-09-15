@@ -1,4 +1,4 @@
-import { Resource } from "./types";
+import { FetchOutputResources, Resource } from "./types";
 
 type ResourceStoreSubscriber = () => void;
 
@@ -12,8 +12,41 @@ type ResourcesStore = {
   has(id: string): boolean;
 };
 
-function createResourcesStore(): ResourcesStore {
-  const store = new Map<string, Resource>();
+function createResourcesStore(
+  initialEntries: FetchOutputResources = {}
+): ResourcesStore {
+  const store = new Map<string, Resource>(
+    Object.entries(initialEntries).map<[string, Resource]>(
+      ([id, fetchResult]) => {
+        const resource: Resource =
+          "values" in fetchResult
+            ? {
+                id,
+                type: fetchResult.type,
+                status: "success",
+                error: null,
+                value: fetchResult.values,
+              }
+            : fetchResult.value !== undefined
+            ? {
+                id,
+                type: fetchResult.type,
+                status: "success",
+                value: fetchResult.value,
+                error: null,
+              }
+            : {
+                id,
+                type: fetchResult.type,
+                status: "error",
+                value: undefined,
+                error: fetchResult.error,
+              };
+
+        return [id, resource];
+      }
+    )
+  );
   const subscribers: Array<ResourceStoreSubscriber> = [];
 
   let isBatching = false;

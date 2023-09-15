@@ -20,7 +20,6 @@ export function mergeCompilationMeta(
   }
 
   return {
-    code: { ...meta1.code, ...meta2.code },
     vars: {
       ...meta1.vars,
       ...meta2.vars,

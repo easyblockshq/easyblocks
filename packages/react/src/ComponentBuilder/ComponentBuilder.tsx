@@ -43,10 +43,16 @@ import {
   UnresolvedResource,
 } from "@easyblocks/core";
 import React, { Fragment, ReactElement } from "react";
-import { OverrideProperties } from "type-fest";
-import { isTracingSchemaProp } from "../../../tracing";
+import Box from "../Box/Box";
 import { trace } from "./trace";
 import { withImpressionTracking } from "./withImpressionTracking";
+import EditableComponentBuilderEditor from "../EditableComponentBuilder/EditableComponentBuilder";
+import EditableComponentBuilderClient from "../EditableComponentBuilder/EditableComponentBuilder.client";
+import Placeholder from "../Placeholder";
+import MissingComponent from "../MissingComponent";
+import { useEasyblocksMetadata } from "../EasyblocksMetadataProvider";
+import { useEasyblocksProviderContext } from "../EasyblocksProvider";
+import { useEasyblocksExternalData } from "../EasyblocksExternalDataProvider";
 
 function buildBoxes(
   compiled: any,
@@ -54,8 +60,6 @@ function buildBoxes(
   actionWrappers: { [key: string]: any },
   meta: any
 ): any {
-  const { Box } = meta.code;
-
   if (Array.isArray(compiled)) {
     return compiled.map((x: any, index: number) =>
       buildBoxes(x, `${name}.${index}`, actionWrappers, meta)
@@ -66,7 +70,7 @@ function buildBoxes(
         __compiled: compiled,
         __name: name,
         devices: meta.vars.devices,
-        stitches: meta.shopstoryProviderContext.stitches,
+        stitches: meta.easyblocksProviderContext.stitches,
       };
 
       if (compiled.__action) {
@@ -273,18 +277,10 @@ function getCompiledSubcomponents(
     | ComponentCollectionSchemaProp
     | ComponentCollectionLocalisedSchemaProp,
   path: string,
-  meta: OverrideProperties<
-    Metadata,
-    { code: Record<string, React.ComponentType<any>> }
-  >,
+  meta: Metadata,
   isEditing: boolean
 ) {
   const originalPath = path;
-  const {
-    Placeholder,
-    EditableComponentBuilderClient,
-    EditableComponentBuilderEditor,
-  } = meta.code;
 
   if (schemaProp.type === "component-collection-localised") {
     path = path + "." + meta.vars.locale;
@@ -301,7 +297,6 @@ function getCompiledSubcomponents(
       index={index}
       contextProps={contextProps}
       path={`${path}.${index}`}
-      meta={meta}
     />
   ));
 
@@ -367,13 +362,15 @@ export type ComponentBuilderProps = {
     [key: string]: any; // any extra props passed in components
   };
   compiled: CompiledShopstoryComponentConfig | CompiledCustomComponentConfig;
-  meta: any;
 };
 
 type ComponentBuilderComponent = React.FC<ComponentBuilderProps>;
 
 function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
-  const { compiled, passedProps, path, meta } = props;
+  const { compiled, passedProps, path } = props;
+  const easyblocksProvider = useEasyblocksProviderContext();
+  const meta = useEasyblocksMetadata();
+  const externalData = useEasyblocksExternalData();
 
   /**
    * Component is build in editing mode only if compiled.__editing is set.
@@ -381,13 +378,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
    * The only case when compiled.__editing is set is when we're in Editor and for non-nested components.
    */
   const isEditing = compiled.__editing !== undefined;
-  const MissingComponent = meta.code.MissingComponent;
   const pathSeparator = path === "" ? "" : ".";
-
-  if (compiled._template === "REPLACE_ME") {
-    // @ts-expect-error this is total exception for purpose of grid editing, will be replaced soon
-    return compiled.element;
-  }
 
   // Here we know we must render just component, without any wrappers
   const componentDefinition = getComponentDefinition(compiled, {
@@ -400,35 +391,26 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
   let component: any;
   if (isComponentCustom) {
     if (isButton) {
-      component = meta.shopstoryProviderContext.buttons[componentDefinition.id];
+      component = easyblocksProvider.buttons[componentDefinition.id];
     } else {
-      component =
-        meta.shopstoryProviderContext.components[componentDefinition.id];
+      component = easyblocksProvider.components[componentDefinition.id];
     }
   } else {
     // We first try to find editor version of that component
     if (compiled.__editing) {
       component =
-        meta.code[componentDefinition.id + ".editor"] ??
-        meta.shopstoryProviderContext.components[
-          componentDefinition.id + ".editor"
-        ];
+        easyblocksProvider.components[componentDefinition.id + ".editor"];
     }
 
     // If it still missing, we try to find client version of that component
     if (!component) {
       component =
-        meta.code[componentDefinition.id + ".client"] ??
-        meta.shopstoryProviderContext.components[
-          componentDefinition.id + ".client"
-        ];
+        easyblocksProvider.components[componentDefinition.id + ".client"];
     }
 
     if (!component) {
       // In most cases we're going to pick component by its id
-      component =
-        meta.code[componentDefinition.id] ??
-        meta.shopstoryProviderContext.components[componentDefinition.id];
+      component = easyblocksProvider.components[componentDefinition.id];
     }
   }
 
@@ -461,7 +443,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
   const traceEvent = isEditing
     ? // eslint-disable-next-line @typescript-eslint/no-unused-vars
       (_: unknown) => {}
-    : trace(compiled, meta.shopstoryProviderContext.eventSink ?? (() => {}));
+    : trace(compiled, easyblocksProvider.eventSink ?? (() => {}));
 
   const Component =
     isEditing || !compiled.tracing?.traceImpressions
@@ -534,7 +516,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
         // save action (for links too)
         actions[schemaProp.prop] = () => {
           const action =
-            meta.shopstoryProviderContext.actions[actionDefinition.id] ??
+            meta.easyblocksProviderContext.actions[actionDefinition.id] ??
             missingActionInstance(actionDefinition.id);
           action(actionParams, null);
         };
@@ -549,7 +531,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
           ) => {
             return React.createElement(LinkWrapper, {
               LinkProvider:
-                meta.shopstoryProviderContext.links[linkActionDefinition.id] ??
+                meta.easyblocksProviderContext.links[linkActionDefinition.id] ??
                 missingLinkInstance(actionDefinition.id),
               Component,
               componentProps: {
@@ -621,9 +603,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
         );
       }
 
-      if (isTracingSchemaProp(schemaProp.prop)) {
-        return;
-      } else if (isSchemaPropComponent(schemaProp)) {
+      if (isSchemaPropComponent(schemaProp)) {
         const item = compiled.components[schemaProp.prop]?.[0];
 
         if (!item) {
@@ -719,11 +699,11 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
 
   const runtime = {
     resources: meta.resources,
-    eventSink: meta.shopstoryProviderContext.eventSink,
-    Image: meta.shopstoryProviderContext.Image,
-    stitches: meta.shopstoryProviderContext.stitches,
-    resop: meta.shopstoryProviderContext.resop,
-    Box: meta.code.Box,
+    eventSink: meta.easyblocksProviderContext.eventSink,
+    Image: meta.easyblocksProviderContext.Image,
+    stitches: meta.easyblocksProviderContext.stitches,
+    resop: meta.easyblocksProviderContext.resop,
+    Box,
     devices: meta.vars.devices,
     isEditing,
     locale: meta.vars.locale,

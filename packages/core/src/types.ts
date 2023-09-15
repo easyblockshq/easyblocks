@@ -512,14 +512,11 @@ export type Config = {
   actions?: CustomAction[];
   links?: CustomLink[];
   devices?: ConfigDevices;
-  eventSink?: EventSink;
   textModifiers?: Array<CustomTextModifier>;
-  audiences?: () => Promise<Audience[]>;
   __masterEnvironment?: boolean;
   strict?: boolean;
   locales?: Array<Locale>;
   rootContainers?: Record<string, RootContainer>;
-  fetch: FetchFunction;
 };
 
 export type PreviewMetadata =
@@ -763,6 +760,12 @@ export type RenderableContent =
   | EmptyRenderableContent
   | NonEmptyRenderableContent;
 
+export type RenderableDocument = {
+  renderableContent: CompiledShopstoryComponentConfig | null;
+  meta: CompilationMetadata;
+  configAfterAuto?: ComponentConfig;
+};
+
 export interface Tracing {
   traceClicks?: boolean;
   traceImpressions?: boolean;
@@ -940,12 +943,6 @@ export type CompilationMetadata = {
     locale: string;
     [key: string]: any;
   };
-  code: {
-    ComponentBuilder?: string;
-    CanvasRoot?: string;
-  } & {
-    [key: string]: string;
-  };
 };
 
 export type Metadata = CompilationMetadata & {
@@ -954,23 +951,12 @@ export type Metadata = CompilationMetadata & {
 
 export type ShopstoryClientDependencies = {
   compile: (
-    items: Array<{
-      content: unknown;
-      /**
-       * nested flag is for the purpose of nested <Shopstory /> components.
-       * If compiler knows that content is nested then it knows that this content
-       * should be compiled in non-editing mode. No unnecessary __editing flag and no
-       * SelectionFrame in the editor.
-       */
-      options: ShopstoryClientAddOptions & { nested: boolean };
-    }>,
+    content: unknown,
     config: Config,
     contextParams: ContextParams
   ) => {
-    items: Array<{
-      compiled: CompiledShopstoryComponentConfig;
-      configAfterAuto?: any;
-    }>;
+    compiled: CompiledShopstoryComponentConfig;
+    configAfterAuto?: any;
     meta: CompilationMetadata;
   };
   /**
@@ -1050,9 +1036,9 @@ type FetchResourceRejectedResult = { value: undefined; error: Error };
 
 // {} in TS means any non nullish value and it's used on purpose here
 // eslint-disable-next-line @typescript-eslint/ban-types
-type NonNullable = {};
+export type NonNullish = {};
 
-export type FetchResourceResult<T extends NonNullable = NonNullable> =
+export type FetchResourceResult<T extends NonNullish = NonNullish> =
   | FetchResourceResolvedResult<T>
   | FetchResourceRejectedResult;
 
@@ -1065,7 +1051,7 @@ export type FetchOutputBasicResources = Record<
 
 export type FetchCompoundResourceResultValue = {
   type: string;
-  value: NonNullable;
+  value: NonNullish;
   label?: string;
 };
 
@@ -1096,7 +1082,11 @@ export type FetchOutputResources = Record<
   (FetchOutputBasicResources | FetchOutputCompoundResources)[string]
 >;
 
-export type FetchFunction = (
+export type PendingExternalData = FetchInputResources;
+
+export type ExternalData = FetchOutputResources;
+
+export type ExternalDataChangeHandler = (
   resources: FetchInputResources,
   contextParams: ContextParams
-) => Promise<FetchOutputResources>;
+) => void;

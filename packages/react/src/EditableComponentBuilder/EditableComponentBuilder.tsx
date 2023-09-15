@@ -9,7 +9,9 @@ import { ContextProps } from "@easyblocks/app-utils";
 
 import React, { FC } from "react";
 import { BlocksControls } from "./BlockControls";
-import { ComponentBuilderProps } from "../ComponentBuilder/ComponentBuilder";
+import ComponentBuilder, {
+  ComponentBuilderProps,
+} from "../ComponentBuilder/ComponentBuilder";
 
 type EditableComponentBuilderProps = ComponentBuilderProps & {
   schemaProp:
@@ -24,21 +26,14 @@ type EditableComponentBuilderProps = ComponentBuilderProps & {
 type EditableComponentBuilderComponent = FC<EditableComponentBuilderProps>;
 
 function EditableComponentBuilder(props: EditableComponentBuilderProps) {
-  const { path, compiled, passedProps, meta } = props;
-
-  const ComponentBuilder = meta.code.ComponentBuilder;
+  const { path, compiled, passedProps } = props;
 
   return (
-    <BlocksControls
-      path={path}
-      disabled={compiled.__editing?.noInline}
-      meta={meta}
-    >
+    <BlocksControls path={path} disabled={compiled.__editing?.noInline}>
       <ComponentBuilder
         compiled={compiled}
         path={path}
         passedProps={passedProps}
-        meta={meta}
       />
     </BlocksControls>
   );

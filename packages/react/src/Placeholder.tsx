@@ -13,7 +13,7 @@ export type PlaceholderProps = {
 };
 
 function Placeholder(props: PlaceholderProps) {
-  const stitches = props.meta.shopstoryProviderContext.stitches;
+  const stitches = props.meta.easyblocksProviderContext.stitches;
   const styles: Record<string, any> = {};
 
   if (props.width) {

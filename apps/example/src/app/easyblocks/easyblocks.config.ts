@@ -3,10 +3,9 @@ import { builtinEditableComponentsDefinitions } from "@easyblocks/editable-compo
 import {
   easyblocksImageWidget,
   easyblocksVideoWidget,
-  fetchEasyblocksMediaResources,
 } from "@easyblocks/media";
-import { fetchPexelsResources, pexelsImageWidget } from "./resources/pexels";
-import { fetchProductResources, productWidget } from "./resources/product";
+import { pexelsImageWidget } from "./resources/pexels";
+import { productWidget } from "./resources/product";
 
 if (!process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN) {
   throw new Error("Missing NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN");
@@ -14,7 +13,7 @@ if (!process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN) {
 
 const easyblocksAccessToken = process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN;
 
-export const shopstoryConfig: Config = {
+export const easyblocksConfig: Config = {
   accessToken: easyblocksAccessToken,
   locales: [
     {
@@ -38,20 +37,6 @@ export const shopstoryConfig: Config = {
     },
   },
   components: builtinEditableComponentsDefinitions,
-  async fetch(resources) {
-    const [easyblocksResources, pexelsResources, productResources] =
-      await Promise.all([
-        fetchEasyblocksMediaResources(resources, easyblocksAccessToken),
-        fetchPexelsResources(resources),
-        fetchProductResources(resources),
-      ]);
-
-    return {
-      ...easyblocksResources,
-      ...pexelsResources,
-      ...productResources,
-    };
-  },
   resourceTypes: {
     image: {
       widgets: [easyblocksImageWidget, pexelsImageWidget, productWidget],

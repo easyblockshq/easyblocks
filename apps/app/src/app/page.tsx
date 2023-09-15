@@ -28,7 +28,7 @@ async function HomePage() {
           Hi {session.user.email}
         </Heading>
       </Flex>
-      {organizations.data.map((o) => {
+      {organizations.data?.map((o) => {
         return (
           <Fragment key={o.id}>
             <Heading as="h2" size="4" mb="2">
@@ -45,7 +45,7 @@ async function HomePage() {
             })}
           </Fragment>
         );
-      })}
+      }) ?? null}
     </Container>
   );
 }

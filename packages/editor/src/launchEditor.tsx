@@ -1,4 +1,10 @@
-import { Config, ContextParams, getDefaultLocale } from "@easyblocks/core";
+import {
+  Config,
+  ContextParams,
+  ExternalDataChangeHandler,
+  FetchOutputResources,
+  getDefaultLocale,
+} from "@easyblocks/core";
 import {
   SSModalContext,
   SSModalStyles,
@@ -10,7 +16,7 @@ import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import React from "react";
-import { createRoot } from "react-dom/client";
+import { createRoot, Root } from "react-dom/client";
 import { HashRouter } from "react-router-dom";
 import { ShouldForwardProp, StyleSheetManager } from "styled-components";
 import { Editor } from "./Editor";
@@ -19,6 +25,8 @@ import { GlobalStyles } from "./tinacms/styles";
 
 type LaunchEditorProps = {
   config: Config;
+  externalData: FetchOutputResources;
+  onExternalDataChange: ExternalDataChangeHandler;
 };
 
 const queryClient = new QueryClient({
@@ -38,6 +46,8 @@ const shouldForwardProp: ShouldForwardProp<"web"> = (propName, target) => {
   return true;
 };
 
+let reactRoot: Root | null = null;
+
 export function launchEditor(props: LaunchEditorProps) {
   const rootNode = document.getElementById("shopstory-main-window");
 
@@ -54,7 +64,9 @@ export function launchEditor(props: LaunchEditorProps) {
     editorSearchParams.rootContainer ?? raiseError("Missing rootContainer");
   const mode = editorSearchParams.mode ?? "playground";
 
-  const reactRoot = createRoot(rootNode);
+  if (!reactRoot) {
+    reactRoot = createRoot(rootNode);
+  }
 
   reactRoot.render(
     <QueryClientProvider client={queryClient}>
@@ -82,6 +94,8 @@ export function launchEditor(props: LaunchEditorProps) {
                 mode={mode}
                 documentId={editorSearchParams.documentId}
                 rootContainer={rootContainer}
+                externalData={props.externalData}
+                onExternalDataChange={props.onExternalDataChange}
               />
               <Toaster containerStyle={{ zIndex: 100100 }} />
             </SSModalContext.Provider>
@@ -91,10 +105,6 @@ export function launchEditor(props: LaunchEditorProps) {
       <ReactQueryDevtools />
     </QueryClientProvider>
   );
-
-  return () => {
-    reactRoot.unmount();
-  };
 }
 
 type EditorSearchParams = {

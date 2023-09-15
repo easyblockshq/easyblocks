@@ -29,13 +29,11 @@ import {
   actionTextModifier,
   StandardLink,
 } from "@easyblocks/editable-components";
-import flow from "lodash/flow";
 import { buildFullTheme } from "./buildFullTheme";
 import {
   themeObjectValueToResponsiveValue,
   themeScalarValueToResponsiveValue,
 } from "./themeValueToResponsiveValue";
-import { addTracingSchema } from "./tracing";
 
 function normalizeSpace(
   space: ResponsiveValue<number | string>
@@ -336,7 +334,7 @@ export function createCompilationContext(
 
       return customComponent;
     }),
-  ].map(flow(addTracingSchema));
+  ];
 
   const activeRootContainer = rootContainers.find(
     (r) => r.id === rootContainer
@@ -412,7 +410,6 @@ export function createCompilationContext(
       textModifiers,
     },
     resourceTypes: fetchingContext.resourceTypes,
-    eventSink: config.eventSink,
     mainBreakpointIndex: mainDevice.id,
     contextParams,
     strict: fetchingContext.strict,

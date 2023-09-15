@@ -1,8 +1,12 @@
-import type { Config, ContextParams } from "@easyblocks/core";
+import type {
+  Config,
+  ContextParams,
+  ExternalData,
+  RenderableDocument,
+} from "@easyblocks/core";
 import React, { useEffect, useState } from "react";
+import { Easyblocks } from "./Easyblocks";
 import { parseQueryParams } from "./parseQueryParams";
-import { Shopstory } from "./Shopstory";
-import { ShopstoryMetadataProvider } from "./ShopstoryMetadataProvider";
 
 type TemplateRendererProps = {
   config: Config;
@@ -12,7 +16,10 @@ type TemplateRendererProps = {
 export const PreviewRenderer: React.FC<TemplateRendererProps> = ({
   config,
 }) => {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<{
+    renderableDocument: RenderableDocument;
+    externalData: ExternalData;
+  } | null>(null);
 
   useEffect(() => {
     import("@easyblocks/core").then(({ buildPreview }) => {
@@ -45,12 +52,7 @@ export const PreviewRenderer: React.FC<TemplateRendererProps> = ({
         accessToken,
         config,
         contextParams
-      ).then(({ meta, renderableContent }) => {
-        setData({
-          meta,
-          renderableContent,
-        });
-      });
+      );
     });
   }, []);
 
@@ -59,8 +61,9 @@ export const PreviewRenderer: React.FC<TemplateRendererProps> = ({
   }
 
   return (
-    <ShopstoryMetadataProvider meta={data.meta}>
-      <Shopstory content={data.renderableContent} />
-    </ShopstoryMetadataProvider>
+    <Easyblocks
+      renderableDocument={data.renderableDocument}
+      externalData={data.externalData}
+    />
   );
 };

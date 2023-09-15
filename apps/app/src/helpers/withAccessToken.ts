@@ -57,7 +57,7 @@ const withAccessToken =
     }
 
     try {
-      const accessToken = parseBearerToken(request.headers["authorization"]);
+      const accessToken = parseBearerToken(request.headers["authorization"]!);
       const supabaseClient = createSupabaseClient(accessToken);
 
       const {

@@ -47,7 +47,7 @@ const DocumentWidget: React.FC<{
 
   let canvasUrl = `${
     window.location.origin
-  }/shopstory-canvas?rootContainer=content&mode=app&source=sales-app&contextParams=${JSON.stringify(
+  }/easyblocks-editor?rootContainer=content&mode=app&source=sales-app&contextParams=${JSON.stringify(
     { locale: "en-US" }
   )}`;
 
@@ -66,7 +66,7 @@ const DocumentWidget: React.FC<{
               ...document,
               accessToken: process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN,
               contextParams: { locale: "en-US" },
-              canvasUrl: `${window.location.origin}/shopstory-canvas`,
+              canvasUrl: `${window.location.origin}/easyblocks-editor`,
             })}
             className={"object-contain absolute top-0 left-0 w-full h-full"}
           />

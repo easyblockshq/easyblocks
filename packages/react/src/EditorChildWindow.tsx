@@ -1,13 +1,12 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForceRerender } from "./hooks/useForceRerender";
-import { Shopstory } from "./Shopstory";
-import {
-  ShopstoryMetadataProvider,
-  useShopstoryMetadata,
-} from "./ShopstoryMetadataProvider";
+import { Easyblocks } from "./Easyblocks";
+import { EasyblocksMetadataProvider } from "./EasyblocksMetadataProvider";
+import CanvasRoot from "./CanvasRoot/CanvasRoot";
+import { EasyblocksExternalDataProvider } from "./EasyblocksExternalDataProvider";
 
-export const EditorChildWindow = () => {
-  const { meta, compiled } = window.parent.editorWindowAPI;
+export function EasyblocksCanvas() {
+  const { meta, compiled, externalData } = window.parent.editorWindowAPI;
 
   const [enabled, setEnabled] = useState(false);
   const { forceRerender } = useForceRerender();
@@ -27,24 +26,26 @@ export const EditorChildWindow = () => {
     };
   });
 
-  const shouldNotRender = !enabled || !meta || !compiled;
+  const shouldNotRender = !enabled || !meta || !compiled || !externalData;
 
   if (shouldNotRender) {
     return <div>Loading...</div>;
   }
 
   return (
-    // ShopstoryMetadataProvider must be defined in case of nested <Shopstory /> components are used!
-    <ShopstoryMetadataProvider meta={meta}>
-      <ShopstoryCanvas>
-        <Shopstory content={{ renderableContent: compiled }} />
-      </ShopstoryCanvas>
-    </ShopstoryMetadataProvider>
+    // EasyblocksMetadataProvider must be defined in case of nested <Easyblocks /> components are used!
+    <EasyblocksMetadataProvider meta={meta}>
+      <EasyblocksExternalDataProvider externalData={externalData}>
+        <CanvasRoot>
+          <Easyblocks
+            renderableDocument={{
+              renderableContent: compiled,
+              meta,
+            }}
+            externalData={externalData}
+          />
+        </CanvasRoot>
+      </EasyblocksExternalDataProvider>
+    </EasyblocksMetadataProvider>
   );
-};
-
-function ShopstoryCanvas(props: { children: ReactNode }) {
-  const meta = useShopstoryMetadata();
-  const CanvasRoot = meta.code.CanvasRoot;
-  return <CanvasRoot>{props.children}</CanvasRoot>;
 }

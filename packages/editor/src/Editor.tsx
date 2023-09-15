@@ -19,6 +19,7 @@ import {
   validate,
 } from "@easyblocks/compiler";
 import {
+  buildEntry,
   CompilationMetadata,
   ComponentConfig,
   Config,
@@ -27,15 +28,17 @@ import {
   createResourcesStore,
   DocumentWithResolvedConfigDTO,
   EditorLauncherProps,
+  ExternalDataChangeHandler,
   ExternalReference,
   FetchCompoundResourceResultValues,
+  FetchOutputResources,
   IApiClient,
   Locale,
   LocalisedDocument,
-  Metadata,
   NonEmptyRenderableContent,
-  RenderableContent,
-  ShopstoryClient,
+  NonNullish,
+  RejectedResource,
+  ResolvedResource,
 } from "@easyblocks/core";
 import {
   SSButtonPrimary,
@@ -43,12 +46,13 @@ import {
   SSFonts,
   useToaster,
 } from "@easyblocks/design-system";
-import { assertDefined, entries, useForceRerender } from "@easyblocks/utils";
+import { assertDefined } from "@easyblocks/utils";
 import { useSession } from "@supabase/auth-helpers-react";
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
+import { Entries } from "type-fest";
 import { ConfigAfterAutoContext } from "./ConfigAfterAutoContext";
 import {
   duplicateItems,
@@ -62,14 +66,12 @@ import { EditorContext, EditorContextType } from "./EditorContext";
 import { EditorIframe } from "./EditorIframe";
 import { EditorSidebar } from "./EditorSidebar";
 import { EditorTopBar, TOP_BAR_HEIGHT } from "./EditorTopBar";
-import { fillGridConfigWithPlaceholders } from "./fillGridConfigWithPlaceholders";
 import {
   ApiClientProvider,
   useApiClient,
 } from "./infrastructure/ApiClientProvider";
 import { createApiClient } from "./infrastructure/createApiClient";
 import { ProjectsApiService } from "./infrastructure/projectsApiService";
-import { StorageProvider } from "./infrastructure/StorageContext";
 import { supabaseClient } from "./infrastructure/supabaseClient";
 import { ModalPicker } from "./ModalPicker";
 import { destinationResolver } from "./paste/destinationResolver";
@@ -179,6 +181,8 @@ type EditorContainerProps = {
   container?: HTMLElement;
   heightMode?: "viewport" | "parent";
   canvasUrl?: string;
+  externalData: FetchOutputResources;
+  onExternalDataChange: ExternalDataChangeHandler;
 };
 
 function EditorContainer(props: EditorContainerProps) {
@@ -252,25 +256,19 @@ function EditorContainer(props: EditorContainerProps) {
     );
   }
 
-  /**
-   * StorageProvider is a bit legacy, it works only with anon token.
-   * That's why even if users logs in with user token, we pass here anonymous token.
-   */
   return (
-    <StorageProvider accessToken={project?.token}>
-      <ApiClientProvider apiClient={apiClient}>
-        <Editor
-          {...props}
-          locales={props.locales}
-          contextParams={props.contextParams}
-          documentId={props.documentId}
-          isPlayground={isPlayground}
-          rootContainer={props.rootContainer}
-          project={project}
-          isEnabled={enabled}
-        />
-      </ApiClientProvider>
-    </StorageProvider>
+    <ApiClientProvider apiClient={apiClient}>
+      <Editor
+        {...props}
+        locales={props.locales}
+        contextParams={props.contextParams}
+        documentId={props.documentId}
+        isPlayground={isPlayground}
+        rootContainer={props.rootContainer}
+        project={project}
+        isEnabled={enabled}
+      />
+    </ApiClientProvider>
   );
 }
 
@@ -293,6 +291,8 @@ export type EditorProps = {
   uniqueSourceIdentifier?: string;
   isPlayground: boolean;
   documentId: string | null;
+  externalData: FetchOutputResources;
+  onExternalDataChange: ExternalDataChangeHandler;
 };
 
 const Editor = memo((props: EditorProps) => {
@@ -330,10 +330,6 @@ const Editor = memo((props: EditorProps) => {
               rootContainer: props.rootContainer,
               compilationContext,
             });
-
-        if (props.rootContainer === "grid") {
-          fillGridConfigWithPlaceholders(resolvedInput.config);
-        }
 
         setResolvedInput(resolvedInput);
       } catch (error) {
@@ -386,57 +382,9 @@ function useBuiltContent(
   config: Config,
   contextParams: ContextParams,
   rawContent: ConfigComponent,
-  rootContainer: EditorLauncherProps["rootContainer"]
-): { meta: Metadata; renderableContent: NonEmptyRenderableContent } {
-  const shopstoryClient = useRef<ShopstoryClient>(
-    new ShopstoryClient(
-      {
-        ...config,
-        projectId: editorContext.project?.id,
-        accessToken: config.accessToken ?? editorContext.project?.token,
-      },
-      contextParams,
-      editorContext.resourcesStore
-    )
-  ).current;
-  const { forceRerender } = useForceRerender();
-
-  shopstoryClient.__applyConfigTransform = false;
-
-  shopstoryClient.injectDependencies({
-    findResources,
-    validate,
-    compile: (items) => {
-      let resultMeta: CompilationMetadata = {
-        code: {},
-        vars: {
-          devices: editorContext.devices,
-          locale: contextParams.locale,
-        },
-      };
-
-      return {
-        items: items.map(({ content, options }) => {
-          const normalizedContent = normalizeInput(content);
-
-          const { meta, ...rest } = options.nested
-            ? compileInternal(normalizedContent, {
-                ...editorContext,
-                isEditing: false,
-              })
-            : compileInternal(
-                normalizedContent,
-                editorContext,
-                editorContext.compilationCache
-              );
-
-          resultMeta = mergeCompilationMeta(resultMeta, meta);
-          return rest;
-        }),
-        meta: resultMeta,
-      };
-    },
-  });
+  onExternalDataChange: ExternalDataChangeHandler
+): NonEmptyRenderableContent & { meta: CompilationMetadata } {
+  const buildEntryResult = useRef<ReturnType<typeof buildEntry>>();
 
   // cached inputs (needed to calculated "inputChanged")
   const inputRawContent = useRef<ConfigComponent>();
@@ -452,18 +400,8 @@ function useBuiltContent(
   inputIsEditing.current = editorContext.isEditing;
   inputBreakpointIndex.current = editorContext.breakpointIndex;
 
-  const renderableContent = useRef<RenderableContent>();
-  const meta = useRef<Metadata>({
-    code: {},
-    resources: [],
-    vars: {
-      devices: editorContext.devices,
-      locale: contextParams.locale,
-    },
-  });
-
-  if (inputChanged) {
-    /**
+  if (!buildEntryResult.current || inputChanged) {
+    /*
      * Why do we merge meta instead of overriding?
      * It might seem redundant. We could only take the newest meta and re-render, right?
      *
@@ -484,27 +422,54 @@ function useBuiltContent(
      *
      */
 
-    const newRenderableContent = shopstoryClient.add(rawContent, {
-      rootContainer,
-    });
-    const newMeta = shopstoryClient.buildSync((newMeta) => {
-      meta.current = {
-        ...mergeCompilationMeta(meta.current, newMeta),
-        resources: newMeta.resources,
-      };
-      forceRerender();
+    buildEntryResult.current = buildEntry({
+      entry: rawContent,
+      config,
+      locale: contextParams.locale,
+      resourcesStore: editorContext.resourcesStore,
+      compiler: {
+        findResources,
+        validate,
+        compile: (content) => {
+          let resultMeta: CompilationMetadata = {
+            vars: {
+              devices: editorContext.devices,
+              locale: contextParams.locale,
+            },
+          };
+
+          const normalizedContent = normalizeInput(content);
+
+          const { meta, ...rest } = compileInternal(
+            normalizedContent,
+            editorContext,
+            editorContext.compilationCache
+          );
+
+          resultMeta = mergeCompilationMeta(resultMeta, meta);
+
+          return {
+            ...rest,
+            meta: resultMeta,
+          };
+        },
+      },
     });
 
-    renderableContent.current = newRenderableContent;
-    meta.current = {
-      ...mergeCompilationMeta(meta.current, newMeta),
-      resources: newMeta.resources,
-    };
+    if (Object.keys(buildEntryResult.current.externalData).length > 0) {
+      onExternalDataChange(
+        buildEntryResult.current.externalData,
+        contextParams
+      );
+    }
   }
 
   return {
-    renderableContent: renderableContent.current as NonEmptyRenderableContent,
-    meta: meta.current!,
+    renderableContent: (buildEntryResult.current as NonEmptyRenderableContent)
+      .renderableContent,
+    configAfterAuto: (buildEntryResult.current as NonEmptyRenderableContent)
+      .configAfterAuto,
+    meta: buildEntryResult.current.meta,
   };
 }
 
@@ -516,6 +481,7 @@ const EditorContent = ({
   uniqueSourceIdentifier,
   isPlayground,
   rootContainer,
+  externalData,
   ...props
 }: EditorContentProps) => {
   const apiClient = useApiClient();
@@ -561,8 +527,8 @@ const EditorContent = ({
   const sidebarNodeRef = useRef<HTMLDivElement | null>(null);
 
   const [editableData, form] = useForm({
-    id: "tina-shopstory",
-    label: "Edit Page",
+    id: "easyblocks-editor",
+    label: "Edit entry",
     fields: [],
     initialValues: initialConfig,
     onSubmit: async () => {},
@@ -691,7 +657,59 @@ const EditorContent = ({
 
   const [isAdminMode, setAdminMode] = useState(false);
 
-  const [resourcesStore] = useState(() => createResourcesStore());
+  const [resourcesStore] = useState(() =>
+    createResourcesStore(externalData ?? {})
+  );
+
+  useEffect(() => {
+    if (externalData) {
+      Object.entries(externalData).forEach(
+        ([id, resource]: Entries<typeof externalData>[number]) => {
+          if ("values" in resource) {
+            resourcesStore.set(id, {
+              id,
+              type: resource.type,
+              status: "success",
+              error: null,
+              value: resource.values,
+            });
+          } else {
+            if (resource.value !== undefined) {
+              resourcesStore.set(id, {
+                id,
+                type: resource.type,
+                status: "success",
+                value: resource.value,
+                error: null,
+              });
+            } else {
+              resourcesStore.set(id, {
+                id,
+                type: resource.type,
+                status: "error",
+                value: undefined,
+                error: resource.error,
+              });
+            }
+          }
+        }
+      );
+
+      window.editorWindowAPI.externalData = Object.fromEntries(
+        resourcesStore
+          .values()
+          .filter<ResolvedResource<NonNullish> | RejectedResource>(
+            (r): r is ResolvedResource<NonNullish> | RejectedResource =>
+              r.status !== "loading"
+          )
+          .map((v) => [v.id, v])
+      );
+
+      console.debug("external data", window.editorWindowAPI.externalData);
+
+      window.editorWindowAPI.onUpdate?.();
+    }
+  }, [externalData, resourcesStore]);
 
   const syncTemplates = () => {
     getTemplates(editorContext, apiClient).then((newTemplates) => {
@@ -789,10 +807,7 @@ const EditorContent = ({
     }
   }, [editorContext.resources]);
 
-  const {
-    meta,
-    renderableContent: { configAfterAuto, renderableContent },
-  } = useBuiltContent(
+  const { configAfterAuto, renderableContent, meta } = useBuiltContent(
     editorContext,
     props.config,
     {
@@ -800,10 +815,10 @@ const EditorContent = ({
       isEditing,
     },
     editableData,
-    rootContainer
+    props.onExternalDataChange
   );
 
-  editorContext.resources = meta.resources;
+  editorContext.resources = resourcesStore.values();
   editorContext.compiledComponentConfig = renderableContent;
   editorContext.configAfterAuto = configAfterAuto;
 
@@ -819,6 +834,8 @@ const EditorContent = ({
   window.editorWindowAPI.editorContext = editorContext;
   window.editorWindowAPI.meta = meta;
   window.editorWindowAPI.compiled = renderableContent;
+  window.editorWindowAPI.externalData =
+    window.editorWindowAPI.externalData ?? {};
 
   usePlugin(form);
 
@@ -833,7 +850,7 @@ const EditorContent = ({
     if (window.editorWindowAPI.onUpdate) {
       window.editorWindowAPI.onUpdate();
     }
-  }, [renderableContent, meta, focussedField, isEditing, breakpointIndex]);
+  }, [renderableContent, focussedField, isEditing, breakpointIndex]);
 
   useEffect(() => {
     window.addEventListener(
@@ -1153,13 +1170,4 @@ function adaptRemoteConfig(
   const withoutLocalizedFlag = removeLocalizedFlag(config, compilationContext);
   const normalized = normalize(withoutLocalizedFlag, compilationContext);
   return normalized;
-}
-
-function mapValues<T extends Record<string, unknown>, R>(
-  obj: T,
-  fn: (value: T[keyof T]) => R
-): Record<keyof T, R> {
-  return Object.fromEntries(
-    entries(obj).map(([key, value]) => [key, fn(value)])
-  ) as Record<keyof T, R>;
 }

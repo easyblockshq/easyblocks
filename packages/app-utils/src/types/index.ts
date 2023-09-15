@@ -11,9 +11,9 @@ import {
   EditingFunction,
   EditingInfoBase,
   EventSink,
+  ExternalData,
   FieldPortal,
   Locale,
-  Metadata,
   RefMap,
   Resource,
   ResourceDefinition,
@@ -200,8 +200,9 @@ export type EditorWindowAPI = {
   editorContext: EditorContextType;
   compilationOutput: EditorCompilationOutput;
   onUpdate?: () => void; // this function will be called by parent window when data is changed, child should "subscribe" to this function
-  meta: Metadata;
+  meta: CompilationMetadata;
   compiled: CompiledComponentConfig;
+  externalData: ExternalData;
 };
 
 export type EditableComponentToComponentConfig<

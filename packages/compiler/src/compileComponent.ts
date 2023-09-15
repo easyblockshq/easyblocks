@@ -903,26 +903,6 @@ function addComponentToSerializedComponentDefinitions(
     tags: internalDefinition.tags,
   };
 
-  const code = internalDefinition.componentCode;
-
-  if (code) {
-    if (typeof code === "object") {
-      const { editor: editorCode, client: clientCode } = code;
-
-      // This case is required when we are editing and we use custom component that renders Shopstory component.
-      // Shopstory components rendered by that component have to be in client mode and not be editable,
-      // but we also need editor version of these components to be rendered during editing.
-      if (compilationContext.isEditing && editorCode) {
-        meta.code[internalDefinition.id + ".editor"] = editorCode;
-        meta.code[internalDefinition.id + ".client"] = clientCode;
-      } else {
-        meta.code[internalDefinition.id] = clientCode;
-      }
-    } else {
-      meta.code[internalDefinition.id] = code;
-    }
-  }
-
   definitions.push(newDef);
 }
 

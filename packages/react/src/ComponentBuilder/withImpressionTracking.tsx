@@ -1,7 +1,7 @@
-import React, { ComponentType } from "react";
-import { useIntersectionObserver } from "./useIntersectionObserver";
-import { thresholdOfHalfTheViewportHeight } from "./thresholdOfHalfTheViewportHeight";
 import { EventType } from "@easyblocks/core";
+import React, { ComponentType } from "react";
+import { thresholdOfHalfTheViewportHeight } from "./thresholdOfHalfTheViewportHeight";
+import { useIntersectionObserver } from "./useIntersectionObserver";
 
 function withImpressionTracking<T extends Record<string, unknown>>(
   {

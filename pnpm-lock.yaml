@@ -883,11 +883,20 @@ importers:
         specifier: '>= 16.8.0'
         version: 17.0.2(react@17.0.2)
     devDependencies:
+      '@easyblocks/app-utils':
+        specifier: workspace:*
+        version: link:../app-utils
       '@easyblocks/build-tools':
         specifier: ^1.5.2
         version: link:../build-tools
+      '@easyblocks/design-system':
+        specifier: workspace:*
+        version: link:../design-system
+      '@easyblocks/editor':
+        specifier: workspace:*
+        version: link:../editor
       '@easyblocks/utils':
-        specifier: link:../utils
+        specifier: workspace:*
         version: link:../utils
       '@jest/types':
         specifier: ^26.6.2

@@ -5,7 +5,7 @@ import type {
   VideoSrc,
   Widget,
   WidgetComponent,
-} from "@shopstory/core";
+} from "@easyblocks/core";
 
 const pexelsApiKey = "us4Cvb33zDTkpH0RqYmuSgzyx0Nnc4qwDkIMkDMOuCw5giL06WmSONgY";
 

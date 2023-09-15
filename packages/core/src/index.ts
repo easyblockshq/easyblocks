@@ -4,7 +4,6 @@ export { createResourcesStore } from "./createResourcesStore";
 export { loadScript } from "./loadScripts";
 export * from "./types";
 export * from "./resourcesUtils";
-export * from "./ShopstoryClient";
 export * from "./buildPreview";
 export * from "./locales";
 export { ApiClient } from "./infrastructure/apiClient";
@@ -33,3 +32,5 @@ export function getResourceId(
 
   return resourceId;
 }
+
+export { buildEntry } from "./buildEntry";

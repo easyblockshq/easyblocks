@@ -3,22 +3,23 @@ import {
   RICH_TEXT_PART_CONFIG_PATH_REGEXP,
 } from "@easyblocks/app-utils";
 import React from "react";
+import { useEasyblocksMetadata } from "../EasyblocksMetadataProvider";
 import { SelectionFrameController } from "./SelectionFrameController";
 
 interface BlocksControlsProps {
   children: React.ReactChild | React.ReactChild[];
   path: string;
   disabled?: boolean;
-  meta: any;
 }
 export function BlocksControls({
   children,
   path,
   disabled,
-  meta,
 }: BlocksControlsProps) {
   const { focussedField, setFocussedField } =
     window.parent.editorWindowAPI.editorContext;
+
+  const meta = useEasyblocksMetadata();
 
   if (disabled) {
     return <>{children}</>;
@@ -94,7 +95,7 @@ export function BlocksControls({
       isActive={isActive}
       isChildrenSelectionDisabled={!isActive && !childIsActive}
       onSelect={focusOnBlock}
-      stitches={meta.shopstoryProviderContext.stitches}
+      stitches={meta.easyblocksProviderContext.stitches}
     >
       {children}
     </SelectionFrameController>

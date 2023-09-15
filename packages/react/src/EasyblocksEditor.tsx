@@ -1,18 +1,21 @@
-import { Config } from "@easyblocks/core";
+import type { Config, FetchOutputResources } from "@easyblocks/core";
 import React, { useEffect, useState } from "react";
-import { EditorChildWindow } from "./EditorChildWindow";
+import { EasyblocksCanvas } from "./EditorChildWindow";
 import { parseQueryParams } from "./parseQueryParams";
 import { PreviewRenderer } from "./PreviewRenderer";
+import type { ExternalDataChangeHandler } from "./types";
 
-export type CanvasProps = {
+export type EasyblocksEditorProps = {
   config: Config;
+  externalData?: FetchOutputResources;
+  onExternalDataChange?: ExternalDataChangeHandler;
 };
 
-export function Canvas(props: CanvasProps) {
+export function EasyblocksEditor(props: EasyblocksEditorProps) {
   const [selectedWindow, setSelectedWindow] = useState<
     "parent" | "child" | "preview" | null
   >(null);
-  const [config, setConfig] = useState<Config | undefined>(undefined);
+  const [editorModule, setEditorModule] = useState<any>();
 
   const setSelectedWindowToParent = () => {
     window.isShopstoryEditor = true;
@@ -50,24 +53,33 @@ export function Canvas(props: CanvasProps) {
 
   useEffect(() => {
     if (selectedWindow === "parent") {
-      Promise.all([buildConfig(props.config), loadEditorModule()]).then(
-        ([config, editorModule]) => {
-          editorModule.launchEditor({
-            config,
-          });
-        }
-      );
-    } else if (selectedWindow === "preview") {
-      buildConfig(props.config).then((config) => setConfig(config));
+      if (editorModule) {
+        editorModule.launchEditor({
+          config: props.config,
+          externalData: props.externalData,
+          onExternalDataChange: props.onExternalDataChange,
+        });
+        return;
+      }
+
+      loadEditorModule().then((editorModule) => {
+        setEditorModule(setEditorModule);
+
+        editorModule.launchEditor({
+          config: props.config,
+          externalData: props.externalData,
+          onExternalDataChange: props.onExternalDataChange,
+        });
+      });
     }
-  }, [selectedWindow]);
+  }, [selectedWindow, props.externalData]);
 
   return (
     <>
       {selectedWindow === "parent" && <div id="shopstory-main-window" />}
-      {selectedWindow === "child" && <EditorChildWindow />}
-      {selectedWindow === "preview" && config && (
-        <PreviewRenderer config={config} />
+      {selectedWindow === "child" && <EasyblocksCanvas />}
+      {selectedWindow === "preview" && (
+        <PreviewRenderer config={props.config} />
       )}
     </>
   );

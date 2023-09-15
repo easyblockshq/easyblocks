@@ -25,7 +25,7 @@ export const findResources: ShopstoryClientDependencies["findResources"] = (
   const compilationContext = createCompilationContext(
     config,
     contextParams,
-    "whatever"
+    "content"
   );
   const normalizedConfig = normalize(inputConfigComponent, compilationContext);
 
