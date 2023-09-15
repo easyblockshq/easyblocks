@@ -4,14 +4,16 @@
     "title": "Flec Candle Holder Pink Blossom",
     "price": 29,
     "compareAtPrice": null,
-    "image": "/images/products/nooma_FlecCandleHolder-Low-PinkBlossom-2.png?v=1652370754"
+    "image": "/images/products/nooma_FlecCandleHolder-Low-PinkBlossom-2.png?v=1652370754",
+    "imageSecondary": "/images/products/nooma_FlecCandleHolder-Set-3.jpg"
   },
   {
     "id": "flec-candle-holder-gold-green",
     "title": "Flec Candle Holder Gold Green",
     "price": 29,
     "compareAtPrice": null,
-    "image": "/images/products/nooma_FlecCandleHolder-Low-GoldGreen-2.png?v=1652371992"
+    "image": "/images/products/nooma_FlecCandleHolder-Low-GoldGreen-2.png?v=1652371992",
+    "imageSecondary": "/images/products/nooma_FlecCandleHolder-Set-3.jpg"
   },
   {
     "id": "toom-modular-sofa-pale-grey-armchair",
@@ -277,7 +279,8 @@
     "title": "Flec Candle Holder Poppy Red",
     "price": 29,
     "compareAtPrice": null,
-    "image": "/images/products/nooma_FlecCandleHolder-Low-PoppyRed-2.png?v=1652191530"
+    "image": "/images/products/nooma_FlecCandleHolder-Low-PoppyRed-2.png?v=1652191530",
+    "imageSecondary": "/images/products/nooma_FlecCandleHolder-Set-3.jpg"
   },
   {
     "id": "oul-serving-platter-bowls",

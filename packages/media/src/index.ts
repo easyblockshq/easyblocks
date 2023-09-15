@@ -5,12 +5,12 @@ export { fetchEasyblocksMediaResources } from "./index.react-server";
 
 export const easyblocksImageWidget: Widget = {
   id: "@easyblocks/image",
-  label: "Easyblocks",
+  label: "My Media",
   component: () => mockMediaPicker("image"),
 };
 
 export const easyblocksVideoWidget: Widget = {
   id: "@easyblocks/video",
-  label: "Easyblocks",
+  label: "My Media",
   component: () => mockMediaPicker("video"),
 };

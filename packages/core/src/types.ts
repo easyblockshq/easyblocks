@@ -428,6 +428,8 @@ export type PickerItem = {
 export interface PickerAPI {
   getItems: (query: string) => Promise<PickerItem[]>;
   getItemById: (id: string) => Promise<PickerItem>;
+
+  placeholder?: string;
 }
 
 export type ExternalFieldItemPicker = {

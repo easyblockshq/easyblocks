@@ -35,6 +35,7 @@ const productWidget: Widget = {
         };
       });
     },
+    placeholder: "Pick a product",
   },
   label: "E-commerce",
 };
@@ -86,6 +87,22 @@ async function fetchProductResources(
       ],
     };
 
+    const secondaryImage: ImageSrc = product.imageSecondary
+      ? {
+          alt: product.title,
+          aspectRatio: 1581 / 2370,
+          mimeType: "image/jpeg",
+          url: product.imageSecondary,
+          srcset: [
+            {
+              h: 2370,
+              w: 1581,
+              url: product.imageSecondary,
+            },
+          ],
+        }
+      : productImage;
+
     result[id] = {
       type: "object",
       values: {
@@ -93,6 +110,11 @@ async function fetchProductResources(
           type: "image",
           value: productImage,
           label: "Main image",
+        },
+        secondaryImage: {
+          type: "image",
+          value: secondaryImage,
+          label: "Secondary image",
         },
         title: {
           type: "text",

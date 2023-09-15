@@ -123,6 +123,7 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
     extraParams.api = {
       products: externalField.getItems,
       product: externalField.getItemById,
+      placeholder: externalField.placeholder,
     };
   } else {
     throw new Error("unknown type");

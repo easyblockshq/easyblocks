@@ -10,6 +10,7 @@ export type Product = {
   price: number;
   compareAtPrice: number | null;
   image: string;
+  imageSecondary?: string;
 };
 
 export const MockProductsService = {

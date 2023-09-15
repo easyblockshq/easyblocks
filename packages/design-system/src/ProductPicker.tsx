@@ -18,6 +18,7 @@ type ProductType = {
 export interface SSProductPickerAPI {
   products: (query: string) => Promise<ProductType[]>;
   product: (id: string) => Promise<ProductType>;
+  placeholder?: string;
 }
 
 type ProductPickerProps = {
@@ -138,6 +139,8 @@ export const SSProductPicker: React.FC<ProductPickerProps> = ({
     };
   }, [value]);
 
+  const placeholder = api.placeholder ?? "Pick an item";
+
   return (
     <div
       css={`
@@ -165,9 +168,7 @@ export const SSProductPicker: React.FC<ProductPickerProps> = ({
               : undefined
           }
           label={
-            state === "loading"
-              ? "Loading..."
-              : product?.title ?? "Pick an item"
+            state === "loading" ? "Loading..." : product?.title ?? placeholder
           }
           onClick={() => {
             setOpen(true);
