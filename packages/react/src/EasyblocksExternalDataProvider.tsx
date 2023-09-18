@@ -1,4 +1,4 @@
-import { FetchOutputResources } from "@easyblocks/core";
+import { ExternalData, FetchOutputResources } from "@easyblocks/core";
 import React, { createContext, useContext } from "react";
 
 const EasyblocksExternalDataContext =
@@ -21,7 +21,7 @@ function EasyblocksExternalDataProvider({
   externalData,
 }: {
   children: React.ReactNode;
-  externalData: FetchOutputResources;
+  externalData: ExternalData;
 }) {
   return (
     <EasyblocksExternalDataContext.Provider value={externalData}>

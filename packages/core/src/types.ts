@@ -507,8 +507,6 @@ export type Config = {
   aspectRatios?: RuntimeConfigThemeValue<string>[];
   boxShadows?: RuntimeConfigThemeValue<string>[];
   containerWidths?: RuntimeConfigThemeValue<number>[];
-  mainGrid?: GridConfig;
-  grids?: Record<string, Partial<GridConfig>>;
   buttons?: ButtonCustomComponent[];
   components?: Array<EditableComponentDefinition | CustomComponent>;
   actions?: CustomAction[];

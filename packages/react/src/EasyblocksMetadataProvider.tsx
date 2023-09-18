@@ -1,13 +1,13 @@
 "use client";
 
-import { Metadata } from "@easyblocks/core";
+import { CompilationMetadata } from "@easyblocks/core";
 import React, { createContext, ReactNode, useContext } from "react";
 import ReactDOM from "react-dom";
 import createElement from "./createElement";
 import { useEasyblocksProviderContext } from "./EasyblocksProvider";
 
 const EasyblocksMetadataContext = createContext<
-  | (Metadata & {
+  | (CompilationMetadata & {
       easyblocksProviderContext: ReturnType<
         typeof useEasyblocksProviderContext
       >;
@@ -17,7 +17,7 @@ const EasyblocksMetadataContext = createContext<
 
 export type EasyblocksMetadataProviderProps = {
   children: ReactNode;
-  meta: Metadata;
+  meta: CompilationMetadata;
 };
 
 const EasyblocksMetadataProvider: React.FC<EasyblocksMetadataProviderProps> = ({
@@ -38,7 +38,6 @@ const EasyblocksMetadataProvider: React.FC<EasyblocksMetadataProviderProps> = ({
     <EasyblocksMetadataContext.Provider
       value={{
         ...meta,
-        vars: meta.vars,
         easyblocksProviderContext,
       }}
     >

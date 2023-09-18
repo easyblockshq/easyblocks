@@ -25,6 +25,7 @@ export default function EntriesPage() {
             <tr>
               <th className={cellClasses}>Name</th>
               <th className={cellClasses}>Id</th>
+              <th className={cellClasses}>Type</th>
               <th className={cellClasses}>Last modified</th>
             </tr>
           </thead>
@@ -40,6 +41,7 @@ export default function EntriesPage() {
                   </Link>
                 </td>
                 <td className={cellClasses}>{entry.id}</td>
+                <td className={cellClasses}>{entry.type}</td>
                 <td className={cellClasses}>
                   {entry.updatedAt.toDateString()}
                 </td>

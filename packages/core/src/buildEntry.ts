@@ -17,13 +17,13 @@ import {
 function buildEntry({
   entry,
   config,
-  locale,
+  contextParams,
   compiler,
   resourcesStore,
 }: {
   entry: ComponentConfig;
   config: Config;
-  locale: string;
+  contextParams: { locale: string; rootContainer: string };
   compiler: ShopstoryClientDependencies;
   resourcesStore: ResourcesStore;
 }): {
@@ -32,10 +32,12 @@ function buildEntry({
   externalData: FetchInputResources;
   configAfterAuto?: ComponentConfig;
 } {
-  const compilationResult = compiler.compile(entry, config, { locale });
-  const resourcesWithSchemaProps = compiler.findResources(entry, config, {
-    locale,
-  });
+  const compilationResult = compiler.compile(entry, config, contextParams);
+  const resourcesWithSchemaProps = compiler.findResources(
+    entry,
+    config,
+    contextParams
+  );
   const externalData = findPendingExternalData(
     resourcesWithSchemaProps,
     resourcesStore

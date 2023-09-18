@@ -45,13 +45,13 @@ const DocumentWidget: React.FC<{
     };
   }, [editorIframeNode, router]);
 
-  let canvasUrl = `${
-    window.location.origin
-  }/easyblocks-editor?rootContainer=content&mode=app&source=sales-app&contextParams=${JSON.stringify(
-    { locale: "en-US" }
-  )}`;
+  let canvasUrl = `${window.location.origin}/easyblocks-editor?rootContainer=${
+    document.rootContainer
+  }&mode=app&source=sales-app&contextParams=${JSON.stringify({
+    locale: "en-US",
+  })}`;
 
-  if (document) {
+  if (document.id) {
     canvasUrl += `&documentId=${document.id}`;
   }
 

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useForceRerender } from "./hooks/useForceRerender";
+import CanvasRoot from "./CanvasRoot/CanvasRoot";
 import { Easyblocks } from "./Easyblocks";
 import { EasyblocksMetadataProvider } from "./EasyblocksMetadataProvider";
-import CanvasRoot from "./CanvasRoot/CanvasRoot";
-import { EasyblocksExternalDataProvider } from "./EasyblocksExternalDataProvider";
+import { useForceRerender } from "./hooks/useForceRerender";
 
 export function EasyblocksCanvas() {
   const { meta, compiled, externalData } = window.parent.editorWindowAPI;
@@ -35,17 +34,15 @@ export function EasyblocksCanvas() {
   return (
     // EasyblocksMetadataProvider must be defined in case of nested <Easyblocks /> components are used!
     <EasyblocksMetadataProvider meta={meta}>
-      <EasyblocksExternalDataProvider externalData={externalData}>
-        <CanvasRoot>
-          <Easyblocks
-            renderableDocument={{
-              renderableContent: compiled,
-              meta,
-            }}
-            externalData={externalData}
-          />
-        </CanvasRoot>
-      </EasyblocksExternalDataProvider>
+      <CanvasRoot>
+        <Easyblocks
+          renderableDocument={{
+            renderableContent: compiled,
+            meta,
+          }}
+          externalData={externalData}
+        />
+      </CanvasRoot>
     </EasyblocksMetadataProvider>
   );
 }

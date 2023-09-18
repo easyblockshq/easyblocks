@@ -35,7 +35,15 @@ export default function EntryPage({
         >
           ← All Entries
         </Link>
-        <h2 className={"text-2xl mb-16 mt-4"}>{entry.name}</h2>
+        <h2 className={"text-2xl mb-16 mt-4"}>
+          {entry.name}
+          <Link
+            href={`/entries/${id}/preview`}
+            className="border border-blue-50 text-black text-sm font-medium rounded-2xl py-1.5 px-4 min-w-[100px]"
+          >
+            Preview
+          </Link>
+        </h2>
 
         <div className={"mb-6"}>
           <div className={"font-bold"}>ID</div>
@@ -66,7 +74,10 @@ export default function EntryPage({
           <div className={"font-bold"}>Page</div>
           <div className={"mt-3"}>
             <DocumentWidget
-              document={entry.page}
+              document={{
+                ...entry.page,
+                rootContainer: entry.page?.rootContainer ?? entry.type,
+              }}
               onSave={(document) => {
                 mockService.updateEntry({
                   ...entry,

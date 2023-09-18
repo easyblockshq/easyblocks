@@ -390,9 +390,9 @@ export function useDataSaver(
           ? 0
           : remoteDocument.current!.version,
         updatedAt: new Date().getTime(),
-        projectId: editorContext.project
-          ? editorContext.project.id
-          : "playground",
+        projectId: editorContext.project.id,
+        rootContainer:
+          remoteDocument.current?.root_container ?? editorContext.rootContainer,
       };
 
       // const configAfterSplit = splitConfigIntoSingleLocaleConfigs(

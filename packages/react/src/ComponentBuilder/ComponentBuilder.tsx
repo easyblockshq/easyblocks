@@ -22,6 +22,7 @@ import {
   splitTemplateName,
 } from "@easyblocks/app-utils";
 import {
+  CompilationMetadata,
   CompiledComponentConfig,
   CompiledCustomComponentConfig,
   CompiledShopstoryComponentConfig,
@@ -30,28 +31,27 @@ import {
   ComponentFixedSchemaProp,
   ComponentSchemaProp,
   CustomResourceSchemaProp,
+  ExternalData,
   FetchOutputCompoundResources,
   getResourceId,
   getResourceType,
   getResourceValue,
   isLocalTextResource,
-  Metadata,
-  ResolvedResource,
-  Resource,
   ResourceSchemaProp,
   ResponsiveValue,
   UnresolvedResource,
 } from "@easyblocks/core";
 import React, { Fragment, ReactElement } from "react";
 import Box from "../Box/Box";
-import { trace } from "./trace";
-import { withImpressionTracking } from "./withImpressionTracking";
-import EditableComponentBuilderEditor from "../EditableComponentBuilder/EditableComponentBuilder";
-import EditableComponentBuilderClient from "../EditableComponentBuilder/EditableComponentBuilder.client";
-import Placeholder from "../Placeholder";
-import MissingComponent from "../MissingComponent";
+import { useEasyblocksExternalData } from "../EasyblocksExternalDataProvider";
 import { useEasyblocksMetadata } from "../EasyblocksMetadataProvider";
 import { useEasyblocksProviderContext } from "../EasyblocksProvider";
+import EditableComponentBuilderEditor from "../EditableComponentBuilder/EditableComponentBuilder";
+import EditableComponentBuilderClient from "../EditableComponentBuilder/EditableComponentBuilder.client";
+import MissingComponent from "../MissingComponent";
+import Placeholder from "../Placeholder";
+import { trace } from "./trace";
+import { withImpressionTracking } from "./withImpressionTracking";
 
 function buildBoxes(
   compiled: any,
@@ -164,7 +164,8 @@ type RenderabilityStatus = {
 
 function getRenderabilityStatus(
   compiled: CompiledComponentConfig,
-  meta: Metadata
+  meta: CompilationMetadata,
+  externalData: ExternalData
 ): RenderabilityStatus {
   const status: RenderabilityStatus = {
     renderable: true,
@@ -215,11 +216,12 @@ function getRenderabilityStatus(
   for (const resourceSchemaProp of requiredResourceFields) {
     const compiledResourceValue = compiled.props[resourceSchemaProp.prop];
     const isResponsiveResource = isTrulyResponsiveValue(compiledResourceValue);
-    const resources = meta.resources.filter((resource: Resource) =>
+    const resourcesIds = Object.keys(externalData).filter((id) =>
       isResponsiveResource
-        ? isResourceDefinedForAnyBreakpoint(resource, resourceSchemaProp)
-        : resource.id === getResourceId(compiled._id, resourceSchemaProp.prop)
+        ? isResourceDefinedForAnyBreakpoint(id, resourceSchemaProp)
+        : id === getResourceId(compiled._id, resourceSchemaProp.prop)
     );
+    const resources = resourcesIds.map((id) => externalData[id]);
     // const resourceValues = resources.map((r) => getResourceValue(r));
 
     // const isLoading =
@@ -234,7 +236,7 @@ function getRenderabilityStatus(
 
     const isDefined =
       resources.length > 0 &&
-      resources.every((r) => r.status === "success"); /*&&
+      resources.every((r) => ("values" in r ? !!r.values : !!r.value)); /*&&
       (isRenderableContent(resourceValues)
         ? isNonEmptyRenderableContent(resourceValues)
         : true);*/
@@ -251,14 +253,14 @@ function getRenderabilityStatus(
   return status;
 
   function isResourceDefinedForAnyBreakpoint(
-    resource: Resource<unknown>,
+    externalDataId: string,
     resourceSchemaProp: CustomResourceSchemaProp
   ) {
     return meta.vars.devices
       .map((d) => d.id)
       .some(
         (deviceId) =>
-          resource.id ===
+          externalDataId ===
           getResourceId(compiled._id, resourceSchemaProp.prop, deviceId)
       );
   }
@@ -276,7 +278,7 @@ function getCompiledSubcomponents(
     | ComponentCollectionSchemaProp
     | ComponentCollectionLocalisedSchemaProp,
   path: string,
-  meta: Metadata,
+  meta: CompilationMetadata,
   isEditing: boolean
 ) {
   const originalPath = path;
@@ -369,6 +371,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
   const { compiled, passedProps, path } = props;
   const easyblocksProvider = useEasyblocksProviderContext();
   const meta = useEasyblocksMetadata();
+  const externalData = useEasyblocksExternalData();
 
   /**
    * Component is build in editing mode only if compiled.__editing is set.
@@ -501,7 +504,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
                 unresolvedResourceValue,
                 actionConfig.props._id,
                 schemaProp,
-                meta.resources
+                externalData
               );
 
               actionParams[schemaProp.prop] = resolvedResourceProp?.value;
@@ -568,7 +571,11 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
     }
   });
 
-  const renderabilityStatus = getRenderabilityStatus(compiled, meta);
+  const renderabilityStatus = getRenderabilityStatus(
+    compiled,
+    meta,
+    externalData
+  );
 
   if (!renderabilityStatus.renderable) {
     return (
@@ -631,7 +638,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
             compiled.props[schemaProp.prop],
             compiled.props._id,
             schemaProp,
-            meta.resources
+            externalData
           );
 
           if (isTrulyResponsiveValue(resolvedResourceProp)) {
@@ -696,7 +703,6 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
   const { ref, ...restPassedProps } = passedProps || {};
 
   const runtime = {
-    resources: meta.resources,
     eventSink: meta.easyblocksProviderContext.eventSink,
     Image: meta.easyblocksProviderContext.Image,
     stitches: meta.easyblocksProviderContext.stitches,
@@ -715,7 +721,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
         shopstoryCompiledConfig.props,
         shopstoryCompiledConfig._id,
         componentDefinition,
-        meta
+        externalData
       ),
       components: styled,
       actions,
@@ -738,7 +744,7 @@ function mapResourceProps(
   props: Record<string, unknown>,
   configId: string,
   componentDefinition: InternalComponentDefinition,
-  meta: Metadata
+  externalData: ExternalData
 ) {
   const resultsProps: Record<string, unknown> = {};
 
@@ -760,7 +766,7 @@ function mapResourceProps(
           propValue,
           configId,
           schemaProp,
-          meta.resources
+          externalData
         );
       }
     } else {
@@ -775,7 +781,7 @@ function resolveResource(
   responsiveResource: ResponsiveValue<UnresolvedResource>,
   configId: string,
   schemaProp: ResourceSchemaProp,
-  resources: Array<Resource>
+  externalData: ExternalData
 ): ResponsiveValue<ResolvedResourceProp | null> {
   return responsiveValueMap(responsiveResource, (r, breakpointIndex) => {
     const type = getResourceType(schemaProp);
@@ -790,26 +796,26 @@ function resolveResource(
           error: null,
         };
       } else {
-        const resource = resources.find((res) => {
+        const resourceId = (() => {
           // If resource field has `key` defined and its `id` starts with "$.", it means that it's a reference to the
           // root resource and we need to look for the resource with the same id as the root resource.
           if (r.key && r.id.startsWith("$.")) {
-            return res.id === r.id;
+            return r.id;
           }
 
           // If `breakpointIndex` is defined, it means we're mapping over the truly responsive value and we need to look
           // for the resource with the breakpoint index in its id.
           if (breakpointIndex !== undefined) {
-            return (
-              res.id === `${configId}.${schemaProp.prop}.${breakpointIndex}`
-            );
+            return `${configId}.${schemaProp.prop}.${breakpointIndex}`;
           }
 
           // In any other case we look for the resource with the id that matches the id for the resource field.
-          return res.id === `${configId}.${schemaProp.prop}`;
-        });
+          return `${configId}.${schemaProp.prop}`;
+        })();
 
-        let resourceValue = resource;
+        const resource = externalData[resourceId];
+
+        let resourceValue: ReturnType<typeof getResourceValue>;
 
         if (resource) {
           resourceValue = getResourceValue(resource);
@@ -818,11 +824,7 @@ function resolveResource(
         /**
          * If resource is not there it means that it hasn't started loading yet, so let's set loading
          */
-        if (
-          resource === undefined ||
-          resource.status === "loading" ||
-          isEmptyRenderableContent(resourceValue)
-        ) {
+        if (resource === undefined || isEmptyRenderableContent(resourceValue)) {
           return {
             id: r.id,
             type,
@@ -832,32 +834,32 @@ function resolveResource(
           };
         }
 
-        if (resource.status === "success") {
-          if (isCompoundResource(resource)) {
-            if (!r.key) {
-              return null;
-            }
+        if (resource.error) {
+          return {
+            id: r.id,
+            type,
+            status: "error",
+            value: undefined,
+            error: resource.error,
+          };
+        }
 
-            const resolvedResourceValue = resource.value[r.key].value;
+        if (isCompoundResource(resource)) {
+          if (!r.key) {
+            return null;
+          }
 
-            if (!resolvedResourceValue) {
-              return null;
-            }
+          const resolvedResourceValue = resource.values[r.key].value;
 
-            return {
-              id: r.id,
-              type,
-              status: "success",
-              value: resolvedResourceValue,
-              error: null,
-            };
+          if (!resolvedResourceValue) {
+            return null;
           }
 
           return {
             id: r.id,
             type,
             status: "success",
-            value: resourceValue,
+            value: resolvedResourceValue,
             error: null,
           };
         }
@@ -865,9 +867,9 @@ function resolveResource(
         return {
           id: r.id,
           type,
-          status: "error",
-          value: undefined,
-          error: resource.error,
+          status: "success",
+          value: resourceValue,
+          error: null,
         };
       }
     }
@@ -877,11 +879,13 @@ function resolveResource(
 }
 
 function isCompoundResource(
-  resource: ResolvedResource
-): resource is ResolvedResource<
-  NonNullable<FetchOutputCompoundResources[string]["values"]>
-> {
-  return resource.type === "object";
+  resource: ExternalData[string]
+): resource is Required<FetchOutputCompoundResources[string]> {
+  return (
+    resource.type === "object" &&
+    "values" in resource &&
+    resource.values !== undefined
+  );
 }
 
 export default ComponentBuilder;

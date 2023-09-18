@@ -2,6 +2,7 @@
 import { ExternalData, RenderableDocument, Resource } from "@easyblocks/core";
 import React, { useEffect } from "react";
 import ComponentBuilder from "./ComponentBuilder/ComponentBuilder";
+import { EasyblocksExternalDataProvider } from "./EasyblocksExternalDataProvider";
 import { EasyblocksMetadataProvider } from "./EasyblocksMetadataProvider";
 
 export type EasyblocksProps = {
@@ -56,13 +57,13 @@ function Easyblocks({ renderableDocument, externalData }: EasyblocksProps) {
   );
 
   return (
-    <EasyblocksMetadataProvider
-      meta={{ ...renderableDocument.meta, resources }}
-    >
-      <ComponentBuilder
-        compiled={renderableDocument.renderableContent}
-        path={""}
-      />
+    <EasyblocksMetadataProvider meta={renderableDocument.meta}>
+      <EasyblocksExternalDataProvider externalData={externalData}>
+        <ComponentBuilder
+          compiled={renderableDocument.renderableContent}
+          path={""}
+        />
+      </EasyblocksExternalDataProvider>
     </EasyblocksMetadataProvider>
   );
 }

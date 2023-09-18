@@ -31,7 +31,6 @@ import {
   EditorLauncherProps,
   ExternalDataChangeHandler,
   ExternalReference,
-  FetchCompoundResourceResultValues,
   FetchOutputResources,
   IApiClient,
   Locale,
@@ -81,7 +80,6 @@ import { ModalPicker } from "./ModalPicker";
 import { destinationResolver } from "./paste/destinationResolver";
 import { pasteManager } from "./paste/manager";
 import { SelectionFrame } from "./selectionFrame/SelectionFrame";
-import { rootResourceWidgetFactory } from "./sidebar/RootResourceWidget";
 import { TemplateModal } from "./TemplateModal";
 import { getTemplates } from "./templates/getTemplates";
 import { TinaProvider } from "./tinacms";
@@ -383,6 +381,7 @@ function useBuiltContent(
   config: Config,
   contextParams: ContextParams,
   rawContent: ConfigComponent,
+  rootContainer: string,
   onExternalDataChange: ExternalDataChangeHandler
 ): NonEmptyRenderableContent & { meta: CompilationMetadata } {
   const buildEntryResult = useRef<ReturnType<typeof buildEntry>>();
@@ -426,7 +425,10 @@ function useBuiltContent(
     buildEntryResult.current = buildEntry({
       entry: rawContent,
       config,
-      locale: contextParams.locale,
+      contextParams: {
+        locale: contextParams.locale,
+        rootContainer,
+      },
       resourcesStore: editorContext.resourcesStore,
       compiler: {
         findResources,
@@ -745,59 +747,6 @@ const EditorContent = ({
     ),
   };
 
-  useEffect(() => {
-    if (editorContext.activeRootContainer.resource) {
-      const rootResource = editorContext.resources.find(
-        (r) => r.id === `$.rootResource`
-      );
-
-      if (
-        rootResource &&
-        rootResource.type === "object" &&
-        rootResource.status === "success" &&
-        rootResource.value !== undefined
-      ) {
-        ["image", "video"].forEach((builtinResourceType) => {
-          const availableBasicResources = Object.entries(
-            rootResource.value as FetchCompoundResourceResultValues
-          ).filter(([, r]) => r.type === builtinResourceType);
-
-          if (!availableBasicResources.length) {
-            return;
-          }
-
-          const resourceDefinition =
-            editorContext.resourceTypes[builtinResourceType];
-
-          if (!resourceDefinition) {
-            return;
-          }
-
-          const rootResourceWidgetIndex = resourceDefinition.widgets.findIndex(
-            (w) => w.id === "@easyblocks/linkedResource"
-          );
-
-          if (rootResourceWidgetIndex !== -1) {
-            resourceDefinition.widgets.splice(
-              rootResourceWidgetIndex,
-              1,
-              rootResourceWidgetFactory({
-                type: builtinResourceType,
-              })
-            );
-            return;
-          }
-
-          resourceDefinition.widgets.push(
-            rootResourceWidgetFactory({
-              type: builtinResourceType,
-            })
-          );
-        });
-      }
-    }
-  }, [editorContext.resources]);
-
   const { configAfterAuto, renderableContent, meta } = useBuiltContent(
     editorContext,
     props.config,
@@ -806,6 +755,7 @@ const EditorContent = ({
       isEditing,
     },
     editableData,
+    rootContainer,
     props.onExternalDataChange
   );
 

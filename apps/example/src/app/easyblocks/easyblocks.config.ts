@@ -31,6 +31,12 @@ export const easyblocksConfig: Config = {
         _template: "$RootSections",
         data: [],
       },
+    },
+    product: {
+      defaultConfig: {
+        _template: "$RootSections",
+        data: [],
+      },
       resource: {
         type: "product",
       },

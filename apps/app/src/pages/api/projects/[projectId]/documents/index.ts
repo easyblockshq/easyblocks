@@ -59,7 +59,7 @@ const handler: AuthenticatedNextApiHandler = async (
           unique_source_identifier: input.unique_source_identifier,
           source: input.source,
           config_id: configData.id,
-          root_container: configData.rootContainer,
+          root_container: input.rootContainer,
         })
         .select();
 

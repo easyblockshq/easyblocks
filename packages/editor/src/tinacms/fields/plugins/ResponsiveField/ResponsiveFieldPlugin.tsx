@@ -25,6 +25,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useConfigAfterAuto } from "../../../../ConfigAfterAutoContext";
 import { useEditorContext } from "../../../../EditorContext";
+import { rootResourceWidgetFactory } from "../../../../sidebar/RootResourceWidget";
 import { FieldBuilder } from "../../../form-builder";
 import { MIXED_VALUE } from "../../components/constants";
 import { getUniqueValues } from "../../components/getUniqueValues";
@@ -144,6 +145,27 @@ export const ResponsiveField = (props: ResponsivePluginProps) => {
         isResourceSchemaProp(schemaProp) &&
         schemaProp.type === "resource"
           ? ({ renderDefaultDecoration }) => {
+              if (
+                editorContext.activeRootContainer.resource &&
+                (schemaProp.resourceType === "image" ||
+                  schemaProp.resourceType === "video")
+              ) {
+                // Make sure to add the root resource widget to image/video resource definition
+                if (
+                  !editorContext.resourceTypes[
+                    schemaProp.resourceType
+                  ].widgets.some((w) => w.id === "@easyblocks/linkedResource")
+                ) {
+                  editorContext.resourceTypes[
+                    schemaProp.resourceType
+                  ].widgets.push(
+                    rootResourceWidgetFactory({
+                      type: schemaProp.resourceType,
+                    })
+                  );
+                }
+              }
+
               const availableWidgets =
                 editorContext.resourceTypes[schemaProp.resourceType]?.widgets;
 

@@ -1,5 +1,5 @@
 import type {
-  Resource,
+  ExternalData,
   ResourceParams,
   ResourceSchemaProp,
   UnresolvedResource,
@@ -23,13 +23,14 @@ export function getResourceType(schemaProp: ResourceSchemaProp): string {
   return schemaProp.type;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getResourceValue(resource: Resource): any {
-  if (resource.status !== "success") {
+export function getResourceValue(externalDataValue: ExternalData[string]) {
+  if (externalDataValue.error !== null) {
     return;
   }
 
-  return resource.value;
+  return "values" in externalDataValue
+    ? externalDataValue.values
+    : externalDataValue.value;
 }
 
 export function isLocalTextResource(

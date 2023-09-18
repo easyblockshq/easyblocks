@@ -24,7 +24,11 @@ async function buildDocument({
   renderableDocument: RenderableDocument;
   externalData: PendingExternalData;
 }> {
-  const entry = await resolveEntryForDocument({ document, config, locale });
+  const entry = await resolveEntryForDocument({
+    document,
+    config,
+    locale,
+  });
   const compiler = await loadCompilerScript();
   const resourcesStore = createResourcesStore();
 
@@ -32,7 +36,10 @@ async function buildDocument({
     {
       entry,
       config,
-      locale,
+      contextParams: {
+        locale,
+        rootContainer: document.rootContainer,
+      },
       compiler,
       resourcesStore,
     }
