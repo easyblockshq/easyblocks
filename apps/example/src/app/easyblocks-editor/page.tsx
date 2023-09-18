@@ -29,6 +29,7 @@ export default function ShopstoryCanvas() {
             ]);
 
           setExternalData({
+            ...externalData,
             ...easyblocksResources,
             ...pexelsResources,
             ...productResources,

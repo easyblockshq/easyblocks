@@ -5,6 +5,7 @@ import {
   ComponentPickerOpenedEvent,
   duplicateConfig,
   findComponentDefinitionById,
+  InternalExternalData,
   ItemInsertedEvent,
   mergeCompilationMeta,
   useEditorGlobalKeyboardShortcuts,
@@ -36,9 +37,6 @@ import {
   Locale,
   LocalisedDocument,
   NonEmptyRenderableContent,
-  NonNullish,
-  RejectedResource,
-  ResolvedResource,
 } from "@easyblocks/core";
 import {
   SSButtonPrimary,
@@ -48,9 +46,15 @@ import {
 } from "@easyblocks/design-system";
 import { assertDefined } from "@easyblocks/utils";
 import { useSession } from "@supabase/auth-helpers-react";
-import React, { memo, useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  createContext,
+  memo,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Modal from "react-modal";
-import { useNavigate, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import { Entries } from "type-fest";
 import { ConfigAfterAutoContext } from "./ConfigAfterAutoContext";
@@ -302,7 +306,6 @@ const Editor = memo((props: EditorProps) => {
     document: DocumentWithResolvedConfigDTO | null;
   } | null>(null);
   const apiClient = useApiClient();
-  const [searchParams] = useSearchParams();
 
   const compilationContext = createCompilationContext(
     props.config,
@@ -316,12 +319,10 @@ const Editor = memo((props: EditorProps) => {
         return;
       }
 
-      const documentId = props.documentId ?? searchParams.get("documentId");
-
       try {
-        const resolvedInput = documentId
+        const resolvedInput = props.documentId
           ? await resolveDocumentId(
-              documentId,
+              props.documentId,
               props.project,
               apiClient,
               compilationContext
@@ -485,7 +486,6 @@ const EditorContent = ({
   ...props
 }: EditorContentProps) => {
   const apiClient = useApiClient();
-  const navigate = useNavigate();
 
   const [breakpointIndex, setBreakpointIndex] = useState(
     compilationContext.mainBreakpointIndex
@@ -695,16 +695,7 @@ const EditorContent = ({
         }
       );
 
-      window.editorWindowAPI.externalData = Object.fromEntries(
-        resourcesStore
-          .values()
-          .filter<ResolvedResource<NonNullish> | RejectedResource>(
-            (r): r is ResolvedResource<NonNullish> | RejectedResource =>
-              r.status !== "loading"
-          )
-          .map((v) => [v.id, v])
-      );
-
+      window.editorWindowAPI.externalData = externalData;
       console.debug("external data", window.editorWindowAPI.externalData);
 
       window.editorWindowAPI.onUpdate?.();
@@ -908,7 +899,50 @@ const EditorContent = ({
   };
 
   const appHeight = heightMode === "viewport" ? "100vh" : "100%";
-  const isDemoProject = props.config.projectId === "demo";
+  const internalExternalData = Object.fromEntries(
+    Object.entries(externalData).map(
+      ([id, resource]: Entries<typeof externalData>[number]) => {
+        if ("values" in resource) {
+          return [
+            id,
+            {
+              id,
+              type: resource.type,
+              status: "success",
+              error: null,
+              value: resource.values,
+            },
+          ];
+        } else {
+          if (resource.value !== undefined) {
+            return [
+              id,
+              {
+                id,
+                type: resource.type,
+                status: "success",
+                value: resource.value,
+                error: null,
+              },
+            ];
+          } else {
+            return [
+              id,
+              {
+                id,
+                type: resource.type,
+                status: "error",
+                value: undefined,
+                error: resource.error,
+              },
+            ];
+          }
+        }
+      }
+    )
+  );
+
+  // window.editorWindowAPI.externalData = internalExternalData;
 
   return (
     <div
@@ -927,94 +961,92 @@ const EditorContent = ({
       )}
       <EditorContext.Provider value={editorContext}>
         <ConfigAfterAutoContext.Provider value={configAfterAuto}>
-          <div id="rootContainer" />
-          <EditorTopBar
-            onUndo={undo}
-            onRedo={redo}
-            title={"Shopstory"}
-            onClose={() => {
-              setDataSaverOverlayOpen(true);
-              saveNow().finally(() => {
-                setDataSaverOverlayOpen(false);
+          <ExternalDataContext.Provider value={internalExternalData}>
+            <div id="rootContainer" />
+            <EditorTopBar
+              onUndo={undo}
+              onRedo={redo}
+              title={"Shopstory"}
+              onClose={() => {
+                setDataSaverOverlayOpen(true);
+                saveNow().finally(() => {
+                  setDataSaverOverlayOpen(false);
 
-                window.postMessage(
-                  {
-                    type: "@easyblocks/closed",
-                  },
-                  "*"
-                );
+                  window.postMessage(
+                    {
+                      type: "@easyblocks/closed",
+                    },
+                    "*"
+                  );
 
-                if (props.onClose) {
-                  props.onClose();
-                }
-
-                if (isDemoProject) {
-                  navigate("/");
-                }
-              });
-            }}
-            devices={compilationContext.devices}
-            breakpointIndex={breakpointIndex}
-            onBreakpointChange={handleSetBreakpoint}
-            onIsEditingChange={handleSetEditing}
-            isEditing={isEditing}
-            saveLabel={"Save"}
-            locale={compilationContext.contextParams.locale}
-            locales={editorContext.locales}
-            onLocaleChange={() => {}}
-            isFullScreen={isFullScreen}
-            setFullScreen={setFullScreen}
-            onAdminModeChange={(val) => {
-              setAdminMode(val);
-            }}
-            isPlayground={editorContext.isPlayground}
-          />
-          <SidebarAndContentContainer height={appHeight}>
-            <ContentContainer
-              onClick={() => {
-                setFocussedField([]);
+                  if (props.onClose) {
+                    props.onClose();
+                  }
+                });
               }}
-            >
-              <EditorIframe
-                onEditorHistoryUndo={undo}
-                onEditorHistoryRedo={redo}
-                isFullScreen={isFullScreen}
-                isEditing={isEditing}
-                height={height}
-                scaleFactor={scaleFactor}
-                width={width}
-                containerRef={iframeContainerRef}
-                margin={heightMode === "viewport" ? 0 : 100}
-                url={props.canvasUrl}
-              />
-              {isEditing && (
-                <SelectionFrame
-                  {...selectionFrameSize}
+              devices={compilationContext.devices}
+              breakpointIndex={breakpointIndex}
+              onBreakpointChange={handleSetBreakpoint}
+              onIsEditingChange={handleSetEditing}
+              isEditing={isEditing}
+              saveLabel={"Save"}
+              locale={compilationContext.contextParams.locale}
+              locales={editorContext.locales}
+              onLocaleChange={() => {}}
+              isFullScreen={isFullScreen}
+              setFullScreen={setFullScreen}
+              onAdminModeChange={(val) => {
+                setAdminMode(val);
+              }}
+              isPlayground={editorContext.isPlayground}
+            />
+            <SidebarAndContentContainer height={appHeight}>
+              <ContentContainer
+                onClick={() => {
+                  setFocussedField([]);
+                }}
+              >
+                <EditorIframe
+                  onEditorHistoryUndo={undo}
+                  onEditorHistoryRedo={redo}
+                  isFullScreen={isFullScreen}
+                  isEditing={isEditing}
+                  height={height}
                   scaleFactor={scaleFactor}
+                  width={width}
+                  containerRef={iframeContainerRef}
+                  margin={heightMode === "viewport" ? 0 : 100}
+                  url={props.canvasUrl}
+                />
+                {isEditing && (
+                  <SelectionFrame
+                    {...selectionFrameSize}
+                    scaleFactor={scaleFactor}
+                  />
+                )}
+              </ContentContainer>
+              {isEditing && (
+                <SidebarContainer ref={sidebarNodeRef}>
+                  <EditorSidebar focussedField={focussedField} form={form} />
+                </SidebarContainer>
+              )}
+              {componentPickerData && (
+                <ModalPicker
+                  onClose={closeComponentPickerModal}
+                  config={componentPickerData.config}
                 />
               )}
-            </ContentContainer>
-            {isEditing && (
-              <SidebarContainer ref={sidebarNodeRef}>
-                <EditorSidebar focussedField={focussedField} form={form} />
-              </SidebarContainer>
-            )}
-            {componentPickerData && (
-              <ModalPicker
-                onClose={closeComponentPickerModal}
-                config={componentPickerData.config}
+            </SidebarAndContentContainer>
+
+            {openTemplateModalAction && (
+              <TemplateModal
+                action={openTemplateModalAction}
+                onClose={() => {
+                  setOpenTemplateModalAction(undefined);
+                }}
               />
             )}
-          </SidebarAndContentContainer>
-
-          {openTemplateModalAction && (
-            <TemplateModal
-              action={openTemplateModalAction}
-              onClose={() => {
-                setOpenTemplateModalAction(undefined);
-              }}
-            />
-          )}
+          </ExternalDataContext.Provider>
         </ConfigAfterAutoContext.Provider>
       </EditorContext.Provider>
     </div>
@@ -1171,3 +1203,5 @@ function adaptRemoteConfig(
   const normalized = normalize(withoutLocalizedFlag, compilationContext);
   return normalized;
 }
+
+export const ExternalDataContext = createContext<InternalExternalData>({});

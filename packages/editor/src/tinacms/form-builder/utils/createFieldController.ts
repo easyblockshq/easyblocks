@@ -195,6 +195,8 @@ function createFieldController({
             const isResponsive = isTrulyResponsiveValue(parsedValue);
             const parsedPathResult = parsePath(path, editorContext.form);
 
+            let resourceId: string | undefined;
+
             if (parsedPathResult.parent) {
               const parentConfigPath = `${parsedPathResult.parent.path}.${parsedPathResult.parent.fieldName}.${parsedPathResult.index}`;
               const parentConfig = dotNotationGet(
@@ -203,14 +205,18 @@ function createFieldController({
               );
 
               if (parentConfig) {
-                const resourceId = getResourceId(
+                resourceId = getResourceId(
                   parentConfig._id,
                   field.schemaProp.prop,
                   isResponsive ? editorContext.breakpointIndex : undefined
                 );
-
-                editorContext.resourcesStore.remove(resourceId);
               }
+            } else {
+              resourceId = getResourceId("$", field.schemaProp.prop);
+            }
+
+            if (resourceId) {
+              editorContext.resourcesStore.remove(resourceId);
             }
           }
 

@@ -14,9 +14,10 @@ import {
 } from "@easyblocks/core";
 import { SSSelect, useToaster } from "@easyblocks/design-system";
 import { dotNotationGet, toArray } from "@easyblocks/utils";
-import React, { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { css } from "styled-components";
 import { SetRequired } from "type-fest";
+import { ExternalDataContext } from "../../../../Editor";
 import { useEditorContext } from "../../../../EditorContext";
 import { useApiClient } from "../../../../infrastructure/ApiClientProvider";
 import { FieldMixedValue } from "../../../../types";
@@ -105,6 +106,7 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
   const { tinaForm, field, input } = props;
   const editorContext = useEditorContext();
   const fieldNames = toArray(field.name);
+  const externalData = useContext(ExternalDataContext);
 
   const originalFormat = field.format ? field.format : (x: any) => x;
   const originalParse = field.parse ? field.parse : (x: any) => x;
@@ -154,7 +156,7 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
 
   const { schemaProp } = field;
   const isCustomResourceProp = schemaProp.type === "resource";
-  const resource = editorContext.resources.find((r) => {
+  const resource = Object.values(externalData).find((r) => {
     const path = fieldNames[0].split(".").slice(0, -1).join(".");
     const configId = dotNotationGet(editorContext.form.values, path)._id;
 

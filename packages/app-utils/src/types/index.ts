@@ -234,3 +234,5 @@ export type CompressedConfig = {
 };
 
 export type ContextProps = Record<string, any>;
+
+export type InternalExternalData = Record<string, Resource>;

@@ -52,7 +52,6 @@ import Placeholder from "../Placeholder";
 import MissingComponent from "../MissingComponent";
 import { useEasyblocksMetadata } from "../EasyblocksMetadataProvider";
 import { useEasyblocksProviderContext } from "../EasyblocksProvider";
-import { useEasyblocksExternalData } from "../EasyblocksExternalDataProvider";
 
 function buildBoxes(
   compiled: any,
@@ -370,7 +369,6 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
   const { compiled, passedProps, path } = props;
   const easyblocksProvider = useEasyblocksProviderContext();
   const meta = useEasyblocksMetadata();
-  const externalData = useEasyblocksExternalData();
 
   /**
    * Component is build in editing mode only if compiled.__editing is set.
