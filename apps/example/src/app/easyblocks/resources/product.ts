@@ -63,11 +63,26 @@ async function fetchProductResources(
     const product = products.find((p) => p.id === inputResource.externalId);
 
     if (!product) {
+      /**
+       * Question: type: "object" for errors?
+       */
       result[id] = {
         type: "object",
         error: new Error(
           `Product with id "${inputResource.externalId}" not found`
         ),
+        values: undefined,
+      };
+      return;
+    }
+
+    /**
+     * How to do it?
+     */
+    if (product.title.indexOf("forced error") > -1) {
+      result[id] = {
+        type: "object",
+        error: new Error("Fetch error"),
         values: undefined,
       };
       return;
