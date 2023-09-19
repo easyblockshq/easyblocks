@@ -668,13 +668,23 @@ const EditorContent = ({
       Object.entries(externalData).forEach(
         ([id, resource]: Entries<typeof externalData>[number]) => {
           if ("values" in resource) {
-            resourcesStore.set(id, {
-              id,
-              type: resource.type,
-              status: "success",
-              error: null,
-              value: resource.values,
-            });
+            if (resource.values !== undefined) {
+              resourcesStore.set(id, {
+                id,
+                type: resource.type,
+                status: "success",
+                error: null,
+                value: resource.values,
+              });
+            } else {
+              resourcesStore.set(id, {
+                id,
+                type: resource.type,
+                status: "error",
+                error: resource.error,
+                value: undefined,
+              });
+            }
           } else {
             if (resource.value !== undefined) {
               resourcesStore.set(id, {
@@ -849,18 +859,32 @@ const EditorContent = ({
   };
 
   const appHeight = heightMode === "viewport" ? "100vh" : "100%";
+
   const internalExternalData = Object.fromEntries(
     Object.entries(externalData).map(
       ([id, resource]: Entries<typeof externalData>[number]) => {
         if ("values" in resource) {
+          if (resource.values !== undefined) {
+            return [
+              id,
+              {
+                id,
+                type: resource.type,
+                status: "success",
+                error: null,
+                value: resource.values,
+              },
+            ];
+          }
+
           return [
             id,
             {
               id,
               type: resource.type,
-              status: "success",
-              error: null,
-              value: resource.values,
+              status: "error",
+              error: resource.error,
+              value: undefined,
             },
           ];
         } else {
