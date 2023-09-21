@@ -1,5 +1,6 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
+import { SSColors } from "./colors";
 
 const rotationKeyframes = keyframes`
   0% {
@@ -11,9 +12,9 @@ const rotationKeyframes = keyframes`
 `;
 
 const LoaderWrapper = styled.div`
-  width: 12px;
-  height: 12px;
-  border: 2px solid currentColor;
+  width: 10px;
+  height: 10px;
+  border: 2px solid ${SSColors.black40};
   border-bottom-color: transparent;
   border-radius: 50%;
   animation: ${rotationKeyframes} 1s linear infinite;
