@@ -91,6 +91,7 @@ const handler: AuthenticatedNextApiHandler = async (
         const newDocument = { ...document };
         // @ts-ignore
         newDocument.updated_at = document.configs.created_at;
+        // @ts-expect-error
         delete newDocument.configs;
         return newDocument;
       });

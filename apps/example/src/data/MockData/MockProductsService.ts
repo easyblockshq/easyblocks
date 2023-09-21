@@ -25,7 +25,7 @@ export const MockProductsService = {
     return products.find((product) => product.id === id);
   },
   getProductsByIds: async (ids: string[]): Promise<Product[]> => {
-    await sleep(500);
+    await sleep(1000);
     return products.filter((product) => ids.includes(product.id));
   },
 };

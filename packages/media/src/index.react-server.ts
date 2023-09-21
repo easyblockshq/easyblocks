@@ -1,7 +1,8 @@
 import {
   ApiClient,
   AssetDTO,
-  FetchInputResources,
+  ChangedExternalData,
+  ExternalData,
   FetchOutputBasicResources,
   IApiClient,
   ImageSrc,
@@ -29,10 +30,10 @@ export const easyblocksVideoWidget: Widget = {
 };
 
 export async function fetchEasyblocksMediaResources(
-  resources: FetchInputResources,
+  externalData: ChangedExternalData,
   accessToken: string
-): Promise<FetchOutputBasicResources> {
-  const mediaInputResources = Object.entries(resources).filter(
+): Promise<ExternalData> {
+  const mediaInputResources = Object.entries(externalData).filter(
     ([, resource]) =>
       resource.widgetId === easyblocksImageWidget.id ||
       resource.widgetId === easyblocksVideoWidget.id
@@ -51,9 +52,10 @@ export async function fetchEasyblocksMediaResources(
     return {};
   }
 
-  const requestedAssetsIds = mediaInputResources.map(
-    ([, resource]) => resource.externalId
-  );
+  const requestedAssetsIds = mediaInputResources
+    .map(([, resource]) => resource.externalId)
+    .filter<string>((externalId): externalId is string => externalId !== null);
+
   const assets = await apiClient.assets.getAssets({
     projectId,
     ids: requestedAssetsIds,

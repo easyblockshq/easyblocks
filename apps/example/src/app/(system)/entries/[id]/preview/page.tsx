@@ -21,7 +21,7 @@ export default function EntryPreviewPage() {
   const [externalData, setExternalData] = useState<ExternalData>({});
 
   useEffect(() => {
-    if (!mockService || !params || typeof params.id !== "string") {
+    if (!mockService || typeof params?.id !== "string") {
       return;
     }
 
@@ -45,7 +45,7 @@ export default function EntryPreviewPage() {
       myCustomFetch({
         ...externalData,
         ...(entry.type === "product" && {
-          "$.rootResource": {
+          "$.product": {
             externalId: "flec-candle-holder-pink-blossom",
             type: "product",
             widgetId: "product",
@@ -56,7 +56,7 @@ export default function EntryPreviewPage() {
         setRenderableDocument(renderableDocument);
       });
     });
-  }, [mockService, params]);
+  }, [mockService, params?.id]);
 
   if (!renderableDocument) {
     return null;

@@ -1,5 +1,6 @@
 import type {
-  FetchInputResources,
+  ChangedExternalData,
+  ExternalData,
   FetchOutputBasicResources,
   ImageSrc,
   VideoSrc,
@@ -98,17 +99,23 @@ const pexelsVideoWidget: Widget = {
 };
 
 async function fetchPexelsResources(
-  resources: FetchInputResources
-): Promise<FetchOutputBasicResources> {
-  const pexelsPhotoResources = Object.entries(resources).filter(
+  externalData: ChangedExternalData
+): Promise<ExternalData> {
+  const pexelsPhotoResources = Object.entries(externalData).filter(
     ([, resource]) => {
-      return resource.widgetId === pexelsImageWidget.id;
+      return (
+        resource.widgetId === pexelsImageWidget.id &&
+        resource.externalId !== null
+      );
     }
   );
 
-  const pexelsVideoResources = Object.entries(resources).filter(
+  const pexelsVideoResources = Object.entries(externalData).filter(
     ([, resource]) => {
-      return resource.widgetId === pexelsVideoWidget.id;
+      return (
+        resource.widgetId === pexelsVideoWidget.id &&
+        resource.externalId !== null
+      );
     }
   );
 

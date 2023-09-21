@@ -59,6 +59,7 @@ import {
   richTextInlineWrapperActionSchemaProp,
 } from "@easyblocks/editable-components";
 import {
+  assertDefined,
   bubbleDown,
   deepClone,
   deepCompare,
@@ -1384,6 +1385,33 @@ function buildDefaultEditingInfo(
       hidden: false,
       label: "Component type",
       name: configPrefix,
+      prop: "$myself",
+      schemaProp: headerSchemaProp,
+    };
+
+    defaultFields.unshift(headerField);
+  } else {
+    const rootComponentDefinition = assertDefined(
+      findComponentDefinitionById(
+        dotNotationGet(editorContext.form.values, "")._template,
+        editorContext
+      )
+    );
+
+    const headerSchemaProp: Component$$$SchemaProp = {
+      prop: "$myself",
+      label: "Component type",
+      type: "component$$$",
+      definition: rootComponentDefinition,
+      required: true,
+      group: "Component",
+    };
+
+    const headerField: InternalEditingField = {
+      component: "identity",
+      hidden: false,
+      label: "Component type",
+      name: "",
       prop: "$myself",
       schemaProp: headerSchemaProp,
     };

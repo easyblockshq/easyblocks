@@ -6,7 +6,6 @@ import {
   InternalAnyTinaField,
   InternalField,
   isConfigPathRichTextPart,
-  isResourceSchemaProp,
   isTrulyResponsiveValue,
   parsePath,
   responsiveValueGetDefinedValue,
@@ -14,7 +13,7 @@ import {
   traverseComponents,
 } from "@easyblocks/app-utils";
 import { CompilationCache, getSchemaDefinition } from "@easyblocks/compiler";
-import { getFallbackLocaleForLocale, getResourceId } from "@easyblocks/core";
+import { getFallbackLocaleForLocale } from "@easyblocks/core";
 import {
   richTextInlineWrapperElementEditableComponent,
   richTextPartEditableComponent,
@@ -186,39 +185,6 @@ function createFieldController({
           }
 
           invalidateCache(path, editorContext);
-
-          // Since we store resources under the combination of configId and schemaProp.prop, this identifier won't change if we select
-          // different resource for the same field. Thus we have to remove resource for the current field before we change it.
-          // Otherwise the newly selected resource won't be fetched because resource for field with given id
-          // is already in the store.
-          if (isResourceSchemaProp(field.schemaProp)) {
-            const isResponsive = isTrulyResponsiveValue(parsedValue);
-            const parsedPathResult = parsePath(path, editorContext.form);
-
-            let resourceId: string | undefined;
-
-            if (parsedPathResult.parent) {
-              const parentConfigPath = `${parsedPathResult.parent.path}.${parsedPathResult.parent.fieldName}.${parsedPathResult.index}`;
-              const parentConfig = dotNotationGet(
-                editorContext.form.values,
-                parentConfigPath
-              );
-
-              if (parentConfig) {
-                resourceId = getResourceId(
-                  parentConfig._id,
-                  field.schemaProp.prop,
-                  isResponsive ? editorContext.breakpointIndex : undefined
-                );
-              }
-            } else {
-              resourceId = getResourceId("$", field.schemaProp.prop);
-            }
-
-            if (resourceId) {
-              editorContext.resourcesStore.remove(resourceId);
-            }
-          }
 
           // At this point we have correct fieldName and correct parsedValue after all [locale] issues solved
 

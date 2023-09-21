@@ -17,9 +17,9 @@ import {
   ConfigDeviceRange,
   ContextParams,
   createFetchingContext,
+  CustomResourceSchemaProp,
   Devices,
   EditorLauncherProps,
-  ResourceSchemaProp,
   ResponsiveValue,
   SchemaProp,
   Spacing,
@@ -330,7 +330,7 @@ export function createCompilationContext(
     throw new Error(`Root container "${rootContainer}" doesn't exist.`);
   }
 
-  if (activeRootContainer.resource) {
+  if (activeRootContainer.schema) {
     const rootComponentDefinition = components.find(
       (c) => c.id === activeRootContainer.defaultConfig._template
     );
@@ -341,19 +341,19 @@ export function createCompilationContext(
       );
     }
 
-    if (
-      !rootComponentDefinition.schema.some((s) => s.prop === "rootResource")
-    ) {
-      const rootResourceSchemaProp: ResourceSchemaProp = {
-        prop: "rootResource",
-        type: "resource",
-        resourceType: activeRootContainer.resource.type,
-        label: "Resource",
-        optional: true,
-      };
+    activeRootContainer.schema.forEach((schemaProp) => {
+      if (
+        !rootComponentDefinition.schema.some((s) => s.prop === schemaProp.prop)
+      ) {
+        const rootResourceSchemaProp: CustomResourceSchemaProp = {
+          ...schemaProp,
+          group: "Preview data",
+          optional: true,
+        };
 
-      rootComponentDefinition.schema.push(rootResourceSchemaProp);
-    }
+        rootComponentDefinition.schema.push(rootResourceSchemaProp);
+      }
+    });
   }
 
   const links: Array<InternalLinkDefinition> = [
@@ -417,8 +417,9 @@ function buildRootContainers(
     for (const [id, rootContainer] of Object.entries(rootContainers)) {
       const resultRootContainer: CompilationContextType["rootContainers"][0] = {
         id,
+        label: rootContainer.label,
         defaultConfig: rootContainer.defaultConfig,
-        resource: rootContainer.resource,
+        schema: rootContainer.schema,
       };
 
       if (rootContainer.widths) {

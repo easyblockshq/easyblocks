@@ -74,29 +74,10 @@ export function getAspectRatioClassName(
   return styles().className;
 }
 
-export function getWrapperClassName(
-  responsiveImage: ResponsiveValue<
-    ResolvedResourceProp<ImageSrc | VideoSrc>
-  > | null,
-  devices: Devices,
-  stitches: any,
-  resop: Resop
-) {
-  const wrapperStyles = resop(
-    {
-      image: responsiveValueFill(
-        responsiveImage,
-        devices,
-        getDevicesWidths(devices)
-      ),
-    },
-    ({ image }) => {
-      return {
-        opacity: image && image.status === "loading" ? 0.5 : 1,
-      };
-    },
-    devices
-  );
+export function getWrapperClassName(devices: Devices, stitches: any) {
+  const wrapperStyles = {
+    opacity: 1,
+  };
 
   const compiledBox = compileBox(wrapperStyles, devices);
   const stylesObject = getBoxStyles(

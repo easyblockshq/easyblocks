@@ -159,6 +159,13 @@ const handler: AuthenticatedNextApiHandler = async (req, res, accessToken) => {
     if (assetFile.mimeType.startsWith("image/")) {
       try {
         const { height, width } = imageSize(assetFile.content);
+
+        if (!height || !width) {
+          return res
+            .status(400)
+            .json({ error: "Image size couldn't be determined" });
+        }
+
         metadata = { height, width };
       } catch (error) {
         console.error(error);
@@ -204,9 +211,9 @@ const handler: AuthenticatedNextApiHandler = async (req, res, accessToken) => {
       .list(projectId);
 
     const insertAssetResult = await supabaseClient.from("assets").insert({
-      asset_id: fileAssetsForProjectResult.data.find(
+      asset_id: fileAssetsForProjectResult.data!.find(
         (a) => assetUploadResult.data.path.split("/").at(-1) === a.name
-      ).id,
+      )!.id,
       metadata,
     });
 
@@ -247,10 +254,10 @@ function getParsedAssetFile(req: AuthenticatedNextApiRequest) {
       const fileContent = await fs.promises.readFile(parsedFile.filepath);
 
       const file = {
-        name: parsedFile.originalFilename,
-        mimeType: parsedFile.mimetype,
+        name: parsedFile.originalFilename!,
+        mimeType: parsedFile.mimetype!,
         content: fileContent,
-        extension: `.${parsedFile.originalFilename.split(".").at(-1)}`,
+        extension: `.${parsedFile.originalFilename!.split(".").at(-1)}`,
       };
 
       resolve(file);

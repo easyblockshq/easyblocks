@@ -5,9 +5,10 @@ import {
   ComponentPickerOpenedEvent,
   duplicateConfig,
   findComponentDefinitionById,
-  InternalExternalData,
+  findConfigById,
   ItemInsertedEvent,
   mergeCompilationMeta,
+  responsiveValueForceGet,
   useEditorGlobalKeyboardShortcuts,
 } from "@easyblocks/app-utils";
 import {
@@ -29,6 +30,7 @@ import {
   createResourcesStore,
   DocumentWithResolvedConfigDTO,
   EditorLauncherProps,
+  ExternalData,
   ExternalDataChangeHandler,
   ExternalReference,
   FetchOutputResources,
@@ -80,6 +82,7 @@ import { ModalPicker } from "./ModalPicker";
 import { destinationResolver } from "./paste/destinationResolver";
 import { pasteManager } from "./paste/manager";
 import { SelectionFrame } from "./selectionFrame/SelectionFrame";
+import { documentDataWidgetFactory } from "./sidebar/DocumentDataWidget";
 import { TemplateModal } from "./TemplateModal";
 import { getTemplates } from "./templates/getTemplates";
 import { TinaProvider } from "./tinacms";
@@ -293,7 +296,7 @@ export type EditorProps = {
   uniqueSourceIdentifier?: string;
   isPlayground: boolean;
   documentId: string | null;
-  externalData: FetchOutputResources;
+  externalData: ExternalData;
   onExternalDataChange: ExternalDataChangeHandler;
 };
 
@@ -376,6 +379,20 @@ type EditorContentProps = EditorProps & {
   isPlayground: boolean;
 };
 
+function parseExternalDataId(externalDataId: string): {
+  configId: string;
+  fieldName: string;
+  breakpointIndex: string | undefined;
+} {
+  const [configId, fieldName, breakpointIndex] = externalDataId.split(".");
+
+  return {
+    configId,
+    fieldName,
+    breakpointIndex,
+  };
+}
+
 function useBuiltContent(
   editorContext: EditorContextType,
   config: Config,
@@ -383,7 +400,9 @@ function useBuiltContent(
   rawContent: ConfigComponent,
   rootContainer: string,
   onExternalDataChange: ExternalDataChangeHandler
-): NonEmptyRenderableContent & { meta: CompilationMetadata } {
+): NonEmptyRenderableContent & {
+  meta: CompilationMetadata;
+} {
   const buildEntryResult = useRef<ReturnType<typeof buildEntry>>();
 
   // cached inputs (needed to calculated "inputChanged")
@@ -395,10 +414,6 @@ function useBuiltContent(
     inputRawContent.current !== rawContent ||
     inputIsEditing.current !== editorContext.isEditing ||
     inputBreakpointIndex.current !== editorContext.breakpointIndex;
-
-  inputRawContent.current = rawContent;
-  inputIsEditing.current = editorContext.isEditing;
-  inputBreakpointIndex.current = editorContext.breakpointIndex;
 
   if (!buildEntryResult.current || inputChanged) {
     /*
@@ -457,6 +472,55 @@ function useBuiltContent(
           };
         },
       },
+      isExternalDataChanged(externalData, defaultIsExternalDataChanged) {
+        // When editing, we consider external data to be changed in more ways.
+        const storedExternalData = editorContext.resourcesStore.get(
+          externalData.id
+        );
+
+        // If external data for given id is already stored, but now the external id is empty it means that the user
+        // has removed that external value and thus the user of editor has to remove it from its external data.
+        if (storedExternalData && externalData.externalId === null) {
+          editorContext.resourcesStore.remove(externalData.id);
+          return true;
+        }
+
+        // If external data for given is is already stored, but now the external id is different it means that the user
+        // has changed the selected external value and thus the user of editor has to update it in its external data.
+        if (
+          storedExternalData &&
+          externalData.externalId &&
+          inputRawContent.current
+        ) {
+          const { breakpointIndex, configId, fieldName } = parseExternalDataId(
+            externalData.id
+          );
+
+          const config = findConfigById(
+            inputRawContent.current,
+            editorContext,
+            configId
+          );
+
+          if (!config) {
+            return false;
+          }
+
+          const value = breakpointIndex
+            ? responsiveValueForceGet(config[fieldName], breakpointIndex)
+            : config[fieldName];
+
+          const hasExternalIdChanged = value.id !== externalData.externalId;
+
+          if (hasExternalIdChanged) {
+            editorContext.resourcesStore.remove(externalData.id);
+          }
+
+          return hasExternalIdChanged;
+        }
+
+        return defaultIsExternalDataChanged(externalData);
+      },
     });
 
     if (Object.keys(buildEntryResult.current.externalData).length > 0) {
@@ -466,6 +530,10 @@ function useBuiltContent(
       );
     }
   }
+
+  inputRawContent.current = rawContent;
+  inputIsEditing.current = editorContext.isEditing;
+  inputBreakpointIndex.current = editorContext.breakpointIndex;
 
   return {
     renderableContent: (buildEntryResult.current as NonEmptyRenderableContent)
@@ -502,12 +570,10 @@ const EditorContent = ({
     | undefined
   >(undefined);
   const [focussedField, setFocussedField] = useState<Array<string>>([]);
-  const focusedFieldRef = useRef(focussedField);
 
   const handleSetFocussedField = React.useRef(
     (field: Array<string> | string) => {
       const nextFocusedField = Array.isArray(field) ? field : [field];
-      focusedFieldRef.current = nextFocusedField;
       setFocussedField(nextFocusedField);
     }
   ).current;
@@ -542,6 +608,8 @@ const EditorContent = ({
       form.finalForm.change("", config);
     },
   });
+
+  const previousExternalData = useRef<ExternalData | undefined>();
 
   const isMaster = !!props.config.__masterEnvironment;
 
@@ -664,7 +732,17 @@ const EditorContent = ({
   );
 
   useEffect(() => {
-    if (externalData) {
+    resourcesStore.batch(() => {
+      if (previousExternalData.current) {
+        Object.keys(previousExternalData.current).forEach((key) => {
+          if (!externalData[key]) {
+            resourcesStore.remove(key);
+          }
+        });
+      }
+
+      previousExternalData.current = externalData;
+
       Object.entries(externalData).forEach(
         ([id, resource]: Entries<typeof externalData>[number]) => {
           if ("values" in resource) {
@@ -706,12 +784,12 @@ const EditorContent = ({
           }
         }
       );
+    });
 
-      window.editorWindowAPI.externalData = externalData;
-      console.debug("external data", window.editorWindowAPI.externalData);
+    window.editorWindowAPI.externalData = externalData;
+    console.debug("external data", window.editorWindowAPI.externalData);
 
-      window.editorWindowAPI.onUpdate?.();
-    }
+    window.editorWindowAPI.onUpdate?.();
   }, [externalData, resourcesStore]);
 
   const syncTemplates = () => {
@@ -736,7 +814,7 @@ const EditorContent = ({
     setFocussedField: handleSetFocussedField,
     isEditing,
     setBreakpointIndex: (newBreakpointIndex) => {
-      handleSetBreakpoint(newBreakpointIndex);
+      setBreakpointIndex(newBreakpointIndex);
     },
     actions,
     save: async (documentData) => {
@@ -756,6 +834,23 @@ const EditorContent = ({
       compilationContext.rootContainers.find((r) => r.id === rootContainer)
     ),
   };
+
+  if (editorContext.activeRootContainer.schema) {
+    ["image", "video"].forEach((builtinExternalType) => {
+      // Make sure to add the root resource widget to image/video resource definition
+      if (
+        !editorContext.resourceTypes[builtinExternalType].widgets.some(
+          (w) => w.id === "@easyblocks/document-data"
+        )
+      ) {
+        editorContext.resourceTypes[builtinExternalType].widgets.push(
+          documentDataWidgetFactory({
+            type: builtinExternalType,
+          })
+        );
+      }
+    });
+  }
 
   const { configAfterAuto, renderableContent, meta } = useBuiltContent(
     editorContext,
@@ -860,64 +955,6 @@ const EditorContent = ({
 
   const appHeight = heightMode === "viewport" ? "100vh" : "100%";
 
-  const internalExternalData = Object.fromEntries(
-    Object.entries(externalData).map(
-      ([id, resource]: Entries<typeof externalData>[number]) => {
-        if ("values" in resource) {
-          if (resource.values !== undefined) {
-            return [
-              id,
-              {
-                id,
-                type: resource.type,
-                status: "success",
-                error: null,
-                value: resource.values,
-              },
-            ];
-          }
-
-          return [
-            id,
-            {
-              id,
-              type: resource.type,
-              status: "error",
-              error: resource.error,
-              value: undefined,
-            },
-          ];
-        } else {
-          if (resource.value !== undefined) {
-            return [
-              id,
-              {
-                id,
-                type: resource.type,
-                status: "success",
-                value: resource.value,
-                error: null,
-              },
-            ];
-          } else {
-            return [
-              id,
-              {
-                id,
-                type: resource.type,
-                status: "error",
-                value: undefined,
-                error: resource.error,
-              },
-            ];
-          }
-        }
-      }
-    )
-  );
-
-  // window.editorWindowAPI.externalData = internalExternalData;
-
   return (
     <div
       id={"shopstory-app"}
@@ -935,7 +972,7 @@ const EditorContent = ({
       )}
       <EditorContext.Provider value={editorContext}>
         <ConfigAfterAutoContext.Provider value={configAfterAuto}>
-          <ExternalDataContext.Provider value={internalExternalData}>
+          <ExternalDataContext.Provider value={externalData}>
             <div id="rootContainer" />
             <EditorTopBar
               onUndo={undo}
@@ -1178,4 +1215,4 @@ function adaptRemoteConfig(
   return normalized;
 }
 
-export const ExternalDataContext = createContext<InternalExternalData>({});
+export const ExternalDataContext = createContext<ExternalData>({});

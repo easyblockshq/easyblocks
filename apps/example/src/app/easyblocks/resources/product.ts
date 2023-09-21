@@ -1,5 +1,6 @@
 import {
-  FetchInputResources,
+  ChangedExternalData,
+  ExternalData,
   FetchOutputCompoundResources,
   ImageSrc,
   PickerItem,
@@ -41,9 +42,9 @@ const productWidget: Widget = {
 };
 
 async function fetchProductResources(
-  resources: FetchInputResources
-): Promise<FetchOutputCompoundResources> {
-  const productResources = Object.entries(resources).filter(
+  externalData: ChangedExternalData
+): Promise<ExternalData> {
+  const productResources = Object.entries(externalData).filter(
     ([, resource]) => resource.widgetId === productWidget.id
   );
 
@@ -51,9 +52,9 @@ async function fetchProductResources(
     return {};
   }
 
-  const productIds = productResources.map(
-    ([, resource]) => resource.externalId
-  );
+  const productIds = productResources
+    .map(([, resource]) => resource.externalId)
+    .filter<string>((externalId): externalId is string => externalId !== null);
 
   const products = await MockProductsService.getProductsByIds(productIds);
 

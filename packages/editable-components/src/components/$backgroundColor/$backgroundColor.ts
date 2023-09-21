@@ -18,7 +18,7 @@ const backgroundColorComponentDefinition: InternalRenderableComponentDefinition<
         type: "color",
       },
     ],
-    getEditorSidebarPreview: (config, { breakpointIndex }) => {
+    getEditorSidebarPreview: (config, _, { breakpointIndex }) => {
       const activeColorValue: RefValue<Color> = responsiveValueForceGet(
         config.color,
         breakpointIndex

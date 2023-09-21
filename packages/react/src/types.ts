@@ -1,4 +1,4 @@
-import type { ContextParams, FetchInputResources } from "@easyblocks/core";
+import type { ChangedExternalData, ContextParams } from "@easyblocks/core";
 
 export type ActionHandler = (values: object, eventInfo: any) => void;
 
@@ -29,6 +29,6 @@ export type LinkProvider = React.ComponentType<LinkProviderProps>;
 export type ShopstoryLink = LinkProvider;
 
 export type ExternalDataChangeHandler = (
-  resources: FetchInputResources,
+  externalData: ChangedExternalData,
   contextParams: ContextParams
 ) => void;

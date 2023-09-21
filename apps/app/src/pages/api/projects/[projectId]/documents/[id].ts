@@ -74,7 +74,7 @@ const handler: AuthenticatedNextApiHandler = async (
         }
 
         const updatedAt = new Date(
-          toArray(currentDocumentData.data[0].configs)[0].updated_at
+          toArray(currentDocumentData.data[0].configs)[0].updated_at!
         );
 
         // This header only exists for testing purposes
@@ -146,7 +146,7 @@ const handler: AuthenticatedNextApiHandler = async (
 
       if (newConfigData) {
         updatedDocumentFields.config_id = newConfigData.id;
-        updatedDocumentFields.version = newDocumentVersion;
+        updatedDocumentFields.version = newDocumentVersion!;
       }
 
       const updateDocumentResult = await supabase

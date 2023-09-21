@@ -19,14 +19,7 @@ function IdentityField({ input, field }: IdentityFieldProps) {
   const panelContext = useContext(PanelContext);
 
   const isMixed = isMixedFieldValue(input.value);
-
-  const config = (() => {
-    if (isMixed) {
-      return null;
-    }
-
-    return input.value;
-  })();
+  const config = isMixed ? null : input.value;
 
   if (config == null) {
     return null;
@@ -47,6 +40,8 @@ function IdentityField({ input, field }: IdentityFieldProps) {
   const parentSchemaProp = parentComponentDefinition?.schema.find(
     (schemaProp) => schemaProp.prop === parent!.fieldName
   );
+  const rootComponentId =
+    editorContext.activeRootContainer.defaultConfig._template;
 
   const isNonRemovable = parentSchemaProp
     ? parentSchemaProp.type === "component-fixed" ||
@@ -54,7 +49,8 @@ function IdentityField({ input, field }: IdentityFieldProps) {
     : true;
   const isNonChangable =
     parentSchemaProp?.type === "component-fixed" ||
-    componentDefinition?.id === "$richTextPart";
+    componentDefinition?.id === "$richTextPart" ||
+    componentDefinition?.id === rootComponentId;
 
   function handleChangeComponentType() {
     if (isNonChangable) {
@@ -109,7 +105,10 @@ function IdentityField({ input, field }: IdentityFieldProps) {
           font-weight: 700;
         `}
       >
-        {componentDefinition?.label ?? componentDefinition?.id}
+        {componentDefinition?.id === rootComponentId
+          ? editorContext.activeRootContainer.label ??
+            `${editorContext.activeRootContainer.id} document template`
+          : componentDefinition?.label ?? componentDefinition?.id}
       </Typography>
       {!isNonChangable && <SSIcons.ChevronDown size={16} />}
     </div>

@@ -1349,19 +1349,17 @@ function resourceNormalize(
           widgetId: x.widgetId,
           key: x.key,
         };
+
         return normalized;
       }
 
       const normalized: UnresolvedResourceEmpty = {
         id: null,
+        widgetId:
+          typeof x.widgetId === "string"
+            ? x.widgetId
+            : compilationContext.resourceTypes[resourceType]?.widgets[0]?.id,
       };
-
-      if (typeof x.widgetId === "string") {
-        normalized.widgetId = x.widgetId;
-      } else {
-        normalized.widgetId =
-          compilationContext.resourceTypes[resourceType]?.widgets[0]?.id;
-      }
 
       return normalized;
     }

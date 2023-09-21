@@ -231,12 +231,6 @@ export type FontSchemaProp = SchemaPropShared<
 
 export type IconSchemaProp = SchemaPropShared<"icon", RefValue<string>>;
 
-export type CustomSchemaProp = SchemaPropShared<string, never> & {
-  [key: string]: any;
-  mapper?: (data: any) => any;
-  optional?: boolean;
-};
-
 export type ComponentPickerType = "large" | "small";
 
 export type PassedField =
@@ -477,11 +471,13 @@ export type LocalizedText = {
 };
 
 export type RootContainer = {
+  label?: string;
   defaultConfig: ComponentConfig;
   widths?: Array<number>;
   resource?: {
     type: string;
   };
+  schema?: Array<CustomResourceSchemaProp>;
 };
 
 type EditableComponentDefinition = {
@@ -583,7 +579,7 @@ export type UnresolvedResourceNonEmpty = {
 
 export type UnresolvedResourceEmpty = {
   id: null;
-  widgetId?: string;
+  widgetId: string;
 };
 
 export type CustomResourceSchemaProp = SchemaPropShared<
@@ -719,6 +715,7 @@ export type ComponentDefinitionShared<Identifier extends string = string> = {
   icon?: "link" | "grid_3x3";
   getEditorSidebarPreview?: (
     config: ConfigComponent,
+    externalData: ExternalData,
     editorContext: EditorSidebarPreviewOptions
   ) => SidebarPreviewVariant | undefined;
   previewImage?: string;
@@ -1022,13 +1019,11 @@ export type EditingFunction = (
 ) => EditingFunctionResult | undefined;
 
 export type FetchInputResource = {
-  externalId: string;
+  externalId: string | null;
   type: string;
   widgetId: string;
   fetchParams?: ResourceParams;
 };
-
-export type FetchInputResources = Record<string, FetchInputResource>;
 
 type FetchResourceResolvedResult<T> = { value: T; error: null };
 
@@ -1082,11 +1077,23 @@ export type FetchOutputResources = Record<
   (FetchOutputBasicResources | FetchOutputCompoundResources)[string]
 >;
 
-export type PendingExternalData = FetchInputResources;
+/**
+ * @deprecated Remove before push
+ */
+export type PendingExternalData = ExternalData;
+
+export type ChangedExternalDataValue = {
+  externalId: string | null;
+  type: string;
+  widgetId: string;
+  fetchParams?: ResourceParams;
+};
+
+export type ChangedExternalData = Record<string, ChangedExternalDataValue>;
 
 export type ExternalData = FetchOutputResources;
 
 export type ExternalDataChangeHandler = (
-  resources: FetchInputResources,
+  resources: ChangedExternalData,
   contextParams: ContextParams
 ) => void;

@@ -7,6 +7,7 @@ import {
   ComponentDefinitionShared,
   ConfigComponent,
   ContextParams,
+  CustomResourceSchemaProp,
   Devices,
   EditingFunction,
   EditingInfoBase,
@@ -86,11 +87,10 @@ export type CompilationContextType = {
 
 export type CompilationRootContainer = {
   id: string;
+  label?: string;
   defaultConfig: ComponentConfig;
   widths?: Record<string, string | number>;
-  resource?: {
-    type: string;
-  };
+  schema?: Array<CustomResourceSchemaProp>;
 };
 
 export type ComponentConfigChangeFunction = (arg: {

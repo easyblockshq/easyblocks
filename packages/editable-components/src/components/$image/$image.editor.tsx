@@ -24,12 +24,7 @@ export default function $image(props: ImageProps) {
     resop
   );
 
-  const imageWrapperClassName = getWrapperClassName(
-    image,
-    devices,
-    stitches,
-    resop
-  );
+  const imageWrapperClassName = getWrapperClassName(devices, stitches);
 
   return (
     <Wrapper>

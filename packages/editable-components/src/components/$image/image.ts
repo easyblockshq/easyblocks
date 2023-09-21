@@ -1,16 +1,16 @@
 import {
   buttonActionSchemaProp,
   InternalRenderableComponentDefinition,
+  isCompoundExternalDataValue,
   responsiveValueForceGet,
 } from "@easyblocks/app-utils";
 import {
-  FetchCompoundResourceResultValues,
+  getResourceId,
   getResourceValue,
   ImageSrc,
-  ResolvedResource,
   UnresolvedResource,
 } from "@easyblocks/core";
-import { last } from "@easyblocks/utils";
+import { assertDefined, last } from "@easyblocks/utils";
 import imageStyles from "./$image.styles";
 
 const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> =
@@ -51,15 +51,13 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
       },
       buttonActionSchemaProp,
     ],
-    getEditorSidebarPreview(config, options) {
-      const { breakpointIndex, resources } = options;
-
+    getEditorSidebarPreview(config, externalData, { breakpointIndex }) {
       const activeImageValue = responsiveValueForceGet<UnresolvedResource>(
         config.image,
         breakpointIndex
       );
 
-      if (activeImageValue.id == null) {
+      if (activeImageValue.id === null) {
         return {
           type: "icon",
           icon: "link",
@@ -67,11 +65,12 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
         };
       }
 
-      const imageResource = resources.find((resource) => {
-        return resource.id === `${config._id}.image`;
-      });
+      const imageResource =
+        externalData[
+          getResourceId(assertDefined(config._id), "image", breakpointIndex)
+        ];
 
-      if (!imageResource || imageResource.status !== "success") {
+      if (!imageResource || imageResource.error !== null) {
         return {
           type: "icon",
           icon: "link",
@@ -79,7 +78,7 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
         };
       }
 
-      if (imageResource.type === "object") {
+      if (isCompoundExternalDataValue(imageResource)) {
         if (!activeImageValue.key) {
           return {
             type: "icon",
@@ -88,9 +87,8 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
           };
         }
 
-        const resolvedCompoundResourceResult = (
-          imageResource as ResolvedResource<FetchCompoundResourceResultValues>
-        ).value?.[activeImageValue.key];
+        const resolvedCompoundResourceResult =
+          imageResource.values?.[activeImageValue.key];
 
         if (!resolvedCompoundResourceResult) {
           return {
@@ -112,7 +110,7 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
         };
       }
 
-      const imageResourceValue = getResourceValue(imageResource);
+      const imageResourceValue = getResourceValue(imageResource) as ImageSrc;
       const imageFileName = last(imageResourceValue.url.split("/"));
       const imageFileNameWithoutQueryParams = imageFileName.split("?")[0];
 

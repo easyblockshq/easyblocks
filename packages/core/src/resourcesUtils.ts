@@ -1,9 +1,4 @@
-import type {
-  ExternalData,
-  ResourceParams,
-  ResourceSchemaProp,
-  UnresolvedResource,
-} from "./types";
+import type { ExternalData, ResourceParams, ResourceSchemaProp } from "./types";
 
 export function getResourceFetchParams(
   schemaProp: ResourceSchemaProp
@@ -34,7 +29,7 @@ export function getResourceValue(externalDataValue: ExternalData[string]) {
 }
 
 export function isLocalTextResource(
-  resource: UnresolvedResource,
+  resource: { id: string | null },
   type: string
 ) {
   if (resource.id === null) {

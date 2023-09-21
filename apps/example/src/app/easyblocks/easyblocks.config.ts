@@ -27,19 +27,32 @@ export const easyblocksConfig: Config = {
   ],
   rootContainers: {
     content: {
+      label: "Content document template",
       defaultConfig: {
         _template: "$RootSections",
         data: [],
       },
     },
     product: {
+      label: "Product document template",
       defaultConfig: {
         _template: "$RootSections",
         data: [],
       },
-      resource: {
-        type: "product",
-      },
+      schema: [
+        {
+          prop: "product",
+          label: "Product",
+          type: "resource",
+          resourceType: "product",
+        },
+        {
+          prop: "fallbackProduct",
+          label: "Fallback product",
+          type: "resource",
+          resourceType: "product",
+        },
+      ],
     },
   },
   components: builtinEditableComponentsDefinitions,

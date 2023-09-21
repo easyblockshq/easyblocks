@@ -5,10 +5,10 @@ import { ShopstoryAccessTokenApiAuthenticationStrategy } from "./infrastructure/
 import { loadCompilerScript } from "./loadScripts";
 import { getFallbackLocaleForLocale } from "./locales";
 import {
+  ChangedExternalData,
   ComponentConfig,
   Config,
   Document,
-  PendingExternalData,
   RenderableDocument,
 } from "./types";
 
@@ -22,7 +22,7 @@ async function buildDocument({
   locale: string;
 }): Promise<{
   renderableDocument: RenderableDocument;
-  externalData: PendingExternalData;
+  externalData: ChangedExternalData;
 }> {
   const entry = await resolveEntryForDocument({
     document,

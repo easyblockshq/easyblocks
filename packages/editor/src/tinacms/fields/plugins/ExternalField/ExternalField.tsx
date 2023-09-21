@@ -23,7 +23,7 @@ import { useApiClient } from "../../../../infrastructure/ApiClientProvider";
 import { FieldMixedValue } from "../../../../types";
 import { FieldBuilder, FieldRenderProps } from "../../../form-builder";
 import { isMixedFieldValue } from "../../components/isMixedFieldValue";
-import { ResourceWidgetsMenu } from "../ResponsiveField/ResponsiveFieldPlugin";
+import { ExternalValueWidgetsMenu } from "../ResponsiveField/ExternalValueWidgetsMenu";
 import { FieldMetaWrapper } from "../wrapFieldWithMeta";
 
 /**
@@ -156,12 +156,12 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
 
   const { schemaProp } = field;
   const isCustomResourceProp = schemaProp.type === "resource";
-  const resource = Object.values(externalData).find((r) => {
+  const externalDataId = Object.keys(externalData).find((externalDataId) => {
     const path = fieldNames[0].split(".").slice(0, -1).join(".");
     const configId = dotNotationGet(editorContext.form.values, path)._id;
 
     return (
-      r.id ===
+      externalDataId ===
       getResourceId(
         configId,
         schemaProp.prop,
@@ -172,6 +172,16 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
       )
     );
   });
+  const resource = externalDataId ? externalData[externalDataId] : undefined;
+
+  const isCompoundResourceValueSelectVisible =
+    !isMixedFieldValue(value) &&
+    value.id !== null &&
+    !value.id.startsWith("$.") &&
+    externalDataId !== undefined &&
+    resource !== undefined &&
+    "values" in resource &&
+    resource.values !== undefined;
 
   return (
     // @ts-expect-error
@@ -190,7 +200,7 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
               }
 
               return (
-                <ResourceWidgetsMenu
+                <ExternalValueWidgetsMenu
                   widgets={widgets}
                   selectedWidgetId={value.widgetId ?? widgets[0].id}
                   onChange={(widgetId) => {
@@ -212,24 +222,28 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
       }
     >
       {content}
-      {!isMixedFieldValue(value) &&
-        value.id !== null &&
-        schemaProp.prop !== "rootResource" &&
-        resource &&
-        resource.status === "success" &&
-        isResolvedCompoundResource(resource) && (
-          <CompoundResourceValueSelect
-            resource={resource}
-            resourceType={schemaProp.resourceType}
-            resourceKey={value.key ?? ""}
-            onResourceKeyChange={(key) => {
-              props.input.onChange({
-                ...input.value,
-                key,
-              });
-            }}
-          />
-        )}
+      {isCompoundResourceValueSelectVisible && (
+        <CompoundResourceValueSelect
+          options={getBasicResourcesOfType(
+            resource.values,
+            schemaProp.resourceType
+          ).map((r) => ({
+            id: externalDataId,
+            key: r.key,
+            label: r.label ?? r.key,
+          }))}
+          resource={{
+            id: externalDataId,
+            key: value.key,
+          }}
+          onResourceKeyChange={(_, key) => {
+            props.input.onChange({
+              ...input.value,
+              key,
+            });
+          }}
+        />
+      )}
     </FieldMetaWrapper>
   );
 };
@@ -239,40 +253,58 @@ export const ExternalFieldPlugin = {
   Component: ExternalFieldComponent,
 };
 
+export function getBasicResourcesOfType(
+  compoundResourceValues: FetchCompoundResourceResultValues,
+  type: string
+) {
+  return Object.entries(compoundResourceValues)
+    .filter(([, r]) => r.type === type)
+    .map(([key, r]) => {
+      return {
+        key,
+        ...r,
+      };
+    });
+}
+
 export function CompoundResourceValueSelect(props: {
-  resource: SetRequired<
-    ResolvedResource<FetchCompoundResourceResultValues>,
-    "value"
-  >;
-  resourceType: string;
-  resourceKey: string;
-  onResourceKeyChange: (value: string) => void;
+  options: Array<{ id: string; key: string; label: string }>;
+  resource:
+    | { id: null; key: undefined }
+    | { id: string; key: string | undefined };
+  onResourceKeyChange: (id: string, key: string) => void;
 }) {
   return (
     <SSSelect
       onChange={(event) => {
-        props.onResourceKeyChange(event.target.value);
+        const selectedOption = JSON.parse(event.target.value);
+        props.onResourceKeyChange(selectedOption.id, selectedOption.key);
       }}
-      value={props.resourceKey}
+      value={
+        props.resource.id !== null
+          ? JSON.stringify({ id: props.resource.id, key: props.resource.key })
+          : ""
+      }
       css={css`
         margin-top: 8px;
         margin-left: 0;
+
+        & > select {
+          text-align: left;
+        }
       `}
     >
-      {!props.resourceKey && (
-        <option key="none" value="">
-          --Select resource field--
-        </option>
-      )}
-      {Object.entries(props.resource.value)
-        .filter(([, resource]) => resource.type === props.resourceType)
-        .map(([key, resource]) => {
-          return (
-            <option key={key} value={key}>
-              {resource.label ?? key}
-            </option>
-          );
-        })}
+      {!props.resource.key && <option value="">--Select source--</option>}
+      {props.options.map((r) => {
+        return (
+          <option
+            key={`${r.id}.${r.key}`}
+            value={JSON.stringify({ id: r.id, key: r.key })}
+          >
+            {r.label}
+          </option>
+        );
+      })}
     </SSSelect>
   );
 }

@@ -1,9 +1,16 @@
-import { InternalField, isResourceSchemaProp } from "@easyblocks/app-utils";
-import { SSFonts, Typography } from "@easyblocks/design-system";
+import {
+  InternalField,
+  isResourceSchemaProp,
+  isTrulyResponsiveValue,
+  responsiveValueForceGet,
+} from "@easyblocks/app-utils";
+import { getResourceId } from "@easyblocks/core";
+import { Loader, SSFonts, Typography } from "@easyblocks/design-system";
 import { dotNotationGet, toArray } from "@easyblocks/utils";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useContext } from "react";
 import styled, { css } from "styled-components";
 import { useConfigAfterAuto } from "../../../ConfigAfterAutoContext";
+import { ExternalDataContext } from "../../../Editor";
 import { useEditorContext } from "../../../EditorContext";
 import { COMPONENTS_SUPPORTING_MIXED_VALUES } from "../components/constants";
 import { isMixedFieldValue } from "../components/isMixedFieldValue";
@@ -24,7 +31,6 @@ type InputFieldType<ExtraFieldProps, InputProps> = FieldProps<InputProps> &
     children: ReactNode;
     renderLabel?: (props: { label: string }) => ReactNode;
     renderDecoration?: (props: {
-      launcherIcon?: string;
       renderDefaultDecoration: () => ReactNode;
     }) => ReactNode;
   };
@@ -39,7 +45,6 @@ export function FieldMetaWrapper<
   children,
   field,
   input,
-  meta,
   noWrap,
   layout = "row",
   renderLabel,
@@ -48,10 +53,11 @@ export function FieldMetaWrapper<
 }: InputFieldType<ExtraFieldProps, InputProps>) {
   const editorContext = useEditorContext();
   const configAfterAuto = useConfigAfterAuto();
+  const externalData = useContext(ExternalDataContext);
   const {
     actions: { runChange },
     form,
-    resources,
+    focussedField,
   } = editorContext;
 
   const { isOpen, tooltipProps, triggerProps, arrowProps } = useTooltip({
@@ -63,10 +69,11 @@ export function FieldMetaWrapper<
   );
 
   const isMixedValue = isMixedFieldValue(input.value);
+  const fieldNames = toArray(field.name);
 
   function handleButtonMixedClick() {
     runChange(() => {
-      toArray(field.name).forEach((fieldName, _, names) => {
+      fieldNames.forEach((fieldName, _, names) => {
         const firstFieldValue = dotNotationGet(form.values, names[0]);
         form.change(fieldName, firstFieldValue);
       });
@@ -94,7 +101,6 @@ export function FieldMetaWrapper<
           Mixed
         </TextButton>
       )}
-      {meta.error && <FieldError>{meta.error}</FieldError>}
     </div>
   );
 
@@ -105,27 +111,37 @@ export function FieldMetaWrapper<
   const label = field.label || input.name;
   const { schemaProp } = field;
   const isResource = isResourceSchemaProp(schemaProp);
-  const configPath = toArray(field.name)[0];
+  const configPath = fieldNames[0].split(".").slice(0, -1).join(".");
+  const fieldValue = dotNotationGet(form.values, fieldNames[0]);
   const config = dotNotationGet(configAfterAuto, configPath);
 
-  const resolvedResource =
+  const externalDataValue =
     isResource && schemaProp.type !== "text"
-      ? resources.find((r) => {
-          return r.id === `${config._id}.${schemaProp.prop}`;
-        })
+      ? externalData[
+          getResourceId(
+            focussedField.length === 0 ? "$" : config._id,
+            schemaProp.prop,
+            isTrulyResponsiveValue(input.value)
+              ? editorContext.breakpointIndex
+              : undefined
+          )
+        ]
       : undefined;
 
-  let icon: string | undefined;
-
   const renderDefaultDecoration = () => {
-    if (icon !== undefined && !isMixedValue) {
-      return (
-        <FieldLabelIconWrapper dangerouslySetInnerHTML={{ __html: icon }} />
-      );
-    }
-
     return null;
   };
+
+  const currentBreakpointFieldValue = responsiveValueForceGet(
+    fieldValue,
+    editorContext.breakpointIndex
+  );
+
+  const isLoadingExternalData =
+    isResource &&
+    !externalDataValue &&
+    currentBreakpointFieldValue.id !== null &&
+    !currentBreakpointFieldValue.id.startsWith("$.");
 
   return (
     <FieldWrapper margin={false} layout={layout}>
@@ -135,8 +151,8 @@ export function FieldMetaWrapper<
             <FieldLabel
               htmlFor={toArray(field.name).join(",")}
               isError={
-                resolvedResource !== undefined &&
-                resolvedResource.status === "error"
+                externalDataValue !== undefined &&
+                externalDataValue.error !== null
               }
               {...triggerProps}
             >
@@ -158,15 +174,25 @@ export function FieldMetaWrapper<
             </FieldLabel>
           )}
 
+          {isLoadingExternalData && (
+            <Loader
+              css={`
+                margin-left: 8px;
+              `}
+            />
+          )}
+
           {(layout === "column" &&
             renderDecoration?.({
-              launcherIcon: icon,
               renderDefaultDecoration,
             })) ??
             renderDefaultDecoration()}
         </FieldLabelWrapper>
       )}
       <FieldInputWrapper layout={layout}>{content}</FieldInputWrapper>
+      {externalDataValue && externalDataValue.error !== null && (
+        <FieldError>{externalDataValue.error.message}</FieldError>
+      )}
     </FieldWrapper>
   );
 }

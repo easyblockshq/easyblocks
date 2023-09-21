@@ -4,34 +4,23 @@ import {
   responsiveValueForceGet,
 } from "@easyblocks/app-utils";
 import {
-  ResourceDefinition,
   ResourceSchemaProp,
   TrulyResponsiveValue,
   UnresolvedResource,
 } from "@easyblocks/core";
-import {
-  Menu,
-  MenuContent,
-  MenuItem,
-  MenuTrigger,
-  SSButtonGhost,
-  SSColors,
-  SSFonts,
-  SSIcons,
-  Typography,
-} from "@easyblocks/design-system";
+import { SSColors, SSFonts, SSIcons } from "@easyblocks/design-system";
 import { dotNotationGet, toArray } from "@easyblocks/utils";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useConfigAfterAuto } from "../../../../ConfigAfterAutoContext";
 import { useEditorContext } from "../../../../EditorContext";
-import { rootResourceWidgetFactory } from "../../../../sidebar/RootResourceWidget";
 import { FieldBuilder } from "../../../form-builder";
 import { MIXED_VALUE } from "../../components/constants";
 import { getUniqueValues } from "../../components/getUniqueValues";
 import { Tooltip, TooltipArrow, TooltipBody } from "../Tooltip";
 import { useTooltip } from "../useTooltip";
-import { FieldLabelIconWrapper, FieldMetaWrapper } from "../wrapFieldWithMeta";
+import { FieldMetaWrapper } from "../wrapFieldWithMeta";
+import { ExternalValueWidgetsMenu } from "./ExternalValueWidgetsMenu";
 import {
   responsiveFieldController,
   ResponsiveFieldDefinition,
@@ -145,27 +134,6 @@ export const ResponsiveField = (props: ResponsivePluginProps) => {
         isResourceSchemaProp(schemaProp) &&
         schemaProp.type === "resource"
           ? ({ renderDefaultDecoration }) => {
-              if (
-                editorContext.activeRootContainer.resource &&
-                (schemaProp.resourceType === "image" ||
-                  schemaProp.resourceType === "video")
-              ) {
-                // Make sure to add the root resource widget to image/video resource definition
-                if (
-                  !editorContext.resourceTypes[
-                    schemaProp.resourceType
-                  ].widgets.some((w) => w.id === "@easyblocks/linkedResource")
-                ) {
-                  editorContext.resourceTypes[
-                    schemaProp.resourceType
-                  ].widgets.push(
-                    rootResourceWidgetFactory({
-                      type: schemaProp.resourceType,
-                    })
-                  );
-                }
-              }
-
               const availableWidgets =
                 editorContext.resourceTypes[schemaProp.resourceType]?.widgets;
 
@@ -186,7 +154,7 @@ export const ResponsiveField = (props: ResponsivePluginProps) => {
               }
 
               return (
-                <ResourceWidgetsMenu
+                <ExternalValueWidgetsMenu
                   widgets={availableWidgets}
                   onChange={(widgetId) => {
                     setSelectedWidgetId(widgetId);
@@ -313,96 +281,4 @@ function getAutoLabelButtonLabel(value: any): string {
   }
 
   return `auto: ${value}`;
-}
-
-export function ResourceWidgetsMenu({
-  selectedWidgetId,
-  widgets,
-  onChange,
-  icon,
-}: {
-  selectedWidgetId: string | undefined;
-  widgets: Array<ResourceDefinition["widgets"][number]>;
-  onChange: (widgetId: string) => void;
-  icon?: string;
-}) {
-  const [internalSelectedWidgetId, setInternalSelectedWidgetId] = useState<
-    string | undefined
-  >(() => {
-    if (selectedWidgetId !== undefined) {
-      return selectedWidgetId;
-    }
-
-    return widgets[0]?.id;
-  });
-
-  const isControlled = selectedWidgetId !== undefined;
-
-  const widgetId = isControlled ? selectedWidgetId : internalSelectedWidgetId;
-
-  function handleWidgetIdChange(widgetId: string) {
-    if (isControlled) {
-      setInternalSelectedWidgetId(widgetId);
-    }
-
-    onChange(widgetId);
-  }
-
-  const selectedWidget = widgets.find((v) => v.id === widgetId);
-
-  return (
-    <Menu>
-      <FieldLabelIconWrapper>
-        <MenuTrigger>
-          <SSButtonGhost>
-            {icon !== undefined && (
-              <span
-                css={`
-                  display: flex;
-                  margin-left: 8px;
-
-                  svg {
-                    width: 14px;
-                    height: 14px;
-                    flex-shrink: 0;
-                  }
-                `}
-                dangerouslySetInnerHTML={{ __html: icon }}
-              ></span>
-            )}
-            {selectedWidget
-              ? selectedWidget.label ?? selectedWidget.id
-              : "Select widget"}
-            <SSIcons.ChevronDown size={16} />
-          </SSButtonGhost>
-        </MenuTrigger>
-      </FieldLabelIconWrapper>
-      <MenuContent>
-        {widgets.map((widget) => {
-          return (
-            <MenuItem
-              key={widget.id}
-              onClick={() => {
-                if (widget.id === selectedWidgetId) {
-                  return;
-                }
-
-                handleWidgetIdChange(widget.id);
-              }}
-            >
-              <Typography
-                color={
-                  selectedWidget && selectedWidget.id === widget.id
-                    ? "black20"
-                    : "white"
-                }
-              >
-                {widget.label ?? widget.id}
-              </Typography>
-            </MenuItem>
-          );
-        })}
-      </MenuContent>
-    </Menu>
-  );
 }

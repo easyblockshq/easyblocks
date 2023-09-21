@@ -21,10 +21,11 @@ import {
   Typography,
 } from "@easyblocks/design-system";
 import { dotNotationGet, toArray } from "@easyblocks/utils";
-import React from "react";
+import React, { useContext } from "react";
 import ReactDOM from "react-dom";
 import styled, { css } from "styled-components";
 import { buildTinaFields } from "../../../buildTinaFields";
+import { ExternalDataContext } from "../../../Editor";
 import { useEditorContext } from "../../../EditorContext";
 import { SidebarFooter } from "../../../SidebarFooter";
 import { FieldMixedValue } from "../../../types";
@@ -220,6 +221,7 @@ const SubComponentPanelButton = ({
 }: SubComponentPanelButtonProps) => {
   const sidebarPanelsRoot = document.getElementById("sidebar-panels-root");
   const editorContext = useEditorContext();
+  const externalData = useContext(ExternalDataContext);
 
   const config = dotNotationGet(editorContext.configAfterAuto, paths[0]);
   const componentDefinition = findComponentDefinition(config, editorContext);
@@ -231,6 +233,7 @@ const SubComponentPanelButton = ({
 
   const sidebarPreview = componentDefinition?.getEditorSidebarPreview?.(
     config,
+    externalData,
     editorContext
   );
 

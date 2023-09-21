@@ -1,15 +1,11 @@
-import {
-  ExternalDataChangeHandler,
-  FetchOutputResources,
-  PendingExternalData,
-} from "@easyblocks/core";
+import { ChangedExternalData, ExternalData } from "@easyblocks/core";
 import { fetchEasyblocksMediaResources } from "@easyblocks/media";
 import { fetchPexelsResources } from "./resources/pexels";
 import { fetchProductResources } from "./resources/product";
 
 const createMyCustomFetch: (
   accessToken: string
-) => (resources: PendingExternalData) => Promise<FetchOutputResources> =
+) => (resources: ChangedExternalData) => Promise<ExternalData> =
   (accessToken) => async (resources) => {
     const [easyblocksResources, pexelsResources, productResources] =
       await Promise.all([

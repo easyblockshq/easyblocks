@@ -51,7 +51,7 @@ const Typography: TypographyComponent = ({
       // Don't forward `color` prop to host element since it's our custom prop, not native one.
       $color={color}
       align={align}
-      isTruncated={isTruncated}
+      $isTruncated={isTruncated}
       {...restProps}
     >
       {children}
@@ -60,8 +60,11 @@ const Typography: TypographyComponent = ({
 };
 
 type TypographyRootProps = Required<
-  Pick<TypographyProps, "variant" | "align" | "isTruncated">
-> & { $color: TypographyProps["color"] };
+  Pick<TypographyProps, "variant" | "align">
+> & {
+  $color: TypographyProps["color"];
+  $isTruncated: NonNullable<TypographyProps["isTruncated"]>;
+};
 
 // Why use `div` as the default text tag?
 // 1. We mostly stack up lines of text so it's natural for typography component to be block element
@@ -76,8 +79,8 @@ const TypographyRoot = styled.div<TypographyRootProps>`
   ${({ variant }) => SSFonts[variant]}
   text-align: ${({ align }) => align};
 
-  ${({ isTruncated }) =>
-    isTruncated &&
+  ${({ $isTruncated }) =>
+    $isTruncated &&
     css`
       overflow: hidden;
       text-overflow: ellipsis;

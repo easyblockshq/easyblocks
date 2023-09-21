@@ -195,7 +195,7 @@ export const SSProductPicker: React.FC<ProductPickerProps> = ({
             setOpen(false);
           }}
           onItemPick={(item) => {
-            onChange({ id: item.id });
+            onChange({ id: item.id, key: undefined });
           }}
         />
       </div>

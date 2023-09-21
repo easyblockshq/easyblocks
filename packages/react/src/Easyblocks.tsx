@@ -1,5 +1,5 @@
 "use client";
-import { ExternalData, RenderableDocument, Resource } from "@easyblocks/core";
+import type { ExternalData, RenderableDocument } from "@easyblocks/core";
 import React, { useEffect } from "react";
 import ComponentBuilder from "./ComponentBuilder/ComponentBuilder";
 import { EasyblocksExternalDataProvider } from "./EasyblocksExternalDataProvider";
@@ -23,38 +23,6 @@ function Easyblocks({ renderableDocument, externalData }: EasyblocksProps) {
   if (renderableDocument.renderableContent === null) {
     return null;
   }
-
-  const resources = Object.entries(externalData).map<Resource>(
-    ([id, resource]) => {
-      if ("values" in resource) {
-        return {
-          id,
-          type: resource.type,
-          status: "success",
-          error: null,
-          value: resource.values,
-        };
-      } else {
-        if (resource.value !== undefined) {
-          return {
-            id,
-            type: resource.type,
-            status: "success",
-            value: resource.value,
-            error: null,
-          };
-        } else {
-          return {
-            id,
-            type: resource.type,
-            status: "error",
-            value: undefined,
-            error: resource.error,
-          };
-        }
-      }
-    }
-  );
 
   return (
     <EasyblocksMetadataProvider meta={renderableDocument.meta}>

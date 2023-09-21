@@ -1,15 +1,15 @@
 import {
   InternalRenderableComponentDefinition,
+  isCompoundExternalDataValue,
   responsiveValueForceGet,
 } from "@easyblocks/app-utils";
 import {
-  FetchCompoundResourceResultValues,
+  getResourceId,
   getResourceValue,
-  ResolvedResource,
   UnresolvedResource,
   VideoSrc,
 } from "@easyblocks/core";
-import { last } from "@easyblocks/utils";
+import { assertDefined, last } from "@easyblocks/utils";
 import videoStyles from "./$video.styles";
 
 const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> =
@@ -142,8 +142,8 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         group: "Controls styling",
       },
     ],
-    getEditorSidebarPreview: (config, options) => {
-      const { breakpointIndex, resources } = options;
+    getEditorSidebarPreview: (config, externalData, options) => {
+      const { breakpointIndex } = options;
       const activeVideoValue = responsiveValueForceGet<UnresolvedResource>(
         config.image,
         breakpointIndex
@@ -157,11 +157,12 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         };
       }
 
-      const videoResource = resources.find((resource) => {
-        return resource.id === `${config._id}.image`;
-      });
+      const videoResource =
+        externalData[
+          getResourceId(assertDefined(config._id), `image`, breakpointIndex)
+        ];
 
-      if (!videoResource || videoResource.status !== "success") {
+      if (!videoResource || videoResource.error !== null) {
         return {
           type: "icon",
           icon: "link",
@@ -169,7 +170,7 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         };
       }
 
-      if (videoResource.type === "object") {
+      if (isCompoundExternalDataValue(videoResource)) {
         if (!activeVideoValue.key) {
           return {
             type: "icon",
@@ -178,9 +179,8 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
           };
         }
 
-        const resolvedCompoundResourceResult = (
-          videoResource as ResolvedResource<FetchCompoundResourceResultValues>
-        ).value?.[activeVideoValue.key];
+        const resolvedCompoundResourceResult =
+          videoResource.values?.[activeVideoValue.key];
 
         if (!resolvedCompoundResourceResult) {
           return {
@@ -202,7 +202,7 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         };
       }
 
-      const videoResourceValue = getResourceValue(videoResource);
+      const videoResourceValue = getResourceValue(videoResource) as VideoSrc;
       const videoFileName = last(videoResourceValue.url.split("/"));
       const videoFileNameWithoutQueryParams = videoFileName.split("?")[0];
 

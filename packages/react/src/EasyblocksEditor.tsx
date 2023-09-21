@@ -1,4 +1,4 @@
-import type { Config, FetchOutputResources } from "@easyblocks/core";
+import type { Config, ExternalData } from "@easyblocks/core";
 import React, { useEffect, useState } from "react";
 import { EasyblocksCanvas } from "./EditorChildWindow";
 import { parseQueryParams } from "./parseQueryParams";
@@ -7,8 +7,8 @@ import type { ExternalDataChangeHandler } from "./types";
 
 export type EasyblocksEditorProps = {
   config: Config;
-  externalData?: FetchOutputResources;
-  onExternalDataChange?: ExternalDataChangeHandler;
+  externalData: ExternalData;
+  onExternalDataChange: ExternalDataChangeHandler;
 };
 
 export function EasyblocksEditor(props: EasyblocksEditorProps) {

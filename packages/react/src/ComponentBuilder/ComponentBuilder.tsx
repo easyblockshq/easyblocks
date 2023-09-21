@@ -821,17 +821,8 @@ function resolveResource(
           resourceValue = getResourceValue(resource);
         }
 
-        /**
-         * If resource is not there it means that it hasn't started loading yet, so let's set loading
-         */
         if (resource === undefined || isEmptyRenderableContent(resourceValue)) {
-          return {
-            id: r.id,
-            type,
-            status: "loading",
-            value: undefined,
-            error: null,
-          };
+          return null;
         }
 
         if (resource.error) {
