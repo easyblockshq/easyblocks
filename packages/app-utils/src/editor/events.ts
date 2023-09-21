@@ -1,7 +1,7 @@
 import type { ComponentConfig, SchemaProp } from "@easyblocks/core";
 import { serialize } from "@easyblocks/utils";
 import type { ConditionalExcept } from "type-fest";
-import type { Component$$$SchemaProp, Variants$$$SchemaProp } from "../schema";
+import type { Component$$$SchemaProp } from "../schema";
 
 type ShopstoryEditorEventData<
   Type extends `@shopstory-editor/${string}${string}`,
@@ -48,7 +48,7 @@ type RichTextChangedEvent = MessageEvent<
     "@shopstory-editor/rich-text-changed",
     {
       prop: string;
-      schemaProp: SchemaProp | Component$$$SchemaProp | Variants$$$SchemaProp;
+      schemaProp: SchemaProp | Component$$$SchemaProp;
       values: Array<unknown>;
     }
   >

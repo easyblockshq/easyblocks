@@ -1,5 +1,5 @@
 import { InternalField } from "@easyblocks/app-utils";
-import React from "react";
+import React, { MouseEvent } from "react";
 import styled from "styled-components";
 import { useEditorContext } from "./EditorContext";
 import { SidebarFooter } from "./SidebarFooter";
@@ -19,7 +19,7 @@ export function InlineSettings({ fields }: InlineSettingsProps) {
 
   return (
     <StyleReset
-      onClick={(e) => {
+      onClick={(e: MouseEvent) => {
         e.stopPropagation();
       }}
       style={{ height: "100%" }}

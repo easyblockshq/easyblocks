@@ -1,24 +1,29 @@
 import {
   AnyField,
   AnyTinaField,
-  CustomResourceSchemaProp,
-  CustomResourceWithVariantsSchemaProp,
   ExternalFieldCustom,
   ExternalFieldType,
+  FetchCompoundResourceResultValues,
+  FetchOutputCompoundResources,
   Field,
+  getResourceId,
+  ResolvedResource,
+  ResourceSchemaProp,
+  TextResourceSchemaProp,
   UnresolvedResource,
 } from "@easyblocks/core";
-import { useToaster } from "@easyblocks/design-system";
-import { toArray } from "@easyblocks/utils";
-import { useUser } from "@supabase/auth-helpers-react";
-import React, { useEffect, useRef } from "react";
+import { SSSelect, useToaster } from "@easyblocks/design-system";
+import { dotNotationGet, toArray } from "@easyblocks/utils";
+import React, { useContext, useEffect, useRef } from "react";
 import { css } from "styled-components";
+import { SetRequired } from "type-fest";
+import { ExternalDataContext } from "../../../../Editor";
 import { useEditorContext } from "../../../../EditorContext";
 import { useApiClient } from "../../../../infrastructure/ApiClientProvider";
 import { FieldMixedValue } from "../../../../types";
 import { FieldBuilder, FieldRenderProps } from "../../../form-builder";
 import { isMixedFieldValue } from "../../components/isMixedFieldValue";
-import { ResourceVariantsMenu } from "../ResponsiveField/ResponsiveFieldPlugin";
+import { ExternalValueWidgetsMenu } from "../ResponsiveField/ExternalValueWidgetsMenu";
 import { FieldMetaWrapper } from "../wrapFieldWithMeta";
 
 /**
@@ -38,14 +43,7 @@ function CustomFieldLauncher(props: {
 }) {
   const apiClient = useApiClient();
   const editorContext = useEditorContext();
-  const user = useUser();
   const toaster = useToaster();
-
-  const externalField: ExternalFieldType = props.field.externalField;
-
-  if (externalField.type !== "custom") {
-    throw new Error("should never happen"); // type narrowing
-  }
 
   const rootNodeRef = useRef<HTMLDivElement | null>(null);
 
@@ -54,14 +52,22 @@ function CustomFieldLauncher(props: {
       root: rootNodeRef.current!,
       value: props.input.value,
       onChange: (value) => {
+        if (value.id === null) {
+          props.input.onChange({
+            id: null,
+            widgetId: props.input.value.widgetId,
+          });
+          return;
+        }
+
         props.input.onChange({
-          ...props.input.value,
-          ...value,
+          id: value.id,
+          key: value.key,
+          widgetId: props.input.value.widgetId!,
         });
       },
-      apiClient:
-        user !== null && !editorContext.isPlayground ? apiClient : undefined,
-      projectId: editorContext.project?.id,
+      apiClient,
+      projectId: editorContext.project.id,
       notify: {
         error: (message) => {
           toaster.error(message);
@@ -87,10 +93,7 @@ function CustomFieldLauncher(props: {
 }
 
 interface ExternalField
-  extends Field<
-    AnyField,
-    CustomResourceSchemaProp | CustomResourceWithVariantsSchemaProp
-  > {
+  extends Field<AnyField, Exclude<ResourceSchemaProp, TextResourceSchemaProp>> {
   externalField: ExternalFieldType;
 }
 
@@ -103,6 +106,7 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
   const { tinaForm, field, input } = props;
   const editorContext = useEditorContext();
   const fieldNames = toArray(field.name);
+  const externalData = useContext(ExternalDataContext);
 
   const originalFormat = field.format ? field.format : (x: any) => x;
   const originalParse = field.parse ? field.parse : (x: any) => x;
@@ -121,10 +125,13 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
     extraParams.api = {
       products: externalField.getItems,
       product: externalField.getItemById,
+      placeholder: externalField.placeholder,
     };
   } else {
     throw new Error("unknown type");
   }
+
+  const { value } = input;
 
   const content = (
     <FieldBuilder
@@ -141,11 +148,40 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
         },
       }}
       noWrap={props.noWrap}
+      {...(!isMixedFieldValue(value) && {
+        key: value.widgetId,
+      })}
     />
   );
 
-  const { value } = input;
   const { schemaProp } = field;
+  const isCustomResourceProp = schemaProp.type === "resource";
+  const externalDataId = Object.keys(externalData).find((externalDataId) => {
+    const path = fieldNames[0].split(".").slice(0, -1).join(".");
+    const configId = dotNotationGet(editorContext.form.values, path)._id;
+
+    return (
+      externalDataId ===
+      getResourceId(
+        configId,
+        schemaProp.prop,
+        schemaProp.resourceType === "image" ||
+          schemaProp.resourceType === "video"
+          ? editorContext.breakpointIndex
+          : undefined
+      )
+    );
+  });
+  const resource = externalDataId ? externalData[externalDataId] : undefined;
+
+  const isCompoundResourceValueSelectVisible =
+    !isMixedFieldValue(value) &&
+    value.id !== null &&
+    !value.id.startsWith("$.") &&
+    externalDataId !== undefined &&
+    resource !== undefined &&
+    "values" in resource &&
+    resource.values !== undefined;
 
   return (
     // @ts-expect-error
@@ -154,22 +190,25 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
       form={tinaForm}
       layout="column"
       renderDecoration={
-        !isMixedFieldValue(value) &&
-        "variants" in schemaProp &&
-        schemaProp.variants.length > 1
+        !isMixedFieldValue(value) && isCustomResourceProp
           ? () => {
+              const widgets =
+                editorContext.resourceTypes[schemaProp.resourceType].widgets;
+
+              if (widgets.length === 1) {
+                return null;
+              }
+
               return (
-                <ResourceVariantsMenu
-                  resourceVariants={schemaProp.variants}
-                  selectedVariantId={
-                    value.variant ?? schemaProp.defaultVariantId
-                  }
-                  onChange={(variantId) => {
+                <ExternalValueWidgetsMenu
+                  widgets={widgets}
+                  selectedWidgetId={value.widgetId ?? widgets[0].id}
+                  onChange={(widgetId) => {
                     editorContext.actions.runChange(() => {
                       fieldNames.forEach((fieldName) => {
                         const newFieldValue: UnresolvedResource = {
                           id: null,
-                          variant: variantId,
+                          widgetId,
                         };
 
                         editorContext.form.change(fieldName, newFieldValue);
@@ -183,6 +222,28 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
       }
     >
       {content}
+      {isCompoundResourceValueSelectVisible && (
+        <CompoundResourceValueSelect
+          options={getBasicResourcesOfType(
+            resource.values,
+            schemaProp.resourceType
+          ).map((r) => ({
+            id: externalDataId,
+            key: r.key,
+            label: r.label ?? r.key,
+          }))}
+          resource={{
+            id: externalDataId,
+            key: value.key,
+          }}
+          onResourceKeyChange={(_, key) => {
+            props.input.onChange({
+              ...input.value,
+              key,
+            });
+          }}
+        />
+      )}
     </FieldMetaWrapper>
   );
 };
@@ -191,3 +252,68 @@ export const ExternalFieldPlugin = {
   name: "external",
   Component: ExternalFieldComponent,
 };
+
+export function getBasicResourcesOfType(
+  compoundResourceValues: FetchCompoundResourceResultValues,
+  type: string
+) {
+  return Object.entries(compoundResourceValues)
+    .filter(([, r]) => r.type === type)
+    .map(([key, r]) => {
+      return {
+        key,
+        ...r,
+      };
+    });
+}
+
+export function CompoundResourceValueSelect(props: {
+  options: Array<{ id: string; key: string; label: string }>;
+  resource:
+    | { id: null; key: undefined }
+    | { id: string; key: string | undefined };
+  onResourceKeyChange: (id: string, key: string) => void;
+}) {
+  return (
+    <SSSelect
+      onChange={(event) => {
+        const selectedOption = JSON.parse(event.target.value);
+        props.onResourceKeyChange(selectedOption.id, selectedOption.key);
+      }}
+      value={
+        props.resource.id !== null
+          ? JSON.stringify({ id: props.resource.id, key: props.resource.key })
+          : ""
+      }
+      css={css`
+        margin-top: 8px;
+        margin-left: 0;
+
+        & > select {
+          text-align: left;
+        }
+      `}
+    >
+      {!props.resource.key && <option value="">--Select source--</option>}
+      {props.options.map((r) => {
+        return (
+          <option
+            key={`${r.id}.${r.key}`}
+            value={JSON.stringify({ id: r.id, key: r.key })}
+          >
+            {r.label}
+          </option>
+        );
+      })}
+    </SSSelect>
+  );
+}
+
+function isResolvedCompoundResource(
+  resource: ResolvedResource
+): resource is SetRequired<
+  ResolvedResource<NonNullable<FetchOutputCompoundResources[string]["values"]>>,
+  "value"
+> {
+  return resource.type === "object";
+}

@@ -1,4 +1,4 @@
-import { noCMSPlugin } from "@easyblocks/nocms";
+import { noCMSPlugin } from "@easyblocks/media";
 import { render, waitFor } from "@testing-library/react";
 import React, { ComponentPropsWithoutRef } from "react";
 import { Editor } from "./Editor";

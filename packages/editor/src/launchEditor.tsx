@@ -1,9 +1,9 @@
 import {
   Config,
   ContextParams,
-  EditorMode,
-  ExternalReference,
-  Locale,
+  ExternalDataChangeHandler,
+  FetchOutputResources,
+  getDefaultLocale,
 } from "@easyblocks/core";
 import {
   SSModalContext,
@@ -11,34 +11,22 @@ import {
   Toaster,
 } from "@easyblocks/design-system";
 import { raiseError } from "@easyblocks/utils";
+import isPropValid from "@emotion/is-prop-valid";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import React from "react";
-import { createRoot } from "react-dom/client";
+import { createRoot, Root } from "react-dom/client";
 import { HashRouter } from "react-router-dom";
+import { ShouldForwardProp, StyleSheetManager } from "styled-components";
 import { Editor } from "./Editor";
 import { supabaseClient } from "./infrastructure/supabaseClient";
 import { GlobalStyles } from "./tinacms/styles";
-import { CMSInput } from "./types";
-import isPropValid from "@emotion/is-prop-valid";
-import { StyleSheetManager } from "styled-components";
 
-type EditorLauncherProps = {
+type LaunchEditorProps = {
   config: Config;
-  configs?: CMSInput;
-  save?: (
-    contentPiece: CMSInput,
-    externals: ExternalReference[]
-  ) => Promise<void>;
-  locales?: Locale[];
-  contextParams?: ContextParams;
-  onClose?: () => void;
-  mode?: EditorMode;
-  rootContainer?: "content" | "grid" | (string & Record<never, never>);
-  container?: HTMLElement;
-  heightMode?: "viewport" | "parent";
-  canvasUrl?: string;
+  externalData: FetchOutputResources;
+  onExternalDataChange: ExternalDataChangeHandler;
 };
 
 const queryClient = new QueryClient({
@@ -49,37 +37,45 @@ const queryClient = new QueryClient({
   },
 });
 
-export function launchEditor(props: EditorLauncherProps) {
-  const rootNode =
-    props.container ?? document.getElementById("shopstory-main-window");
+const shouldForwardProp: ShouldForwardProp<"web"> = (propName, target) => {
+  if (typeof target === "string") {
+    // For HTML elements, forward the prop if it is a valid HTML attribute
+    return isPropValid(propName);
+  }
+  // For other elements, forward all props
+  return true;
+};
+
+let reactRoot: Root | null = null;
+
+export function launchEditor(props: LaunchEditorProps) {
+  const rootNode = document.getElementById("shopstory-main-window");
 
   if (!rootNode) {
     throw new Error("Can't find #shopstory-main-window element");
   }
 
-  const locales =
-    props.config.locales ?? props.locales ?? raiseError("Missing locales");
+  const locales = props.config.locales ?? raiseError("Missing locales");
   const editorSearchParams = parseEditorSearchParams();
-  const contextParams =
-    editorSearchParams.contextParams ??
-    props.contextParams ??
-    raiseError(`Missing "contextParams" value.`);
-
+  const contextParams = editorSearchParams.contextParams ?? {
+    locale: getDefaultLocale(locales).code,
+  };
   const rootContainer =
-    editorSearchParams.rootContainer ?? props.rootContainer ?? props.mode;
+    editorSearchParams.rootContainer ?? raiseError("Missing rootContainer");
   const mode = editorSearchParams.mode ?? "playground";
 
-  if (!rootContainer) {
-    throw new Error(`Missing "rootContainer" prop`);
+  if (!reactRoot) {
+    reactRoot = createRoot(rootNode);
   }
-
-  const reactRoot = createRoot(rootNode);
 
   reactRoot.render(
     <QueryClientProvider client={queryClient}>
       <SessionContextProvider supabaseClient={supabaseClient}>
         <HashRouter>
-          <StyleSheetManager shouldForwardProp={isPropValid}>
+          <StyleSheetManager
+            shouldForwardProp={shouldForwardProp}
+            enableVendorPrefixes
+          >
             <SSModalContext.Provider
               value={() => {
                 return document.querySelector("#modalContainer");
@@ -98,12 +94,8 @@ export function launchEditor(props: EditorLauncherProps) {
                 mode={mode}
                 documentId={editorSearchParams.documentId}
                 rootContainer={rootContainer}
-                configs={props.configs}
-                save={props.save}
-                onClose={props.onClose}
-                canvasUrl={props.canvasUrl}
-                container={props.container}
-                heightMode={props.heightMode}
+                externalData={props.externalData}
+                onExternalDataChange={props.onExternalDataChange}
               />
               <Toaster containerStyle={{ zIndex: 100100 }} />
             </SSModalContext.Provider>
@@ -113,10 +105,6 @@ export function launchEditor(props: EditorLauncherProps) {
       <ReactQueryDevtools />
     </QueryClientProvider>
   );
-
-  return () => {
-    reactRoot.unmount();
-  };
 }
 
 type EditorSearchParams = {
@@ -124,7 +112,7 @@ type EditorSearchParams = {
   documentId: string | null;
   source: string | null;
   uniqueSourceIdentifier: string | null;
-  rootContainer: EditorLauncherProps["rootContainer"] | null;
+  rootContainer: "content" | "grid" | (string & Record<never, never>) | null;
   contextParams: ContextParams | null;
 };
 

@@ -1,6 +1,8 @@
+import type { ChangedExternalData, ContextParams } from "@easyblocks/core";
+
 export type ActionHandler = (values: object, eventInfo: any) => void;
 
-export type ShopstoryButtonProps = {
+export type EasyblocksButtonProps = {
   as?: "button" | "a";
   label?: string;
   symbol?: React.ReactElement;
@@ -8,10 +10,12 @@ export type ShopstoryButtonProps = {
   [key: string]: any;
 };
 
-export type ShopstoryButton<T> = React.ComponentType<T & ShopstoryButtonProps>;
+export type EasyblocksButton<T> = React.ComponentType<
+  T & EasyblocksButtonProps
+>;
 
 export type LinkProviderProps = {
-  Component: ShopstoryButton<any>;
+  Component: EasyblocksButton<any>;
   componentProps: {
     as: "a";
     onClick: (event: React.MouseEvent<HTMLElement>) => void;
@@ -23,3 +27,8 @@ export type LinkProviderProps = {
 export type LinkProvider = React.ComponentType<LinkProviderProps>;
 
 export type ShopstoryLink = LinkProvider;
+
+export type ExternalDataChangeHandler = (
+  externalData: ChangedExternalData,
+  contextParams: ContextParams
+) => void;

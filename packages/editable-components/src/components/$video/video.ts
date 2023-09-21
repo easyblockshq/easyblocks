@@ -1,22 +1,15 @@
 import {
-  findComponentDefinition,
-  getSchemaPropByProp,
   InternalRenderableComponentDefinition,
+  isCompoundExternalDataValue,
   responsiveValueForceGet,
 } from "@easyblocks/app-utils";
 import {
-  getResourceFetchParams,
-  getResourceTransformerHash,
-  getResourceType,
+  getResourceId,
   getResourceValue,
-  getResourceVariant,
-  Resource,
-  resourceByIdentity,
-  ResourceSchemaProp,
   UnresolvedResource,
   VideoSrc,
 } from "@easyblocks/core";
-import { last } from "@easyblocks/utils";
+import { assertDefined, last } from "@easyblocks/utils";
 import videoStyles from "./$video.styles";
 
 const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> =
@@ -41,7 +34,8 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
       {
         prop: "image",
         label: "Video",
-        type: "video",
+        type: "resource",
+        resourceType: "video",
       },
       {
         prop: "aspectRatio", // main image size
@@ -148,15 +142,8 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         group: "Controls styling",
       },
     ],
-    getEditorSidebarPreview: (config, options) => {
-      const {
-        breakpointIndex,
-        resources,
-        video,
-        videoVariants,
-        image,
-        imageVariants,
-      } = options;
+    getEditorSidebarPreview: (config, externalData, options) => {
+      const { breakpointIndex } = options;
       const activeVideoValue = responsiveValueForceGet<UnresolvedResource>(
         config.image,
         breakpointIndex
@@ -170,36 +157,12 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         };
       }
 
-      const schemaProp = getSchemaPropByProp(
-        // @ts-expect-error For now lets leave it, we will fix it later!
-        findComponentDefinition(config, options)!,
-        "image"
-      ) as ResourceSchemaProp;
+      const videoResource =
+        externalData[
+          getResourceId(assertDefined(config._id), `image`, breakpointIndex)
+        ];
 
-      const videoResource = resources.find<Resource<VideoSrc>>(
-        (resource): resource is Resource<VideoSrc> => {
-          const resourceType = getResourceType(
-            schemaProp,
-            options,
-            activeVideoValue
-          );
-
-          const fetchParams = getResourceFetchParams(
-            activeVideoValue,
-            schemaProp,
-            { image, imageVariants, video, videoVariants }
-          );
-
-          return resourceByIdentity(
-            activeVideoValue.id,
-            resourceType,
-            activeVideoValue.info,
-            fetchParams
-          )(resource);
-        }
-      );
-
-      if (!videoResource || videoResource.status !== "success") {
+      if (!videoResource || videoResource.error !== null) {
         return {
           type: "icon",
           icon: "link",
@@ -207,18 +170,39 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         };
       }
 
-      const transformHash = getResourceTransformerHash(
-        videoResource,
-        schemaProp,
-        getResourceVariant(activeVideoValue, schemaProp, {
-          image,
-          imageVariants,
-          video,
-          videoVariants,
-        })
-      );
+      if (isCompoundExternalDataValue(videoResource)) {
+        if (!activeVideoValue.key) {
+          return {
+            type: "icon",
+            icon: "link",
+            description: "None",
+          };
+        }
 
-      const videoResourceValue = getResourceValue(videoResource, transformHash);
+        const resolvedCompoundResourceResult =
+          videoResource.values?.[activeVideoValue.key];
+
+        if (!resolvedCompoundResourceResult) {
+          return {
+            type: "icon",
+            icon: "link",
+            description: "None",
+          };
+        }
+
+        const imageFileName = last(
+          (resolvedCompoundResourceResult.value as VideoSrc).url.split("/")
+        );
+        const imageFileNameWithoutQueryParams = imageFileName.split("?")[0];
+
+        return {
+          type: "image",
+          url: (resolvedCompoundResourceResult.value as VideoSrc).url,
+          description: imageFileNameWithoutQueryParams,
+        };
+      }
+
+      const videoResourceValue = getResourceValue(videoResource) as VideoSrc;
       const videoFileName = last(videoResourceValue.url.split("/"));
       const videoFileNameWithoutQueryParams = videoFileName.split("?")[0];
 

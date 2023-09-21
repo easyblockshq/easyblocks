@@ -23,13 +23,5 @@ limitations under the License.
 export { TinaCMS } from "./tina-cms";
 export type { TinaCMSConfig } from "./tina-cms";
 // export { GlobalFormPlugin } from "./plugins/screens";
-export {
-  TinaProvider,
-  // Deprecated aliases to the previous exports
-  Tina,
-} from "./components/TinaProvider";
-export type {
-  TinaProviderProps,
-  // Deprecated aliases to the previous exports
-  TinaProps,
-} from "./components/TinaProvider";
+export { TinaProvider } from "./components/TinaProvider";
+export type { TinaProviderProps } from "./components/TinaProvider";

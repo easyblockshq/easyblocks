@@ -1,5 +1,6 @@
 import {
   CompilationMetadata,
+  CompiledComponentConfig,
   CompiledShopstoryComponentConfig,
   ComponentConfig,
   ComponentConfigBase,
@@ -11,33 +12,26 @@ import {
   EditingFunction,
   EditingInfoBase,
   EventSink,
+  ExternalData,
   FieldPortal,
-  ImageSrc,
-  ImageVariant,
   Locale,
-  LocalizedText,
   RefMap,
   Resource,
   ResourceDefinition,
-  ResourceTransformer,
   ResponsiveValue,
   SchemaProp,
   Template,
   TemplateBase,
   Theme,
   TrulyResponsiveValue,
-  VideoSrc,
-  VideoVariant,
 } from "@easyblocks/core";
-import type { SetRequired, PartialDeep } from "type-fest";
+import type { PartialDeep } from "type-fest";
 import { InternalAnyTinaField } from "../schema";
 import { Form } from "../tinacms";
 
 export * from "./ConfigComponentIdentifier";
 export * from "./ConfigModel";
 export * from "./ConfigOrConfigArray";
-export * from "./ContentPiece";
-export * from "./RawContent";
 
 export type UnwrapResponsiveValue<T> = T extends ResponsiveValue<infer Value>
   ? Value
@@ -78,13 +72,8 @@ export type CompilationContextType = {
   devices: Devices;
   theme: Theme;
   resourceTypes: {
-    [key: string]: ResourceDefinition<any>;
+    [key: string]: ResourceDefinition;
   };
-  text?: ResourceDefinition<LocalizedText>;
-  image: MediaSchemaPropTemplate<ImageSrc>;
-  imageVariants: Array<ImageVariant>;
-  video: MediaSchemaPropTemplate<VideoSrc>;
-  videoVariants: Array<VideoVariant>;
   definitions: InternalComponentDefinitions;
   mainBreakpointIndex: string;
   isEditing?: boolean;
@@ -98,18 +87,11 @@ export type CompilationContextType = {
 
 export type CompilationRootContainer = {
   id: string;
+  label?: string;
   defaultConfig: ComponentConfig;
   widths?: Record<string, string | number>;
+  schema?: Array<CustomResourceSchemaProp>;
 };
-
-export type ImageTransformer = ResourceTransformer<any, ImageSrc>;
-
-export type VideoTransformer = ResourceTransformer<any, VideoSrc>;
-
-export type MediaSchemaPropTemplate<TransformResult> = SetRequired<
-  Omit<CustomResourceSchemaProp<TransformResult>, "prop" | "type">,
-  "transform"
->;
 
 export type ComponentConfigChangeFunction = (arg: {
   value: any;
@@ -201,8 +183,7 @@ export type EditorContextType = CompilationContextType & {
   focussedField: Array<string>;
   setFocussedField: (focusedFields: string | Array<string>) => void;
   actions: EditorActions;
-  imageVariantsDisplay: Array<string>;
-  videoVariantsDisplay: Array<string>;
+  activeRootContainer: CompilationRootContainer;
 };
 
 export type InternalCompilationOutput = {
@@ -219,6 +200,9 @@ export type EditorWindowAPI = {
   editorContext: EditorContextType;
   compilationOutput: EditorCompilationOutput;
   onUpdate?: () => void; // this function will be called by parent window when data is changed, child should "subscribe" to this function
+  meta: CompilationMetadata;
+  compiled: CompiledComponentConfig;
+  externalData: ExternalData;
 };
 
 export type EditableComponentToComponentConfig<
@@ -250,3 +234,5 @@ export type CompressedConfig = {
 };
 
 export type ContextProps = Record<string, any>;
+
+export type InternalExternalData = Record<string, Resource>;

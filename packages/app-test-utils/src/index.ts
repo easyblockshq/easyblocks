@@ -58,8 +58,6 @@ export const testCompilationContext: CompilationContextType = {
     textModifiers: [],
   },
   devices: testDevices,
-  image: testImage,
-  video: testVideo,
   contextParams: {
     locale: "en",
   },
@@ -75,8 +73,6 @@ export const testCompilationContext: CompilationContextType = {
   },
   mainBreakpointIndex: "b4",
   resourceTypes: {},
-  imageVariants: [],
-  videoVariants: [],
   rootContainers: [],
   rootContainer: "content",
 };

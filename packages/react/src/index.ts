@@ -1,15 +1,16 @@
-export { Canvas } from "./Canvas";
-export type { CanvasProps } from "./Canvas";
-export { Shopstory, ShopstoryGrid } from "./Shopstory";
-export type { ShopstoryProps, ShopstoryGridProps } from "./Shopstory";
-export { ShopstoryMetadataProvider } from "./ShopstoryMetadataProvider";
-export type { ShopstoryMetadataProviderProps } from "./ShopstoryMetadataProvider";
-export { ShopstoryProvider } from "./ShopstoryProvider";
-export type { ShopstoryProviderProps } from "./ShopstoryProvider";
-export { shopstoryGetCssText, shopstoryGetStyleTag } from "./ssr";
+export { EasyblocksEditor } from "./EasyblocksEditor";
+export type { EasyblocksEditorProps } from "./EasyblocksEditor";
+export { Easyblocks } from "./Easyblocks";
+export type { EasyblocksProps } from "./Easyblocks";
+export { EasyblocksMetadataProvider } from "./EasyblocksMetadataProvider";
+export type { EasyblocksMetadataProviderProps } from "./EasyblocksMetadataProvider";
+export { EasyblocksProvider } from "./EasyblocksProvider";
+export type { EasyblocksProviderProps } from "./EasyblocksProvider";
+export { easyblocksGetCssText, easyblocksGetStyleTag } from "./ssr";
 export type { ImageProps } from "./StandardImage";
 export type {
-  ShopstoryButton,
-  ShopstoryButtonProps,
+  EasyblocksButton,
+  EasyblocksButtonProps,
   ShopstoryLink,
 } from "./types";
+export { useEasyblocksExternalData } from "./EasyblocksExternalDataProvider";

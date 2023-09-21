@@ -11,7 +11,6 @@ import {
   SliderFieldPlugin,
   SVGPickerFieldPlugin,
   TokenFieldPlugin,
-  VariantsPlugin,
 } from "../fields";
 import { CMSContext } from "../react-core";
 import { TinaCMS } from "../tina-cms";
@@ -31,7 +30,6 @@ function configureTinaCms() {
 
   tinaCms.fields.add(ProductPickerFieldPlugin);
   tinaCms.fields.add(BlockFieldPlugin);
-  tinaCms.fields.add(VariantsPlugin);
   tinaCms.fields.add(SliderFieldPlugin);
   tinaCms.fields.add(SVGPickerFieldPlugin);
   tinaCms.fields.add(ResponsiveFieldPlugin);
@@ -70,13 +68,3 @@ export const TinaProvider: React.FC<TinaProviderProps> = ({
     </CMSContext.Provider>
   );
 };
-
-/**
- * @deprecated This has been renamed to `TinaProvider`.
- */
-export const Tina = TinaProvider;
-
-/**
- * @deprecated This has been renamed to `TinaProviderProps`.
- */
-export type TinaProps = TinaProviderProps;

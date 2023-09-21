@@ -1,74 +1,13 @@
-import {
-  Config,
-  ImageVariant,
-  LauncherPlugin,
-  ResourceSchemaProp,
-  ResourceTransformer,
-} from "@easyblocks/core";
+import { CompilationContextType } from "@easyblocks/app-utils";
+import { Config } from "@easyblocks/core";
 import { assertDefined } from "@easyblocks/utils";
 import { createCompilationContext } from "./createCompilationContext";
 
-const testPlugin: LauncherPlugin = {
-  id: "test",
-  launcher: {
-    image: {
-      resourceType: "test.image",
-      transform: (value) => {
-        return {
-          alt: value.alt,
-          aspectRatio: value.width / value.height,
-          mimeType: "image/jpeg",
-          srcset: [
-            {
-              h: value.height,
-              url: `/images/${value.id}.jpeg`,
-              w: value.width,
-            },
-          ],
-          url: `/images/${value.id}.jpeg`,
-        };
-      },
-    },
-    onEditorLoad() {},
-    video: {
-      resourceType: "test.video",
-      transform: (value) => {
-        return {
-          alt: value.alt,
-          aspectRatio: value.width / value.height,
-          url: `/videos/${value.id}`,
-        };
-      },
-    },
-  },
-  resources: {
-    "test.image": {
-      defaultFetch: async (resources) => {
-        return resources.map((r) => {
-          return {
-            ...r,
-            value: {
-              id: r.id,
-              width: 1920,
-              height: 1080,
-              alt: `Image ${r.id}`,
-            },
-          };
-        });
-      },
-      widget: () => ({
-        type: "custom",
-        component: () => {
-          new Error("Not implemented");
-        },
-      }),
-    },
-  },
-};
-
 const basicConfig: Config = {
-  plugins: [testPlugin],
   resourceTypes: {},
+  fetch() {
+    return Promise.resolve({});
+  },
 };
 
 const defaults = {
@@ -123,7 +62,8 @@ describe("breakpoints", () => {
   test("no devices outputs default", () => {
     const result = createCompilationContext(
       { ...basicConfig },
-      { locale: "en-US" }
+      { locale: "en-US" },
+      "content"
     );
     expect(result.devices).toHaveLength(6);
     expect(result.devices[0]).toEqual(defaults.xs);
@@ -153,7 +93,8 @@ describe("breakpoints", () => {
       },
       {
         locale: "en-US",
-      }
+      },
+      "content"
     );
 
     expect(result.devices[0]).toEqual({
@@ -182,154 +123,14 @@ describe("max widths", () => {
   test("no devices outputs default", () => {
     const result = createCompilationContext(
       { ...basicConfig, containerWidths: [{ id: "small", value: 800 }] },
-      { locale: "en-US" }
+      { locale: "en-US" },
+      "content"
     );
 
     expect(result.theme.containerWidths.small).toMatchObject({
       type: "dev",
       value: "800",
     });
-  });
-});
-
-describe("image variants", () => {
-  test("returns array with only image variant based on launcher plugin if image sources are not provided", () => {
-    const result = createCompilationContext(basicConfig, { locale: "en-US" });
-
-    expect(result.imageVariants).toHaveLength(1);
-    expect(result.imageVariants[0]).toEqual<ImageVariant>({
-      id: "test.default",
-      label: "Default",
-      resourceType: "test.image",
-      transform: basicConfig.plugins![0].launcher!.image.transform,
-      transformHash: expect.any(String),
-    });
-  });
-
-  test("returns array with image variant based on launcher plugin and custom variant if custom image variant is provided", () => {
-    const customVariantTransform: ResourceTransformer<any, any> = (v) => v;
-
-    const result = createCompilationContext(
-      {
-        ...basicConfig,
-        imageVariants: [
-          {
-            id: "customImage",
-            resourceType: "customImageResourceType",
-            transform: customVariantTransform,
-          },
-        ],
-      },
-      { locale: "en-US" }
-    );
-
-    expect(result.imageVariants).toHaveLength(2);
-    expect(result.imageVariants[0]).toEqual<ImageVariant>({
-      id: "test.default",
-      label: "Default",
-      resourceType: "test.image",
-      transform: basicConfig.plugins![0].launcher!.image.transform,
-      transformHash: expect.any(String),
-    });
-    expect(result.imageVariants[1]).toEqual<ImageVariant>({
-      id: "customImage",
-      resourceType: "customImageResourceType",
-      transform: customVariantTransform,
-      transformHash: expect.any(String),
-    });
-  });
-
-  test("params and fetchParams are passed through", () => {
-    const result = createCompilationContext(
-      {
-        ...basicConfig,
-        image: {
-          ...testPlugin.launcher.image,
-          params: {
-            param1: "widget param",
-          },
-          fetchParams: {
-            param1: "fetch param",
-          },
-        },
-      },
-      { locale: "en-US" }
-    );
-
-    expect(result.imageVariants).toHaveLength(1);
-    expect(result.imageVariants[0]).toEqual<ImageVariant>({
-      id: "test.default",
-      label: "Default",
-      resourceType: "test.image",
-      transform: basicConfig.plugins![0].launcher!.image.transform,
-      transformHash: expect.any(String),
-      params: {
-        param1: "widget param",
-      },
-      fetchParams: {
-        param1: "fetch param",
-      },
-    });
-  });
-
-  test("throws an error when custom image variant matches the name of the image variant based on launcher plugin", () => {
-    expect(() => {
-      createCompilationContext(
-        {
-          ...basicConfig,
-          imageVariants: [
-            {
-              id: "test.default",
-              resourceType: "test.image",
-              transform: (v) => v,
-            },
-          ],
-        },
-        { locale: "en-US" }
-      );
-    }).toThrowErrorMatchingInlineSnapshot(
-      `"Image variant id \\"test.default\\" is reserved identifier and cannot be used."`
-    );
-  });
-
-  test("throws an error when provided image variants have non unique ids", () => {
-    expect(() => {
-      createCompilationContext(
-        {
-          ...basicConfig,
-          imageVariants: [
-            {
-              id: "variant1",
-              resourceType: "test.image",
-              transform: (v) => v,
-            },
-            {
-              id: "variant1",
-              resourceType: "test.image",
-              transform: (v) => v,
-            },
-            {
-              id: "variant2",
-              resourceType: "test.image",
-              transform: (v) => v,
-            },
-            {
-              id: "variant2",
-              resourceType: "test.image",
-              transform: (v) => v,
-            },
-            {
-              id: "variant3",
-              resourceType: "test.image",
-              transform: (v) => v,
-            },
-          ],
-        },
-        { locale: "en-US" }
-      );
-    }).toThrowErrorMatchingInlineSnapshot(
-      `"All image variants must have a unique id. Image variants with non unique id: \\"variant1\\", \\"variant2\\"."`
-    );
   });
 });
 
@@ -347,20 +148,16 @@ describe("components", () => {
             },
             {
               prop: "image1",
-              type: "image",
+              type: "resource",
+              resourceType: "image",
             },
             {
               prop: "video1",
-              type: "video",
+              type: "resource",
+              resourceType: "video",
             },
             {
               prop: "resource1",
-              type: "resource",
-              resourceType: "testResource1",
-              transform: (value) => value,
-            },
-            {
-              prop: "resource2",
               type: "resource",
               resourceType: "testResource1",
             },
@@ -369,36 +166,13 @@ describe("components", () => {
         },
       ],
     },
-    { locale: "en-US" }
+    { locale: "en-US" },
+    "content"
   );
 
   const testComponentDefinition = assertDefined(
     context.definitions.components.find((c) => c.id === "TestComponent")
   );
-
-  test("adds transform hash to resource schema props when transform function is given", () => {
-    const resource1SchemaProp = testComponentDefinition.schema.find(
-      (s) => s.prop === "resource1"
-    );
-
-    expect(resource1SchemaProp).toEqual<ResourceSchemaProp>({
-      prop: "resource1",
-      type: "resource",
-      resourceType: "testResource1",
-      transform: expect.any(Function),
-      transformHash: expect.any(String),
-    });
-
-    const resource2SchemaProp = testComponentDefinition.schema.find(
-      (s) => s.prop === "resource2"
-    );
-
-    expect(resource2SchemaProp).toEqual<ResourceSchemaProp>({
-      prop: "resource2",
-      type: "resource",
-      resourceType: "testResource1",
-    });
-  });
 
   test("adds traceId, traceImpressions, and traceClicks schema props", () => {
     expect(testComponentDefinition.schema).toEqual(
@@ -430,7 +204,11 @@ describe("components", () => {
 
 describe("root containers", () => {
   test('returns empty root containers when "rootContainers" is not defined in config', () => {
-    const context = createCompilationContext(basicConfig, { locale: "en-US" });
+    const context = createCompilationContext(
+      basicConfig,
+      { locale: "en-US" },
+      "content"
+    );
 
     expect(context.rootContainers).toEqual([]);
   });
@@ -442,13 +220,19 @@ describe("root containers", () => {
         rootContainers: {
           rootContainer1: {
             widths: [100, 200, 300, 400, 500, 600],
+            defaultConfig: {
+              _template: "$TestComponent",
+            },
           },
         },
       },
-      { locale: "en-US" }
+      { locale: "en-US" },
+      "content"
     );
 
-    expect(context.rootContainers).toEqual([
+    expect(context.rootContainers).toEqual<
+      CompilationContextType["rootContainers"]
+    >([
       {
         id: "rootContainer1",
         widths: {
@@ -458,6 +242,9 @@ describe("root containers", () => {
           lg: 400,
           xl: 500,
           "2xl": 600,
+        },
+        defaultConfig: {
+          _template: "$TestComponent",
         },
       },
     ]);
@@ -470,13 +257,19 @@ describe("root containers", () => {
         rootContainers: {
           rootContainer1: {
             widths: [1000, 900, 800, 700, 600, 500],
+            defaultConfig: {
+              _template: "$TestComponent",
+            },
           },
         },
       },
-      { locale: "en-US" }
+      { locale: "en-US" },
+      "content"
     );
 
-    expect(context.rootContainers).toEqual([
+    expect(context.rootContainers).toEqual<
+      CompilationContextType["rootContainers"]
+    >([
       {
         id: "rootContainer1",
         widths: {
@@ -486,6 +279,9 @@ describe("root containers", () => {
           lg: 700,
           xl: 600,
           "2xl": 500,
+        },
+        defaultConfig: {
+          _template: "$TestComponent",
         },
       },
     ]);
@@ -499,10 +295,14 @@ describe("root containers", () => {
           rootContainers: {
             rootContainer1: {
               widths: [100, 200, 300, 400, 500],
+              defaultConfig: {
+                _template: "$TestComponent",
+              },
             },
           },
         },
-        { locale: "en-US" }
+        { locale: "en-US" },
+        "content"
       );
     }).toThrowErrorMatchingInlineSnapshot(
       `"Invalid number of widths for root container \\"rootContainer1\\". Expected 6 widths, got 5."`

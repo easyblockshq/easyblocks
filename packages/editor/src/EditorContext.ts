@@ -8,12 +8,11 @@ import { CompilationCache } from "@easyblocks/compiler";
 import {
   CompiledComponentConfig,
   ConfigComponent,
-  LocalizedText,
   Resource,
-  ResourceDefinition,
+  ResourcesStore,
 } from "@easyblocks/core";
 import React, { useContext } from "react";
-import { ActionsType, TextSyncers, VariantsManager } from "./types";
+import { ActionsType, TextSyncers } from "./types";
 
 export type EditorContextType = BaseEditorContextType & {
   templates?: Record<string, AnyTemplate[]>;
@@ -24,7 +23,7 @@ export type EditorContextType = BaseEditorContextType & {
   isMaster?: boolean;
   isEditing?: boolean;
   actions: ActionsType;
-  text?: ResourceDefinition<LocalizedText> & TextSyncers;
+  text?: TextSyncers;
   save: (document: {
     id: string;
     version: number;
@@ -33,20 +32,16 @@ export type EditorContextType = BaseEditorContextType & {
   }) => Promise<void>;
   compiledComponentConfig?: CompiledComponentConfig;
   configAfterAuto?: ConfigComponent;
-  variantsManager?: VariantsManager;
   resources: Array<Resource>;
   compilationCache: CompilationCache;
   isAdminMode: boolean;
-  launcher?: {
-    id: string;
-    icon?: string;
-  };
-  project?: {
+  project: {
     id: string;
     name: string;
     token: string;
   };
   isPlayground: boolean;
+  resourcesStore: ResourcesStore;
 };
 
 export const EditorContext = React.createContext<EditorContextType | null>(

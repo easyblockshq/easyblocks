@@ -9,7 +9,7 @@ export * from "./components/$richText/$richTextPart/$richTextPart";
 export * from "./components/$richText/builders";
 export * from "./components/$text/$text";
 export * from "./components/$richText/builders";
-export { schemas, builtinEditableComponentsDefinitions } from "./schemas";
+export { builtinEditableComponentsDefinitions } from "./schemas";
 export * from "./textModifiers/actionTextModifier";
 export {
   builtinEditableComponents,

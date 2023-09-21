@@ -1,4 +1,4 @@
-import React from "react";
+import React, { MouseEvent } from "react";
 import { useDropzone } from "react-dropzone";
 import styled, { css } from "styled-components";
 import { TrashIcon } from "../../../icons";
@@ -110,7 +110,7 @@ export const ImageUpload = ({
               <StyledImage src={previewSrc} />
               {onClear && (
                 <DeleteButton
-                  onClick={(e) => {
+                  onClick={(e: MouseEvent<HTMLButtonElement>) => {
                     e.stopPropagation();
                     onClear();
                   }}

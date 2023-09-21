@@ -1,23 +1,16 @@
 import {
   buttonActionSchemaProp,
-  findComponentDefinition,
-  getSchemaPropByProp,
   InternalRenderableComponentDefinition,
+  isCompoundExternalDataValue,
   responsiveValueForceGet,
 } from "@easyblocks/app-utils";
 import {
-  getResourceFetchParams,
-  getResourceTransformerHash,
-  getResourceType,
+  getResourceId,
   getResourceValue,
-  getResourceVariant,
   ImageSrc,
-  Resource,
-  resourceByIdentity,
-  ResourceSchemaProp,
   UnresolvedResource,
 } from "@easyblocks/core";
-import { last } from "@easyblocks/utils";
+import { assertDefined, last } from "@easyblocks/utils";
 import imageStyles from "./$image.styles";
 
 const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> =
@@ -45,7 +38,8 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
     schema: [
       {
         prop: "image",
-        type: "image",
+        type: "resource",
+        resourceType: "image",
         label: "Source",
       },
       {
@@ -57,22 +51,13 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
       },
       buttonActionSchemaProp,
     ],
-    getEditorSidebarPreview(config, options) {
-      const {
-        breakpointIndex,
-        resources,
-        imageVariants,
-        image,
-        videoVariants,
-        video,
-      } = options;
-
+    getEditorSidebarPreview(config, externalData, { breakpointIndex }) {
       const activeImageValue = responsiveValueForceGet<UnresolvedResource>(
         config.image,
         breakpointIndex
       );
 
-      if (activeImageValue.id == null) {
+      if (activeImageValue.id === null) {
         return {
           type: "icon",
           icon: "link",
@@ -80,54 +65,52 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
         };
       }
 
-      const schemaProp = getSchemaPropByProp(
-        // @ts-expect-error For now lets leave it, we will fix it later!
-        findComponentDefinition(config, options)!,
-        "image"
-      ) as ResourceSchemaProp;
+      const imageResource =
+        externalData[
+          getResourceId(assertDefined(config._id), "image", breakpointIndex)
+        ];
 
-      const imageResource = resources.find<Resource<ImageSrc>>(
-        (resource): resource is Resource<ImageSrc> => {
-          const resourceType = getResourceType(
-            schemaProp,
-            options,
-            activeImageValue
-          );
+      if (!imageResource || imageResource.error !== null) {
+        return {
+          type: "icon",
+          icon: "link",
+          description: "None",
+        };
+      }
 
-          const fetchParams = getResourceFetchParams(
-            activeImageValue,
-            schemaProp,
-            { image, imageVariants, video, videoVariants }
-          );
-
-          return resourceByIdentity(
-            activeImageValue.id,
-            resourceType,
-            activeImageValue.info,
-            fetchParams
-          )(resource);
+      if (isCompoundExternalDataValue(imageResource)) {
+        if (!activeImageValue.key) {
+          return {
+            type: "icon",
+            icon: "link",
+            description: "None",
+          };
         }
-      );
 
-      if (!imageResource || imageResource.status !== "success") {
+        const resolvedCompoundResourceResult =
+          imageResource.values?.[activeImageValue.key];
+
+        if (!resolvedCompoundResourceResult) {
+          return {
+            type: "icon",
+            icon: "link",
+            description: "None",
+          };
+        }
+
+        const imageFileName = last(
+          (resolvedCompoundResourceResult.value as ImageSrc).url.split("/")
+        );
+        const imageFileNameWithoutQueryParams = imageFileName.split("?")[0];
+
         return {
-          type: "icon",
-          icon: "link",
-          description: "None",
+          type: "image",
+          url: (resolvedCompoundResourceResult.value as ImageSrc).url,
+          description: imageFileNameWithoutQueryParams,
         };
       }
 
-      const transformHash = getResourceTransformerHash(
-        imageResource,
-        schemaProp,
-        getResourceVariant(activeImageValue, schemaProp, {
-          image,
-          imageVariants,
-          video,
-          videoVariants,
-        })
-      );
-      const imageResourceValue = getResourceValue(imageResource, transformHash);
+      const imageResourceValue = getResourceValue(imageResource) as ImageSrc;
       const imageFileName = last(imageResourceValue.url.split("/"));
       const imageFileNameWithoutQueryParams = imageFileName.split("?")[0];
 

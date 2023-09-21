@@ -1,13 +1,7 @@
-import {
-  configMap,
-  splitConfigIntoSingleLocaleConfigs,
-} from "@easyblocks/app-utils";
+import { configMap } from "@easyblocks/app-utils";
 import {
   ComponentConfig,
   DocumentWithResolvedConfigDTO,
-  EditorLauncherProps,
-  LocalisedDocument,
-  PreviewMetadata,
   UnresolvedResourceNonEmpty,
 } from "@easyblocks/core";
 import { deepClone, deepCompare, sleep } from "@easyblocks/utils";
@@ -359,9 +353,9 @@ export function useDataSaver(
           remoteDocument.current.config.config = configToSave;
           remoteDocument.current.version = updatedDocument.version;
         } else {
-          const source =
-            editorContext.launcher?.id ??
-            new URLSearchParams(window.location.search).get("source");
+          const source = new URLSearchParams(window.location.search).get(
+            "source"
+          );
 
           if (!source) {
             throw new Error(
@@ -396,9 +390,9 @@ export function useDataSaver(
           ? 0
           : remoteDocument.current!.version,
         updatedAt: new Date().getTime(),
-        projectId: editorContext.project
-          ? editorContext.project.id
-          : "playground",
+        projectId: editorContext.project.id,
+        rootContainer:
+          remoteDocument.current?.root_container ?? editorContext.rootContainer,
       };
 
       // const configAfterSplit = splitConfigIntoSingleLocaleConfigs(
@@ -544,27 +538,6 @@ export function useDataSaver(
       console.debug("Last save!");
       await onTick();
     },
-  };
-}
-
-function getPreviewData(
-  config: ComponentConfig,
-  rootContainer: Exclude<EditorLauncherProps["rootContainer"], undefined>
-): PreviewMetadata {
-  if (rootContainer === "grid") {
-    const extraCardsCount = config.data[0].Component[0].Cards.filter(
-      (x: ComponentConfig) => x._template !== "$Placeholder"
-    ).length;
-
-    return {
-      mode: "grid",
-      extraCardsCount,
-    };
-  }
-
-  return {
-    mode: rootContainer,
-    sectionsCount: config.data.length,
   };
 }
 

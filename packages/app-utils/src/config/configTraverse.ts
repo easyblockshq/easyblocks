@@ -7,6 +7,7 @@ type ConfigTraverseCallback = (arg: {
   path: string;
   value: any;
   schemaProp: SchemaProp;
+  config: ComponentConfig;
 }) => void;
 
 /**
@@ -54,6 +55,7 @@ function configTraverseInternal(
       schemaProp.type === "component-collection"
     ) {
       callback({
+        config,
         value: config[schemaProp.prop],
         path: `${pathPrefix}${schemaProp.prop}`,
         schemaProp,
@@ -67,6 +69,7 @@ function configTraverseInternal(
       );
     } else if (schemaProp.type === "component-collection-localised") {
       callback({
+        config,
         value: config[schemaProp.prop],
         path: `${pathPrefix}${schemaProp.prop}`,
         schemaProp,
@@ -83,6 +86,7 @@ function configTraverseInternal(
     } else {
       const currentPath = `${pathPrefix}${schemaProp.prop}`;
       callback({
+        config,
         path: currentPath,
         value: config[schemaProp.prop],
         schemaProp,

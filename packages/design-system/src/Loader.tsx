@@ -19,8 +19,12 @@ const LoaderWrapper = styled.div`
   animation: ${rotationKeyframes} 1s linear infinite;
 `;
 
-function Loader() {
-  return <LoaderWrapper />;
+type LoaderProps = {
+  className?: string;
+};
+
+function Loader({ className }: LoaderProps) {
+  return <LoaderWrapper className={className} />;
 }
 
 export { Loader };

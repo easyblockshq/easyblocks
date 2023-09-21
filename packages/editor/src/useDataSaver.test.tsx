@@ -71,16 +71,12 @@ function createEditorContext(
             create: mockCreate.function,
             update: mockUpdate.function,
             remove: mockRemove.function,
-            fetch: assertDefined(editorContext.text).fetch,
           },
       save: mockSaveConfig.function,
       project: {
         id: "test-project",
         name: "Test project",
         token: "test-project-token",
-      },
-      launcher: {
-        id: "nocms",
       },
     },
     mockCreate,

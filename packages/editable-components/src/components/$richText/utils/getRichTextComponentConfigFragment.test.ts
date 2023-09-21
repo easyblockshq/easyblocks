@@ -1,6 +1,6 @@
 import { EditorContextType, Form } from "@easyblocks/app-utils";
 import { RichTextComponentConfig } from "../$richText";
-import { schemas } from "../../../schemas";
+import { builtinEditableComponentsDefinitions } from "../../../schemas";
 import {
   buildRichTextBlockElementComponentConfig,
   buildRichTextComponentConfig,
@@ -12,7 +12,7 @@ import { getRichTextComponentConfigFragment } from "./getRichTextComponentConfig
 const testEditorContext: EditorContextType = {
   definitions: {
     actions: [],
-    components: [...schemas],
+    components: [...builtinEditableComponentsDefinitions],
     links: [],
     textModifiers: [],
   },

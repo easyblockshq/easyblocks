@@ -11,16 +11,16 @@
     "check": "tsc && eslint --quiet src/"
   },
   "dependencies": {
-    "@popperjs/core": "^2.11.5",
-    "@react-aria/tooltip": "^3.1.8",
     "@easyblocks/app-utils": "^1.5.2",
     "@easyblocks/compiler": "^1.5.2",
     "@easyblocks/core": "workspace:*",
     "@easyblocks/design-system": "link:../design-system",
     "@easyblocks/editable-components": "^1.5.2",
-    "@easyblocks/nocms": "workspace:*",
+    "@easyblocks/media": "workspace:*",
     "@easyblocks/utils": "link:../utils",
     "@emotion/is-prop-valid": "^1.2.1",
+    "@popperjs/core": "^2.11.5",
+    "@react-aria/tooltip": "^3.1.8",
     "@supabase/auth-helpers-react": "^0.3.1",
     "@supabase/supabase-js": "^2.20.0",
     "@tanstack/react-query": "^4.29.12",
@@ -45,9 +45,9 @@
     "type-fest": "^3.11.1"
   },
   "devDependencies": {
-    "@jest/types": "^26.6.2",
     "@easyblocks/build-tools": "^1.5.2",
     "@easyblocks/test-utils": "^1.5.2",
+    "@jest/types": "^26.6.2",
     "@tanstack/react-query-devtools": "^4.29.12",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",

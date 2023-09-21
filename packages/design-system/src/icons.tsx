@@ -1,7 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 
-const IconContainer = styled.div<IconProps>`
+const IconContainer = styled.div.withConfig({
+  shouldForwardProp(prop) {
+    return !["size", "isStroke"].includes(prop);
+  },
+})<IconProps>`
   svg {
     width: ${(p) => (p.size || 16) + "px"};
     height: ${(p) => (p.size || 16) + "px"};

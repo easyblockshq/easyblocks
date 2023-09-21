@@ -58,7 +58,8 @@ describe("configMap", () => {
             },
             {
               prop: "image",
-              type: "image",
+              type: "resource",
+              resourceType: "image",
             },
             {
               prop: "text",
@@ -87,7 +88,8 @@ describe("configMap", () => {
             },
             {
               prop: "image",
-              type: "image",
+              type: "resource",
+              resourceType: "image",
             },
           ],
         },

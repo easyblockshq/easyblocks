@@ -285,8 +285,8 @@ function SignUpPage() {
                     </clipPath>
                   </defs>
                 </svg>
+                Open Outlook
               </a>
-              Open Outlook
             </Button>
           </Stack>
 

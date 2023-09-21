@@ -45,13 +45,13 @@ const DocumentWidget: React.FC<{
     };
   }, [editorIframeNode, router]);
 
-  let canvasUrl = `${
-    window.location.origin
-  }/shopstory-canvas?rootContainer=content&mode=app&source=sales-app&contextParams=${JSON.stringify(
-    { locale: "en-US" }
-  )}`;
+  let canvasUrl = `${window.location.origin}/easyblocks-editor?rootContainer=${
+    document.rootContainer
+  }&mode=app&source=sales-app&contextParams=${JSON.stringify({
+    locale: "en-US",
+  })}`;
 
-  if (document) {
+  if (document.id) {
     canvasUrl += `&documentId=${document.id}`;
   }
 
@@ -66,7 +66,7 @@ const DocumentWidget: React.FC<{
               ...document,
               accessToken: process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN,
               contextParams: { locale: "en-US" },
-              canvasUrl: `${window.location.origin}/shopstory-canvas`,
+              canvasUrl: `${window.location.origin}/easyblocks-editor`,
             })}
             className={"object-contain absolute top-0 left-0 w-full h-full"}
           />
@@ -87,7 +87,13 @@ const DocumentWidget: React.FC<{
 
         <DialogPortal>
           <DialogOverlay className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50" />
-          <DialogContent className="fixed top-[50%] left-[50%] w-[calc(100vw-48px)] h-[calc(100vh-48px)] bg-white translate-x-[-50%] translate-y-[-50%] shadow-xl">
+          <DialogContent
+            className="fixed top-[50%] left-[50%] w-[calc(100vw-48px)] h-[calc(100vh-48px)] bg-white translate-x-[-50%] translate-y-[-50%] shadow-xl"
+            onPointerDownOutside={(event) => {
+              // Prevent closing the editor when clicking outside the iframe
+              event.preventDefault();
+            }}
+          >
             <iframe
               ref={setEditorIframeNode}
               src={canvasUrl}

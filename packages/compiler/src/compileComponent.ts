@@ -2,7 +2,7 @@ import {
   CompilationContextType,
   compileBox,
   Component$$$SchemaProp,
-  InternalEditingInfo,
+  ContextProps,
   EditingInfoComponent,
   EditingInfoComponentCollection,
   EditorContextType,
@@ -11,6 +11,9 @@ import {
   getDevicesWidths,
   getTinaField,
   InternalComponentDefinition,
+  InternalEditingField,
+  InternalEditingFunctionResult,
+  InternalEditingInfo,
   InternalRenderableComponentDefinition,
   isComponentConfig,
   isResourceSchemaProp,
@@ -25,12 +28,8 @@ import {
   parsePath,
   resop2,
   responsiveValueFill,
-  responsiveValueNormalize,
   scalarizeConfig,
   splitTemplateName,
-  Variants$$$SchemaProp,
-  InternalEditingFunctionResult,
-  InternalEditingField,
 } from "@easyblocks/app-utils";
 import {
   AnyEditingField,
@@ -49,17 +48,18 @@ import {
   EditingFunctionResult,
   EditingInfo,
   EventSourceType,
+  FieldPortal,
   RefMap,
   SchemaProp,
   SerializedComponentDefinition,
   TrulyResponsiveValue,
 } from "@easyblocks/core";
-import { ContextProps } from "@easyblocks/app-utils";
 import {
   RichTextComponentConfig,
   richTextInlineWrapperActionSchemaProp,
 } from "@easyblocks/editable-components";
 import {
+  assertDefined,
   bubbleDown,
   deepClone,
   deepCompare,
@@ -580,9 +580,11 @@ export function compileComponent(
        */
       componentDefinition.schema.forEach((schemaProp: SchemaProp) => {
         if (isResourceSchemaProp(schemaProp)) {
-          compiled.props[schemaProp.prop] = responsiveValueNormalize(
-            compiledValues[schemaProp.prop],
-            compilationContext.devices
+          // We simply copy ONLY the breakpoints which are defined in the raw data
+          compiled.props[schemaProp.prop] = Object.fromEntries(
+            Object.keys(editableElement[schemaProp.prop]).map((key) => {
+              return [key, compiledValues[schemaProp.prop][key]];
+            })
           );
         }
       });
@@ -902,26 +904,6 @@ function addComponentToSerializedComponentDefinitions(
     tags: internalDefinition.tags,
   };
 
-  const code = internalDefinition.componentCode;
-
-  if (code) {
-    if (typeof code === "object") {
-      const { editor: editorCode, client: clientCode } = code;
-
-      // This case is required when we are editing and we use custom component that renders Shopstory component.
-      // Shopstory components rendered by that component have to be in client mode and not be editable,
-      // but we also need editor version of these components to be rendered during editing.
-      if (compilationContext.isEditing && editorCode) {
-        meta.code[internalDefinition.id + ".editor"] = editorCode;
-        meta.code[internalDefinition.id + ".client"] = clientCode;
-      } else {
-        meta.code[internalDefinition.id] = clientCode;
-      }
-    } else {
-      meta.code[internalDefinition.id] = code;
-    }
-  }
-
   definitions.push(newDef);
 }
 
@@ -1106,7 +1088,7 @@ function compileAction(
     );
 
     compiled.__editing = {
-      // @ts-expect-error FIXME: field that holds Variant$$$ and Component$$$ schema prop
+      // @ts-expect-error FIXME: field that holds Component$$$ schema prop
       fields: editingInfo.fields,
     };
   }
@@ -1407,26 +1389,32 @@ function buildDefaultEditingInfo(
       schemaProp: headerSchemaProp,
     };
 
-    if (process.env.SHOPSTORY_FEATURE_VARIANTS === "enabled") {
-      const variantSchemaProp: Variants$$$SchemaProp = {
-        prop: "$myself",
-        label: "Variants",
-        type: "variants$$$",
-        group: "Variations",
-        definition: parentDefinition,
-      };
+    defaultFields.unshift(headerField);
+  } else {
+    const rootComponentDefinition = assertDefined(
+      findComponentDefinitionById(
+        dotNotationGet(editorContext.form.values, "")._template,
+        editorContext
+      )
+    );
 
-      const variantsField: InternalEditingField = {
-        component: "variant",
-        group: "Variations",
-        hidden: false,
-        label: "Variants",
-        name: configPrefix,
-        prop: "$myself",
-        schemaProp: variantSchemaProp,
-      };
-      defaultFields.unshift(variantsField);
-    }
+    const headerSchemaProp: Component$$$SchemaProp = {
+      prop: "$myself",
+      label: "Component type",
+      type: "component$$$",
+      definition: rootComponentDefinition,
+      required: true,
+      group: "Component",
+    };
+
+    const headerField: InternalEditingField = {
+      component: "identity",
+      hidden: false,
+      label: "Component type",
+      name: "",
+      prop: "$myself",
+      schemaProp: headerSchemaProp,
+    };
 
     defaultFields.unshift(headerField);
   }
@@ -2003,14 +1991,24 @@ function convertEditingFieldToInternalEditingField(
               configPrefix
             );
 
+            const overrides: Extract<
+              FieldPortal,
+              { portal: "field" }
+            >["overrides"] = {};
+
+            if (field.label !== undefined) {
+              overrides.label = field.label;
+            }
+
+            if (field.group !== undefined) {
+              overrides.group = field.group;
+            }
+
             return {
               portal: "field",
               fieldName: pathFragments.at(-1)!,
               source: absoluteFieldPath,
-              overrides: {
-                label: field.label,
-                group: field.group,
-              },
+              overrides,
             };
           }
         }

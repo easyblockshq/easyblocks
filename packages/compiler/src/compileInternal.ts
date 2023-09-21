@@ -8,13 +8,6 @@ import { CompilationCache } from "./CompilationCache";
 import { normalize } from "./normalize";
 import { buildFullTheme } from "./buildFullTheme";
 import { compileComponent } from "./compileComponent";
-import Box from "./built/builders/react/Box";
-import CanvasRoot from "./built/builders/react/CanvasRoot";
-import ComponentBuilder from "./built/builders/react/ComponentBuilder";
-import EditableComponentBuilderEditor from "./built/builders/react/EditableComponentBuilder.editor";
-import EditableComponentBuilderClient from "./built/builders/react/EditableComponentBuilder.client";
-import Placeholder from "./built/builders/react/Placeholder.editor";
-import MissingComponent from "./built/builders/react/MissingComponent";
 
 export type CompileInternalReturnType = {
   compiled: CompiledShopstoryComponentConfig;
@@ -35,7 +28,6 @@ export function compileInternal(
   };
 
   const meta: CompilationMetadata = {
-    code: {},
     vars: {
       definitions: {
         links: [],
@@ -43,6 +35,8 @@ export function compileInternal(
         components: [],
         textModifiers: [],
       },
+      devices: compilationContextWithFullTheme.devices,
+      locale: compilationContextWithFullTheme.contextParams.locale,
     },
   };
 
@@ -64,42 +58,11 @@ export function compileInternal(
     cache
   );
 
-  const isEditing = !!compilationContext.isEditing;
-
-  let builtinCode: Record<string, string> = {
-    ComponentBuilder,
-    EditableComponentBuilderClient,
-    MissingComponent,
-    Box,
-  };
-
-  if (isEditing) {
-    builtinCode = {
-      ...builtinCode,
-      EditableComponentBuilderEditor,
-      MissingComponent,
-      Placeholder,
-      CanvasRoot,
-    };
-  }
-
   const ret: CompileInternalReturnType = {
     compiled:
       compilationArtifacts.compiledComponentConfig as CompiledShopstoryComponentConfig,
     meta: {
-      code: {
-        ...meta.code,
-        ...builtinCode,
-      },
-      vars: {
-        ...meta.vars,
-        devices: compilationContextWithFullTheme.devices,
-        image: compilationContextWithFullTheme.image,
-        video: compilationContextWithFullTheme.video,
-        locale: compilationContextWithFullTheme.contextParams.locale,
-        imageVariants: compilationContextWithFullTheme.imageVariants,
-        videoVariants: compilationContextWithFullTheme.videoVariants,
-      },
+      vars: meta.vars,
     },
   };
 

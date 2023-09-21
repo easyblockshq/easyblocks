@@ -12,7 +12,6 @@ const HISTORY_SIZE = 50;
 export interface HistoryEntry {
   focussedField: Array<string>;
   config: ComponentConfig;
-  audiences: string[];
 }
 
 class EditorHistory {

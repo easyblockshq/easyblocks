@@ -17,7 +17,7 @@ const StandardLink: InternalLinkDefinition = {
   ],
   tags: ["actionLink"],
   icon: "link",
-  getEditorSidebarPreview: (config, options) => {
+  getEditorSidebarPreview: (config, _, options) => {
     if (!config.url) {
       return undefined;
     }

@@ -1,4 +1,4 @@
-import { Audience, Devices, Locale } from "@easyblocks/core";
+import { Devices, Locale } from "@easyblocks/core";
 import {
   SSButtonGhost,
   SSButtonPrimary,
@@ -11,8 +11,6 @@ import { useUser } from "@supabase/auth-helpers-react";
 import React, { useRef } from "react";
 import styled from "styled-components";
 import { useOnClickNTimes } from "./useOnClickNTimes";
-import { AudiencePicker } from "./variants";
-
 export const TOP_BAR_HEIGHT = 40;
 
 const TopBar = styled.div`
@@ -70,9 +68,6 @@ export const EditorTopBar: React.FC<{
   locales: Locale[];
   locale: string;
   onLocaleChange: (locale: string) => void;
-  allAudiences?: Audience[];
-  audiences?: string[];
-  onAudienceChange?: (audienceId: string) => void;
   isFullScreen: boolean;
   setFullScreen: (x: boolean) => void;
   onAdminModeChange: (x: boolean) => void;
@@ -87,9 +82,6 @@ export const EditorTopBar: React.FC<{
   isEditing,
   onUndo,
   onRedo,
-  allAudiences = [],
-  audiences = [],
-  onAudienceChange = () => {},
   isFullScreen,
   setFullScreen,
   onAdminModeChange,
@@ -156,12 +148,6 @@ export const EditorTopBar: React.FC<{
       </Heading>
 
       <TopBarRight>
-        <AudiencePicker
-          allAudiences={allAudiences}
-          audiences={audiences}
-          onAudienceChange={onAudienceChange}
-        />
-
         <SSSelect
           value={
             !isEditing && isFullScreen ? "__fullscreen__" : breakpointIndex

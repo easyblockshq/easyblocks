@@ -29,14 +29,16 @@
   "dependencies": {
     "@babel/runtime": "^7.21.0",
     "@easyblocks/core": "workspace:*",
-    "@easyblocks/nocms": "workspace:*",
     "@stitches/core": "^1.2.5",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@jest/types": "^26.6.2",
+    "@easyblocks/app-utils": "workspace:*",
     "@easyblocks/build-tools": "^1.5.2",
-    "@easyblocks/utils": "link:../utils",
+    "@easyblocks/design-system": "workspace:*",
+    "@easyblocks/editor": "workspace:*",
+    "@easyblocks/utils": "workspace:*",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@types/jest": "^26.0.20",

@@ -35,7 +35,7 @@ export const FormActionMenu: FC<FormActionMenuProps> = ({ actions, form }) => {
   );
 };
 
-const MoreActionsButton = styled((p) => (
+const MoreActionsButton = styled((p: any) => (
   <button {...p}>
     <EllipsisVerticalIcon />
   </button>

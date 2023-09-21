@@ -3,11 +3,12 @@ import {
   CompilationContextType,
   componentPickerClosed,
   ComponentPickerOpenedEvent,
-  configMap,
   duplicateConfig,
   findComponentDefinitionById,
+  findConfigById,
   ItemInsertedEvent,
-  normalizeNonDocumentCmsInput,
+  mergeCompilationMeta,
+  responsiveValueForceGet,
   useEditorGlobalKeyboardShortcuts,
 } from "@easyblocks/app-utils";
 import {
@@ -20,29 +21,23 @@ import {
   validate,
 } from "@easyblocks/compiler";
 import {
-  Audience,
+  buildEntry,
   CompilationMetadata,
   ComponentConfig,
   Config,
   ConfigComponent,
   ContextParams,
+  createResourcesStore,
   DocumentWithResolvedConfigDTO,
   EditorLauncherProps,
+  ExternalData,
+  ExternalDataChangeHandler,
   ExternalReference,
-  getLauncherPlugin,
+  FetchOutputResources,
   IApiClient,
-  isDocument,
-  isRawContentRemote,
   Locale,
   LocalisedDocument,
-  LocalisedRawContent,
-  Metadata,
   NonEmptyRenderableContent,
-  RawContent,
-  RawContentFull,
-  RawContentLocal,
-  RenderableContent,
-  ShopstoryClient,
 } from "@easyblocks/core";
 import {
   SSButtonPrimary,
@@ -50,10 +45,19 @@ import {
   SSFonts,
   useToaster,
 } from "@easyblocks/design-system";
-import { entries, nonNullable, useForceRerender } from "@easyblocks/utils";
-import React, { memo, useCallback, useEffect, useRef, useState } from "react";
+import { assertDefined } from "@easyblocks/utils";
+import { useSession } from "@supabase/auth-helpers-react";
+import React, {
+  createContext,
+  memo,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Modal from "react-modal";
 import styled from "styled-components";
+import { Entries } from "type-fest";
 import { ConfigAfterAutoContext } from "./ConfigAfterAutoContext";
 import {
   duplicateItems,
@@ -64,14 +68,22 @@ import {
   replaceItems,
 } from "./editorActions";
 import { EditorContext, EditorContextType } from "./EditorContext";
+import { EditorIframe } from "./EditorIframe";
 import { EditorSidebar } from "./EditorSidebar";
 import { EditorTopBar, TOP_BAR_HEIGHT } from "./EditorTopBar";
-import { fillGridConfigWithPlaceholders } from "./fillGridConfigWithPlaceholders";
-import { StorageProvider } from "./infrastructure/StorageContext";
+import {
+  ApiClientProvider,
+  useApiClient,
+} from "./infrastructure/ApiClientProvider";
+import { createApiClient } from "./infrastructure/createApiClient";
+import { ProjectsApiService } from "./infrastructure/projectsApiService";
+import { supabaseClient } from "./infrastructure/supabaseClient";
 import { ModalPicker } from "./ModalPicker";
 import { destinationResolver } from "./paste/destinationResolver";
 import { pasteManager } from "./paste/manager";
 import { SelectionFrame } from "./selectionFrame/SelectionFrame";
+import { documentDataWidgetFactory } from "./sidebar/DocumentDataWidget";
+import { TemplateModal } from "./TemplateModal";
 import { getTemplates } from "./templates/getTemplates";
 import { TinaProvider } from "./tinacms";
 import { useForm, usePlugin } from "./tinacms/react-core";
@@ -80,48 +92,11 @@ import {
   CMSInput,
   OpenComponentPickerConfig,
   OpenTemplateModalAction,
-  VariantsRepository,
 } from "./types";
 import { useDataSaver } from "./useDataSaver";
 import { useEditorHistory } from "./useEditorHistory";
 import { checkLocalesCorrectness } from "./utils/locales/checkLocalesCorrectness";
-import { mergeSingleLocaleConfigsIntoConfig } from "./utils/locales/mergeConfigs";
 import { removeLocalizedFlag } from "./utils/locales/removeLocalizedFlag";
-import {
-  addVariant,
-  editVariant,
-  getAudiencesForVariantsGroup,
-  getVariant,
-  mapToVariant,
-  removeVariant,
-  reorderVariant,
-  selectVariant,
-  storeVariant,
-} from "./variants";
-import { AudienceModal } from "./variants/AudienceModal";
-import { firstMatchingVariantFor } from "./variants/matchers";
-
-import { mergeCompilationMeta } from "@easyblocks/app-utils";
-import { useSession } from "@supabase/auth-helpers-react";
-import {
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
-import { AuthModal } from "./auth/AuthModal";
-import { Dashboard } from "./dashboard/Dashboard";
-import { EditorIframe } from "./EditorIframe";
-import {
-  ApiClientProvider,
-  useApiClient,
-} from "./infrastructure/ApiClientProvider";
-import { createApiClient } from "./infrastructure/createApiClient";
-import { ProjectsApiService } from "./infrastructure/projectsApiService";
-import { supabaseClient } from "./infrastructure/supabaseClient";
-import { TemplateModal } from "./TemplateModal";
 
 const ContentContainer = styled.div`
   position: relative;
@@ -211,76 +186,22 @@ type EditorContainerProps = {
   container?: HTMLElement;
   heightMode?: "viewport" | "parent";
   canvasUrl?: string;
+  externalData: FetchOutputResources;
+  onExternalDataChange: ExternalDataChangeHandler;
 };
 
 function EditorContainer(props: EditorContainerProps) {
   const [enabled, setEnabled] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
-  const navigate = useNavigate();
   const session = useSession();
-  const location = useLocation();
   const [project, setProject] = useState<
     EditorContextType["project"] | undefined
   >(undefined);
   const [apiClient] = useState(() => createApiClient(props.config.accessToken));
 
-  const compilationContext = createCompilationContext(
-    props.config,
-    props.contextParams,
-    props.rootContainer
-  );
-
-  const launcherPlugin = getLauncherPlugin(props.config);
-  const isOpenedInCMS = launcherPlugin?.id !== "nocms";
   const isPlayground = props.mode === "playground";
 
   useEffect(() => {
-    async function handleSignedIn() {
-      // When coming from other browser tab, the signed in event occurs again.
-      // If the user is already authorized we don't need to do anything.
-      if (enabled) {
-        return;
-      }
-
-      if (!props.config.projectId) {
-        setError("Authorization error. Missing project ID.");
-        return;
-      }
-
-      const projectsApiService = new ProjectsApiService(apiClient);
-      const project = await projectsApiService.getProjectById(
-        props.config.projectId
-      );
-
-      if (project === null) {
-        setError("Authorization error. You don't have access to this project.");
-        return;
-      }
-
-      if (project.tokens.length > 0) {
-        setProject({
-          ...project,
-          token: project.tokens[0],
-        });
-      }
-
-      setEnabled(true);
-
-      if (location.hash === "#/auth") {
-        navigate("/");
-      }
-    }
-
-    function handleSignedOut() {
-      setError(undefined);
-      setEnabled(false);
-      navigate("/auth", {
-        state: {
-          view: "sign_in",
-        },
-      });
-    }
-
     async function handleAccessTokenAuthorization() {
       if (enabled) {
         return;
@@ -304,59 +225,20 @@ function EditorContainer(props: EditorContainerProps) {
       }
 
       setEnabled(true);
-      navigate("/editor" + location.search);
     }
 
     if (isPlayground) {
       console.debug(`Opening Shopstory in playground mode.`);
-      setEnabled(true);
-      navigate("/editor" + location.search);
-      return;
-    }
-
-    if (props.config.accessToken) {
+    } else {
       console.debug(
         `Opening Shopstory with access token: ${props.config.accessToken}`
       );
-
-      handleAccessTokenAuthorization();
-    } else {
-      console.debug("Opening Shopstory in user authenticated mode.");
-
-      const {
-        data: { subscription },
-      } = supabaseClient.auth.onAuthStateChange((event, session) => {
-        if (event === "INITIAL_SESSION") {
-          if (session) {
-            handleSignedIn();
-          } else {
-            navigate("/auth");
-          }
-        }
-
-        if (event === "SIGNED_IN") {
-          handleSignedIn();
-        }
-
-        if (event === "SIGNED_OUT") {
-          handleSignedOut();
-        }
-
-        if (event === "PASSWORD_RECOVERY") {
-          navigate("/auth", { state: { view: "password_update" } });
-        }
-      });
-
-      return () => {
-        subscription.unsubscribe();
-      };
     }
-  }, [enabled, location.hash, navigate]);
 
-  const isShopstoryAccessTokenAuthenticationMethodUsed =
-    !!props.config.accessToken;
+    handleAccessTokenAuthorization();
+  }, [apiClient, enabled, isPlayground, props.config.accessToken]);
 
-  if (isShopstoryAccessTokenAuthenticationMethodUsed && !enabled) {
+  if (!enabled || !project) {
     return <AuthenticationScreen>Authenticating...</AuthenticationScreen>;
   }
 
@@ -379,51 +261,19 @@ function EditorContainer(props: EditorContainerProps) {
     );
   }
 
-  /**
-   * StorageProvider is a bit legacy, it works only with anon token.
-   * That's why even if users logs in with user token, we pass here anonymous token.
-   */
   return (
-    <StorageProvider accessToken={project?.token}>
-      <ApiClientProvider apiClient={apiClient}>
-        <Routes>
-          <Route
-            path="/auth"
-            element={isPlayground ? <Navigate to="/" /> : <AuthModal />}
-          />
-          <Route
-            path="/editor"
-            element={
-              <Editor
-                {...props}
-                locales={props.locales}
-                contextParams={props.contextParams}
-                documentId={props.documentId}
-                isPlayground={isPlayground}
-                rootContainer={props.rootContainer}
-                project={project}
-                isEnabled={enabled}
-              />
-            }
-          />
-          {!isOpenedInCMS && project !== undefined && (
-            <Route
-              path="/"
-              element={
-                <Dashboard
-                  normalizeConfig={(config) =>
-                    normalize(config, compilationContext)
-                  }
-                  project={project}
-                  locales={props.locales}
-                  contextParams={props.contextParams}
-                />
-              }
-            />
-          )}
-        </Routes>
-      </ApiClientProvider>
-    </StorageProvider>
+    <ApiClientProvider apiClient={apiClient}>
+      <Editor
+        {...props}
+        locales={props.locales}
+        contextParams={props.contextParams}
+        documentId={props.documentId}
+        isPlayground={isPlayground}
+        rootContainer={props.rootContainer}
+        project={project}
+        isEnabled={enabled}
+      />
+    </ApiClientProvider>
   );
 }
 
@@ -446,6 +296,8 @@ export type EditorProps = {
   uniqueSourceIdentifier?: string;
   isPlayground: boolean;
   documentId: string | null;
+  externalData: ExternalData;
+  onExternalDataChange: ExternalDataChangeHandler;
 };
 
 const Editor = memo((props: EditorProps) => {
@@ -455,7 +307,6 @@ const Editor = memo((props: EditorProps) => {
     document: DocumentWithResolvedConfigDTO | null;
   } | null>(null);
   const apiClient = useApiClient();
-  const [searchParams] = useSearchParams();
 
   const compilationContext = createCompilationContext(
     props.config,
@@ -469,26 +320,18 @@ const Editor = memo((props: EditorProps) => {
         return;
       }
 
-      const documentId = props.documentId ?? searchParams.get("documentId");
-
       try {
-        const resolvedInput = documentId
+        const resolvedInput = props.documentId
           ? await resolveDocumentId(
-              documentId,
+              props.documentId,
               props.project,
               apiClient,
               compilationContext
             )
-          : await resolveCMSInput({
-              cmsInput: props.configs,
+          : getDefaultInput({
               rootContainer: props.rootContainer,
-              apiClient,
               compilationContext,
             });
-
-        if (props.rootContainer === "grid") {
-          fillGridConfigWithPlaceholders(resolvedInput.config);
-        }
 
         setResolvedInput(resolvedInput);
       } catch (error) {
@@ -536,58 +379,31 @@ type EditorContentProps = EditorProps & {
   isPlayground: boolean;
 };
 
+function parseExternalDataId(externalDataId: string): {
+  configId: string;
+  fieldName: string;
+  breakpointIndex: string | undefined;
+} {
+  const [configId, fieldName, breakpointIndex] = externalDataId.split(".");
+
+  return {
+    configId,
+    fieldName,
+    breakpointIndex,
+  };
+}
+
 function useBuiltContent(
   editorContext: EditorContextType,
   config: Config,
   contextParams: ContextParams,
   rawContent: ConfigComponent,
-  rootContainer: EditorLauncherProps["rootContainer"]
-): { meta: Metadata; renderableContent: NonEmptyRenderableContent } {
-  const shopstoryClient = useRef<ShopstoryClient>(
-    new ShopstoryClient(
-      {
-        ...config,
-        projectId: editorContext.project?.id,
-        accessToken: config.accessToken ?? editorContext.project?.token,
-      },
-      contextParams
-    )
-  ).current;
-  const { forceRerender } = useForceRerender();
-
-  shopstoryClient.__applyConfigTransform = false;
-
-  shopstoryClient.injectDependencies({
-    findResources,
-    validate,
-    compile: (items) => {
-      let resultMeta: CompilationMetadata = {
-        code: {},
-        vars: {},
-      };
-
-      return {
-        items: items.map(({ content, options }) => {
-          const normalizedContent = normalizeInput(content, options.mode);
-
-          const { meta, ...rest } = options.nested
-            ? compileInternal(normalizedContent, {
-                ...editorContext,
-                isEditing: false,
-              })
-            : compileInternal(
-                normalizedContent,
-                editorContext,
-                editorContext.compilationCache
-              );
-
-          resultMeta = mergeCompilationMeta(resultMeta, meta);
-          return rest;
-        }),
-        meta: resultMeta,
-      };
-    },
-  });
+  rootContainer: string,
+  onExternalDataChange: ExternalDataChangeHandler
+): NonEmptyRenderableContent & {
+  meta: CompilationMetadata;
+} {
+  const buildEntryResult = useRef<ReturnType<typeof buildEntry>>();
 
   // cached inputs (needed to calculated "inputChanged")
   const inputRawContent = useRef<ConfigComponent>();
@@ -599,19 +415,8 @@ function useBuiltContent(
     inputIsEditing.current !== editorContext.isEditing ||
     inputBreakpointIndex.current !== editorContext.breakpointIndex;
 
-  inputRawContent.current = rawContent;
-  inputIsEditing.current = editorContext.isEditing;
-  inputBreakpointIndex.current = editorContext.breakpointIndex;
-
-  const renderableContent = useRef<RenderableContent>();
-  const meta = useRef<Metadata>({
-    code: {},
-    resources: [],
-    vars: {},
-  });
-
-  if (inputChanged) {
-    /**
+  if (!buildEntryResult.current || inputChanged) {
+    /*
      * Why do we merge meta instead of overriding?
      * It might seem redundant. We could only take the newest meta and re-render, right?
      *
@@ -632,27 +437,110 @@ function useBuiltContent(
      *
      */
 
-    const newRenderableContent = shopstoryClient.add(rawContent, {
-      rootContainer,
-    });
-    const newMeta = shopstoryClient.buildSync((newMeta) => {
-      meta.current = {
-        ...mergeCompilationMeta(meta.current, newMeta),
-        resources: newMeta.resources,
-      };
-      forceRerender();
+    buildEntryResult.current = buildEntry({
+      entry: rawContent,
+      config,
+      contextParams: {
+        locale: contextParams.locale,
+        rootContainer,
+      },
+      resourcesStore: editorContext.resourcesStore,
+      compiler: {
+        findResources,
+        validate,
+        compile: (content) => {
+          let resultMeta: CompilationMetadata = {
+            vars: {
+              devices: editorContext.devices,
+              locale: contextParams.locale,
+            },
+          };
+
+          const normalizedContent = normalizeInput(content);
+
+          const { meta, ...rest } = compileInternal(
+            normalizedContent,
+            editorContext,
+            editorContext.compilationCache
+          );
+
+          resultMeta = mergeCompilationMeta(resultMeta, meta);
+
+          return {
+            ...rest,
+            meta: resultMeta,
+          };
+        },
+      },
+      isExternalDataChanged(externalData, defaultIsExternalDataChanged) {
+        // When editing, we consider external data to be changed in more ways.
+        const storedExternalData = editorContext.resourcesStore.get(
+          externalData.id
+        );
+
+        // If external data for given id is already stored, but now the external id is empty it means that the user
+        // has removed that external value and thus the user of editor has to remove it from its external data.
+        if (storedExternalData && externalData.externalId === null) {
+          editorContext.resourcesStore.remove(externalData.id);
+          return true;
+        }
+
+        // If external data for given is is already stored, but now the external id is different it means that the user
+        // has changed the selected external value and thus the user of editor has to update it in its external data.
+        if (
+          storedExternalData &&
+          externalData.externalId &&
+          inputRawContent.current
+        ) {
+          const { breakpointIndex, configId, fieldName } = parseExternalDataId(
+            externalData.id
+          );
+
+          const config = findConfigById(
+            inputRawContent.current,
+            editorContext,
+            configId
+          );
+
+          if (!config) {
+            return false;
+          }
+
+          const value = breakpointIndex
+            ? responsiveValueForceGet(config[fieldName], breakpointIndex)
+            : config[fieldName];
+
+          const hasExternalIdChanged = value.id !== externalData.externalId;
+
+          if (hasExternalIdChanged) {
+            editorContext.resourcesStore.remove(externalData.id);
+          }
+
+          return hasExternalIdChanged;
+        }
+
+        return defaultIsExternalDataChanged(externalData);
+      },
     });
 
-    renderableContent.current = newRenderableContent;
-    meta.current = {
-      ...mergeCompilationMeta(meta.current, newMeta),
-      resources: newMeta.resources,
-    };
+    if (Object.keys(buildEntryResult.current.externalData).length > 0) {
+      onExternalDataChange(
+        buildEntryResult.current.externalData,
+        contextParams
+      );
+    }
   }
 
+  inputRawContent.current = rawContent;
+  inputIsEditing.current = editorContext.isEditing;
+  inputBreakpointIndex.current = editorContext.breakpointIndex;
+
   return {
-    renderableContent: renderableContent.current as NonEmptyRenderableContent,
-    meta: meta.current!,
+    renderableContent: (buildEntryResult.current as NonEmptyRenderableContent)
+      .renderableContent,
+    configAfterAuto: (buildEntryResult.current as NonEmptyRenderableContent)
+      .configAfterAuto,
+    meta: buildEntryResult.current.meta,
   };
 }
 
@@ -663,82 +551,17 @@ const EditorContent = ({
   initialConfig,
   uniqueSourceIdentifier,
   isPlayground,
+  rootContainer,
+  externalData,
   ...props
 }: EditorContentProps) => {
   const apiClient = useApiClient();
-  const navigate = useNavigate();
 
   const [breakpointIndex, setBreakpointIndex] = useState(
     compilationContext.mainBreakpointIndex
   );
-
-  const [editVariantRequest, setEditVariantRequest] = useState<
-    { id: string; groupId: string; path: string } | undefined
-  >();
-
-  const [addVariantRequest, setAddVariantRequest] = useState<
-    { config: ComponentConfig; path: string } | undefined
-  >();
-
-  const [allAudiences, setAllAudiences] = useState<Audience[]>([]);
-  const [audiences, setAudiences] = useState<string[]>(
-    compilationContext.contextParams.audiences ?? []
-  );
-
   const compilationCache = useRef(new CompilationCache());
-
-  const handleAudienceChange = (audienceId: string) => {
-    const set = new Set(audiences);
-    if (set.has(audienceId)) {
-      set.delete(audienceId);
-    } else {
-      set.add(audienceId);
-    }
-    setAudiences(Array.from(set));
-  };
-
-  useEffect(() => {
-    actions.runChange(() => {
-      let variantsRepositorySnapshot = form.values._variants ?? {};
-
-      const configMapper = mapToVariant((configComponent) => {
-        variantsRepositorySnapshot = storeVariant(
-          variantsRepositorySnapshot,
-          configComponent
-        );
-        return getVariant(
-          form.values._variants as VariantsRepository,
-          firstMatchingVariantFor(audiences),
-          configComponent
-        );
-      });
-
-      const configWithVariantsResolved = configMap(
-        form.values,
-        editorContext,
-        configMapper
-      );
-
-      form.finalForm.batch(() => {
-        form.change("", configWithVariantsResolved);
-        form.change("_variants", variantsRepositorySnapshot);
-      });
-    });
-  }, [audiences]);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const fetchedAudiences = await props.config.audiences?.();
-        setAllAudiences(fetchedAudiences ?? []);
-      } catch (e) {
-        console.error(e);
-      }
-    })();
-  }, []);
-
   const [isEditing, setEditing] = useState(true);
-
   const [componentPickerData, setComponentPickerData] = useState<
     | {
         promiseResolve: (config: ComponentConfig | undefined) => void;
@@ -747,12 +570,10 @@ const EditorContent = ({
     | undefined
   >(undefined);
   const [focussedField, setFocussedField] = useState<Array<string>>([]);
-  const focusedFieldRef = useRef(focussedField);
 
   const handleSetFocussedField = React.useRef(
     (field: Array<string> | string) => {
       const nextFocusedField = Array.isArray(field) ? field : [field];
-      focusedFieldRef.current = nextFocusedField;
       setFocussedField(nextFocusedField);
     }
   ).current;
@@ -774,20 +595,21 @@ const EditorContent = ({
   const sidebarNodeRef = useRef<HTMLDivElement | null>(null);
 
   const [editableData, form] = useForm({
-    id: "tina-shopstory",
-    label: "Edit Page",
+    id: "easyblocks-editor",
+    label: "Edit entry",
     fields: [],
     initialValues: initialConfig,
     onSubmit: async () => {},
   });
 
   const { undo, redo, push } = useEditorHistory({
-    onChange: ({ config, focusedField, audiences }) => {
+    onChange: ({ config, focusedField }) => {
       setFocussedField(focusedField);
       form.finalForm.change("", config);
-      setAudiences(audiences);
     },
   });
+
+  const previousExternalData = useRef<ExternalData | undefined>();
 
   const isMaster = !!props.config.__masterEnvironment;
 
@@ -886,7 +708,6 @@ const EditorContent = ({
         push({
           config: form.values,
           focussedField: fieldsToFocus,
-          audiences,
         });
 
         setFocussedField(fieldsToFocus);
@@ -906,12 +727,73 @@ const EditorContent = ({
 
   const [isAdminMode, setAdminMode] = useState(false);
 
+  const [resourcesStore] = useState(() =>
+    createResourcesStore(externalData ?? {})
+  );
+
+  useEffect(() => {
+    resourcesStore.batch(() => {
+      if (previousExternalData.current) {
+        Object.keys(previousExternalData.current).forEach((key) => {
+          if (!externalData[key]) {
+            resourcesStore.remove(key);
+          }
+        });
+      }
+
+      previousExternalData.current = externalData;
+
+      Object.entries(externalData).forEach(
+        ([id, resource]: Entries<typeof externalData>[number]) => {
+          if ("values" in resource) {
+            if (resource.values !== undefined) {
+              resourcesStore.set(id, {
+                id,
+                type: resource.type,
+                status: "success",
+                error: null,
+                value: resource.values,
+              });
+            } else {
+              resourcesStore.set(id, {
+                id,
+                type: resource.type,
+                status: "error",
+                error: resource.error,
+                value: undefined,
+              });
+            }
+          } else {
+            if (resource.value !== undefined) {
+              resourcesStore.set(id, {
+                id,
+                type: resource.type,
+                status: "success",
+                value: resource.value,
+                error: null,
+              });
+            } else {
+              resourcesStore.set(id, {
+                id,
+                type: resource.type,
+                status: "error",
+                value: undefined,
+                error: resource.error,
+              });
+            }
+          }
+        }
+      );
+    });
+
+    window.editorWindowAPI.externalData = externalData;
+    console.debug("external data", window.editorWindowAPI.externalData);
+
+    window.editorWindowAPI.onUpdate?.();
+  }, [externalData, resourcesStore]);
+
   const syncTemplates = () => {
-    getTemplates(
-      editorContext,
-      apiClient,
-      props.config.unstable_templates ?? []
-    ).then((newTemplates) => {
+    getTemplates(editorContext, apiClient).then((newTemplates) => {
       setTemplates(newTemplates);
     });
   };
@@ -919,8 +801,6 @@ const EditorContent = ({
   useEffect(() => {
     syncTemplates();
   }, []);
-
-  const launcherPlugin = getLauncherPlugin(props.config);
 
   const editorContext: EditorContextType = {
     ...compilationContext,
@@ -934,7 +814,7 @@ const EditorContent = ({
     setFocussedField: handleSetFocussedField,
     isEditing,
     setBreakpointIndex: (newBreakpointIndex) => {
-      handleSetBreakpoint(newBreakpointIndex);
+      setBreakpointIndex(newBreakpointIndex);
     },
     actions,
     save: async (documentData) => {
@@ -945,64 +825,34 @@ const EditorContent = ({
     },
     text: undefined,
     locales: props.locales,
-    variantsManager: {
-      removeVariant: (id, groupId, path) => {
-        actions.runChange(() => {
-          removeVariant({ form, id, groupId, path });
-        });
-      },
-      selectVariant: (id, path) => {
-        actions.runChange(() => {
-          selectVariant({ form, id, path });
-        });
-      },
-      reorderVariant: (groupId, sourceIndex, destinationIndex) => {
-        actions.runChange(() => {
-          reorderVariant(form, groupId, sourceIndex, destinationIndex);
-        });
-      },
-      getVariantsGroup: (groupId) => {
-        return getAudiencesForVariantsGroup(
-          form.values._variants ?? {},
-          allAudiences ?? [],
-          groupId
-        );
-      },
-      openAddVariantModal: (config, path) => {
-        setAddVariantRequest({ config, path });
-      },
-      openEditVariantModal: (id, groupId, path) => {
-        setEditVariantRequest({ id, groupId, path });
-      },
-    },
     resources: [],
     compilationCache: compilationCache.current,
-    launcher: launcherPlugin
-      ? {
-          id: launcherPlugin.id,
-          icon: launcherPlugin.icon,
-        }
-      : undefined,
     project: props.project,
-    imageVariantsDisplay:
-      props.config.imageVariantsDisplay ??
-      [
-        launcherPlugin && `${launcherPlugin.id}.default`,
-        ...(props.config.imageVariants?.map((v) => v.id) ?? []),
-      ].filter(nonNullable()),
-    videoVariantsDisplay:
-      props.config.videoVariantsDisplay ??
-      [
-        launcherPlugin && `${launcherPlugin.id}.default`,
-        ...(props.config.videoVariants?.map((v) => v.id) ?? []),
-      ].filter(nonNullable()),
     isPlayground,
+    resourcesStore,
+    activeRootContainer: assertDefined(
+      compilationContext.rootContainers.find((r) => r.id === rootContainer)
+    ),
   };
 
-  const {
-    meta,
-    renderableContent: { configAfterAuto, renderableContent },
-  } = useBuiltContent(
+  if (editorContext.activeRootContainer.schema) {
+    ["image", "video"].forEach((builtinExternalType) => {
+      // Make sure to add the root resource widget to image/video resource definition
+      if (
+        !editorContext.resourceTypes[builtinExternalType].widgets.some(
+          (w) => w.id === "@easyblocks/document-data"
+        )
+      ) {
+        editorContext.resourceTypes[builtinExternalType].widgets.push(
+          documentDataWidgetFactory({
+            type: builtinExternalType,
+          })
+        );
+      }
+    });
+  }
+
+  const { configAfterAuto, renderableContent, meta } = useBuiltContent(
     editorContext,
     props.config,
     {
@@ -1010,10 +860,11 @@ const EditorContent = ({
       isEditing,
     },
     editableData,
-    props.rootContainer
+    rootContainer,
+    props.onExternalDataChange
   );
 
-  editorContext.resources = meta.resources;
+  editorContext.resources = resourcesStore.values();
   editorContext.compiledComponentConfig = renderableContent;
   editorContext.configAfterAuto = configAfterAuto;
 
@@ -1029,6 +880,8 @@ const EditorContent = ({
   window.editorWindowAPI.editorContext = editorContext;
   window.editorWindowAPI.meta = meta;
   window.editorWindowAPI.compiled = renderableContent;
+  window.editorWindowAPI.externalData =
+    window.editorWindowAPI.externalData ?? {};
 
   usePlugin(form);
 
@@ -1036,7 +889,6 @@ const EditorContent = ({
     push({
       config: initialConfig,
       focussedField: [],
-      audiences: compilationContext.contextParams.audiences ?? [],
     });
   }, []);
 
@@ -1044,7 +896,7 @@ const EditorContent = ({
     if (window.editorWindowAPI.onUpdate) {
       window.editorWindowAPI.onUpdate();
     }
-  }, [renderableContent, meta, focussedField, isEditing, breakpointIndex]);
+  }, [renderableContent, focussedField, isEditing, breakpointIndex]);
 
   useEffect(() => {
     window.addEventListener(
@@ -1102,7 +954,6 @@ const EditorContent = ({
   };
 
   const appHeight = heightMode === "viewport" ? "100vh" : "100%";
-  const isDemoProject = props.config.projectId === "demo";
 
   return (
     <div
@@ -1121,139 +972,92 @@ const EditorContent = ({
       )}
       <EditorContext.Provider value={editorContext}>
         <ConfigAfterAutoContext.Provider value={configAfterAuto}>
-          <div id="rootContainer" />
-          <EditorTopBar
-            onUndo={undo}
-            onRedo={redo}
-            title={"Shopstory"}
-            onClose={() => {
-              setDataSaverOverlayOpen(true);
-              saveNow().finally(() => {
-                setDataSaverOverlayOpen(false);
+          <ExternalDataContext.Provider value={externalData}>
+            <div id="rootContainer" />
+            <EditorTopBar
+              onUndo={undo}
+              onRedo={redo}
+              title={"Shopstory"}
+              onClose={() => {
+                setDataSaverOverlayOpen(true);
+                saveNow().finally(() => {
+                  setDataSaverOverlayOpen(false);
 
-                window.postMessage(
-                  {
-                    type: "@easyblocks/closed",
-                  },
-                  "*"
-                );
+                  window.postMessage(
+                    {
+                      type: "@easyblocks/closed",
+                    },
+                    "*"
+                  );
 
-                if (props.onClose) {
-                  props.onClose();
-                }
-
-                if (isDemoProject) {
-                  navigate("/");
-                }
-              });
-            }}
-            devices={compilationContext.devices}
-            breakpointIndex={breakpointIndex}
-            onBreakpointChange={handleSetBreakpoint}
-            onIsEditingChange={handleSetEditing}
-            isEditing={isEditing}
-            saveLabel={"Save"}
-            locale={compilationContext.contextParams.locale}
-            locales={editorContext.locales}
-            onLocaleChange={() => {}}
-            allAudiences={allAudiences}
-            audiences={audiences}
-            onAudienceChange={handleAudienceChange}
-            isFullScreen={isFullScreen}
-            setFullScreen={setFullScreen}
-            onAdminModeChange={(val) => {
-              setAdminMode(val);
-            }}
-            isPlayground={editorContext.isPlayground}
-          />
-          <SidebarAndContentContainer height={appHeight}>
-            <ContentContainer
-              onClick={() => {
-                setFocussedField([]);
+                  if (props.onClose) {
+                    props.onClose();
+                  }
+                });
               }}
-            >
-              <EditorIframe
-                onEditorHistoryUndo={undo}
-                onEditorHistoryRedo={redo}
-                isFullScreen={isFullScreen}
-                isEditing={isEditing}
-                height={height}
-                scaleFactor={scaleFactor}
-                width={width}
-                containerRef={iframeContainerRef}
-                margin={heightMode === "viewport" ? 0 : 100}
-                url={props.canvasUrl}
-              />
-              {isEditing && (
-                <SelectionFrame
-                  {...selectionFrameSize}
+              devices={compilationContext.devices}
+              breakpointIndex={breakpointIndex}
+              onBreakpointChange={handleSetBreakpoint}
+              onIsEditingChange={handleSetEditing}
+              isEditing={isEditing}
+              saveLabel={"Save"}
+              locale={compilationContext.contextParams.locale}
+              locales={editorContext.locales}
+              onLocaleChange={() => {}}
+              isFullScreen={isFullScreen}
+              setFullScreen={setFullScreen}
+              onAdminModeChange={(val) => {
+                setAdminMode(val);
+              }}
+              isPlayground={editorContext.isPlayground}
+            />
+            <SidebarAndContentContainer height={appHeight}>
+              <ContentContainer
+                onClick={() => {
+                  setFocussedField([]);
+                }}
+              >
+                <EditorIframe
+                  onEditorHistoryUndo={undo}
+                  onEditorHistoryRedo={redo}
+                  isFullScreen={isFullScreen}
+                  isEditing={isEditing}
+                  height={height}
                   scaleFactor={scaleFactor}
+                  width={width}
+                  containerRef={iframeContainerRef}
+                  margin={heightMode === "viewport" ? 0 : 100}
+                  url={props.canvasUrl}
+                />
+                {isEditing && (
+                  <SelectionFrame
+                    {...selectionFrameSize}
+                    scaleFactor={scaleFactor}
+                  />
+                )}
+              </ContentContainer>
+              {isEditing && (
+                <SidebarContainer ref={sidebarNodeRef}>
+                  <EditorSidebar focussedField={focussedField} form={form} />
+                </SidebarContainer>
+              )}
+              {componentPickerData && (
+                <ModalPicker
+                  onClose={closeComponentPickerModal}
+                  config={componentPickerData.config}
                 />
               )}
-            </ContentContainer>
-            {isEditing && (
-              <SidebarContainer ref={sidebarNodeRef}>
-                <EditorSidebar focussedField={focussedField} form={form} />
-              </SidebarContainer>
-            )}
-            {componentPickerData && (
-              <ModalPicker
-                onClose={closeComponentPickerModal}
-                config={componentPickerData.config}
-              />
-            )}
-            {addVariantRequest && (
-              <AudienceModal
-                onClose={() => {
-                  setAddVariantRequest(undefined);
-                }}
-                onAudienceChange={(audienceId) => {
-                  actions.runChange(() => {
-                    const { config, path } = addVariantRequest;
-                    addVariant({
-                      form,
-                      context: editorContext,
-                      audience: audienceId,
-                      variant: config,
-                      path,
-                    });
-                    setAddVariantRequest(undefined);
-                  });
-                }}
-                allAudiences={allAudiences ?? []}
-              />
-            )}
-            {editVariantRequest && (
-              <AudienceModal
-                onClose={() => {
-                  setEditVariantRequest(undefined);
-                }}
-                onAudienceChange={(newAudience) => {
-                  actions.runChange(() => {
-                    const { id, groupId, path } = editVariantRequest;
-                    editVariant({
-                      form,
-                      groupId,
-                      id,
-                      newAudience,
-                      path,
-                    });
-                    setEditVariantRequest(undefined);
-                  });
-                }}
-                allAudiences={allAudiences ?? []}
-              />
-            )}
-          </SidebarAndContentContainer>
+            </SidebarAndContentContainer>
 
-          {openTemplateModalAction && (
-            <TemplateModal
-              action={openTemplateModalAction}
-              onClose={() => {
-                setOpenTemplateModalAction(undefined);
-              }}
-            />
-          )}
+            {openTemplateModalAction && (
+              <TemplateModal
+                action={openTemplateModalAction}
+                onClose={() => {
+                  setOpenTemplateModalAction(undefined);
+                }}
+              />
+            )}
+          </ExternalDataContext.Provider>
         </ConfigAfterAutoContext.Provider>
       </EditorContext.Provider>
     </div>
@@ -1325,119 +1129,46 @@ function useIframeSize({
   };
 }
 
-async function resolveCMSInput({
-  cmsInput,
+function getDefaultInput({
   rootContainer,
-  apiClient,
   compilationContext,
 }: {
-  cmsInput: CMSInput | undefined;
   rootContainer: EditorLauncherProps["rootContainer"];
-  apiClient: IApiClient;
   compilationContext: CompilationContextType;
-}): Promise<{
+}): {
   config: ConfigComponent;
   document: DocumentWithResolvedConfigDTO | null;
-}> {
-  if (!cmsInput) {
-    const rootContainerDefaultConfig = compilationContext.rootContainers.find(
-      (r) => r.id === rootContainer
-    )?.defaultConfig;
+} {
+  const rootContainerDefaultConfig = compilationContext.rootContainers.find(
+    (r) => r.id === rootContainer
+  )?.defaultConfig;
 
-    if (!rootContainerDefaultConfig) {
-      throw new Error(
-        `Missing default config for root container "${rootContainer}"`
-      );
-    }
-
-    if (
-      !findComponentDefinitionById(
-        rootContainerDefaultConfig._template,
-        compilationContext
-      )
-    ) {
-      throw new Error(
-        `Missing definition for root container component "${rootContainerDefaultConfig._template}"`
-      );
-    }
-
-    const defaultConfig = normalize(
-      rootContainerDefaultConfig,
-      compilationContext
-    );
-
-    return {
-      config: defaultConfig,
-      document: null,
-    };
-  }
-
-  const cmsInputValue = Object.values(cmsInput)[0] as CMSInput[keyof CMSInput];
-
-  if (!isDocument(cmsInputValue)) {
-    const localizedRawContent = normalizeNonDocumentCmsInput(
-      cmsInput as Exclude<CMSInput, LocalisedDocument>
-    );
-    const rawContent = Object.values(localizedRawContent)[0] as RawContent;
-
-    if (isRawContentRemote(rawContent)) {
-      const remoteConfig = await apiClient.configs.getConfigById({
-        configId: rawContent.id,
-        projectId: rawContent.projectId,
-      });
-
-      if (!remoteConfig) {
-        throw new Error(`Config with id ${rawContent.id} doesn't exist`);
-      }
-
-      const adaptedConfig = adaptRemoteConfig(
-        remoteConfig.config,
-        compilationContext
-      );
-
-      return {
-        config: adaptedConfig,
-        document: null,
-      };
-    }
-
-    const config = mergeSingleLocaleConfigsIntoConfig(
-      mapValues(
-        localizedRawContent as LocalisedRawContent<
-          RawContentFull | RawContentLocal
-        >,
-        (content) => content.content
-      ),
-      compilationContext
-    );
-
-    if (!config) {
-      throw new Error(
-        "Got empty config from non empty CMS input. This is unexpected error."
-      );
-    }
-
-    const normalizedConfig = normalize(config, compilationContext);
-    return { config: normalizedConfig, document: null };
-  }
-
-  const remoteDocument = await apiClient.documents.getDocumentById({
-    documentId: cmsInputValue.documentId,
-    projectId: cmsInputValue.projectId,
-  });
-
-  if (!remoteDocument) {
+  if (!rootContainerDefaultConfig) {
     throw new Error(
-      `Document with id ${cmsInputValue.documentId} doesn't exist for project with id: ${cmsInputValue.projectId}`
+      `Missing default config for root container "${rootContainer}"`
     );
   }
 
-  remoteDocument.config.config = adaptRemoteConfig(
-    remoteDocument.config.config,
+  if (
+    !findComponentDefinitionById(
+      rootContainerDefaultConfig._template,
+      compilationContext
+    )
+  ) {
+    throw new Error(
+      `Missing definition for root container component "${rootContainerDefaultConfig._template}"`
+    );
+  }
+
+  const defaultConfig = normalize(
+    rootContainerDefaultConfig,
     compilationContext
   );
 
-  return { config: remoteDocument.config.config, document: remoteDocument };
+  return {
+    config: defaultConfig,
+    document: null,
+  };
 }
 
 async function resolveDocumentId(
@@ -1484,11 +1215,4 @@ function adaptRemoteConfig(
   return normalized;
 }
 
-function mapValues<T extends Record<string, unknown>, R>(
-  obj: T,
-  fn: (value: T[keyof T]) => R
-): Record<keyof T, R> {
-  return Object.fromEntries(
-    entries(obj).map(([key, value]) => [key, fn(value)])
-  ) as Record<keyof T, R>;
-}
+export const ExternalDataContext = createContext<ExternalData>({});

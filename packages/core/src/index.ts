@@ -1,10 +1,9 @@
 export * from "./checkers";
 export type { ResourcesStore } from "./createResourcesStore";
+export { createResourcesStore } from "./createResourcesStore";
 export { loadScript } from "./loadScripts";
-export { getLauncherPlugin } from "./syncResources";
 export * from "./types";
 export * from "./resourcesUtils";
-export * from "./ShopstoryClient";
 export * from "./buildPreview";
 export * from "./locales";
 export { ApiClient } from "./infrastructure/apiClient";
@@ -19,3 +18,20 @@ export type {
 export { ShopstoryAccessTokenApiAuthenticationStrategy } from "./infrastructure/ShopstoryAccessTokenApiAuthenticationStrategy";
 export { createFetchingContext } from "./createFetchingContext";
 export type { FetchingContext } from "./createFetchingContext";
+
+export function getResourceId(
+  configId: string,
+  fieldName: string,
+  deviceId?: string
+) {
+  let resourceId = `${configId}.${fieldName}`;
+
+  if (deviceId) {
+    resourceId += `.${deviceId}`;
+  }
+
+  return resourceId;
+}
+
+export { buildEntry } from "./buildEntry";
+export { buildDocument } from "./buildDocument";

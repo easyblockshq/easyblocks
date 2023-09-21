@@ -51,7 +51,7 @@ const Typography: TypographyComponent = ({
       // Don't forward `color` prop to host element since it's our custom prop, not native one.
       $color={color}
       align={align}
-      isTruncated={isTruncated}
+      $isTruncated={isTruncated}
       {...restProps}
     >
       {children}
@@ -60,8 +60,11 @@ const Typography: TypographyComponent = ({
 };
 
 type TypographyRootProps = Required<
-  Pick<TypographyProps, "color" | "variant" | "align" | "isTruncated">
->;
+  Pick<TypographyProps, "variant" | "align">
+> & {
+  $color: TypographyProps["color"];
+  $isTruncated: NonNullable<TypographyProps["isTruncated"]>;
+};
 
 // Why use `div` as the default text tag?
 // 1. We mostly stack up lines of text so it's natural for typography component to be block element
@@ -72,12 +75,12 @@ type TypographyRootProps = Required<
 //    or maybe you would get warning from React about incorrect nesting of HTML elements.
 //    By using the `div` as the default, you don't have to worry about it.
 const TypographyRoot = styled.div<TypographyRootProps>`
-  color: ${({ color }) => (color !== undefined ? SSColors[color] : "black")};
+  color: ${({ $color }) => ($color !== undefined ? SSColors[$color] : "black")};
   ${({ variant }) => SSFonts[variant]}
   text-align: ${({ align }) => align};
 
-  ${({ isTruncated }) =>
-    isTruncated &&
+  ${({ $isTruncated }) =>
+    $isTruncated &&
     css`
       overflow: hidden;
       text-overflow: ellipsis;

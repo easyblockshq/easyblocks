@@ -8,7 +8,7 @@ import {
   createCompilationContext,
   findResources,
   normalize,
-} from "../../../apps/api/modules/compiler";
+} from "../../../apps/app/src/modules/compiler";
 
 import { findPendingResources } from "./findPendingResources";
 
@@ -18,7 +18,6 @@ import { syncResources } from "./syncResources";
 import {
   Config,
   ConfigComponent,
-  DefaultFetchFunction,
   FetchFunction,
   FetchResourcesOutput,
   LauncherPlugin,
@@ -52,7 +51,7 @@ const getImageFromId = (id: string) => ({
   ],
 });
 
-const imageFetcher = mock<DefaultFetchFunction>(async (resources) => {
+const imageFetcher = mock<FetchFunction>(async (resources) => {
   return resources.map((resource) => {
     return {
       ...resource,
@@ -68,14 +67,14 @@ describe("data synchronizers", () => {
     id: "test",
     resources: {
       image: {
-        defaultFetch: imageFetcher,
+        fetch: imageFetcher,
         widget: {
           type: "custom",
           component: () => {},
         },
       },
       video: {
-        defaultFetch: async (resources) => {
+        fetch: async (resources) => {
           return resources.map((resource) => {
             return {
               ...resource,
@@ -110,20 +109,6 @@ describe("data synchronizers", () => {
         },
       },
     },
-  };
-
-  const productTransform: ResourceTransformer<
-    { id: string },
-    { id: string }
-  > = (product) => {
-    if (product.id.startsWith("crashesMapper.")) {
-      throw new Error("error");
-    }
-
-    return {
-      ...product,
-      id: "!!!" + product.id,
-    };
   };
 
   const shopstoryConfig: Config = {
@@ -253,16 +238,19 @@ describe("data synchronizers", () => {
             prop: "product",
             type: "resource",
             resourceType: "product",
-            transform: productTransform,
           },
         ],
       },
     ],
   };
 
-  const compilationContext = createCompilationContext(shopstoryConfig, {
-    locale: "en",
-  });
+  const compilationContext = createCompilationContext(
+    shopstoryConfig,
+    {
+      locale: "en",
+    },
+    "content"
+  );
 
   test("with correct config", async () => {
     const config: ConfigComponent = {
@@ -413,7 +401,6 @@ describe("data synchronizers", () => {
     const imageTransformHash = getTransformHash(
       testPlugin.launcher.image.transform
     );
-    const productTransformHash = getTransformHash(productTransform);
 
     expect(Object.values(pendingResourcesAfterSync).flat().length).toBe(0);
 
@@ -436,11 +423,9 @@ describe("data synchronizers", () => {
     });
 
     expect(
-      getResolvedResource(resourcesStore, "shoes", "product")?.values[
-        productTransformHash
-      ]
+      getResolvedResource(resourcesStore, "shoes", "product")?.values["default"]
     ).toEqual({
-      id: "!!!shoes",
+      id: "shoes",
       handle: "shoes",
       price: 100,
     });

@@ -17,7 +17,6 @@ import {
   responsiveValueFlatten,
   responsiveValueMap,
   splitTemplateName,
-  Variants$$$SchemaProp,
 } from "@easyblocks/app-utils";
 import {
   Boolean$SchemaProp,
@@ -28,12 +27,11 @@ import {
   CompiledShopstoryComponentConfig,
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
+  ComponentConfig,
   ComponentFixedSchemaProp,
   ComponentSchemaProp,
   ConfigComponent,
   CustomResourceSchemaProp,
-  CustomResourceWithVariantsSchemaProp,
-  CustomSchemaProp,
   Devices,
   Font,
   FontSchemaProp,
@@ -41,7 +39,7 @@ import {
   getFallbackLocaleForLocale,
   getResourceType,
   IconSchemaProp,
-  ImageResourceSchemaProp,
+  LocalizedText,
   NumberSchemaProp,
   Option,
   RadioGroup$SchemaProp,
@@ -64,10 +62,8 @@ import {
   UnresolvedResource,
   UnresolvedResourceEmpty,
   UnresolvedResourceNonEmpty,
-  VideoResourceSchemaProp,
 } from "@easyblocks/core";
 import { uniqueId } from "@easyblocks/utils";
-import { OverrideProperties } from "type-fest";
 import { CompilationCache } from "./CompilationCache";
 import { compileComponent } from "./compileComponent";
 
@@ -93,9 +89,14 @@ export type SchemaPropDefinition<Type, CompiledType> = {
 };
 
 export type TextSchemaPropDefinition = SchemaPropDefinition<
-  UnresolvedResource,
-  | UnresolvedResourceEmpty
-  | OverrideProperties<UnresolvedResourceNonEmpty, { value: string }>
+  {
+    id: string;
+    value: LocalizedText;
+  },
+  {
+    id: string;
+    value: string;
+  }
 >;
 
 export type StringSchemaPropDefinition = SchemaPropDefinition<string, string>;
@@ -198,14 +199,15 @@ export type ComponentFixedSchemaPropDefinition = SchemaPropDefinition<
 >;
 
 type ResourceSchemaPropDefinition = SchemaPropDefinition<
-  UnresolvedResource,
-  UnresolvedResource
+  ResponsiveValue<UnresolvedResource>,
+  ResponsiveValue<UnresolvedResource>
 >;
 
-export type CustomSchemaPropDefinition = SchemaPropDefinition<
-  UnresolvedResource,
-  UnresolvedResource
+export type Component$$$SchemaPropDefinition = SchemaPropDefinition<
+  ComponentConfig,
+  ComponentConfig
 >;
+
 export type SchemaPropDefinitionProviders = {
   text: (
     schemaProp: TextResourceSchemaProp,
@@ -215,12 +217,10 @@ export type SchemaPropDefinitionProviders = {
     schemaProp: StringSchemaProp,
     compilationContext: CompilationContextType
   ) => StringSchemaPropDefinition;
-
   string$: (
     schemaProp: String$SchemaProp,
     compilationContext: CompilationContextType
   ) => String$SchemaPropDefinition;
-
   number: (
     schemaProp: NumberSchemaProp,
     compilationContext: CompilationContextType
@@ -249,7 +249,6 @@ export type SchemaPropDefinitionProviders = {
     schemaProp: RadioGroup$SchemaProp,
     compilationContext: CompilationContextType
   ) => RadioGroup$SchemaPropDefinition;
-
   color: (
     schemaProp: ColorSchemaProp,
     compilationContext: CompilationContextType
@@ -258,7 +257,6 @@ export type SchemaPropDefinitionProviders = {
     schemaProp: StringTokenSchemaProp,
     compilationContext: CompilationContextType
   ) => StringTokenSchemaPropDefinition;
-
   space: (
     schemaProp: SpaceSchemaProp,
     compilationContext: CompilationContextType
@@ -271,17 +269,6 @@ export type SchemaPropDefinitionProviders = {
     schemaProp: IconSchemaProp,
     compilationContext: CompilationContextType
   ) => IconSchemaPropDefinition;
-
-  // product: (schemaProp: ProductSchemaProp, compilationContext: CompilationContextType) => ProductSchemaPropDefinition,
-  image: (
-    schemaProp: ImageResourceSchemaProp,
-    compilationContext: CompilationContextType
-  ) => ImageSchemaPropDefinition;
-  video: (
-    schemaProp: VideoResourceSchemaProp,
-    compilationContext: CompilationContextType
-  ) => VideoSchemaPropDefinition;
-
   component: (
     schemaProp: ComponentSchemaProp,
     compilationContext: CompilationContextType
@@ -298,19 +285,12 @@ export type SchemaPropDefinitionProviders = {
     schemaProp: ComponentFixedSchemaProp,
     compilationContext: CompilationContextType
   ) => ComponentFixedSchemaPropDefinition;
-
-  // component$$$: (
-  //   schemaProp: Component$$$SchemaProp,
-  //   compilationContext: CompilationContextType
-  // ) => Component$$$SchemaPropDefinition;
-
-  custom: (
-    schemaProp: CustomSchemaProp,
+  component$$$: (
+    schemaProp: Component$$$SchemaProp,
     compilationContext: CompilationContextType
-  ) => CustomSchemaPropDefinition;
-
+  ) => Component$$$SchemaPropDefinition;
   resource: (
-    schemaProp: CustomResourceSchemaProp | CustomResourceWithVariantsSchemaProp,
+    schemaProp: CustomResourceSchemaProp,
     compilationContext: CompilationContextType
   ) => ResourceSchemaPropDefinition;
 };
@@ -734,53 +714,6 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
     };
   },
 
-  image: (_, compilationContext): ImageSchemaPropDefinition => {
-    const normalize = getResponsiveNormalize<UnresolvedResource>(
-      compilationContext,
-      {},
-      { id: null },
-      resourceNormalize
-    );
-
-    return {
-      normalize,
-      compile: (x) => x,
-      getHash: resourceGetHash,
-    };
-  },
-  video: (_, compilationContext): VideoSchemaPropDefinition => {
-    const normalize = getResponsiveNormalize<UnresolvedResource>(
-      compilationContext,
-      {},
-      { id: null },
-      resourceNormalize
-    );
-
-    return {
-      normalize,
-      compile: (x) => {
-        return x;
-      },
-      getHash: resourceGetHash,
-    };
-  },
-
-  custom: (): CustomSchemaPropDefinition => {
-    return {
-      normalize: (x) => {
-        const normalized = resourceNormalize(x);
-        if (!normalized) {
-          return {
-            id: null,
-          };
-        }
-        return normalized;
-      },
-      compile: (x) => x,
-      getHash: resourceGetHash,
-    };
-  },
-
   component: (
     _,
     compilationContext: CompilationContextType
@@ -1020,14 +953,51 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
     };
   },
 
+  component$$$: () => {
+    return {
+      normalize: (x) => x,
+      compile: (x) => x,
+      getHash: (x) => x._template,
+    };
+  },
+
   resource: (schemaProp, compilationContext) => {
+    if (
+      schemaProp.resourceType === "image" ||
+      schemaProp.resourceType === "video"
+    ) {
+      const normalize = getResponsiveNormalize<UnresolvedResource>(
+        compilationContext,
+        {},
+        {
+          id: null,
+          widgetId:
+            compilationContext.resourceTypes[schemaProp.resourceType]
+              ?.widgets[0]?.id,
+        },
+        resourceNormalize(schemaProp.resourceType)
+      );
+
+      return {
+        normalize,
+        compile: (x) => x,
+        getHash: resourceGetHash,
+      };
+    }
+
     return {
       normalize: (value) => {
-        const normalized = resourceNormalize(value);
+        const normalized = resourceNormalize(schemaProp.type)(
+          value,
+          compilationContext
+        );
 
         if (!normalized) {
           return {
             id: null,
+            widgetId:
+              compilationContext.resourceTypes[schemaProp.resourceType]
+                ?.widgets[0]?.id,
           };
         }
 
@@ -1037,11 +1007,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         return value;
       },
       getHash: (value) => {
-        const resourceType = getResourceType(
-          schemaProp,
-          compilationContext,
-          value
-        );
+        const resourceType = getResourceType(schemaProp);
 
         if (value.id === null) {
           return `${schemaProp.type}.${resourceType}`;
@@ -1057,20 +1023,23 @@ function getNormalize<T>(
   compilationContext: CompilationContextType,
   defaultValue: any,
   fallbackDefaultValue: T,
-  normalize: (x: any) => T | undefined = (x) => x
+  normalize: (
+    x: any,
+    compilationContext: CompilationContextType
+  ) => T | undefined = (x) => x
 ) {
   return (val: any): T => {
-    const normalizedVal = normalize(val);
+    const normalizedVal = normalize(val, compilationContext);
     if (normalizedVal !== undefined) {
       return normalizedVal;
     }
 
-    const normalizedDefaultVal = normalize(defaultValue);
+    const normalizedDefaultVal = normalize(defaultValue, compilationContext);
     if (normalizedDefaultVal !== undefined) {
       return normalizedDefaultVal;
     }
 
-    return normalize(fallbackDefaultValue) as T;
+    return normalize(fallbackDefaultValue, compilationContext) as T;
   };
 }
 
@@ -1078,7 +1047,10 @@ function getResponsiveNormalize<ScalarType>(
   compilationContext: CompilationContextType,
   defaultValue: any,
   fallbackDefaultValue: ScalarType,
-  normalize: (x: any) => ScalarType | undefined = (x) => x
+  normalize: (
+    x: any,
+    compilationContext: CompilationContextType
+  ) => ScalarType | undefined = (x) => x
 ) {
   if (isTrulyResponsiveValue(defaultValue)) {
     /**
@@ -1105,7 +1077,7 @@ function getResponsiveNormalize<ScalarType>(
     }
 
     const responsiveVal = responsiveValueMap(val, (x) => {
-      return normalize(x);
+      return normalize(x, compilationContext);
     });
 
     // main breakpoint always set
@@ -1363,33 +1335,35 @@ function getRef<T>(value: RefValue<T>): string {
   throw new Error("unreachable");
 }
 
-function resourceNormalize(x: any): UnresolvedResource | undefined {
-  if (typeof x === "object" && x !== null) {
-    if (typeof x.id === "string") {
-      const normalized: UnresolvedResourceNonEmpty = { id: x.id };
+function resourceNormalize(
+  resourceType: string
+): (
+  x: any,
+  compilationContext: CompilationContextType
+) => UnresolvedResource | undefined {
+  return (x, compilationContext) => {
+    if (typeof x === "object" && x !== null) {
+      if (typeof x.id === "string") {
+        const normalized: UnresolvedResourceNonEmpty = {
+          id: x.id,
+          widgetId: x.widgetId,
+          key: x.key,
+        };
 
-      if (typeof x.info === "object") {
-        normalized.info = x.info;
+        return normalized;
       }
 
-      if (typeof x.variant === "string") {
-        normalized.variant = x.variant;
-      }
+      const normalized: UnresolvedResourceEmpty = {
+        id: null,
+        widgetId:
+          typeof x.widgetId === "string"
+            ? x.widgetId
+            : compilationContext.resourceTypes[resourceType]?.widgets[0]?.id,
+      };
 
       return normalized;
     }
-
-    const normalized: UnresolvedResourceEmpty = {
-      id: null,
-    };
-
-    if (typeof x.variant === "string") {
-      normalized.variant = x.variant;
-    }
-
-    return normalized;
-  }
-  return;
+  };
 }
 
 function resourceGetHash(
@@ -1407,15 +1381,7 @@ function resourceGetHash(
   }
 
   if (value.id) {
-    if (value.variant) {
-      return `${value.id}.${value.variant}`;
-    }
-
-    return value.id;
-  } else {
-    if (value.variant) {
-      return value.variant;
-    }
+    return `${value.id}.${value.widgetId}`;
   }
 }
 
@@ -1431,9 +1397,6 @@ export function normalizeComponent(
   const ret: ConfigComponent = {
     _id: configComponent._id,
     _template: configComponent._template,
-    _variantGroupId: configComponent._variantGroupId,
-    _audience: configComponent._audience,
-    _variants: configComponent._variants,
     _master: configComponent._master,
     $$$refs: configComponent.$$$refs,
     traceId: configComponent.traceId,
@@ -1528,14 +1491,12 @@ export function normalizeComponent(
 }
 
 export function getSchemaDefinition<
-  T extends SchemaProp | Variants$$$SchemaProp | Component$$$SchemaProp
+  T extends SchemaProp | Component$$$SchemaProp
 >(
   schemaProp: T,
   compilationContext: CompilationContextType
 ): ReturnType<SchemaPropDefinitionProvider> {
-  const provider: SchemaPropDefinitionProvider =
-    (schemaPropDefinitions as any)[schemaProp.type] ||
-    schemaPropDefinitions.custom;
+  const provider = schemaPropDefinitions[schemaProp.type];
 
   return provider(schemaProp as any, compilationContext);
 }

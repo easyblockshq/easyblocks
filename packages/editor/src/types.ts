@@ -5,9 +5,7 @@ import {
   ConfigComponent,
   ContextParams,
   LocalisedConfigs,
-  LocalisedContentPiece,
   LocalisedDocument,
-  LocalisedRawContent,
   LocalizedText,
   Metadata,
 } from "@easyblocks/core";
@@ -151,26 +149,6 @@ export type Roles = {
 
 export type FieldMixedValue = { __mixed__: true };
 
-export type VariantsRepository = Record<string, ComponentConfig[]>;
-
-export interface VariantsManager {
-  openAddVariantModal(variant: ConfigComponent, path: string): void;
-  openEditVariantModal(variantId: string, groupId: string, path: string): void;
-  removeVariant(variantId: string, groupId: string, path: string): void;
-  selectVariant(variantId: string, path: string): void;
-  getVariantsGroup(groupId: string): Array<{
-    audienceId: string;
-    variantId: string;
-    name: string;
-    description: string;
-  }>;
-  reorderVariant(
-    groupId: string,
-    sourceIndex: number,
-    destinationIndex?: number
-  ): void;
-}
-
 export type EditorWindowAPI = {
   editorContext: EditorContextType;
   onUpdate?: () => void; // this function will be called by parent window when data is changed, child should "subscribe" to this function
@@ -178,8 +156,4 @@ export type EditorWindowAPI = {
   compiled: CompiledShopstoryComponentConfig;
 };
 
-export type CMSInput =
-  | LocalisedDocument
-  | LocalisedRawContent
-  | LocalisedContentPiece
-  | LocalisedConfigs;
+export type CMSInput = LocalisedDocument | LocalisedConfigs;

@@ -4,7 +4,6 @@ import {
   isSchemaPropActionTextModifier,
   isSchemaPropTextModifier,
   isTemplate,
-  Variants$$$SchemaProp,
   EditorContextType,
 } from "@easyblocks/app-utils";
 import { SchemaProp } from "@easyblocks/core";
@@ -37,7 +36,7 @@ function updateSelection(
   editor: Editor,
   editorContext: EditorContextType,
   key: string,
-  schemaProp: SchemaProp | Variants$$$SchemaProp | Component$$$SchemaProp,
+  schemaProp: SchemaProp | Component$$$SchemaProp,
   ...values: Array<unknown>
 ):
   | {
@@ -118,7 +117,7 @@ function updateInlineWrapper(
   editor: SelectedEditor,
   editorContext: EditorContextType,
   key: string,
-  schemaProp: SchemaProp | Component$$$SchemaProp | Variants$$$SchemaProp,
+  schemaProp: SchemaProp | Component$$$SchemaProp,
   ...values: Array<any>
 ): true | void {
   const isSelectionCollapsed = Range.isCollapsed(editor.selection);

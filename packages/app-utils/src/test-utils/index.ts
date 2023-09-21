@@ -59,8 +59,6 @@ export const testCompilationContext: CompilationContextType = {
     textModifiers: [],
   },
   devices: testDevices,
-  image: testImage,
-  video: testVideo,
   contextParams: {
     locale: "en",
   },
@@ -75,11 +73,8 @@ export const testCompilationContext: CompilationContextType = {
     boxShadows: {},
   },
   mainBreakpointIndex: "b4",
-  resourceTypes: {},
-  imageVariants: [],
   rootContainers: [],
   rootContainer: "",
-  videoVariants: [],
 };
 
 function createForm(initialValues: Record<string, any> = {}) {

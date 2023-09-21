@@ -192,13 +192,16 @@ function scalarizeNonComponentProp(
       throw new Error("unreachable");
     }
 
-    // image and video are responsive
-    if (schemaProp.type === "image" || schemaProp.type === "video") {
-      return responsiveValueForceGet(value, breakpoint);
-    }
-
-    // resources should be ignored (not to run scalarise on value which we don't control)
     if (isResourceSchemaProp(schemaProp)) {
+      // image and video are responsive
+      if (
+        schemaProp.resourceType === "image" ||
+        schemaProp.resourceType === "video"
+      ) {
+        return responsiveValueForceGet(value, breakpoint);
+      }
+
+      // other resources should be ignored (not to run scalarise on value which we don't control)
       return value;
     }
 

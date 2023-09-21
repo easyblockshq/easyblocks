@@ -61,12 +61,7 @@ const $video = (props: VideoProps) => {
     resop
   );
 
-  const imageWrapperClassName = getWrapperClassName(
-    image,
-    devices,
-    stitches,
-    resop
-  );
+  const imageWrapperClassName = getWrapperClassName(devices, stitches);
 
   return (
     <Wrapper>

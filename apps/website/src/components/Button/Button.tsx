@@ -25,8 +25,8 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   const Component: React.ElementType = as;
 
-  // @ts-ignore
   return (
+    // @ts-ignore
     <Component className={styles.button} {...props}>
       <div className={`font-body ${styles.label}`}>{children}</div>
       <div>{icon}</div>

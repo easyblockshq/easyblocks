@@ -1,0 +1,11 @@
+{
+  "workspaces": {
+    "packages/compiler": {
+      "ignore": ["src/built/**/*"]
+    },
+    "packages/editable-components": {
+      "ignore": ["src/built/**/*"]
+    }
+  },
+  "ignoreBinaries": ["supabase"]
+}

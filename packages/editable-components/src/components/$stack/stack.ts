@@ -19,8 +19,6 @@ const stackComponentDefinition: InternalRenderableComponentDefinition<"$stack"> 
     styles: $stackStyles,
     pasteSlots: ["Items"],
     editing: ({ values, editingInfo }) => {
-      console.log(editingInfo);
-
       const items = editingInfo.components
         .Items as Array<ChildComponentEditingInfo>;
 

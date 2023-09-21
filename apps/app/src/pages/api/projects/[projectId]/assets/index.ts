@@ -35,8 +35,8 @@ const handler: AuthenticatedNextApiHandler = async (req, res, accessToken) => {
   const supabaseClient = createSupabaseClient(accessToken, projectId);
 
   // For some reason, the RLS policy doesn't work with authenticated users so we perform the check here instead
-  const { data: activeProjectId, error } = await supabaseClient.rpc(
-    "active_project_id"
+  const { data: projectIdFromToken, error } = await supabaseClient.rpc(
+    "project_id_from_access_token"
   );
 
   if (error) {
@@ -44,22 +44,27 @@ const handler: AuthenticatedNextApiHandler = async (req, res, accessToken) => {
     return internalServerErrorResponse(res);
   }
 
-  if (activeProjectId !== projectId) {
+  // For some reason, the RLS policy doesn't work with authenticated users so we perform the check here instead
+  if (projectIdFromToken !== projectId) {
     return res.status(403).json({ message: "Forbidden" });
   }
 
   if (req.method === "GET") {
-    let { data: files, error } = await supabaseClient.storage
+    let assetsQueryResult = await supabaseClient.storage
       .from("assets")
       .list(projectId);
 
-    if (error) {
+    if (assetsQueryResult.error) {
       console.error(error);
       return internalServerErrorResponse(res);
     }
 
+    let files = assetsQueryResult.data;
+
     if (req.query.ids) {
-      files = files.filter((file) => toArray(req.query.ids).includes(file.id));
+      files = assetsQueryResult.data.filter((file) =>
+        toArray(req.query.ids).includes(file.id)
+      );
     }
 
     if (req.query.type) {
@@ -86,7 +91,7 @@ const handler: AuthenticatedNextApiHandler = async (req, res, accessToken) => {
       );
 
     const assets = files.map((file) => {
-      const assetRecord = assetRecords.find(
+      const assetRecord = assetRecords!.find(
         (asset) => asset.asset_id === file.id
       );
 
@@ -98,7 +103,7 @@ const handler: AuthenticatedNextApiHandler = async (req, res, accessToken) => {
 
       if (file.metadata.mimetype.startsWith("image/")) {
         const assetMetadataParseResult = assetMetadataSchema.safeParse(
-          assetRecord.metadata
+          assetRecord!.metadata
         );
 
         if (assetMetadataParseResult.success === false) {
@@ -126,8 +131,8 @@ const handler: AuthenticatedNextApiHandler = async (req, res, accessToken) => {
           : {
               mediaType: "image",
               metadata: {
-                width: assetMetadata.width,
-                height: assetMetadata.height,
+                width: assetMetadata!.width,
+                height: assetMetadata!.height,
                 mimeType: file.metadata.mimetype,
               },
             }),
@@ -154,6 +159,13 @@ const handler: AuthenticatedNextApiHandler = async (req, res, accessToken) => {
     if (assetFile.mimeType.startsWith("image/")) {
       try {
         const { height, width } = imageSize(assetFile.content);
+
+        if (!height || !width) {
+          return res
+            .status(400)
+            .json({ error: "Image size couldn't be determined" });
+        }
+
         metadata = { height, width };
       } catch (error) {
         console.error(error);
@@ -199,9 +211,9 @@ const handler: AuthenticatedNextApiHandler = async (req, res, accessToken) => {
       .list(projectId);
 
     const insertAssetResult = await supabaseClient.from("assets").insert({
-      asset_id: fileAssetsForProjectResult.data.find(
+      asset_id: fileAssetsForProjectResult.data!.find(
         (a) => assetUploadResult.data.path.split("/").at(-1) === a.name
-      ).id,
+      )!.id,
       metadata,
     });
 
@@ -242,10 +254,10 @@ function getParsedAssetFile(req: AuthenticatedNextApiRequest) {
       const fileContent = await fs.promises.readFile(parsedFile.filepath);
 
       const file = {
-        name: parsedFile.originalFilename,
-        mimeType: parsedFile.mimetype,
+        name: parsedFile.originalFilename!,
+        mimeType: parsedFile.mimetype!,
         content: fileContent,
-        extension: `.${parsedFile.originalFilename.split(".").at(-1)}`,
+        extension: `.${parsedFile.originalFilename!.split(".").at(-1)}`,
       };
 
       resolve(file);

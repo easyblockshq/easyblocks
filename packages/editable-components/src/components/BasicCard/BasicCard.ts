@@ -324,4 +324,5 @@ export const basicBackgroundCardDefinition: InternalRenderableComponentDefinitio
     ...basicCardDefinition,
     id: "$BasicCardBackground",
     schema: basicBackgroundCardSchema,
+    label: "Banner cover",
   };

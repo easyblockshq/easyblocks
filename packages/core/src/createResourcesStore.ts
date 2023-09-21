@@ -1,18 +1,52 @@
-import { Resource } from "./types";
+import { FetchOutputResources, Resource } from "./types";
 
 type ResourceStoreSubscriber = () => void;
 
 type ResourcesStore = {
-  get(id: string, type: string): Resource | undefined;
+  get(id: string): Resource | undefined;
   set(id: string, resource: Resource): void;
+  remove(id: string): void;
   values(): Array<Resource>;
   subscribe(listener: ResourceStoreSubscriber): () => void;
   batch(callback: () => void): void;
-  has(id: string, type: string): boolean;
+  has(id: string): boolean;
 };
 
-function createResourcesStore(): ResourcesStore {
-  const store = new Map<string, Map<string, Resource>>();
+function createResourcesStore(
+  initialEntries: FetchOutputResources = {}
+): ResourcesStore {
+  const store = new Map<string, Resource>(
+    Object.entries(initialEntries).map<[string, Resource]>(
+      ([id, fetchResult]) => {
+        const resource: Resource =
+          "values" in fetchResult
+            ? {
+                id,
+                type: fetchResult.type,
+                status: "success",
+                error: null,
+                value: fetchResult.values,
+              }
+            : fetchResult.value !== undefined
+            ? {
+                id,
+                type: fetchResult.type,
+                status: "success",
+                value: fetchResult.value,
+                error: null,
+              }
+            : {
+                id,
+                type: fetchResult.type,
+                status: "error",
+                value: undefined,
+                error: fetchResult.error,
+              };
+
+        return [id, resource];
+      }
+    )
+  );
   const subscribers: Array<ResourceStoreSubscriber> = [];
 
   let isBatching = false;
@@ -24,25 +58,24 @@ function createResourcesStore(): ResourcesStore {
   }
 
   const resourcesStore: ResourcesStore = {
-    get(id: string, type: string) {
-      return store.get(type)?.get(id);
+    get(id: string) {
+      return store.get(id);
     },
 
     values() {
-      return Array.from(store.values()).flatMap((values) =>
-        Array.from(values.values())
-      );
+      return Array.from(store.values());
     },
 
     set(id: string, entry: Resource) {
-      const resourcesForType = store.get(entry.type);
+      store.set(id, entry);
 
-      if (!resourcesForType) {
-        store.set(entry.type, new Map<string, Resource>([[id, entry]]));
-      } else {
-        resourcesForType.set(id, entry);
-        store.set(entry.type, resourcesForType);
+      if (!isBatching) {
+        notify();
       }
+    },
+
+    remove(id) {
+      store.delete(id);
 
       if (!isBatching) {
         notify();
@@ -64,14 +97,8 @@ function createResourcesStore(): ResourcesStore {
       notify();
     },
 
-    has(id, type) {
-      const resourcesForType = store.get(type);
-
-      if (!resourcesForType) {
-        return false;
-      }
-
-      return resourcesForType.has(id);
+    has(id) {
+      return store.has(id);
     },
   };
 
