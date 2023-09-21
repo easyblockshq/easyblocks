@@ -70,7 +70,7 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
           getResourceId(assertDefined(config._id), "image", breakpointIndex)
         ];
 
-      if (!imageResource || imageResource.error !== null) {
+      if (!imageResource || "error" in imageResource) {
         return {
           type: "icon",
           icon: "link",
@@ -88,7 +88,7 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
         }
 
         const resolvedCompoundResourceResult =
-          imageResource.values?.[activeImageValue.key];
+          imageResource.value[activeImageValue.key];
 
         if (!resolvedCompoundResourceResult) {
           return {

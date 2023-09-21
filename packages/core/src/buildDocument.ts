@@ -1,5 +1,4 @@
 import { buildEntry } from "./buildEntry";
-import { createResourcesStore } from "./createResourcesStore";
 import { ApiClient } from "./infrastructure/apiClient";
 import { ShopstoryAccessTokenApiAuthenticationStrategy } from "./infrastructure/ShopstoryAccessTokenApiAuthenticationStrategy";
 import { loadCompilerScript } from "./loadScripts";
@@ -30,7 +29,6 @@ async function buildDocument({
     locale,
   });
   const compiler = await loadCompilerScript();
-  const resourcesStore = createResourcesStore();
 
   const { meta, externalData, renderableContent, configAfterAuto } = buildEntry(
     {
@@ -41,7 +39,7 @@ async function buildDocument({
         rootContainer: document.rootContainer,
       },
       compiler,
-      resourcesStore,
+      externalData: {},
     }
   );
 

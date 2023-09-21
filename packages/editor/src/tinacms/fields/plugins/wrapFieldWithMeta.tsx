@@ -151,8 +151,7 @@ export function FieldMetaWrapper<
             <FieldLabel
               htmlFor={toArray(field.name).join(",")}
               isError={
-                externalDataValue !== undefined &&
-                externalDataValue.error !== null
+                externalDataValue !== undefined && "error" in externalDataValue
               }
               {...triggerProps}
             >
@@ -190,7 +189,7 @@ export function FieldMetaWrapper<
         </FieldLabelWrapper>
       )}
       <FieldInputWrapper layout={layout}>{content}</FieldInputWrapper>
-      {externalDataValue && externalDataValue.error !== null && (
+      {externalDataValue && "error" in externalDataValue && (
         <FieldError>{externalDataValue.error.message}</FieldError>
       )}
     </FieldWrapper>

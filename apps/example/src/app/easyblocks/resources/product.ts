@@ -1,4 +1,4 @@
-import {
+import type {
   ChangedExternalData,
   ExternalData,
   FetchOutputCompoundResources,
@@ -68,11 +68,9 @@ async function fetchProductResources(
        * Question: type: "object" for errors?
        */
       result[id] = {
-        type: "object",
         error: new Error(
           `Product with id "${inputResource.externalId}" not found`
         ),
-        values: undefined,
       };
       return;
     }
@@ -82,9 +80,7 @@ async function fetchProductResources(
      */
     if (product.title.indexOf("forced error") > -1) {
       result[id] = {
-        type: "object",
         error: new Error("Fetch error"),
-        values: undefined,
       };
       return;
     }
@@ -121,7 +117,7 @@ async function fetchProductResources(
 
     result[id] = {
       type: "object",
-      values: {
+      value: {
         mainImage: {
           type: "image",
           value: productImage,
@@ -137,7 +133,6 @@ async function fetchProductResources(
           value: product.title,
         },
       },
-      error: null,
     };
   });
 

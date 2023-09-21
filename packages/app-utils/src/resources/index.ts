@@ -14,5 +14,14 @@ export type ResolvedResourceProp<ResourceValue = unknown> =
 export function isCompoundExternalDataValue(
   value: ExternalData[string]
 ): value is FetchOutputCompoundResources[string] {
-  return value.type === "object" && "values" in value && "error" in value;
+  return (
+    ("type" in value && value.type === "object" && "value" in value) ||
+    "error" in value
+  );
+}
+
+export function isResolvedCompoundExternalDataValue(
+  value: ExternalData[string]
+): value is Exclude<FetchOutputCompoundResources[string], { error: Error }> {
+  return "type" in value && value.type === "object" && "value" in value;
 }

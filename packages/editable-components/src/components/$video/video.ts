@@ -162,7 +162,7 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
           getResourceId(assertDefined(config._id), `image`, breakpointIndex)
         ];
 
-      if (!videoResource || videoResource.error !== null) {
+      if (!videoResource || "error" in videoResource) {
         return {
           type: "icon",
           icon: "link",
@@ -180,7 +180,7 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         }
 
         const resolvedCompoundResourceResult =
-          videoResource.values?.[activeVideoValue.key];
+          videoResource.value[activeVideoValue.key];
 
         if (!resolvedCompoundResourceResult) {
           return {

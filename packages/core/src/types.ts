@@ -1025,9 +1025,12 @@ export type FetchInputResource = {
   fetchParams?: ResourceParams;
 };
 
-type FetchResourceResolvedResult<T> = { value: T; error: null };
+type FetchResourceResolvedResult<T> = {
+  type: string & Record<never, never>;
+  value: T;
+};
 
-type FetchResourceRejectedResult = { value: undefined; error: Error };
+type FetchResourceRejectedResult = { error: Error };
 
 // {} in TS means any non nullish value and it's used on purpose here
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -1037,12 +1040,7 @@ export type FetchResourceResult<T extends NonNullish = NonNullish> =
   | FetchResourceResolvedResult<T>
   | FetchResourceRejectedResult;
 
-export type FetchOutputBasicResources = Record<
-  string,
-  {
-    type: string & Record<never, never>;
-  } & FetchResourceResult
->;
+export type FetchOutputBasicResources = Record<string, FetchResourceResult>;
 
 export type FetchCompoundResourceResultValue = {
   type: string;
@@ -1055,21 +1053,15 @@ export type FetchCompoundResourceResultValues = Record<
   FetchCompoundResourceResultValue
 >;
 
-export type FetchCompoundResourceResult =
-  | {
-      values: FetchCompoundResourceResultValues;
-      error: null;
-    }
-  | {
-      values: undefined;
-      error: Error;
-    };
-
 export type FetchOutputCompoundResources = Record<
   string,
-  {
-    type: "object";
-  } & FetchCompoundResourceResult
+  | {
+      type: "object";
+      value: FetchCompoundResourceResultValues;
+    }
+  | {
+      error: Error;
+    }
 >;
 
 export type FetchOutputResources = Record<

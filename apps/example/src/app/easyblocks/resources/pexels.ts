@@ -1,7 +1,6 @@
 import type {
   ChangedExternalData,
   ExternalData,
-  FetchOutputBasicResources,
   ImageSrc,
   VideoSrc,
   Widget,
@@ -136,85 +135,75 @@ async function fetchPexelsResources(
   );
 
   const photosResults = Object.fromEntries(
-    pexelsPhotoResources.map<[string, FetchOutputBasicResources[string]]>(
-      ([id, inputResource]) => {
-        // Pexels API returns id as a number
-        const photo = photos.find(
-          (p) => p.id.toString() === inputResource.externalId
-        );
+    pexelsPhotoResources.map(([id, inputResource]) => {
+      // Pexels API returns id as a number
+      const photo = photos.find(
+        (p) => p.id.toString() === inputResource.externalId
+      );
 
-        if (!photo) {
-          return [
-            id,
-            {
-              type: "image",
-              value: undefined,
-              error: new Error("Photo not found"),
-            },
-          ];
-        }
-
-        const photoValue: ImageSrc = {
-          alt: photo.alt,
-          aspectRatio: photo.width / photo.height,
-          mimeType: "image/jpeg",
-          srcset: [
-            {
-              h: photo.height,
-              url: photo.src.large2x,
-              w: photo.width,
-            },
-          ],
-          url: photo.src.large2x,
-        };
-
+      if (!photo) {
         return [
           id,
           {
-            type: "image",
-            value: photoValue,
-            error: null,
+            error: new Error("Photo not found"),
           },
         ];
       }
-    )
+
+      const photoValue: ImageSrc = {
+        alt: photo.alt,
+        aspectRatio: photo.width / photo.height,
+        mimeType: "image/jpeg",
+        srcset: [
+          {
+            h: photo.height,
+            url: photo.src.large2x,
+            w: photo.width,
+          },
+        ],
+        url: photo.src.large2x,
+      };
+
+      return [
+        id,
+        {
+          type: "image",
+          value: photoValue,
+        },
+      ];
+    })
   );
 
   const videosResults = Object.fromEntries(
-    pexelsVideoResources.map<[string, FetchOutputBasicResources[string]]>(
-      ([id, inputResource]) => {
-        const video = videos.find(
-          // Pexels API returns id as a number
-          (p) => p.id.toString() === inputResource.externalId
-        );
+    pexelsVideoResources.map(([id, inputResource]) => {
+      const video = videos.find(
+        // Pexels API returns id as a number
+        (p) => p.id.toString() === inputResource.externalId
+      );
 
-        if (!video) {
-          return [
-            id,
-            {
-              type: "video",
-              value: undefined,
-              error: new Error("Video not found"),
-            },
-          ];
-        }
-
-        const videoValue: VideoSrc = {
-          alt: video.id,
-          aspectRatio: 1,
-          url: video.video_files.find((f: any) => f.quality === "hd").link,
-        };
-
+      if (!video) {
         return [
           id,
           {
-            type: "video",
-            value: videoValue,
-            error: null,
+            error: new Error("Video not found"),
           },
         ];
       }
-    )
+
+      const videoValue: VideoSrc = {
+        alt: video.id,
+        aspectRatio: 1,
+        url: video.video_files.find((f: any) => f.quality === "hd").link,
+      };
+
+      return [
+        id,
+        {
+          type: "video",
+          value: videoValue,
+        },
+      ];
+    })
   );
 
   return { ...photosResults, ...videosResults };

@@ -1,3 +1,4 @@
+import { isResolvedCompoundExternalDataValue } from "@easyblocks/app-utils";
 import {
   ExternalFieldCustomComponentProps,
   FetchOutputCompoundResources,
@@ -51,21 +52,18 @@ function DocumentDataWidgetComponent({
   ).map((s) => `$.${s.prop}`);
 
   const documentCompoundResources = Object.entries(externalData).filter<
-    [string, Extract<FetchOutputCompoundResources[string], { error: null }>]
+    [string, Exclude<FetchOutputCompoundResources[string], { error: Error }>]
   >(
     (
       r
     ): r is [
       string,
-      Extract<FetchOutputCompoundResources[string], { error: null }>
+      Exclude<FetchOutputCompoundResources[string], { error: Error }>
     ] => {
       const [externalId, externalDataValue] = r;
       return (
         documentResourcesIds.includes(externalId) &&
-        externalDataValue.type === "object" &&
-        "values" in externalDataValue &&
-        externalDataValue.values !== undefined &&
-        externalDataValue.error === null
+        isResolvedCompoundExternalDataValue(externalDataValue)
       );
     }
   );
@@ -86,7 +84,7 @@ function DocumentDataWidgetComponent({
     <CompoundResourceValueSelect
       options={documentCompoundResources.flatMap(
         ([externalId, externalDataValue]) =>
-          getBasicResourcesOfType(externalDataValue.values, type).map((r) => {
+          getBasicResourcesOfType(externalDataValue.value, type).map((r) => {
             const resourceSchemaProp = assertDefined(
               editorContext.activeRootContainer.schema?.find(
                 (s) => s.prop === externalId.split(".")[1]

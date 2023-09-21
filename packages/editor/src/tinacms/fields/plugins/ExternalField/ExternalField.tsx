@@ -1,13 +1,12 @@
+import { isResolvedCompoundExternalDataValue } from "@easyblocks/app-utils";
 import {
   AnyField,
   AnyTinaField,
   ExternalFieldCustom,
   ExternalFieldType,
   FetchCompoundResourceResultValues,
-  FetchOutputCompoundResources,
   Field,
   getResourceId,
-  ResolvedResource,
   ResourceSchemaProp,
   TextResourceSchemaProp,
   UnresolvedResource,
@@ -16,7 +15,6 @@ import { SSSelect, useToaster } from "@easyblocks/design-system";
 import { dotNotationGet, toArray } from "@easyblocks/utils";
 import React, { useContext, useEffect, useRef } from "react";
 import { css } from "styled-components";
-import { SetRequired } from "type-fest";
 import { ExternalDataContext } from "../../../../Editor";
 import { useEditorContext } from "../../../../EditorContext";
 import { useApiClient } from "../../../../infrastructure/ApiClientProvider";
@@ -180,8 +178,7 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
     !value.id.startsWith("$.") &&
     externalDataId !== undefined &&
     resource !== undefined &&
-    "values" in resource &&
-    resource.values !== undefined;
+    isResolvedCompoundExternalDataValue(resource);
 
   return (
     // @ts-expect-error
@@ -225,7 +222,7 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
       {isCompoundResourceValueSelectVisible && (
         <CompoundResourceValueSelect
           options={getBasicResourcesOfType(
-            resource.values,
+            resource.value,
             schemaProp.resourceType
           ).map((r) => ({
             id: externalDataId,
@@ -307,13 +304,4 @@ export function CompoundResourceValueSelect(props: {
       })}
     </SSSelect>
   );
-}
-
-function isResolvedCompoundResource(
-  resource: ResolvedResource
-): resource is SetRequired<
-  ResolvedResource<NonNullable<FetchOutputCompoundResources[string]["values"]>>,
-  "value"
-> {
-  return resource.type === "object";
 }
