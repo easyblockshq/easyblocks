@@ -112,7 +112,7 @@ export function FieldMetaWrapper<
   const { schemaProp } = field;
   const isResource = isResourceSchemaProp(schemaProp);
   const configPath = fieldNames[0].split(".").slice(0, -1).join(".");
-  const fieldValue = dotNotationGet(form.values, fieldNames[0]);
+  const fieldValue = dotNotationGet(configAfterAuto, fieldNames[0]);
   const config = dotNotationGet(configAfterAuto, configPath);
 
   const externalDataValue =
