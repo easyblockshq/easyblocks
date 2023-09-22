@@ -38,14 +38,8 @@ import {
   LocalisedDocument,
   NonEmptyRenderableContent,
 } from "@easyblocks/core";
-import {
-  SSButtonPrimary,
-  SSColors,
-  SSFonts,
-  useToaster,
-} from "@easyblocks/design-system";
+import { SSColors, SSFonts, useToaster } from "@easyblocks/design-system";
 import { assertDefined } from "@easyblocks/utils";
-import { useSession } from "@supabase/auth-helpers-react";
 import React, {
   createContext,
   memo,
@@ -75,7 +69,6 @@ import {
 } from "./infrastructure/ApiClientProvider";
 import { createApiClient } from "./infrastructure/createApiClient";
 import { ProjectsApiService } from "./infrastructure/projectsApiService";
-import { supabaseClient } from "./infrastructure/supabaseClient";
 import { ModalPicker } from "./ModalPicker";
 import { destinationResolver } from "./paste/destinationResolver";
 import { pasteManager } from "./paste/manager";
@@ -191,7 +184,6 @@ type EditorContainerProps = {
 function EditorContainer(props: EditorContainerProps) {
   const [enabled, setEnabled] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
-  const session = useSession();
   const [project, setProject] = useState<
     EditorContextType["project"] | undefined
   >(undefined);
@@ -241,22 +233,7 @@ function EditorContainer(props: EditorContainerProps) {
   }
 
   if (error) {
-    return (
-      <AuthenticationScreen>
-        {error}
-        {session !== null && (
-          <div>
-            <SSButtonPrimary
-              onClick={() => {
-                supabaseClient.auth.signOut();
-              }}
-            >
-              Sign out
-            </SSButtonPrimary>
-          </div>
-        )}
-      </AuthenticationScreen>
-    );
+    return <AuthenticationScreen>{error}</AuthenticationScreen>;
   }
 
   return (
@@ -910,7 +887,7 @@ const EditorContent = ({
             <EditorTopBar
               onUndo={undo}
               onRedo={redo}
-              title={"Shopstory"}
+              title={"Easyblocks"}
               onClose={() => {
                 setDataSaverOverlayOpen(true);
                 saveNow().finally(() => {

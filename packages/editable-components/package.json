@@ -254,7 +254,6 @@
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@types/vimeo__player": "^2.18.0",
-    "css-unit-converter": "^1.1.1",
     "postcss-value-parser": "^3.3.0"
   }
 }

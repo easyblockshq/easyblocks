@@ -22,12 +22,9 @@ export interface SSProductPickerAPI {
 }
 
 type ProductPickerProps = {
-  value:
-    | { id: string; variant?: string; info?: Record<string, unknown> }
-    | { id: null; variant?: string };
-  onChange: (product: { id: string | null; key?: string }) => void;
+  value: string | null;
+  onChange: (id: string | null) => void;
   api: SSProductPickerAPI;
-  clearable?: boolean;
 };
 
 function getProductFromId(
@@ -78,14 +75,13 @@ type ProductApiRequestState =
   | { status: "success"; data: Array<ProductType>; error: null }
   | { status: "error"; data: undefined; error: any };
 
-export const SSProductPicker: React.FC<ProductPickerProps> = ({
+export const ProductPicker: React.FC<ProductPickerProps> = ({
   value,
   onChange,
   api,
-  clearable = false,
 }) => {
   const [product, setProduct] = useState<ProductType | null>(
-    getProductFromCache(value.id)
+    getProductFromCache(value ?? null)
   );
   const [isOpen, setOpen] = useState(false);
   const [state, setState] = useState<ProductPickerState>("unknown");
@@ -96,18 +92,18 @@ export const SSProductPicker: React.FC<ProductPickerProps> = ({
   }
 
   useEffect(() => {
-    if (product?.id === value.id) {
+    if (product?.id === value) {
       return;
     }
 
-    if (!value.id) {
+    if (!value) {
       setProduct(null);
       return;
     }
 
     let isMounted = true;
 
-    getProductFromId(value.id, api).then(
+    getProductFromId(value, api).then(
       (product) => {
         if (!isMounted) {
           return;
@@ -148,7 +144,7 @@ export const SSProductPicker: React.FC<ProductPickerProps> = ({
       `}
     >
       {state === "error" && (
-        <ErrorMessage>Couldn't fetch data for id: {value.id}</ErrorMessage>
+        <ErrorMessage>Couldn't fetch data for id: {value}</ErrorMessage>
       )}
 
       <div
@@ -175,12 +171,12 @@ export const SSProductPicker: React.FC<ProductPickerProps> = ({
           }}
         />
 
-        {product && clearable && (
+        {product && (
           <SSButtonGhost
             icon={SSIcons.Remove}
             hideLabel
             onClick={() => {
-              onChange({ id: null, key: undefined });
+              onChange(null);
             }}
           >
             Clear
@@ -188,14 +184,13 @@ export const SSProductPicker: React.FC<ProductPickerProps> = ({
         )}
 
         <ItemPickerModal
-          key={value.variant}
           isOpen={isOpen}
           getItems={api.products}
           onClose={() => {
             setOpen(false);
           }}
           onItemPick={(item) => {
-            onChange({ id: item.id, key: undefined });
+            onChange(item.id);
           }}
         />
       </div>

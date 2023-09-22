@@ -8,6 +8,7 @@ import {
   LocalisedDocument,
   LocalizedText,
   Metadata,
+  WidgetComponentProps,
 } from "@easyblocks/core";
 import { EditorContextType } from "./EditorContext";
 
@@ -157,3 +158,8 @@ export type EditorWindowAPI = {
 };
 
 export type CMSInput = LocalisedDocument | LocalisedConfigs;
+
+export type InternalWidgetComponentProps = Omit<
+  WidgetComponentProps,
+  "onChange"
+> & { onChange: (id: string, key?: string) => void; resourceKey?: string };

@@ -8,7 +8,7 @@ export function responsiveValueFindHigherDeviceWithDefinedValue<T>(
   value: TrulyResponsiveValue<T>,
   breakpoint: string,
   devices: Devices,
-  widths: TrulyResponsiveValue<number>
+  widths?: TrulyResponsiveValue<number>
 ) {
   const componentWidths = widths
     ? getDeviceWidthPairs(widths, devices)
@@ -71,7 +71,7 @@ export function responsiveValueFindDeviceWithDefinedValue<T>(
   value: TrulyResponsiveValue<T>,
   breakpoint: string,
   devices: Devices,
-  widths: TrulyResponsiveValue<number>
+  widths?: TrulyResponsiveValue<number>
 ) {
   if (value[breakpoint] !== undefined) {
     return devices.find((x) => x.id === breakpoint);

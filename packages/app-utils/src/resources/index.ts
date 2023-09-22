@@ -4,6 +4,9 @@ import type {
   RejectedResource,
   ResolvedResource,
   FetchOutputCompoundResources,
+  UnresolvedResource,
+  UnresolvedResourceEmpty,
+  ExternalDataCompoundResourceResolvedResult,
 } from "@easyblocks/core";
 
 export type ResolvedResourceProp<ResourceValue = unknown> =
@@ -22,6 +25,16 @@ export function isCompoundExternalDataValue(
 
 export function isResolvedCompoundExternalDataValue(
   value: ExternalData[string]
-): value is Exclude<FetchOutputCompoundResources[string], { error: Error }> {
+): value is ExternalDataCompoundResourceResolvedResult {
   return "type" in value && value.type === "object" && "value" in value;
+}
+
+export function isIdReferenceToDocumentExternalData(id: string) {
+  return id.startsWith("$.");
+}
+
+export function isEmptyExternalDataConfigEntry(
+  externalDataConfigEntry: UnresolvedResource
+): externalDataConfigEntry is UnresolvedResourceEmpty {
+  return externalDataConfigEntry.id === null;
 }

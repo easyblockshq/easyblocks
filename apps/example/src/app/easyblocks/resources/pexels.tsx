@@ -4,8 +4,8 @@ import type {
   ImageSrc,
   VideoSrc,
   Widget,
-  WidgetComponent,
 } from "@easyblocks/core";
+import { ItemPicker } from "@easyblocks/editor";
 
 const pexelsApiKey = "us4Cvb33zDTkpH0RqYmuSgzyx0Nnc4qwDkIMkDMOuCw5giL06WmSONgY";
 
@@ -19,82 +19,88 @@ const pexelsApiFetch: (path: `/${string}`) => Promise<Response> = async (
   });
 };
 
-const pexelsImageWidgetComponent: WidgetComponent = {
-  type: "item-picker",
-  async getItemById(id) {
-    const response = await pexelsApiFetch(`/v1/photos/${id}`);
-
-    const photo = await response.json();
-
-    return {
-      id: photo.id.toString(),
-      title: photo.id.toString(),
-      thumbnail: photo.src.small,
-    };
-  },
-  async getItems(query) {
-    const response = await pexelsApiFetch(
-      query
-        ? `/v1/search?query=${query}`
-        : // Pexels API returns 400 if no query is provided, so let's use curated images instead in that case
-          "/v1/curated"
-    );
-
-    const data = await response.json();
-
-    return data.photos.map((photo: any) => {
-      return {
-        id: photo.id.toString(),
-        title: photo.id.toString(),
-        thumbnail: photo.src.small,
-      };
-    });
-  },
-};
-
-const pexelsVideoWidgetComponent: WidgetComponent = {
-  type: "item-picker",
-  async getItemById(id) {
-    const response = await pexelsApiFetch(`/videos/videos/${id}`);
-
-    const video = await response.json();
-
-    return {
-      id: video.id.toString(),
-      title: video.id.toString(),
-      thumbnail: video.image,
-    };
-  },
-  async getItems(query) {
-    const response = await pexelsApiFetch(
-      query
-        ? `/videos/search?query=${query}`
-        : // Pexels API returns 400 if no query is provided, so let's use popular videos instead in that case
-          "/videos/popular"
-    );
-
-    const data = await response.json();
-
-    return data.videos.map((video: any) => {
-      return {
-        id: video.id.toString(),
-        title: video.id.toString(),
-        thumbnail: video.image,
-      };
-    });
-  },
-};
-
 const pexelsImageWidget: Widget = {
   id: "@pexels/photo",
   label: "Pexels",
-  component: pexelsImageWidgetComponent,
+  component: ({ id, onChange }) => {
+    return (
+      <ItemPicker
+        value={id}
+        onChange={onChange}
+        getItems={async (query) => {
+          const response = await pexelsApiFetch(
+            query
+              ? `/v1/search?query=${query}`
+              : // Pexels API returns 400 if no query is provided, so let's use curated images instead in that case
+                "/v1/curated"
+          );
+
+          const data = await response.json();
+
+          return data.photos.map((photo: any) => {
+            return {
+              id: photo.id.toString(),
+              title: photo.id.toString(),
+              thumbnail: photo.src.small,
+            };
+          });
+        }}
+        getItemById={async (id) => {
+          const response = await pexelsApiFetch(`/v1/photos/${id}`);
+
+          const photo = await response.json();
+
+          return {
+            id: photo.id.toString(),
+            title: photo.id.toString(),
+            thumbnail: photo.src.small,
+          };
+        }}
+      />
+    );
+  },
 };
 
 const pexelsVideoWidget: Widget = {
   id: "@pexels/video",
   label: "Pexels",
-  component: pexelsVideoWidgetComponent,
+  component: ({ id, onChange }) => {
+    return (
+      <ItemPicker
+        value={id}
+        onChange={onChange}
+        getItems={async (query) => {
+          const response = await pexelsApiFetch(
+            query
+              ? `/videos/search?query=${query}`
+              : // Pexels API returns 400 if no query is provided, so let's use popular videos instead in that case
+                "/videos/popular"
+          );
+
+          const data = await response.json();
+
+          return data.videos.map((video: any) => {
+            return {
+              id: video.id.toString(),
+              title: video.id.toString(),
+              thumbnail: video.image,
+            };
+          });
+        }}
+        getItemById={async (id) => {
+          const response = await pexelsApiFetch(`/videos/videos/${id}`);
+
+          const video = await response.json();
+
+          return {
+            id: video.id.toString(),
+            title: video.id.toString(),
+            thumbnail: video.image,
+          };
+        }}
+      />
+    );
+  },
 };
 
 async function fetchPexelsResources(
