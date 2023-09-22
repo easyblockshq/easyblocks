@@ -6,39 +6,45 @@ import type {
   PickerItem,
   Widget,
 } from "@easyblocks/core";
+import { ItemPicker } from "@easyblocks/editor";
 import { MockProductsService } from "../../../data/MockData/MockProductsService";
 
 const productWidget: Widget = {
   id: "product",
-  component: {
-    type: "item-picker",
-    async getItemById(id) {
-      const item = await MockProductsService.getProductById(id);
-
-      if (!item) {
-        throw new Error("Unable to find product for id: " + id);
-      }
-
-      return {
-        id: item.id,
-        title: item.title,
-        thumbnail: item.image,
-      };
-    },
-    async getItems(query) {
-      const items = await MockProductsService.searchProducts(query);
-
-      return items.map<PickerItem>((item) => {
-        return {
-          id: item.id,
-          title: item.title,
-          thumbnail: item.image,
-        };
-      });
-    },
-    placeholder: "Pick a product",
-  },
   label: "E-commerce",
+  component: function ProductWidgetComponent({ id, onChange }) {
+    return (
+      <ItemPicker
+        value={id}
+        onChange={onChange}
+        getItems={async (query) => {
+          const items = await MockProductsService.searchProducts(query);
+
+          return items.map<PickerItem>((item) => {
+            return {
+              id: item.id,
+              title: item.title,
+              thumbnail: item.image,
+            };
+          });
+        }}
+        getItemById={async (id) => {
+          const item = await MockProductsService.getProductById(id);
+
+          if (!item) {
+            throw new Error("Unable to find product for id: " + id);
+          }
+
+          return {
+            id: item.id,
+            title: item.title,
+            thumbnail: item.image,
+          };
+        }}
+        placeholder="Pick a product"
+      />
+    );
+  },
 };
 
 async function fetchProductResources(

@@ -7,7 +7,6 @@ import {
   SSIcons,
   SSSelect,
 } from "@easyblocks/design-system";
-import { useUser } from "@supabase/auth-helpers-react";
 import React, { useRef } from "react";
 import styled from "styled-components";
 import { useOnClickNTimes } from "./useOnClickNTimes";
@@ -93,8 +92,6 @@ export const EditorTopBar: React.FC<{
     onAdminModeChange(true);
   });
 
-  const user = useUser();
-
   return (
     <TopBar>
       <TopBarLeft>
@@ -135,16 +132,6 @@ export const EditorTopBar: React.FC<{
       <Heading ref={headingRef}>
         {title}
         {isPlayground && " (Playground Mode)"}
-        {!isPlayground && user !== null && (
-          <span
-            css={`
-              color: ${SSColors.black40};
-            `}
-          >
-            {" "}
-            ({user.email})
-          </span>
-        )}
       </Heading>
 
       <TopBarRight>

@@ -136,9 +136,6 @@ importers:
       '@easyblocks/design-system':
         specifier: workspace:*
         version: link:../../packages/design-system
-      '@easyblocks/editor':
-        specifier: workspace:*
-        version: link:../../packages/editor
       '@easyblocks/utils':
         specifier: workspace:*
         version: link:../../packages/utils
@@ -212,18 +209,15 @@ importers:
       '@easyblocks/editable-components':
         specifier: workspace:*
         version: link:../../packages/editable-components
+      '@easyblocks/editor':
+        specifier: workspace:*
+        version: link:../../packages/editor
       '@easyblocks/media':
         specifier: workspace:*
         version: link:../../packages/media
-      '@easyblocks/next-editable-components':
-        specifier: link:../../packages/next-editable-components
-        version: link:../../packages/next-editable-components
       '@easyblocks/react':
         specifier: workspace:*
         version: link:../../packages/react
-      '@easyblocks/shopify':
-        specifier: workspace:*
-        version: link:../../packages/shopify
       '@radix-ui/react-dialog':
         specifier: ^1.0.4
         version: 1.0.4(@types/react-dom@18.2.7)(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
@@ -239,18 +233,12 @@ importers:
       autoprefixer:
         specifier: 10.4.14
         version: 10.4.14(postcss@8.4.26)
-      date-fns:
-        specifier: ^2.30.0
-        version: 2.30.0
       eslint:
         specifier: 8.45.0
         version: 8.45.0
       eslint-config-next:
         specifier: 13.4.10
         version: 13.4.10(eslint@8.45.0)(typescript@5.1.6)
-      graphql-request:
-        specifier: ^3.4.0
-        version: 3.7.0(graphql@16.6.0)
       next:
         specifier: 13.4.12
         version: 13.4.12(@babel/core@7.21.3)(react-dom@18.2.0)(react@18.2.0)
@@ -378,9 +366,6 @@ importers:
       '@easyblocks/build-tools':
         specifier: ^1.5.2
         version: link:../build-tools
-      '@easyblocks/media':
-        specifier: workspace:*
-        version: link:../media
       '@easyblocks/test-utils':
         specifier: ^1.5.2
         version: link:../test-utils
@@ -624,51 +609,33 @@ importers:
       '@types/vimeo__player':
         specifier: ^2.18.0
         version: 2.18.0
-      css-unit-converter:
-        specifier: ^1.1.1
-        version: 1.1.2
       postcss-value-parser:
         specifier: ^3.3.0
         version: 3.3.1
 
   packages/editor:
     dependencies:
-      '@easyblocks/app-utils':
-        specifier: ^1.5.2
-        version: link:../app-utils
-      '@easyblocks/compiler':
-        specifier: ^1.5.2
-        version: link:../compiler
+      '@babel/runtime':
+        specifier: ^7.21.0
+        version: 7.21.0
       '@easyblocks/core':
         specifier: workspace:*
         version: link:../core
-      '@easyblocks/design-system':
-        specifier: link:../design-system
-        version: link:../design-system
       '@easyblocks/editable-components':
         specifier: ^1.5.2
         version: link:../editable-components
-      '@easyblocks/media':
-        specifier: workspace:*
-        version: link:../media
-      '@easyblocks/utils':
-        specifier: link:../utils
-        version: link:../utils
       '@emotion/is-prop-valid':
         specifier: ^1.2.1
         version: 1.2.1
       '@popperjs/core':
         specifier: ^2.11.5
         version: 2.11.6
+      '@radix-ui/react-dropdown-menu':
+        specifier: ^2.0.5
+        version: 2.0.5(@types/react-dom@18.2.7)(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
       '@react-aria/tooltip':
         specifier: ^3.1.8
         version: 3.4.0(react@18.2.0)
-      '@supabase/auth-helpers-react':
-        specifier: ^0.3.1
-        version: 0.3.1(@supabase/supabase-js@2.20.0)
-      '@supabase/supabase-js':
-        specifier: ^2.20.0
-        version: 2.20.0
       '@tanstack/react-query':
         specifier: ^4.29.12
         version: 4.29.12(react-dom@18.2.0)(react@18.2.0)
@@ -690,6 +657,9 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      postcss-value-parser:
+        specifier: ^3.3.0
+        version: 3.3.1
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -714,6 +684,9 @@ importers:
       react-final-form:
         specifier: ^6.5.7
         version: 6.5.9(final-form@4.20.9)(react@18.2.0)
+      react-hot-toast:
+        specifier: ^2.4.0
+        version: 2.4.0(csstype@3.1.2)(react-dom@18.2.0)(react@18.2.0)
       react-modal:
         specifier: ^3.12.1
         version: 3.16.1(react-dom@18.2.0)(react@18.2.0)
@@ -730,12 +703,27 @@ importers:
         specifier: ^3.11.1
         version: 3.11.1
     devDependencies:
+      '@easyblocks/app-utils':
+        specifier: ^1.5.2
+        version: link:../app-utils
       '@easyblocks/build-tools':
         specifier: ^1.5.2
         version: link:../build-tools
+      '@easyblocks/compiler':
+        specifier: ^1.5.2
+        version: link:../compiler
+      '@easyblocks/design-system':
+        specifier: workspace:*
+        version: link:../design-system
+      '@easyblocks/reduce-css-calc':
+        specifier: workspace:*
+        version: link:../reduce-css-calc
       '@easyblocks/test-utils':
         specifier: ^1.5.2
         version: link:../test-utils
+      '@easyblocks/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@jest/types':
         specifier: ^26.6.2
         version: 26.6.2
@@ -751,9 +739,6 @@ importers:
       '@types/color-string':
         specifier: ^1.5.0
         version: 1.5.2
-      '@types/crypto-js':
-        specifier: ^4.1.1
-        version: 4.1.1
       '@types/express':
         specifier: ^4.17.15
         version: 4.17.17
@@ -778,21 +763,9 @@ importers:
       '@types/react-modal':
         specifier: ^3.13.1
         version: 3.13.1
-      babel-loader:
-        specifier: ^9.1.2
-        version: 9.1.2(@babel/core@7.21.8)(webpack@5.76.3)
       babel-plugin-styled-components:
         specifier: ^2.0.7
         version: 2.0.7(styled-components@6.0.7)
-      copy-webpack-plugin:
-        specifier: ^11.0.0
-        version: 11.0.0(webpack@5.76.3)
-      fork-ts-checker-webpack-plugin:
-        specifier: ^7.3.0
-        version: 7.3.0(typescript@4.8.4)(webpack@5.76.3)
-      webpack:
-        specifier: ^5.75.0
-        version: 5.76.3
 
   packages/media:
     dependencies:
@@ -802,6 +775,9 @@ importers:
       '@easyblocks/core':
         specifier: ^1.5.2
         version: link:../core
+      '@easyblocks/editor':
+        specifier: workspace:*
+        version: link:../editor
       '@radix-ui/react-dropdown-menu':
         specifier: ^2.0.5
         version: 2.0.5(@types/react-dom@18.2.7)(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
@@ -870,6 +846,9 @@ importers:
       '@easyblocks/core':
         specifier: workspace:*
         version: link:../core
+      '@easyblocks/editor':
+        specifier: workspace:*
+        version: link:../editor
       '@stitches/core':
         specifier: ^1.2.5
         version: 1.2.8
@@ -892,9 +871,6 @@ importers:
       '@easyblocks/design-system':
         specifier: workspace:*
         version: link:../design-system
-      '@easyblocks/editor':
-        specifier: workspace:*
-        version: link:../editor
       '@easyblocks/utils':
         specifier: workspace:*
         version: link:../utils
@@ -919,9 +895,6 @@ importers:
 
   packages/reduce-css-calc:
     dependencies:
-      css-unit-converter:
-        specifier: ^1.1.1
-        version: 1.1.2
       postcss-value-parser:
         specifier: ^3.3.0
         version: 3.3.1
@@ -3398,6 +3371,7 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.13.11
+    dev: false
 
   /@babel/runtime@7.21.5:
     resolution: {integrity: sha512-8jI69toZqqcsnqGGqwGS4Qb1VwLOEp4hz+CXPywcvjs60u3B4Pom/U/7rm4W8tMOYEB+E9wgD0mW1l3r8qlI9Q==}
@@ -6609,14 +6583,6 @@ packages:
       set-cookie-parser: 2.6.0
     dev: false
 
-  /@supabase/auth-helpers-react@0.3.1(@supabase/supabase-js@2.20.0):
-    resolution: {integrity: sha512-g3SFv08Dz9FapNif/ZY1b7qKGlMJDyTLSayHBz3kb3FuYxg7aLWgQtydDhm5AGbc0XtvpIBuhGTIOVevwpdosA==}
-    peerDependencies:
-      '@supabase/supabase-js': ^2.0.4
-    dependencies:
-      '@supabase/supabase-js': 2.20.0
-    dev: false
-
   /@supabase/auth-helpers-shared@0.4.1(@supabase/supabase-js@2.32.0):
     resolution: {integrity: sha512-IEDX9JzWkIjQiLUaP4Qy5YDiG0jFQatWfS+jw8cCQs6QfbNdEPd2Y3qonwGHnM90CZom9SvjuylBv2pFVAL7Lw==}
     peerDependencies:
@@ -6634,24 +6600,8 @@ packages:
       - encoding
     dev: false
 
-  /@supabase/gotrue-js@2.25.0:
-    resolution: {integrity: sha512-tZXArO0f1NKMQo6rtGryOSqS51WQJQMS3lEHIyH50WffQb/n1tiYY1L8yCyrvTogz9RXpihdQeUjVW77kKd7sQ==}
-    dependencies:
-      cross-fetch: 3.1.5
-    transitivePeerDependencies:
-      - encoding
-    dev: false
-
   /@supabase/gotrue-js@2.46.2:
     resolution: {integrity: sha512-tLyZZNEb3St6Dxe671seLCzYWZ2DftSWWjPEfqAwW6kNOAr+Aw2uEIW0H3gEJxSIST+E+ly9lUBm/rGlfDWKPA==}
-    dependencies:
-      cross-fetch: 3.1.5
-    transitivePeerDependencies:
-      - encoding
-    dev: false
-
-  /@supabase/postgrest-js@1.4.1:
-    resolution: {integrity: sha512-aruqwV/aTggkM7OVv2JinCeXmRMKHJCZpkuS1nuoa0NgLw7g3NyILSyWOKYTBJ/PxE/zXtWsBhdxFzaaNz5uxg==}
     dependencies:
       cross-fetch: 3.1.5
     transitivePeerDependencies:
@@ -6664,16 +6614,6 @@ packages:
       cross-fetch: 3.1.5
     transitivePeerDependencies:
       - encoding
-    dev: false
-
-  /@supabase/realtime-js@2.7.2:
-    resolution: {integrity: sha512-Fi6xAl5PUkqnjl3wo4rdcQIbMG3+yTRX1aUZe/yfvTG84RMvmCXJ1yN6MmafVLeZpU1xkaz5Vx4L0tnHcLiy6w==}
-    dependencies:
-      '@types/phoenix': 1.5.5
-      '@types/websocket': 1.0.5
-      websocket: 1.0.34
-    transitivePeerDependencies:
-      - supports-color
     dev: false
 
   /@supabase/realtime-js@2.7.3:
@@ -6692,20 +6632,6 @@ packages:
       cross-fetch: 3.1.5
     transitivePeerDependencies:
       - encoding
-    dev: false
-
-  /@supabase/supabase-js@2.20.0:
-    resolution: {integrity: sha512-6sNX4WEaVBbmOS1K2U3PcpAhp0FcjVo1FRSEoj4N+NZ6DIokX+yut8IBhF176pg5kFCdFIL2wyNhf3SltREmWw==}
-    dependencies:
-      '@supabase/functions-js': 2.1.0
-      '@supabase/gotrue-js': 2.25.0
-      '@supabase/postgrest-js': 1.4.1
-      '@supabase/realtime-js': 2.7.2
-      '@supabase/storage-js': 2.5.1
-      cross-fetch: 3.1.5
-    transitivePeerDependencies:
-      - encoding
-      - supports-color
     dev: false
 
   /@supabase/supabase-js@2.32.0:
@@ -6815,7 +6741,7 @@ packages:
     engines: {node: '>=8', npm: '>=6', yarn: '>=1'}
     dependencies:
       '@adobe/css-tools': 4.2.0
-      '@babel/runtime': 7.21.0
+      '@babel/runtime': 7.21.5
       '@types/testing-library__jest-dom': 5.14.5
       aria-query: 5.1.3
       chalk: 3.0.0
@@ -9958,9 +9884,6 @@ packages:
       css-color-keywords: 1.0.0
       postcss-value-parser: 4.2.0
 
-  /css-unit-converter@1.1.2:
-    resolution: {integrity: sha512-IiJwMC8rdZE0+xiEZHeru6YoONC4rfPMqGm2W85jMIbkFvv5nFTwJVFHam2eFrN6txmoUYFAFXiv8ICVeTO0MA==}
-
   /css.escape@1.5.1:
     resolution: {integrity: sha512-YUifsXXuknHlUsmlgyY0PKzgPOr7/FjCePfHNt0jxm83wHZi44VDMQ7/fGNkjY3/jV1MC+1CmZbaHzugyeRtpg==}
     dev: true
@@ -10024,6 +9947,7 @@ packages:
     engines: {node: '>=0.11'}
     dependencies:
       '@babel/runtime': 7.21.5
+    dev: true
 
   /date-time@0.1.1:
     resolution: {integrity: sha512-p4psdkgdNA6x0600SKbfWiOomNb33ADBMRHf49GMhYVgJsPefZlMSLXXVWWUpbqSxB3DL5/cxKa6a8i3XPK5Xg==}

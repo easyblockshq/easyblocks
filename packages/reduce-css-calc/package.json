@@ -33,7 +33,6 @@
     "process-nextick-args": "^2.0.1"
   },
   "dependencies": {
-    "css-unit-converter": "^1.1.1",
     "postcss-value-parser": "^3.3.0"
   },
   "eslintConfig": {

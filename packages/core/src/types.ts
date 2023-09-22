@@ -1,6 +1,5 @@
 import { ComponentType } from "react";
 import { PartialDeep } from "type-fest";
-import { IApiClient } from "./infrastructure/apiClient";
 import { Locale } from "./locales";
 
 type ScalarOrCollection<T> = T | Array<T>;
@@ -430,36 +429,15 @@ export type ExternalFieldItemPicker = {
   type: "item-picker";
 } & PickerAPI;
 
-export type ExternalFieldCustomComponentProps = {
-  root: HTMLElement;
-  value: UnresolvedResource;
-  onChange: (newValue: { id: null } | { id: string; key?: string }) => void;
-  apiClient: IApiClient;
-  projectId: string;
-  notify: {
-    error: (message: string) => void;
-  };
+export type WidgetComponentProps = {
+  id: string | null;
+  onChange: (newId: string | null) => void;
 };
-
-type CleanupFunction = () => void;
-
-export type ExternalFieldCustom = {
-  type: "custom";
-  component: (
-    props: ExternalFieldCustomComponentProps
-  ) => void | CleanupFunction;
-};
-
-export type ExternalFieldType = ExternalFieldItemPicker | ExternalFieldCustom;
-
-export type WidgetComponent =
-  | ExternalFieldType
-  | ((params: Record<string, any>) => ExternalFieldType);
 
 export type Widget = {
   id: string;
   label: string;
-  component: WidgetComponent;
+  component: ComponentType<WidgetComponentProps>;
 };
 
 export type ResourceDefinition = {
@@ -1053,15 +1031,19 @@ export type FetchCompoundResourceResultValues = Record<
   FetchCompoundResourceResultValue
 >;
 
+export type ExternalDataCompoundResourceResolvedResult = {
+  type: "object";
+  value: FetchCompoundResourceResultValues;
+};
+
+export type ExternalDataCompoundResourceRejectedResult = {
+  error: Error;
+};
+
 export type FetchOutputCompoundResources = Record<
   string,
-  | {
-      type: "object";
-      value: FetchCompoundResourceResultValues;
-    }
-  | {
-      error: Error;
-    }
+  | ExternalDataCompoundResourceResolvedResult
+  | ExternalDataCompoundResourceRejectedResult
 >;
 
 export type FetchOutputResources = Record<

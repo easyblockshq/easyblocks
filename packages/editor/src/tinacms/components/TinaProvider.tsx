@@ -6,7 +6,6 @@ import {
   ExternalFieldPlugin,
   FontTokenFieldPlugin,
   IdentityFieldPlugin,
-  ProductPickerFieldPlugin,
   ResponsiveFieldPlugin,
   SliderFieldPlugin,
   SVGPickerFieldPlugin,
@@ -28,7 +27,6 @@ export const INVALID_CMS_ERROR =
 function configureTinaCms() {
   const tinaCms = new TinaCMS({ enabled: true });
 
-  tinaCms.fields.add(ProductPickerFieldPlugin);
   tinaCms.fields.add(BlockFieldPlugin);
   tinaCms.fields.add(SliderFieldPlugin);
   tinaCms.fields.add(SVGPickerFieldPlugin);

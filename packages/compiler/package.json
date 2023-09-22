@@ -24,7 +24,6 @@
     "@jest/types": "^26.6.2",
     "@easyblocks/app-test-utils": "^1.5.2",
     "@easyblocks/build-tools": "^1.5.2",
-    "@easyblocks/media": "workspace:*",
     "@easyblocks/test-utils": "^1.5.2",
     "@types/crypto-js": "^4.1.1",
     "@types/jest": "^26.0.20",

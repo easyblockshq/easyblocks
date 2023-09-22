@@ -1,7 +1,10 @@
 import {
   InternalField,
+  isEmptyExternalDataConfigEntry,
+  isIdReferenceToDocumentExternalData,
   isResourceSchemaProp,
   isTrulyResponsiveValue,
+  responsiveValueFindDeviceWithDefinedValue,
   responsiveValueForceGet,
 } from "@easyblocks/app-utils";
 import { getResourceId } from "@easyblocks/core";
@@ -114,7 +117,6 @@ export function FieldMetaWrapper<
   const configPath = fieldNames[0].split(".").slice(0, -1).join(".");
   const fieldValue = dotNotationGet(configAfterAuto, fieldNames[0]);
   const config = dotNotationGet(configAfterAuto, configPath);
-
   const externalDataValue =
     isResource && schemaProp.type !== "text"
       ? externalData[
@@ -122,7 +124,11 @@ export function FieldMetaWrapper<
             focussedField.length === 0 ? "$" : config._id,
             schemaProp.prop,
             isTrulyResponsiveValue(input.value)
-              ? editorContext.breakpointIndex
+              ? responsiveValueFindDeviceWithDefinedValue(
+                  input.value,
+                  editorContext.breakpointIndex,
+                  editorContext.devices
+                )?.id
               : undefined
           )
         ]
@@ -140,8 +146,8 @@ export function FieldMetaWrapper<
   const isLoadingExternalData =
     isResource &&
     !externalDataValue &&
-    currentBreakpointFieldValue.id !== null &&
-    !currentBreakpointFieldValue.id.startsWith("$.");
+    !isEmptyExternalDataConfigEntry(currentBreakpointFieldValue) &&
+    !isIdReferenceToDocumentExternalData(currentBreakpointFieldValue.id);
 
   return (
     <FieldWrapper margin={false} layout={layout}>
