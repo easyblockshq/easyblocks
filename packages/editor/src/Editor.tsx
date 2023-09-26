@@ -887,7 +887,6 @@ const EditorContent = ({
             <EditorTopBar
               onUndo={undo}
               onRedo={redo}
-              title={"Easyblocks"}
               onClose={() => {
                 setDataSaverOverlayOpen(true);
                 saveNow().finally(() => {
@@ -919,7 +918,6 @@ const EditorContent = ({
               onAdminModeChange={(val) => {
                 setAdminMode(val);
               }}
-              isPlayground={editorContext.isPlayground}
             />
             <SidebarAndContentContainer height={appHeight}>
               <ContentContainer

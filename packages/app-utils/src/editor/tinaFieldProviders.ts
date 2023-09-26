@@ -11,6 +11,7 @@ import {
   FontSchemaProp,
   IconSchemaProp,
   NumberSchemaProp,
+  PositionSchemaProp,
   RadioGroup$SchemaProp,
   RadioGroupSchemaProp,
   ResponsiveValue,
@@ -126,6 +127,7 @@ export type TinaFieldProviders = {
   "component-fixed": FieldProvider<ComponentFixedSchemaProp>;
   component$$$: FieldProvider<ComponentFixedSchemaProp>;
   resource: FieldProvider<CustomResourceSchemaProp, UnresolvedResource>;
+  position: FieldProvider<PositionSchemaProp>;
 };
 
 const tinaFieldProviders: TinaFieldProviders = {
@@ -375,6 +377,13 @@ const tinaFieldProviders: TinaFieldProviders = {
       ...getCommonFieldProps(schemaProp),
       component: "external",
       externalField: fieldWidget.component,
+    };
+  },
+  position: (schemaProp) => {
+    return {
+      ...getCommonFieldProps(schemaProp),
+      component: "responsive2",
+      subComponent: "position",
     };
   },
 };

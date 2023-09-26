@@ -1,6 +1,5 @@
 import { InternalField } from "@easyblocks/app-utils";
-import { SSSelect } from "@easyblocks/design-system";
-import { toArray } from "@easyblocks/utils";
+import { Select, SelectItem, SelectSeparator } from "@easyblocks/design-system";
 import React from "react";
 import { FieldMixedValue } from "../../../types";
 import { FieldRenderProps } from "../../form-builder";
@@ -18,10 +17,9 @@ type Option =
 
 interface SelectFieldProps extends InternalField {
   options: (Option | string)[];
-  icon?: any;
-  nullLabel?: string;
 }
-export interface SelectProps
+
+export interface SelectFieldComponentProps
   extends FieldRenderProps<string | FieldMixedValue> {
   name: Array<string> | string;
   field: SelectFieldProps;
@@ -29,14 +27,16 @@ export interface SelectProps
   options?: (Option | string)[];
 }
 
-const NULL_VALUE = "__NULL__";
-
-export const Select: React.FC<SelectProps> = ({ input, field, options }) => {
+export const SelectFieldComponent: React.FC<SelectFieldComponentProps> = ({
+  input,
+  field,
+  options,
+}) => {
   const { value, onChange } = input;
   const isMixedValue = isMixedFieldValue(value);
 
   const selectOptions = options || field.options;
-  let normalizedSelectOptions = selectOptions.map(toProps);
+  const normalizedSelectOptions = selectOptions.map(toProps);
 
   if (isMixedValue) {
     normalizedSelectOptions.unshift(
@@ -50,45 +50,16 @@ export const Select: React.FC<SelectProps> = ({ input, field, options }) => {
     );
   }
 
-  let inputValue = isMixedValue ? MIXED_VALUE : value;
+  const inputValue = isMixedValue ? MIXED_VALUE : value;
 
-  if (field.nullLabel) {
-    normalizedSelectOptions = [
-      {
-        value: NULL_VALUE,
-        label: field.nullLabel,
-      },
-      ...normalizedSelectOptions,
-    ];
-    inputValue = inputValue || NULL_VALUE;
-  }
-
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    event.stopPropagation();
-    const value = event.target.value;
-
-    if (value === NULL_VALUE) {
-      onChange(null);
-    } else {
-      onChange(event);
-    }
+  const handleChange = (value: string) => {
+    onChange(value);
   };
 
   return (
-    <SSSelect
-      {...input}
-      id={toArray(field.name).join(",")}
-      value={inputValue}
-      icon={field.icon}
-      onChange={handleChange}
-      controlSize="full-width"
-    >
-      {normalizedSelectOptions ? (
-        normalizedSelectOptions.map(toComponent)
-      ) : (
-        <option>{inputValue}</option>
-      )}
-    </SSSelect>
+    <Select value={inputValue} onChange={handleChange}>
+      {normalizedSelectOptions.map(toComponent)}
+    </Select>
   );
 };
 
@@ -99,20 +70,16 @@ function toProps(option: Option | string): Option {
 
 function toComponent(option: Option) {
   if ("isDivider" in option) {
-    return (
-      <option disabled key="divider" aria-hidden="true">
-        ----------
-      </option>
-    );
+    return <SelectSeparator key="divider" />;
   }
 
   return (
-    <option
+    <SelectItem
       key={option.value}
       value={option.value}
-      disabled={option.value === MIXED_VALUE}
+      isDisabled={option.value === MIXED_VALUE}
     >
       {option.label}
-    </option>
+    </SelectItem>
   );
 }

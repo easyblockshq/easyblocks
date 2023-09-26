@@ -2,7 +2,7 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "dev": "lerna run --stream dev --scope '@easyblocks/core' --scope '@easyblocks/editable-components' --scope '@easyblocks/compiler' --scope 'app' --scope '@easyblocks/react' --scope '@easyblocks/media' --scope '@easyblocks/editor'",
+    "dev": "lerna run --stream dev --scope '@easyblocks/core' --scope '@easyblocks/compiler' --scope 'app' --scope '@easyblocks/editor'",
     "nuke": "./scripts/nuke.sh",
     "clean": "./scripts/clean.sh",
     "build": "nx run-many --target build",

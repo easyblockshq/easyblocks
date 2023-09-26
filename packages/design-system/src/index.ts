@@ -30,3 +30,5 @@ export {
   MenuSeparator,
 } from "./Menu";
 export { Loader } from "./Loader";
+export { Select, SelectItem, SelectSeparator } from "./Select/Select";
+export { ToggleGroup, ToggleGroupItem } from "./ToggleGroup/ToggleGroup";

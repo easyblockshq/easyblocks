@@ -280,6 +280,17 @@ export type ResourceSchemaProp =
   | TextResourceSchemaProp
   | CustomResourceSchemaProp;
 
+export type PositionVertical = "top" | "center" | "bottom";
+
+export type PositionHorizontal = "left" | "center" | "right";
+
+export type Position = `${PositionVertical}-${PositionHorizontal}`;
+
+export type PositionSchemaProp = SchemaPropShared<
+  "position",
+  ResponsiveValue<Position>
+>;
+
 export type SchemaProp =
   | StringSchemaProp
   | String$SchemaProp
@@ -300,7 +311,8 @@ export type SchemaProp =
   | ComponentSchemaProp
   | ComponentCollectionSchemaProp
   | ComponentCollectionLocalisedSchemaProp
-  | ComponentFixedSchemaProp;
+  | ComponentFixedSchemaProp
+  | PositionSchemaProp;
 
 type CustomComponentShared = {
   id: string;
@@ -645,7 +657,7 @@ export type SerializableResource =
   | Omit<RejectedResource, "values">;
 
 export type DeviceRange = {
-  id: string;
+  id: DeviceId;
   w: number;
   h: number;
   breakpoint: number | null;
@@ -653,6 +665,8 @@ export type DeviceRange = {
   label?: string;
   isMain?: boolean;
 };
+
+export type DeviceId = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
 export type Devices = DeviceRange[];
 
