@@ -48,7 +48,7 @@ const envs = {
   ...process.env,
   NODE_ENV,
   ...parsed,
-  SHOPSTORY_API_URL: process.env.SHOPSTORY_API_URL ?? "http://localhost:3100",
+  EASYBLOCKS_API_URL: process.env.EASYBLOCKS_API_URL ?? "http://localhost:3100",
   VERCEL: process.env.VERCEL ?? 0,
 };
 
