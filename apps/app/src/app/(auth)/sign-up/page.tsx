@@ -472,3 +472,5 @@ function GoogleSignInButton(props: {
     </Button>
   );
 }
+
+export const dynamic = "force-dynamic";
