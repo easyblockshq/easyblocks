@@ -6607,7 +6607,7 @@ packages:
       '@react-aria/interactions': 3.14.0(react@18.2.0)
       '@react-aria/utils': 3.15.0(react@18.2.0)
       '@react-stately/tooltip': 3.3.0(react@18.2.0)
-      '@react-types/shared': 3.17.0(react@18.2.0)
+      '@react-types/shared': 3.18.1(react@18.2.0)
       '@react-types/tooltip': 3.3.0(react@18.2.0)
       '@swc/helpers': 0.4.14
       react: 18.2.0
@@ -6677,14 +6677,6 @@ packages:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
       '@react-types/shared': 3.18.1(react@18.2.0)
-      react: 18.2.0
-    dev: false
-
-  /@react-types/shared@3.17.0(react@18.2.0):
-    resolution: {integrity: sha512-1SNZ/RhVrrQ1e6yE0bPV7d5Sfp+Uv0dfUEhwF9MAu2v5msu7AMewnsiojKNA0QA6Ing1gpDLjHCxtayQfuxqcg==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
-    dependencies:
       react: 18.2.0
     dev: false
 
