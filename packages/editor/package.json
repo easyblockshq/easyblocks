@@ -32,6 +32,7 @@
     "@easyblocks/design-system": "workspace:*",
     "@emotion/is-prop-valid": "^1.2.1",
     "@popperjs/core": "^2.11.5",
+    "@radix-ui/react-radio-group": "^1.1.3",
     "@radix-ui/react-icons": "^1.3.0",
     "@react-aria/tooltip": "^3.1.8",
     "@tanstack/react-query": "^4.29.12",
