@@ -197,7 +197,7 @@ const richTextEditableComponent: InternalRenderableComponentDefinition<"$richTex
         group: "Text",
       },
     ],
-    tags: ["item", "notrace"],
+    type: "item",
     styles: richTextStyles,
     editing,
   };

@@ -652,7 +652,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
 
     {
       id: "$separator",
-      tags: ["item", "notrace"],
+      type: "item",
       label: "Separator",
       styles: $separatorStyles,
       schema: [
@@ -703,7 +703,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
 
     {
       id: "$BannerSection",
-      tags: ["section", "notrace"],
+      type: "section",
       label: "Banner",
       styles: $sectionWrapperStyles,
       editing: sectionWrapperEditing,
@@ -719,7 +719,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
     },
     {
       id: "$BannerSection2",
-      tags: ["section", "notrace"],
+      type: "section",
       label: "Banner",
       styles: $sectionWrapperStyles,
       editing: sectionWrapperEditing,
@@ -735,7 +735,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
     },
     {
       id: "$Grid",
-      tags: ["section", "notrace"],
+      type: "section",
       label: "Grid / Slider",
       icon: "grid_3x3",
       styles: $sectionWrapperStyles,
@@ -753,7 +753,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
     },
     {
       id: "$TwoCards",
-      tags: ["section", "notrace"],
+      type: "section",
       label: "Two Cards",
       styles: $sectionWrapperStyles,
       editing: sectionWrapperEditing,
@@ -770,7 +770,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
     {
       id: "$GridCard",
       pasteSlots: ["Cards"],
-      tags: ["card"],
+      type: "card",
       styles: grid2Styles,
       auto: gridAuto,
       editing: ({ values, editingInfo }) => {
@@ -1108,105 +1108,8 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
       ],
     },
     {
-      id: "$TokenSection",
-      tags: ["token", "notrace"],
-      styles: tokenStyles,
-      schema: [
-        ...tokenFields("100%"),
-        {
-          prop: "Component",
-          type: "component",
-          componentTypes: ["section"],
-        },
-      ],
-    },
-    {
-      id: "$TokenCard",
-      tags: ["token", "notrace"],
-      styles: tokenStyles,
-      schema: [
-        ...tokenFields("600px"),
-        {
-          prop: "Component",
-          type: "component",
-          componentTypes: ["card"],
-        },
-      ],
-    },
-    {
-      id: "$TokenButton",
-      tags: ["token"],
-      styles: tokenStyles,
-      schema: [
-        ...tokenFields("auto"),
-        {
-          prop: "Component",
-          type: "component",
-          componentTypes: ["button"],
-        },
-      ],
-    },
-    {
-      id: "$TokenColor",
-      tags: ["token", "notrace"],
-      styles: tokenColorStyles,
-      schema: [
-        {
-          prop: "name",
-          type: "text",
-        },
-        {
-          prop: "color",
-          label: "Color hex (#xxxxxx)",
-          type: "text",
-          defaultValue: "#ffffff",
-        },
-      ],
-    },
-
-    {
-      id: "$TokenFont",
-      tags: ["token", "notrace"],
-      styles: tokenFontStyles,
-      schema: [
-        {
-          prop: "name",
-          type: "text",
-        },
-        {
-          prop: "exampleTextLength",
-          type: "radio-group",
-          options: ["short", "medium", "long"],
-        },
-        {
-          prop: "family",
-          type: "text",
-          defaultValue: "sans-serif",
-        },
-        {
-          prop: "weight",
-          type: "text",
-          defaultValue: "500",
-        },
-        {
-          prop: "size",
-          type: "space",
-        },
-        {
-          prop: "letterSpacing",
-          type: "text",
-          defaultValue: "0",
-        },
-        {
-          prop: "isUppercase",
-          type: "boolean",
-        },
-      ],
-    },
-
-    {
       id: "$BannerCard",
-      tags: ["card"],
+      type: "card",
       pasteSlots: ["SideImage", "Stack"],
       styles: bannerCardStyles,
       auto: bannerCardAuto,
@@ -1229,7 +1132,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
     },
     {
       id: "$TwoCardsCard",
-      tags: ["card"],
+      type: "card",
       auto: twoCardsAuto,
       styles: twoCardsStyles,
       change: twoCardsChange,
@@ -1423,7 +1326,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
     },
     {
       id: "$IconButton",
-      tags: ["button"],
+      type: "button",
       styles: iconButtonStyles,
       editing: () => {
         return {
@@ -1493,7 +1396,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
     {
       id: "$IconButton2",
       label: "Basic Icon Button",
-      tags: ["button"],
+      type: "button",
       styles: iconButton2Styles,
       editing: () => {
         return {
@@ -1618,7 +1521,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
 
     {
       id: "$Placeholder",
-      tags: ["card", "notrace"],
+      type: "card",
       styles: placeholderStyles,
       schema: [],
     },
@@ -1626,7 +1529,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
     {
       id: "$StandardButton",
       label: "Basic Button",
-      tags: ["button"],
+      type: "button",
       styles: standardButtonStyles,
       schema: [
         buttonActionSchemaProp,
@@ -1800,41 +1703,12 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         },
       ],
     },
-
-    // {
-    //   id: "$MissingComponent",
-    //   schema: [
-    //     {
-    //       prop: "error",
-    //       type: "string",
-    //       visible: false,
-    //     },
-    //   ],
-    //   tags: ["notrace"],
-    //   styles: () => ({}),
-    //   editing: () => ({
-    //     components: {},
-    //     fields: [],
-    //   }),
-    // },
-
-    // {
-    //   id: "$MissingAction",
-    //   schema: [],
-    //   tags: ["action", "notrace"],
-    //   styles: () => ({}),
-    //   editing: () => ({
-    //     components: {},
-    //     fields: [],
-    //   }),
-    // },
-
     playgroundComponentDefinition,
 
     {
       id: "$BannerCard2",
       label: "Banner Card",
-      tags: ["card"],
+      type: "card",
       pasteSlots: ["SideImage", "Stack"],
       styles: bannerCard2Styles,
       auto: bannerCard2Auto,
@@ -2144,11 +2018,10 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
           visible: false,
         },
       ],
-      tags: ["notrace"],
     },
     {
       id: "$MissingAction",
       schema: [],
-      tags: ["action", "notrace"],
+      type: "action",
     },
   ];

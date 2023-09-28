@@ -40,6 +40,7 @@ import {
   ResourceSchemaProp,
   ResponsiveValue,
   UnresolvedResource,
+  isNoCodeComponentOfType,
 } from "@easyblocks/core";
 import React, { Fragment, ReactElement } from "react";
 import Box from "../Box/Box";
@@ -387,7 +388,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
   })!;
 
   const isComponentCustom = !componentDefinition.id.startsWith("$");
-  const isButton = componentDefinition.tags.includes("button");
+  const isButton = isNoCodeComponentOfType(componentDefinition, "button");
 
   let component: any;
   if (isComponentCustom) {

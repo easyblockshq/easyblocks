@@ -15,7 +15,7 @@ import $textStyles from "./$text.styles";
 const textEditableComponent: InternalRenderableComponentDefinition<"$text"> = {
   id: "$text",
   styles: $textStyles,
-  tags: ["item", "notrace"],
+  type: "item",
   schema: [
     {
       prop: "value",

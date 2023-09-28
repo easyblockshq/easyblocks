@@ -53,6 +53,7 @@ import {
   SchemaProp,
   SerializedComponentDefinition,
   TrulyResponsiveValue,
+  isNoCodeComponentOfType,
 } from "@easyblocks/core";
 import {
   RichTextComponentConfig,
@@ -138,10 +139,7 @@ export function compileComponent(
 
   refMap = { ...refMap, ...(editableElement.$$$refs || {}) };
 
-  if (
-    componentDefinition.tags.length > 0 &&
-    componentDefinition.tags[0].startsWith("action")
-  ) {
+  if (isNoCodeComponentOfType(componentDefinition, "action")) {
     throw new Error("compileComponent can never be called for action");
   }
 
@@ -194,7 +192,7 @@ export function compileComponent(
   );
 
   const isCustomComponent = !editableElement._template.startsWith("$");
-  const isButton = componentDefinition.tags.includes("button");
+  const isButton = isNoCodeComponentOfType(componentDefinition, "button");
 
   const { $width, $widthAuto } = calculateWidths(
     compilationContext,
@@ -316,16 +314,16 @@ export function compileComponent(
     );
 
     // Let's compile tracing
-    if (
-      componentDefinition.schema.some(({ prop }) => isTracingSchemaProp(prop))
-    ) {
-      compiled.tracing = {
-        traceId,
-        traceClicks,
-        traceImpressions,
-        type: tracingType(componentDefinition.tags, contextProps.tracingType),
-      };
-    }
+    // if (
+    //   componentDefinition.schema.some(({ prop }) => isTracingSchemaProp(prop))
+    // ) {
+    //   compiled.tracing = {
+    //     traceId,
+    //     traceClicks,
+    //     traceImpressions,
+    //     type: tracingType(componentDefinition.tags, contextProps.tracingType),
+    //   };
+    // }
 
     componentDefinition.schema.forEach((schemaProp: SchemaProp) => {
       if (
@@ -416,7 +414,7 @@ export function compileComponent(
        * Actually maybe custom components should also have compilation phase?
        */
 
-      const isButton = componentDefinition.tags.includes("button");
+      const isButton = isNoCodeComponentOfType(componentDefinition, "button");
       if (isButton) {
         stylesOutput.symbol = {
           noInline: true,
@@ -901,7 +899,7 @@ function addComponentToSerializedComponentDefinitions(
     id: internalDefinition.id,
     label: internalDefinition.label,
     schema: internalDefinition.schema,
-    tags: internalDefinition.tags,
+    type: internalDefinition.type,
   };
 
   definitions.push(newDef);
@@ -1059,7 +1057,9 @@ function compileAction(
   addComponentToSerializedComponentDefinitions(
     editableElement,
     meta,
-    componentDefinition.tags.includes("actionLink") ? "links" : "actions",
+    isNoCodeComponentOfType(componentDefinition, "actionLink")
+      ? "links"
+      : "actions",
     compilationContext
   );
 
@@ -1105,12 +1105,11 @@ function calculateWidths(
   const $widthAuto: TrulyResponsiveValue<boolean> = { $res: true };
 
   compilationContext.devices.forEach((device) => {
-    $width[device.id] =
-      contextProps.$width?.[device.id] ??
-      (componentDefinition?.tags.includes("section") ||
-      componentDefinition?.tags.includes("root")
-        ? device.w
-        : -1);
+    $width[device.id] = contextProps.$width?.[device.id] ?? -1;
+    // (isNoCodeComponentOfType(componentDefinition, "section") ||
+    // componentDefinition?.tags.includes("root")
+    //   ? device.w
+    //   : -1);
 
     $widthAuto[device.id] =
       contextProps.$widthAuto?.[device.id] ??
@@ -1210,15 +1209,15 @@ function resolveLocalisedValue<T>(
   }
 }
 
-function tracingType(tags: string[], overwrite?: EventSourceType) {
-  if (overwrite) {
-    return overwrite;
-  }
-
-  const types: EventSourceType[] = ["section", "card", "button", "item"];
-
-  return types.find((t) => tags.includes(t)) ?? "item";
-}
+// function tracingType(tags: string[], overwrite?: EventSourceType) {
+//   if (overwrite) {
+//     return overwrite;
+//   }
+//
+//   const types: EventSourceType[] = ["section", "card", "button", "item"];
+//
+//   return types.find((t) => tags.includes(t)) ?? "item";
+// }
 
 function compileTextModifier(
   modifierValue: ConfigComponent,

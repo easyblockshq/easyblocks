@@ -16,7 +16,7 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
   {
     id: "$video",
     label: "Video",
-    tags: ["image", "item"],
+    type: ["image", "item"],
     styles: videoStyles,
     editing: ({ values, editingInfo }) => {
       let fields = [...editingInfo.fields];

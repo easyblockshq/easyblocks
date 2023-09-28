@@ -244,83 +244,86 @@ export function createCompilationContext(
     config.actions || []
   ).map((action) => ({
     ...action,
-    tags: ["action"],
+    type: "action",
   }));
 
-  const components: Array<InternalRenderableComponentDefinition> = [
-    ...(config.components || []).map((component) => {
-      if ("tags" in component) {
-        return component;
-      }
+  //
+  // const components: Array<InternalRenderableComponentDefinition> = [
+  //   ...(config.components || []).map((component) => {
+  //     if ("tags" in component) {
+  //       return component;
+  //     }
+  //
+  //     const customComponent: InternalRenderableComponentDefinition = {
+  //       id: component.id,
+  //       schema: component.schema,
+  //       tags: [component.type ?? "item"],
+  //       previewImage: component.previewImage,
+  //       label: component.label,
+  //     };
+  //
+  //     return customComponent;
+  //   }),
+  //   ...(config.buttons || []).map((component) => {
+  //     const customComponent = {
+  //       ...component,
+  //       tags: ["button"],
+  //     };
+  //
+  //     // Check if user didn't set label / symbol properties
+  //     const userDefinedLabel = component.schema.find(
+  //       (schemaProp) => schemaProp.prop === "label"
+  //     );
+  //     if (userDefinedLabel) {
+  //       throw new Error(
+  //         `Your custom component "${component.id}" have a prop named "label". You can't use it as it's a reserved prop.`
+  //       );
+  //     }
+  //     const userDefinedSymbol = component.schema.find(
+  //       (schemaProp) => schemaProp.prop === "symbol"
+  //     );
+  //     if (userDefinedSymbol) {
+  //       throw new Error(
+  //         `Your custom component "${component.id}" have a prop named "symbol". You can't use it as it's a reserved prop.`
+  //       );
+  //     }
+  //
+  //     const buttonSchemaProps: SchemaProp[] = [];
+  //
+  //     buttonSchemaProps.push(buttonActionSchemaProp);
+  //
+  //     const { label, symbol } = component.builtinProps || {};
+  //
+  //     if (label !== "off") {
+  //       buttonSchemaProps.push(buttonLabelSchemaProp);
+  //     } else {
+  //       buttonSchemaProps.push({ ...buttonLabelSchemaProp, visible: false });
+  //     }
+  //
+  //     if (symbol === "optional") {
+  //       buttonSchemaProps.push(buttonOptionalIconSchemaProp);
+  //     } else if (symbol === "on") {
+  //       buttonSchemaProps.push(buttonRequiredIconSchemaProp);
+  //     } else {
+  //       buttonSchemaProps.push({
+  //         ...buttonOptionalIconSchemaProp,
+  //         visible: false, // by default symbol is not visible
+  //       });
+  //     }
+  //
+  //     customComponent.schema = [
+  //       ...buttonSchemaProps,
+  //       ...customComponent.schema.map((x) => ({
+  //         ...x,
+  //         group: x.group || "Properties",
+  //       })),
+  //     ];
+  //
+  //     return customComponent;
+  //   }),
+  // ];
 
-      const customComponent: InternalRenderableComponentDefinition = {
-        id: component.id,
-        schema: component.schema,
-        tags: [component.type ?? "item"],
-        previewImage: component.previewImage,
-        label: component.label,
-      };
-
-      return customComponent;
-    }),
-    ...(config.buttons || []).map((component) => {
-      const customComponent = {
-        ...component,
-        tags: ["button"],
-      };
-
-      // Check if user didn't set label / symbol properties
-      const userDefinedLabel = component.schema.find(
-        (schemaProp) => schemaProp.prop === "label"
-      );
-      if (userDefinedLabel) {
-        throw new Error(
-          `Your custom component "${component.id}" have a prop named "label". You can't use it as it's a reserved prop.`
-        );
-      }
-      const userDefinedSymbol = component.schema.find(
-        (schemaProp) => schemaProp.prop === "symbol"
-      );
-      if (userDefinedSymbol) {
-        throw new Error(
-          `Your custom component "${component.id}" have a prop named "symbol". You can't use it as it's a reserved prop.`
-        );
-      }
-
-      const buttonSchemaProps: SchemaProp[] = [];
-
-      buttonSchemaProps.push(buttonActionSchemaProp);
-
-      const { label, symbol } = component.builtinProps || {};
-
-      if (label !== "off") {
-        buttonSchemaProps.push(buttonLabelSchemaProp);
-      } else {
-        buttonSchemaProps.push({ ...buttonLabelSchemaProp, visible: false });
-      }
-
-      if (symbol === "optional") {
-        buttonSchemaProps.push(buttonOptionalIconSchemaProp);
-      } else if (symbol === "on") {
-        buttonSchemaProps.push(buttonRequiredIconSchemaProp);
-      } else {
-        buttonSchemaProps.push({
-          ...buttonOptionalIconSchemaProp,
-          visible: false, // by default symbol is not visible
-        });
-      }
-
-      customComponent.schema = [
-        ...buttonSchemaProps,
-        ...customComponent.schema.map((x) => ({
-          ...x,
-          group: x.group || "Properties",
-        })),
-      ];
-
-      return customComponent;
-    }),
-  ];
+  const components = config.components ?? [];
 
   const activeRootContainer = rootContainers.find(
     (r) => r.id === rootContainer
@@ -360,14 +363,14 @@ export function createCompilationContext(
     StandardLink,
     ...(config.links || []).map((linkConfig) => ({
       ...linkConfig,
-      tags: ["actionLink"],
+      type: "actionLink",
     })),
   ];
 
   const textModifiers: Array<InternalTextModifierDefinition> = [
     {
       id: "$MissingTextModifier",
-      tags: ["actionTextModifier"],
+      type: "actionTextModifier",
       schema: [],
       apply: () => {
         return {};
@@ -377,11 +380,10 @@ export function createCompilationContext(
     ...(config.textModifiers ?? []).map((modifier) => {
       return {
         ...modifier,
-        tags: [
+        type:
           modifier.type === "text"
             ? "textModifier"
             : `${modifier.type}TextModifier`,
-        ],
       };
     }),
   ];

@@ -33,3 +33,4 @@ export function getResourceId(
 
 export { buildEntry } from "./buildEntry";
 export { buildDocument } from "./buildDocument";
+export { isNoCodeComponentOfType } from "./isNoCodeComponentOfType";

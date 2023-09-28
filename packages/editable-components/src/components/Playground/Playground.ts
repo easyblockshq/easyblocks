@@ -8,7 +8,6 @@ import playgroundStyles from "./Playground.styles";
 const playgroundComponentDefinition: InternalRenderableComponentDefinition<"$Playground"> =
   {
     id: "$Playground",
-    tags: ["notrace"],
     styles: playgroundStyles,
     schema: [
       {

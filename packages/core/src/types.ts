@@ -473,7 +473,7 @@ export type RootContainer = {
 type EditableComponentDefinition = {
   id: string;
   schema: Array<SchemaProp>;
-  tags: Array<string>;
+  type?: string | string[];
   label?: string;
   styles?: any;
   editing?: any;
@@ -494,7 +494,7 @@ export type Config = {
   boxShadows?: RuntimeConfigThemeValue<string>[];
   containerWidths?: RuntimeConfigThemeValue<number>[];
   buttons?: ButtonCustomComponent[];
-  components?: Array<EditableComponentDefinition | CustomComponent>;
+  components?: Array<EditableComponentDefinition>;
   actions?: CustomAction[];
   links?: CustomLink[];
   devices?: ConfigDevices;
@@ -702,7 +702,7 @@ type SidebarPreviewVariant = { description?: string } & (
 export type ComponentDefinitionShared<Identifier extends string = string> = {
   id: Identifier;
   label?: string;
-  tags: string[];
+  type?: string | string[];
   schema: SchemaProp[];
   change?: ComponentConfigChangeFunction;
   icon?: "link" | "grid_3x3";

@@ -4,7 +4,7 @@ const inlineCodeTextModifier: InternalTextModifierDefinition = {
   id: "$InlineCodeTextModifier",
   label: "Inline code",
   schema: [],
-  tags: ["textModifier"],
+  type: "textModifier",
   apply: ({ elements }) => {
     const fontSizes = elements.map((element: Record<string, any>) =>
       typeof element.font.fontSize === "number"

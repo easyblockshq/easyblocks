@@ -17,7 +17,7 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
   {
     id: "$image",
     label: "Image",
-    tags: ["image", "item"],
+    type: "item",
     styles: imageStyles,
     editing: ({ values, editingInfo }) => {
       let fields = [...editingInfo.fields];

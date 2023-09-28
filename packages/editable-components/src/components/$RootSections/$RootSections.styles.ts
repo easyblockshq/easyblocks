@@ -21,15 +21,17 @@ export const rootSectionStyles = (
     return box(itemWrapperStyles);
   });
 
+  const dataItemProps = config.data.map(() => {
+    return {
+      $width: t.$width,
+      $widthAuto: false,
+    };
+  });
+
   return {
     ItemWrappers,
     data: {
-      itemProps: config.data.map(() => {
-        return {
-          $width: t.$width,
-          $widthAuto: false,
-        };
-      }),
+      itemProps: dataItemProps,
     },
   };
 };

@@ -15,6 +15,7 @@ import {
   getDefaultLocale,
   Template,
   IApiClient,
+  isNoCodeComponentOfType,
 } from "@easyblocks/core";
 import {
   buildRichTextBlockElementComponentConfig,
@@ -26,21 +27,14 @@ import { EditorContextType } from "../EditorContext";
 import { controlButton } from "./builtinTemplates/controlButton";
 import { icon } from "./builtinTemplates/icon";
 import { standardButton } from "./builtinTemplates/standardButton";
-import { getBuiltInTemplates } from "./getBuiltinTemplates";
 import { getRemoteUserTemplates } from "./getRemoteUserTemplates";
 
 function getDefaultTemplateForDefinition(
   def: InternalComponentDefinition
 ): Template {
-  const type = getComponentMainType(def.tags);
-
   return {
     id: def.id,
-    previewImage:
-      def.previewImage ??
-      (type === "button"
-        ? "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_button.png"
-        : undefined),
+    previewImage: def.previewImage,
     config: {
       _template: def.id,
     },
@@ -75,7 +69,7 @@ function findTemplatesOfType(
       return false;
     }
 
-    return definition.tags.includes(type);
+    return isNoCodeComponentOfType(definition, type);
   });
 }
 
@@ -97,7 +91,7 @@ function getMyLibraryTemplates(
   definitions
     .filter(
       (component) =>
-        component.tags.includes(filterType) &&
+        isNoCodeComponentOfType(component, filterType) &&
         !component.id.startsWith("$") &&
         !(component as CustomComponent).hidden
     )
@@ -138,10 +132,6 @@ export async function getTemplates(
   apiClient: IApiClient,
   configTemplates: Template[] = []
 ) {
-  const remoteBuiltinTemplates = await getBuiltInTemplates(
-    !!editorContext.isMaster
-  );
-
   let remoteUserDefinedTemplates: Template[] = [];
 
   if (!editorContext.isPlayground && !editorContext.disableCustomTemplates) {
@@ -160,7 +150,6 @@ export async function getTemplates(
   return getTemplatesInternal(
     editorContext,
     configTemplates,
-    remoteBuiltinTemplates,
     remoteUserDefinedTemplates
   );
 }
@@ -168,7 +157,6 @@ export async function getTemplates(
 export function getTemplatesInternal(
   editorContext: EditorContextType,
   configTemplates: Template[],
-  remoteBuiltinTemplates: Template[],
   remoteUserDefinedTemplates: Template[]
 ): Record<string, AnyTemplate[]> {
   const allUserTemplates = [...remoteUserDefinedTemplates, ...configTemplates];
@@ -402,13 +390,6 @@ export function getTemplatesInternal(
   }
 
   allCards.push(...myLibraryCards);
-
-  allCards.push(
-    ...remoteBuiltinTemplates.filter((template) => {
-      const def = findComponentDefinition(template.config, editorContext);
-      return def?.tags.includes("card");
-    })
-  );
 
   if (editorContext.isMaster) {
     allCards.push({
@@ -688,12 +669,6 @@ export function getTemplatesInternal(
     "section"
   );
   templatesDict.section.push(...myLibrarySections);
-  templatesDict.section.push(
-    ...remoteBuiltinTemplates.filter((template) => {
-      const def = findComponentDefinition(template.config, editorContext);
-      return def?.tags.includes("section");
-    })
-  );
 
   // Raw
   if (editorContext.isMaster) {

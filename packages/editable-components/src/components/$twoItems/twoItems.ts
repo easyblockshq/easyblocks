@@ -5,7 +5,7 @@ import $twoItems from "./$twoItems.styles";
 const twoItemsComponentDefinition: InternalRenderableComponentDefinition<"$twoItems"> =
   {
     id: "$twoItems",
-    tags: ["item", "notrace"],
+    type: "item",
     label: "Left / Right layout",
     pasteSlots: ["Items"],
     styles: $twoItems,

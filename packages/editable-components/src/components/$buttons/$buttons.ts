@@ -4,7 +4,7 @@ import { buttonsStyles } from "./$buttons.styles";
 const buttonsComponentDefinition: InternalRenderableComponentDefinition<"$buttons"> =
   {
     id: "$buttons",
-    tags: ["item", "notrace"],
+    type: "item",
     pasteSlots: ["Buttons"],
     styles: buttonsStyles,
     editing: ({ values }) => {
