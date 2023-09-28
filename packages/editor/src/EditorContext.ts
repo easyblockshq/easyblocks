@@ -40,6 +40,7 @@ export type EditorContextType = BaseEditorContextType & {
     token: string;
   };
   isPlayground: boolean;
+  disableCustomTemplates: boolean;
 };
 
 export const EditorContext = React.createContext<EditorContextType | null>(

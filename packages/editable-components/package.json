@@ -246,7 +246,6 @@
     "@jest/types": "^26.6.2",
     "@easyblocks/app-utils": "^1.5.2",
     "@easyblocks/build-tools": "^1.5.2",
-    "@easyblocks/design-system": "link:../design-system",
     "@easyblocks/reduce-css-calc": "link:../reduce-css-calc",
     "@easyblocks/utils": "link:../utils",
     "@types/jest": "^26.0.20",

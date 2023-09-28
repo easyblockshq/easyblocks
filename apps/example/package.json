@@ -11,6 +11,7 @@
   "dependencies": {
     "@easyblocks/core": "workspace:*",
     "@easyblocks/editable-components": "workspace:*",
+    "@easyblocks/design-system": "workspace:*",
     "@easyblocks/media": "workspace:*",
     "@easyblocks/editor": "workspace:*",
     "@easyblocks/react": "workspace:*",

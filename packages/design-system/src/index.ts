@@ -12,7 +12,7 @@ export * from "./ToggleButton";
 export * from "./Toggle";
 export * from "./modals/Modal";
 export * from "./rows/BasicRow";
-export * from "./ProductPicker";
+export * from "./SimplePicker";
 export * from "./Slider";
 export * from "./ThumbnailButton";
 export * from "./FormElement";

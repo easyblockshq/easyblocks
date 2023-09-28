@@ -64,27 +64,32 @@ export function SidebarFooter(props: { paths: string[] }) {
     role !== "item" &&
     !role.startsWith("$"); /* rich text part, etc */
 
-  if (!isSaveable || editorContext.isPlayground) {
-    return null;
-  }
+  const showSaveAsTemplate =
+    isSaveable &&
+    !editorContext.isPlayground &&
+    !editorContext.disableCustomTemplates;
 
   return (
     <div>
       <IdWrapper>
         <div>Id: {value._id}</div>
         <br />
-        <SSButtonSecondary
-          onClick={() => {
-            editorContext.actions.openTemplateModal({
-              mode: "create",
-              config: value,
-              width,
-              widthAuto,
-            });
-          }}
-        >
-          Save as template
-        </SSButtonSecondary>
+
+        {showSaveAsTemplate && (
+          <SSButtonSecondary
+            onClick={() => {
+              editorContext.actions.openTemplateModal({
+                mode: "create",
+                config: value,
+                width,
+                widthAuto,
+              });
+            }}
+          >
+            Save as template
+          </SSButtonSecondary>
+        )}
+
         {(isMaster || isAdminMode) && (
           <div style={{ paddingTop: 16 }}>
             <div>

@@ -11,7 +11,6 @@
   "dependencies": {
     "@easyblocks/app-utils": "^1.5.2",
     "@easyblocks/core": "workspace:*",
-    "@easyblocks/design-system": "link:../design-system",
     "@easyblocks/editable-components": "^1.5.2",
     "@easyblocks/reduce-css-calc": "^1.5.2",
     "@easyblocks/utils": "link:../utils",

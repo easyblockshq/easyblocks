@@ -6,7 +6,7 @@ import type {
   PickerItem,
   Widget,
 } from "@easyblocks/core";
-import { ItemPicker } from "@easyblocks/editor";
+import { SimplePicker } from "@easyblocks/design-system";
 import { MockProductsService } from "../../../data/MockData/MockProductsService";
 
 const productWidget: Widget = {
@@ -14,7 +14,7 @@ const productWidget: Widget = {
   label: "E-commerce",
   component: function ProductWidgetComponent({ id, onChange }) {
     return (
-      <ItemPicker
+      <SimplePicker
         value={id}
         onChange={onChange}
         getItems={async (query) => {

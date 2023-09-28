@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "test-national-2";
+  src: url("fonts/test-national-2-regular.woff2") format("woff2");
+  font-display: block;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "test-national-2";
+  src: url("fonts/test-national-2-medium.woff2") format("woff2");
+  font-display: block;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "test-national-2";
+  src: url("fonts/test-national-2-bold.woff2") format("woff2");
+  font-display: block;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "test-soehne-mono";
+  src: url("fonts/test-soehne-mono-leicht.woff2") format("woff2");
+  font-display: block;
+}

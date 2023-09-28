@@ -503,6 +503,7 @@ export type Config = {
   strict?: boolean;
   locales?: Array<Locale>;
   rootContainers?: Record<string, RootContainer>;
+  disableCustomTemplates?: boolean;
 };
 
 export type PreviewMetadata =

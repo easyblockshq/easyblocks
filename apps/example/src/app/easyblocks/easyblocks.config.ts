@@ -58,7 +58,7 @@ export const easyblocksConfig: Config = {
   components: builtinEditableComponentsDefinitions,
   resourceTypes: {
     image: {
-      widgets: [easyblocksImageWidget, pexelsImageWidget, productWidget],
+      widgets: [easyblocksImageWidget, pexelsImageWidget],
     },
     video: {
       widgets: [easyblocksVideoWidget],

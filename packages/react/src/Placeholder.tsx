@@ -1,6 +1,4 @@
-// Import colors and fonts directly to avoid TSC to type-check whole design-system package
-import { SSColors } from "@easyblocks/design-system/src/colors";
-import { SSFonts } from "@easyblocks/design-system/src/fonts";
+import { SSColors, SSFonts } from "@easyblocks/design-system";
 import React, { FC } from "react";
 
 export type PlaceholderProps = {

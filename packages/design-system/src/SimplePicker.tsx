@@ -9,73 +9,41 @@ import styled, { css, keyframes } from "styled-components";
 import debounce from "lodash/debounce";
 import { ThumbnailButton } from "./ThumbnailButton";
 
-type ProductType = {
+export type SimplePickerItem = {
   id: string;
   title: string;
   thumbnail?: string;
 };
 
-export interface SSProductPickerAPI {
-  products: (query: string) => Promise<ProductType[]>;
-  product: (id: string) => Promise<ProductType>;
-  placeholder?: string;
-}
-
-type ProductPickerProps = {
+export type SimplePickerProps = {
   value: string | null;
   onChange: (id: string | null) => void;
-  api: SSProductPickerAPI;
+  getItems: (query: string) => Promise<Array<SimplePickerItem>>;
+  getItemById: (id: string) => Promise<SimplePickerItem>;
+  placeholder?: string;
 };
 
-function getProductFromId(
-  id: string,
-  api: SSProductPickerAPI
-): Promise<ProductType> {
-  return new Promise<ProductType>((resolve, reject) => {
-    const cached = getProductFromCache(id);
-
-    if (cached) {
-      resolve(cached);
-    }
-
-    api.product(id).then(
-      (product) => {
-        resolve(product);
-      },
-      () => {
-        reject();
-      }
-    );
-  });
+export function SimplePicker({
+  value,
+  onChange,
+  getItemById,
+  getItems,
+  placeholder,
+}: SimplePickerProps) {
+  return (
+    <ProductPicker
+      value={value}
+      onChange={onChange}
+      api={{
+        products: getItems,
+        product: getItemById,
+        placeholder,
+      }}
+    />
+  );
 }
 
-const productCache: { [key: string]: ProductType } = {};
-
-function getProductFromCache(id: string | null): ProductType | null {
-  if (!id) {
-    return null;
-  }
-
-  if (productCache[id]) {
-    return productCache[id];
-  }
-
-  return null;
-}
-
-function saveProductToCache(product: ProductType) {
-  productCache[product.id] = product;
-}
-
-type ProductPickerState = "unknown" | "error" | "success" | "loading";
-
-type ProductApiRequestState =
-  | { status: "idle"; data: undefined; error: null }
-  | { status: "loading"; data: Array<ProductType> | undefined; error: null }
-  | { status: "success"; data: Array<ProductType>; error: null }
-  | { status: "error"; data: undefined; error: any };
-
-export const ProductPicker: React.FC<ProductPickerProps> = ({
+const ProductPicker: React.FC<ProductPickerProps> = ({
   value,
   onChange,
   api,
@@ -197,6 +165,72 @@ export const ProductPicker: React.FC<ProductPickerProps> = ({
     </div>
   );
 };
+
+type ProductType = {
+  id: string;
+  title: string;
+  thumbnail?: string;
+};
+
+interface SSProductPickerAPI {
+  products: (query: string) => Promise<ProductType[]>;
+  product: (id: string) => Promise<ProductType>;
+  placeholder?: string;
+}
+
+type ProductPickerProps = {
+  value: string | null;
+  onChange: (id: string | null) => void;
+  api: SSProductPickerAPI;
+};
+
+function getProductFromId(
+  id: string,
+  api: SSProductPickerAPI
+): Promise<ProductType> {
+  return new Promise<ProductType>((resolve, reject) => {
+    const cached = getProductFromCache(id);
+
+    if (cached) {
+      resolve(cached);
+    }
+
+    api.product(id).then(
+      (product) => {
+        resolve(product);
+      },
+      () => {
+        reject();
+      }
+    );
+  });
+}
+
+const productCache: { [key: string]: ProductType } = {};
+
+function getProductFromCache(id: string | null): ProductType | null {
+  if (!id) {
+    return null;
+  }
+
+  if (productCache[id]) {
+    return productCache[id];
+  }
+
+  return null;
+}
+
+function saveProductToCache(product: ProductType) {
+  productCache[product.id] = product;
+}
+
+type ProductPickerState = "unknown" | "error" | "success" | "loading";
+
+type ProductApiRequestState =
+  | { status: "idle"; data: undefined; error: null }
+  | { status: "loading"; data: Array<ProductType> | undefined; error: null }
+  | { status: "success"; data: Array<ProductType>; error: null }
+  | { status: "error"; data: undefined; error: any };
 
 interface ProductPickerModalProps {
   isOpen: boolean;

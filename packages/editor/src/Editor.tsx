@@ -743,6 +743,7 @@ const EditorContent = ({
     activeRootContainer: assertDefined(
       compilationContext.rootContainers.find((r) => r.id === rootContainer)
     ),
+    disableCustomTemplates: props.config.disableCustomTemplates ?? false,
   };
 
   if (editorContext.activeRootContainer.schema) {
