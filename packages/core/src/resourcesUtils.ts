@@ -19,13 +19,11 @@ export function getResourceType(schemaProp: ResourceSchemaProp): string {
 }
 
 export function getResourceValue(externalDataValue: ExternalData[string]) {
-  if (externalDataValue.error !== null) {
+  if ("error" in externalDataValue) {
     return;
   }
 
-  return "values" in externalDataValue
-    ? externalDataValue.values
-    : externalDataValue.value;
+  return externalDataValue.value;
 }
 
 export function isLocalTextResource(

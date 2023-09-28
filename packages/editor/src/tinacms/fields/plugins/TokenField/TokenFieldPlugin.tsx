@@ -9,9 +9,20 @@ import {
   ResponsiveValue,
   ThemeRefValue,
 } from "@easyblocks/core";
-import { SSInput, SSSelect } from "@easyblocks/design-system";
-import { toArray } from "@easyblocks/utils";
-import React, { useRef, useState } from "react";
+import {
+  Select,
+  SelectItem,
+  SelectSeparator,
+  SSColors,
+  SSInput,
+} from "@easyblocks/design-system";
+import React, {
+  forwardRef,
+  Fragment,
+  ReactNode,
+  useRef,
+  useState,
+} from "react";
 import { FieldRenderProps } from "react-final-form";
 import styled from "styled-components";
 import { useEditorContext } from "../../../../EditorContext";
@@ -109,9 +120,7 @@ function TokenFieldComponent<TokenValue>({
         ? (input.value.value as string)
         : CUSTOM_OPTION_VALUE);
 
-  const onSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedValue = e.target.value;
-
+  const onSelectChange = (selectedValue: string) => {
     if (selectedValue === CUSTOM_OPTION_VALUE) {
       if (isMixedFieldValue(input.value)) {
         input.onChange({
@@ -156,59 +165,110 @@ function TokenFieldComponent<TokenValue>({
     }
   };
 
+  const customInputElement = shouldShowInput ? (
+    <div>
+      <div style={{ height: 4 }} />
+      <SSInput
+        value={inputValue}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          setInputValue(e.target.value);
+        }}
+        onBlur={() => {
+          const normalizedValue = normalizeCustomValue(inputValue);
+          setInputValue(normalizedValue);
+          input.onChange({
+            value: normalizedValue,
+          });
+        }}
+        ref={customValueTextFieldRef}
+        align={"right"}
+      />
+    </div>
+  ) : null;
+
+  if (field.schemaProp.type === "color") {
+    return (
+      <Fragment>
+        <Select value={selectValue} onChange={onSelectChange}>
+          {isMixedFieldValue(input.value) && (
+            <>
+              <SelectColorTokenItem value={MIXED_VALUE} isDisabled>
+                Mixed
+              </SelectColorTokenItem>
+              <SelectSeparator />
+            </>
+          )}
+          {
+            <Fragment>
+              {options.map((o) => {
+                return (
+                  <SelectColorTokenItem
+                    key={o.id}
+                    value={o.id}
+                    previewColor={(field.tokens[o.id]?.value as string) ?? o.id}
+                  >
+                    {o.label}
+                  </SelectColorTokenItem>
+                );
+              })}
+              {allowCustom && (
+                <>
+                  <SelectSeparator />
+                  <SelectColorTokenItem
+                    value={CUSTOM_OPTION_VALUE}
+                    previewColor={
+                      selectValue === CUSTOM_OPTION_VALUE
+                        ? ((
+                            input.value as Exclude<
+                              (typeof input)["value"],
+                              FieldMixedValue
+                            >
+                          ).value as string)
+                        : undefined
+                    }
+                  >
+                    Custom
+                  </SelectColorTokenItem>
+                </>
+              )}
+            </Fragment>
+          }
+        </Select>
+        {customInputElement}
+      </Fragment>
+    );
+  }
+
   return (
     <Root>
-      <SSSelect
-        value={selectValue}
-        onChange={onSelectChange}
-        controlSize="full-width"
-        id={toArray(field.name).join(",")}
-      >
+      <Select value={selectValue} onChange={onSelectChange}>
         {isMixedFieldValue(input.value) && (
           <>
-            <option value={MIXED_VALUE} disabled>
+            <SelectItem value={MIXED_VALUE} isDisabled>
               Mixed
-            </option>
-            <option disabled key="divider" aria-hidden="true">
-              ----------
-            </option>
+            </SelectItem>
+            <SelectSeparator />
           </>
         )}
-        {options.map((option) => (
-          <option key={option.id} value={option.id}>
-            {option.label}
-          </option>
-        ))}
-        {allowCustom && (
-          <>
-            <option disabled key="divider" aria-hidden="true">
-              ----------
-            </option>
-            <option value={CUSTOM_OPTION_VALUE}>Custom</option>
-          </>
-        )}
-      </SSSelect>
-
-      {shouldShowInput && (
-        <div>
-          <div style={{ height: 4 }} />
-          <SSInput
-            value={inputValue}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setInputValue(e.target.value);
-            }}
-            onBlur={() => {
-              const normalizedValue = normalizeCustomValue(inputValue);
-              setInputValue(normalizedValue);
-              input.onChange({
-                value: normalizedValue,
-              });
-            }}
-            ref={customValueTextFieldRef}
-            align={"right"}
-          />
-        </div>
-      )}
+        {
+          <Fragment>
+            {options.map((o) => {
+              return (
+                <SelectItem key={o.id} value={o.id}>
+                  {o.label}
+                </SelectItem>
+              );
+            })}
+            {allowCustom && (
+              <>
+                <SelectSeparator />
+                <SelectItem value={CUSTOM_OPTION_VALUE}>Custom</SelectItem>
+              </>
+            )}
+          </Fragment>
+        }
+      </Select>
+      {customInputElement}
     </Root>
   );
 }
@@ -227,3 +287,37 @@ export const TokenFieldPlugin = {
 
 export { TokenFieldComponent };
 export type { TokenField, TokenFieldProps };
+
+const SelectColorTokenItem = forwardRef<
+  HTMLDivElement,
+  {
+    children: ReactNode;
+    previewColor?: string;
+    value: string;
+    isDisabled?: boolean;
+  }
+>((props, ref) => {
+  return (
+    <SelectItem value={props.value} isDisabled={props.isDisabled} ref={ref}>
+      <span
+        css={`
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        `}
+      >
+        <span
+          css={`
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+
+            ${props.previewColor &&
+            `background-color: ${props.previewColor}; border: 1px solid ${SSColors.black10};`}
+          `}
+        />
+        <span>{props.children}</span>
+      </span>
+    </SelectItem>
+  );
+});

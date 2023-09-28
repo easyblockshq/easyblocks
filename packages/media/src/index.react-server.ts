@@ -1,17 +1,16 @@
-import {
-  ApiClient,
+import type {
   AssetDTO,
   ChangedExternalData,
   ExternalData,
-  FetchOutputBasicResources,
   IApiClient,
   ImageSrc,
-  ShopstoryAccessTokenApiAuthenticationStrategy,
   VideoSrc,
   Widget,
 } from "@easyblocks/core";
-
-type Entries<T extends Record<string, unknown>> = [keyof T, T[keyof T]];
+import {
+  ApiClient,
+  ShopstoryAccessTokenApiAuthenticationStrategy,
+} from "@easyblocks/core";
 
 export const easyblocksImageWidget: Widget = {
   id: "@easyblocks/image",
@@ -62,33 +61,28 @@ export async function fetchEasyblocksMediaResources(
   });
 
   const fetchResult = Object.fromEntries(
-    mediaInputResources.map<Entries<FetchOutputBasicResources>>(
-      ([id, inputResource]) => {
-        const asset = assets.find((a) => inputResource.externalId === a.id);
+    mediaInputResources.map(([id, inputResource]) => {
+      const asset = assets.find((a) => inputResource.externalId === a.id);
 
-        if (!asset) {
-          return [
-            id,
-            {
-              type: inputResource.type,
-              value: undefined,
-              error: new Error(
-                `Asset with id "${inputResource.externalId}" not found`
-              ),
-            },
-          ];
-        }
-
+      if (!asset) {
         return [
           id,
           {
-            type: inputResource.type,
-            value: createMediaFromAsset(asset),
-            error: null,
+            error: new Error(
+              `Asset with id "${inputResource.externalId}" not found`
+            ),
           },
         ];
       }
-    )
+
+      return [
+        id,
+        {
+          type: inputResource.type,
+          value: createMediaFromAsset(asset),
+        },
+      ];
+    })
   );
 
   return fetchResult;

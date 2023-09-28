@@ -48,6 +48,7 @@ import {
   RefValue,
   ResponsiveValue,
   SchemaProp,
+  PositionSchemaProp,
   Select$SchemaProp,
   SelectSchemaProp,
   SerializedComponentDefinitions,
@@ -62,6 +63,7 @@ import {
   UnresolvedResource,
   UnresolvedResourceEmpty,
   UnresolvedResourceNonEmpty,
+  Position,
 } from "@easyblocks/core";
 import { uniqueId } from "@easyblocks/utils";
 import { CompilationCache } from "./CompilationCache";
@@ -293,6 +295,13 @@ export type SchemaPropDefinitionProviders = {
     schemaProp: CustomResourceSchemaProp,
     compilationContext: CompilationContextType
   ) => ResourceSchemaPropDefinition;
+  position: (
+    schemaProp: PositionSchemaProp,
+    compilationContext: CompilationContextType
+  ) => SchemaPropDefinition<
+    ResponsiveValue<Position>,
+    ResponsiveValue<Position>
+  >;
 };
 
 export type SchemaPropDefinitionProvider =
@@ -721,7 +730,6 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
     // Here:
     // 1. if non-fixed => ss-block field.
     // 2. if fixed => ss-block field with "fixed" flag (no component picker).
-
     const normalize = (x: any) => {
       if (!Array.isArray(x) || x.length === 0) {
         return [];
@@ -1014,6 +1022,27 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         }
 
         return `${schemaProp.type}.${resourceType}.${value.id}`;
+      },
+    };
+  },
+  position: function (schemaProp, compilationContext) {
+    return {
+      normalize: getResponsiveNormalize<Position>(
+        compilationContext,
+        schemaProp.defaultValue,
+        "top-left",
+        (x) => {
+          return typeof x === "string" ? (x as Position) : "top-left";
+        }
+      ),
+      compile: (x) => x,
+      getHash: (value, currentBreakpoint) => {
+        if (isTrulyResponsiveValue(value)) {
+          const breakpointValue = responsiveValueAt(value, currentBreakpoint);
+          return breakpointValue?.toString();
+        }
+
+        return value;
       },
     };
   },

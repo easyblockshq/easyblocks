@@ -11,6 +11,7 @@ import {
   FontSchemaProp,
   IconSchemaProp,
   NumberSchemaProp,
+  PositionSchemaProp,
   RadioGroup$SchemaProp,
   RadioGroupSchemaProp,
   ResponsiveValue,
@@ -126,6 +127,7 @@ export type TinaFieldProviders = {
   "component-fixed": FieldProvider<ComponentFixedSchemaProp>;
   component$$$: FieldProvider<ComponentFixedSchemaProp>;
   resource: FieldProvider<CustomResourceSchemaProp, UnresolvedResource>;
+  position: FieldProvider<PositionSchemaProp>;
 };
 
 const tinaFieldProviders: TinaFieldProviders = {
@@ -359,11 +361,6 @@ const tinaFieldProviders: TinaFieldProviders = {
       throw new Error(`Can't find widget named "${schemaProp.resourceType}"`);
     }
 
-    const field =
-      typeof fieldWidget.component === "function"
-        ? fieldWidget.component(schemaProp.params ?? {})
-        : fieldWidget.component;
-
     if (
       schemaProp.resourceType === "image" ||
       schemaProp.resourceType === "video"
@@ -372,14 +369,21 @@ const tinaFieldProviders: TinaFieldProviders = {
         ...getCommonFieldProps(schemaProp),
         component: "responsive2",
         subComponent: "external",
-        externalField: field,
+        externalField: fieldWidget.component,
       };
     }
 
     return {
       ...getCommonFieldProps(schemaProp),
       component: "external",
-      externalField: field,
+      externalField: fieldWidget.component,
+    };
+  },
+  position: (schemaProp) => {
+    return {
+      ...getCommonFieldProps(schemaProp),
+      component: "responsive2",
+      subComponent: "position",
     };
   },
 };

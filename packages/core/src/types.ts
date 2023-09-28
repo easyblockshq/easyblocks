@@ -1,6 +1,5 @@
 import { ComponentType } from "react";
 import { PartialDeep } from "type-fest";
-import { IApiClient } from "./infrastructure/apiClient";
 import { Locale } from "./locales";
 
 type ScalarOrCollection<T> = T | Array<T>;
@@ -281,6 +280,17 @@ export type ResourceSchemaProp =
   | TextResourceSchemaProp
   | CustomResourceSchemaProp;
 
+export type PositionVertical = "top" | "center" | "bottom";
+
+export type PositionHorizontal = "left" | "center" | "right";
+
+export type Position = `${PositionVertical}-${PositionHorizontal}`;
+
+export type PositionSchemaProp = SchemaPropShared<
+  "position",
+  ResponsiveValue<Position>
+>;
+
 export type SchemaProp =
   | StringSchemaProp
   | String$SchemaProp
@@ -301,7 +311,8 @@ export type SchemaProp =
   | ComponentSchemaProp
   | ComponentCollectionSchemaProp
   | ComponentCollectionLocalisedSchemaProp
-  | ComponentFixedSchemaProp;
+  | ComponentFixedSchemaProp
+  | PositionSchemaProp;
 
 type CustomComponentShared = {
   id: string;
@@ -430,36 +441,15 @@ export type ExternalFieldItemPicker = {
   type: "item-picker";
 } & PickerAPI;
 
-export type ExternalFieldCustomComponentProps = {
-  root: HTMLElement;
-  value: UnresolvedResource;
-  onChange: (newValue: { id: null } | { id: string; key?: string }) => void;
-  apiClient: IApiClient;
-  projectId: string;
-  notify: {
-    error: (message: string) => void;
-  };
+export type WidgetComponentProps = {
+  id: string | null;
+  onChange: (newId: string | null) => void;
 };
-
-type CleanupFunction = () => void;
-
-export type ExternalFieldCustom = {
-  type: "custom";
-  component: (
-    props: ExternalFieldCustomComponentProps
-  ) => void | CleanupFunction;
-};
-
-export type ExternalFieldType = ExternalFieldItemPicker | ExternalFieldCustom;
-
-export type WidgetComponent =
-  | ExternalFieldType
-  | ((params: Record<string, any>) => ExternalFieldType);
 
 export type Widget = {
   id: string;
   label: string;
-  component: WidgetComponent;
+  component: ComponentType<WidgetComponentProps>;
 };
 
 export type ResourceDefinition = {
@@ -513,6 +503,7 @@ export type Config = {
   strict?: boolean;
   locales?: Array<Locale>;
   rootContainers?: Record<string, RootContainer>;
+  disableCustomTemplates?: boolean;
 };
 
 export type PreviewMetadata =
@@ -667,7 +658,7 @@ export type SerializableResource =
   | Omit<RejectedResource, "values">;
 
 export type DeviceRange = {
-  id: string;
+  id: DeviceId;
   w: number;
   h: number;
   breakpoint: number | null;
@@ -675,6 +666,8 @@ export type DeviceRange = {
   label?: string;
   isMain?: boolean;
 };
+
+export type DeviceId = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
 export type Devices = DeviceRange[];
 
@@ -1025,9 +1018,12 @@ export type FetchInputResource = {
   fetchParams?: ResourceParams;
 };
 
-type FetchResourceResolvedResult<T> = { value: T; error: null };
+type FetchResourceResolvedResult<T> = {
+  type: string & Record<never, never>;
+  value: T;
+};
 
-type FetchResourceRejectedResult = { value: undefined; error: Error };
+type FetchResourceRejectedResult = { error: Error };
 
 // {} in TS means any non nullish value and it's used on purpose here
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -1037,12 +1033,7 @@ export type FetchResourceResult<T extends NonNullish = NonNullish> =
   | FetchResourceResolvedResult<T>
   | FetchResourceRejectedResult;
 
-export type FetchOutputBasicResources = Record<
-  string,
-  {
-    type: string & Record<never, never>;
-  } & FetchResourceResult
->;
+export type FetchOutputBasicResources = Record<string, FetchResourceResult>;
 
 export type FetchCompoundResourceResultValue = {
   type: string;
@@ -1055,21 +1046,19 @@ export type FetchCompoundResourceResultValues = Record<
   FetchCompoundResourceResultValue
 >;
 
-export type FetchCompoundResourceResult =
-  | {
-      values: FetchCompoundResourceResultValues;
-      error: null;
-    }
-  | {
-      values: undefined;
-      error: Error;
-    };
+export type ExternalDataCompoundResourceResolvedResult = {
+  type: "object";
+  value: FetchCompoundResourceResultValues;
+};
+
+export type ExternalDataCompoundResourceRejectedResult = {
+  error: Error;
+};
 
 export type FetchOutputCompoundResources = Record<
   string,
-  {
-    type: "object";
-  } & FetchCompoundResourceResult
+  | ExternalDataCompoundResourceResolvedResult
+  | ExternalDataCompoundResourceRejectedResult
 >;
 
 export type FetchOutputResources = Record<

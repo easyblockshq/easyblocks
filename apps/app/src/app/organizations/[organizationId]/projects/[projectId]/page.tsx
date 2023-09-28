@@ -73,3 +73,5 @@ export default ProjectPage;
 function maskToken(token: string) {
   return `${token.slice(0, 8)}...${token.slice(-8)}`;
 }
+
+export const dynamic = "force-dynamic";

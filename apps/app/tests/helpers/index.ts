@@ -50,7 +50,7 @@ async function removeTestUser(supabase: SupabaseClient, session: Session) {
     .delete()
     .in(
       "id",
-      removedProjectsAccess.map((p) => p.project_id)
+      removedProjectsAccess!.map((p) => p.project_id)
     )
     .select();
 

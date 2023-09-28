@@ -1,8 +1,5 @@
 "use client";
-import {
-  ExternalFieldCustom,
-  ExternalFieldCustomComponentProps,
-} from "@easyblocks/core";
+import { Widget, WidgetComponentProps } from "@easyblocks/core";
 import {
   IconButtonPrimary,
   Menu,
@@ -21,9 +18,10 @@ import {
   Stack,
   ThumbnailButton,
   Typography,
+  useToaster,
 } from "@easyblocks/design-system";
+import { useApiClient, useEditorContext } from "@easyblocks/editor";
 import React, { useEffect, useRef, useState } from "react";
-import { createRoot } from "react-dom/client";
 import styled, { css } from "styled-components";
 import { mediaAdapter } from "./mediaAdapter";
 
@@ -194,12 +192,14 @@ function CardsGroup(props: {
 }
 
 const Component = (
-  props: Omit<ExternalFieldCustomComponentProps, "root"> & {
+  props: WidgetComponentProps & {
     mediaType: "image" | "video";
   }
 ) => {
-  const id: string | null = props.value.id;
-  const { apiClient, projectId, mediaType, notify } = props;
+  const { id, mediaType } = props;
+  const apiClient = useApiClient();
+  const editorContext = useEditorContext();
+  const toaster = useToaster();
   const [isOpen, setOpen] = useState(false);
   const [items, setItems] = useState<Media[] | null>(null);
   const [fetchingAssetsStatus, setFetchingAssetsStatus] = useState<
@@ -212,13 +212,12 @@ const Component = (
   const assetFileInput = useRef<HTMLInputElement>(null);
   const draggingCount = useRef(0);
 
-  const selectedItem =
-    items && items.find((item) => item.id === props.value.id);
+  const selectedItem = items && items.find((item) => item.id === id);
 
   async function fetchAssets() {
     setFetchingAssetsStatus("loading");
-    props.apiClient.assets
-      .getAssets({ projectId, type: mediaType })
+    apiClient.assets
+      .getAssets({ projectId: editorContext.project.id, type: mediaType })
       .then((assets) => {
         const items = assets.map(mediaAdapter);
         setItems(items);
@@ -259,14 +258,14 @@ const Component = (
 
     try {
       await apiClient.assets.uploadAsset({
-        projectId,
+        projectId: editorContext.project.id,
         asset: file,
       });
 
       fetchAssets();
     } catch (error) {
       console.error(error);
-      notify.error(`File upload for file ${file.name} failed`);
+      toaster.error(`File upload for file ${file.name} failed`);
     } finally {
       setIsUploading(false);
     }
@@ -386,7 +385,7 @@ const Component = (
 
           <CardsGroup
             onSelect={(item) => {
-              props.onChange({ id: item.id });
+              props.onChange(item.id);
               setOpen(false);
             }}
             onRemove={(item) => {
@@ -466,19 +465,19 @@ const Component = (
 
                     try {
                       await apiClient.assets.removeAsset({
-                        projectId,
+                        projectId: editorContext.project.id,
                         assetId: assetToRemove.id,
                       });
 
                       if (selectedItem?.id === assetToRemove.id) {
-                        props.onChange({ id: null });
+                        props.onChange(null);
                       }
 
                       fetchAssets();
                       setAssetToRemove(null);
                     } catch (error) {
                       console.error(error);
-                      notify.error(
+                      toaster.error(
                         `Failed to remove asset ${assetToRemove.title}`
                       );
                     } finally {
@@ -530,7 +529,7 @@ const Component = (
         >
           <SSButtonSecondary
             onClick={() => {
-              props.onChange({ id: null });
+              props.onChange(null);
             }}
           >
             Clear
@@ -541,27 +540,8 @@ const Component = (
   );
 };
 
-export function mockMediaPicker(key: "image" | "video"): ExternalFieldCustom {
-  return {
-    type: "custom",
-    component: ({ root, onChange, value, apiClient, projectId, notify }) => {
-      const reactRoot = createRoot(root);
-
-      reactRoot.render(
-        <Component
-          value={value}
-          onChange={onChange}
-          apiClient={apiClient}
-          projectId={projectId}
-          mediaType={key}
-          notify={notify}
-          key={key}
-        />
-      );
-
-      return () => {
-        reactRoot.unmount();
-      };
-    },
+export function mockMediaPicker(key: "image" | "video"): Widget["component"] {
+  return ({ onChange, id }) => {
+    return <Component id={id} onChange={onChange} mediaType={key} key={key} />;
   };
 }

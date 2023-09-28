@@ -1,8 +1,7 @@
-import { ExternalData, FetchOutputResources } from "@easyblocks/core";
+import type { ExternalData } from "@easyblocks/core";
 import React, { createContext, useContext } from "react";
 
-const EasyblocksExternalDataContext =
-  createContext<FetchOutputResources | null>(null);
+const EasyblocksExternalDataContext = createContext<ExternalData | null>(null);
 
 function useEasyblocksExternalData() {
   const context = useContext(EasyblocksExternalDataContext);

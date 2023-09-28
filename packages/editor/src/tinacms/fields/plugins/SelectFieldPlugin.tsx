@@ -1,8 +1,8 @@
 import { wrapFieldsWithMeta } from "./wrapFieldWithMeta";
-import { Select } from "../components";
+import { SelectFieldComponent } from "../components";
 import { parse } from "./textFormat";
 
-export const SelectField = wrapFieldsWithMeta(Select);
+export const SelectField = wrapFieldsWithMeta(SelectFieldComponent);
 
 export const SelectFieldPlugin = {
   name: "select",

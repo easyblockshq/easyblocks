@@ -12,7 +12,6 @@ export * from "./IdentityFieldPlugin";
 export * from "./ImageFieldPlugin";
 export { BlockFieldPlugin } from "./BlockFieldPlugin";
 export { ExternalFieldPlugin } from "./ExternalField/ExternalField";
-export { ProductPickerFieldPlugin } from "./ProductFieldPlugin";
 export { ResponsiveFieldPlugin } from "./ResponsiveField/ResponsiveFieldPlugin";
 export { SVGPickerFieldPlugin } from "./SVGPicker/SVGPicker";
 export { SliderFieldPlugin } from "./SliderFieldPlugin";

@@ -1,4 +1,3 @@
-import { ResourcesStore } from "./createResourcesStore";
 import {
   getResourceFetchParams,
   getResourceType,
@@ -10,6 +9,7 @@ import {
   CompiledShopstoryComponentConfig,
   ComponentConfig,
   Config,
+  ExternalData,
   ResourceWithSchemaProp,
   ShopstoryClientDependencies,
 } from "./types";
@@ -19,7 +19,7 @@ type BuildEntryOptions = {
   config: Config;
   contextParams: { locale: string; rootContainer: string };
   compiler: ShopstoryClientDependencies;
-  resourcesStore: ResourcesStore;
+  externalData: ExternalData;
   isExternalDataChanged?: (
     externalData: {
       id: string;
@@ -37,7 +37,7 @@ function buildEntry({
   config,
   contextParams,
   compiler,
-  resourcesStore,
+  externalData,
   isExternalDataChanged,
 }: BuildEntryOptions): {
   renderableContent: CompiledShopstoryComponentConfig;
@@ -55,16 +55,16 @@ function buildEntry({
     config,
     contextParams
   );
-  const externalData = findChangedExternalData(
+  const pendingExternalData = findChangedExternalData(
     resourcesWithSchemaProps,
-    resourcesStore,
+    externalData,
     isExternalDataChanged
   );
 
   return {
     renderableContent: compilationResult.compiled,
     meta: compilationResult.meta,
-    externalData,
+    externalData: pendingExternalData,
     configAfterAuto: compilationResult.configAfterAuto,
   };
 }
@@ -73,7 +73,7 @@ export { buildEntry };
 
 function findChangedExternalData(
   resourcesWithSchemaProps: Array<ResourceWithSchemaProp>,
-  resourcesStore: ResourcesStore,
+  externalData: ExternalData,
   isExternalDataPending: BuildEntryOptions["isExternalDataChanged"]
 ) {
   const changedExternalData: ChangedExternalData = {};
@@ -91,7 +91,7 @@ function findChangedExternalData(
         },
         type
       ) &&
-      !isResourceSettled(id, resourcesStore) &&
+      !externalData[id] &&
       !resource.externalId?.startsWith("$.")
     );
   }
@@ -130,9 +130,4 @@ function findChangedExternalData(
   });
 
   return changedExternalData;
-}
-
-function isResourceSettled(id: string, resourcesStore: ResourcesStore) {
-  const resource = resourcesStore.get(id);
-  return resource && resource.status !== "loading";
 }

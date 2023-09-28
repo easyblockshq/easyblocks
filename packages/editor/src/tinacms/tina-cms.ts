@@ -28,6 +28,7 @@ import {
   ToggleFieldPlugin,
 } from "../tinacms/fields";
 import { FieldPlugin } from "../tinacms/form-builder";
+import { PositionFieldPlugin } from "./fields/plugins/PositionFieldPlugin";
 import { ScreenPlugin } from "./react-screens";
 
 const DEFAULT_FIELDS = [
@@ -39,6 +40,7 @@ const DEFAULT_FIELDS = [
   ToggleFieldPlugin,
   SelectFieldPlugin,
   RadioGroupFieldPlugin,
+  PositionFieldPlugin,
 ];
 
 export type TinaCMSConfig = CMSConfig;

@@ -12,7 +12,7 @@ export * from "./ToggleButton";
 export * from "./Toggle";
 export * from "./modals/Modal";
 export * from "./rows/BasicRow";
-export * from "./ProductPicker";
+export * from "./SimplePicker";
 export * from "./Slider";
 export * from "./ThumbnailButton";
 export * from "./FormElement";
@@ -30,3 +30,5 @@ export {
   MenuSeparator,
 } from "./Menu";
 export { Loader } from "./Loader";
+export { Select, SelectItem, SelectSeparator } from "./Select/Select";
+export { ToggleGroup, ToggleGroupItem } from "./ToggleGroup/ToggleGroup";

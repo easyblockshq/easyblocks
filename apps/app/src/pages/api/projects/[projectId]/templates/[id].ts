@@ -94,7 +94,7 @@ const handler: AuthenticatedNextApiHandler = async (
         return;
       }
 
-      await updateMappingsForTemplate(id, [], supabase);
+      await updateMappingsForTemplate(id!, [], supabase);
 
       response.status(200).json(null);
       return;

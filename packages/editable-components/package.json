@@ -246,7 +246,6 @@
     "@jest/types": "^26.6.2",
     "@easyblocks/app-utils": "^1.5.2",
     "@easyblocks/build-tools": "^1.5.2",
-    "@easyblocks/design-system": "link:../design-system",
     "@easyblocks/reduce-css-calc": "link:../reduce-css-calc",
     "@easyblocks/utils": "link:../utils",
     "@types/jest": "^26.0.20",
@@ -254,7 +253,6 @@
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@types/vimeo__player": "^2.18.0",
-    "css-unit-converter": "^1.1.1",
     "postcss-value-parser": "^3.3.0"
   }
 }

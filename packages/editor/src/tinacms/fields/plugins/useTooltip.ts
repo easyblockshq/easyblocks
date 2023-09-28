@@ -1,5 +1,5 @@
-import { useTooltipTrigger } from "@react-aria/tooltip";
-import { MouseEvent, useState } from "react";
+import { TooltipTriggerAria, useTooltipTrigger } from "@react-aria/tooltip";
+import { CSSProperties, MouseEvent, RefCallback, useState } from "react";
 import { usePopper } from "react-popper";
 
 interface TooltipOptions {
@@ -7,7 +7,18 @@ interface TooltipOptions {
   onClick?: () => void;
 }
 
-function useTooltip({ isDisabled, onClick }: TooltipOptions = {}) {
+type TooltipResult = {
+  isOpen: boolean;
+  arrowProps: {
+    ref: RefCallback<HTMLElement>;
+    style: CSSProperties;
+  };
+} & TooltipTriggerAria;
+
+function useTooltip({
+  isDisabled,
+  onClick,
+}: TooltipOptions = {}): TooltipResult {
   const [isOpen, setIsOpen] = useState(false);
   const [triggerElement, setTriggerElement] = useState<HTMLElement | null>(
     null

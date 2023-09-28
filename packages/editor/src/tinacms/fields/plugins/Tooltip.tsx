@@ -5,11 +5,11 @@ import styled from "styled-components";
 
 interface TooltipProps {
   children: ReactNode;
-  style: CSSProperties;
+  style?: CSSProperties;
 }
 
 const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
-  ({ children, style, ...rest }, ref) => {
+  ({ children, style = {}, ...rest }, ref) => {
     return createPortal(
       <div style={{ ...style, zIndex: 100100 }} ref={ref} {...rest}>
         {children}

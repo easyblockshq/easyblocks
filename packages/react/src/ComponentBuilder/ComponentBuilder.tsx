@@ -7,6 +7,7 @@ import {
   findComponentDefinitionById,
   getComponentMainType,
   InternalComponentDefinition,
+  isCompoundExternalDataValue,
   isEmptyRenderableContent,
   isResourceSchemaProp,
   isSchemaPropAction,
@@ -32,7 +33,6 @@ import {
   ComponentSchemaProp,
   CustomResourceSchemaProp,
   ExternalData,
-  FetchOutputCompoundResources,
   getResourceId,
   getResourceType,
   getResourceValue,
@@ -236,7 +236,7 @@ function getRenderabilityStatus(
 
     const isDefined =
       resources.length > 0 &&
-      resources.every((r) => ("values" in r ? !!r.values : !!r.value)); /*&&
+      resources.every((r) => "value" in r && r.value); /*&&
       (isRenderableContent(resourceValues)
         ? isNonEmptyRenderableContent(resourceValues)
         : true);*/
@@ -825,7 +825,7 @@ function resolveResource(
           return null;
         }
 
-        if (resource.error) {
+        if ("error" in resource) {
           return {
             id: r.id,
             type,
@@ -835,12 +835,12 @@ function resolveResource(
           };
         }
 
-        if (isCompoundResource(resource)) {
+        if (isCompoundExternalDataValue(resource)) {
           if (!r.key) {
             return null;
           }
 
-          const resolvedResourceValue = resource.values[r.key].value;
+          const resolvedResourceValue = resource.value[r.key].value;
 
           if (!resolvedResourceValue) {
             return null;
@@ -867,16 +867,6 @@ function resolveResource(
 
     return null;
   });
-}
-
-function isCompoundResource(
-  resource: ExternalData[string]
-): resource is Required<FetchOutputCompoundResources[string]> {
-  return (
-    resource.type === "object" &&
-    "values" in resource &&
-    resource.values !== undefined
-  );
 }
 
 export default ComponentBuilder;

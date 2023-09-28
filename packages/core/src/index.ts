@@ -1,6 +1,4 @@
 export * from "./checkers";
-export type { ResourcesStore } from "./createResourcesStore";
-export { createResourcesStore } from "./createResourcesStore";
 export { loadScript } from "./loadScripts";
 export * from "./types";
 export * from "./resourcesUtils";

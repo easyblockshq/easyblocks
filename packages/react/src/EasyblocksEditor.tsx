@@ -96,7 +96,6 @@ async function buildConfig(config: Config) {
 }
 
 async function loadEditorModule() {
-  const { loadScript } = await import("@easyblocks/core");
-
-  return loadScript("editor.js");
+  const editorModule = await import("@easyblocks/editor");
+  return editorModule;
 }

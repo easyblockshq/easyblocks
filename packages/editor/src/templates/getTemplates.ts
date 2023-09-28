@@ -144,7 +144,7 @@ export async function getTemplates(
 
   let remoteUserDefinedTemplates: Template[] = [];
 
-  if (!editorContext.isPlayground) {
+  if (!editorContext.isPlayground && !editorContext.disableCustomTemplates) {
     const project = editorContext.project;
     if (!project) {
       throw new Error(

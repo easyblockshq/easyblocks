@@ -11,19 +11,19 @@ export function getAppUrlRoot() {
   /**
    * This condition is true for 2 use cases:
    * 1. Local development - localhost:3100. Local production build also uses localhost:3100.
-   * 2. Publish. Before publishing package we should build `core` with explicitly set SHOPSTORY_API_URL to production Vercel URL. It will go to npm.
+   * 2. Publish. Before publishing package we should build `core` with explicitly set EASYBLOCKS_API_URL to production Vercel URL. It will go to npm.
    */
   if (!isVercel) {
-    // For production we force SHOPSTORY_API_URL to be set
+    // For production we force EASYBLOCKS_API_URL to be set
     if (process.env.NODE_ENV === "production") {
-      if (!process.env.SHOPSTORY_API_URL) {
+      if (!process.env.EASYBLOCKS_API_URL) {
         throw new Error(
-          "environment variable SHOPSTORY_API_URL must be defined"
+          "environment variable EASYBLOCKS_API_URL must be defined"
         );
       }
     }
 
-    return process.env.SHOPSTORY_API_URL ?? "http://localhost:3100";
+    return process.env.EASYBLOCKS_API_URL ?? "http://localhost:3100";
   }
 
   // Vercel -> app build
@@ -32,7 +32,7 @@ export function getAppUrlRoot() {
   // const isVercelProduction = process.env.VERCEL_ENV === "production";
 
   // is project being build a backend
-  const isApi = process.env.VERCEL_URL!.startsWith("api-");
+  const isApi = process.env.VERCEL_URL!.startsWith("easyblocks-app-");
 
   // building backend project, in this case backend URL is just VERCEL_URL
   if (isApi) {
@@ -45,6 +45,6 @@ export function getAppUrlRoot() {
       "-"
     );
 
-    return `https://api-git-${normalizedBranchName}-shopstoryapp.vercel.app`;
+    return `https://easyblocks-app-git-${normalizedBranchName}-shopstoryapp.vercel.app`;
   }
 }

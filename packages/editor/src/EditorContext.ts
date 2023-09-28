@@ -9,7 +9,6 @@ import {
   CompiledComponentConfig,
   ConfigComponent,
   Resource,
-  ResourcesStore,
 } from "@easyblocks/core";
 import React, { useContext } from "react";
 import { ActionsType, TextSyncers } from "./types";
@@ -41,7 +40,7 @@ export type EditorContextType = BaseEditorContextType & {
     token: string;
   };
   isPlayground: boolean;
-  resourcesStore: ResourcesStore;
+  disableCustomTemplates: boolean;
 };
 
 export const EditorContext = React.createContext<EditorContextType | null>(

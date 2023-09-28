@@ -446,18 +446,7 @@ const bannerFields: SchemaProp[] = [
   {
     prop: "contentPositionInBackgroundMode",
     label: "Position",
-    type: "select$",
-    options: [
-      "top-left",
-      "top-center",
-      "top-right",
-      "center-left",
-      "center-center",
-      "center-right",
-      "bottom-left",
-      "bottom-center",
-      "bottom-right",
-    ],
+    type: "position",
     group: "Stack",
     visible: (values) => {
       return (
@@ -2060,18 +2049,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         {
           prop: "backgroundModePosition",
           label: "Position",
-          type: "select$",
-          options: [
-            "top-left",
-            "top-center",
-            "top-right",
-            "center-left",
-            "center-center",
-            "center-right",
-            "bottom-left",
-            "bottom-center",
-            "bottom-right",
-          ],
+          type: "position",
           group: "Content Card",
           visible: (values) => {
             return values.mode === "background";

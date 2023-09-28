@@ -27,7 +27,6 @@ import {
   Config,
   ConfigComponent,
   ContextParams,
-  createResourcesStore,
   DocumentWithResolvedConfigDTO,
   EditorLauncherProps,
   ExternalData,
@@ -39,14 +38,8 @@ import {
   LocalisedDocument,
   NonEmptyRenderableContent,
 } from "@easyblocks/core";
-import {
-  SSButtonPrimary,
-  SSColors,
-  SSFonts,
-  useToaster,
-} from "@easyblocks/design-system";
+import { SSColors, SSFonts, useToaster } from "@easyblocks/design-system";
 import { assertDefined } from "@easyblocks/utils";
-import { useSession } from "@supabase/auth-helpers-react";
 import React, {
   createContext,
   memo,
@@ -57,7 +50,6 @@ import React, {
 } from "react";
 import Modal from "react-modal";
 import styled from "styled-components";
-import { Entries } from "type-fest";
 import { ConfigAfterAutoContext } from "./ConfigAfterAutoContext";
 import {
   duplicateItems,
@@ -77,7 +69,6 @@ import {
 } from "./infrastructure/ApiClientProvider";
 import { createApiClient } from "./infrastructure/createApiClient";
 import { ProjectsApiService } from "./infrastructure/projectsApiService";
-import { supabaseClient } from "./infrastructure/supabaseClient";
 import { ModalPicker } from "./ModalPicker";
 import { destinationResolver } from "./paste/destinationResolver";
 import { pasteManager } from "./paste/manager";
@@ -193,7 +184,6 @@ type EditorContainerProps = {
 function EditorContainer(props: EditorContainerProps) {
   const [enabled, setEnabled] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
-  const session = useSession();
   const [project, setProject] = useState<
     EditorContextType["project"] | undefined
   >(undefined);
@@ -243,22 +233,7 @@ function EditorContainer(props: EditorContainerProps) {
   }
 
   if (error) {
-    return (
-      <AuthenticationScreen>
-        {error}
-        {session !== null && (
-          <div>
-            <SSButtonPrimary
-              onClick={() => {
-                supabaseClient.auth.signOut();
-              }}
-            >
-              Sign out
-            </SSButtonPrimary>
-          </div>
-        )}
-      </AuthenticationScreen>
-    );
+    return <AuthenticationScreen>{error}</AuthenticationScreen>;
   }
 
   return (
@@ -399,6 +374,7 @@ function useBuiltContent(
   contextParams: ContextParams,
   rawContent: ConfigComponent,
   rootContainer: string,
+  externalData: ExternalData,
   onExternalDataChange: ExternalDataChangeHandler
 ): NonEmptyRenderableContent & {
   meta: CompilationMetadata;
@@ -444,7 +420,7 @@ function useBuiltContent(
         locale: contextParams.locale,
         rootContainer,
       },
-      resourcesStore: editorContext.resourcesStore,
+      externalData,
       compiler: {
         findResources,
         validate,
@@ -472,16 +448,13 @@ function useBuiltContent(
           };
         },
       },
-      isExternalDataChanged(externalData, defaultIsExternalDataChanged) {
+      isExternalDataChanged(externalDataValue, defaultIsExternalDataChanged) {
         // When editing, we consider external data to be changed in more ways.
-        const storedExternalData = editorContext.resourcesStore.get(
-          externalData.id
-        );
+        const storedExternalData = externalData[externalDataValue.id];
 
         // If external data for given id is already stored, but now the external id is empty it means that the user
         // has removed that external value and thus the user of editor has to remove it from its external data.
-        if (storedExternalData && externalData.externalId === null) {
-          editorContext.resourcesStore.remove(externalData.id);
+        if (storedExternalData && externalDataValue.externalId === null) {
           return true;
         }
 
@@ -489,11 +462,11 @@ function useBuiltContent(
         // has changed the selected external value and thus the user of editor has to update it in its external data.
         if (
           storedExternalData &&
-          externalData.externalId &&
+          externalDataValue.externalId &&
           inputRawContent.current
         ) {
           const { breakpointIndex, configId, fieldName } = parseExternalDataId(
-            externalData.id
+            externalDataValue.id
           );
 
           const config = findConfigById(
@@ -510,16 +483,13 @@ function useBuiltContent(
             ? responsiveValueForceGet(config[fieldName], breakpointIndex)
             : config[fieldName];
 
-          const hasExternalIdChanged = value.id !== externalData.externalId;
-
-          if (hasExternalIdChanged) {
-            editorContext.resourcesStore.remove(externalData.id);
-          }
+          const hasExternalIdChanged =
+            value.id !== externalDataValue.externalId;
 
           return hasExternalIdChanged;
         }
 
-        return defaultIsExternalDataChanged(externalData);
+        return defaultIsExternalDataChanged(externalDataValue);
       },
     });
 
@@ -727,70 +697,11 @@ const EditorContent = ({
 
   const [isAdminMode, setAdminMode] = useState(false);
 
-  const [resourcesStore] = useState(() =>
-    createResourcesStore(externalData ?? {})
-  );
-
   useEffect(() => {
-    resourcesStore.batch(() => {
-      if (previousExternalData.current) {
-        Object.keys(previousExternalData.current).forEach((key) => {
-          if (!externalData[key]) {
-            resourcesStore.remove(key);
-          }
-        });
-      }
-
-      previousExternalData.current = externalData;
-
-      Object.entries(externalData).forEach(
-        ([id, resource]: Entries<typeof externalData>[number]) => {
-          if ("values" in resource) {
-            if (resource.values !== undefined) {
-              resourcesStore.set(id, {
-                id,
-                type: resource.type,
-                status: "success",
-                error: null,
-                value: resource.values,
-              });
-            } else {
-              resourcesStore.set(id, {
-                id,
-                type: resource.type,
-                status: "error",
-                error: resource.error,
-                value: undefined,
-              });
-            }
-          } else {
-            if (resource.value !== undefined) {
-              resourcesStore.set(id, {
-                id,
-                type: resource.type,
-                status: "success",
-                value: resource.value,
-                error: null,
-              });
-            } else {
-              resourcesStore.set(id, {
-                id,
-                type: resource.type,
-                status: "error",
-                value: undefined,
-                error: resource.error,
-              });
-            }
-          }
-        }
-      );
-    });
-
     window.editorWindowAPI.externalData = externalData;
     console.debug("external data", window.editorWindowAPI.externalData);
-
     window.editorWindowAPI.onUpdate?.();
-  }, [externalData, resourcesStore]);
+  }, [externalData]);
 
   const syncTemplates = () => {
     getTemplates(editorContext, apiClient).then((newTemplates) => {
@@ -829,10 +740,10 @@ const EditorContent = ({
     compilationCache: compilationCache.current,
     project: props.project,
     isPlayground,
-    resourcesStore,
     activeRootContainer: assertDefined(
       compilationContext.rootContainers.find((r) => r.id === rootContainer)
     ),
+    disableCustomTemplates: props.config.disableCustomTemplates ?? false,
   };
 
   if (editorContext.activeRootContainer.schema) {
@@ -861,10 +772,10 @@ const EditorContent = ({
     },
     editableData,
     rootContainer,
+    externalData,
     props.onExternalDataChange
   );
 
-  editorContext.resources = resourcesStore.values();
   editorContext.compiledComponentConfig = renderableContent;
   editorContext.configAfterAuto = configAfterAuto;
 
@@ -977,7 +888,6 @@ const EditorContent = ({
             <EditorTopBar
               onUndo={undo}
               onRedo={redo}
-              title={"Shopstory"}
               onClose={() => {
                 setDataSaverOverlayOpen(true);
                 saveNow().finally(() => {
@@ -1009,7 +919,6 @@ const EditorContent = ({
               onAdminModeChange={(val) => {
                 setAdminMode(val);
               }}
-              isPlayground={editorContext.isPlayground}
             />
             <SidebarAndContentContainer height={appHeight}>
               <ContentContainer
