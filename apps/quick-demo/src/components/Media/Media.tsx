@@ -60,6 +60,7 @@ export const Media: FC<MediaProps> = ({
       {mediaType === "image" && (
         <Image
           {...media.mediaObject}
+          alt={media.mediaObject.alt ?? ""}
           placeholder={placeholder}
           layout={layout}
           priority={priority}

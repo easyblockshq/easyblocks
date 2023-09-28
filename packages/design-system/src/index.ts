@@ -6,7 +6,6 @@ export { Typography } from "./Typography";
 export { CustomComponentSymbol } from "./CustomComponentSymbol";
 
 export * from "./buttons";
-export * from "./Select";
 export * from "./Input";
 export * from "./ToggleButton";
 export * from "./Toggle";

@@ -303,19 +303,24 @@ const SelectColorTokenItem = forwardRef<
         css={`
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: 6px;
         `}
       >
-        <span
-          css={`
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-
-            ${props.previewColor &&
-            `background-color: ${props.previewColor}; border: 1px solid ${SSColors.black10};`}
-          `}
-        />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="15"
+          height="16"
+          viewBox="0 0 15 16"
+          fill="none"
+        >
+          <circle
+            cx="7.28931"
+            cy="8.00024"
+            r="6.78931"
+            fill={props.previewColor ?? "#fff"}
+            stroke={SSColors.black100}
+          />
+        </svg>
         <span>{props.children}</span>
       </span>
     </SelectItem>

@@ -1,9 +1,13 @@
+import {
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+} from "@radix-ui/react-icons";
 import * as RadixSelect from "@radix-ui/react-select";
 import React, { forwardRef, ReactNode } from "react";
 import styled from "styled-components";
 import { SSColors } from "../colors";
 import { SSFonts } from "../fonts";
-import { SSIcons } from "../icons";
 
 const SelectTrigger = styled(RadixSelect.Trigger)`
   all: unset;
@@ -18,29 +22,64 @@ function Select(props: {
   children: ReactNode;
   value: string;
   onChange: (value: string) => void;
+  placeholder?: string;
 }) {
   return (
     <RadixSelect.Root value={props.value} onValueChange={props.onChange}>
       <SelectTrigger
         css={`
-          min-height: 28px;
+          display: flex;
+          gap: 4px;
+
+          box-sizing: border-box;
+          height: 28px;
+          padding: 0 2px 0 4px;
+          border-radius: 2px;
+
+          @media (hover: hover) {
+            &:hover {
+              box-shadow: 0 0 0 1px ${SSColors.black10};
+            }
+          }
         `}
       >
-        <RadixSelect.Value placeholder="Select a value" />
+        <RadixSelect.Value
+          placeholder={props.placeholder ?? "Select a value..."}
+        />
         <RadixSelect.Icon>
-          <SSIcons.ChevronDown />
+          <ChevronDownIcon color={SSColors.black40} />
         </RadixSelect.Icon>
       </SelectTrigger>
       <RadixSelect.Portal>
         <RadixSelect.Content
           css={`
-            padding: 8px 0;
+            min-width: 100px;
+            max-height: 600px;
+            padding: 4px 0;
+
             background: #fff;
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
-              0 4px 6px -4px rgb(0 0 0 / 0.1);
+            border: 1px solid ${SSColors.black10};
           `}
         >
+          <RadixSelect.ScrollUpButton
+            css={`
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            `}
+          >
+            <ChevronUpIcon />
+          </RadixSelect.ScrollUpButton>
           <RadixSelect.Viewport>{props.children}</RadixSelect.Viewport>
+          <RadixSelect.ScrollDownButton
+            css={`
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            `}
+          >
+            <ChevronDownIcon />
+          </RadixSelect.ScrollDownButton>
         </RadixSelect.Content>
       </RadixSelect.Portal>
     </RadixSelect.Root>
@@ -48,25 +87,26 @@ function Select(props: {
 }
 
 const SelectItemWrapper = styled(RadixSelect.Item)`
+  display: flex;
+  align-items: center;
+  gap: 6px;
   box-sizing: border-box;
   min-height: 28px;
-  padding: 8px;
+  padding: 0 6px;
 
   ${SSFonts.body};
+  color: #000;
 
   background: #fff;
   outline: none;
 
-  &[data-state="checked"] {
-    background: ${SSColors.blue20};
+  &[data-state="unchecked"] {
+    // If item is unchecked, we have to move to the right to recompense space of the missing checkmark icon
+    padding-left: calc(6px + 15px + 6px);
   }
 
   &[data-highlighted] {
-    background: #e2e2e2;
-  }
-
-  &[data-highlighted][data-state="checked"] {
-    background: #dee6ee;
+    background: #daeafd;
   }
 
   @media (hover: hover) {
@@ -84,14 +124,25 @@ const SelectItem = forwardRef<
       disabled={props.isDisabled ?? false}
       ref={ref}
     >
+      <RadixSelect.ItemIndicator>
+        <CheckIcon color="#202123" />
+      </RadixSelect.ItemIndicator>
       <RadixSelect.ItemText>{props.children}</RadixSelect.ItemText>
     </SelectItemWrapper>
   );
 });
 
-const SelectSeparator = styled(RadixSelect.Separator)`
-  height: 1px;
-  background: ${SSColors.black20};
-`;
+function SelectSeparator() {
+  return (
+    <RadixSelect.Separator
+      css={`
+        height: 1px;
+        margin: 4px;
+
+        background: ${SSColors.black100};
+      `}
+    />
+  );
+}
 
 export { Select, SelectItem, SelectSeparator };

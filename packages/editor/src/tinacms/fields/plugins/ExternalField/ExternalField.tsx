@@ -8,10 +8,9 @@ import {
   TextResourceSchemaProp,
   UnresolvedResource,
 } from "@easyblocks/core";
-import { SSSelect } from "@easyblocks/design-system";
+import { Select, SelectItem } from "@easyblocks/design-system";
 import { dotNotationGet, toArray } from "@easyblocks/utils";
-import React, { ComponentType, Fragment, useContext } from "react";
-import { css } from "styled-components";
+import React, { ComponentType, useContext } from "react";
 import { ExternalDataContext } from "../../../../Editor";
 import { useEditorContext } from "../../../../EditorContext";
 import {
@@ -119,7 +118,13 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
         {isMixedFieldValue(value) ? (
           "Mixed"
         ) : (
-          <Fragment>
+          <div
+            css={`
+              display: flex;
+              flex-direction: column;
+              gap: 8px;
+            `}
+          >
             <ExternalField
               id={value.id}
               resourceKey={"key" in value ? value.key : undefined}
@@ -158,7 +163,7 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
                 }}
               />
             )}
-          </Fragment>
+          </div>
         )}
       </div>
     </FieldMetaWrapper>
@@ -192,36 +197,28 @@ export function CompoundResourceValueSelect(props: {
   onResourceKeyChange: (id: string, key: string) => void;
 }) {
   return (
-    <SSSelect
-      onChange={(event) => {
-        const selectedOption = JSON.parse(event.target.value);
+    <Select
+      onChange={(value) => {
+        const selectedOption = JSON.parse(value);
         props.onResourceKeyChange(selectedOption.id, selectedOption.key);
       }}
       value={
-        props.resource.id !== null
+        props.resource.id !== null && props.resource.key !== undefined
           ? JSON.stringify({ id: props.resource.id, key: props.resource.key })
           : ""
       }
-      css={css`
-        margin-top: 8px;
-        margin-left: 0;
-
-        & > select {
-          text-align: left;
-        }
-      `}
+      placeholder="Select source..."
     >
-      {!props.resource.key && <option value="">--Select source--</option>}
       {props.options.map((r) => {
         return (
-          <option
+          <SelectItem
             key={`${r.id}.${r.key}`}
             value={JSON.stringify({ id: r.id, key: r.key })}
           >
             {r.label}
-          </option>
+          </SelectItem>
         );
       })}
-    </SSSelect>
+    </Select>
   );
 }
