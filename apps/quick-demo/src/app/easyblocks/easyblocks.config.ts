@@ -95,7 +95,7 @@ export const easyblocksConfig: Config = {
   ],
   resourceTypes: {
     image: {
-      widgets: [mockImageWidget, pexelsImageWidget, productWidget],
+      widgets: [mockImageWidget, pexelsImageWidget],
     },
     video: {
       widgets: [mockVideoWidget],
