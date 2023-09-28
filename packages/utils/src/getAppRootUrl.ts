@@ -32,7 +32,7 @@ export function getAppUrlRoot() {
   // const isVercelProduction = process.env.VERCEL_ENV === "production";
 
   // is project being build a backend
-  const isApi = process.env.VERCEL_URL!.startsWith("api-");
+  const isApi = process.env.VERCEL_URL!.startsWith("easyblocks-app-");
 
   // building backend project, in this case backend URL is just VERCEL_URL
   if (isApi) {
@@ -45,6 +45,6 @@ export function getAppUrlRoot() {
       "-"
     );
 
-    return `https://api-git-${normalizedBranchName}-shopstoryapp.vercel.app`;
+    return `https://easyblocks-app-git-${normalizedBranchName}-shopstoryapp.vercel.app`;
   }
 }
