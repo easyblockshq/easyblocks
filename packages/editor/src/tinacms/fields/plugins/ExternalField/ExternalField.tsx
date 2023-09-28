@@ -122,6 +122,7 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
             css={`
               display: flex;
               flex-direction: column;
+              align-items: flex-start;
               gap: 8px;
             `}
           >
