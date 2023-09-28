@@ -21,6 +21,7 @@ const confirmHandler: NextApiHandler = async (req, res) => {
       },
     }
   );
+
   const refreshToken = req.cookies["sb-refresh-token"];
   const accessToken = req.cookies["sb-access-token"];
 

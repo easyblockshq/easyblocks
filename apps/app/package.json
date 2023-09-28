@@ -22,7 +22,7 @@
     "@easyblocks/design-system": "workspace:*",
     "@easyblocks/utils": "workspace:*",
     "@radix-ui/themes": "^1.0.0",
-    "@supabase/auth-helpers-nextjs": "^0.8.1",
+    "@supabase/auth-helpers-nextjs": "^0.7.4",
     "@supabase/supabase-js": "^2.32.0",
     "formidable": "^3.4.0",
     "image-size": "^1.0.2",

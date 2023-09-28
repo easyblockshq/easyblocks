@@ -87,12 +87,13 @@ function SignUpPage() {
           </FormBody>
 
           <Stack gap={24}>
-            <FormSubmitButton
+            <Button
+              size="3"
               type="submit"
               disabled={formStatus.status === "loading"}
             >
               Create account
-            </FormSubmitButton>
+            </Button>
 
             <div
               css={`
