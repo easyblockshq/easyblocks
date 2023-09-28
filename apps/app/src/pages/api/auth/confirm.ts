@@ -22,67 +22,64 @@ const confirmHandler: NextApiHandler = async (req, res) => {
     }
   );
 
-  const refreshToken = req.cookies["sb-refresh-token"];
-  const accessToken = req.cookies["sb-access-token"];
+  const code = req.query.code;
 
-  if (refreshToken && accessToken) {
-    const {
-      data: { user },
-    } = await supabase.auth.setSession({
-      refresh_token: refreshToken,
-      access_token: accessToken,
-    });
+  if (!code || Array.isArray(code)) {
+    res.status(400).json({ error: "Missing or invalid code format" });
+    return;
+  }
 
-    if (!user) {
-      res.status(400).json({ error: "Invalid refresh and/or access token" });
-      return;
-    }
+  const sessionResponse = await supabase.auth.exchangeCodeForSession(code);
 
-    // When user confirms their account, we create a default organization for them.
-    const insertOrganizationResult = await supabase
-      .from("organizations")
+  if (sessionResponse.error) {
+    res.status(400).json({ error: "Invalid code" });
+    return;
+  }
+
+  const { user } = sessionResponse.data;
+
+  // When user confirms their account, we create a default organization for them.
+  const insertOrganizationResult = await supabase
+    .from("organizations")
+    .insert({
+      name: `${user.email}'s organization`,
+    })
+    .select("id");
+
+  if (insertOrganizationResult.data) {
+    // After the organization is created, we add the user to the organization.
+    const insertOrganizationUserResult = await supabase
+      .from("organizations_users")
       .insert({
-        name: `${user.email}'s organization`,
-      })
-      .select("id");
+        organization_id: insertOrganizationResult.data[0].id,
+        user_id: user.id,
+      });
 
-    if (insertOrganizationResult.data) {
-      // After the organization is created, we add the user to the organization.
-      const insertOrganizationUserResult = await supabase
-        .from("organizations_users")
+    if (!insertOrganizationUserResult.error) {
+      // Finally, we create a default project for the user in his organization.
+      const insertProjectResult = await supabase
+        .from("projects")
         .insert({
+          name: `${user.email}'s project`,
           organization_id: insertOrganizationResult.data[0].id,
-          user_id: user.id,
-        });
+        })
+        .select("id");
 
-      if (!insertOrganizationUserResult.error) {
-        // Finally, we create a default project for the user in his organization.
-        const insertProjectResult = await supabase
+      if (!insertProjectResult.error) {
+        const projectId = insertProjectResult.data[0].id;
+        const token = TokenService.getAccessToken(projectId);
+
+        await supabase
           .from("projects")
-          .insert({
-            name: `${user.email}'s project`,
-            organization_id: insertOrganizationResult.data[0].id,
+          .update({
+            tokens: [token],
           })
-          .select("id");
-
-        if (!insertProjectResult.error) {
-          const projectId = insertProjectResult.data[0].id;
-          const token = TokenService.getAccessToken(projectId);
-
-          await supabase
-            .from("projects")
-            .update({
-              tokens: [token],
-            })
-            .eq("id", projectId);
-        }
+          .eq("id", projectId);
       }
     }
-
-    res.redirect("/");
-  } else {
-    res.status(400).json({ error: "No refresh or access token" });
   }
+
+  res.redirect("/");
 };
 
 export default confirmHandler;
