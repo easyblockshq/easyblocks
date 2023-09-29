@@ -43,10 +43,7 @@ function VideoRenderer(props: VideoRendererProps) {
     }
   }, [muted, playing]);
 
-  const videoUrl =
-    !video || video.status === "loading" || video.status === "error"
-      ? null
-      : video.value.url;
+  const videoUrl = !video || video.status === "error" ? null : video.value.url;
 
   return (
     <div style={{ position: "relative", width: "100%", height: "100%" }}>
