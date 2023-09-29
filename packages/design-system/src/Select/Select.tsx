@@ -33,7 +33,7 @@ function Select(props: {
 
           box-sizing: border-box;
           height: 28px;
-          padding: 0 2px 0 4px;
+          padding: 0 2px 0 6px;
           border-radius: 2px;
 
           @media (hover: hover) {
