@@ -59,6 +59,7 @@ function Select(props: {
 
             background: #fff;
             border: 1px solid ${SSColors.black10};
+            border-radius: 2px;
           `}
         >
           <RadixSelect.ScrollUpButton
