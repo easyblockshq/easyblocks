@@ -732,6 +732,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
           componentType: "$BannerCard2",
         },
       ],
+      allowSave: true,
     },
     {
       id: "$Grid",
@@ -750,6 +751,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         ...sectionWrapperFields.filter((x) => x.group !== "General"),
       ],
       pasteSlots: ["Component"],
+      allowSave: true,
     },
     {
       id: "$TwoCards",
@@ -1138,6 +1140,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
       styles: twoCardsStyles,
       change: twoCardsChange,
       hideTemplates: true,
+      allowSave: true,
       editing: ({ values, editingInfo }) => {
         const fields = Object.fromEntries(
           editingInfo.fields.map((f) => [f.path, f])

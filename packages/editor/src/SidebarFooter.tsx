@@ -13,7 +13,10 @@ import { findRoleFromSchemaProp } from "./findRole";
 import { pathToCompiledPath } from "./pathToCompiledPath";
 import { stripRichTextPartSelection } from "@easyblocks/app-utils";
 import { parsePath } from "@easyblocks/app-utils";
-import { findComponentDefinitionById } from "@easyblocks/app-utils";
+import {
+  findComponentDefinitionById,
+  findComponentDefinition,
+} from "@easyblocks/app-utils";
 
 const IdWrapper = styled.div`
   display: block;
@@ -63,7 +66,9 @@ export function SidebarFooter(props: { paths: string[] }) {
   //   role !== undefined &&
   //   role !== "item" &&
   //   !role.startsWith("$"); /* rich text part, etc */
-  const isSaveable = true;
+
+  const definition = findComponentDefinition(value, editorContext)!;
+  const isSaveable = !!definition.allowSave;
 
   const showSaveAsTemplate =
     isSaveable &&
