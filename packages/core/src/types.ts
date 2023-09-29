@@ -730,6 +730,7 @@ export type ComponentDefinitionShared<Identifier extends string = string> = {
   label?: string;
   type?: string | string[];
   schema: SchemaProp[];
+
   change?: ComponentConfigChangeFunction;
   icon?: "link" | "grid_3x3";
   getEditorSidebarPreview?: (
@@ -738,6 +739,9 @@ export type ComponentDefinitionShared<Identifier extends string = string> = {
     editorContext: EditorSidebarPreviewOptions
   ) => SidebarPreviewVariant | undefined;
   previewImage?: string;
+
+  hideTemplates?: boolean;
+  allowSave?: boolean;
 };
 
 export type SerializedRenderableComponentDefinition =

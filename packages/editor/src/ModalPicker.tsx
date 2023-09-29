@@ -82,6 +82,10 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
           templatesDictionary![component.id].templates.push(template);
         }
       });
+
+      if (templatesDictionary![component.id].templates.length === 0) {
+        delete templatesDictionary![component.id];
+      }
     });
   }
 

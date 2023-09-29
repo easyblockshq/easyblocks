@@ -20,8 +20,6 @@ import {
   ResourceDefinition,
   ResponsiveValue,
   SchemaProp,
-  Template,
-  TemplateBase,
   Theme,
   TrulyResponsiveValue,
 } from "@easyblocks/core";
@@ -222,12 +220,6 @@ export interface CompiledComponentCollectionValues {
   index: number;
   length: number;
 }
-
-export type SpecialTemplate = TemplateBase & {
-  specialRole: "card";
-};
-
-export type AnyTemplate = SpecialTemplate | Template;
 
 export type CompressedConfig = {
   __compressed: string;

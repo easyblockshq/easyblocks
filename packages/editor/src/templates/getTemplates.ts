@@ -133,9 +133,6 @@ export async function getTemplates(
 ): Promise<Template[]> {
   let remoteUserDefinedTemplates: UserDefinedTemplate[] = [];
 
-  const TEST = await getBuiltInTemplates(false);
-  console.log("@@@@@@@", TEST);
-
   if (!editorContext.isPlayground && !editorContext.disableCustomTemplates) {
     const project = editorContext.project;
     if (!project) {
@@ -236,6 +233,16 @@ export function getTemplatesInternal(
   ];
 
   return allUserTemplates
+    .filter((template) => {
+      const definition = findComponentDefinitionById(
+        template.config._template,
+        editorContext
+      );
+      if (!definition || definition.hideTemplates) {
+        return false;
+      }
+      return true;
+    })
     .filter((template) => {
       return template.config._itemProps
         ? Object.keys(template.config._itemProps).every((componentId) =>

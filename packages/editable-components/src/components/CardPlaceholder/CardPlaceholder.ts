@@ -6,6 +6,7 @@ export const cardPlaceholderDefinition: InternalRenderableComponentDefinition<"$
     id: "$CardPlaceholder",
     label: "Card Placeholder",
     type: "card",
+    hideTemplates: true,
     styles: cardPlaceholderStyles,
     schema: [
       {

@@ -773,6 +773,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
       type: "card",
       styles: grid2Styles,
       auto: gridAuto,
+      hideTemplates: true,
       editing: ({ values, editingInfo }) => {
         const fields = Object.fromEntries(
           editingInfo.fields.map((f) => [f.path, f])
@@ -1136,6 +1137,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
       auto: twoCardsAuto,
       styles: twoCardsStyles,
       change: twoCardsChange,
+      hideTemplates: true,
       editing: ({ values, editingInfo }) => {
         const fields = Object.fromEntries(
           editingInfo.fields.map((f) => [f.path, f])
@@ -1523,6 +1525,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
       id: "$Placeholder",
       type: "card",
       styles: placeholderStyles,
+      hideTemplates: true,
       schema: [],
     },
 
