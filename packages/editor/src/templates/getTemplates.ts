@@ -664,7 +664,7 @@ export function getTemplatesInternal(
   }
 
   if (
-    process.env.NODE_ENV === "development" &&
+    // process.env.NODE_ENV === "development" &&
     findComponentDefinitionById("$text", editorContext)
   ) {
     templatesDict.item.push({
