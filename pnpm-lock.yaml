@@ -709,7 +709,7 @@ importers:
         specifier: workspace:*
         version: link:../design-system
       '@easyblocks/editable-components':
-        specifier: ^1.5.2
+        specifier: workspace:*
         version: link:../editable-components
       '@emotion/is-prop-valid':
         specifier: ^1.2.1
