@@ -1,5 +1,4 @@
 import {
-  AnyTemplate,
   EditorContextType as BaseEditorContextType,
   Form,
   InternalAnyField,
@@ -9,12 +8,13 @@ import {
   CompiledComponentConfig,
   ConfigComponent,
   Resource,
+  Template,
 } from "@easyblocks/core";
 import React, { useContext } from "react";
 import { ActionsType, TextSyncers } from "./types";
 
 export type EditorContextType = BaseEditorContextType & {
-  templates?: Record<string, AnyTemplate[]>;
+  templates?: Template[];
   syncTemplates: () => void;
   focussedField: Array<string>;
   setFocussedField: (field: Array<string> | string) => void;

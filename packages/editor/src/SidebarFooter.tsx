@@ -57,12 +57,13 @@ export function SidebarFooter(props: { paths: string[] }) {
     (schemaProp) => schemaProp.prop === parentInfo.fieldName
   )!;
 
-  const role = findRoleFromSchemaProp(schema);
+  // const role = findRoleFromSchemaProp(schema);
 
-  const isSaveable =
-    role !== undefined &&
-    role !== "item" &&
-    !role.startsWith("$"); /* rich text part, etc */
+  // const isSaveable =
+  //   role !== undefined &&
+  //   role !== "item" &&
+  //   !role.startsWith("$"); /* rich text part, etc */
+  const isSaveable = true;
 
   const showSaveAsTemplate =
     isSaveable &&

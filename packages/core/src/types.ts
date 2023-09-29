@@ -389,26 +389,50 @@ export type Audience = {
   description?: string;
 };
 
-export type TemplateBase = {
-  id?: string;
-  label?: string;
-  type?: string;
-  previewImage?: string;
-  group?: string;
+export type UserDefinedTemplate = {
+  id: string;
+  label: string;
+  thumbnail?: string;
+  config: ConfigComponent;
+  isUserDefined: true;
 };
 
-export type Template = TemplateBase & {
-  isGroupEmptyTemplate?: boolean;
-  mapTo?: string | string[];
-  isDefaultTextModifier?: boolean; // maybe to remove in the future. But we need to know which template is default text modifier!
+export type InternalTemplate = {
+  label: string;
+  thumbnail?: string;
   config: ConfigComponent;
-  configId?: string;
-  isRemoteUserDefined?: boolean;
-  previewSettings?: {
-    width: number;
-    widthAuto: boolean;
-  };
+  isUserDefined?: false;
 };
+
+export type Template = InternalTemplate | UserDefinedTemplate;
+
+//
+// export type Template = {
+//   id?: string;
+//   label?: string;
+//   thumbnail?: string;
+//
+//   config: ConfigComponent
+//
+//   isUserDefined?: boolean,
+//
+//
+//   // type?: string;
+//   // previewImage?: string;
+//   // group?: string;
+//   // isGroupEmptyTemplate?: boolean;
+//   // mapTo?: string | string[];
+//
+//   // isDefaultTextModifier?: boolean; // maybe to remove in the future. But we need to know which template is default text modifier!
+//
+//   // config: ConfigComponent;
+//   // configId?: string;
+//   // isRemoteUserDefined?: boolean;
+//   // previewSettings?: {
+//   //   width: number;
+//   //   widthAuto: boolean;
+//   // };
+// };
 
 type RuntimeConfigThemeValue<T> = {
   id: string;
@@ -504,6 +528,7 @@ export type Config = {
   locales?: Array<Locale>;
   rootContainers?: Record<string, RootContainer>;
   disableCustomTemplates?: boolean;
+  templates?: InternalTemplate[];
 };
 
 export type PreviewMetadata =

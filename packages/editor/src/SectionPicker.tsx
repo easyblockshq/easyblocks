@@ -1,5 +1,5 @@
 import { AnyTemplate, isTemplate } from "@easyblocks/app-utils";
-import { CompiledShopstoryComponentConfig } from "@easyblocks/core";
+import { CompiledShopstoryComponentConfig, Template } from "@easyblocks/core";
 import {
   CustomComponentSymbol,
   SSButtonGhostColor,
@@ -12,8 +12,8 @@ import React, { useRef } from "react";
 import styled from "styled-components";
 import { getComponentConfigPreviewImageURL } from "./configComponentPreview";
 import { EditorContextType, useEditorContext } from "./EditorContext";
-import { Template } from "./types";
 import { getComponentLabelFromTemplate } from "./utils/getComponentLabelFromTemplate";
+import { TemplatePicker } from "./TemplatePicker";
 
 export type CompiledEntryParentContext = {
   parent: CompiledShopstoryComponentConfig;
@@ -152,8 +152,8 @@ function getTemplatePreviewImage(
   }
 
   // template.previewImage is always most important and overrides other sources of preview
-  if (template.previewImage) {
-    return template.previewImage;
+  if (template.thumbnail) {
+    return template.thumbnail;
   }
 
   // TODO: not only access token is important here but also information if user is authorised (access token correct)
@@ -161,14 +161,16 @@ function getTemplatePreviewImage(
     return;
   }
 
-  if (template.configId) {
-    return getComponentConfigPreviewImageURL({
-      configId: template.configId,
-      contextParams: editorContext.contextParams,
-      locales: editorContext.locales,
-      project: editorContext.project,
-    });
-  }
+  return;
+
+  // if (template.configId) {
+  //   return getComponentConfigPreviewImageURL({
+  //     configId: template.configId,
+  //     contextParams: editorContext.contextParams,
+  //     locales: editorContext.locales,
+  //     project: editorContext.project,
+  //   });
+  // }
 }
 
 const SectionCard: React.FC<SectionCardProps> = ({
@@ -246,7 +248,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
 
         <div></div>
 
-        {isTemplate(template) && template.isRemoteUserDefined && (
+        {isTemplate(template) && template.isUserDefined && (
           <SSButtonGhostColor
             className={"editButton"}
             onClick={() => {
@@ -288,7 +290,6 @@ const ModalGridRoot = styled.div<VisualProps>`
 
 type SectionPickerModalProps = {
   isOpen: boolean;
-  onSelect?: (result: AnyTemplate) => void;
   onClose?: () => void;
   parentContext?: CompiledEntryParentContext;
   noRefs?: boolean;
@@ -329,53 +330,43 @@ const GridRoot = styled.div`
   overflow-y: auto;
 `;
 
-export const SectionPickerModal: React.FC<SectionPickerModalProps> = (
-  props
-) => {
-  const { isOpen, onSelect, onClose, componentTypes } = props;
-  const editorContext = useEditorContext();
+export const SectionPickerModal: TemplatePicker = (props) => {
+  const { isOpen, onClose, templates } = props;
 
-  const mode = componentTypes.includes("card") ? "card" : "section";
+  const mode = "section";
 
-  const templates = editorContext.templates?.[componentTypes[0]];
+  const templateGroups = templates;
 
-  const templateGroups: Record<
-    string,
-    { templates: AnyTemplate[]; empty?: Template }
-  > = {};
-
-  const NO_CATEGORY_LABEL = "-- NO CATEGORY --";
-  (templates ?? []).forEach((template) => {
-    const groupName = template.group ?? NO_CATEGORY_LABEL;
-    if (!templateGroups[groupName]) {
-      templateGroups[groupName] = {
-        templates: [],
-      };
-    }
-
-    if (isTemplate(template) && template.isGroupEmptyTemplate) {
-      templateGroups[groupName].empty = template;
-    } else {
-      templateGroups[groupName].templates.push(template);
-    }
-  });
-
-  // Let's move no category to the bottom
-  const noCategoryGroup = templateGroups[NO_CATEGORY_LABEL];
-  if (noCategoryGroup) {
-    delete templateGroups[NO_CATEGORY_LABEL];
-    templateGroups[NO_CATEGORY_LABEL] = noCategoryGroup;
-  }
+  // > = {};
+  //
+  // const NO_CATEGORY_LABEL = "-- NO CATEGORY --";
+  // (templates ?? []).forEach((template) => {
+  //   const groupName = template.group ?? NO_CATEGORY_LABEL;
+  //   if (!templateGroups[groupName]) {
+  //     templateGroups[groupName] = {
+  //       templates: [],
+  //     };
+  //   }
+  //
+  //   if (isTemplate(template) && template.isGroupEmptyTemplate) {
+  //     templateGroups[groupName].empty = template;
+  //   } else {
+  //     templateGroups[groupName].templates.push(template);
+  //   }
+  // });
+  //
+  // // Let's move no category to the bottom
+  // const noCategoryGroup = templateGroups[NO_CATEGORY_LABEL];
+  // if (noCategoryGroup) {
+  //   delete templateGroups[NO_CATEGORY_LABEL];
+  //   templateGroups[NO_CATEGORY_LABEL] = noCategoryGroup;
+  // }
 
   const gridRootRef = useRef<HTMLDivElement>(null);
 
-  const templateSelected = (template: AnyTemplate) => {
-    if (onSelect) {
-      onSelect(template);
-    }
-
+  const templateSelected = (template: Template) => {
     if (onClose) {
-      onClose();
+      onClose(template);
     }
   };
 
@@ -394,7 +385,7 @@ export const SectionPickerModal: React.FC<SectionPickerModalProps> = (
     >
       <ModalRoot>
         <Sidebar>
-          {templates && (
+          {templateGroups && (
             <SidebarContent>
               {Object.keys(templateGroups).map((groupName) => (
                 <SidebarButton
@@ -419,8 +410,7 @@ export const SectionPickerModal: React.FC<SectionPickerModalProps> = (
         <GridRoot ref={gridRootRef}>
           {templates === undefined && <Message>Loading...</Message>}
 
-          {templates &&
-            templates.length > 0 &&
+          {templateGroups &&
             Object.entries(templateGroups).map(
               ([groupName, groupTemplates], index) => (
                 <div
@@ -430,19 +420,19 @@ export const SectionPickerModal: React.FC<SectionPickerModalProps> = (
                 >
                   <TitleContainer>
                     <Title>{groupName}</Title>
-                    {groupTemplates.empty && (
-                      <SSButtonGhostColor
-                        icon={SSIcons.Add}
-                        onClick={() => {
-                          templateSelected(groupTemplates.empty!);
-                        }}
-                      >
-                        Add empty
-                      </SSButtonGhostColor>
-                    )}
+                    {/*{groupTemplates.empty && (*/}
+                    {/*  <SSButtonGhostColor*/}
+                    {/*    icon={SSIcons.Add}*/}
+                    {/*    onClick={() => {*/}
+                    {/*      templateSelected(groupTemplates.empty!);*/}
+                    {/*    }}*/}
+                    {/*  >*/}
+                    {/*    Add empty*/}
+                    {/*  </SSButtonGhostColor>*/}
+                    {/*)}*/}
                   </TitleContainer>
                   <ModalGridRoot mode={mode}>
-                    {groupTemplates.templates.map((template, index) => (
+                    {groupTemplates.map((template, index) => (
                       <SectionCard
                         key={index}
                         template={template}

@@ -428,14 +428,10 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
     }
 
     if (isMissingComponent) {
-      return (
-        <MissingComponent tags={[]} error={true}>
-          Missing
-        </MissingComponent>
-      );
+      return <MissingComponent error={true}>Missing</MissingComponent>;
     } else {
       return (
-        <MissingComponent tags={componentDefinition.tags} error={true}>
+        <MissingComponent component={componentDefinition} error={true}>
           Missing
         </MissingComponent>
       );
@@ -524,7 +520,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
         };
 
         // if link action, we must save link provider
-        if (actionDefinition.tags.includes("actionLink")) {
+        if (isNoCodeComponentOfType(actionDefinition, "actionLink")) {
           const linkActionDefinition = actionDefinition;
 
           actionWrappers[schemaProp.prop] = (
@@ -580,7 +576,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
 
   if (!renderabilityStatus.renderable) {
     return (
-      <MissingComponent tags={componentDefinition.tags}>
+      <MissingComponent component={componentDefinition}>
         {`Fill following fields to render the component: ${renderabilityStatus.fieldsRequiredToRender.join(
           ", "
         )}`}

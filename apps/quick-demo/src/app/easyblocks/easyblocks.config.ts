@@ -4,6 +4,7 @@ import { pexelsImageWidget } from "./resources/pexels";
 import { productWidget } from "./resources/product";
 import { mockImageWidget } from "./externalData/mockMedia/mockImageWidget";
 import { mockVideoWidget } from "@/app/easyblocks/externalData/mockMedia/mockVideoWidget";
+import { templates } from "@/app/easyblocks/templates/templates";
 
 if (!process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN) {
   throw new Error("Missing NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN");
@@ -58,7 +59,7 @@ export const easyblocksConfig: Config = {
     {
       id: "ProductCard",
       label: "Product Card",
-      tags: ["card"],
+      type: "card",
       schema: [
         {
           prop: "product",
@@ -104,5 +105,6 @@ export const easyblocksConfig: Config = {
       widgets: [productWidget],
     },
   },
-  disableCustomTemplates: true,
+  // disableCustomTemplates: true,
+  templates,
 };

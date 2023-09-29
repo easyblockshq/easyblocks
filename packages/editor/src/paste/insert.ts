@@ -7,6 +7,7 @@ import {
 import { ConfigComponent, SchemaProp } from "@easyblocks/core";
 import { includesAny } from "@easyblocks/utils";
 import { reconcile } from "./reconcile";
+import { normalizeToStringArray } from "../normalizeToStringArray";
 
 const getTypes = (schema?: SchemaProp) => {
   if (schema?.type === "component-collection" || schema?.type === "component") {
@@ -40,7 +41,10 @@ const insertCommand = ({
       return null;
     }
 
-    const itemTypes = [itemDefinition.id, ...itemDefinition.tags];
+    const itemTypes = [
+      itemDefinition.id,
+      ...normalizeToStringArray(itemDefinition.type),
+    ];
     if (!includesAny(types, itemTypes)) {
       return null;
     }

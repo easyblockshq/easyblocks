@@ -1,4 +1,6 @@
 import React, { CSSProperties, FC } from "react";
+import { ComponentDefinitionShared } from "@easyblocks/core";
+import { normalizeToStringArray } from "@easyblocks/editor/dist/normalizeToStringArray";
 
 type MissingComponentType = "BUTTON" | "CARD" | "SECTION";
 
@@ -51,7 +53,7 @@ const contentStyles: (props: {
 };
 
 type MissingComponentBuilderProps = {
-  tags?: string[];
+  component?: ComponentDefinitionShared;
   children?: React.ReactNode;
   error?: boolean;
 };
@@ -59,13 +61,19 @@ type MissingComponentBuilderProps = {
 type MissingComponentBuilderComponent = FC<MissingComponentBuilderProps>;
 
 function MissingComponent({
-  tags = [],
+  component,
   children,
   error,
 }: MissingComponentBuilderProps) {
-  const isButton = tags.includes("button");
-  const isSection = tags.includes("section");
-  const isCard = tags.includes("card");
+  const isButton =
+    component?.type === "button" ||
+    (Array.isArray(component?.type) && component?.type.includes("button"));
+  const isSection =
+    component?.type === "section" ||
+    (Array.isArray(component?.type) && component?.type.includes("section"));
+  const isCard =
+    component?.type === "card" ||
+    (Array.isArray(component?.type) && component?.type.includes("card"));
 
   let type: MissingComponentType | undefined;
 

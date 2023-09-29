@@ -441,6 +441,10 @@ function buildRootContainers(
             ];
           })
         );
+      } else {
+        resultRootContainer.widths = Object.fromEntries(
+          devices.map((device) => [device.id, device.w])
+        );
       }
 
       resultRootContainers.push(resultRootContainer);
