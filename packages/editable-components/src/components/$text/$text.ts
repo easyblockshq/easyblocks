@@ -14,11 +14,13 @@ import $textStyles from "./$text.styles";
 
 const textEditableComponent: InternalRenderableComponentDefinition<"$text"> = {
   id: "$text",
+  label: "Text",
   styles: $textStyles,
   tags: ["item", "notrace"],
   schema: [
     {
       prop: "value",
+      label: "Text",
       type: "text",
     },
     {

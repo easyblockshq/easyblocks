@@ -40,14 +40,7 @@ import {
 } from "@easyblocks/core";
 import { SSColors, SSFonts, useToaster } from "@easyblocks/design-system";
 import { assertDefined } from "@easyblocks/utils";
-import React, {
-  createContext,
-  memo,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
 import styled from "styled-components";
 import { ConfigAfterAutoContext } from "./ConfigAfterAutoContext";
@@ -60,6 +53,7 @@ import {
   replaceItems,
 } from "./editorActions";
 import { EditorContext, EditorContextType } from "./EditorContext";
+import { EditorExternalDataProvider } from "./EditorExternalDataProvider";
 import { EditorIframe } from "./EditorIframe";
 import { EditorSidebar } from "./EditorSidebar";
 import { EditorTopBar, TOP_BAR_HEIGHT } from "./EditorTopBar";
@@ -579,8 +573,6 @@ const EditorContent = ({
     },
   });
 
-  const previousExternalData = useRef<ExternalData | undefined>();
-
   const isMaster = !!props.config.__masterEnvironment;
 
   const [templates, setTemplates] = useState<
@@ -747,13 +739,19 @@ const EditorContent = ({
   };
 
   if (editorContext.activeRootContainer.schema) {
-    ["image", "video"].forEach((builtinExternalType) => {
-      // Make sure to add the root resource widget to image/video resource definition
+    ["image", "video", "text"].forEach((builtinExternalType) => {
+      // Make sure to add the root resource widget to built-in resource definitions
       if (
         !editorContext.resourceTypes[builtinExternalType].widgets.some(
           (w) => w.id === "@easyblocks/document-data"
         )
       ) {
+        if (!editorContext.resourceTypes[builtinExternalType]) {
+          editorContext.resourceTypes[builtinExternalType] = {
+            widgets: [],
+          };
+        }
+
         editorContext.resourceTypes[builtinExternalType].widgets.push(
           documentDataWidgetFactory({
             type: builtinExternalType,
@@ -883,7 +881,7 @@ const EditorContent = ({
       )}
       <EditorContext.Provider value={editorContext}>
         <ConfigAfterAutoContext.Provider value={configAfterAuto}>
-          <ExternalDataContext.Provider value={externalData}>
+          <EditorExternalDataProvider externalData={externalData}>
             <div id="rootContainer" />
             <EditorTopBar
               onUndo={undo}
@@ -966,7 +964,7 @@ const EditorContent = ({
                 }}
               />
             )}
-          </ExternalDataContext.Provider>
+          </EditorExternalDataProvider>
         </ConfigAfterAutoContext.Provider>
       </EditorContext.Provider>
     </div>
@@ -1123,5 +1121,3 @@ function adaptRemoteConfig(
   const normalized = normalize(withoutLocalizedFlag, compilationContext);
   return normalized;
 }
-
-export const ExternalDataContext = createContext<ExternalData>({});

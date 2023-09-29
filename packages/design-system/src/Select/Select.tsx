@@ -30,6 +30,7 @@ function Select(props: {
         css={`
           display: flex;
           gap: 4px;
+          max-width: 100%;
 
           box-sizing: border-box;
           height: 28px;
@@ -44,6 +45,11 @@ function Select(props: {
         `}
       >
         <RadixSelect.Value
+          css={`
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          `}
           placeholder={props.placeholder ?? "Select a value..."}
         />
         <RadixSelect.Icon>
@@ -60,6 +66,7 @@ function Select(props: {
             background: #fff;
             border: 1px solid ${SSColors.black10};
             border-radius: 2px;
+            box-shadow: 0px 2px 14px 0px rgba(0, 0, 0, 0.15);
           `}
         >
           <RadixSelect.ScrollUpButton
@@ -102,7 +109,7 @@ const SelectItemWrapper = styled(RadixSelect.Item)`
   outline: none;
 
   &[data-state="unchecked"] {
-    // If item is unchecked, we have to move to the right to recompense space of the missing checkmark icon
+    // If item is unchecked, we have to move it to the right to recompense space of the missing checkmark icon
     padding-left: calc(6px + 15px + 6px);
   }
 

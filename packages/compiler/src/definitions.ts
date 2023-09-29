@@ -24,6 +24,8 @@ import {
   Color,
   ColorSchemaProp,
   CompiledCustomComponentConfig,
+  CompiledExternalTextValue,
+  CompiledLocalTextValue,
   CompiledShopstoryComponentConfig,
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
@@ -33,22 +35,24 @@ import {
   ConfigComponent,
   CustomResourceSchemaProp,
   Devices,
+  ExternalTextValue,
   Font,
   FontSchemaProp,
   getFallbackForLocale,
   getFallbackLocaleForLocale,
   getResourceType,
   IconSchemaProp,
-  LocalizedText,
+  LocalTextValue,
   NumberSchemaProp,
   Option,
+  Position,
+  PositionSchemaProp,
   RadioGroup$SchemaProp,
   RadioGroupSchemaProp,
   RefMap,
   RefValue,
   ResponsiveValue,
   SchemaProp,
-  PositionSchemaProp,
   Select$SchemaProp,
   SelectSchemaProp,
   SerializedComponentDefinitions,
@@ -63,7 +67,6 @@ import {
   UnresolvedResource,
   UnresolvedResourceEmpty,
   UnresolvedResourceNonEmpty,
-  Position,
 } from "@easyblocks/core";
 import { uniqueId } from "@easyblocks/utils";
 import { CompilationCache } from "./CompilationCache";
@@ -91,14 +94,8 @@ export type SchemaPropDefinition<Type, CompiledType> = {
 };
 
 export type TextSchemaPropDefinition = SchemaPropDefinition<
-  {
-    id: string;
-    value: LocalizedText;
-  },
-  {
-    id: string;
-    value: string;
-  }
+  LocalTextValue | ExternalTextValue,
+  CompiledLocalTextValue | CompiledExternalTextValue
 >;
 
 export type StringSchemaPropDefinition = SchemaPropDefinition<string, string>;
@@ -316,14 +313,12 @@ const textProvider: SchemaPropDefinitionProviders["text"] = (
       return false;
     }
 
-    if (typeof x.id !== "string") {
-      return false;
-    }
-
-    if (x.id.startsWith("local.")) {
-      // for local values "value" must be object
-      if (typeof x.value !== "object" || x.value === null) {
-        return false;
+    if (typeof x.id === "string") {
+      if (x.id.startsWith("local.")) {
+        // for local values "value" must be object
+        if (typeof x.value !== "object" || x.value === null) {
+          return false;
+        }
       }
     }
 
@@ -349,48 +344,48 @@ const textProvider: SchemaPropDefinitionProviders["text"] = (
       throw new Error(`incorrect text type: ${x}`);
     },
     compile: (x) => {
-      if (x.id === null) {
-        throw new Error("text cant be null");
-      }
+      if ("value" in x) {
+        const value = x.value[compilationContext.contextParams.locale];
 
-      if (!x.value) {
-        throw new Error("text value cant be empty");
-      }
+        // Let's apply fallback when we're editing
+        if (
+          isContextEditorContext(compilationContext) &&
+          compilationContext.locales &&
+          typeof value !== "string"
+        ) {
+          const fallbackValue =
+            getFallbackForLocale(
+              x.value,
+              compilationContext.contextParams.locale,
+              compilationContext.locales
+            ) ?? "";
 
-      const value = x.value[compilationContext.contextParams.locale];
+          return {
+            id: x.id,
+            value: fallbackValue,
+          };
+        }
 
-      // Let's apply fallback when we're editing
-      if (
-        isContextEditorContext(compilationContext) &&
-        compilationContext.locales &&
-        typeof value !== "string"
-      ) {
-        const fallbackValue =
-          getFallbackForLocale(
-            x.value,
-            compilationContext.contextParams.locale,
-            compilationContext.locales
-          ) ?? "";
+        if (value === undefined) {
+          const availableLocales = Object.keys(x.value)
+            .map((locale) => `"${locale}"`)
+            .join(",");
+
+          throw new Error(
+            `The content passed to ShopstoryClient is not available in a locale: "${compilationContext.contextParams.locale}" (available locales: ${availableLocales}). Please make sure to provide a valid locale code.`
+          );
+        }
 
         return {
           id: x.id,
-          value: fallbackValue,
+          value,
         };
-      }
-
-      if (value === undefined) {
-        const availableLocales = Object.keys(x.value)
-          .map((locale) => `"${locale}"`)
-          .join(",");
-
-        throw new Error(
-          `The content passed to ShopstoryClient is not available in a locale: "${compilationContext.contextParams.locale}" (available locales: ${availableLocales}). Please make sure to provide a valid locale code.`
-        );
       }
 
       return {
         id: x.id,
-        value,
+        widgetId: x.widgetId,
+        key: x.key,
       };
     },
     getHash: (value) => {

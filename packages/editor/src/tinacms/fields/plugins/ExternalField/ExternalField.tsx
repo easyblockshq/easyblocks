@@ -10,8 +10,8 @@ import {
 } from "@easyblocks/core";
 import { Select, SelectItem } from "@easyblocks/design-system";
 import { dotNotationGet, toArray } from "@easyblocks/utils";
-import React, { ComponentType, useContext } from "react";
-import { ExternalDataContext } from "../../../../Editor";
+import React, { ComponentType } from "react";
+import { useEditorExternalData } from "../../../../EditorExternalDataProvider";
 import { useEditorContext } from "../../../../EditorContext";
 import {
   FieldMixedValue,
@@ -40,7 +40,7 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
     input: { value },
   } = props;
   const editorContext = useEditorContext();
-  const externalData = useContext(ExternalDataContext);
+  const externalData = useEditorExternalData();
 
   const fieldNames = toArray(field.name);
   const ExternalField = field.externalField;
@@ -72,7 +72,6 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
     isResolvedCompoundExternalDataValue(resource);
 
   return (
-    // @ts-expect-error
     <FieldMetaWrapper
       {...props}
       form={tinaForm}

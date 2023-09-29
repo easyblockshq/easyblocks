@@ -109,7 +109,6 @@ export const ResponsiveField = (props: ResponsivePluginProps) => {
   const schemaProp = field.schemaProp;
 
   return (
-    // @ts-expect-error
     <FieldMetaWrapper
       {...props}
       layout={isExternalField ? "column" : "row"}

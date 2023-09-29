@@ -2,7 +2,6 @@ import {
   InternalField,
   isEmptyExternalDataConfigEntry,
   isIdReferenceToDocumentExternalData,
-  isResourceSchemaProp,
   isTrulyResponsiveValue,
   responsiveValueFindDeviceWithDefinedValue,
   responsiveValueForceGet,
@@ -10,11 +9,11 @@ import {
 import { getResourceId } from "@easyblocks/core";
 import { Loader, SSFonts, Typography } from "@easyblocks/design-system";
 import { dotNotationGet, toArray } from "@easyblocks/utils";
-import React, { ReactNode, useContext } from "react";
+import React, { ReactNode } from "react";
 import styled, { css } from "styled-components";
 import { useConfigAfterAuto } from "../../../ConfigAfterAutoContext";
-import { ExternalDataContext } from "../../../Editor";
 import { useEditorContext } from "../../../EditorContext";
+import { useEditorExternalData } from "../../../EditorExternalDataProvider";
 import { COMPONENTS_SUPPORTING_MIXED_VALUES } from "../components/constants";
 import { isMixedFieldValue } from "../components/isMixedFieldValue";
 import { FieldProps } from "./fieldProps";
@@ -28,7 +27,10 @@ type ExtraFieldMetaWrapperFields = {
   isLabelHidden?: boolean;
 };
 
-type InputFieldType<ExtraFieldProps, InputProps> = FieldProps<InputProps> &
+type InputFieldType<ExtraFieldProps, InputProps> = Omit<
+  FieldProps<InputProps>,
+  "meta"
+> &
   ExtraFieldProps &
   ExtraFieldMetaWrapperFields & {
     children: ReactNode;
@@ -56,7 +58,7 @@ export function FieldMetaWrapper<
 }: InputFieldType<ExtraFieldProps, InputProps>) {
   const editorContext = useEditorContext();
   const configAfterAuto = useConfigAfterAuto();
-  const externalData = useContext(ExternalDataContext);
+  const externalData = useEditorExternalData();
   const {
     actions: { runChange },
     form,
@@ -113,26 +115,27 @@ export function FieldMetaWrapper<
 
   const label = field.label || input.name;
   const { schemaProp } = field;
-  const isResource = isResourceSchemaProp(schemaProp);
+  const isResource =
+    schemaProp.type === "resource" ||
+    (schemaProp.type === "text" && !input.value.id?.startsWith("local."));
   const configPath = fieldNames[0].split(".").slice(0, -1).join(".");
   const fieldValue = dotNotationGet(configAfterAuto, fieldNames[0]);
   const config = dotNotationGet(configAfterAuto, configPath);
-  const externalDataValue =
-    isResource && schemaProp.type !== "text"
-      ? externalData[
-          getResourceId(
-            focussedField.length === 0 ? "$" : config._id,
-            schemaProp.prop,
-            isTrulyResponsiveValue(input.value)
-              ? responsiveValueFindDeviceWithDefinedValue(
-                  input.value,
-                  editorContext.breakpointIndex,
-                  editorContext.devices
-                )?.id
-              : undefined
-          )
-        ]
-      : undefined;
+  const externalDataValue = isResource
+    ? externalData[
+        getResourceId(
+          focussedField.length === 0 ? "$" : config._id,
+          schemaProp.prop,
+          isTrulyResponsiveValue(input.value)
+            ? responsiveValueFindDeviceWithDefinedValue(
+                input.value,
+                editorContext.breakpointIndex,
+                editorContext.devices
+              )?.id
+            : undefined
+        )
+      ]
+    : undefined;
 
   const renderDefaultDecoration = () => {
     return null;

@@ -10,7 +10,6 @@ export function useTextValue(
   normalize?: (x: string) => string | null
 ) {
   const {
-    actions,
     contextParams: { locale },
     locales,
   } = window.parent.editorWindowAPI.editorContext;
@@ -22,7 +21,8 @@ export function useTextValue(
 
   const valueFromProps = (() => {
     if (isExternal) {
-      let displayedValue = value.value[locale];
+      let displayedValue = value.value?.[locale];
+
       if (typeof displayedValue !== "string") {
         displayedValue = fallbackValue ?? "";
       }
@@ -37,21 +37,19 @@ export function useTextValue(
   const [localInputValue, setLocalInputValue] = React.useState(valueFromProps);
 
   function saveNewValue(newValue: string | null) {
-    actions.runChange(() => {
-      if (isExternal) {
-        const newExternalValue = {
-          ...value,
-          value: {
-            ...value.value,
-            [locale]: newValue,
-          },
-        };
+    if (isExternal) {
+      const newExternalValue = {
+        ...value,
+        value: {
+          ...value.value,
+          [locale]: newValue,
+        },
+      };
 
-        onChange(newExternalValue);
-      } else {
-        onChange(newValue);
-      }
-    });
+      onChange(newExternalValue);
+    } else {
+      onChange(newValue);
+    }
   }
 
   const onChangeDebounced = React.useCallback(

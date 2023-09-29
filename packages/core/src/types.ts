@@ -620,12 +620,6 @@ export type ResourceIdentity = {
   type: string;
 };
 
-export type PendingResource = ResourceIdentity & {
-  status: "loading";
-  value: undefined;
-  error: null;
-};
-
 export type ResolvedResource<Value = unknown> = ResourceIdentity & {
   status: "success";
   value: Value;
@@ -640,7 +634,6 @@ export type RejectedResource = ResourceIdentity & {
 };
 
 export type Resource<Value = unknown> =
-  | PendingResource
   | ResolvedResource<Value>
   | RejectedResource;
 
@@ -653,9 +646,13 @@ export type VideoResource = Resource<VideoSrc>;
 export type TextResource = Resource<LocalizedText>;
 
 export type SerializableResource =
-  | Omit<PendingResource, "values">
   | ResolvedResource
-  | Omit<RejectedResource, "values">;
+  | Omit<RejectedResource, "value">;
+
+export type ExternalValueProp<ResourceValue = unknown> =
+  | (Omit<ResolvedResource, "value"> & { value: ResourceValue })
+  | (Omit<RejectedResource, "value"> & { value: undefined })
+  | null;
 
 export type DeviceRange = {
   id: DeviceId;
@@ -1035,15 +1032,30 @@ export type FetchResourceResult<T extends NonNullish = NonNullish> =
 
 export type FetchOutputBasicResources = Record<string, FetchResourceResult>;
 
-export type FetchCompoundResourceResultValue = {
-  type: string;
-  value: NonNullish;
+export type FetchCompoundResourceResultValue<
+  Type extends string = string,
+  Value extends NonNullish = NonNullish
+> = {
+  type: Type;
+  value: Value;
   label?: string;
 };
 
+export type FetchCompoundImageResourceResultValue =
+  FetchCompoundResourceResultValue<"image", ImageSrc>;
+
+export type FetchCompoundVideoResourceResultValue =
+  FetchCompoundResourceResultValue<"video", VideoSrc>;
+
+export type FetchCompoundTextResourceResultValue =
+  FetchCompoundResourceResultValue<"text", string>;
+
 export type FetchCompoundResourceResultValues = Record<
   string,
-  FetchCompoundResourceResultValue
+  | FetchCompoundImageResourceResultValue
+  | FetchCompoundVideoResourceResultValue
+  | FetchCompoundTextResourceResultValue
+  | FetchCompoundResourceResultValue<string & Record<never, never>, NonNullish>
 >;
 
 export type ExternalDataCompoundResourceResolvedResult = {
@@ -1086,3 +1098,15 @@ export type ExternalDataChangeHandler = (
   resources: ChangedExternalData,
   contextParams: ContextParams
 ) => void;
+
+export type LocalTextValue = { id: `local.${string}`; value: LocalizedText };
+
+export type CompiledLocalTextValue = { id: `local.${string}`; value: string };
+
+export type ExternalTextValue = {
+  id: string | null;
+  key?: string;
+  widgetId: string;
+};
+
+export type CompiledExternalTextValue = ExternalTextValue;

@@ -44,6 +44,10 @@ export function BlocksControls({
     event.stopPropagation();
     event.preventDefault();
 
+    if (isActive) {
+      return;
+    }
+
     const closestEditableElementFromTarget = (
       event.target as HTMLElement
     ).closest('[contenteditable="true"]');

@@ -1,19 +1,26 @@
-import { getFallbackForLocale } from "@easyblocks/core";
+import { isResolvedCompoundExternalDataValue } from "@easyblocks/app-utils";
+import {
+  ExternalTextValue,
+  getFallbackForLocale,
+  getResourceId,
+  LocalTextValue,
+  UnresolvedResource,
+} from "@easyblocks/core";
 import { SSInput } from "@easyblocks/design-system";
-import { cleanString } from "@easyblocks/utils";
+import { cleanString, dotNotationGet } from "@easyblocks/utils";
 import debounce from "lodash/debounce";
-import React, { useRef } from "react";
+import React, { ComponentType, useRef } from "react";
+import { FieldRenderProps } from "react-final-form";
 import { useEditorContext } from "../../../EditorContext";
+import { useEditorExternalData } from "../../../EditorExternalDataProvider";
+import { InternalWidgetComponentProps } from "../../../types";
+import {
+  CompoundResourceValueSelect,
+  getBasicResourcesOfType,
+} from "./ExternalField/ExternalField";
+import { ExternalValueWidgetsMenu } from "./ResponsiveField/ExternalValueWidgetsMenu";
 import { parse } from "./textFormat";
-import { wrapFieldsWithMeta } from "./wrapFieldWithMeta";
-
-type InputProps = {
-  error?: boolean;
-  small?: boolean;
-  placeholder?: string;
-  step?: string | number;
-  icon?: any;
-};
+import { FieldMetaWrapper } from "./wrapFieldWithMeta";
 
 export function useTextValue(
   value: any,
@@ -22,7 +29,6 @@ export function useTextValue(
   normalize?: (x: string) => string | null
 ) {
   const {
-    actions,
     contextParams: { locale },
     locales,
   } = useEditorContext();
@@ -34,7 +40,7 @@ export function useTextValue(
 
   const valueFromProps = (() => {
     if (isExternal) {
-      let displayedValue = value.value[locale];
+      let displayedValue = value.value?.[locale];
       if (typeof displayedValue !== "string") {
         displayedValue = fallbackValue ?? "";
       }
@@ -49,21 +55,19 @@ export function useTextValue(
   const [localInputValue, setLocalInputValue] = React.useState(valueFromProps);
 
   function saveNewValue(newValue: string | null) {
-    actions.runChange(() => {
-      if (isExternal) {
-        const newExternalValue = {
-          ...value,
-          value: {
-            ...value.value,
-            [locale]: newValue,
-          },
-        };
+    if (isExternal) {
+      const newExternalValue = {
+        ...value,
+        value: {
+          ...value.value,
+          [locale]: newValue,
+        },
+      };
 
-        onChange(newExternalValue);
-      } else {
-        onChange(newValue);
-      }
-    });
+      onChange(newExternalValue);
+    } else {
+      onChange(newValue);
+    }
   }
 
   const onChangeDebounced = React.useCallback(
@@ -135,14 +139,11 @@ export function useTextValue(
   };
 }
 
-export const TextField = wrapFieldsWithMeta<
-  {
-    placeholder: string;
-    icon?: any;
-  },
-  InputProps
->(({ input, field }) => {
+type TextFieldProps = FieldRenderProps<LocalTextValue | ExternalTextValue, any>;
+
+export function TextField({ input, field, form }: TextFieldProps) {
   const { value, onChange, ...restInputProperties } = input;
+  const editorContext = useEditorContext();
 
   const inputProps = useTextValue(
     value,
@@ -151,21 +152,159 @@ export const TextField = wrapFieldsWithMeta<
     (field as any).normalize
   );
 
-  return (
-    <SSInput
-      {...restInputProperties}
-      {...inputProps}
-      icon={field.icon}
-      align={"right"}
-    />
+  const externalData = useEditorExternalData();
+
+  const fieldExternalDataId = getResourceId(
+    dotNotationGet(
+      editorContext.form.values,
+      field.name.split(".").slice(0, -1).join(".")
+    )._id,
+    field.schemaProp.prop
   );
-});
+
+  const isInputValueExternalTextValue = isExternalTextValue(value);
+
+  const externalDataValue = isInputValueExternalTextValue
+    ? externalData[fieldExternalDataId]
+    : null;
+
+  const WidgetComponent = editorContext.resourceTypes["text"].widgets.find(
+    (w) => "widgetId" in input.value && w.id === input.value.widgetId
+  )?.component as ComponentType<InternalWidgetComponentProps> | undefined;
+
+  const isCompoundResourceValueSelectVisible =
+    isInputValueExternalTextValue &&
+    value.id !== null &&
+    !value.id.startsWith("$.") &&
+    externalDataValue != null &&
+    isResolvedCompoundExternalDataValue(externalDataValue);
+
+  return (
+    <FieldMetaWrapper
+      field={field}
+      input={input}
+      form={form}
+      layout="column"
+      renderDecoration={() => {
+        const widgets = [
+          ...(editorContext.resourceTypes["text"]?.widgets ?? []),
+        ];
+
+        widgets.unshift({
+          id: "@easyblocks/local-text",
+          label: "Local text",
+          component: () => {
+            return null;
+          },
+        });
+
+        if (widgets.length === 1) {
+          return null;
+        }
+
+        return (
+          <ExternalValueWidgetsMenu
+            widgets={widgets}
+            selectedWidgetId={
+              "widgetId" in value ? value.widgetId : widgets[0].id
+            }
+            onChange={(widgetId) => {
+              const newValue: UnresolvedResource = {
+                id: null,
+                widgetId,
+              };
+
+              onChange(newValue);
+            }}
+          />
+        );
+      }}
+    >
+      <div
+        css={`
+          display: flex;
+          gap: 8px;
+          width: 100%;
+        `}
+      >
+        {WidgetComponent && isInputValueExternalTextValue ? (
+          <div
+            css={`
+              display: flex;
+              flex-direction: column;
+              gap: 8px;
+              align-items: flex-start;
+              flex-grow: 1;
+            `}
+          >
+            <WidgetComponent
+              id={value.id}
+              resourceKey={"key" in value ? value.key : undefined}
+              onChange={(newId, newKey) => {
+                const newValue: ExternalTextValue = {
+                  id: newId,
+                  widgetId: value.widgetId,
+                };
+
+                if (newKey) {
+                  newValue.key = newKey;
+                }
+
+                onChange(newValue);
+              }}
+            />
+            {isCompoundResourceValueSelectVisible && (
+              <CompoundResourceValueSelect
+                options={getBasicResourcesOfType(
+                  externalDataValue.value,
+                  "text"
+                ).map((r) => ({
+                  id: value.id!,
+                  key: r.key,
+                  label: r.label ?? r.key,
+                }))}
+                resource={
+                  value.id === null
+                    ? {
+                        id: value.id,
+                        key: undefined,
+                      }
+                    : {
+                        id: value.id,
+                        key: value.key,
+                      }
+                }
+                onResourceKeyChange={(_, key) => {
+                  input.onChange({
+                    ...value,
+                    key,
+                  });
+                }}
+              />
+            )}
+          </div>
+        ) : (
+          <SSInput
+            {...restInputProperties}
+            {...inputProps}
+            icon={field.icon}
+            controlSize="full-width"
+            withBorder
+          />
+        )}
+      </div>
+    </FieldMetaWrapper>
+  );
+}
 
 export const TextFieldPlugin = {
   name: "text",
   Component: TextField,
-  validate(value: any, values: any, meta: any, field: any) {
-    if (field.required && !value) return "Required";
-  },
   parse,
 };
+
+function isExternalTextValue(
+  value: LocalTextValue | ExternalTextValue
+): value is ExternalTextValue {
+  return !("value" in value);
+}

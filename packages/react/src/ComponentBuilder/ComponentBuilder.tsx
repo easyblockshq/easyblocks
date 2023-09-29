@@ -40,6 +40,7 @@ import {
   ResourceSchemaProp,
   ResponsiveValue,
   UnresolvedResource,
+  UnresolvedResourceNonEmpty,
 } from "@easyblocks/core";
 import React, { Fragment, ReactElement } from "react";
 import Box from "../Box/Box";
@@ -760,7 +761,9 @@ function mapResourceProps(
         schemaProp.type === "text" &&
         (propValue as UnresolvedResource).id?.startsWith("local.")
       ) {
-        resultsProps[propName] = propValue;
+        resultsProps[propName] = (
+          propValue as UnresolvedResourceNonEmpty
+        ).value;
       } else {
         resultsProps[propName] = resolveResource(
           propValue,
