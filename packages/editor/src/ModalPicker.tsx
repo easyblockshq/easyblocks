@@ -72,11 +72,14 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
     templatesDictionary = {};
 
     components.forEach((component) => {
-      templatesDictionary![component.id] = [];
+      templatesDictionary![component.id] = {
+        component,
+        templates: [],
+      };
 
       editorContext.templates!.forEach((template) => {
         if (component.id === template.config._template) {
-          templatesDictionary![component.id].push(template);
+          templatesDictionary![component.id].templates.push(template);
         }
       });
     });

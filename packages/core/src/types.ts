@@ -398,7 +398,8 @@ export type UserDefinedTemplate = {
 };
 
 export type InternalTemplate = {
-  label: string;
+  id: string;
+  label?: string;
   thumbnail?: string;
   config: ConfigComponent;
   isUserDefined?: false;

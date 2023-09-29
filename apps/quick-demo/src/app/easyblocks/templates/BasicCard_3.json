@@ -1,0 +1,480 @@
+{
+  "_id": "6b8193c9-4d99-4d9a-84ec-d05c4991e8f4",
+  "_template": "$BannerCard2",
+  "traceId": "$BannerCard2-8d9e37ea",
+  "_itemProps": {
+    "$GridCard": {
+      "Cards": {
+        "itemSize": "1x1"
+      }
+    }
+  },
+  "cornerRadius": {
+    "$res": true,
+    "xl": "0"
+  },
+  "Card1": [
+    {
+      "_id": "13311198-6ab6-4d03-9185-d517d079699d",
+      "_template": "$BasicCard",
+      "traceId": "$BasicCard-2da1f95a",
+      "size": {
+        "$res": true,
+        "xl": {
+          "value": "fit-content"
+        }
+      },
+      "cornerRadius": {
+        "$res": true,
+        "xl": "0"
+      },
+      "Background": [],
+      "enableContent": true,
+      "position": {
+        "$res": true,
+        "xl": "center-left"
+      },
+      "paddingLeft": {
+        "$res": true,
+        "xl": {
+          "value": "24px",
+          "ref": "24"
+        }
+      },
+      "paddingRight": {
+        "$res": true,
+        "xl": {
+          "value": "24px",
+          "ref": "24"
+        }
+      },
+      "paddingTop": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "ref": "16"
+        }
+      },
+      "paddingBottom": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "ref": "16"
+        }
+      },
+      "paddingLeftExternal": {
+        "$res": true,
+        "xl": {
+          "value": "0px",
+          "ref": "0"
+        }
+      },
+      "paddingRightExternal": {
+        "$res": true,
+        "xl": {
+          "value": "0px",
+          "ref": "0"
+        }
+      },
+      "paddingTopExternal": {
+        "$res": true,
+        "xl": {
+          "value": "0px",
+          "ref": "0"
+        }
+      },
+      "paddingBottomExternal": {
+        "$res": true,
+        "xl": {
+          "value": "0px",
+          "ref": "0"
+        }
+      },
+      "edgeMarginProtection": {
+        "$res": true,
+        "xl": true
+      },
+      "Stack": [
+        {
+          "_id": "51d7ba5d-c55e-4409-b439-5ea22e21cde7",
+          "_template": "$stack",
+          "traceId": "$stack-267df081",
+          "Items": [
+            {
+              "_id": "e6461874-a9af-4c6f-800a-77b7d60cdab7",
+              "_template": "$richText",
+              "traceId": "$richText-a8379d28",
+              "_itemProps": {
+                "$stack": {
+                  "Items": {
+                    "width": {
+                      "$res": true,
+                      "xl": "512px"
+                    },
+                    "marginBottom": {
+                      "$res": true,
+                      "xl": {
+                        "value": "16px",
+                        "ref": "16"
+                      }
+                    },
+                    "align": {
+                      "$res": true,
+                      "xl": "left"
+                    }
+                  }
+                }
+              },
+              "elements": {
+                "en": [
+                  {
+                    "_id": "d6315ae6-0466-46ef-acbc-8c1fc0b471e5",
+                    "_template": "$richTextBlockElement",
+                    "traceId": "$richTextBlockElement-e0ff67d5",
+                    "type": "paragraph",
+                    "elements": [
+                      {
+                        "_id": "01a33c95-2267-41ee-93a2-3173027ce05d",
+                        "_template": "$richTextLineElement",
+                        "traceId": "$richTextLineElement-85d8d707",
+                        "elements": [
+                          {
+                            "_id": "151db380-aa50-4209-a2bb-2840e59d078b",
+                            "_template": "$richTextPart",
+                            "traceId": "$richTextPart-15502b19",
+                            "value": "Lorem ipsum dolor sit amet",
+                            "font": {
+                              "$res": true,
+                              "xl": {
+                                "value": {
+                                  "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
+                                  "fontSize": 20,
+                                  "fontWeight": 400,
+                                  "lineHeight": 1.2,
+                                  "@xs": {
+                                    "fontSize": 18
+                                  }
+                                },
+                                "ref": "$body"
+                              }
+                            },
+                            "color": {
+                              "$res": true,
+                              "xl": {
+                                "value": "black",
+                                "ref": "$dark"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              "accessibilityRole": "div",
+              "isListStyleAuto": true,
+              "mainFont": {
+                "$res": true,
+                "xl": {
+                  "value": {
+                    "fontSize": 32,
+                    "fontFamily": "sans-serif"
+                  },
+                  "ref": "$heading"
+                }
+              },
+              "mainColor": {
+                "$res": true,
+                "xl": {
+                  "value": "black",
+                  "ref": "$dark"
+                }
+              }
+            },
+            {
+              "_id": "df84a07e-e1b4-42bf-afe5-d58f370cf8f0",
+              "_template": "$buttons",
+              "traceId": "$buttons-f64139be",
+              "_itemProps": {
+                "$stack": {
+                  "Items": {
+                    "width": {
+                      "$res": true,
+                      "xl": "512px"
+                    },
+                    "marginBottom": {
+                      "$res": true,
+                      "xl": {
+                        "value": "0px",
+                        "ref": "0"
+                      }
+                    },
+                    "align": {
+                      "$res": true,
+                      "xl": "left"
+                    }
+                  }
+                }
+              },
+              "verticalLayout": false,
+              "gap": {
+                "$res": true,
+                "xl": {
+                  "value": "12px",
+                  "ref": "12"
+                }
+              },
+              "Buttons": [
+                {
+                  "_id": "d9199c97-34e4-449a-8e4b-67da1c36560f",
+                  "_template": "$StandardButton",
+                  "_master": "buttonTextDark",
+                  "traceId": "$StandardButton-c972c55c",
+                  "_itemProps": {
+                    "$buttons": {
+                      "Buttons": {}
+                    }
+                  },
+                  "action": [],
+                  "label": {
+                    "id": "local.79f5c6e8-ba48-4233-9219-1bcce37d50d2",
+                    "value": {
+                      "en": "Button"
+                    }
+                  },
+                  "symbol": [],
+                  "font": {
+                    "$res": true,
+                    "xl": {
+                      "value": {
+                        "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
+                        "fontSize": 16,
+                        "fontWeight": 500,
+                        "lineHeight": 1.2
+                      },
+                      "ref": "$body2.bold"
+                    }
+                  },
+                  "color": {
+                    "$res": true,
+                    "xl": {
+                      "value": "black",
+                      "ref": "$dark"
+                    }
+                  },
+                  "underline": "on-custom",
+                  "underlineOffset": {
+                    "$res": true,
+                    "xl": "4"
+                  },
+                  "hasBackground": false,
+                  "backgroundColor": {
+                    "$res": true,
+                    "xl": {
+                      "value": "xxx"
+                    }
+                  },
+                  "hasBorder": false,
+                  "borderWidth": {
+                    "$res": true,
+                    "xl": "1"
+                  },
+                  "borderColor": {
+                    "$res": true,
+                    "xl": {
+                      "value": "black",
+                      "ref": "$dark"
+                    }
+                  },
+                  "minHeight": {
+                    "$res": true,
+                    "xl": "42"
+                  },
+                  "minWidth": {
+                    "$res": true,
+                    "xl": "100"
+                  },
+                  "horizontalPadding": {
+                    "$res": true,
+                    "xl": {
+                      "value": "16px",
+                      "ref": "16"
+                    }
+                  },
+                  "radius": {
+                    "$res": true,
+                    "xl": "10"
+                  },
+                  "traceImpressions": false,
+                  "traceClicks": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "Card2": [
+    {
+      "_id": "8200658a-8e43-4579-a876-5dcebeaad9c4",
+      "_template": "$BasicCardBackground",
+      "traceId": "$BasicCardBackground-67a26069",
+      "size": {
+        "$res": true,
+        "xl": {
+          "ref": "$square",
+          "value": "1:1"
+        }
+      },
+      "cornerRadius": {
+        "$res": true,
+        "xl": "0"
+      },
+      "Background": [
+        {
+          "_id": "20fcb97e-575d-46b7-82c3-112250dbaf38",
+          "_template": "$image",
+          "traceId": "$image-962da247",
+          "image": {
+            "$res": true,
+            "xl": {
+              "id": null
+            }
+          },
+          "aspectRatio": {
+            "$res": true,
+            "xl": {
+              "value": "2:1",
+              "ref": "$landscape"
+            }
+          },
+          "action": [],
+          "traceImpressions": false,
+          "traceClicks": false
+        }
+      ],
+      "enableContent": false,
+      "position": {
+        "$res": true,
+        "xl": "top-left"
+      },
+      "paddingLeft": {
+        "$res": true,
+        "xl": {
+          "value": "24px",
+          "ref": "24"
+        }
+      },
+      "paddingRight": {
+        "$res": true,
+        "xl": {
+          "value": "24px",
+          "ref": "24"
+        }
+      },
+      "paddingTop": {
+        "$res": true,
+        "xl": {
+          "value": "24px",
+          "ref": "24"
+        }
+      },
+      "paddingBottom": {
+        "$res": true,
+        "xl": {
+          "value": "24px",
+          "ref": "24"
+        }
+      },
+      "paddingLeftExternal": {
+        "$res": true,
+        "xl": {
+          "value": "0px",
+          "ref": "0"
+        }
+      },
+      "paddingRightExternal": {
+        "$res": true,
+        "xl": {
+          "value": "0px",
+          "ref": "0"
+        }
+      },
+      "paddingTopExternal": {
+        "$res": true,
+        "xl": {
+          "value": "0px",
+          "ref": "0"
+        }
+      },
+      "paddingBottomExternal": {
+        "$res": true,
+        "xl": {
+          "value": "0px",
+          "ref": "0"
+        }
+      },
+      "edgeMarginProtection": {
+        "$res": true,
+        "xl": true
+      },
+      "Stack": [
+        {
+          "_id": "ac43cb78-b14d-4bc3-87d4-a1861a3f8ef8",
+          "_template": "$stack",
+          "traceId": "$stack-216a5351",
+          "Items": []
+        }
+      ]
+    }
+  ],
+  "mode": {
+    "$res": true,
+    "xl": "left"
+  },
+  "sideModeWidth": {
+    "$res": true,
+    "xl": "40%"
+  },
+  "backgroundModePosition": {
+    "$res": true,
+    "xl": "bottom-center"
+  },
+  "backgroundModePaddingLeft": {
+    "$res": true,
+    "xl": {
+      "value": "24px",
+      "ref": "24"
+    }
+  },
+  "backgroundModePaddingRight": {
+    "$res": true,
+    "xl": {
+      "value": "24px",
+      "ref": "24"
+    }
+  },
+  "backgroundModePaddingTop": {
+    "$res": true,
+    "xl": {
+      "value": "24px",
+      "ref": "24"
+    }
+  },
+  "backgroundModePaddingBottom": {
+    "$res": true,
+    "xl": {
+      "value": "24px",
+      "ref": "24"
+    }
+  },
+  "backgroundModeEdgeMarginProtection": {
+    "$res": true,
+    "xl": true
+  },
+  "action": [],
+  "traceImpressions": false,
+  "traceClicks": false
+}

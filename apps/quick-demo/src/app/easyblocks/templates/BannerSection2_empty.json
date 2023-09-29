@@ -1,0 +1,368 @@
+{
+  "_id": "14cbfff0-0bda-4212-9e64-8253fab14961",
+  "hide": {
+    "xl": false,
+    "$res": true
+  },
+  "padding": {
+    "xl": {
+      "ref": "24",
+      "value": "24px"
+    },
+    "$res": true
+  },
+  "traceId": "$BannerSection2-9be9ed81",
+  "Component": [
+    {
+      "_id": "7297c1a6-6046-46c2-8a5e-b47b52683598",
+      "mode": {
+        "xl": "none",
+        "$res": true
+      },
+      "Card1": [
+        {
+          "_id": "d2cff8ec-46d5-4f74-93bb-8cd317b45b2a",
+          "size": {
+            "xl": {
+              "value": "fit-content"
+            },
+            "$res": true
+          },
+          "Stack": [
+            {
+              "_id": "2a38a416-d819-4a17-b89b-dca02fb6ca2f",
+              "Items": [],
+              "traceId": "$stack-1e490c64",
+              "_template": "$stack"
+            }
+          ],
+          "traceId": "$BasicCard-3a2d5a2b",
+          "position": {
+            "xl": "top-left",
+            "$res": true
+          },
+          "_template": "$BasicCard",
+          "Background": [],
+          "paddingTop": {
+            "xl": {
+              "ref": "24",
+              "value": "24px"
+            },
+            "$res": true
+          },
+          "paddingLeft": {
+            "xl": {
+              "ref": "24",
+              "value": "24px"
+            },
+            "$res": true
+          },
+          "cornerRadius": {
+            "xl": "0",
+            "$res": true
+          },
+          "paddingRight": {
+            "xl": {
+              "ref": "24",
+              "value": "24px"
+            },
+            "$res": true
+          },
+          "enableContent": true,
+          "paddingBottom": {
+            "xl": {
+              "ref": "24",
+              "value": "24px"
+            },
+            "$res": true
+          },
+          "paddingTopExternal": {
+            "xl": {
+              "ref": "0",
+              "value": "0px"
+            },
+            "$res": true
+          },
+          "paddingLeftExternal": {
+            "xl": {
+              "ref": "0",
+              "value": "0px"
+            },
+            "$res": true
+          },
+          "edgeMarginProtection": {
+            "xl": true,
+            "$res": true
+          },
+          "paddingRightExternal": {
+            "xl": {
+              "ref": "0",
+              "value": "0px"
+            },
+            "$res": true
+          },
+          "paddingBottomExternal": {
+            "xl": {
+              "ref": "0",
+              "value": "0px"
+            },
+            "$res": true
+          }
+        }
+      ],
+      "Card2": [
+        {
+          "_id": "b221e9b0-7aaa-46b6-8536-4e2adbfb7b72",
+          "size": {
+            "xl": {
+              "ref": "$landscape",
+              "value": "16:9"
+            },
+            "$res": true
+          },
+          "Stack": [
+            {
+              "_id": "467f43d2-6eb6-408f-a957-105dc08cd2f0",
+              "Items": [],
+              "traceId": "$stack-10d07c85",
+              "_template": "$stack"
+            }
+          ],
+          "traceId": "$BasicCardBackground-864b257d",
+          "position": {
+            "xl": "top-left",
+            "$res": true
+          },
+          "_template": "$BasicCardBackground",
+          "Background": [
+            {
+              "_id": "000f9c04-6ef2-4976-8f2e-3d535614b274",
+              "image": {
+                "xl": {
+                  "id": null
+                },
+                "$res": true
+              },
+              "action": [],
+              "traceId": "$image-bbf7464e",
+              "_template": "$image",
+              "aspectRatio": {
+                "xl": {
+                  "ref": "$landscape",
+                  "value": "16:9"
+                },
+                "$res": true
+              },
+              "traceClicks": false,
+              "traceImpressions": false
+            }
+          ],
+          "paddingTop": {
+            "xl": {
+              "ref": "24",
+              "value": "24px"
+            },
+            "$res": true
+          },
+          "paddingLeft": {
+            "xl": {
+              "ref": "24",
+              "value": "24px"
+            },
+            "$res": true
+          },
+          "cornerRadius": {
+            "xl": "0",
+            "$res": true
+          },
+          "paddingRight": {
+            "xl": {
+              "ref": "24",
+              "value": "24px"
+            },
+            "$res": true
+          },
+          "enableContent": false,
+          "paddingBottom": {
+            "xl": {
+              "ref": "24",
+              "value": "24px"
+            },
+            "$res": true
+          },
+          "paddingTopExternal": {
+            "xl": {
+              "ref": "0",
+              "value": "0px"
+            },
+            "$res": true
+          },
+          "paddingLeftExternal": {
+            "xl": {
+              "ref": "0",
+              "value": "0px"
+            },
+            "$res": true
+          },
+          "edgeMarginProtection": {
+            "xl": true,
+            "$res": true
+          },
+          "paddingRightExternal": {
+            "xl": {
+              "ref": "0",
+              "value": "0px"
+            },
+            "$res": true
+          },
+          "paddingBottomExternal": {
+            "xl": {
+              "ref": "0",
+              "value": "0px"
+            },
+            "$res": true
+          }
+        }
+      ],
+      "action": [],
+      "traceId": "$BannerCard2-442a024c",
+      "_template": "$BannerCard2",
+      "traceClicks": false,
+      "cornerRadius": {
+        "xl": "0",
+        "$res": true
+      },
+      "sideModeWidth": {
+        "xl": "50%",
+        "$res": true
+      },
+      "traceImpressions": false,
+      "backgroundModePosition": {
+        "xl": "bottom-center",
+        "$res": true
+      },
+      "backgroundModePaddingTop": {
+        "xl": {
+          "ref": "24",
+          "value": "24px"
+        },
+        "$res": true
+      },
+      "backgroundModePaddingLeft": {
+        "xl": {
+          "ref": "24",
+          "value": "24px"
+        },
+        "$res": true
+      },
+      "backgroundModePaddingRight": {
+        "xl": {
+          "ref": "24",
+          "value": "24px"
+        },
+        "$res": true
+      },
+      "backgroundModePaddingBottom": {
+        "xl": {
+          "ref": "24",
+          "value": "24px"
+        },
+        "$res": true
+      },
+      "backgroundModeEdgeMarginProtection": {
+        "xl": true,
+        "$res": true
+      }
+    }
+  ],
+  "_template": "$BannerSection2",
+  "_itemProps": {
+    "$RootSections": {
+      "data": {
+        "topMargin": {
+          "xl": {
+            "ref": "0",
+            "value": "0px"
+          },
+          "$res": true
+        },
+        "bottomMargin": {
+          "xl": {
+            "ref": "32",
+            "value": "32px"
+          },
+          "$res": true
+        }
+      }
+    }
+  },
+  "headerMode": "none",
+  "HeaderStack": [
+    {
+      "_id": "3afaa5a6-b6d5-4436-92d7-fa428f2707e8",
+      "Items": [],
+      "traceId": "$stack-164f458f",
+      "_template": "$stack"
+    }
+  ],
+  "Background__": [],
+  "escapeMargin": {
+    "xl": false,
+    "$res": true
+  },
+  "layout1Stack": "left",
+  "layout2Stacks": {
+    "xl": "left-right",
+    "$res": true
+  },
+  "containerMargin": {
+    "xl": {
+      "ref": "containerMargin.default",
+      "value": {
+        "xl": "5vw",
+        "$res": true
+      }
+    },
+    "$res": true
+  },
+  "headerStacksGap": {
+    "xl": {
+      "ref": "12",
+      "value": "12px"
+    },
+    "$res": true
+  },
+  "footerSectionGap": {
+    "xl": {
+      "ref": "12",
+      "value": "12px"
+    },
+    "$res": true
+  },
+  "headerSectionGap": {
+    "xl": {
+      "ref": "12",
+      "value": "12px"
+    },
+    "$res": true
+  },
+  "containerMaxWidth": {
+    "xl": {
+      "ref": "none",
+      "value": "none"
+    },
+    "$res": true
+  },
+  "HeaderSecondaryStack": [
+    {
+      "_id": "a576eacb-1654-44ab-8685-9e33d6e9c7d3",
+      "Items": [],
+      "traceId": "$stack-3769b309",
+      "_template": "$stack"
+    }
+  ],
+  "layout2StacksVerticalAlign": {
+    "xl": "center",
+    "$res": true
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "_id": "c8f6f164-3672-46ae-967e-ce6c4f7276b2",
+  "_id": "4567f297-32c9-480e-9b9f-01c9bdd0db0c",
   "hide": {
     "xl": false,
     "$res": true
@@ -11,17 +11,17 @@
     },
     "$res": true
   },
-  "traceId": "$BannerSection2-87942027",
+  "traceId": "$BannerSection2-933a7f25",
   "Component": [
     {
-      "_id": "01258ba2-d900-4b42-950d-59b5a2f3c803",
+      "_id": "d58d7521-f82d-433e-ad7b-ad654526cc5c",
       "mode": {
         "xl": "background",
         "$res": true
       },
       "Card1": [
         {
-          "_id": "6bd81c99-0599-434e-b384-4e9c02be4524",
+          "_id": "13513625-1384-46f9-92d6-837fd88ed5a7",
           "size": {
             "xl": {
               "value": "fit-content"
@@ -30,24 +30,22 @@
           },
           "Stack": [
             {
-              "_id": "939fc38d-33f3-43b7-9da5-e2ffa4f0c5e5",
+              "_id": "b5130320-6a61-4c8d-b146-fd424a0cbe27",
               "Items": [
                 {
-                  "_id": "527d6626-8e9f-413d-a0af-6b1f93da7584",
-                  "traceId": "$richText-a6ab5fd0",
+                  "_id": "f551dcb4-51f9-4f33-a089-300ef787736a",
+                  "traceId": "$richText-2ceed481",
                   "elements": {
                     "en": [
                       {
-                        "_id": "01a60f3a-7294-45a9-987f-528de25ed3da",
+                        "_id": "9e081cd2-ae2e-4fa8-8955-f7e02b449055",
                         "type": "paragraph",
-                        "traceId": "$richTextBlockElement-e17e1060",
                         "elements": [
                           {
-                            "_id": "97d4e31b-132e-4490-adc9-2851e6d40240",
-                            "traceId": "$richTextLineElement-c2ee0efd",
+                            "_id": "b057c959-97ff-4166-93a9-7ca995cbcd0c",
                             "elements": [
                               {
-                                "_id": "5ff7e286-f7c2-4bf8-85a8-30e253289c43",
+                                "_id": "b3749a11-a303-4c5a-a0b3-52c70d9c0792",
                                 "font": {
                                   "xl": {
                                     "ref": "$heading2",
@@ -65,13 +63,12 @@
                                 },
                                 "color": {
                                   "xl": {
-                                    "ref": "$light",
-                                    "value": "white"
+                                    "ref": "$dark",
+                                    "value": "black"
                                   },
                                   "$res": true
                                 },
                                 "value": "Heading goes here",
-                                "traceId": "$richTextPart-710df8dc",
                                 "_template": "$richTextPart"
                               }
                             ],
@@ -109,7 +106,7 @@
                     "$stack": {
                       "Items": {
                         "align": {
-                          "xl": "left",
+                          "xl": "center",
                           "$res": true
                         },
                         "width": {
@@ -130,21 +127,19 @@
                   "accessibilityRole": "div"
                 },
                 {
-                  "_id": "0f4dd57c-135b-44a1-a302-cecd0d0d431b",
-                  "traceId": "$richText-7cf12d57",
+                  "_id": "38ff94ac-eaa7-4ec1-a846-e3fd4439f626",
+                  "traceId": "$richText-f75d2343",
                   "elements": {
                     "en": [
                       {
-                        "_id": "dd1b619e-ad30-48b8-857d-1c4152d88d8d",
+                        "_id": "22198a40-8731-45f7-af3c-056f8da3b43f",
                         "type": "paragraph",
-                        "traceId": "$richTextBlockElement-0ed6e355",
                         "elements": [
                           {
-                            "_id": "d1ee79c1-350c-4238-ae86-059f29551767",
-                            "traceId": "$richTextLineElement-8b4f0a62",
+                            "_id": "58597cdd-627a-424a-9042-57be14f7a0e3",
                             "elements": [
                               {
-                                "_id": "ca66a4b8-6977-4556-8f8e-05cc472dfd6d",
+                                "_id": "589d69dd-dbdd-46ab-b10c-61e0aec283f4",
                                 "font": {
                                   "xl": {
                                     "ref": "$body",
@@ -162,13 +157,12 @@
                                 },
                                 "color": {
                                   "xl": {
-                                    "ref": "$light",
-                                    "value": "white"
+                                    "ref": "$dark",
+                                    "value": "black"
                                   },
                                   "$res": true
                                 },
                                 "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
-                                "traceId": "$richTextPart-207ffbbf",
                                 "_template": "$richTextPart"
                               }
                             ],
@@ -203,7 +197,7 @@
                     "$stack": {
                       "Items": {
                         "align": {
-                          "xl": "left",
+                          "xl": "center",
                           "$res": true
                         },
                         "width": {
@@ -224,7 +218,7 @@
                   "accessibilityRole": "div"
                 },
                 {
-                  "_id": "00f961d0-6989-4aef-9699-33fc2454a07b",
+                  "_id": "e187f99d-36bc-4631-9283-9c8356cd1cff",
                   "gap": {
                     "xl": {
                       "ref": "12",
@@ -234,7 +228,7 @@
                   },
                   "Buttons": [
                     {
-                      "_id": "299a6737-cd3a-4130-9a45-76b0ea232793",
+                      "_id": "f6afbf77-8d64-4ffc-bb35-bdbe6c5b09f0",
                       "font": {
                         "xl": {
                           "ref": "$body2.bold",
@@ -249,13 +243,13 @@
                       },
                       "color": {
                         "xl": {
-                          "ref": "$dark",
-                          "value": "black"
+                          "ref": "$light",
+                          "value": "white"
                         },
                         "$res": true
                       },
                       "label": {
-                        "id": "local.e156ce6f-80d1-469f-9a11-51181d001116",
+                        "id": "local.31967d5e-fcd9-43f6-a306-5e18c46a24ef",
                         "value": {
                           "en": "Lorem ipsum"
                         }
@@ -266,8 +260,8 @@
                         "$res": true
                       },
                       "symbol": [],
-                      "_master": "buttonLight",
-                      "traceId": "$StandardButton-5e994f06",
+                      "_master": "buttonDark",
+                      "traceId": "$StandardButton-4c47021c",
                       "minWidth": {
                         "xl": "100",
                         "$res": true
@@ -299,8 +293,8 @@
                       "hasBackground": true,
                       "backgroundColor": {
                         "xl": {
-                          "ref": "$light",
-                          "value": "white"
+                          "ref": "$dark",
+                          "value": "black"
                         },
                         "$res": true
                       },
@@ -318,7 +312,7 @@
                       }
                     },
                     {
-                      "_id": "c1b1d828-c9f0-47fb-b47a-53cbf02b6e1a",
+                      "_id": "e6963d79-3514-42ef-9abe-47729631fe99",
                       "font": {
                         "xl": {
                           "ref": "$body2.bold",
@@ -333,13 +327,13 @@
                       },
                       "color": {
                         "xl": {
-                          "ref": "$dark",
-                          "value": "black"
+                          "ref": "$light",
+                          "value": "white"
                         },
                         "$res": true
                       },
                       "label": {
-                        "id": "local.350ab4bc-591f-43fe-b06c-6edd65f7fc5a",
+                        "id": "local.ebfca833-82f8-4f5e-b4c8-538e4bfeb12c",
                         "value": {
                           "en": "Lorem ipsum"
                         }
@@ -350,8 +344,8 @@
                         "$res": true
                       },
                       "symbol": [],
-                      "_master": "buttonLight",
-                      "traceId": "$StandardButton-adfbf38f",
+                      "_master": "buttonDark",
+                      "traceId": "$StandardButton-8d588092",
                       "minWidth": {
                         "xl": "100",
                         "$res": true
@@ -383,8 +377,8 @@
                       "hasBackground": true,
                       "backgroundColor": {
                         "xl": {
-                          "ref": "$light",
-                          "value": "white"
+                          "ref": "$dark",
+                          "value": "black"
                         },
                         "$res": true
                       },
@@ -402,13 +396,13 @@
                       }
                     }
                   ],
-                  "traceId": "$buttons-00474580",
+                  "traceId": "$buttons-4bc880c0",
                   "_template": "$buttons",
                   "_itemProps": {
                     "$stack": {
                       "Items": {
                         "align": {
-                          "xl": "left",
+                          "xl": "center",
                           "$res": true
                         },
                         "width": {
@@ -428,13 +422,13 @@
                   "verticalLayout": false
                 }
               ],
-              "traceId": "$stack-c22db056",
+              "traceId": "$stack-b1cf8654",
               "_template": "$stack"
             }
           ],
-          "traceId": "$BasicCard-1374ea74",
+          "traceId": "$BasicCard-2ee80a19",
           "position": {
-            "xl": "bottom-left",
+            "xl": "center-center",
             "$res": true
           },
           "_template": "$BasicCard",
@@ -467,8 +461,8 @@
           "enableContent": true,
           "paddingBottom": {
             "xl": {
-              "ref": "64",
-              "value": "64px"
+              "ref": "32",
+              "value": "32px"
             },
             "$res": true
           },
@@ -508,26 +502,22 @@
       ],
       "Card2": [
         {
-          "_id": "19a666c4-87c8-4717-b7ae-8d453aaf14b7",
+          "_id": "d737b7e0-7035-4638-b408-53c9cebe5ae3",
           "size": {
             "xl": {
-              "value": "2:1"
-            },
-            "xs": {
-              "ref": "$portrait",
-              "value": "4:5"
+              "value": "fit-content"
             },
             "$res": true
           },
           "Stack": [
             {
-              "_id": "6c343dd2-33be-45f1-a82e-11d4959e59f8",
+              "_id": "274887f2-6d30-4322-b52c-d5f7c9288148",
               "Items": [],
-              "traceId": "$stack-6113c6db",
+              "traceId": "$stack-8b0b3e82",
               "_template": "$stack"
             }
           ],
-          "traceId": "$BasicCardBackground-96b4e2f1",
+          "traceId": "$BasicCardBackground-6bb321e6",
           "position": {
             "xl": "top-left",
             "$res": true
@@ -535,25 +525,16 @@
           "_template": "$BasicCardBackground",
           "Background": [
             {
-              "_id": "8f6159f1-940a-42a2-be45-e2139c19b7b1",
-              "image": {
+              "_id": "d7aafef1-243c-4e3d-bdfb-1abdd18dbf94",
+              "color": {
                 "xl": {
-                  "id": null
+                  "ref": "$backgroundLight",
+                  "value": "#F2F2F2"
                 },
                 "$res": true
               },
-              "action": [],
-              "traceId": "$image-ad3443c5",
-              "_template": "$image",
-              "aspectRatio": {
-                "xl": {
-                  "ref": "$landscape",
-                  "value": "2:1"
-                },
-                "$res": true
-              },
-              "traceClicks": false,
-              "traceImpressions": false
+              "traceId": "$backgroundColor-1fe71450",
+              "_template": "$backgroundColor"
             }
           ],
           "paddingTop": {
@@ -624,7 +605,7 @@
         }
       ],
       "action": [],
-      "traceId": "$BannerCard2-60f84d60",
+      "traceId": "$BannerCard2-641f3c79",
       "_template": "$BannerCard2",
       "traceClicks": false,
       "cornerRadius": {
@@ -698,9 +679,9 @@
   "headerMode": "none",
   "HeaderStack": [
     {
-      "_id": "6fdb6761-8c04-4dc5-80f0-aef732b9b724",
+      "_id": "a38519d7-ddf3-4c8c-80f0-d17d466cf969",
       "Items": [],
-      "traceId": "$stack-055ec05f",
+      "traceId": "$stack-20a9a15c",
       "_template": "$stack"
     }
   ],
@@ -754,9 +735,9 @@
   },
   "HeaderSecondaryStack": [
     {
-      "_id": "cff65c12-8d8d-4f68-a4ef-a30b44d8b68b",
+      "_id": "fc20b0d4-3c77-4610-bcfe-4a8289d984a7",
       "Items": [],
-      "traceId": "$stack-3d4957b0",
+      "traceId": "$stack-33b99fe7",
       "_template": "$stack"
     }
   ],

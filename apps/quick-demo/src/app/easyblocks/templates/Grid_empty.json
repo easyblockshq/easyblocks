@@ -1,0 +1,305 @@
+{
+  "_id": "f3241ffd-db4f-4ce3-99d4-58c0e60bf0b8",
+  "hide": {
+    "xl": false,
+    "$res": true
+  },
+  "padding": {
+    "xl": {
+      "ref": "24",
+      "value": "24px"
+    },
+    "$res": true
+  },
+  "traceId": "$Grid-dbaf443e",
+  "Component": [
+    {
+      "_id": "451fca62-9978-4434-be77-f93d460f73b0",
+      "Cards": [],
+      "rowGap": {
+        "xl": {
+          "ref": "16",
+          "value": "16px"
+        },
+        "$res": true
+      },
+      "traceId": "$GridCard-52e67d10",
+      "variant": {
+        "xl": "grid",
+        "$res": true
+      },
+      "LeftArrow": [
+        {
+          "_id": "a5bb42b4-072d-49a0-945c-60036d72cc9c",
+          "label": {
+            "id": "local.a0925c70-9403-499f-8513-51a94bb31ca9",
+            "value": {
+              "en": "Previous"
+            }
+          },
+          "shape": "circle",
+          "action": [],
+          "symbol": [
+            {
+              "_id": "6c553f16-69af-4964-a4e6-7badfc587998",
+              "icon": {
+                "ref": "$sliderLeft",
+                "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"red\" width=\"100px\" height=\"100px\"><path d=\"M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z\"/></svg>"
+              },
+              "color": {
+                "xl": {
+                  "ref": "$dark",
+                  "value": "black"
+                },
+                "$res": true
+              },
+              "traceId": "$icon-6ef7e7ff",
+              "_template": "$icon"
+            }
+          ],
+          "_master": "buttonSliderLeft",
+          "traceId": "$IconButton2-3b8b5048",
+          "_template": "$IconButton2",
+          "hasBorder": false,
+          "buttonSize": {
+            "xl": "40",
+            "$res": true
+          },
+          "symbolSize": {
+            "xl": "24",
+            "$res": true
+          },
+          "borderColor": {
+            "xl": {
+              "ref": "$dark",
+              "value": "black"
+            },
+            "$res": true
+          },
+          "borderWidth": "1",
+          "traceClicks": false,
+          "hasBackground": true,
+          "backgroundColor": {
+            "xl": {
+              "value": "#D8D8D880"
+            },
+            "$res": true
+          },
+          "traceImpressions": false
+        }
+      ],
+      "_template": "$GridCard",
+      "columnGap": {
+        "xl": {
+          "ref": "16",
+          "value": "16px"
+        },
+        "$res": true
+      },
+      "RightArrow": [
+        {
+          "_id": "6adbabf6-a9c1-4d1e-8d97-845ec9866c11",
+          "label": {
+            "id": "local.dd9f8e6e-3a00-49c5-a836-57940a1a44db",
+            "value": {
+              "en": "Next"
+            }
+          },
+          "shape": "circle",
+          "action": [],
+          "symbol": [
+            {
+              "_id": "712ee25b-bcc7-4e8f-a35a-62bb7443e2b4",
+              "icon": {
+                "ref": "$sliderRight",
+                "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z\"/></svg>"
+              },
+              "color": {
+                "xl": {
+                  "ref": "$dark",
+                  "value": "black"
+                },
+                "$res": true
+              },
+              "traceId": "$icon-b759ae3d",
+              "_template": "$icon"
+            }
+          ],
+          "_master": "buttonSliderRight",
+          "traceId": "$IconButton2-ef004a28",
+          "_template": "$IconButton2",
+          "hasBorder": false,
+          "buttonSize": {
+            "xl": "40",
+            "$res": true
+          },
+          "symbolSize": {
+            "xl": "24",
+            "$res": true
+          },
+          "borderColor": {
+            "xl": {
+              "ref": "$dark",
+              "value": "black"
+            },
+            "$res": true
+          },
+          "borderWidth": "1",
+          "traceClicks": false,
+          "hasBackground": true,
+          "backgroundColor": {
+            "xl": {
+              "value": "#D8D8D880"
+            },
+            "$res": true
+          },
+          "traceImpressions": false
+        }
+      ],
+      "traceClicks": false,
+      "numberOfItems": {
+        "xl": {
+          "ref": "4",
+          "value": "4"
+        },
+        "$res": true
+      },
+      "verticalAlign": {
+        "xl": "top",
+        "$res": true
+      },
+      "leftArrowOffset": {
+        "xl": {
+          "ref": "0",
+          "value": "0px"
+        },
+        "$res": true
+      },
+      "rightArrowOffset": {
+        "xl": {
+          "ref": "0",
+          "value": "0px"
+        },
+        "$res": true
+      },
+      "traceImpressions": false,
+      "leftArrowPlacement": {
+        "xl": "center",
+        "$res": true
+      },
+      "showSliderControls": {
+        "xl": false,
+        "$res": true
+      },
+      "fractionalItemWidth": {
+        "xl": "1.25",
+        "$res": true
+      },
+      "rightArrowPlacement": {
+        "xl": "center",
+        "$res": true
+      },
+      "gridMainObjectAspectRatio": {
+        "xl": {
+          "ref": "$gridMainObjectDefault",
+          "value": "4:5"
+        },
+        "$res": true
+      },
+      "shouldSliderItemsBeVisibleOnMargin": {
+        "xl": true,
+        "$res": true
+      }
+    }
+  ],
+  "_template": "$Grid",
+  "_itemProps": {
+    "$RootSections": {
+      "data": {
+        "topMargin": {
+          "xl": {
+            "ref": "0",
+            "value": "0px"
+          },
+          "$res": true
+        },
+        "bottomMargin": {
+          "xl": {
+            "ref": "32",
+            "value": "32px"
+          },
+          "$res": true
+        }
+      }
+    }
+  },
+  "headerMode": "none",
+  "HeaderStack": [
+    {
+      "_id": "d8ed1cc7-cb17-4df3-9bd3-84346ca4b0e0",
+      "Items": [],
+      "traceId": "$stack-51bef763",
+      "_template": "$stack"
+    }
+  ],
+  "Background__": [],
+  "escapeMargin": {
+    "xl": false,
+    "$res": true
+  },
+  "layout1Stack": "left",
+  "layout2Stacks": {
+    "xl": "left-right",
+    "$res": true
+  },
+  "containerMargin": {
+    "xl": {
+      "ref": "containerMargin.default",
+      "value": {
+        "xl": "5vw",
+        "$res": true
+      }
+    },
+    "$res": true
+  },
+  "headerStacksGap": {
+    "xl": {
+      "ref": "12",
+      "value": "12px"
+    },
+    "$res": true
+  },
+  "footerSectionGap": {
+    "xl": {
+      "ref": "12",
+      "value": "12px"
+    },
+    "$res": true
+  },
+  "headerSectionGap": {
+    "xl": {
+      "ref": "12",
+      "value": "12px"
+    },
+    "$res": true
+  },
+  "containerMaxWidth": {
+    "xl": {
+      "ref": "none",
+      "value": "none"
+    },
+    "$res": true
+  },
+  "HeaderSecondaryStack": [
+    {
+      "_id": "8401e759-5531-484e-9519-abbe98ed9014",
+      "Items": [],
+      "traceId": "$stack-08ba1b63",
+      "_template": "$stack"
+    }
+  ],
+  "layout2StacksVerticalAlign": {
+    "xl": "center",
+    "$res": true
+  }
+}

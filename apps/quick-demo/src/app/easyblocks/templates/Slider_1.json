@@ -1,0 +1,877 @@
+{
+  "_id": "33f6111d-7155-4541-9d4f-6e5d00118373",
+  "_template": "$Grid",
+  "traceId": "$Grid-10e5ef98",
+  "_itemProps": {
+    "$RootSections": {
+      "data": {
+        "topMargin": {
+          "$res": true,
+          "xl": {
+            "value": "0px",
+            "ref": "0"
+          }
+        },
+        "bottomMargin": {
+          "$res": true,
+          "xl": {
+            "value": "32px",
+            "ref": "32"
+          }
+        }
+      }
+    }
+  },
+  "hide": {
+    "$res": true,
+    "xl": false
+  },
+  "Component": [
+    {
+      "_id": "975fa9e8-22c6-4585-a70e-2eed39136e3e",
+      "_template": "$GridCard",
+      "traceId": "$GridCard-79989227",
+      "Cards": [
+        {
+          "_id": "f61cb24b-167b-411c-95cd-9a68a3bafbb4",
+          "_template": "$CardPlaceholder",
+          "_master": "productCard",
+          "traceId": "$CardPlaceholder-1e5fbfc1",
+          "_itemProps": {
+            "$GridCard": {
+              "Cards": {
+                "itemSize": "1x1"
+              }
+            }
+          },
+          "font": {
+            "$res": true,
+            "xl": {
+              "value": {
+                "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
+                "fontSize": 20,
+                "fontWeight": 400,
+                "lineHeight": 1.2,
+                "@xs": {
+                  "fontSize": 18
+                }
+              },
+              "ref": "$body"
+            }
+          },
+          "aspectRatio": {
+            "$res": true,
+            "xl": {
+              "value": "4:5",
+              "ref": "$portrait"
+            }
+          },
+          "backgroundColor": {
+            "$res": true,
+            "xl": {
+              "value": "rgb(242, 242, 242)"
+            }
+          },
+          "value": "Product",
+          "traceImpressions": false,
+          "traceClicks": false
+        },
+        {
+          "_id": "141810ed-d20d-4dec-9fea-4e35b83b7cb0",
+          "_template": "$CardPlaceholder",
+          "_master": "productCard",
+          "traceId": "$CardPlaceholder-9e378b83",
+          "_itemProps": {
+            "$GridCard": {
+              "Cards": {
+                "itemSize": "1x1"
+              }
+            }
+          },
+          "font": {
+            "$res": true,
+            "xl": {
+              "value": {
+                "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
+                "fontSize": 20,
+                "fontWeight": 400,
+                "lineHeight": 1.2,
+                "@xs": {
+                  "fontSize": 18
+                }
+              },
+              "ref": "$body"
+            }
+          },
+          "aspectRatio": {
+            "$res": true,
+            "xl": {
+              "value": "4:5",
+              "ref": "$portrait"
+            }
+          },
+          "backgroundColor": {
+            "$res": true,
+            "xl": {
+              "value": "rgb(242, 242, 242)"
+            }
+          },
+          "value": "Product",
+          "traceImpressions": false,
+          "traceClicks": false
+        },
+        {
+          "_id": "b8236196-e60e-4fbd-b01e-2e51d8bfe41e",
+          "_template": "$CardPlaceholder",
+          "_master": "productCard",
+          "traceId": "$CardPlaceholder-7dcc016c",
+          "_itemProps": {
+            "$GridCard": {
+              "Cards": {
+                "itemSize": "1x1"
+              }
+            }
+          },
+          "font": {
+            "$res": true,
+            "xl": {
+              "value": {
+                "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
+                "fontSize": 20,
+                "fontWeight": 400,
+                "lineHeight": 1.2,
+                "@xs": {
+                  "fontSize": 18
+                }
+              },
+              "ref": "$body"
+            }
+          },
+          "aspectRatio": {
+            "$res": true,
+            "xl": {
+              "value": "4:5",
+              "ref": "$portrait"
+            }
+          },
+          "backgroundColor": {
+            "$res": true,
+            "xl": {
+              "value": "rgb(242, 242, 242)"
+            }
+          },
+          "value": "Product",
+          "traceImpressions": false,
+          "traceClicks": false
+        },
+        {
+          "_id": "a2c2f9da-32d9-45ff-9e72-cb1240e405f9",
+          "_template": "$CardPlaceholder",
+          "_master": "productCard",
+          "traceId": "$CardPlaceholder-9ee7c583",
+          "_itemProps": {
+            "$GridCard": {
+              "Cards": {
+                "itemSize": "1x1"
+              }
+            }
+          },
+          "font": {
+            "$res": true,
+            "xl": {
+              "value": {
+                "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
+                "fontSize": 20,
+                "fontWeight": 400,
+                "lineHeight": 1.2,
+                "@xs": {
+                  "fontSize": 18
+                }
+              },
+              "ref": "$body"
+            }
+          },
+          "aspectRatio": {
+            "$res": true,
+            "xl": {
+              "value": "4:5",
+              "ref": "$portrait"
+            }
+          },
+          "backgroundColor": {
+            "$res": true,
+            "xl": {
+              "value": "rgb(242, 242, 242)"
+            }
+          },
+          "value": "Product",
+          "traceImpressions": false,
+          "traceClicks": false
+        },
+        {
+          "_id": "be4c811f-0f8c-4f90-a097-85dd148e6ff3",
+          "_template": "$CardPlaceholder",
+          "_master": "productCard",
+          "traceId": "$CardPlaceholder-56dea78e",
+          "_itemProps": {
+            "$GridCard": {
+              "Cards": {
+                "itemSize": "1x1"
+              }
+            }
+          },
+          "font": {
+            "$res": true,
+            "xl": {
+              "value": {
+                "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
+                "fontSize": 20,
+                "fontWeight": 400,
+                "lineHeight": 1.2,
+                "@xs": {
+                  "fontSize": 18
+                }
+              },
+              "ref": "$body"
+            }
+          },
+          "aspectRatio": {
+            "$res": true,
+            "xl": {
+              "value": "4:5",
+              "ref": "$portrait"
+            }
+          },
+          "backgroundColor": {
+            "$res": true,
+            "xl": {
+              "value": "rgb(242, 242, 242)"
+            }
+          },
+          "value": "Product",
+          "traceImpressions": false,
+          "traceClicks": false
+        },
+        {
+          "_id": "0a46d322-c46a-4cad-94fe-6c5d38213769",
+          "_template": "$CardPlaceholder",
+          "_master": "productCard",
+          "traceId": "$CardPlaceholder-344ab288",
+          "_itemProps": {
+            "$GridCard": {
+              "Cards": {
+                "itemSize": "1x1"
+              }
+            }
+          },
+          "font": {
+            "$res": true,
+            "xl": {
+              "value": {
+                "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
+                "fontSize": 20,
+                "fontWeight": 400,
+                "lineHeight": 1.2,
+                "@xs": {
+                  "fontSize": 18
+                }
+              },
+              "ref": "$body"
+            }
+          },
+          "aspectRatio": {
+            "$res": true,
+            "xl": {
+              "value": "4:5",
+              "ref": "$portrait"
+            }
+          },
+          "backgroundColor": {
+            "$res": true,
+            "xl": {
+              "value": "rgb(242, 242, 242)"
+            }
+          },
+          "value": "Product",
+          "traceImpressions": false,
+          "traceClicks": false
+        },
+        {
+          "_id": "efd18708-5152-4995-8e6a-c625b8351dcd",
+          "_template": "$CardPlaceholder",
+          "_master": "productCard",
+          "traceId": "$CardPlaceholder-4af6fde0",
+          "_itemProps": {
+            "$GridCard": {
+              "Cards": {
+                "itemSize": "1x1"
+              }
+            }
+          },
+          "font": {
+            "$res": true,
+            "xl": {
+              "value": {
+                "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
+                "fontSize": 20,
+                "fontWeight": 400,
+                "lineHeight": 1.2,
+                "@xs": {
+                  "fontSize": 18
+                }
+              },
+              "ref": "$body"
+            }
+          },
+          "aspectRatio": {
+            "$res": true,
+            "xl": {
+              "value": "4:5",
+              "ref": "$portrait"
+            }
+          },
+          "backgroundColor": {
+            "$res": true,
+            "xl": {
+              "value": "rgb(242, 242, 242)"
+            }
+          },
+          "value": "Product",
+          "traceImpressions": false,
+          "traceClicks": false
+        },
+        {
+          "_id": "74518cd3-c84e-495e-a77b-eee332bd0e6d",
+          "_template": "$CardPlaceholder",
+          "_master": "productCard",
+          "traceId": "$CardPlaceholder-1fcd1903",
+          "_itemProps": {
+            "$GridCard": {
+              "Cards": {
+                "itemSize": "1x1"
+              }
+            }
+          },
+          "font": {
+            "$res": true,
+            "xl": {
+              "value": {
+                "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
+                "fontSize": 20,
+                "fontWeight": 400,
+                "lineHeight": 1.2,
+                "@xs": {
+                  "fontSize": 18
+                }
+              },
+              "ref": "$body"
+            }
+          },
+          "aspectRatio": {
+            "$res": true,
+            "xl": {
+              "value": "4:5",
+              "ref": "$portrait"
+            }
+          },
+          "backgroundColor": {
+            "$res": true,
+            "xl": {
+              "value": "rgb(242, 242, 242)"
+            }
+          },
+          "value": "Product",
+          "traceImpressions": false,
+          "traceClicks": false
+        }
+      ],
+      "variant": {
+        "$res": true,
+        "xl": "slider"
+      },
+      "numberOfItems": {
+        "$res": true,
+        "xl": {
+          "value": "4",
+          "ref": "4"
+        }
+      },
+      "fractionalItemWidth": {
+        "$res": true,
+        "xl": "1.25"
+      },
+      "columnGap": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "ref": "16"
+        }
+      },
+      "rowGap": {
+        "$res": true,
+        "xl": {
+          "value": "32px",
+          "ref": "32"
+        }
+      },
+      "verticalAlign": {
+        "$res": true,
+        "xl": "top"
+      },
+      "showSliderControls": {
+        "$res": true,
+        "xl": false
+      },
+      "shouldSliderItemsBeVisibleOnMargin": {
+        "$res": true,
+        "xl": true
+      },
+      "gridMainObjectAspectRatio": {
+        "$res": true,
+        "xl": {
+          "value": "4:5",
+          "ref": "$gridMainObjectDefault"
+        }
+      },
+      "LeftArrow": [
+        {
+          "_id": "9d3939fa-33b9-4710-b84e-a1aea91383c9",
+          "_template": "$IconButton2",
+          "_master": "buttonSliderLeft",
+          "traceId": "$IconButton2-8cb06f77",
+          "action": [],
+          "symbol": [
+            {
+              "_id": "75ec615e-7bdc-41d5-bd4e-cd5d941f226e",
+              "_template": "$icon",
+              "traceId": "$icon-b6337b57",
+              "icon": {
+                "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"red\" width=\"100px\" height=\"100px\"><path d=\"M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z\"/></svg>",
+                "ref": "$sliderLeft"
+              },
+              "color": {
+                "$res": true,
+                "xl": {
+                  "value": "black",
+                  "ref": "$dark"
+                }
+              }
+            }
+          ],
+          "hasBackground": true,
+          "backgroundColor": {
+            "$res": true,
+            "xl": {
+              "value": "#D8D8D880"
+            }
+          },
+          "hasBorder": false,
+          "borderWidth": "1",
+          "borderColor": {
+            "$res": true,
+            "xl": {
+              "value": "black",
+              "ref": "$dark"
+            }
+          },
+          "symbolSize": {
+            "$res": true,
+            "xl": "24"
+          },
+          "buttonSize": {
+            "$res": true,
+            "xl": "40"
+          },
+          "shape": "circle",
+          "label": {
+            "id": "local.0c2fb744-c3ef-41e2-9744-a001691c2f90",
+            "value": {
+              "en": "Previous"
+            }
+          },
+          "traceImpressions": false,
+          "traceClicks": false
+        }
+      ],
+      "leftArrowPlacement": {
+        "$res": true,
+        "xl": "outside"
+      },
+      "leftArrowOffset": {
+        "$res": true,
+        "xl": {
+          "value": "8px",
+          "ref": "8"
+        }
+      },
+      "RightArrow": [
+        {
+          "_id": "4851266b-4a62-467e-821b-132039485a7f",
+          "_template": "$IconButton2",
+          "_master": "buttonSliderRight",
+          "traceId": "$IconButton2-daa0337d",
+          "action": [],
+          "symbol": [
+            {
+              "_id": "a10d23ef-8935-4cd4-92c5-0329f846cee1",
+              "_template": "$icon",
+              "traceId": "$icon-b81585c5",
+              "icon": {
+                "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z\"/></svg>",
+                "ref": "$sliderRight"
+              },
+              "color": {
+                "$res": true,
+                "xl": {
+                  "value": "black",
+                  "ref": "$dark"
+                }
+              }
+            }
+          ],
+          "hasBackground": true,
+          "backgroundColor": {
+            "$res": true,
+            "xl": {
+              "value": "#D8D8D880"
+            }
+          },
+          "hasBorder": false,
+          "borderWidth": "1",
+          "borderColor": {
+            "$res": true,
+            "xl": {
+              "value": "black",
+              "ref": "$dark"
+            }
+          },
+          "symbolSize": {
+            "$res": true,
+            "xl": "24"
+          },
+          "buttonSize": {
+            "$res": true,
+            "xl": "40"
+          },
+          "shape": "circle",
+          "label": {
+            "id": "local.6edacd07-fbd6-42aa-a853-4ac46038a3d6",
+            "value": {
+              "en": "Next"
+            }
+          },
+          "traceImpressions": false,
+          "traceClicks": false
+        }
+      ],
+      "rightArrowPlacement": {
+        "$res": true,
+        "xl": "outside"
+      },
+      "rightArrowOffset": {
+        "$res": true,
+        "xl": {
+          "value": "8px",
+          "ref": "8"
+        }
+      },
+      "traceImpressions": false,
+      "traceClicks": false
+    }
+  ],
+  "containerMargin": {
+    "$res": true,
+    "xl": {
+      "value": {
+        "$res": true,
+        "xl": "5vw"
+      },
+      "ref": "containerMargin.default"
+    }
+  },
+  "containerMaxWidth": {
+    "$res": true,
+    "xl": {
+      "value": "none",
+      "ref": "none"
+    }
+  },
+  "escapeMargin": {
+    "$res": true,
+    "xl": false
+  },
+  "headerMode": "2-stacks",
+  "layout1Stack": "center",
+  "layout2Stacks": {
+    "$res": true,
+    "xl": "left-right"
+  },
+  "layout2StacksVerticalAlign": {
+    "$res": true,
+    "xl": "center"
+  },
+  "headerStacksGap": {
+    "$res": true,
+    "xl": {
+      "value": "12px",
+      "ref": "12"
+    }
+  },
+  "headerSectionGap": {
+    "$res": true,
+    "xl": {
+      "value": "32px",
+      "ref": "32"
+    }
+  },
+  "footerSectionGap": {
+    "$res": true,
+    "xl": {
+      "value": "48px",
+      "ref": "48"
+    }
+  },
+  "HeaderStack": [
+    {
+      "_id": "eeae4ee5-fdb3-48f3-a530-75a7ba205c24",
+      "_template": "$stack",
+      "traceId": "$stack-b90d74ca",
+      "Items": [
+        {
+          "_id": "298c4142-31b7-47fb-901e-19a9f91f1320",
+          "_template": "$richText",
+          "traceId": "$richText-ef849753",
+          "_itemProps": {
+            "$stack": {
+              "Items": {
+                "width": {
+                  "$res": true,
+                  "xl": "512px"
+                },
+                "marginBottom": {
+                  "$res": true,
+                  "xl": {
+                    "value": "0px",
+                    "ref": "0"
+                  }
+                },
+                "align": {
+                  "$res": true,
+                  "xl": "left"
+                }
+              }
+            }
+          },
+          "elements": {
+            "en": [
+              {
+                "_id": "b0317f28-6ccb-4f9e-a541-fac0daf154b4",
+                "_template": "$richTextBlockElement",
+                "traceId": "$richTextBlockElement-175b21b4",
+                "type": "paragraph",
+                "elements": [
+                  {
+                    "_id": "90bf6893-3fe9-4646-b31d-7f0317ce0aae",
+                    "_template": "$richTextLineElement",
+                    "traceId": "$richTextLineElement-515b2a5d",
+                    "elements": [
+                      {
+                        "_id": "4c50a212-8df9-44af-b646-79716746aadb",
+                        "_template": "$richTextPart",
+                        "traceId": "$richTextPart-91846192",
+                        "value": "Heading goes here",
+                        "font": {
+                          "$res": true,
+                          "xl": {
+                            "value": {
+                              "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
+                              "fontSize": 32,
+                              "fontWeight": 500,
+                              "lineHeight": 1.2,
+                              "@xs": {
+                                "fontSize": 28
+                              }
+                            },
+                            "ref": "$heading3"
+                          }
+                        },
+                        "color": {
+                          "$res": true,
+                          "xl": {
+                            "value": "black",
+                            "ref": "$dark"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "accessibilityRole": "div",
+          "isListStyleAuto": true,
+          "mainFont": {
+            "$res": true,
+            "xl": {
+              "value": {
+                "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
+                "fontSize": 20,
+                "fontWeight": 400,
+                "lineHeight": 1.2,
+                "@xs": {
+                  "fontSize": 18
+                }
+              },
+              "ref": "$body"
+            }
+          },
+          "mainColor": {
+            "$res": true,
+            "xl": {
+              "value": "black",
+              "ref": "$dark"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "HeaderSecondaryStack": [
+    {
+      "_id": "03eef5e2-d9e4-428c-b762-3b43a7318074",
+      "_template": "$stack",
+      "traceId": "$stack-37bc2f22",
+      "Items": [
+        {
+          "_id": "7075e519-ced2-423e-b6db-330355a13bc3",
+          "_template": "$buttons",
+          "traceId": "$buttons-1c5329b2",
+          "_itemProps": {
+            "$stack": {
+              "Items": {
+                "width": {
+                  "$res": true,
+                  "xl": "512px"
+                },
+                "marginBottom": {
+                  "$res": true,
+                  "xl": {
+                    "value": "0px",
+                    "ref": "0"
+                  }
+                },
+                "align": {
+                  "$res": true,
+                  "xl": "left"
+                }
+              }
+            }
+          },
+          "verticalLayout": false,
+          "gap": {
+            "$res": true,
+            "xl": {
+              "value": "12px",
+              "ref": "12"
+            }
+          },
+          "Buttons": [
+            {
+              "_id": "bfded67a-6d28-4455-8209-da3cd0792b14",
+              "_template": "$StandardButton",
+              "_master": "buttonDark",
+              "traceId": "$StandardButton-eef5351a",
+              "_itemProps": {
+                "$buttons": {
+                  "Buttons": {}
+                }
+              },
+              "action": [],
+              "label": {
+                "id": "local.8863e311-f4fd-46fb-baf3-8f19daeebdc9",
+                "value": {
+                  "en": "Shop all"
+                }
+              },
+              "symbol": [],
+              "font": {
+                "$res": true,
+                "xl": {
+                  "value": {
+                    "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
+                    "fontSize": 16,
+                    "fontWeight": 500,
+                    "lineHeight": 1.2
+                  },
+                  "ref": "$body2.bold"
+                }
+              },
+              "color": {
+                "$res": true,
+                "xl": {
+                  "value": "white",
+                  "ref": "$light"
+                }
+              },
+              "underline": "off",
+              "underlineOffset": {
+                "$res": true,
+                "xl": "4"
+              },
+              "hasBackground": true,
+              "backgroundColor": {
+                "$res": true,
+                "xl": {
+                  "value": "black",
+                  "ref": "$dark"
+                }
+              },
+              "hasBorder": false,
+              "borderWidth": {
+                "$res": true,
+                "xl": "1"
+              },
+              "borderColor": {
+                "$res": true,
+                "xl": {
+                  "value": "black",
+                  "ref": "$dark"
+                }
+              },
+              "minHeight": {
+                "$res": true,
+                "xl": "42"
+              },
+              "minWidth": {
+                "$res": true,
+                "xl": "100"
+              },
+              "horizontalPadding": {
+                "$res": true,
+                "xl": {
+                  "value": "16px",
+                  "ref": "16"
+                }
+              },
+              "radius": {
+                "$res": true,
+                "xl": "10"
+              },
+              "traceImpressions": false,
+              "traceClicks": false
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "Background__": [],
+  "padding": {
+    "$res": true,
+    "xl": {
+      "value": "24px",
+      "ref": "24"
+    }
+  }
+}

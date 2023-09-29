@@ -701,26 +701,26 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
 
     stackComponentDefinition,
 
-    {
-      id: "$BannerSection",
-      type: "section",
-      label: "Banner",
-      styles: $sectionWrapperStyles,
-      editing: sectionWrapperEditing,
-      pasteSlots: ["Component"],
-      schema: [
-        ...sectionWrapperFields,
-        {
-          prop: "Component",
-          type: "component-fixed",
-          componentType: "$BannerCard",
-        },
-      ],
-    },
+    // {
+    //   id: "$BannerSection",
+    //   type: "section",
+    //   label: "Banner",
+    //   styles: $sectionWrapperStyles,
+    //   editing: sectionWrapperEditing,
+    //   pasteSlots: ["Component"],
+    //   schema: [
+    //     ...sectionWrapperFields,
+    //     {
+    //       prop: "Component",
+    //       type: "component-fixed",
+    //       componentType: "$BannerCard",
+    //     },
+    //   ],
+    // },
     {
       id: "$BannerSection2",
       type: "section",
-      label: "Banner",
+      label: "Hero Banner",
       styles: $sectionWrapperStyles,
       editing: sectionWrapperEditing,
       pasteSlots: ["Component"],
@@ -736,7 +736,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
     {
       id: "$Grid",
       type: "section",
-      label: "Grid / Slider",
+      label: "Collection",
       icon: "grid_3x3",
       styles: $sectionWrapperStyles,
       editing: sectionWrapperEditing,
@@ -1107,29 +1107,29 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         },
       ],
     },
-    {
-      id: "$BannerCard",
-      type: "card",
-      pasteSlots: ["SideImage", "Stack"],
-      styles: bannerCardStyles,
-      auto: bannerCardAuto,
-      schema: bannerFields,
-      editing: () => {
-        return {
-          components: {
-            SideImage: {
-              selectable: false,
-            },
-            Background: {
-              selectable: false,
-            },
-            Stack: {
-              selectable: false,
-            },
-          },
-        };
-      },
-    },
+    // {
+    //   id: "$BannerCard",
+    //   type: "card",
+    //   pasteSlots: ["SideImage", "Stack"],
+    //   styles: bannerCardStyles,
+    //   auto: bannerCardAuto,
+    //   schema: bannerFields,
+    //   editing: () => {
+    //     return {
+    //       components: {
+    //         SideImage: {
+    //           selectable: false,
+    //         },
+    //         Background: {
+    //           selectable: false,
+    //         },
+    //         Stack: {
+    //           selectable: false,
+    //         },
+    //       },
+    //     };
+    //   },
+    // },
     {
       id: "$TwoCardsCard",
       type: "card",
@@ -1707,7 +1707,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
 
     {
       id: "$BannerCard2",
-      label: "Banner Card",
+      label: "Basic Card",
       type: "card",
       pasteSlots: ["SideImage", "Stack"],
       styles: bannerCard2Styles,

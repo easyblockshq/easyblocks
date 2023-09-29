@@ -1,7 +1,10 @@
-import { Template } from "@easyblocks/core";
+import { ComponentDefinitionShared, Template } from "@easyblocks/core";
 
 export type TemplatesDictionary = {
-  [componentId: string]: Template[];
+  [componentId: string]: {
+    component: ComponentDefinitionShared;
+    templates: Template[];
+  };
 };
 
 export type TemplatePickerProps = {

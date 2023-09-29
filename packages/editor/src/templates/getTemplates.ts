@@ -24,6 +24,7 @@ import { icon } from "./builtinTemplates/icon";
 import { standardButton } from "./builtinTemplates/standardButton";
 import { getRemoteUserTemplates } from "./getRemoteUserTemplates";
 import { generateTextTemplate } from "./generateTextTemplate";
+import { getBuiltInTemplates } from "./getBuiltinTemplates";
 
 function getDefaultTemplateForDefinition(
   def: InternalComponentDefinition
@@ -131,6 +132,9 @@ export async function getTemplates(
   configTemplates: InternalTemplate[] = []
 ): Promise<Template[]> {
   let remoteUserDefinedTemplates: UserDefinedTemplate[] = [];
+
+  const TEST = await getBuiltInTemplates(false);
+  console.log("@@@@@@@", TEST);
 
   if (!editorContext.isPlayground && !editorContext.disableCustomTemplates) {
     const project = editorContext.project;

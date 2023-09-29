@@ -228,21 +228,21 @@ const SectionCard: React.FC<SectionCardProps> = ({
             {template.label && (
               <>
                 <CardLabelTemplateName>{template.label}</CardLabelTemplateName>
-                <div
-                  style={{
-                    lineHeight: 1,
-                    color: SSColors.black40,
-                    paddingTop: 2,
-                  }}
-                >
-                  &nbsp;&nbsp;·&nbsp;&nbsp;
-                </div>
+                {/*<div*/}
+                {/*  style={{*/}
+                {/*    lineHeight: 1,*/}
+                {/*    color: SSColors.black40,*/}
+                {/*    paddingTop: 2,*/}
+                {/*  }}*/}
+                {/*>*/}
+                {/*  &nbsp;&nbsp;·&nbsp;&nbsp;*/}
+                {/*</div>*/}
               </>
             )}
-            <TemplateLabel
-              label={getComponentLabelFromTemplate(template, editorContext)}
-              custom={isCustom}
-            />
+            {/*<TemplateLabel*/}
+            {/*  label={getComponentLabelFromTemplate(template, editorContext)}*/}
+            {/*  custom={isCustom}*/}
+            {/*/>*/}
           </>
         </CardLabelContainer>
 
@@ -387,23 +387,30 @@ export const SectionPickerModal: TemplatePicker = (props) => {
         <Sidebar>
           {templateGroups && (
             <SidebarContent>
-              {Object.keys(templateGroups).map((groupName) => (
-                <SidebarButton
-                  key={`sectionPicker__group__${groupName}`}
-                  onClick={() => {
-                    const groupNode = document.getElementById(
-                      `sectionPicker__group__${groupName}`
-                    );
-                    const groupOffsetTop = groupNode!.offsetTop;
-                    gridRootRef.current!.scrollTo({
-                      top: groupOffsetTop,
-                      behavior: "smooth",
-                    });
-                  }}
-                >
-                  {groupName}
-                </SidebarButton>
-              ))}
+              {Object.entries(templateGroups).map(
+                ([
+                  componentId,
+                  {
+                    component: { label },
+                  },
+                ]) => (
+                  <SidebarButton
+                    key={`sectionPicker__group__${componentId}`}
+                    onClick={() => {
+                      const groupNode = document.getElementById(
+                        `sectionPicker__group__${componentId}`
+                      );
+                      const groupOffsetTop = groupNode!.offsetTop;
+                      gridRootRef.current!.scrollTo({
+                        top: groupOffsetTop,
+                        behavior: "smooth",
+                      });
+                    }}
+                  >
+                    {label ?? componentId}
+                  </SidebarButton>
+                )
+              )}
             </SidebarContent>
           )}
         </Sidebar>
@@ -412,14 +419,23 @@ export const SectionPickerModal: TemplatePicker = (props) => {
 
           {templateGroups &&
             Object.entries(templateGroups).map(
-              ([groupName, groupTemplates], index) => (
+              (
+                [
+                  componentId,
+                  {
+                    component: { label },
+                    templates,
+                  },
+                ],
+                index
+              ) => (
                 <div
                   style={{ paddingTop: "32px", paddingBottom: "32px" }}
-                  id={`sectionPicker__group__${groupName}`}
-                  key={`sectionPicker__group__${groupName}`}
+                  id={`sectionPicker__group__${componentId}`}
+                  key={`sectionPicker__group__${componentId}`}
                 >
                   <TitleContainer>
-                    <Title>{groupName}</Title>
+                    <Title>{label ?? componentId}</Title>
                     {/*{groupTemplates.empty && (*/}
                     {/*  <SSButtonGhostColor*/}
                     {/*    icon={SSIcons.Add}*/}
@@ -432,7 +448,7 @@ export const SectionPickerModal: TemplatePicker = (props) => {
                     {/*)}*/}
                   </TitleContainer>
                   <ModalGridRoot mode={mode}>
-                    {groupTemplates.map((template, index) => (
+                    {templates.map((template, index) => (
                       <SectionCard
                         key={index}
                         template={template}
