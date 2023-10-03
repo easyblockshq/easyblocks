@@ -134,7 +134,7 @@ export const EditorTopBar: React.FC<{
       <TopBarCenter ref={headingRef}>
         <DeviceSwitch
           devices={devices}
-          deviceId={isFullScreen ? "fit-screen" : breakpointIndex}
+          deviceId={isFullScreen && !isEditing ? "fit-screen" : breakpointIndex}
           onDeviceChange={(deviceId) => {
             if (deviceId === "fit-screen") {
               setFullScreen(true);
