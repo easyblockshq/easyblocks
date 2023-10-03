@@ -5,3 +5,4 @@ export * from "./tinaFieldProviders";
 export * from "./isTemplate";
 export * from "./events";
 export * from "./useEditorGlobalKeyboardShortcuts";
+export * from "./useTextValue";

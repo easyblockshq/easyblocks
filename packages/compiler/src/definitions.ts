@@ -24,7 +24,7 @@ import {
   Color,
   ColorSchemaProp,
   CompiledCustomComponentConfig,
-  CompiledExternalTextValue,
+  CompiledExternalDataValue,
   CompiledLocalTextValue,
   CompiledShopstoryComponentConfig,
   ComponentCollectionLocalisedSchemaProp,
@@ -35,7 +35,7 @@ import {
   ConfigComponent,
   CustomResourceSchemaProp,
   Devices,
-  ExternalTextValue,
+  ExternalDataValue,
   Font,
   FontSchemaProp,
   getFallbackForLocale,
@@ -94,8 +94,8 @@ export type SchemaPropDefinition<Type, CompiledType> = {
 };
 
 export type TextSchemaPropDefinition = SchemaPropDefinition<
-  LocalTextValue | ExternalTextValue,
-  CompiledLocalTextValue | CompiledExternalTextValue
+  LocalTextValue | ExternalDataValue,
+  CompiledLocalTextValue | CompiledExternalDataValue
 >;
 
 export type StringSchemaPropDefinition = SchemaPropDefinition<string, string>;
@@ -363,6 +363,7 @@ const textProvider: SchemaPropDefinitionProviders["text"] = (
           return {
             id: x.id,
             value: fallbackValue,
+            widgetId: "@easyblocks/local-text",
           };
         }
 
@@ -379,6 +380,7 @@ const textProvider: SchemaPropDefinitionProviders["text"] = (
         return {
           id: x.id,
           value,
+          widgetId: "@easyblocks/local-text",
         };
       }
 

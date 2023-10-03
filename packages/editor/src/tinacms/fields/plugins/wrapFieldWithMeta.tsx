@@ -2,17 +2,31 @@ import {
   InternalField,
   isEmptyExternalDataConfigEntry,
   isIdReferenceToDocumentExternalData,
+  isResourceSchemaProp,
   isTrulyResponsiveValue,
   responsiveValueFindDeviceWithDefinedValue,
   responsiveValueForceGet,
 } from "@easyblocks/app-utils";
-import { getResourceId } from "@easyblocks/core";
-import { Loader, SSFonts, Typography } from "@easyblocks/design-system";
+import {
+  ExternalDataValue,
+  getResourceId,
+  LocalTextValue,
+  ResourceDefinition,
+  ResourceSchemaProp,
+  TrulyResponsiveValue,
+} from "@easyblocks/core";
+import {
+  Loader,
+  Select,
+  SelectItem,
+  SSFonts,
+  Typography,
+} from "@easyblocks/design-system";
 import { dotNotationGet, toArray } from "@easyblocks/utils";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 import styled, { css } from "styled-components";
 import { useConfigAfterAuto } from "../../../ConfigAfterAutoContext";
-import { useEditorContext } from "../../../EditorContext";
+import { EditorContextType, useEditorContext } from "../../../EditorContext";
 import { useEditorExternalData } from "../../../EditorExternalDataProvider";
 import { COMPONENTS_SUPPORTING_MIXED_VALUES } from "../components/constants";
 import { isMixedFieldValue } from "../components/isMixedFieldValue";
@@ -35,9 +49,6 @@ type InputFieldType<ExtraFieldProps, InputProps> = Omit<
   ExtraFieldMetaWrapperFields & {
     children: ReactNode;
     renderLabel?: (props: { label: string }) => ReactNode;
-    renderDecoration?: (props: {
-      renderDefaultDecoration: () => ReactNode;
-    }) => ReactNode;
   };
 
 // Wraps the Field component in labels describing the field's meta state
@@ -53,7 +64,6 @@ export function FieldMetaWrapper<
   noWrap,
   layout = "row",
   renderLabel,
-  renderDecoration,
   isLabelHidden,
 }: InputFieldType<ExtraFieldProps, InputProps>) {
   const editorContext = useEditorContext();
@@ -115,13 +125,14 @@ export function FieldMetaWrapper<
 
   const label = field.label || input.name;
   const { schemaProp } = field;
-  const isResource =
+  const isResource = isResourceSchemaProp(schemaProp);
+  const isExternalData =
     schemaProp.type === "resource" ||
     (schemaProp.type === "text" && !input.value.id?.startsWith("local."));
   const configPath = fieldNames[0].split(".").slice(0, -1).join(".");
   const fieldValue = dotNotationGet(configAfterAuto, fieldNames[0]);
   const config = dotNotationGet(configAfterAuto, configPath);
-  const externalDataValue = isResource
+  const externalDataValue = isExternalData
     ? externalData[
         getResourceId(
           focussedField.length === 0 ? "$" : config._id,
@@ -137,17 +148,13 @@ export function FieldMetaWrapper<
       ]
     : undefined;
 
-  const renderDefaultDecoration = () => {
-    return null;
-  };
-
   const currentBreakpointFieldValue = responsiveValueForceGet(
     fieldValue,
     editorContext.breakpointIndex
   );
 
   const isLoadingExternalData =
-    isResource &&
+    isExternalData &&
     !externalDataValue &&
     !isEmptyExternalDataConfigEntry(currentBreakpointFieldValue) &&
     !isIdReferenceToDocumentExternalData(currentBreakpointFieldValue.id);
@@ -190,11 +197,33 @@ export function FieldMetaWrapper<
             />
           )}
 
-          {(layout === "column" &&
-            renderDecoration?.({
-              renderDefaultDecoration,
-            })) ??
-            renderDefaultDecoration()}
+          {layout === "column" && isResource && !isMixedValue && (
+            <WidgetsSelect
+              schemaProp={schemaProp}
+              value={currentBreakpointFieldValue}
+              onChange={(widgetId) => {
+                if (isTrulyResponsiveValue(input.value)) {
+                  const newFieldValue: TrulyResponsiveValue<ExternalDataValue> =
+                    {
+                      ...input.value,
+                      [editorContext.breakpointIndex]: {
+                        id: null,
+                        widgetId,
+                      },
+                    };
+
+                  input.onChange(newFieldValue);
+                } else {
+                  const newFieldValue: ExternalDataValue = {
+                    id: null,
+                    widgetId,
+                  };
+
+                  input.onChange(newFieldValue);
+                }
+              }}
+            />
+          )}
         </FieldLabelWrapper>
       )}
       <FieldInputWrapper layout={layout}>{content}</FieldInputWrapper>
@@ -203,6 +232,126 @@ export function FieldMetaWrapper<
       )}
     </FieldWrapper>
   );
+}
+
+function WidgetsSelect({
+  value,
+  onChange,
+  schemaProp,
+}: {
+  value: LocalTextValue | ExternalDataValue;
+  onChange: (widgetId: string) => void;
+  schemaProp: ResourceSchemaProp;
+}) {
+  const editorContext = useEditorContext();
+
+  const [selectedWidgetId, setSelectedWidgetId] = useState<string | undefined>(
+    () =>
+      "widgetId" in value
+        ? value.widgetId
+        : getDefaultWidgetIdForResource(schemaProp, editorContext)
+  );
+
+  const availableWidgets = [
+    ...(editorContext.resourceTypes[
+      schemaProp.type === "resource" ? schemaProp.resourceType : schemaProp.type
+    ]?.widgets ?? []),
+  ];
+
+  if (schemaProp.type === "text") {
+    availableWidgets.unshift({
+      id: "@easyblocks/local-text",
+      label: "Local text",
+      component: () => {
+        return null;
+      },
+    });
+  }
+
+  if (availableWidgets.length === 1) {
+    return null;
+  }
+
+  const selectedWidget = availableWidgets.find((w) =>
+    "widgetId" in value ? w.id === value.widgetId : true
+  );
+
+  if (!selectedWidget) {
+    return null;
+  }
+
+  return (
+    <ExternalValueWidgetSelect
+      widgets={availableWidgets}
+      onChange={(widgetId) => {
+        setSelectedWidgetId(widgetId);
+        onChange(widgetId);
+      }}
+      selectedWidgetId={selectedWidgetId}
+    />
+  );
+}
+
+function ExternalValueWidgetSelect({
+  selectedWidgetId,
+  widgets,
+  onChange,
+}: {
+  selectedWidgetId: string | undefined;
+  widgets: Array<ResourceDefinition["widgets"][number]>;
+  onChange: (widgetId: string) => void;
+  icon?: string;
+}) {
+  const [internalSelectedWidgetId, setInternalSelectedWidgetId] = useState<
+    string | undefined
+  >(() => {
+    if (selectedWidgetId !== undefined) {
+      return selectedWidgetId;
+    }
+
+    return widgets[0]?.id;
+  });
+
+  const isControlled = selectedWidgetId !== undefined;
+
+  const widgetId = isControlled ? selectedWidgetId : internalSelectedWidgetId;
+
+  function handleWidgetIdChange(widgetId: string) {
+    if (isControlled) {
+      setInternalSelectedWidgetId(widgetId);
+    }
+
+    onChange(widgetId);
+  }
+
+  const selectedWidget = widgets.find((v) => v.id === widgetId);
+
+  return (
+    <FieldLabelIconWrapper>
+      <Select
+        value={selectedWidget?.id ?? ""}
+        onChange={(widgetId) => {
+          handleWidgetIdChange(widgetId);
+        }}
+        placeholder="Select widget..."
+      >
+        {widgets.map((widget) => {
+          return (
+            <SelectItem value={widget.id} key={widget.id}>
+              {widget.label ?? widget.id}
+            </SelectItem>
+          );
+        })}
+      </Select>
+    </FieldLabelIconWrapper>
+  );
+}
+
+function getDefaultWidgetIdForResource(
+  schemaProp: ResourceSchemaProp,
+  editorContext: EditorContextType
+): string | undefined {
+  return editorContext.resourceTypes[schemaProp.resourceType]?.widgets[0]?.id;
 }
 
 function isResponsiveField(

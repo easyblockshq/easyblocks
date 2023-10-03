@@ -7,7 +7,7 @@ export function addLocalizedFlag(
 ) {
   return configMap(config, context, ({ value, schemaProp }) => {
     if (
-      (schemaProp.type === "text" && value.id.startsWith("local.")) ||
+      (schemaProp.type === "text" && value.id?.startsWith("local.")) ||
       schemaProp.type === "component-collection-localised"
     ) {
       return {

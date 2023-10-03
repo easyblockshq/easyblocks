@@ -1,16 +1,8 @@
-import {
-  isResourceSchemaProp,
-  isTrulyResponsiveValue,
-  responsiveValueForceGet,
-} from "@easyblocks/app-utils";
-import {
-  ResourceSchemaProp,
-  TrulyResponsiveValue,
-  UnresolvedResource,
-} from "@easyblocks/core";
+import { responsiveValueForceGet } from "@easyblocks/app-utils";
+import { ResourceSchemaProp } from "@easyblocks/core";
 import { SSColors, SSFonts, SSIcons } from "@easyblocks/design-system";
 import { dotNotationGet, toArray } from "@easyblocks/utils";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useConfigAfterAuto } from "../../../../ConfigAfterAutoContext";
 import { useEditorContext } from "../../../../EditorContext";
@@ -20,7 +12,6 @@ import { getUniqueValues } from "../../components/getUniqueValues";
 import { Tooltip, TooltipArrow, TooltipBody } from "../Tooltip";
 import { useTooltip } from "../useTooltip";
 import { FieldMetaWrapper } from "../wrapFieldWithMeta";
-import { ExternalValueWidgetsMenu } from "./ExternalValueWidgetsMenu";
 import {
   responsiveFieldController,
   ResponsiveFieldDefinition,
@@ -62,15 +53,6 @@ export const ResponsiveField = (props: ResponsivePluginProps) => {
 
   const isMixedValue = uniqueValues.length > 1;
   const value = isMixedValue ? MIXED_VALUE : uniqueValues[0];
-
-  const [selectedWidgetId, setSelectedWidgetId] = useState<string | undefined>(
-    () =>
-      isResourceSchemaProp(field.schemaProp)
-        ? (value as UnresolvedResource).widgetId ??
-          getDefaultWidgetIdForResource(field.schemaProp)
-        : undefined
-  );
-
   const controller = responsiveFieldController({
     field,
     onChange: (newValues) => {
@@ -106,8 +88,6 @@ export const ResponsiveField = (props: ResponsivePluginProps) => {
     },
   });
 
-  const schemaProp = field.schemaProp;
-
   return (
     <FieldMetaWrapper
       {...props}
@@ -126,64 +106,6 @@ export const ResponsiveField = (props: ResponsivePluginProps) => {
                 )}
               </ResetButton>
             )
-          : undefined
-      }
-      renderDecoration={
-        !isMixedValue &&
-        isResourceSchemaProp(schemaProp) &&
-        schemaProp.type === "resource"
-          ? ({ renderDefaultDecoration }) => {
-              const availableWidgets =
-                editorContext.resourceTypes[schemaProp.resourceType]?.widgets;
-
-              if (!availableWidgets) {
-                return null;
-              }
-
-              if (availableWidgets.length === 1) {
-                return renderDefaultDecoration();
-              }
-
-              const selectedWidget = availableWidgets.find((w) =>
-                value.widgetId ? w.id === value.widgetId : true
-              );
-
-              if (!selectedWidget) {
-                return null;
-              }
-
-              return (
-                <ExternalValueWidgetsMenu
-                  widgets={availableWidgets}
-                  onChange={(widgetId) => {
-                    setSelectedWidgetId(widgetId);
-
-                    editorContext.actions.runChange(() => {
-                      if (isTrulyResponsiveValue(input.value)) {
-                        const newFieldValue: TrulyResponsiveValue<UnresolvedResource> =
-                          {
-                            ...input.value,
-                            [editorContext.breakpointIndex]: {
-                              id: null,
-                              widgetId,
-                            },
-                          };
-
-                        input.onChange(newFieldValue);
-                      } else {
-                        const newFieldValue: UnresolvedResource = {
-                          id: null,
-                          widgetId,
-                        };
-
-                        input.onChange(newFieldValue);
-                      }
-                    });
-                  }}
-                  selectedWidgetId={selectedWidgetId}
-                />
-              );
-            }
           : undefined
       }
     >

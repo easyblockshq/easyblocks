@@ -271,7 +271,10 @@ export type ComponentFixedSchemaProp = SchemaPropShared<
   passFields?: PassedField[];
 }; // we don't want to set default value for nested components
 
-export type TextResourceSchemaProp = SchemaPropShared<"text", string> & {
+export type TextResourceSchemaProp = SchemaPropShared<
+  "text",
+  LocalTextValue | ExternalDataValue | string
+> & {
   normalize?: (x: string) => string | null;
   [key: string]: any;
 };
@@ -1099,14 +1102,26 @@ export type ExternalDataChangeHandler = (
   contextParams: ContextParams
 ) => void;
 
-export type LocalTextValue = { id: `local.${string}`; value: LocalizedText };
+export type LocalDataValue<Value = unknown> = {
+  id: string;
+  value: Value;
+  widgetId: string;
+};
 
-export type CompiledLocalTextValue = { id: `local.${string}`; value: string };
+export type LocalTextValue = Omit<
+  LocalDataValue<LocalizedText>,
+  "id" | "widgetId"
+> & { id: `local.${string}`; widgetId: "@easyblocks/local-text" };
 
-export type ExternalTextValue = {
+export type CompiledLocalTextValue = Omit<
+  LocalDataValue<string>,
+  "id" | "widgetId"
+> & { id: `local.${string}`; widgetId: "@easyblocks/local-text" };
+
+export type ExternalDataValue = {
   id: string | null;
   key?: string;
   widgetId: string;
 };
 
-export type CompiledExternalTextValue = ExternalTextValue;
+export type CompiledExternalDataValue = ExternalDataValue;

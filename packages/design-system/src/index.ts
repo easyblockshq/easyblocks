@@ -31,3 +31,4 @@ export {
 export { Loader } from "./Loader";
 export { Select, SelectItem, SelectSeparator } from "./Select/Select";
 export { ToggleGroup, ToggleGroupItem } from "./ToggleGroup/ToggleGroup";
+export { Tooltip, TooltipContent, TooltipTrigger } from "./Tooltip/Tooltip";

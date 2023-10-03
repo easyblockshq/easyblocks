@@ -1,8 +1,8 @@
+import { useTextValue } from "@easyblocks/app-utils";
 import { dotNotationGet } from "@easyblocks/utils";
 import React, { useRef } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { CompiledShopstoryComponentProps } from "../../types";
-import { useTextValue } from "./useTextValue";
 
 export interface InlineTextProps {
   path: string;
@@ -15,7 +15,11 @@ export function InlineTextarea({
   placeholder,
   stitches,
 }: InlineTextProps) {
-  const { form } = window.parent.editorWindowAPI.editorContext;
+  const {
+    form,
+    contextParams: { locale },
+    locales,
+  } = window.parent.editorWindowAPI.editorContext;
   const valuePath = `${path}.value`;
   const value = dotNotationGet(form.values, valuePath);
 
@@ -24,6 +28,8 @@ export function InlineTextarea({
     (val: string | null) => {
       form.change(valuePath, val);
     },
+    locale,
+    locales,
     placeholder
   );
 

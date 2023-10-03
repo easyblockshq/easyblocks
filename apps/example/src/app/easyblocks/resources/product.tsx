@@ -133,6 +133,7 @@ async function fetchProductResources(
           title: {
             type: "text",
             value: product.title,
+            label: "Title",
           },
         },
       };
@@ -141,6 +142,7 @@ async function fetchProductResources(
       compoundExternalDataValue.value.description = {
         type: "text",
         value: product.description,
+        label: "Description",
       };
     }
 

@@ -292,7 +292,11 @@ const Component = (
   );
 
   return (
-    <div>
+    <div
+      css={`
+        width: 100%;
+      `}
+    >
       {fetchingAssetsStatus === "loading" && items === null && (
         <ThumbnailButton label={"Loading..."} disabled={true} />
       )}

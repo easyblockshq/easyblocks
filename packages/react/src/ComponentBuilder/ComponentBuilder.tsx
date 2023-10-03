@@ -26,6 +26,8 @@ import {
   CompilationMetadata,
   CompiledComponentConfig,
   CompiledCustomComponentConfig,
+  CompiledExternalDataValue,
+  CompiledLocalTextValue,
   CompiledShopstoryComponentConfig,
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
@@ -40,7 +42,6 @@ import {
   ResourceSchemaProp,
   ResponsiveValue,
   UnresolvedResource,
-  UnresolvedResourceNonEmpty,
 } from "@easyblocks/core";
 import React, { Fragment, ReactElement } from "react";
 import Box from "../Box/Box";
@@ -759,10 +760,12 @@ function mapResourceProps(
 
       if (
         schemaProp.type === "text" &&
-        (propValue as UnresolvedResource).id?.startsWith("local.")
+        (
+          propValue as CompiledLocalTextValue | CompiledExternalDataValue
+        ).id?.startsWith("local.")
       ) {
         resultsProps[propName] = (
-          propValue as UnresolvedResourceNonEmpty
+          propValue as unknown as CompiledLocalTextValue
         ).value;
       } else {
         resultsProps[propName] = resolveResource(

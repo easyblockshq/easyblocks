@@ -1,4 +1,4 @@
-import { getFallbackForLocale } from "@easyblocks/core";
+import { getFallbackForLocale, Locale } from "@easyblocks/core";
 import { cleanString } from "@easyblocks/utils";
 import debounce from "lodash/debounce";
 import React from "react";
@@ -6,14 +6,11 @@ import React from "react";
 export function useTextValue(
   value: any,
   onChange: any,
+  locale: string,
+  locales: Array<Locale>,
   defaultPlaceholder?: string,
   normalize?: (x: string) => string | null
 ) {
-  const {
-    contextParams: { locale },
-    locales,
-  } = window.parent.editorWindowAPI.editorContext;
-
   const isExternal = typeof value === "object" && value !== null;
   const fallbackValue = isExternal
     ? getFallbackForLocale(value.value, locale, locales)

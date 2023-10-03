@@ -10,6 +10,7 @@ import {
   CustomResourceSchemaProp,
   FontSchemaProp,
   IconSchemaProp,
+  LocalTextValue,
   NumberSchemaProp,
   PositionSchemaProp,
   RadioGroup$SchemaProp,
@@ -102,7 +103,7 @@ function buildThemeDefinition<T>(
 type FieldProvider<S extends SchemaProp, Value = S["defaultValue"]> = (
   schemaProp: S,
   editorContext: EditorContextType,
-  value: Value
+  value: NonNullable<Value>
 ) => AnyTinaField;
 
 export type TinaFieldProviders = {
@@ -131,7 +132,29 @@ export type TinaFieldProviders = {
 };
 
 const tinaFieldProviders: TinaFieldProviders = {
-  text: (schemaProp) => {
+  text: (schemaProp, editorContext, value) => {
+    if (!isValueLocalTextValue(value) && typeof value !== "string") {
+      const resourceDefinition = editorContext.resourceTypes["text"];
+
+      const fieldWidget = resourceDefinition.widgets.find((w) =>
+        value?.widgetId ? w.id === value.widgetId : true
+      );
+
+      if (!fieldWidget) {
+        throw new Error(
+          `Can't find widget named "${
+            value.widgetId ?? resourceDefinition.widgets[0].id
+          }"`
+        );
+      }
+
+      return {
+        ...getCommonFieldProps(schemaProp),
+        component: "external",
+        externalField: fieldWidget.component,
+      };
+    }
+
     return {
       ...getCommonFieldProps(schemaProp),
       component: "text",
@@ -397,4 +420,36 @@ export function getTinaField<T extends SchemaProp>(
     (tinaFieldProviders as any)[schemaProp.type] || tinaFieldProviders.resource;
 
   return fieldProvider(schemaProp, editorContext, value);
+}
+
+function isValueLocalTextValue(value: unknown): value is LocalTextValue {
+  if (!(typeof value === "object" && value !== null)) {
+    return false;
+  }
+
+  if (
+    !(
+      "id" in value &&
+      typeof (value as { id: unknown }).id === "string" &&
+      (value as { id: string }).id.startsWith("local.")
+    )
+  ) {
+    return false;
+  }
+
+  if (!("value" in value)) {
+    return false;
+  }
+
+  if (
+    !(
+      "widgetId" in value &&
+      typeof (value as { widgetId: unknown }).widgetId === "string" &&
+      (value as { widgetId: string }).widgetId === "@easyblocks/local-text"
+    )
+  ) {
+    return false;
+  }
+
+  return true;
 }

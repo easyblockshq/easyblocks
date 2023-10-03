@@ -5,25 +5,22 @@ import {
   Field,
   getResourceId,
   ResourceSchemaProp,
-  TextResourceSchemaProp,
   UnresolvedResource,
 } from "@easyblocks/core";
 import { Select, SelectItem } from "@easyblocks/design-system";
 import { dotNotationGet, toArray } from "@easyblocks/utils";
 import React, { ComponentType } from "react";
-import { useEditorExternalData } from "../../../../EditorExternalDataProvider";
 import { useEditorContext } from "../../../../EditorContext";
+import { useEditorExternalData } from "../../../../EditorExternalDataProvider";
 import {
   FieldMixedValue,
   InternalWidgetComponentProps,
 } from "../../../../types";
 import { FieldRenderProps } from "../../../form-builder";
 import { isMixedFieldValue } from "../../components/isMixedFieldValue";
-import { ExternalValueWidgetsMenu } from "../ResponsiveField/ExternalValueWidgetsMenu";
 import { FieldMetaWrapper } from "../wrapFieldWithMeta";
 
-interface ExternalField
-  extends Field<AnyField, Exclude<ResourceSchemaProp, TextResourceSchemaProp>> {
+interface ExternalField extends Field<AnyField, ResourceSchemaProp> {
   externalField: ComponentType<InternalWidgetComponentProps>;
 }
 
@@ -44,7 +41,6 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
 
   const fieldNames = toArray(field.name);
   const ExternalField = field.externalField;
-  const isCustomResourceProp = field.schemaProp.type === "resource";
   const externalDataId = Object.keys(externalData).find((externalDataId) => {
     const path = fieldNames[0].split(".").slice(0, -1).join(".");
     const configId = dotNotationGet(editorContext.form.values, path)._id;
@@ -72,43 +68,7 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
     isResolvedCompoundExternalDataValue(resource);
 
   return (
-    <FieldMetaWrapper
-      {...props}
-      form={tinaForm}
-      layout="column"
-      renderDecoration={
-        !isMixedFieldValue(value) && isCustomResourceProp
-          ? () => {
-              const widgets =
-                editorContext.resourceTypes[field.schemaProp.resourceType]
-                  .widgets;
-
-              if (widgets.length === 1) {
-                return null;
-              }
-
-              return (
-                <ExternalValueWidgetsMenu
-                  widgets={widgets}
-                  selectedWidgetId={value.widgetId ?? widgets[0].id}
-                  onChange={(widgetId) => {
-                    editorContext.actions.runChange(() => {
-                      fieldNames.forEach((fieldName) => {
-                        const newFieldValue: UnresolvedResource = {
-                          id: null,
-                          widgetId,
-                        };
-
-                        editorContext.form.change(fieldName, newFieldValue);
-                      });
-                    });
-                  }}
-                />
-              );
-            }
-          : undefined
-      }
-    >
+    <FieldMetaWrapper {...props} form={tinaForm} layout="column">
       <div
         css={`
           width: 100%;
@@ -141,11 +101,14 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
                 input.onChange(newValue);
               }}
             />
+
             {isCompoundResourceValueSelectVisible && (
               <CompoundResourceValueSelect
                 options={getBasicResourcesOfType(
                   resource.value,
-                  field.schemaProp.resourceType
+                  field.schemaProp.type === "resource"
+                    ? field.schemaProp.resourceType
+                    : field.schemaProp.type
                 ).map((r) => ({
                   id: externalDataId,
                   key: r.key,

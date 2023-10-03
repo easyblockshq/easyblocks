@@ -19,7 +19,7 @@ export const SearchableSmallPickerModal: React.FC<
 
   const [query, setQuery] = useState("");
 
-  const trimmedQuery = query.trim();
+  const trimmedQuery = query.trim().toLocaleLowerCase();
 
   const filteredTemplates =
     trimmedQuery === ""
