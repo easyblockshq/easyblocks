@@ -9,6 +9,7 @@ import {
   SSModalContext,
   SSModalStyles,
   Toaster,
+  TooltipProvider,
 } from "@easyblocks/design-system";
 import { raiseError } from "@easyblocks/utils";
 import isPropValid from "@emotion/is-prop-valid";
@@ -80,20 +81,22 @@ export function launchEditor(props: LaunchEditorProps) {
           >
             <GlobalStyles />
             <SSModalStyles />
-            <div
-              id={"modalContainer"}
-              style={{ position: "fixed", left: 0, top: 0, zIndex: 100000 }}
-            />
-            <Editor
-              config={props.config}
-              contextParams={contextParams}
-              locales={locales}
-              mode={mode}
-              documentId={editorSearchParams.documentId}
-              rootContainer={rootContainer}
-              externalData={props.externalData}
-              onExternalDataChange={props.onExternalDataChange}
-            />
+            <TooltipProvider>
+              <div
+                id={"modalContainer"}
+                style={{ position: "fixed", left: 0, top: 0, zIndex: 100000 }}
+              />
+              <Editor
+                config={props.config}
+                contextParams={contextParams}
+                locales={locales}
+                mode={mode}
+                documentId={editorSearchParams.documentId}
+                rootContainer={rootContainer}
+                externalData={props.externalData}
+                onExternalDataChange={props.onExternalDataChange}
+              />
+            </TooltipProvider>
             <Toaster containerStyle={{ zIndex: 100100 }} />
           </SSModalContext.Provider>
         </StyleSheetManager>

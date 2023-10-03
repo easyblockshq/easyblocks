@@ -2,12 +2,12 @@ import * as RadixTooltip from "@radix-ui/react-tooltip";
 import React, { ReactNode } from "react";
 import { SSColors } from "../colors";
 
+function TooltipProvider(props: { children: ReactNode }) {
+  return <RadixTooltip.Provider>{props.children}</RadixTooltip.Provider>;
+}
+
 function Tooltip(props: { children: ReactNode }) {
-  return (
-    <RadixTooltip.Provider>
-      <RadixTooltip.Root>{props.children}</RadixTooltip.Root>
-    </RadixTooltip.Provider>
-  );
+  return <RadixTooltip.Root>{props.children}</RadixTooltip.Root>;
 }
 
 function TooltipTrigger(props: { children: ReactNode }) {
@@ -41,4 +41,4 @@ function TooltipContent(props: { children: ReactNode }) {
   );
 }
 
-export { Tooltip, TooltipTrigger, TooltipContent };
+export { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent };
