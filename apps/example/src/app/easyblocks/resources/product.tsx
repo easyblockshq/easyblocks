@@ -1,6 +1,7 @@
 import type {
   ChangedExternalData,
   ExternalData,
+  ExternalDataCompoundResourceResolvedResult,
   FetchOutputCompoundResources,
   ImageSrc,
   PickerItem,
@@ -70,9 +71,6 @@ async function fetchProductResources(
     const product = products.find((p) => p.id === inputResource.externalId);
 
     if (!product) {
-      /**
-       * Question: type: "object" for errors?
-       */
       result[id] = {
         error: new Error(
           `Product with id "${inputResource.externalId}" not found`
@@ -81,9 +79,6 @@ async function fetchProductResources(
       return;
     }
 
-    /**
-     * How to do it?
-     */
     if (product.title.indexOf("forced error") > -1) {
       result[id] = {
         error: new Error("Fetch error"),
@@ -121,25 +116,37 @@ async function fetchProductResources(
         }
       : productImage;
 
-    result[id] = {
-      type: "object",
-      value: {
-        mainImage: {
-          type: "image",
-          value: productImage,
-          label: "Main image",
+    const compoundExternalDataValue: ExternalDataCompoundResourceResolvedResult =
+      {
+        type: "object",
+        value: {
+          mainImage: {
+            type: "image",
+            value: productImage,
+            label: "Main image",
+          },
+          secondaryImage: {
+            type: "image",
+            value: secondaryImage,
+            label: "Secondary image",
+          },
+          title: {
+            type: "text",
+            value: product.title,
+            label: "Title",
+          },
         },
-        secondaryImage: {
-          type: "image",
-          value: secondaryImage,
-          label: "Secondary image",
-        },
-        title: {
-          type: "text",
-          value: product.title,
-        },
-      },
-    };
+      };
+
+    if (product.description) {
+      compoundExternalDataValue.value.description = {
+        type: "text",
+        value: product.description,
+        label: "Description",
+      };
+    }
+
+    result[id] = compoundExternalDataValue;
   });
 
   return result;

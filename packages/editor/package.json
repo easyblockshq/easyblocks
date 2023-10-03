@@ -28,7 +28,7 @@
   "dependencies": {
     "@babel/runtime": "^7.21.0",
     "@easyblocks/core": "workspace:*",
-    "@easyblocks/editable-components": "^1.5.2",
+    "@easyblocks/editable-components": "workspace:*",
     "@easyblocks/design-system": "workspace:*",
     "@emotion/is-prop-valid": "^1.2.1",
     "@popperjs/core": "^2.11.5",

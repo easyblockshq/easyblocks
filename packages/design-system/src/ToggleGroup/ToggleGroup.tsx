@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { forwardRef, ReactNode } from "react";
 import * as RadixToggleGroup from "@radix-ui/react-toggle-group";
 import { SSColors } from "../colors";
 
@@ -23,10 +23,13 @@ function ToggleGroup(props: {
   );
 }
 
-function ToggleGroupItem(props: { value: string; children: ReactNode }) {
+const ToggleGroupItem = forwardRef<
+  HTMLButtonElement,
+  { value: string; children: ReactNode }
+>(function ToggleGroupItem({ value, children, ...props }, forwardedRef) {
   return (
     <RadixToggleGroup.Item
-      value={props.value}
+      value={value}
       css={`
         all: unset;
         box-sizing: border-box;
@@ -37,7 +40,7 @@ function ToggleGroupItem(props: { value: string; children: ReactNode }) {
         justify-content: center;
         background-color: transparent;
 
-        &[data-state="on"] {
+        &[aria-checked="true"] {
           background-color: ${SSColors.black10};
         }
 
@@ -55,10 +58,12 @@ function ToggleGroupItem(props: { value: string; children: ReactNode }) {
           flex-shrink: 0;
         }
       `}
+      ref={forwardedRef}
+      {...props}
     >
-      {props.children}
+      {children}
     </RadixToggleGroup.Item>
   );
-}
+});
 
 export { ToggleGroup, ToggleGroupItem };

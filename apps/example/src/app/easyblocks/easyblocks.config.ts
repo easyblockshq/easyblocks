@@ -66,5 +66,8 @@ export const easyblocksConfig: Config = {
     product: {
       widgets: [productWidget],
     },
+    text: {
+      widgets: [productWidget],
+    },
   },
 };

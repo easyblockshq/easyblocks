@@ -14,7 +14,7 @@ type ImageRendererProps = {
 };
 
 function ImageRenderer({ image, Image }: ImageRendererProps) {
-  if (!image || image.status === "loading") {
+  if (!image) {
     return <Placeholder />;
   } else if (image.status === "error") {
     return (

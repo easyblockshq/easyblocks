@@ -26,6 +26,8 @@ import {
   CompilationMetadata,
   CompiledComponentConfig,
   CompiledCustomComponentConfig,
+  CompiledExternalDataValue,
+  CompiledLocalTextValue,
   CompiledShopstoryComponentConfig,
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
@@ -758,9 +760,13 @@ function mapResourceProps(
 
       if (
         schemaProp.type === "text" &&
-        (propValue as UnresolvedResource).id?.startsWith("local.")
+        (
+          propValue as CompiledLocalTextValue | CompiledExternalDataValue
+        ).id?.startsWith("local.")
       ) {
-        resultsProps[propName] = propValue;
+        resultsProps[propName] = (
+          propValue as unknown as CompiledLocalTextValue
+        ).value;
       } else {
         resultsProps[propName] = resolveResource(
           propValue,

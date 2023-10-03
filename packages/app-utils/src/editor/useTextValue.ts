@@ -1,4 +1,4 @@
-import { getFallbackForLocale } from "@easyblocks/core";
+import { getFallbackForLocale, Locale } from "@easyblocks/core";
 import { cleanString } from "@easyblocks/utils";
 import debounce from "lodash/debounce";
 import React from "react";
@@ -6,15 +6,11 @@ import React from "react";
 export function useTextValue(
   value: any,
   onChange: any,
+  locale: string,
+  locales: Array<Locale>,
   defaultPlaceholder?: string,
   normalize?: (x: string) => string | null
 ) {
-  const {
-    actions,
-    contextParams: { locale },
-    locales,
-  } = window.parent.editorWindowAPI.editorContext;
-
   const isExternal = typeof value === "object" && value !== null;
   const fallbackValue = isExternal
     ? getFallbackForLocale(value.value, locale, locales)
@@ -22,7 +18,8 @@ export function useTextValue(
 
   const valueFromProps = (() => {
     if (isExternal) {
-      let displayedValue = value.value[locale];
+      let displayedValue = value.value?.[locale];
+
       if (typeof displayedValue !== "string") {
         displayedValue = fallbackValue ?? "";
       }
@@ -37,21 +34,19 @@ export function useTextValue(
   const [localInputValue, setLocalInputValue] = React.useState(valueFromProps);
 
   function saveNewValue(newValue: string | null) {
-    actions.runChange(() => {
-      if (isExternal) {
-        const newExternalValue = {
-          ...value,
-          value: {
-            ...value.value,
-            [locale]: newValue,
-          },
-        };
+    if (isExternal) {
+      const newExternalValue = {
+        ...value,
+        value: {
+          ...value.value,
+          [locale]: newValue,
+        },
+      };
 
-        onChange(newExternalValue);
-      } else {
-        onChange(newValue);
-      }
-    });
+      onChange(newExternalValue);
+    } else {
+      onChange(newValue);
+    }
   }
 
   const onChangeDebounced = React.useCallback(

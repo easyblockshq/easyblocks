@@ -7,6 +7,7 @@ function sleep(ms: number) {
 export type Product = {
   id: string;
   title: string;
+  description?: string;
   price: number;
   compareAtPrice: number | null;
   image: string;
