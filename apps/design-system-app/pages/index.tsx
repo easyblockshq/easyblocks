@@ -13,6 +13,7 @@ import { SelectStories } from "@/src/SelectStories";
 import { ToggleButtonStories } from "@/src/ToggleButtonStories";
 import { MultiSelectStories } from "@/src/MultiSelectStories";
 import { BasicRowStories } from "@/src/BasicRowStories";
+import { NavigationControllerStories } from "@/src/NavigationControllerStories";
 
 function Separator() {
   return (
@@ -66,6 +67,8 @@ export default function Home() {
       <MultiSelectStories />
       <Separator />
       <BasicRowStories />
+      <Separator />
+      <NavigationControllerStories />
 
       <br />
       <br />
