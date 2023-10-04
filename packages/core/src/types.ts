@@ -230,7 +230,7 @@ export type FontSchemaProp = SchemaPropShared<
 
 export type IconSchemaProp = SchemaPropShared<"icon", RefValue<string>>;
 
-export type ComponentPickerType = "large" | "small";
+export type ComponentPickerType = "large" | "large-3" | "compact";
 
 export type PassedField =
   | { name: string; label: string; showWhen?: any; group?: string }

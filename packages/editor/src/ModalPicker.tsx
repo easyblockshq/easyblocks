@@ -89,6 +89,8 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
     });
   }
 
+  const picker = schemaProp.picker ?? "compact";
+
   // const defaultPickerMode =
   //   componentTypes.includes("section") || componentTypes.includes("card")
   //     ? "big"
@@ -127,13 +129,28 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
     }
   };
 
-  return (
-    <SectionPickerModal
-      isOpen={true}
-      onClose={onModalClose}
-      templates={templatesDictionary}
-    />
-  );
+  if (picker === "large" || picker === "large-3") {
+    return (
+      <SectionPickerModal
+        isOpen={true}
+        onClose={onModalClose}
+        templates={templatesDictionary}
+        mode={picker}
+      />
+    );
+  } else if (picker === "compact") {
+    console.log("COMPACT!!!!!", templatesDictionary);
+
+    return (
+      <SearchableSmallPickerModal
+        isOpen={true}
+        onClose={onModalClose}
+        templates={templatesDictionary}
+      />
+    );
+  } else {
+    throw new Error(`unknown template picker: "${picker}"`);
+  }
 
   // if (pickerMode === "small") {
   //   modal = (

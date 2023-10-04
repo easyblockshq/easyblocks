@@ -821,6 +821,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
           prop: "Cards",
           type: "component-collection",
           componentTypes: ["card"],
+          picker: "large-3",
           itemFields: [
             {
               prop: "itemSize",

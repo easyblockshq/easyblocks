@@ -20,7 +20,7 @@ export type CompiledEntryParentContext = {
   fieldName: string;
 };
 
-type Mode = "card" | "section";
+type Mode = "large" | "large-3";
 
 type VisualProps = {
   mode: Mode;
@@ -51,7 +51,7 @@ const ImageContainer = styled.div<VisualProps>`
   position: relative;
   background-color: ${SSColors.black10};
   margin-bottom: 8px;
-  padding-bottom: ${(p) => (p.mode === "card" ? "90%" : "60%")};
+  padding-bottom: ${(p) => (p.mode === "large-3" ? "90%" : "60%")};
   cursor: pointer;
 `;
 
@@ -283,7 +283,7 @@ const ModalRoot = styled.div`
 const ModalGridRoot = styled.div<VisualProps>`
   display: grid;
   grid-template-columns: ${(p) =>
-    p.mode === "card" ? "1fr 1fr 1fr" : "1fr 1fr"};
+    p.mode === "large-3" ? "1fr 1fr 1fr" : "1fr 1fr"};
   grid-column-gap: 16px;
   grid-row-gap: 30px;
 `;
@@ -330,11 +330,12 @@ const GridRoot = styled.div`
   overflow-y: auto;
 `;
 
-export const SectionPickerModal: TemplatePicker = (props) => {
-  const { isOpen, onClose, templates } = props;
-
-  const mode = "section";
-
+export const SectionPickerModal: TemplatePicker<{ mode?: Mode }> = ({
+  isOpen,
+  onClose,
+  templates,
+  mode = "large",
+}) => {
   const templateGroups = templates;
 
   // > = {};

@@ -37,6 +37,7 @@ const rootSectionsComponentDefinition: InternalRenderableComponentDefinition<"$R
         prop: "data",
         label: "data",
         type: "component-collection",
+        picker: "large",
         componentTypes: ["section"],
         itemFields: [
           {
