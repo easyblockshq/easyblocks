@@ -16,6 +16,8 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
   {
     id: "$video",
     label: "Video",
+    thumbnail:
+      "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_video.png",
     type: ["image", "item"],
     styles: videoStyles,
     editing: ({ values, editingInfo }) => {

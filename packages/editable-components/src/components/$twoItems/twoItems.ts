@@ -6,7 +6,9 @@ const twoItemsComponentDefinition: InternalRenderableComponentDefinition<"$twoIt
   {
     id: "$twoItems",
     type: "item",
-    label: "Left / Right layout",
+    label: "Horizontal layout",
+    thumbnail:
+      "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_horizontal_layout.png",
     pasteSlots: ["Items"],
     styles: $twoItems,
     editing: ({ values, editingInfo }) => {

@@ -730,6 +730,7 @@ export type ComponentDefinitionShared<Identifier extends string = string> = {
   label?: string;
   type?: string | string[];
   schema: SchemaProp[];
+  thumbnail?: string;
 
   change?: ComponentConfigChangeFunction;
   icon?: "link" | "grid_3x3";

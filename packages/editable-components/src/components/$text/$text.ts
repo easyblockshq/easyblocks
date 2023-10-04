@@ -14,8 +14,11 @@ import $textStyles from "./$text.styles";
 
 const textEditableComponent: InternalRenderableComponentDefinition<"$text"> = {
   id: "$text",
+  label: "Simple Text",
   styles: $textStyles,
   type: "item",
+  thumbnail:
+    "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_text.png",
   schema: [
     {
       prop: "value",

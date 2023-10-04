@@ -18,6 +18,8 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
     id: "$image",
     label: "Image",
     type: "item",
+    thumbnail:
+      "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_image.png",
     styles: imageStyles,
     editing: ({ values, editingInfo }) => {
       let fields = [...editingInfo.fields];

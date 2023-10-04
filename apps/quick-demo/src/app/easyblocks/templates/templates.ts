@@ -155,4 +155,18 @@ export const templates: Template[] = [
     thumbnail:
       "https://images.ctfassets.net/blh4anz05qu1/4mRFPyFl2b1J68n8Sp5KzV/f87bb51535c986641f1c5d7d12694b2b/Screenshot_2023-01-10_at_14.43.48.png",
   },
+  {
+    id: "ButtonGroup_default",
+    label: "Default",
+    config: {
+      _template: "$buttons",
+      gap: {
+        $res: true,
+        xl: {
+          ref: "12",
+          value: "12px",
+        },
+      },
+    },
+  },
 ];
