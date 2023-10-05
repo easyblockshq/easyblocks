@@ -27,18 +27,23 @@ import { generateTextTemplate } from "./generateTextTemplate";
 import { getBuiltInTemplates } from "./getBuiltinTemplates";
 
 function getDefaultTemplateForDefinition(
-  def: InternalComponentDefinition
+  def: InternalComponentDefinition,
+  editorContext: EditorContextType
 ): InternalTemplate {
+  // Text has different way of building a default config
+  const config =
+    def.id === "$richText"
+      ? generateTextTemplate(editorContext)
+      : {
+          _template: def.id,
+        };
+
   return {
-    // id: def.id,
+    id: `${def.id}_default`,
     label: def.label ?? def.id,
     thumbnail: def.previewImage,
-    config: {
-      _template: def.id,
-    },
+    config,
     isUserDefined: false,
-    // label: "Default",
-    // group: "My library",
   };
 }
 
@@ -101,7 +106,7 @@ function getMyLibraryTemplates(
         )
       ) {
         defaultTemplatesForDefinitions.push(
-          getDefaultTemplateForDefinition(definition)
+          getDefaultTemplateForDefinition(definition, editorContext)
         );
       }
     });
@@ -155,7 +160,8 @@ export async function getTemplates(
 
 function getNecessaryDefaultTemplates(
   components: InternalComponentDefinition[],
-  templates: Template[]
+  templates: Template[],
+  editorContext: EditorContextType
 ) {
   const result: InternalTemplate[] = [];
 
@@ -164,7 +170,7 @@ function getNecessaryDefaultTemplates(
       (template) => template.config._template === component.id
     );
     if (componentTemplates.length === 0) {
-      result.push(getDefaultTemplateForDefinition(component));
+      result.push(getDefaultTemplateForDefinition(component, editorContext));
     }
   });
 
@@ -211,19 +217,23 @@ export function getTemplatesInternal(
     ...configTemplates,
     ...getNecessaryDefaultTemplates(
       editorContext.definitions.components,
-      configTemplates
+      configTemplates,
+      editorContext
     ),
     ...getNecessaryDefaultTemplates(
       editorContext.definitions.links,
-      configTemplates
+      configTemplates,
+      editorContext
     ),
     ...getNecessaryDefaultTemplates(
       editorContext.definitions.actions,
-      configTemplates
+      configTemplates,
+      editorContext
     ),
     ...getNecessaryDefaultTemplates(
       editorContext.definitions.textModifiers,
-      configTemplates
+      configTemplates,
+      editorContext
     ),
   ];
 
