@@ -21,6 +21,7 @@ import BasicCard_4 from "./BasicCard_4.json";
 import BasicCard_5 from "./BasicCard_5.json";
 import BasicCard_6 from "./BasicCard_6.json";
 import BasicCard_7 from "./BasicCard_7.json";
+import video from "./video.json";
 
 import { Template } from "@easyblocks/core";
 
@@ -168,5 +169,10 @@ export const templates: Template[] = [
         },
       },
     },
+  },
+  {
+    id: "Video_default",
+    label: "Default",
+    config: video,
   },
 ];

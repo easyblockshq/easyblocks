@@ -508,7 +508,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
     return {
       ...buildThemeDefinition(
         compilationContext.theme.colors,
-        "$dark",
+        "#000000",
         schemaProp,
         compilationContext,
         (x: any) => {
@@ -1203,7 +1203,7 @@ function getFirstOptionValue(
 
 function buildThemeDefinition<T>(
   themeValues: { [key: string]: ThemeRefValue<ResponsiveValue<T>> },
-  defaultKey: string, // we must make sure that defaultKey is always correct
+  defaultKey: any, // we must make sure that defaultKey is always correct
   schemaProp:
     | ColorSchemaProp
     | SpaceSchemaProp
@@ -1214,10 +1214,7 @@ function buildThemeDefinition<T>(
   // shouldLinearize?: boolean
 ) {
   // Create default value
-  const defaultValue = {
-    ref: defaultKey,
-    value: themeValues[defaultKey].value,
-  };
+  const defaultValue = Object.values(themeValues)[0];
 
   /**
    * TODO:

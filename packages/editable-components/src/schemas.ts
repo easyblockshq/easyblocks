@@ -1644,6 +1644,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
 
     {
       id: "$MissingComponent",
+      label: "Missing",
       schema: [
         {
           prop: "error",
@@ -1654,6 +1655,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
     },
     {
       id: "$MissingAction",
+      label: "Missing",
       schema: [],
       type: "action",
     },

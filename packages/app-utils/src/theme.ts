@@ -79,100 +79,100 @@ export const defaultTheme: Theme = {
     },
   },
   colors: {
-    $dark: { value: "black", type: "dev" },
-    $light: { value: "white", type: "dev" },
-    $backgroundDark: { value: "#363636", type: "dev" },
-    $backgroundLight: { value: "#F2F2F2", type: "dev" },
-    transparent: { value: "transparent", type: "dev" },
+    // $dark: { value: "black", type: "dev" },
+    // $light: { value: "white", type: "dev" },
+    // $backgroundDark: { value: "#363636", type: "dev" },
+    // $backgroundLight: { value: "#F2F2F2", type: "dev" },
+    // transparent: { value: "transparent", type: "dev" },
   },
   fonts: {
-    $body: {
-      value: {
-        fontFamily: MASTER_FONT_FAMILY,
-        fontSize: 20,
-        fontWeight: 400,
-        lineHeight: 1.2,
-        "@xs": {
-          fontSize: 18,
-        },
-      },
-      type: "dev",
-    },
-    "$body.bold": {
-      value: {
-        fontFamily: MASTER_FONT_FAMILY,
-        fontSize: 20,
-        fontWeight: 500,
-        lineHeight: 1.2,
-        "@xs": {
-          fontSize: 18,
-        },
-      },
-      type: "dev",
-    },
-    $body2: {
-      value: {
-        fontFamily: MASTER_FONT_FAMILY,
-        fontSize: 16,
-        fontWeight: 400,
-        lineHeight: 1.2,
-      },
-      type: "dev",
-    },
-    "$body2.bold": {
-      value: {
-        fontFamily: MASTER_FONT_FAMILY,
-        fontSize: 16,
-        fontWeight: 500,
-        lineHeight: 1.2,
-      },
-      type: "dev",
-    },
-    $heading1: {
-      value: {
-        fontFamily: MASTER_FONT_FAMILY,
-        fontSize: 64,
-        fontWeight: 500,
-        lineHeight: 1.2,
-        "@xs": {
-          fontSize: 36,
-        },
-      },
-      type: "dev",
-    },
-    $heading2: {
-      value: {
-        fontFamily: MASTER_FONT_FAMILY,
-        fontSize: 48,
-        fontWeight: 500,
-        lineHeight: 1.2,
-        "@xs": {
-          fontSize: 32,
-        },
-      },
-      type: "dev",
-    },
-    $heading3: {
-      value: {
-        fontFamily: MASTER_FONT_FAMILY,
-        fontSize: 32,
-        fontWeight: 500,
-        lineHeight: 1.2,
-        "@xs": {
-          fontSize: 28,
-        },
-      },
-      type: "dev",
-    },
-    $heading4: {
-      value: {
-        fontFamily: MASTER_FONT_FAMILY,
-        fontSize: 24,
-        fontWeight: 500,
-        lineHeight: 1.2,
-      },
-      type: "dev",
-    },
+    // $body: {
+    //   value: {
+    //     fontFamily: MASTER_FONT_FAMILY,
+    //     fontSize: 20,
+    //     fontWeight: 400,
+    //     lineHeight: 1.2,
+    //     "@xs": {
+    //       fontSize: 18,
+    //     },
+    //   },
+    //   type: "dev",
+    // },
+    // "$body.bold": {
+    //   value: {
+    //     fontFamily: MASTER_FONT_FAMILY,
+    //     fontSize: 20,
+    //     fontWeight: 500,
+    //     lineHeight: 1.2,
+    //     "@xs": {
+    //       fontSize: 18,
+    //     },
+    //   },
+    //   type: "dev",
+    // },
+    // $body2: {
+    //   value: {
+    //     fontFamily: MASTER_FONT_FAMILY,
+    //     fontSize: 16,
+    //     fontWeight: 400,
+    //     lineHeight: 1.2,
+    //   },
+    //   type: "dev",
+    // },
+    // "$body2.bold": {
+    //   value: {
+    //     fontFamily: MASTER_FONT_FAMILY,
+    //     fontSize: 16,
+    //     fontWeight: 500,
+    //     lineHeight: 1.2,
+    //   },
+    //   type: "dev",
+    // },
+    // $heading1: {
+    //   value: {
+    //     fontFamily: MASTER_FONT_FAMILY,
+    //     fontSize: 64,
+    //     fontWeight: 500,
+    //     lineHeight: 1.2,
+    //     "@xs": {
+    //       fontSize: 36,
+    //     },
+    //   },
+    //   type: "dev",
+    // },
+    // $heading2: {
+    //   value: {
+    //     fontFamily: MASTER_FONT_FAMILY,
+    //     fontSize: 48,
+    //     fontWeight: 500,
+    //     lineHeight: 1.2,
+    //     "@xs": {
+    //       fontSize: 32,
+    //     },
+    //   },
+    //   type: "dev",
+    // },
+    // $heading3: {
+    //   value: {
+    //     fontFamily: MASTER_FONT_FAMILY,
+    //     fontSize: 32,
+    //     fontWeight: 500,
+    //     lineHeight: 1.2,
+    //     "@xs": {
+    //       fontSize: 28,
+    //     },
+    //   },
+    //   type: "dev",
+    // },
+    // $heading4: {
+    //   value: {
+    //     fontFamily: MASTER_FONT_FAMILY,
+    //     fontSize: 24,
+    //     fontWeight: 500,
+    //     lineHeight: 1.2,
+    //   },
+    //   type: "dev",
+    // },
   },
   icons: {
     $sliderLeft: {

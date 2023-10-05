@@ -12,6 +12,8 @@ if (!process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN) {
 
 const easyblocksAccessToken = process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN;
 
+const MASTER_FONT_FAMILY = "-apple-system, BlinkMacSystemFont, sans-serif";
+
 export const easyblocksConfig: Config = {
   accessToken: easyblocksAccessToken,
   locales: [
@@ -92,6 +94,140 @@ export const easyblocksConfig: Config = {
           type: "boolean",
         },
       ],
+    },
+  ],
+  colors: [
+    {
+      id: "dark",
+      label: "Black",
+      value: "black",
+    },
+    {
+      id: "white",
+      label: "White",
+      value: "white",
+    },
+    {
+      id: "dark-grey",
+      label: "Dark Grey",
+      value: "#363636",
+    },
+    {
+      id: "light-grey",
+      label: "Light Grey",
+      value: "#F2F2F2",
+    },
+    {
+      id: "transparent",
+      label: "Transparent",
+      value: "transparent",
+    },
+    {
+      id: "transparent-grey-dark",
+      label: "Transparent Dark",
+      value: "#363636",
+    },
+    {
+      id: "transparent-grey-light",
+      label: "Transparent Light",
+      value: "#36363680",
+    },
+  ],
+  fonts: [
+    {
+      id: "body",
+      label: "Body",
+      value: {
+        fontFamily: MASTER_FONT_FAMILY,
+        fontSize: 20,
+        fontWeight: 400,
+        lineHeight: 1.2,
+        "@xs": {
+          fontSize: 18,
+        },
+      },
+    },
+    {
+      id: "body.bold",
+      label: "Body (bold)",
+      value: {
+        fontFamily: MASTER_FONT_FAMILY,
+        fontSize: 20,
+        fontWeight: 500,
+        lineHeight: 1.2,
+        "@xs": {
+          fontSize: 18,
+        },
+      },
+    },
+    {
+      id: "body2",
+      label: "Body small",
+      value: {
+        fontFamily: MASTER_FONT_FAMILY,
+        fontSize: 16,
+        fontWeight: 400,
+        lineHeight: 1.2,
+      },
+    },
+    {
+      id: "body2.bold",
+      label: "Body small (bold)",
+      value: {
+        fontFamily: MASTER_FONT_FAMILY,
+        fontSize: 16,
+        fontWeight: 500,
+        lineHeight: 1.2,
+      },
+    },
+    {
+      id: "heading1",
+      label: "Heading 1",
+      value: {
+        fontFamily: MASTER_FONT_FAMILY,
+        fontSize: 64,
+        fontWeight: 500,
+        lineHeight: 1.2,
+        "@xs": {
+          fontSize: 36,
+        },
+      },
+    },
+    {
+      id: "heading2",
+      label: "Heading 2",
+      value: {
+        fontFamily: MASTER_FONT_FAMILY,
+        fontSize: 48,
+        fontWeight: 500,
+        lineHeight: 1.2,
+        "@xs": {
+          fontSize: 32,
+        },
+      },
+    },
+    {
+      id: "heading3",
+      label: "Heading 3",
+      value: {
+        fontFamily: MASTER_FONT_FAMILY,
+        fontSize: 32,
+        fontWeight: 500,
+        lineHeight: 1.2,
+        "@xs": {
+          fontSize: 28,
+        },
+      },
+    },
+    {
+      id: "heading4",
+      label: "Heading 4",
+      value: {
+        fontFamily: MASTER_FONT_FAMILY,
+        fontSize: 24,
+        fontWeight: 500,
+        lineHeight: 1.2,
+      },
     },
   ],
   resourceTypes: {

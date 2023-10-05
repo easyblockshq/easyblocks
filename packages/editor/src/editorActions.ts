@@ -375,9 +375,10 @@ function replaceItems(
     editorContext.form.change(
       path,
       duplicateConfig(
-        newConfig && oldConfig
-          ? changeComponentConfig(oldConfig, newConfig, editorContext)
-          : newConfig,
+        // newConfig && oldConfig
+        //   ? changeComponentConfig(oldConfig, newConfig, editorContext)
+        //   : newConfig,
+        newConfig,
         editorContext
       )
     );

@@ -89,6 +89,10 @@ const stackComponentDefinition: InternalRenderableComponentDefinition<"$stack"> 
             label: "Bottom",
             type: "space",
             group: "Margins",
+            defaultValue: {
+              ref: "0",
+              value: "0px",
+            },
           },
           {
             prop: "align",

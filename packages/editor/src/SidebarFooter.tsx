@@ -67,8 +67,8 @@ export function SidebarFooter(props: { paths: string[] }) {
   //   role !== "item" &&
   //   !role.startsWith("$"); /* rich text part, etc */
 
-  const definition = findComponentDefinition(value, editorContext)!;
-  const isSaveable = !!definition.allowSave;
+  const definition = findComponentDefinition(value, editorContext);
+  const isSaveable = !!definition?.allowSave;
 
   const showSaveAsTemplate =
     isSaveable &&
