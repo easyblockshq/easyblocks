@@ -9,17 +9,21 @@ function StandardButton(
           HTMLButtonElement,
           { children: ReactNode }
         >;
+        IconWrapper: any;
       };
       props: {
         label: {
           value: string;
         };
+        icon: string;
+        variant: "label" | "icon" | "label-icon";
       };
     };
     forwardedRef: Ref<HTMLButtonElement>;
   } & Record<string, any>
 ) {
-  const { ButtonRoot } = props.__fromEditor.components;
+  const { ButtonRoot, IconWrapper } = props.__fromEditor.components;
+  const variant = props.__fromEditor.props.variant;
 
   // Every Shopstory button is just a component that must have props and ref passed.
   const buttonProps: Record<string, any> = {
@@ -41,7 +45,14 @@ function StandardButton(
 
   return (
     <ButtonRoot {...buttonProps}>
-      <div>{props.__fromEditor.props.label.value}</div>
+      {variant !== "icon" && <div>{props.__fromEditor.props.label.value}</div>}
+      {variant !== "label" && (
+        <IconWrapper
+          dangerouslySetInnerHTML={{
+            __html: props.__fromEditor.props.icon,
+          }}
+        />
+      )}
     </ButtonRoot>
   );
 }
