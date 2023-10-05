@@ -1,27 +1,29 @@
 import {
   configTraverse,
-  isResourceSchemaProp,
+  isExternalSchemaProp,
   isTrulyResponsiveValue,
   responsiveValueEntries,
 } from "@easyblocks/app-utils";
 import {
-  getResourceId,
-  ResourceWithSchemaProp,
-  ShopstoryClientDependencies,
-  UnresolvedResource,
+  CompilerModule,
+  ExternalReference,
+  ExternalSchemaProp,
+  ExternalWithSchemaProp,
+  getExternalReferenceLocationKey,
+  isLocalTextReference,
 } from "@easyblocks/core";
 import { assertDefined } from "@easyblocks/utils";
 import { createCompilationContext } from "../createCompilationContext";
 import { normalize } from "../normalize";
 import { normalizeInput } from "../normalizeInput";
 
-export const findResources: ShopstoryClientDependencies["findResources"] = (
+export const findExternals: CompilerModule["findExternals"] = (
   input,
   config,
   contextParams
 ) => {
   const inputConfigComponent = normalizeInput(input);
-  const resourcesWithSchemaProps: ResourceWithSchemaProp[] = [];
+  const externalsWithSchemaProps: ExternalWithSchemaProp[] = [];
   const compilationContext = createCompilationContext(
     config,
     contextParams,
@@ -33,7 +35,13 @@ export const findResources: ShopstoryClientDependencies["findResources"] = (
     normalizedConfig,
     compilationContext,
     ({ config, value, schemaProp }) => {
-      if (!isResourceSchemaProp(schemaProp)) {
+      // This kinda tricky, because "text" is a special case. It can be either local or external.
+      // To prevent false positives, we need to check if it's local text reference and make sure that we won't
+      // treat "text" that's actually external as non external.
+      if (
+        (schemaProp.type === "text" && isLocalTextReference(value, "text")) ||
+        (schemaProp.type !== "text" && !isExternalSchemaProp(schemaProp))
+      ) {
         return;
       }
 
@@ -42,27 +50,31 @@ export const findResources: ShopstoryClientDependencies["findResources"] = (
           ? "$"
           : assertDefined(config._id);
 
-      if (isTrulyResponsiveValue<UnresolvedResource | undefined>(value)) {
+      if (isTrulyResponsiveValue<ExternalReference | undefined>(value)) {
         responsiveValueEntries(value).forEach(([breakpoint, currentValue]) => {
           if (currentValue === undefined) {
             return;
           }
 
-          resourcesWithSchemaProps.push({
-            id: getResourceId(configId, schemaProp.prop, breakpoint),
-            schemaProp,
-            resource: currentValue,
+          externalsWithSchemaProps.push({
+            id: getExternalReferenceLocationKey(
+              configId,
+              schemaProp.prop,
+              breakpoint
+            ),
+            schemaProp: schemaProp as ExternalSchemaProp,
+            externalReference: currentValue,
           });
         });
       } else {
-        resourcesWithSchemaProps.push({
-          id: getResourceId(configId, schemaProp.prop),
-          schemaProp,
-          resource: value,
+        externalsWithSchemaProps.push({
+          id: getExternalReferenceLocationKey(configId, schemaProp.prop),
+          schemaProp: schemaProp as ExternalSchemaProp,
+          externalReference: value,
         });
       }
     }
   );
 
-  return resourcesWithSchemaProps;
+  return externalsWithSchemaProps;
 };

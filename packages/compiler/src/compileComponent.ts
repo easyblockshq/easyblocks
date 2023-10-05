@@ -16,7 +16,7 @@ import {
   InternalEditingInfo,
   InternalRenderableComponentDefinition,
   isComponentConfig,
-  isResourceSchemaProp,
+  isExternalSchemaProp,
   isSchemaPropAction,
   isSchemaPropActionTextModifier,
   isSchemaPropCollection,
@@ -52,6 +52,7 @@ import {
   RefMap,
   SchemaProp,
   SerializedComponentDefinition,
+  SpaceSchemaProp,
   TrulyResponsiveValue,
 } from "@easyblocks/core";
 import {
@@ -226,7 +227,8 @@ export function compileComponent(
           ownPropsAfterAuto[schemaProp.prop],
           compilationContext,
           $width,
-          schemaProp.autoConstant ?? DEFAULT_SPACE_AUTO_CONSTANT
+          (schemaProp as SpaceSchemaProp).autoConstant ??
+            DEFAULT_SPACE_AUTO_CONSTANT
         );
       }
     });
@@ -242,7 +244,8 @@ export function compileComponent(
           value,
           compilationContext,
           $width,
-          arg.itemSchemaProp.autoConstant ?? DEFAULT_SPACE_AUTO_CONSTANT
+          (arg.itemSchemaProp as SpaceSchemaProp).autoConstant ??
+            DEFAULT_SPACE_AUTO_CONSTANT
         );
       }
 
@@ -579,7 +582,7 @@ export function compileComponent(
        * 3. However, it's not OK for responsive resources (like image, video).
        */
       componentDefinition.schema.forEach((schemaProp: SchemaProp) => {
-        if (isResourceSchemaProp(schemaProp)) {
+        if (isExternalSchemaProp(schemaProp) || schemaProp.type === "text") {
           // We simply copy ONLY the breakpoints which are defined in the raw data
           compiled.props[schemaProp.prop] = Object.fromEntries(
             Object.keys(editableElement[schemaProp.prop]).map((key) => {
@@ -845,7 +848,7 @@ function createOwnComponentProps({
     const refs = Object.fromEntries(
       componentDefinition.schema
         .filter((schemaProp) => {
-          return !isResourceSchemaProp(schemaProp);
+          return !isExternalSchemaProp(schemaProp);
         })
         .map((schemaProp) => {
           return [schemaProp.prop, refMap[ref][schemaProp.prop]];
@@ -1643,7 +1646,7 @@ function createFieldName(
   /**
    * This condition is kind of "ancient". It's ref mechanism (shared properties) that is not in use anymore. But it's necessary for backward compatibility.
    */
-  if (ref && !isResourceSchemaProp(schemaProp)) {
+  if (ref && !isExternalSchemaProp(schemaProp)) {
     // local ref
     if (!isRefLocal) {
       throw new Error("global refs not enabled");

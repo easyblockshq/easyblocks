@@ -1,5 +1,4 @@
 /** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
-import { ExternalValueProp } from "@easyblocks/core";
 import type { ForwardRefRenderFunction, ReactNode, Ref } from "react";
 
 function StandardButton(
@@ -12,7 +11,7 @@ function StandardButton(
         >;
       };
       props: {
-        label: string | ExternalValueProp<string>;
+        label: string | undefined;
       };
     };
     forwardedRef: Ref<HTMLButtonElement>;
@@ -40,13 +39,7 @@ function StandardButton(
 
   return (
     <ButtonRoot {...buttonProps}>
-      <div>
-        {typeof props.__fromEditor.props.label === "object"
-          ? props.__fromEditor.props.label !== null
-            ? props.__fromEditor.props.label.value ?? ""
-            : ""
-          : props.__fromEditor.props.label}
-      </div>
+      <div>{props.__fromEditor.props.label ?? ""}</div>
     </ButtonRoot>
   );
 }

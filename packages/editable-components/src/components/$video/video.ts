@@ -1,12 +1,13 @@
 import {
   InternalRenderableComponentDefinition,
   isCompoundExternalDataValue,
+  responsiveValueFindDeviceWithDefinedValue,
   responsiveValueForceGet,
 } from "@easyblocks/app-utils";
 import {
-  getResourceId,
-  getResourceValue,
-  UnresolvedResource,
+  ExternalReference,
+  getExternalReferenceLocationKey,
+  getExternalValue,
   VideoSrc,
 } from "@easyblocks/core";
 import { assertDefined, last } from "@easyblocks/utils";
@@ -34,8 +35,7 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
       {
         prop: "image",
         label: "Video",
-        type: "resource",
-        resourceType: "video",
+        type: "video",
       },
       {
         prop: "aspectRatio", // main image size
@@ -142,11 +142,28 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         group: "Controls styling",
       },
     ],
-    getEditorSidebarPreview: (config, externalData, options) => {
-      const { breakpointIndex } = options;
-      const activeVideoValue = responsiveValueForceGet<UnresolvedResource>(
+    getEditorSidebarPreview: (
+      config,
+      externalData,
+      { breakpointIndex, devices }
+    ) => {
+      const device = responsiveValueFindDeviceWithDefinedValue(
         config.image,
-        breakpointIndex
+        breakpointIndex,
+        devices
+      );
+
+      if (!device) {
+        return {
+          type: "icon",
+          icon: "link",
+          description: "None",
+        };
+      }
+
+      const activeVideoValue = responsiveValueForceGet<ExternalReference>(
+        config.image,
+        device.id
       );
 
       if (activeVideoValue.id == null) {
@@ -157,12 +174,16 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         };
       }
 
-      const videoResource =
+      const videoExternalValue =
         externalData[
-          getResourceId(assertDefined(config._id), `image`, breakpointIndex)
+          getExternalReferenceLocationKey(
+            assertDefined(config._id),
+            "image",
+            breakpointIndex
+          )
         ];
 
-      if (!videoResource || "error" in videoResource) {
+      if (!videoExternalValue || "error" in videoExternalValue) {
         return {
           type: "icon",
           icon: "link",
@@ -170,7 +191,7 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         };
       }
 
-      if (isCompoundExternalDataValue(videoResource)) {
+      if (isCompoundExternalDataValue(videoExternalValue)) {
         if (!activeVideoValue.key) {
           return {
             type: "icon",
@@ -179,10 +200,10 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
           };
         }
 
-        const resolvedCompoundResourceResult =
-          videoResource.value[activeVideoValue.key];
+        const resolvedCompoundExternalDataResult =
+          videoExternalValue.value[activeVideoValue.key];
 
-        if (!resolvedCompoundResourceResult) {
+        if (!resolvedCompoundExternalDataResult) {
           return {
             type: "icon",
             icon: "link",
@@ -191,18 +212,20 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         }
 
         const imageFileName = last(
-          (resolvedCompoundResourceResult.value as VideoSrc).url.split("/")
+          (resolvedCompoundExternalDataResult.value as VideoSrc).url.split("/")
         );
         const imageFileNameWithoutQueryParams = imageFileName.split("?")[0];
 
         return {
           type: "image",
-          url: (resolvedCompoundResourceResult.value as VideoSrc).url,
+          url: (resolvedCompoundExternalDataResult.value as VideoSrc).url,
           description: imageFileNameWithoutQueryParams,
         };
       }
 
-      const videoResourceValue = getResourceValue(videoResource) as VideoSrc;
+      const videoResourceValue = getExternalValue(
+        videoExternalValue
+      ) as VideoSrc;
       const videoFileName = last(videoResourceValue.url.split("/"));
       const videoFileNameWithoutQueryParams = videoFileName.split("?")[0];
 

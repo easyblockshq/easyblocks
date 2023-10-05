@@ -43,20 +43,18 @@ export const easyblocksConfig: Config = {
         {
           prop: "product",
           label: "Product",
-          type: "resource",
-          resourceType: "product",
+          type: "product",
         },
         {
           prop: "fallbackProduct",
           label: "Fallback product",
-          type: "resource",
-          resourceType: "product",
+          type: "product",
         },
       ],
     },
   },
   components: builtinEditableComponentsDefinitions,
-  resourceTypes: {
+  types: {
     image: {
       widgets: [easyblocksImageWidget, pexelsImageWidget, productWidget],
     },

@@ -4,7 +4,7 @@ import { buildFullTheme } from "./buildFullTheme";
 import { normalizeComponent } from "./definitions";
 
 export function normalize(
-  configComponent: ConfigComponent,
+  configComponent: Omit<ConfigComponent, "_id"> & { _id?: string },
   compilationContext: CompilationContextType
 ): ConfigComponent {
   const compilationContextWithFullTheme = {

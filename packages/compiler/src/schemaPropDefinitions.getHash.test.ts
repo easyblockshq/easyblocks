@@ -51,7 +51,7 @@ const testCompilationContext: CompilationContextType = {
   text: {
     fetch: jest.fn(),
   },
-  resourceTypes: {},
+  types: {},
   video: {
     resourceType: "",
     transform: jest.fn(),
@@ -247,7 +247,7 @@ describe("custom schema", () => {
     'for %s returns "%s""',
     (value, expected) => {
       expect(
-        schemaPropDefinitions["custom"](
+        schemaPropDefinitions["external"](
           {
             prop: "testProp",
             type: "custom",

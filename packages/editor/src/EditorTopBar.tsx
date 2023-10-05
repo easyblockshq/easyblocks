@@ -335,9 +335,9 @@ function DeviceSwitch({
         }
 
         return (
-          <Tooltip>
+          <Tooltip key={d.id}>
             <TooltipTrigger>
-              <ToggleGroupItem value={d.id} key={d.id}>
+              <ToggleGroupItem value={d.id}>
                 {DEVICE_ID_TO_ICON[d.id]}
               </ToggleGroupItem>
             </TooltipTrigger>

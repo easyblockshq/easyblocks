@@ -1,4 +1,7 @@
-import { Resource, TextResource } from "@easyblocks/core";
+import {
+  ExternalData,
+  getExternalReferenceLocationKey,
+} from "@easyblocks/core";
 import { TextComponentConfig } from "../$text/$text";
 import {
   RichTextAccessibilityRole,
@@ -14,13 +17,9 @@ import {
 function convertTextComponentConfigToRichTextComponentConfig(
   textComponentConfig: TextComponentConfig,
   locale: string,
-  resources: Array<Resource>
+  externalData: ExternalData
 ): RichTextComponentConfig {
-  const value = getResourceValueForResource(
-    textComponentConfig.value,
-    locale,
-    resources
-  );
+  const value = getResourceValueForResource(textComponentConfig, externalData);
 
   if (value === null || value === undefined) {
     throw new Error("Case not implemented yet");
@@ -57,19 +56,22 @@ function convertTextComponentConfigToRichTextComponentConfig(
 }
 
 function getResourceValueForResource(
-  unresolvedResource: TextComponentConfig["value"],
-  locale: string,
-  resources: Array<Resource>
+  textComponentConfig: TextComponentConfig,
+  externalData: ExternalData
 ): string | null | undefined {
-  if (unresolvedResource.id === null) {
+  if (textComponentConfig.value.id === null) {
     return "";
   }
 
-  const textResource = resources.find<TextResource>(
-    (r): r is TextResource => true
+  const locationKey = getExternalReferenceLocationKey(
+    textComponentConfig._id,
+    "value"
   );
+  const textResource = externalData[locationKey];
 
-  return textResource?.value?.[locale];
+  return "value" in textResource && textResource.type === "text"
+    ? (textResource.value as string)
+    : null;
 }
 
 function splitValueByLines(value: string) {

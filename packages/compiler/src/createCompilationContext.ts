@@ -17,9 +17,9 @@ import {
   ConfigDeviceRange,
   ContextParams,
   createFetchingContext,
-  CustomResourceSchemaProp,
   Devices,
   EditorLauncherProps,
+  ExternalSchemaProp,
   ResponsiveValue,
   SchemaProp,
   Spacing,
@@ -345,13 +345,13 @@ export function createCompilationContext(
       if (
         !rootComponentDefinition.schema.some((s) => s.prop === schemaProp.prop)
       ) {
-        const rootResourceSchemaProp: CustomResourceSchemaProp = {
+        const rootExternalSchemaProp: ExternalSchemaProp = {
           ...schemaProp,
           group: "Preview data",
           optional: true,
         };
 
-        rootComponentDefinition.schema.push(rootResourceSchemaProp);
+        rootComponentDefinition.schema.push(rootExternalSchemaProp);
       }
     });
   }
@@ -395,7 +395,7 @@ export function createCompilationContext(
       links,
       textModifiers,
     },
-    resourceTypes: fetchingContext.resourceTypes,
+    types: fetchingContext.types,
     mainBreakpointIndex: mainDevice.id,
     contextParams,
     strict: fetchingContext.strict,

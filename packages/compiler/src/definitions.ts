@@ -9,7 +9,7 @@ import {
   getDevicesWidths,
   getMappedToken,
   isContextEditorContext,
-  isResourceSchemaProp,
+  isExternalSchemaProp,
   isTrulyResponsiveValue,
   parseSpacing,
   responsiveValueAt,
@@ -24,8 +24,7 @@ import {
   Color,
   ColorSchemaProp,
   CompiledCustomComponentConfig,
-  CompiledExternalDataValue,
-  CompiledLocalTextValue,
+  CompiledLocalTextReference,
   CompiledShopstoryComponentConfig,
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
@@ -33,16 +32,17 @@ import {
   ComponentFixedSchemaProp,
   ComponentSchemaProp,
   ConfigComponent,
-  CustomResourceSchemaProp,
   Devices,
-  ExternalDataValue,
+  ExternalReference,
+  ExternalReferenceEmpty,
+  ExternalReferenceNonEmpty,
+  ExternalSchemaProp,
   Font,
   FontSchemaProp,
   getFallbackForLocale,
   getFallbackLocaleForLocale,
-  getResourceType,
   IconSchemaProp,
-  LocalTextValue,
+  LocalTextReference,
   NumberSchemaProp,
   Option,
   Position,
@@ -61,12 +61,10 @@ import {
   String$SchemaProp,
   StringSchemaProp,
   StringTokenSchemaProp,
-  TextResourceSchemaProp,
+  TextSchemaProp,
   ThemeRefValue,
   TrulyResponsiveValue,
   UnresolvedResource,
-  UnresolvedResourceEmpty,
-  UnresolvedResourceNonEmpty,
 } from "@easyblocks/core";
 import { uniqueId } from "@easyblocks/utils";
 import { CompilationCache } from "./CompilationCache";
@@ -94,8 +92,8 @@ export type SchemaPropDefinition<Type, CompiledType> = {
 };
 
 export type TextSchemaPropDefinition = SchemaPropDefinition<
-  LocalTextValue | ExternalDataValue,
-  CompiledLocalTextValue | CompiledExternalDataValue
+  LocalTextReference | ExternalReference,
+  CompiledLocalTextReference | ExternalReference
 >;
 
 export type StringSchemaPropDefinition = SchemaPropDefinition<string, string>;
@@ -159,16 +157,6 @@ export type IconSchemaPropDefinition = SchemaPropDefinition<
   string
 >;
 
-export type ImageSchemaPropDefinition = SchemaPropDefinition<
-  ResponsiveValue<UnresolvedResource>,
-  ResponsiveValue<UnresolvedResource>
->;
-
-export type VideoSchemaPropDefinition = SchemaPropDefinition<
-  ResponsiveValue<UnresolvedResource>,
-  ResponsiveValue<UnresolvedResource>
->;
-
 export type ConfigComponentCompilationOutput = {
   compiledComponentConfig:
     | CompiledShopstoryComponentConfig
@@ -197,9 +185,9 @@ export type ComponentFixedSchemaPropDefinition = SchemaPropDefinition<
   Array<ConfigComponentCompilationOutput>
 >;
 
-type ResourceSchemaPropDefinition = SchemaPropDefinition<
-  ResponsiveValue<UnresolvedResource>,
-  ResponsiveValue<UnresolvedResource>
+type ExternalSchemaPropDefinition = SchemaPropDefinition<
+  ResponsiveValue<ExternalReference>,
+  ResponsiveValue<ExternalReference>
 >;
 
 export type Component$$$SchemaPropDefinition = SchemaPropDefinition<
@@ -209,7 +197,7 @@ export type Component$$$SchemaPropDefinition = SchemaPropDefinition<
 
 export type SchemaPropDefinitionProviders = {
   text: (
-    schemaProp: TextResourceSchemaProp,
+    schemaProp: TextSchemaProp,
     compilationContext: CompilationContextType
   ) => TextSchemaPropDefinition;
   string: (
@@ -288,10 +276,10 @@ export type SchemaPropDefinitionProviders = {
     schemaProp: Component$$$SchemaProp,
     compilationContext: CompilationContextType
   ) => Component$$$SchemaPropDefinition;
-  resource: (
-    schemaProp: CustomResourceSchemaProp,
+  external: (
+    schemaProp: ExternalSchemaProp,
     compilationContext: CompilationContextType
-  ) => ResourceSchemaPropDefinition;
+  ) => ExternalSchemaPropDefinition;
   position: (
     schemaProp: PositionSchemaProp,
     compilationContext: CompilationContextType
@@ -334,6 +322,7 @@ const textProvider: SchemaPropDefinitionProviders["text"] = (
             [compilationContext.contextParams.locale]:
               schemaProp.defaultValue ?? "Lorem ipsum",
           },
+          widgetId: "@easyblocks/local-text",
         };
       }
 
@@ -387,7 +376,7 @@ const textProvider: SchemaPropDefinitionProviders["text"] = (
       return {
         id: x.id,
         widgetId: x.widgetId,
-        key: x.key,
+        ...(x.id !== null && { key: x.key }),
       };
     },
     getHash: (value) => {
@@ -966,21 +955,16 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
     };
   },
 
-  resource: (schemaProp, compilationContext) => {
-    if (
-      schemaProp.resourceType === "image" ||
-      schemaProp.resourceType === "video"
-    ) {
+  external: (schemaProp, compilationContext) => {
+    if (schemaProp.type === "image" || schemaProp.type === "video") {
       const normalize = getResponsiveNormalize<UnresolvedResource>(
         compilationContext,
         {},
         {
           id: null,
-          widgetId:
-            compilationContext.resourceTypes[schemaProp.resourceType]
-              ?.widgets[0]?.id,
+          widgetId: compilationContext.types[schemaProp.type]?.widgets[0]?.id,
         },
-        resourceNormalize(schemaProp.resourceType)
+        externalNormalize(schemaProp.type)
       );
 
       return {
@@ -992,7 +976,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
 
     return {
       normalize: (value) => {
-        const normalized = resourceNormalize(schemaProp.type)(
+        const normalized = externalNormalize(schemaProp.type)(
           value,
           compilationContext
         );
@@ -1000,9 +984,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         if (!normalized) {
           return {
             id: null,
-            widgetId:
-              compilationContext.resourceTypes[schemaProp.resourceType]
-                ?.widgets[0]?.id,
+            widgetId: compilationContext.types[schemaProp.type]?.widgets[0]?.id,
           };
         }
 
@@ -1012,13 +994,11 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         return value;
       },
       getHash: (value) => {
-        const resourceType = getResourceType(schemaProp);
-
         if (value.id === null) {
-          return `${schemaProp.type}.${resourceType}`;
+          return `${schemaProp.type}.${schemaProp.type}`;
         }
 
-        return `${schemaProp.type}.${resourceType}.${value.id}`;
+        return `${schemaProp.type}.${schemaProp.type}.${value.id}`;
       },
     };
   },
@@ -1361,16 +1341,16 @@ function getRef<T>(value: RefValue<T>): string {
   throw new Error("unreachable");
 }
 
-function resourceNormalize(
-  resourceType: string
+function externalNormalize(
+  externalType: string
 ): (
   x: any,
   compilationContext: CompilationContextType
-) => UnresolvedResource | undefined {
+) => ExternalReference | undefined {
   return (x, compilationContext) => {
     if (typeof x === "object" && x !== null) {
       if (typeof x.id === "string") {
-        const normalized: UnresolvedResourceNonEmpty = {
+        const normalized: ExternalReferenceNonEmpty = {
           id: x.id,
           widgetId: x.widgetId,
           key: x.key,
@@ -1379,12 +1359,12 @@ function resourceNormalize(
         return normalized;
       }
 
-      const normalized: UnresolvedResourceEmpty = {
+      const normalized: ExternalReferenceEmpty = {
         id: null,
         widgetId:
           typeof x.widgetId === "string"
             ? x.widgetId
-            : compilationContext.resourceTypes[resourceType]?.widgets[0]?.id,
+            : compilationContext.types[externalType]?.widgets[0]?.id,
       };
 
       return normalized;
@@ -1412,16 +1392,12 @@ function resourceGetHash(
 }
 
 export function normalizeComponent(
-  configComponent: ConfigComponent,
+  configComponent: Omit<ConfigComponent, "_id"> & { _id?: string },
   compilationContext: CompilationContextType,
   isRef?: boolean
 ): ConfigComponent {
-  if (configComponent._template === "$ExternalBlock") {
-    return configComponent;
-  }
-
   const ret: ConfigComponent = {
-    _id: configComponent._id,
+    _id: configComponent._id ?? uniqueId(),
     _template: configComponent._template,
     _master: configComponent._master,
     $$$refs: configComponent.$$$refs,
@@ -1477,12 +1453,12 @@ export function normalizeComponent(
     if (!isRef) {
       const { ref } = splitTemplateName(configComponent._template);
       if (ref) {
-        if (!isResourceSchemaProp(schemaProp)) {
+        if (!isExternalSchemaProp(schemaProp)) {
           return;
         }
       }
     } else {
-      if (isResourceSchemaProp(schemaProp)) {
+      if (isExternalSchemaProp(schemaProp)) {
         return;
       }
     }
@@ -1505,10 +1481,6 @@ export function normalizeComponent(
     }
   }
 
-  if (!ret._id) {
-    ret._id = uniqueId();
-  }
-
   if (!ret.traceId) {
     ret.traceId = generateDefaultTraceId(ret);
   }
@@ -1522,7 +1494,12 @@ export function getSchemaDefinition<
   schemaProp: T,
   compilationContext: CompilationContextType
 ): ReturnType<SchemaPropDefinitionProvider> {
-  const provider = schemaPropDefinitions[schemaProp.type];
+  const provider =
+    schemaProp.type === "image" ||
+    schemaProp.type === "video" ||
+    isExternalSchemaProp(schemaProp)
+      ? schemaPropDefinitions.external
+      : schemaPropDefinitions[schemaProp.type];
 
   return provider(schemaProp as any, compilationContext);
 }

@@ -59,7 +59,7 @@ export const testCompilationContext: CompilationContextType = {
     textModifiers: [],
   },
   devices: testDevices,
-  resourceTypes: {},
+  types: {},
   image: testImage,
   video: testVideo,
   contextParams: {

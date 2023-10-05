@@ -1,5 +1,6 @@
 import {
   InternalRenderableComponentDefinition,
+  responsiveValueFindDeviceWithDefinedValue,
   responsiveValueForceGet,
 } from "@easyblocks/app-utils";
 import { Color, RefValue } from "@easyblocks/core";
@@ -18,10 +19,24 @@ const backgroundColorComponentDefinition: InternalRenderableComponentDefinition<
         type: "color",
       },
     ],
-    getEditorSidebarPreview: (config, _, { breakpointIndex }) => {
+    getEditorSidebarPreview: (config, _, { breakpointIndex, devices }) => {
+      const device = responsiveValueFindDeviceWithDefinedValue(
+        config.color,
+        breakpointIndex,
+        devices
+      );
+
+      if (!device) {
+        return {
+          type: "icon",
+          icon: "link",
+          description: "None",
+        };
+      }
+
       const activeColorValue: RefValue<Color> = responsiveValueForceGet(
         config.color,
-        breakpointIndex
+        device.id
       );
 
       if (!activeColorValue) {

@@ -6,9 +6,7 @@ type TextProps = {
   __fromEditor: {
     components: any;
     props: {
-      value?: {
-        value: string;
-      };
+      value?: string;
     };
   };
 };
@@ -18,7 +16,7 @@ const $text = (props: TextProps) => {
 
   // We need to transform new lines into <br />
 
-  const lines = cleanString(props.__fromEditor.props.value?.value || "").split(
+  const lines = cleanString(props.__fromEditor.props.value || "").split(
     /(?:\r\n|\r|\n)/g
   );
 

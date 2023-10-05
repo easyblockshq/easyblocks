@@ -25,7 +25,6 @@ export function changeComponentConfig(
   const isNewButton = newComponentDefinition.tags.includes("button");
 
   if (isPreviousButton && isNewButton) {
-    const isNewCustom = !newConfig._template.startsWith("$");
     const isNewIconButton = newConfig._template === "$IconButton";
 
     const previousSymbol: ConfigComponent | undefined =

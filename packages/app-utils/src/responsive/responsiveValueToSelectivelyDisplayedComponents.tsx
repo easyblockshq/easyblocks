@@ -4,7 +4,10 @@ import { isTrulyResponsiveValue } from "./isTrulyResponsiveValue";
 
 export function responsiveValueToSelectivelyDisplayedComponents<T>(
   input: ResponsiveValue<T>,
-  callback: (arg: T, breakpointIndex?: string) => React.ReactElement,
+  callback: (
+    arg: T | undefined,
+    breakpointIndex?: string
+  ) => React.ReactElement,
   devices: Devices,
   stitches: any,
   removeFromDom?: boolean
@@ -16,7 +19,7 @@ export function responsiveValueToSelectivelyDisplayedComponents<T>(
   const rangesWithValues: Array<{
     from: number;
     to: number | null;
-    value: T;
+    value: T | undefined;
     breakpointIndex: string;
   }> = [];
 
@@ -26,11 +29,6 @@ export function responsiveValueToSelectivelyDisplayedComponents<T>(
     }
 
     const value = input[device.id] as T | undefined;
-
-    // Skip value only if it's `undefined`. If it's null, it's still a valid value.
-    if (value === undefined) {
-      return;
-    }
 
     if (rangesWithValues.length === 0) {
       rangesWithValues.push({

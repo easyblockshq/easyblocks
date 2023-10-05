@@ -16,11 +16,16 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.21.0",
-    "@easyblocks/core": "^1.5.2",
+    "@easyblocks/core": "workspace:*",
+    "@easyblocks/design-system": "workspace:*",
     "graphql-request": "^3.4.0"
   },
   "devDependencies": {
-    "@easyblocks/build-tools": "^1.5.2"
+    "@easyblocks/build-tools": "workspace:*",
+    "@types/react": "^18.2.20"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0"
   },
   "files": [
     "dist/",

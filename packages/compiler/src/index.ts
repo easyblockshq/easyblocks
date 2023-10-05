@@ -5,7 +5,7 @@ export { compileInternal } from "./compileInternal";
 export { createCompilationContext } from "./createCompilationContext";
 export { getSchemaDefinition } from "./definitions";
 export type { SchemaPropDefinitionProviders } from "./definitions";
-export { findResources } from "./public/findResources";
+export { findExternals } from "./public/findResources";
 export { normalize } from "./normalize";
 export { validate } from "./validation";
 export { normalizeInput } from "./normalizeInput";

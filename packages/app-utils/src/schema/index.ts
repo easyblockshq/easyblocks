@@ -3,8 +3,8 @@ import {
   ComponentCollectionSchemaProp,
   ComponentFixedSchemaProp,
   ComponentSchemaProp,
+  ExternalSchemaProp,
   Field,
-  ResourceSchemaProp,
   SchemaProp as CoreSchemaProp,
   SchemaPropShared,
 } from "@easyblocks/core";
@@ -93,10 +93,34 @@ export function isSchemaPropTextModifier(schemaProp: SchemaProp) {
   );
 }
 
-export function isResourceSchemaProp(
+const internalTypes = new Set<SchemaProp["type"]>([
+  "string",
+  "number",
+  "boolean",
+  "string$",
+  "boolean$",
+  "select",
+  "select$",
+  "radio-group",
+  "radio-group$",
+  "color",
+  "space",
+  "font",
+  "stringToken",
+  "icon",
+  "text",
+  "component",
+  "component-collection",
+  "component-fixed",
+  "position",
+  "component$$$",
+  "component-collection-localised",
+]);
+
+export function isExternalSchemaProp(
   schemaProp: SchemaProp
-): schemaProp is ResourceSchemaProp {
-  return schemaProp.type === "resource" || schemaProp.type === "text";
+): schemaProp is ExternalSchemaProp {
+  return !internalTypes.has(schemaProp.type);
 }
 
 export function isSchemaPropTokenized(schemaProp: SchemaProp) {

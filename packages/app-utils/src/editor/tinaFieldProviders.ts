@@ -7,10 +7,10 @@ import {
   ComponentCollectionSchemaProp,
   ComponentFixedSchemaProp,
   ComponentSchemaProp,
-  CustomResourceSchemaProp,
+  ExternalSchemaProp,
   FontSchemaProp,
   IconSchemaProp,
-  LocalTextValue,
+  LocalTextReference,
   NumberSchemaProp,
   PositionSchemaProp,
   RadioGroup$SchemaProp,
@@ -23,11 +23,12 @@ import {
   String$SchemaProp,
   StringSchemaProp,
   StringTokenSchemaProp,
-  TextResourceSchemaProp,
+  TextSchemaProp,
   ThemeRefValue,
-  UnresolvedResource,
 } from "@easyblocks/core";
 import { getMappedToken } from "../getMappedToken";
+import { responsiveValueGet } from "../responsive";
+import { isExternalSchemaProp } from "../schema";
 import { EditorContextType } from "../types";
 import validateColor from "./validate-color";
 
@@ -100,14 +101,17 @@ function buildThemeDefinition<T>(
   };
 }
 
-type FieldProvider<S extends SchemaProp, Value = S["defaultValue"]> = (
+type FieldProvider<
+  S extends SchemaProp,
+  Value = Exclude<S["defaultValue"], undefined>
+> = (
   schemaProp: S,
   editorContext: EditorContextType,
-  value: NonNullable<Value>
+  value: Value
 ) => AnyTinaField;
 
 export type TinaFieldProviders = {
-  text: FieldProvider<TextResourceSchemaProp>;
+  text: FieldProvider<TextSchemaProp>;
   string: FieldProvider<StringSchemaProp>;
   string$: FieldProvider<String$SchemaProp>;
   number: FieldProvider<NumberSchemaProp>;
@@ -127,17 +131,17 @@ export type TinaFieldProviders = {
   "component-collection-localised": FieldProvider<ComponentCollectionLocalisedSchemaProp>;
   "component-fixed": FieldProvider<ComponentFixedSchemaProp>;
   component$$$: FieldProvider<ComponentFixedSchemaProp>;
-  resource: FieldProvider<CustomResourceSchemaProp, UnresolvedResource>;
+  external: FieldProvider<ExternalSchemaProp>;
   position: FieldProvider<PositionSchemaProp>;
 };
 
 const tinaFieldProviders: TinaFieldProviders = {
   text: (schemaProp, editorContext, value) => {
-    if (!isValueLocalTextValue(value) && typeof value !== "string") {
-      const resourceDefinition = editorContext.resourceTypes["text"];
+    if (!isValueLocalTextReference(value) && typeof value !== "string") {
+      const resourceDefinition = editorContext.types["text"];
 
-      const fieldWidget = resourceDefinition.widgets.find((w) =>
-        value?.widgetId ? w.id === value.widgetId : true
+      const fieldWidget = resourceDefinition.widgets.find(
+        (w) => w.id === value.widgetId
       );
 
       if (!fieldWidget) {
@@ -366,34 +370,41 @@ const tinaFieldProviders: TinaFieldProviders = {
       schemaProp,
     };
   },
-  resource: (schemaProp, editorContext, value) => {
-    const resourceDefinition =
-      editorContext.resourceTypes[schemaProp.resourceType];
+  external: (schemaProp, editorContext, value) => {
+    const externalTypeDefinition = editorContext.types[schemaProp.type];
 
-    if (!resourceDefinition) {
-      throw new Error(
-        `Can't find resource definition for resource type "${schemaProp.resourceType}"`
+    if (!externalTypeDefinition) {
+      throw new Error(`Can't find definition for type "${schemaProp.type}"`);
+    }
+
+    // TODO: Right now only image and video can hold responsive external reference
+    // After introducing `responsive` property for type definition of external we should look at it
+    if (schemaProp.type === "image" || schemaProp.type === "video") {
+      const currentDeviceValue =
+        responsiveValueGet(value, editorContext.breakpointIndex) ?? value;
+
+      const fieldWidget = externalTypeDefinition.widgets.find(
+        (w) => w.id === currentDeviceValue.widgetId
       );
-    }
 
-    const fieldWidget = resourceDefinition.widgets.find((w) =>
-      value?.widgetId ? w.id === value.widgetId : true
-    );
+      if (!fieldWidget) {
+        throw new Error(`Can't find widget named "${schemaProp.type}"`);
+      }
 
-    if (!fieldWidget) {
-      throw new Error(`Can't find widget named "${schemaProp.resourceType}"`);
-    }
-
-    if (
-      schemaProp.resourceType === "image" ||
-      schemaProp.resourceType === "video"
-    ) {
       return {
         ...getCommonFieldProps(schemaProp),
         component: "responsive2",
         subComponent: "external",
         externalField: fieldWidget.component,
       };
+    }
+
+    const fieldWidget = externalTypeDefinition.widgets.find(
+      (w) => w.id === value.widgetId
+    );
+
+    if (!fieldWidget) {
+      throw new Error(`Can't find widget named "${schemaProp.type}"`);
     }
 
     return {
@@ -416,13 +427,18 @@ export function getTinaField<T extends SchemaProp>(
   editorContext: EditorContextType,
   value: any
 ) {
-  const fieldProvider =
-    (tinaFieldProviders as any)[schemaProp.type] || tinaFieldProviders.resource;
+  if (isExternalSchemaProp(schemaProp)) {
+    return tinaFieldProviders.external(schemaProp, editorContext, value);
+  }
+
+  const fieldProvider = (tinaFieldProviders as any)[schemaProp.type];
 
   return fieldProvider(schemaProp, editorContext, value);
 }
 
-function isValueLocalTextValue(value: unknown): value is LocalTextValue {
+function isValueLocalTextReference(
+  value: unknown
+): value is LocalTextReference {
   if (!(typeof value === "object" && value !== null)) {
     return false;
   }

@@ -548,7 +548,7 @@ function createTestCompilationContext({
     },
     mainBreakpointIndex: "",
     theme: {} as any,
-    resourceTypes: {},
+    types: {},
     video: {
       resourceType: "testAsset",
       transform: () => {

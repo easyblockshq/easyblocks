@@ -1,15 +1,10 @@
 import {
   CompilationContextType,
   configTraverse,
-  isResourceSchemaProp,
+  isExternalSchemaProp,
   isTrulyResponsiveValue,
 } from "@easyblocks/app-utils";
-
-import {
-  ConfigComponent,
-  UnresolvedResource,
-  getResourceType,
-} from "@easyblocks/core";
+import { ConfigComponent, UnresolvedResource } from "@easyblocks/core";
 
 type ExternalValueWithPositionInConfig = {
   type: string;
@@ -24,7 +19,7 @@ export function getAllExternals(
   const result: ExternalValueWithPositionInConfig[] = [];
 
   configTraverse(config, context, ({ schemaProp, path, value }) => {
-    if (isResourceSchemaProp(schemaProp)) {
+    if (isExternalSchemaProp(schemaProp)) {
       if (isTrulyResponsiveValue(value)) {
         for (const key in value) {
           if (key === "$res") {
@@ -36,14 +31,14 @@ export function getAllExternals(
           }
 
           result.push({
-            type: getResourceType(schemaProp),
+            type: schemaProp.type,
             value: { ...value[key] },
             path: path + "." + key,
           });
         }
       } else {
         result.push({
-          type: getResourceType(schemaProp),
+          type: schemaProp.type,
           value: { ...value },
           path: path,
         });

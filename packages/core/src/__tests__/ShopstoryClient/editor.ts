@@ -41,7 +41,7 @@ test("marks resources as rejected when type misses custom fetch", async () => {
   const shopstoryClient = new ShopstoryClient(
     createTestConfig({
       strict: false,
-      resourceTypes: {
+      types: {
         product1: {
           fetch: product1FetchMock,
           widget: {},
@@ -143,7 +143,7 @@ test("marks resources as rejected when custom fetch throws an error", async () =
   const shopstoryClient = new ShopstoryClient(
     createTestConfig({
       strict: false,
-      resourceTypes: {
+      types: {
         product1: {
           fetch: async () => {
             throw new Error('Unhandled error during "product1" fetch');
@@ -250,7 +250,7 @@ test("marks resources as rejected when custom fetcher doesn't return an array", 
   const shopstoryClient = new ShopstoryClient(
     createTestConfig({
       strict: false,
-      resourceTypes: {
+      types: {
         product1: {
           fetch: productCustomFetchMock,
         },
@@ -319,7 +319,7 @@ test("marks resources as rejected when custom fetcher returns array of not valid
   const shopstoryClient = new ShopstoryClient(
     createTestConfig({
       strict: false,
-      resourceTypes: {
+      types: {
         product1: {
           fetch: productCustomFetchMock,
         },
@@ -383,7 +383,7 @@ test("marks resource as rejected when result of fetch function is data with circ
   const shopstoryClient = new ShopstoryClient(
     createTestConfig({
       strict: false,
-      resourceTypes: {
+      types: {
         product: {
           fetch: async (resources) => {
             return resources.map((resource) => {
@@ -469,7 +469,7 @@ test("marks only returned resource from custom fetcher as resolved and the rest 
   const shopstoryClient = new ShopstoryClient(
     createTestConfig({
       strict: false,
-      resourceTypes: {
+      types: {
         product: {
           fetch: productCustomFetchMock,
         },

@@ -9,7 +9,7 @@ import {
   InternalComponentDefinition,
   isCompoundExternalDataValue,
   isEmptyRenderableContent,
-  isResourceSchemaProp,
+  isExternalSchemaProp,
   isSchemaPropAction,
   isSchemaPropActionTextModifier,
   isSchemaPropCollection,
@@ -18,7 +18,6 @@ import {
   isSchemaPropTextModifier,
   isTrulyResponsiveValue,
   itemInserted,
-  ResolvedResourceProp,
   responsiveValueMap,
   splitTemplateName,
 } from "@easyblocks/app-utils";
@@ -26,20 +25,20 @@ import {
   CompilationMetadata,
   CompiledComponentConfig,
   CompiledCustomComponentConfig,
-  CompiledExternalDataValue,
-  CompiledLocalTextValue,
+  CompiledLocalTextReference,
   CompiledShopstoryComponentConfig,
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
   ComponentFixedSchemaProp,
   ComponentSchemaProp,
-  CustomResourceSchemaProp,
   ExternalData,
-  getResourceId,
-  getResourceType,
-  getResourceValue,
-  isLocalTextResource,
-  ResourceSchemaProp,
+  ExternalReference,
+  ExternalSchemaProp,
+  getExternalReferenceLocationKey,
+  getExternalValue,
+  isLocalTextReference,
+  LocalReference,
+  LocalTextReference,
   ResponsiveValue,
   UnresolvedResource,
 } from "@easyblocks/core";
@@ -47,7 +46,10 @@ import React, { Fragment, ReactElement } from "react";
 import Box from "../Box/Box";
 import { useEasyblocksExternalData } from "../EasyblocksExternalDataProvider";
 import { useEasyblocksMetadata } from "../EasyblocksMetadataProvider";
-import { useEasyblocksProviderContext } from "../EasyblocksProvider";
+import {
+  EasyblocksProviderContextValue,
+  useEasyblocksProviderContext,
+} from "../EasyblocksProvider";
 import EditableComponentBuilderEditor from "../EditableComponentBuilder/EditableComponentBuilder";
 import EditableComponentBuilderClient from "../EditableComponentBuilder/EditableComponentBuilder.client";
 import MissingComponent from "../MissingComponent";
@@ -184,44 +186,36 @@ function getRenderabilityStatus(
   }
 
   const mappedSchema = componentDefinition.schema.map((schema) => {
-    if (isResourceSchemaProp(schema)) {
-      if (
-        schema.type === "resource" &&
-        (schema.resourceType === "image" || schema.resourceType === "video")
-      ) {
-        const resourceSchemaProp: CustomResourceSchemaProp = {
-          ...schema,
-          optional: true,
-        };
+    if (schema.type === "image" || schema.type === "video") {
+      const optionalExternalSchemaProp: ExternalSchemaProp = {
+        ...(schema as ExternalSchemaProp),
+        optional: true,
+      };
 
-        return resourceSchemaProp;
-      }
+      return optionalExternalSchemaProp;
     }
 
     return schema;
   });
 
-  const requiredResourceFields = mappedSchema.filter(
-    (resource): resource is CustomResourceSchemaProp => {
-      return (
-        isResourceSchemaProp(resource) &&
-        !resource.optional &&
-        resource.type !== "text"
-      );
+  const requiredExternalFields = mappedSchema.filter(
+    (schemaProp): schemaProp is ExternalSchemaProp => {
+      return isExternalSchemaProp(schemaProp) && !schemaProp.optional;
     }
   );
 
-  if (requiredResourceFields.length === 0) {
+  if (requiredExternalFields.length === 0) {
     return status;
   }
 
-  for (const resourceSchemaProp of requiredResourceFields) {
+  for (const resourceSchemaProp of requiredExternalFields) {
     const compiledResourceValue = compiled.props[resourceSchemaProp.prop];
     const isResponsiveResource = isTrulyResponsiveValue(compiledResourceValue);
     const resourcesIds = Object.keys(externalData).filter((id) =>
       isResponsiveResource
-        ? isResourceDefinedForAnyBreakpoint(id, resourceSchemaProp)
-        : id === getResourceId(compiled._id, resourceSchemaProp.prop)
+        ? isExternalValueDefinedForAnyDevice(id, resourceSchemaProp)
+        : id ===
+          getExternalReferenceLocationKey(compiled._id, resourceSchemaProp.prop)
     );
     const resources = resourcesIds.map((id) => externalData[id]);
     // const resourceValues = resources.map((r) => getResourceValue(r));
@@ -254,16 +248,20 @@ function getRenderabilityStatus(
 
   return status;
 
-  function isResourceDefinedForAnyBreakpoint(
+  function isExternalValueDefinedForAnyDevice(
     externalDataId: string,
-    resourceSchemaProp: CustomResourceSchemaProp
+    externalSchemaProp: ExternalSchemaProp
   ) {
     return meta.vars.devices
       .map((d) => d.id)
       .some(
         (deviceId) =>
           externalDataId ===
-          getResourceId(compiled._id, resourceSchemaProp.prop, deviceId)
+          getExternalReferenceLocationKey(
+            compiled._id,
+            externalSchemaProp.prop,
+            deviceId
+          )
       );
   }
 }
@@ -390,33 +388,11 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
 
   const isComponentCustom = !componentDefinition.id.startsWith("$");
   const isButton = componentDefinition.tags.includes("button");
-
-  let component: any;
-  if (isComponentCustom) {
-    if (isButton) {
-      component = easyblocksProvider.buttons[componentDefinition.id];
-    } else {
-      component = easyblocksProvider.components[componentDefinition.id];
-    }
-  } else {
-    // We first try to find editor version of that component
-    if (compiled.__editing) {
-      component =
-        easyblocksProvider.components[componentDefinition.id + ".editor"];
-    }
-
-    // If it still missing, we try to find client version of that component
-    if (!component) {
-      component =
-        easyblocksProvider.components[componentDefinition.id + ".client"];
-    }
-
-    if (!component) {
-      // In most cases we're going to pick component by its id
-      component = easyblocksProvider.components[componentDefinition.id];
-    }
-  }
-
+  const component = getComponent(
+    componentDefinition,
+    easyblocksProvider,
+    isEditing
+  );
   const isMissingComponent = compiled._template === "$MissingComponent";
   const isMissingInstance = component === undefined;
   const isMissing = isMissingComponent || isMissingInstance;
@@ -490,29 +466,30 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
         const actionParams: Record<string, any> = {};
 
         actionDefinition.schema.forEach((schemaProp) => {
-          if (isResourceSchemaProp(schemaProp)) {
-            const unresolvedResourceValue = actionConfig.props[schemaProp.prop];
+          const propValue = actionConfig.props[schemaProp.prop];
 
-            if (isLocalTextResource(unresolvedResourceValue, schemaProp.type)) {
-              actionParams[schemaProp.prop] = unresolvedResourceValue.value;
-            } else {
-              if (isTrulyResponsiveValue(unresolvedResourceValue)) {
-                throw new Error(
-                  "Unexpected responsive value for resource within custom component"
-                );
-              }
-
-              const resolvedResourceProp = resolveResource(
-                unresolvedResourceValue,
-                actionConfig.props._id,
-                schemaProp,
-                externalData
+          if (isExternalSchemaProp(schemaProp)) {
+            if (isTrulyResponsiveValue(propValue)) {
+              throw new Error(
+                "Unexpected responsive value for resource within custom component"
               );
-
-              actionParams[schemaProp.prop] = resolvedResourceProp?.value;
             }
+
+            const resolvedResourceProp = resolveExternalValue(
+              propValue,
+              actionConfig.props._id,
+              schemaProp,
+              externalData
+            );
+
+            actionParams[schemaProp.prop] = resolvedResourceProp;
           } else {
-            actionParams[schemaProp.prop] = actionConfig.props[schemaProp.prop];
+            actionParams[schemaProp.prop] = isLocalTextReference(
+              propValue,
+              "text"
+            )
+              ? propValue.value
+              : propValue;
           }
         });
 
@@ -629,30 +606,28 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
             isEditing
           );
         }
-      } else if (isResourceSchemaProp(schemaProp)) {
-        if (
-          isLocalTextResource(compiled.props[schemaProp.prop], schemaProp.type)
-        ) {
-          componentProps[schemaProp.prop] =
-            compiled.props[schemaProp.prop].value;
-        } else {
-          const resolvedResourceProp = resolveResource(
-            compiled.props[schemaProp.prop],
-            compiled.props._id,
-            schemaProp,
-            externalData
+      } else if (isExternalSchemaProp(schemaProp)) {
+        const resolvedResourceProp = resolveExternalValue(
+          compiled.props[schemaProp.prop],
+          compiled.props._id,
+          schemaProp,
+          externalData
+        );
+
+        if (isTrulyResponsiveValue(resolvedResourceProp)) {
+          throw new Error(
+            "Unexpected responsive value for resource within custom component"
           );
-
-          if (isTrulyResponsiveValue(resolvedResourceProp)) {
-            throw new Error(
-              "Unexpected responsive value for resource within custom component"
-            );
-          }
-
-          componentProps[schemaProp.prop] = resolvedResourceProp?.value;
         }
+
+        componentProps[schemaProp.prop] = resolvedResourceProp;
       } else {
-        componentProps[schemaProp.prop] = compiled.props[schemaProp.prop];
+        componentProps[schemaProp.prop] = isLocalTextReference(
+          compiled.props[schemaProp.prop],
+          schemaProp.type
+        )
+          ? compiled.props[schemaProp.prop].value
+          : compiled.props[schemaProp.prop];
       }
       // TODO: set componentProps.__fromEditor to all the props that are NOT from schema (all passed)
     });
@@ -719,7 +694,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
     ...restPassedProps,
     __fromEditor: {
       _id: shopstoryCompiledConfig._id,
-      props: mapResourceProps(
+      props: mapExternalProps(
         shopstoryCompiledConfig.props,
         shopstoryCompiledConfig._id,
         componentDefinition,
@@ -742,7 +717,45 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
   return <Component {...componentProps} />;
 }
 
-function mapResourceProps(
+function getComponent(
+  componentDefinition: InternalComponentDefinition,
+  easyblocksProvider: EasyblocksProviderContextValue,
+  isEditing: boolean
+) {
+  const isComponentCustom = !componentDefinition.id.startsWith("$");
+  const isButton = componentDefinition.tags.includes("button");
+
+  if (isComponentCustom) {
+    if (isButton) {
+      return easyblocksProvider.buttons[componentDefinition.id];
+    } else {
+      return easyblocksProvider.components[componentDefinition.id];
+    }
+  } else {
+    let component: any;
+
+    // We first try to find editor version of that component
+    if (isEditing) {
+      component =
+        easyblocksProvider.components[componentDefinition.id + ".editor"];
+    }
+
+    // If it still missing, we try to find client version of that component
+    if (!component) {
+      component =
+        easyblocksProvider.components[componentDefinition.id + ".client"];
+    }
+
+    if (!component) {
+      // In most cases we're going to pick component by its id
+      component = easyblocksProvider.components[componentDefinition.id];
+    }
+
+    return component;
+  }
+}
+
+function mapExternalProps(
   props: Record<string, unknown>,
   configId: string,
   componentDefinition: InternalComponentDefinition,
@@ -755,23 +768,33 @@ function mapResourceProps(
       (currentSchema) => currentSchema.prop === propName
     );
 
-    if (schemaProp && isResourceSchemaProp(schemaProp)) {
-      const propValue = props[propName] as ResponsiveValue<UnresolvedResource>;
+    if (
+      schemaProp &&
+      (isExternalSchemaProp(schemaProp) || schemaProp.type === "text")
+    ) {
+      const propValue = props[propName] as ResponsiveValue<
+        LocalReference | ExternalReference
+      >;
 
       if (
         schemaProp.type === "text" &&
-        (
-          propValue as CompiledLocalTextValue | CompiledExternalDataValue
-        ).id?.startsWith("local.")
+        isLocalTextReference(propValue as LocalTextReference, "text")
       ) {
         resultsProps[propName] = (
-          propValue as unknown as CompiledLocalTextValue
+          propValue as unknown as CompiledLocalTextReference
         ).value;
-      } else {
-        resultsProps[propName] = resolveResource(
-          propValue,
+      } else if (
+        isExternalSchemaProp(schemaProp) ||
+        (schemaProp.type === "text" &&
+          !isLocalTextReference(
+            propValue as LocalReference | ExternalReference,
+            "text"
+          ))
+      ) {
+        resultsProps[propName] = resolveExternalValue(
+          propValue as ExternalReference,
           configId,
-          schemaProp,
+          schemaProp as ExternalSchemaProp,
           externalData
         );
       }
@@ -783,95 +806,58 @@ function mapResourceProps(
   return resultsProps;
 }
 
-function resolveResource(
+function resolveExternalValue(
   responsiveResource: ResponsiveValue<UnresolvedResource>,
   configId: string,
-  schemaProp: ResourceSchemaProp,
+  schemaProp: ExternalSchemaProp,
   externalData: ExternalData
-): ResponsiveValue<ResolvedResourceProp | null> {
+) {
   return responsiveValueMap(responsiveResource, (r, breakpointIndex) => {
-    const type = getResourceType(schemaProp);
-
     if (r.id) {
-      if (isLocalTextResource(r, "text")) {
-        return {
-          id: r.id,
-          type,
-          status: "success",
-          value: r.value,
-          error: null,
-        };
-      } else {
-        const resourceId = (() => {
-          // If resource field has `key` defined and its `id` starts with "$.", it means that it's a reference to the
-          // root resource and we need to look for the resource with the same id as the root resource.
-          if (r.key && r.id.startsWith("$.")) {
-            return r.id;
-          }
+      // If resource field has `key` defined and its `id` starts with "$.", it means that it's a reference to the
+      // root resource and we need to look for the resource with the same id as the root resource.
+      const resourceId =
+        r.key && r.id.startsWith("$.")
+          ? r.id
+          : getExternalReferenceLocationKey(
+              configId,
+              schemaProp.prop,
+              breakpointIndex
+            );
+      const resource = externalData[resourceId];
 
-          // If `breakpointIndex` is defined, it means we're mapping over the truly responsive value and we need to look
-          // for the resource with the breakpoint index in its id.
-          if (breakpointIndex !== undefined) {
-            return `${configId}.${schemaProp.prop}.${breakpointIndex}`;
-          }
+      let resourceValue: ReturnType<typeof getExternalValue>;
 
-          // In any other case we look for the resource with the id that matches the id for the resource field.
-          return `${configId}.${schemaProp.prop}`;
-        })();
-
-        const resource = externalData[resourceId];
-
-        let resourceValue: ReturnType<typeof getResourceValue>;
-
-        if (resource) {
-          resourceValue = getResourceValue(resource);
-        }
-
-        if (resource === undefined || isEmptyRenderableContent(resourceValue)) {
-          return null;
-        }
-
-        if ("error" in resource) {
-          return {
-            id: r.id,
-            type,
-            status: "error",
-            value: undefined,
-            error: resource.error,
-          };
-        }
-
-        if (isCompoundExternalDataValue(resource)) {
-          if (!r.key) {
-            return null;
-          }
-
-          const resolvedResourceValue = resource.value[r.key].value;
-
-          if (!resolvedResourceValue) {
-            return null;
-          }
-
-          return {
-            id: r.id,
-            type,
-            status: "success",
-            value: resolvedResourceValue,
-            error: null,
-          };
-        }
-
-        return {
-          id: r.id,
-          type,
-          status: "success",
-          value: resourceValue,
-          error: null,
-        };
+      if (resource) {
+        resourceValue = getExternalValue(resource);
       }
+
+      if (resource === undefined || isEmptyRenderableContent(resourceValue)) {
+        return;
+      }
+
+      if ("error" in resource) {
+        return;
+      }
+
+      if (isCompoundExternalDataValue(resource)) {
+        if (!r.key) {
+          return;
+        }
+
+        const resolvedResourceValue = resource.value[r.key].value;
+
+        if (!resolvedResourceValue) {
+          return;
+        }
+
+        return resolvedResourceValue;
+      }
+
+      return resourceValue;
     }
 
-    return null;
+    return;
   });
 }
 

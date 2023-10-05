@@ -1,5 +1,4 @@
 import { responsiveValueForceGet } from "@easyblocks/app-utils";
-import { ResourceSchemaProp } from "@easyblocks/core";
 import { SSColors, SSFonts, SSIcons } from "@easyblocks/design-system";
 import { dotNotationGet, toArray } from "@easyblocks/utils";
 import React from "react";
@@ -129,12 +128,6 @@ export const ResponsiveField = (props: ResponsivePluginProps) => {
       </div>
     </FieldMetaWrapper>
   );
-
-  function getDefaultWidgetIdForResource(
-    schemaProp: ResourceSchemaProp
-  ): string | undefined {
-    return editorContext.resourceTypes[schemaProp.resourceType]?.widgets[0]?.id;
-  }
 };
 
 export const ResponsiveFieldPlugin = {

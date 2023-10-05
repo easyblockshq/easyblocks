@@ -8,7 +8,6 @@ import { deepClone, deepCompare, sleep } from "@easyblocks/utils";
 import { useEffect, useRef, useState } from "react";
 import { EditorContextType } from "./EditorContext";
 import { getAllExternals } from "./getAllExternals";
-import { getExternalsForSave } from "./getExternalsForSave";
 import { useApiClient } from "./infrastructure/ApiClientProvider";
 import { TextExternal, TextExternalMap } from "./types";
 import { getConfigSnapshot } from "./utils/config/getConfigSnapshot";
@@ -319,11 +318,6 @@ export function useDataSaver(
     );
 
     try {
-      const externalReferences = getExternalsForSave(
-        configToSave,
-        editorContext
-      );
-
       // Adding __localized flag here but eventually we want to send compialtionContext to the
       // API and all the work related with localized text will be handled on the server
       const configToSaveWithLocalisedFlag = addLocalizedFlag(

@@ -5,7 +5,7 @@ import {
   Form,
   parsePath,
 } from "@easyblocks/app-utils";
-import { ConfigComponent } from "@easyblocks/core";
+import { ComponentSchemaProp, ConfigComponent } from "@easyblocks/core";
 import {
   assertDefined,
   dotNotationGet,
@@ -498,7 +498,10 @@ function isFieldRemovable(
         return false;
       }
 
-      if (fieldSchema.type === "component" && fieldSchema.required) {
+      if (
+        fieldSchema.type === "component" &&
+        (fieldSchema as ComponentSchemaProp).required
+      ) {
         return false;
       }
     }

@@ -1,8 +1,5 @@
 /** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
-import {
-  ResolvedResourceProp,
-  responsiveValueToSelectivelyDisplayedComponents,
-} from "@easyblocks/app-utils";
+import { responsiveValueToSelectivelyDisplayedComponents } from "@easyblocks/app-utils";
 import { ResponsiveValue, VideoSrc } from "@easyblocks/core";
 import { useForceRerender } from "@easyblocks/utils";
 import { useEffect, useState } from "react";
@@ -16,7 +13,7 @@ import { VideoRenderer } from "./VideoRenderer";
 export type VideoProps = CompiledShopstoryComponentProps<
   "$video",
   {
-    image: ResponsiveValue<ResolvedResourceProp<VideoSrc>> | null;
+    image: ResponsiveValue<VideoSrc | undefined>;
     aspectRatio: ResponsiveValue<string>;
     gridBaseLineHeight: ResponsiveValue<string>;
     enablePlaybackControls: boolean;
@@ -26,7 +23,7 @@ export type VideoProps = CompiledShopstoryComponentProps<
   ReturnType<typeof import("./$video.styles")["default"]>
 >;
 
-const $video = (props: VideoProps) => {
+function VideoEditor(props: VideoProps) {
   const { __fromEditor } = props;
 
   const { Wrapper, AspectRatioMaker, ImageWrapper } = __fromEditor.components;
@@ -80,6 +77,6 @@ const $video = (props: VideoProps) => {
       </ImageWrapper>
     </Wrapper>
   );
-};
+}
 
-export default $video;
+export default VideoEditor;

@@ -1,5 +1,7 @@
 import { buildText } from "../../types/text/buildText";
 import { EditorContextType } from "../../EditorContext";
+import { ComponentConfig } from "@easyblocks/core";
+import { uniqueId } from "@easyblocks/utils";
 
 export const controlButton = (
   editorContext: EditorContextType,
@@ -8,8 +10,9 @@ export const controlButton = (
   buttonSize: number,
   symbolSize: number,
   backgroundColor: string
-) => ({
+): ComponentConfig => ({
   _template: "$IconButton2",
+  _id: uniqueId(),
   symbol: [symbol],
   label: buildText(label, editorContext),
   buttonSize: {

@@ -1,18 +1,18 @@
 import {
   InternalField,
-  isEmptyExternalDataConfigEntry,
-  isIdReferenceToDocumentExternalData,
-  isResourceSchemaProp,
+  isEmptyExternalReference,
+  isExternalSchemaProp,
+  isIdReferenceToDocumentExternalValue,
   isTrulyResponsiveValue,
   responsiveValueFindDeviceWithDefinedValue,
   responsiveValueForceGet,
 } from "@easyblocks/app-utils";
 import {
-  ExternalDataValue,
-  getResourceId,
-  LocalTextValue,
-  ResourceDefinition,
-  ResourceSchemaProp,
+  ExternalReference,
+  ExternalSchemaProp,
+  getExternalReferenceLocationKey,
+  LocalTextReference,
+  TextSchemaProp,
   TrulyResponsiveValue,
 } from "@easyblocks/core";
 import {
@@ -22,11 +22,11 @@ import {
   SSFonts,
   Typography,
 } from "@easyblocks/design-system";
-import { dotNotationGet, toArray } from "@easyblocks/utils";
+import { dotNotationGet, toArray, uniqueId } from "@easyblocks/utils";
 import React, { ReactNode, useState } from "react";
 import styled, { css } from "styled-components";
 import { useConfigAfterAuto } from "../../../ConfigAfterAutoContext";
-import { EditorContextType, useEditorContext } from "../../../EditorContext";
+import { useEditorContext } from "../../../EditorContext";
 import { useEditorExternalData } from "../../../EditorExternalDataProvider";
 import { COMPONENTS_SUPPORTING_MIXED_VALUES } from "../components/constants";
 import { isMixedFieldValue } from "../components/isMixedFieldValue";
@@ -41,10 +41,10 @@ type ExtraFieldMetaWrapperFields = {
   isLabelHidden?: boolean;
 };
 
-type InputFieldType<ExtraFieldProps, InputProps> = Omit<
-  FieldProps<InputProps>,
-  "meta"
-> &
+type InputFieldType<
+  ExtraFieldProps extends Record<string, unknown>,
+  InputProps extends Record<string, unknown>
+> = Omit<FieldProps<InputProps>, "meta"> &
   ExtraFieldProps &
   ExtraFieldMetaWrapperFields & {
     children: ReactNode;
@@ -55,8 +55,8 @@ type InputFieldType<ExtraFieldProps, InputProps> = Omit<
 // Add any other fields that the Field component should expect onto the ExtraFieldProps generic type
 
 export function FieldMetaWrapper<
-  ExtraFieldProps = Record<string, unknown>,
-  InputProps = Record<string, unknown>
+  ExtraFieldProps extends Record<string, unknown> = Record<string, unknown>,
+  InputProps extends Record<string, unknown> = Record<string, unknown>
 >({
   children,
   field,
@@ -69,15 +69,15 @@ export function FieldMetaWrapper<
   const editorContext = useEditorContext();
   const configAfterAuto = useConfigAfterAuto();
   const externalData = useEditorExternalData();
+  const { isOpen, tooltipProps, triggerProps, arrowProps } = useTooltip({
+    isDisabled: field.description === undefined,
+  });
+
   const {
     actions: { runChange },
     form,
     focussedField,
   } = editorContext;
-
-  const { isOpen, tooltipProps, triggerProps, arrowProps } = useTooltip({
-    isDisabled: field.description === undefined,
-  });
 
   const isMixedValueSupported = isMixedValueSupportedByComponent(
     isResponsiveField(field) ? field.subComponent : field.component
@@ -125,16 +125,15 @@ export function FieldMetaWrapper<
 
   const label = field.label || input.name;
   const { schemaProp } = field;
-  const isResource = isResourceSchemaProp(schemaProp);
-  const isExternalData =
-    schemaProp.type === "resource" ||
+  const isExternalField =
+    isExternalSchemaProp(schemaProp) ||
     (schemaProp.type === "text" && !input.value.id?.startsWith("local."));
   const configPath = fieldNames[0].split(".").slice(0, -1).join(".");
   const fieldValue = dotNotationGet(configAfterAuto, fieldNames[0]);
   const config = dotNotationGet(configAfterAuto, configPath);
-  const externalDataValue = isExternalData
+  const externalValue = isExternalField
     ? externalData[
-        getResourceId(
+        getExternalReferenceLocationKey(
           focussedField.length === 0 ? "$" : config._id,
           schemaProp.prop,
           isTrulyResponsiveValue(input.value)
@@ -153,11 +152,11 @@ export function FieldMetaWrapper<
     editorContext.breakpointIndex
   );
 
-  const isLoadingExternalData =
-    isExternalData &&
-    !externalDataValue &&
-    !isEmptyExternalDataConfigEntry(currentBreakpointFieldValue) &&
-    !isIdReferenceToDocumentExternalData(currentBreakpointFieldValue.id);
+  const isLoadingExternalValue =
+    isExternalField &&
+    !externalValue &&
+    !isEmptyExternalReference(currentBreakpointFieldValue) &&
+    !isIdReferenceToDocumentExternalValue(currentBreakpointFieldValue.id);
 
   return (
     <FieldWrapper margin={false} layout={layout}>
@@ -166,9 +165,7 @@ export function FieldMetaWrapper<
           {renderLabel?.({ label }) ?? (
             <FieldLabel
               htmlFor={toArray(field.name).join(",")}
-              isError={
-                externalDataValue !== undefined && "error" in externalDataValue
-              }
+              isError={externalValue !== undefined && "error" in externalValue}
               {...triggerProps}
             >
               <span
@@ -189,7 +186,7 @@ export function FieldMetaWrapper<
             </FieldLabel>
           )}
 
-          {isLoadingExternalData && (
+          {isLoadingExternalValue && (
             <Loader
               css={`
                 margin-left: 6px;
@@ -197,38 +194,53 @@ export function FieldMetaWrapper<
             />
           )}
 
-          {layout === "column" && isResource && !isMixedValue && (
-            <WidgetsSelect
-              schemaProp={schemaProp}
-              value={currentBreakpointFieldValue}
-              onChange={(widgetId) => {
-                if (isTrulyResponsiveValue(input.value)) {
-                  const newFieldValue: TrulyResponsiveValue<ExternalDataValue> =
-                    {
-                      ...input.value,
-                      [editorContext.breakpointIndex]: {
-                        id: null,
-                        widgetId,
-                      },
+          {layout === "column" &&
+            (isExternalSchemaProp(schemaProp) || schemaProp.type === "text") &&
+            !isMixedValue && (
+              <WidgetsSelect
+                schemaProp={schemaProp}
+                value={currentBreakpointFieldValue}
+                onChange={(widgetId) => {
+                  if (widgetId === "@easyblocks/local-text") {
+                    const newFieldValue: LocalTextReference = {
+                      id: `local.${uniqueId()}`,
+                      value: {},
+                      widgetId,
                     };
 
-                  input.onChange(newFieldValue);
-                } else {
-                  const newFieldValue: ExternalDataValue = {
-                    id: null,
-                    widgetId,
-                  };
+                    input.onChange(newFieldValue);
+                    return;
+                  }
 
-                  input.onChange(newFieldValue);
-                }
-              }}
-            />
-          )}
+                  if (isTrulyResponsiveValue(input.value)) {
+                    const newFieldValue: TrulyResponsiveValue<ExternalReference> =
+                      {
+                        ...input.value,
+                        [editorContext.breakpointIndex]: {
+                          id: null,
+                          widgetId,
+                        },
+                      };
+
+                    input.onChange(newFieldValue);
+                  } else {
+                    const newFieldValue: ExternalReference = {
+                      id: null,
+                      widgetId,
+                    };
+
+                    input.onChange(newFieldValue);
+                  }
+                }}
+              />
+            )}
         </FieldLabelWrapper>
       )}
+
       <FieldInputWrapper layout={layout}>{content}</FieldInputWrapper>
-      {externalDataValue && "error" in externalDataValue && (
-        <FieldError>{externalDataValue.error.message}</FieldError>
+
+      {externalValue && "error" in externalValue && (
+        <FieldError>{externalValue.error.message}</FieldError>
       )}
     </FieldWrapper>
   );
@@ -239,23 +251,18 @@ function WidgetsSelect({
   onChange,
   schemaProp,
 }: {
-  value: LocalTextValue | ExternalDataValue;
+  value: LocalTextReference | ExternalReference;
   onChange: (widgetId: string) => void;
-  schemaProp: ResourceSchemaProp;
+  schemaProp: ExternalSchemaProp | TextSchemaProp;
 }) {
   const editorContext = useEditorContext();
 
-  const [selectedWidgetId, setSelectedWidgetId] = useState<string | undefined>(
-    () =>
-      "widgetId" in value
-        ? value.widgetId
-        : getDefaultWidgetIdForResource(schemaProp, editorContext)
+  const [selectedWidgetId, setSelectedWidgetId] = useState<string>(
+    () => value.widgetId
   );
 
   const availableWidgets = [
-    ...(editorContext.resourceTypes[
-      schemaProp.type === "resource" ? schemaProp.resourceType : schemaProp.type
-    ]?.widgets ?? []),
+    ...(editorContext.types[schemaProp.type]?.widgets ?? []),
   ];
 
   if (schemaProp.type === "text") {
@@ -272,70 +279,16 @@ function WidgetsSelect({
     return null;
   }
 
-  const selectedWidget = availableWidgets.find((w) =>
-    "widgetId" in value ? w.id === value.widgetId : true
-  );
-
-  if (!selectedWidget) {
-    return null;
-  }
-
-  return (
-    <ExternalValueWidgetSelect
-      widgets={availableWidgets}
-      onChange={(widgetId) => {
-        setSelectedWidgetId(widgetId);
-        onChange(widgetId);
-      }}
-      selectedWidgetId={selectedWidgetId}
-    />
-  );
-}
-
-function ExternalValueWidgetSelect({
-  selectedWidgetId,
-  widgets,
-  onChange,
-}: {
-  selectedWidgetId: string | undefined;
-  widgets: Array<ResourceDefinition["widgets"][number]>;
-  onChange: (widgetId: string) => void;
-  icon?: string;
-}) {
-  const [internalSelectedWidgetId, setInternalSelectedWidgetId] = useState<
-    string | undefined
-  >(() => {
-    if (selectedWidgetId !== undefined) {
-      return selectedWidgetId;
-    }
-
-    return widgets[0]?.id;
-  });
-
-  const isControlled = selectedWidgetId !== undefined;
-
-  const widgetId = isControlled ? selectedWidgetId : internalSelectedWidgetId;
-
-  function handleWidgetIdChange(widgetId: string) {
-    if (isControlled) {
-      setInternalSelectedWidgetId(widgetId);
-    }
-
-    onChange(widgetId);
-  }
-
-  const selectedWidget = widgets.find((v) => v.id === widgetId);
-
   return (
     <FieldLabelIconWrapper>
       <Select
-        value={selectedWidget?.id ?? ""}
+        value={selectedWidgetId}
         onChange={(widgetId) => {
-          handleWidgetIdChange(widgetId);
+          setSelectedWidgetId(widgetId);
+          onChange(widgetId);
         }}
-        placeholder="Select widget..."
       >
-        {widgets.map((widget) => {
+        {availableWidgets.map((widget) => {
           return (
             <SelectItem value={widget.id} key={widget.id}>
               {widget.label ?? widget.id}
@@ -345,13 +298,6 @@ function ExternalValueWidgetSelect({
       </Select>
     </FieldLabelIconWrapper>
   );
-}
-
-function getDefaultWidgetIdForResource(
-  schemaProp: ResourceSchemaProp,
-  editorContext: EditorContextType
-): string | undefined {
-  return editorContext.resourceTypes[schemaProp.resourceType]?.widgets[0]?.id;
 }
 
 function isResponsiveField(
@@ -387,8 +333,8 @@ const TextButton = styled(Typography)`
 `;
 
 export function wrapFieldsWithMeta<
-  ExtraFieldProps = Record<string, any>,
-  InputProps = Record<string, any>
+  ExtraFieldProps extends Record<string, any> = Record<string, any>,
+  InputProps extends Record<string, any> = Record<string, any>
 >(
   Field: React.ComponentType<InputFieldType<ExtraFieldProps, InputProps>>,
   extraProps?: ExtraFieldMetaWrapperFields

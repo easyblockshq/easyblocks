@@ -4,13 +4,19 @@ import {
   findComponentDefinition,
   Form,
 } from "@easyblocks/app-utils";
-import { ConfigComponent, SchemaProp } from "@easyblocks/core";
+import {
+  ComponentCollectionSchemaProp,
+  ComponentSchemaProp,
+  ConfigComponent,
+  SchemaProp,
+} from "@easyblocks/core";
 import { includesAny } from "@easyblocks/utils";
 import { reconcile } from "./reconcile";
 
 const getTypes = (schema?: SchemaProp) => {
   if (schema?.type === "component-collection" || schema?.type === "component") {
-    return schema.componentTypes;
+    return (schema as ComponentCollectionSchemaProp | ComponentSchemaProp)
+      .componentTypes;
   }
   return [];
 };

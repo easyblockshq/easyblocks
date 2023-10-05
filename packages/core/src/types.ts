@@ -19,8 +19,7 @@ export interface ComponentConfigBase<Identifier extends string> {
 export type ConfigComponent = {
   _template: string; // instance of the component (unique id)
   _ref?: string; // ref of the component,
-  _id?: string; // optional because template items don't have ids, we could have separate types later for this to distinguish between them statically
-  _projectId?: string; // optional because of backward compatibility
+  _id: string;
   $$$refs?: RefMap;
   [key: string]: any; // props
 };
@@ -47,11 +46,6 @@ export type Document = {
 };
 
 export type LocalisedDocument = Record<string, Document>;
-
-export type ExternalReference = {
-  type: string;
-  id: string;
-};
 
 export type RefValue<T> = {
   value: T;
@@ -112,20 +106,9 @@ export type ThemeSpaceScalar = number | string;
 
 export type ThemeSpace = ThemeSpaceScalar | { [key: string]: ThemeSpaceScalar };
 
-export type ThemeNumberOfItemsInRow =
-  | NumberOfItemsInRow
-  | { [key: string]: NumberOfItemsInRow };
-
 export type ThemeColor = Color | { [key: string]: Color };
 
 export type ThemeFont = { [key: string]: any };
-
-interface GridConfig {
-  containerMargin: ThemeSpace;
-  horizontalGap: ThemeSpace;
-  verticalGap: ThemeSpace;
-  numberOfItemsInRow: ThemeNumberOfItemsInRow;
-}
 
 export type ButtonCustomComponent = CustomComponentShared & {
   builtinProps?: {
@@ -271,17 +254,13 @@ export type ComponentFixedSchemaProp = SchemaPropShared<
   passFields?: PassedField[];
 }; // we don't want to set default value for nested components
 
-export type TextResourceSchemaProp = SchemaPropShared<
+export type TextSchemaProp = SchemaPropShared<
   "text",
-  LocalTextValue | ExternalDataValue | string
+  LocalTextReference | ExternalReference | string
 > & {
   normalize?: (x: string) => string | null;
   [key: string]: any;
 };
-
-export type ResourceSchemaProp =
-  | TextResourceSchemaProp
-  | CustomResourceSchemaProp;
 
 export type PositionVertical = "top" | "center" | "bottom";
 
@@ -294,6 +273,23 @@ export type PositionSchemaProp = SchemaPropShared<
   ResponsiveValue<Position>
 >;
 
+export type ExternalSchemaProp = SchemaPropShared<
+  string & Record<never, never>,
+  ExternalReference
+> & {
+  /**
+   * Parameters passed to the widget.
+   */
+  params?: ExternalParams;
+  /**
+   * Parameters passed to the fetch function.
+   */
+  fetchParams?: ExternalParams;
+  /**
+   * If `true`, the resource becomes optional and the component using it can render without it.
+   */
+  optional?: boolean;
+};
 export type SchemaProp =
   | StringSchemaProp
   | String$SchemaProp
@@ -309,13 +305,13 @@ export type SchemaProp =
   | FontSchemaProp
   | StringTokenSchemaProp
   | IconSchemaProp
-  | TextResourceSchemaProp
-  | CustomResourceSchemaProp
+  | TextSchemaProp
   | ComponentSchemaProp
   | ComponentCollectionSchemaProp
   | ComponentCollectionLocalisedSchemaProp
   | ComponentFixedSchemaProp
-  | PositionSchemaProp;
+  | PositionSchemaProp
+  | ExternalSchemaProp;
 
 type CustomComponentShared = {
   id: string;
@@ -386,12 +382,6 @@ export interface TracingEvent {
 
 export type EventSink = (event: TracingEvent) => void;
 
-export type Audience = {
-  id: string;
-  name: string;
-  description?: string;
-};
-
 export type TemplateBase = {
   id?: string;
   label?: string;
@@ -404,7 +394,7 @@ export type Template = TemplateBase & {
   isGroupEmptyTemplate?: boolean;
   mapTo?: string | string[];
   isDefaultTextModifier?: boolean; // maybe to remove in the future. But we need to know which template is default text modifier!
-  config: ConfigComponent;
+  config: ComponentConfig;
   configId?: string;
   isRemoteUserDefined?: boolean;
   previewSettings?: {
@@ -420,7 +410,7 @@ type RuntimeConfigThemeValue<T> = {
   mapTo?: string | string[];
 };
 
-export type ResourceParams = Record<string, unknown>;
+export type ExternalParams = Record<string, unknown>;
 
 export type ContextParams = {
   locale: string;
@@ -432,18 +422,6 @@ export type PickerItem = {
   title: string;
   thumbnail?: string;
 };
-
-export interface PickerAPI {
-  getItems: (query: string) => Promise<PickerItem[]>;
-  getItemById: (id: string) => Promise<PickerItem>;
-
-  placeholder?: string;
-}
-
-export type ExternalFieldItemPicker = {
-  type: "item-picker";
-} & PickerAPI;
-
 export type WidgetComponentProps = {
   id: string | null;
   onChange: (newId: string | null) => void;
@@ -455,7 +433,7 @@ export type Widget = {
   component: ComponentType<WidgetComponentProps>;
 };
 
-export type ResourceDefinition = {
+export type ExternalDefinition = {
   widgets: Array<Widget>;
 };
 
@@ -465,12 +443,12 @@ export type LocalizedText = {
 
 export type RootContainer = {
   label?: string;
-  defaultConfig: ComponentConfig;
+  defaultConfig: Omit<ComponentConfig, "_id">;
   widths?: Array<number>;
   resource?: {
     type: string;
   };
-  schema?: Array<CustomResourceSchemaProp>;
+  schema?: Array<ExternalSchemaProp>;
 };
 
 type EditableComponentDefinition = {
@@ -487,8 +465,8 @@ type EditableComponentDefinition = {
 export type Config = {
   accessToken: string;
   projectId?: string;
-  resourceTypes?: Record<string, ResourceDefinition>;
-  text?: ResourceDefinition;
+  types?: Record<string, ExternalDefinition>;
+  text?: ExternalDefinition;
   space?: RuntimeConfigThemeValue<ThemeSpace>[];
   colors?: RuntimeConfigThemeValue<ThemeColor>[];
   fonts?: RuntimeConfigThemeValue<ThemeFont>[];
@@ -576,28 +554,6 @@ export type UnresolvedResourceEmpty = {
   widgetId: string;
 };
 
-export type CustomResourceSchemaProp = SchemaPropShared<
-  "resource",
-  UnresolvedResource
-> & {
-  /**
-   * Name of the custom resource to use for resource field.
-   */
-  resourceType: string;
-  /**
-   * Parameters passed to the widget.
-   */
-  params?: ResourceParams;
-  /**
-   * Parameters passed to the fetch function.
-   */
-  fetchParams?: ResourceParams;
-  /**
-   * If `true`, the resource becomes optional and the component using it can render without it.
-   */
-  optional?: boolean;
-};
-
 export type ImageSrcSetEntry = {
   w: number;
   h: number;
@@ -639,14 +595,6 @@ export type RejectedResource = ResourceIdentity & {
 export type Resource<Value = unknown> =
   | ResolvedResource<Value>
   | RejectedResource;
-
-export type LocalResource<T = unknown> = Omit<Resource<T>, "status">;
-
-export type ImageResource = Resource<ImageSrc>;
-
-export type VideoResource = Resource<VideoSrc>;
-
-export type TextResource = Resource<LocalizedText>;
 
 export type SerializableResource =
   | ResolvedResource
@@ -905,6 +853,7 @@ export interface IShopstoryClient {
 
 export type EditorSidebarPreviewOptions = {
   breakpointIndex: string;
+  devices: Devices;
   contextParams: ContextParams;
   resources: Array<Resource>;
 };
@@ -917,10 +866,10 @@ export interface ConfigModel {
   created_at: string;
 }
 
-export type ResourceWithSchemaProp = {
+export type ExternalWithSchemaProp = {
   id: string;
-  resource: UnresolvedResource;
-  schemaProp: ResourceSchemaProp;
+  externalReference: ExternalReference;
+  schemaProp: ExternalSchemaProp;
 };
 
 /**
@@ -939,7 +888,7 @@ export type Metadata = CompilationMetadata & {
   resources: Array<Resource>;
 };
 
-export type ShopstoryClientDependencies = {
+export type CompilerModule = {
   compile: (
     content: unknown,
     config: Config,
@@ -954,11 +903,11 @@ export type ShopstoryClientDependencies = {
    * Without it we would have to analyse the config in ShopstoryClient in order to find resources to be fetched.
    * This is very internal logic and should stay in the cloud to be able to be updated live.
    */
-  findResources: (
+  findExternals: (
     rawContent: any,
     config: Config,
     contextParams: ContextParams
-  ) => ResourceWithSchemaProp[];
+  ) => ExternalWithSchemaProp[];
   validate: (input: unknown) =>
     | {
         isValid: true;
@@ -1015,7 +964,7 @@ export type FetchInputResource = {
   externalId: string | null;
   type: string;
   widgetId: string;
-  fetchParams?: ResourceParams;
+  fetchParams?: ExternalParams;
 };
 
 type FetchResourceResolvedResult<T> = {
@@ -1090,38 +1039,50 @@ export type ChangedExternalDataValue = {
   externalId: string | null;
   type: string;
   widgetId: string;
-  fetchParams?: ResourceParams;
+  fetchParams?: ExternalParams;
 };
 
 export type ChangedExternalData = Record<string, ChangedExternalDataValue>;
 
-export type ExternalData = FetchOutputResources;
+export type ExternalData = Record<
+  string,
+  (FetchOutputBasicResources | FetchOutputCompoundResources)[string]
+>;
 
 export type ExternalDataChangeHandler = (
   resources: ChangedExternalData,
   contextParams: ContextParams
 ) => void;
 
-export type LocalDataValue<Value = unknown> = {
+export type LocalReference<Value = unknown> = {
   id: string;
   value: Value;
   widgetId: string;
 };
 
-export type LocalTextValue = Omit<
-  LocalDataValue<LocalizedText>,
+export type LocalTextReference = Omit<
+  LocalReference<LocalizedText>,
   "id" | "widgetId"
 > & { id: `local.${string}`; widgetId: "@easyblocks/local-text" };
 
-export type CompiledLocalTextValue = Omit<
-  LocalDataValue<string>,
+export type CompiledLocalTextReference = Omit<
+  LocalReference<string>,
   "id" | "widgetId"
 > & { id: `local.${string}`; widgetId: "@easyblocks/local-text" };
 
-export type ExternalDataValue = {
-  id: string | null;
-  key?: string;
+export type ExternalReferenceEmpty = {
+  id: null;
   widgetId: string;
 };
 
-export type CompiledExternalDataValue = ExternalDataValue;
+export type ExternalReferenceNonEmpty = {
+  id: string;
+  widgetId: string;
+  key?: string;
+};
+
+export type ExternalReference =
+  | ExternalReferenceEmpty
+  | ExternalReferenceNonEmpty;
+
+export type CompiledExternalDataValue = ExternalReference;

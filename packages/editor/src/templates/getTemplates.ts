@@ -10,11 +10,11 @@ import {
 } from "@easyblocks/app-utils";
 import { normalize } from "@easyblocks/compiler";
 import {
-  ConfigComponent,
+  ComponentConfig,
   CustomComponent,
   getDefaultLocale,
-  Template,
   IApiClient,
+  Template,
 } from "@easyblocks/core";
 import {
   buildRichTextBlockElementComponentConfig,
@@ -22,6 +22,7 @@ import {
   buildRichTextLineElementComponentConfig,
   buildRichTextPartComponentConfig,
 } from "@easyblocks/editable-components";
+import { uniqueId } from "@easyblocks/utils";
 import { EditorContextType } from "../EditorContext";
 import { controlButton } from "./builtinTemplates/controlButton";
 import { icon } from "./builtinTemplates/icon";
@@ -42,6 +43,7 @@ function getDefaultTemplateForDefinition(
         ? "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_button.png"
         : undefined),
     config: {
+      _id: uniqueId(),
       _template: def.id,
     },
     // label: "Default",
@@ -216,7 +218,7 @@ export function getTemplatesInternal(
    * MASTER CONFIGS
    */
   // Default master templates
-  const masterConfigs: Record<string, ConfigComponent> = {
+  const masterConfigs: Record<string, Template["config"]> = {
     buttonSliderLeft: controlButton(
       editorContext,
       icon("$sliderLeft", "$dark"),
@@ -287,9 +289,11 @@ export function getTemplatesInternal(
     buttonTextDark: standardButton("$dark", null),
     productCard: {
       _template: "$CardPlaceholder",
+      _id: uniqueId(),
     },
     actionTextModifierDefault: {
       _template: "$StandardActionStyles",
+      _id: uniqueId(),
       isColorOverwriteEnabled: true,
       color: {
         $res: true,
@@ -315,6 +319,7 @@ export function getTemplatesInternal(
   // video defined here because it uses above master configs (video buttons)
   masterConfigs.video = {
     _template: "$video",
+    _id: uniqueId(),
     enableControls: false,
     margin: {
       $res: true,
@@ -348,9 +353,9 @@ export function getTemplatesInternal(
   /**
    * SHARED TEMPLATES
    */
-  const gridCard4 = {
+  const gridCard4: ComponentConfig = {
     _template: "$GridCard",
-
+    _id: uniqueId(),
     rightArrowPlacement: {
       $res: true,
       [editorContext.mainBreakpointIndex]: "center",
@@ -363,8 +368,9 @@ export function getTemplatesInternal(
     LeftArrow: [masterConfigs.buttonSliderLeft],
   };
 
-  const gridCard2 = {
+  const gridCard2: ComponentConfig = {
     _template: "$GridCard",
+    _id: uniqueId(),
     rightArrowPlacement: {
       $res: true,
       [editorContext.mainBreakpointIndex]: "center",
@@ -417,6 +423,7 @@ export function getTemplatesInternal(
         "https://shopstory.s3.eu-central-1.amazonaws.com/placeholder_banner_card.png", // temporary absolute path
       config: {
         _template: "$BannerCard2",
+        _id: uniqueId(),
         mode: {
           $res: true,
           [editorContext.mainBreakpointIndex]: "none",
@@ -460,6 +467,7 @@ export function getTemplatesInternal(
           "https://shopstory.s3.eu-central-1.amazonaws.com/placeholder_banner_card.png", // temporary absolute path
         config: {
           _template: "$BannerCard",
+          _id: uniqueId(),
           sideImagePosition: {
             $res: true,
             [editorContext.mainBreakpointIndex]: "top",
@@ -482,6 +490,7 @@ export function getTemplatesInternal(
       "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_image.png",
     config: {
       _template: "$image",
+      _id: uniqueId(),
     },
   };
 
@@ -530,6 +539,7 @@ export function getTemplatesInternal(
         "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_button_group.png",
       config: {
         _template: "$buttons",
+        _id: uniqueId(),
         gap: {
           $res: true,
           [editorContext.mainBreakpointIndex]: {
@@ -605,6 +615,7 @@ export function getTemplatesInternal(
       "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_horizontal_layout.png",
     config: {
       _template: "$twoItems",
+      _id: uniqueId(),
     },
   });
 
@@ -615,6 +626,7 @@ export function getTemplatesInternal(
       "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_separator.png",
     config: {
       _template: "$separator",
+      _id: uniqueId(),
     },
   });
 
@@ -625,6 +637,7 @@ export function getTemplatesInternal(
 
     config: {
       _template: "$vimeoPlayer",
+      _id: uniqueId(),
     },
   });
 
@@ -690,7 +703,10 @@ export function getTemplatesInternal(
   templatesDict.section.push(...myLibrarySections);
   templatesDict.section.push(
     ...remoteBuiltinTemplates.filter((template) => {
-      const def = findComponentDefinition(template.config, editorContext);
+      const def = findComponentDefinitionById(
+        template.config._template,
+        editorContext
+      );
       return def?.tags.includes("section");
     })
   );
@@ -705,6 +721,7 @@ export function getTemplatesInternal(
       group: "Raw",
       config: {
         _template: "$BannerSection2",
+        _id: uniqueId(),
         Component: [
           {
             _template: "$BannerCard2",
@@ -741,6 +758,7 @@ export function getTemplatesInternal(
         "https://shopstory.s3.eu-central-1.amazonaws.com/placeholder_slider_grid.png", // temporary absolute path
       config: {
         _template: "$Grid",
+        _id: uniqueId(),
         Component: [gridCard4],
       },
       group: "Raw",
@@ -752,6 +770,7 @@ export function getTemplatesInternal(
       previewImage:
         "https://shopstory.s3.eu-central-1.amazonaws.com/placeholder_banner.png", // temporary absolute path
       config: {
+        _id: uniqueId(),
         _template: "$TwoCards",
       },
       group: "Raw",
@@ -841,6 +860,7 @@ export function getTemplatesInternal(
       "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_button.png",
     config: {
       _template: "$StandardButton",
+      _id: uniqueId(),
       hasBackground: false,
       hasBorder: false,
       underline: "on",
@@ -880,6 +900,7 @@ export function getTemplatesInternal(
   templatesDict.action.push({
     config: {
       _template: "$StandardLink",
+      _id: uniqueId(),
       url: {
         id: "local.96b6f39a-916f-43a5-bfdd-d78ca8f0b72d",
         value: {
@@ -952,6 +973,7 @@ export function getTemplatesInternal(
     type: "Solid color",
     config: {
       _template: "$backgroundColor",
+      _id: uniqueId(),
     },
   });
 
@@ -967,6 +989,7 @@ export function getTemplatesInternal(
 
     config: {
       _template: "$vimeoPlayer",
+      _id: uniqueId(),
     },
   });
 

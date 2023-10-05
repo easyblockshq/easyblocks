@@ -1,10 +1,16 @@
-import { isResolvedCompoundExternalDataValue } from "@easyblocks/app-utils";
+import {
+  isEmptyExternalReference,
+  isIdReferenceToDocumentExternalValue,
+  isResolvedCompoundExternalDataValue,
+} from "@easyblocks/app-utils";
 import {
   AnyField,
+  ExternalReference,
+  ExternalSchemaProp,
   FetchCompoundResourceResultValues,
   Field,
-  getResourceId,
-  ResourceSchemaProp,
+  getExternalReferenceLocationKey,
+  TextSchemaProp,
   UnresolvedResource,
 } from "@easyblocks/core";
 import { Select, SelectItem } from "@easyblocks/design-system";
@@ -20,12 +26,13 @@ import { FieldRenderProps } from "../../../form-builder";
 import { isMixedFieldValue } from "../../components/isMixedFieldValue";
 import { FieldMetaWrapper } from "../wrapFieldWithMeta";
 
-interface ExternalField extends Field<AnyField, ResourceSchemaProp> {
+interface ExternalField
+  extends Field<AnyField, ExternalSchemaProp | TextSchemaProp> {
   externalField: ComponentType<InternalWidgetComponentProps>;
 }
 
 interface ExternalFieldProps
-  extends FieldRenderProps<UnresolvedResource | FieldMixedValue, any> {
+  extends FieldRenderProps<ExternalReference | FieldMixedValue, any> {
   field: ExternalField;
 }
 
@@ -41,31 +48,25 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
 
   const fieldNames = toArray(field.name);
   const ExternalField = field.externalField;
-  const externalDataId = Object.keys(externalData).find((externalDataId) => {
-    const path = fieldNames[0].split(".").slice(0, -1).join(".");
-    const configId = dotNotationGet(editorContext.form.values, path)._id;
-
-    return (
-      externalDataId ===
-      getResourceId(
-        configId,
-        field.schemaProp.prop,
-        field.schemaProp.resourceType === "image" ||
-          field.schemaProp.resourceType === "video"
-          ? editorContext.breakpointIndex
-          : undefined
-      )
-    );
-  });
-  const resource = externalDataId ? externalData[externalDataId] : undefined;
+  const path = fieldNames[0].split(".").slice(0, -1).join(".");
+  const configId = dotNotationGet(editorContext.form.values, path)._id;
+  const externalReferenceLocationKey = getExternalReferenceLocationKey(
+    configId,
+    field.schemaProp.prop,
+    field.schemaProp.type === "image" || field.schemaProp.type === "video"
+      ? editorContext.breakpointIndex
+      : undefined
+  );
+  const externalValue = externalReferenceLocationKey
+    ? externalData[externalReferenceLocationKey]
+    : undefined;
 
   const isCompoundResourceValueSelectVisible =
     !isMixedFieldValue(value) &&
-    value.id !== null &&
-    !value.id.startsWith("$.") &&
-    externalDataId !== undefined &&
-    resource !== undefined &&
-    isResolvedCompoundExternalDataValue(resource);
+    !isEmptyExternalReference(value) &&
+    !isIdReferenceToDocumentExternalValue(value.id) &&
+    externalValue !== undefined &&
+    isResolvedCompoundExternalDataValue(externalValue);
 
   return (
     <FieldMetaWrapper {...props} form={tinaForm} layout="column">
@@ -105,17 +106,15 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
             {isCompoundResourceValueSelectVisible && (
               <CompoundResourceValueSelect
                 options={getBasicResourcesOfType(
-                  resource.value,
-                  field.schemaProp.type === "resource"
-                    ? field.schemaProp.resourceType
-                    : field.schemaProp.type
+                  externalValue.value,
+                  field.schemaProp.type
                 ).map((r) => ({
-                  id: externalDataId,
+                  id: externalReferenceLocationKey,
                   key: r.key,
                   label: r.label ?? r.key,
                 }))}
                 resource={{
-                  id: externalDataId,
+                  id: externalReferenceLocationKey,
                   key: value.key,
                 }}
                 onResourceKeyChange={(_, key) => {

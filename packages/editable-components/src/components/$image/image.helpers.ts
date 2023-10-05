@@ -2,7 +2,6 @@ import {
   compileBox,
   getBoxStyles,
   getDevicesWidths,
-  ResolvedResourceProp,
   responsiveValueFill,
   responsiveValueMap,
 } from "@easyblocks/app-utils";
@@ -15,7 +14,7 @@ type Resop = typeof import("@easyblocks/app-utils").resop2;
 export type ImageProps = CompiledShopstoryComponentProps<
   "$image",
   {
-    image: ResponsiveValue<ResolvedResourceProp<ImageSrc>> | null;
+    image: ResponsiveValue<ImageSrc | undefined>;
     aspectRatio: ResponsiveValue<string>;
     gridBaseLineHeight: ResponsiveValue<string>;
   },
@@ -23,9 +22,7 @@ export type ImageProps = CompiledShopstoryComponentProps<
 >;
 
 export function getAspectRatioClassName(
-  responsiveImage: ResponsiveValue<
-    ResolvedResourceProp<ImageSrc | VideoSrc>
-  > | null,
+  responsiveImage: ResponsiveValue<ImageSrc | VideoSrc | undefined>,
   aspectRatio: ImageProps["__fromEditor"]["props"]["aspectRatio"],
   gridBaseLineHeight: ImageProps["__fromEditor"]["props"]["gridBaseLineHeight"],
   devices: Devices,
@@ -33,7 +30,7 @@ export function getAspectRatioClassName(
   resop: Resop
 ) {
   const naturalAspectRatio = responsiveValueMap(responsiveImage, (image) => {
-    return image?.value?.aspectRatio ?? null; // null is important because it means it's defined
+    return image?.aspectRatio ?? null; // null is important because it means it's defined
   });
 
   const input: Record<string, any> = {

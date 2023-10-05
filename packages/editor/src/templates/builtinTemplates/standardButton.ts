@@ -1,8 +1,12 @@
+import { ComponentConfig } from "@easyblocks/core";
+import { uniqueId } from "@easyblocks/utils";
+
 export const standardButton = (
   color: string,
   backgroundColor: string | null
-) => ({
+): ComponentConfig => ({
   _template: "$StandardButton",
+  _id: uniqueId(),
   color: {
     $res: true,
     xl: {

@@ -19,7 +19,7 @@ import {
   ImageVariant,
   LauncherPlugin,
   RenderableContent,
-  ResourceDefinition,
+  ExternalDefinition,
   ResourceTransformer,
   SerializableResource,
   VideoTransformer,
@@ -49,7 +49,7 @@ test("fetches resources using custom fetcher", async () => {
 
   const shopstoryClient = new ShopstoryClient(
     createTestConfig({
-      resourceTypes: {
+      types: {
         product: {
           fetch: productCustomFetchMock,
         },
@@ -253,7 +253,7 @@ test("fetches resources for new configs added during fetching", async () => {
 
   const shopstoryClient = new ShopstoryClient(
     createTestConfig({
-      resourceTypes: {
+      types: {
         entry1: {
           fetch: entry1Fetcher,
         },
@@ -531,7 +531,7 @@ test("doesn't refetch resources again if they were already fetched", async () =>
 
   const shopstoryClient = new ShopstoryClient(
     createTestConfig({
-      resourceTypes: {
+      types: {
         product: {
           fetch: productFetchMock,
         },
@@ -590,7 +590,7 @@ test("doesn't refetch resources again if they were already fetched", async () =>
 test("user can specify it's own error for resources", async () => {
   const shopstoryClient = new ShopstoryClient(
     createTestConfig({
-      resourceTypes: {
+      types: {
         product: {
           fetch: async (resources) => {
             return resources.map((resource) => {
@@ -667,7 +667,7 @@ test("resources with the same id, but different info and/or fetchParams should b
 
   const shopstoryClient = new ShopstoryClient(
     createTestConfig({
-      resourceTypes: {
+      types: {
         product: {
           fetch: productFetchSpy,
         },
@@ -966,7 +966,7 @@ describe("image and video", () => {
 
     const shopstoryClient = new ShopstoryClient(
       createTestConfig({
-        resourceTypes: {
+        types: {
           product: {
             fetch: async (resources) => {
               return resources.map((resource) => {
@@ -1148,7 +1148,7 @@ describe("image and video", () => {
 
     const shopstoryClient = new ShopstoryClient(
       createTestConfig({
-        resourceTypes: {
+        types: {
           imageAsset: {
             fetch: imageAssetFetchMock,
           },
@@ -1291,7 +1291,7 @@ describe("image and video", () => {
 
     const shopstoryClient = new ShopstoryClient(
       createTestConfig({
-        resourceTypes: {
+        types: {
           imageAsset: {
             fetch: async (resources) => {
               return resources.map((resource) => {
@@ -1662,7 +1662,7 @@ describe("image variants", () => {
     });
   });
 
-  const customImageResourceDefinition: ResourceDefinition = {
+  const customImageResourceDefinition: ExternalDefinition = {
     fetch: customImageResourceFetch,
   };
 
@@ -1685,7 +1685,7 @@ describe("image variants", () => {
             ],
           },
         ],
-        resourceTypes: {
+        types: {
           customImage: customImageResourceDefinition,
         },
         imageVariants: [
@@ -1798,7 +1798,7 @@ describe("image variants", () => {
             schema: [{ prop: "image1", type: "image" }],
           },
         ],
-        resourceTypes: {
+        types: {
           customImage: customImageResourceDefinition,
         },
         imageVariants: [customImageVariant],
@@ -1863,7 +1863,7 @@ describe("video variants", () => {
     });
   });
 
-  const customVideoResourceDefinition: ResourceDefinition = {
+  const customVideoResourceDefinition: ExternalDefinition = {
     fetch: customVideoResourceFetch,
   };
 
@@ -1886,7 +1886,7 @@ describe("video variants", () => {
             ],
           },
         ],
-        resourceTypes: {
+        types: {
           customVideo: customVideoResourceDefinition,
         },
         imageVariants: [
@@ -1983,7 +1983,7 @@ describe("video variants", () => {
             schema: [{ prop: "video1", type: "video" }],
           },
         ],
-        resourceTypes: {
+        types: {
           customVideo: customVideoResourceDefinition,
         },
         videoVariants: [customVideoVariant],

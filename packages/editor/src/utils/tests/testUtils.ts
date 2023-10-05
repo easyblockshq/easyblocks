@@ -23,7 +23,7 @@ export const testEmptyWidget: ExternalFieldCustom = {
   component: () => {},
 };
 
-export const testTypes: EditorContextType["resourceTypes"] = {
+export const testTypes: EditorContextType["types"] = {
   image: {
     defaultFetch: async (resources) => {
       return resources.map((resource) => {
@@ -152,7 +152,7 @@ export const testEditorContext: EditorContextType = {
   breakpointIndex: "b1",
   setBreakpointIndex: (b) => null,
   devices: testDevices,
-  resourceTypes: testTypes,
+  types: testTypes,
   image: testImage,
   video: testVideo,
   text: testText,

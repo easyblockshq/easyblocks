@@ -37,7 +37,7 @@ function configMapArray(
     return;
   }
 
-  return configArray.map((x: ConfigComponent, index: number) =>
+  return configArray.map((x, index) =>
     configMapInternal(x, context, callback, `${prefix}.${index}`)
   );
 }

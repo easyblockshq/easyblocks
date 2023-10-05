@@ -1004,15 +1004,24 @@ importers:
         specifier: ^7.21.0
         version: 7.21.0
       '@easyblocks/core':
-        specifier: ^1.5.2
+        specifier: workspace:*
         version: link:../core
+      '@easyblocks/design-system':
+        specifier: workspace:*
+        version: link:../design-system
       graphql-request:
         specifier: ^3.4.0
         version: 3.7.0(graphql@16.6.0)
+      react:
+        specifier: '>=16.8.0'
+        version: 18.2.0
     devDependencies:
       '@easyblocks/build-tools':
-        specifier: ^1.5.2
+        specifier: workspace:*
         version: link:../build-tools
+      '@types/react':
+        specifier: ^18.2.20
+        version: 18.2.20
 
   packages/test-utils:
     dependencies:
@@ -15837,7 +15846,7 @@ packages:
       '@next/env': 13.4.12
       '@swc/helpers': 0.5.1
       busboy: 1.6.0
-      caniuse-lite: 1.0.30001541
+      caniuse-lite: 1.0.30001519
       postcss: 8.4.14
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)

@@ -223,7 +223,7 @@ const SubComponentPanelButton = ({
   const editorContext = useEditorContext();
   const externalData = useEditorExternalData();
 
-  const config = dotNotationGet(editorContext.configAfterAuto, paths[0]);
+  const config = dotNotationGet(editorContext.form.values, paths[0]);
   const componentDefinition = findComponentDefinition(config, editorContext);
   const label =
     componentDefinition?.label ??

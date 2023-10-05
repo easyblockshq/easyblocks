@@ -6,7 +6,7 @@
  */
 import {
   createCompilationContext,
-  findResources,
+  findExternals,
   normalize,
 } from "../../../apps/app/src/modules/compiler";
 
@@ -113,7 +113,7 @@ describe("data synchronizers", () => {
 
   const shopstoryConfig: Config = {
     plugins: [testPlugin],
-    resourceTypes: {
+    types: {
       product: {
         // @ts-expect-error there are purposeful type errors to mimic JS behavior
         fetch: async (resources, contextParams) => {
@@ -359,7 +359,7 @@ describe("data synchronizers", () => {
       locale: "en",
     };
 
-    const resorcesWithSchemaProps = findResources(
+    const resorcesWithSchemaProps = findExternals(
       inputConfig,
       shopstoryConfig,
       contextParams
@@ -387,7 +387,7 @@ describe("data synchronizers", () => {
       stagedForMap: pendingResources,
     });
 
-    const resorcesWithSchemaPropsAfterSync = findResources(
+    const resorcesWithSchemaPropsAfterSync = findExternals(
       inputConfig,
       shopstoryConfig,
       contextParams

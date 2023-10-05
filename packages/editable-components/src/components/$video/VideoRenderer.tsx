@@ -1,12 +1,11 @@
 /** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
-import { ResolvedResourceProp } from "@easyblocks/app-utils";
 import { VideoSrc } from "@easyblocks/core";
 import { useEffect, useRef, useState } from "react";
 import { VideoProps } from "./$video.editor";
 import { VideoPlaceholder } from "./VideoPlaceholder";
 
 type VideoRendererProps = VideoProps & {
-  video: ResolvedResourceProp<VideoSrc> | null;
+  video: VideoSrc | undefined;
 };
 
 function VideoRenderer(props: VideoRendererProps) {
@@ -43,7 +42,7 @@ function VideoRenderer(props: VideoRendererProps) {
     }
   }, [muted, playing]);
 
-  const videoUrl = !video || video.status === "error" ? null : video.value.url;
+  const videoUrl = !video ? null : video.url;
 
   return (
     <div style={{ position: "relative", width: "100%", height: "100%" }}>
@@ -57,7 +56,7 @@ function VideoRenderer(props: VideoRendererProps) {
           playsInline={true}
         >
           <source src={videoUrl} />
-          {video?.value?.alt}
+          {video?.alt}
         </Video>
       )}
 

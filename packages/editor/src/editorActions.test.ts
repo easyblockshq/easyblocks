@@ -134,7 +134,7 @@ const testCompilationContext: CompilationContextType = {
   text: {
     fetch: jest.fn(),
   },
-  resourceTypes: {},
+  types: {},
   video: {
     resourceType: "",
     transform: jest.fn(),

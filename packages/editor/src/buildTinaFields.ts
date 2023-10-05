@@ -1,11 +1,10 @@
-import { CompiledCustomComponentConfig, FieldPortal } from "@easyblocks/core";
-import { dotNotationGet } from "@easyblocks/utils";
 import {
   InternalAnyTinaField,
   InternalField,
   stripRichTextPartSelection,
 } from "@easyblocks/app-utils";
-
+import { CompiledCustomComponentConfig, FieldPortal } from "@easyblocks/core";
+import { dotNotationGet } from "@easyblocks/utils";
 import type { EditorContextType } from "./EditorContext";
 import { pathToCompiledPath } from "./pathToCompiledPath";
 
@@ -44,7 +43,6 @@ function internalBuildTinaFields(
       fieldsFilter ? fieldsFilter(field as InternalAnyTinaField) : true
     )
     .forEach((item) => {
-      // @ts-expect-error FIXME:
       if (isFieldPortal(item)) {
         let fields: InternalAnyTinaField[] = [];
 

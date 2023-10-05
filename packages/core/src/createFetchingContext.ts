@@ -1,15 +1,15 @@
-import type { Config, ResourceDefinition } from "./types";
+import type { Config, ExternalDefinition } from "./types";
 
 export type FetchingContext = {
-  resourceTypes: {
-    [key: string]: ResourceDefinition;
+  types: {
+    [key: string]: ExternalDefinition;
   };
   strict?: boolean;
 };
 
 function createFetchingContext(config: Config): FetchingContext {
   return {
-    resourceTypes: config.resourceTypes ?? {},
+    types: config.types ?? {},
     strict: config.strict,
   };
 }

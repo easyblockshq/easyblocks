@@ -72,7 +72,7 @@ export const testCompilationContext: CompilationContextType = {
     boxShadows: {},
   },
   mainBreakpointIndex: "b4",
-  resourceTypes: {},
+  types: {},
   rootContainers: [],
   rootContainer: "content",
 };

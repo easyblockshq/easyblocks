@@ -1,24 +1,6 @@
-import type { ExternalData, ResourceParams, ResourceSchemaProp } from "./types";
+import type { ExternalData } from "./types";
 
-export function getResourceFetchParams(
-  schemaProp: ResourceSchemaProp
-): ResourceParams | undefined {
-  if (schemaProp.type === "text") {
-    return;
-  }
-
-  return schemaProp.fetchParams;
-}
-
-export function getResourceType(schemaProp: ResourceSchemaProp): string {
-  if (schemaProp.type === "resource") {
-    return schemaProp.resourceType;
-  }
-
-  return schemaProp.type;
-}
-
-export function getResourceValue(externalDataValue: ExternalData[string]) {
+export function getExternalValue(externalDataValue: ExternalData[string]) {
   if ("error" in externalDataValue) {
     return;
   }
@@ -26,7 +8,7 @@ export function getResourceValue(externalDataValue: ExternalData[string]) {
   return externalDataValue.value;
 }
 
-export function isLocalTextResource(
+export function isLocalTextReference(
   resource: { id: string | null },
   type: string
 ) {
@@ -35,4 +17,18 @@ export function isLocalTextResource(
   }
 
   return type === "text" && resource.id.startsWith("local.");
+}
+
+export function getExternalReferenceLocationKey(
+  configId: string,
+  fieldName: string,
+  deviceId?: string
+) {
+  let resourceId = `${configId}.${fieldName}`;
+
+  if (deviceId) {
+    resourceId += `.${deviceId}`;
+  }
+
+  return resourceId;
 }

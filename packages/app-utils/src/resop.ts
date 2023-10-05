@@ -7,7 +7,7 @@ import {
 import { responsiveValueForceGet } from "./responsive/responsiveValueGet";
 import { responsiveValueNormalize } from "./responsive/responsiveValueNormalize";
 import {
-  isResourceSchemaProp,
+  isExternalSchemaProp,
   isSchemaPropActionTextModifier,
   isSchemaPropCollection,
   isSchemaPropComponent,
@@ -183,7 +183,6 @@ function squashCSSResults(
 function scalarizeNonComponentProp(
   value: any,
   breakpoint: string,
-  devices: Devices,
   schemaProp?: SchemaProp
 ) {
   if (schemaProp) {
@@ -192,16 +191,10 @@ function scalarizeNonComponentProp(
       throw new Error("unreachable");
     }
 
-    if (isResourceSchemaProp(schemaProp)) {
-      // image and video are responsive
-      if (
-        schemaProp.resourceType === "image" ||
-        schemaProp.resourceType === "video"
-      ) {
-        return responsiveValueForceGet(value, breakpoint);
-      }
-
-      // other resources should be ignored (not to run scalarise on value which we don't control)
+    // External values and text value should not be scalarized
+    // At least we introduce `responsive` property for external definition
+    // TODO: recheck after introducing `responsive` property
+    if (isExternalSchemaProp(schemaProp) || schemaProp.type === "text") {
       return value;
     }
 
@@ -231,15 +224,10 @@ function scalarizeCollection(
         scalarizedChild[schemaProp.prop] = scalarizeNonComponentProp(
           value,
           breakpoint,
-          devices,
           schemaProp
         );
       } else {
-        scalarizedChild[key] = scalarizeNonComponentProp(
-          value,
-          breakpoint,
-          devices
-        );
+        scalarizedChild[key] = scalarizeNonComponentProp(value, breakpoint);
       }
     }
 
@@ -304,8 +292,7 @@ export function scalarizeConfig(
                         nestedModifierKey
                       ] = scalarizeNonComponentProp(
                         modifierConfig[modifierKey][index][nestedModifierKey],
-                        breakpoint,
-                        devices
+                        breakpoint
                       );
                     }
                   }
@@ -313,8 +300,7 @@ export function scalarizeConfig(
               } else {
                 scalarModifierValues[modifierKey] = scalarizeNonComponentProp(
                   modifierConfig[modifierKey],
-                  breakpoint,
-                  devices
+                  breakpoint
                 );
               }
             }
@@ -340,13 +326,12 @@ export function scalarizeConfig(
         ret[prop] = scalarizeNonComponentProp(
           config[prop],
           breakpoint,
-          devices,
           schemaProp
         );
       }
     } else {
       // context props automatically get scalarized
-      ret[prop] = scalarizeNonComponentProp(config[prop], breakpoint, devices);
+      ret[prop] = scalarizeNonComponentProp(config[prop], breakpoint);
     }
   }
 

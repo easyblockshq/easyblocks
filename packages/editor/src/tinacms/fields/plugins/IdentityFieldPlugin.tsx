@@ -1,5 +1,5 @@
 import { findComponentDefinitionById, parsePath } from "@easyblocks/app-utils";
-import { ConfigComponent, Field } from "@easyblocks/core";
+import { ComponentSchemaProp, ConfigComponent, Field } from "@easyblocks/core";
 import { SSButtonGhost, SSIcons, Typography } from "@easyblocks/design-system";
 import { toArray } from "@easyblocks/utils";
 import React, { useContext } from "react";
@@ -45,7 +45,8 @@ function IdentityField({ input, field }: IdentityFieldProps) {
 
   const isNonRemovable = parentSchemaProp
     ? parentSchemaProp.type === "component-fixed" ||
-      (parentSchemaProp.type === "component" && parentSchemaProp.required)
+      (parentSchemaProp.type === "component" &&
+        (parentSchemaProp as ComponentSchemaProp).required)
     : true;
   const isNonChangable =
     parentSchemaProp?.type === "component-fixed" ||

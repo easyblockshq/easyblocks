@@ -2,13 +2,14 @@ import {
   buttonActionSchemaProp,
   InternalRenderableComponentDefinition,
   isCompoundExternalDataValue,
+  responsiveValueFindDeviceWithDefinedValue,
   responsiveValueForceGet,
 } from "@easyblocks/app-utils";
 import {
-  getResourceId,
-  getResourceValue,
+  ExternalReference,
+  getExternalReferenceLocationKey,
+  getExternalValue,
   ImageSrc,
-  UnresolvedResource,
 } from "@easyblocks/core";
 import { assertDefined, last } from "@easyblocks/utils";
 import imageStyles from "./$image.styles";
@@ -38,8 +39,7 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
     schema: [
       {
         prop: "image",
-        type: "resource",
-        resourceType: "image",
+        type: "image",
         label: "Source",
       },
       {
@@ -51,10 +51,28 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
       },
       buttonActionSchemaProp,
     ],
-    getEditorSidebarPreview(config, externalData, { breakpointIndex }) {
-      const activeImageValue = responsiveValueForceGet<UnresolvedResource>(
+    getEditorSidebarPreview(
+      config,
+      externalData,
+      { breakpointIndex, devices }
+    ) {
+      const device = responsiveValueFindDeviceWithDefinedValue(
         config.image,
-        breakpointIndex
+        breakpointIndex,
+        devices
+      );
+
+      if (!device) {
+        return {
+          type: "icon",
+          icon: "link",
+          description: "None",
+        };
+      }
+
+      const activeImageValue = responsiveValueForceGet<ExternalReference>(
+        config.image,
+        device.id
       );
 
       if (activeImageValue.id === null) {
@@ -65,12 +83,16 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
         };
       }
 
-      const imageResource =
+      const imageExternalValue =
         externalData[
-          getResourceId(assertDefined(config._id), "image", breakpointIndex)
+          getExternalReferenceLocationKey(
+            assertDefined(config._id),
+            "image",
+            device.id
+          )
         ];
 
-      if (!imageResource || "error" in imageResource) {
+      if (!imageExternalValue || "error" in imageExternalValue) {
         return {
           type: "icon",
           icon: "link",
@@ -78,7 +100,7 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
         };
       }
 
-      if (isCompoundExternalDataValue(imageResource)) {
+      if (isCompoundExternalDataValue(imageExternalValue)) {
         if (!activeImageValue.key) {
           return {
             type: "icon",
@@ -87,10 +109,10 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
           };
         }
 
-        const resolvedCompoundResourceResult =
-          imageResource.value[activeImageValue.key];
+        const resolvedCompoundExternalValueResult =
+          imageExternalValue.value[activeImageValue.key];
 
-        if (!resolvedCompoundResourceResult) {
+        if (!resolvedCompoundExternalValueResult) {
           return {
             type: "icon",
             icon: "link",
@@ -99,18 +121,20 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
         }
 
         const imageFileName = last(
-          (resolvedCompoundResourceResult.value as ImageSrc).url.split("/")
+          (resolvedCompoundExternalValueResult.value as ImageSrc).url.split("/")
         );
         const imageFileNameWithoutQueryParams = imageFileName.split("?")[0];
 
         return {
           type: "image",
-          url: (resolvedCompoundResourceResult.value as ImageSrc).url,
+          url: (resolvedCompoundExternalValueResult.value as ImageSrc).url,
           description: imageFileNameWithoutQueryParams,
         };
       }
 
-      const imageResourceValue = getResourceValue(imageResource) as ImageSrc;
+      const imageResourceValue = getExternalValue(
+        imageExternalValue
+      ) as ImageSrc;
       const imageFileName = last(imageResourceValue.url.split("/"));
       const imageFileNameWithoutQueryParams = imageFileName.split("?")[0];
 

@@ -1,4 +1,4 @@
-import { ComponentSchemaProp, TextResourceSchemaProp } from "@easyblocks/core";
+import { ComponentSchemaProp, TextSchemaProp } from "@easyblocks/core";
 
 export const buttonActionSchemaProp: ComponentSchemaProp = {
   prop: "action",
@@ -11,7 +11,7 @@ export const buttonActionSchemaProp: ComponentSchemaProp = {
   isLabelHidden: true,
 };
 
-export const buttonLabelSchemaProp: TextResourceSchemaProp = {
+export const buttonLabelSchemaProp: TextSchemaProp = {
   prop: "label",
   type: "text",
   label: "Label",

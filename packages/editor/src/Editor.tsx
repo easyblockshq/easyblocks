@@ -15,7 +15,7 @@ import {
   CompilationCache,
   compileInternal,
   createCompilationContext,
-  findResources,
+  findExternals,
   normalize,
   normalizeInput,
   validate,
@@ -416,7 +416,7 @@ function useBuiltContent(
       },
       externalData,
       compiler: {
-        findResources,
+        findExternals,
         validate,
         compile: (content) => {
           let resultMeta: CompilationMetadata = {
@@ -740,19 +740,19 @@ const EditorContent = ({
 
   if (editorContext.activeRootContainer.schema) {
     ["image", "video", "text"].forEach((builtinExternalType) => {
-      // Make sure to add the root resource widget to built-in resource definitions
+      // Make sure to add the document data widget to built-in resource definitions
       if (
-        !editorContext.resourceTypes[builtinExternalType].widgets.some(
+        !editorContext.types[builtinExternalType].widgets.some(
           (w) => w.id === "@easyblocks/document-data"
         )
       ) {
-        if (!editorContext.resourceTypes[builtinExternalType]) {
-          editorContext.resourceTypes[builtinExternalType] = {
+        if (!editorContext.types[builtinExternalType]) {
+          editorContext.types[builtinExternalType] = {
             widgets: [],
           };
         }
 
-        editorContext.resourceTypes[builtinExternalType].widgets.push(
+        editorContext.types[builtinExternalType].widgets.push(
           documentDataWidgetFactory({
             type: builtinExternalType,
           })

@@ -1,11 +1,11 @@
 import type {
   ExternalData,
+  ExternalDataCompoundResourceResolvedResult,
+  ExternalReference,
+  ExternalReferenceEmpty,
+  FetchOutputCompoundResources,
   RejectedResource,
   ResolvedResource,
-  FetchOutputCompoundResources,
-  UnresolvedResource,
-  UnresolvedResourceEmpty,
-  ExternalDataCompoundResourceResolvedResult,
 } from "@easyblocks/core";
 
 export type ResolvedResourceProp<ResourceValue = unknown> =
@@ -27,12 +27,12 @@ export function isResolvedCompoundExternalDataValue(
   return "type" in value && value.type === "object" && "value" in value;
 }
 
-export function isIdReferenceToDocumentExternalData(id: string) {
+export function isIdReferenceToDocumentExternalValue(id: string) {
   return id.startsWith("$.");
 }
 
-export function isEmptyExternalDataConfigEntry(
-  externalDataConfigEntry: UnresolvedResource
-): externalDataConfigEntry is UnresolvedResourceEmpty {
+export function isEmptyExternalReference(
+  externalDataConfigEntry: ExternalReference
+): externalDataConfigEntry is ExternalReferenceEmpty {
   return externalDataConfigEntry.id === null;
 }

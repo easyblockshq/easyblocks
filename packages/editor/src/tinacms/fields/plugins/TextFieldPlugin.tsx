@@ -1,5 +1,5 @@
 import { InternalField, useTextValue } from "@easyblocks/app-utils";
-import { LocalTextValue, ResponsiveValue } from "@easyblocks/core";
+import { LocalTextReference, ResponsiveValue } from "@easyblocks/core";
 import { SSInput } from "@easyblocks/design-system";
 import React from "react";
 import { FieldRenderProps } from "react-final-form";
@@ -8,7 +8,7 @@ import { parse } from "./textFormat";
 import { wrapFieldsWithMeta } from "./wrapFieldWithMeta";
 
 type TextFieldProps = FieldRenderProps<
-  ResponsiveValue<string> | LocalTextValue
+  ResponsiveValue<string> | LocalTextReference
 > & {
   field: InternalField & {
     placeholder?: string;

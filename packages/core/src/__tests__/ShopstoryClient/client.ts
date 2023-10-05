@@ -32,7 +32,7 @@ test("throws error when type is missing custom fetch ", async () => {
 
   const shopstoryClient = new ShopstoryClient(
     createTestConfig({
-      resourceTypes: {
+      types: {
         product1: {
           fetch: product1FetchMock,
         },
@@ -104,7 +104,7 @@ test("throws error when one of custom fetches finishes with error", async () => 
 
   const shopstoryClient = new ShopstoryClient(
     createTestConfig({
-      resourceTypes: {
+      types: {
         product1: {
           fetch: async () => {
             throw new Error('Unhandled error during "product1" fetch');
@@ -178,7 +178,7 @@ test("throws error when custom fetcher doesn't return an array", async () => {
 
   const shopstoryClient = new ShopstoryClient(
     createTestConfig({
-      resourceTypes: {
+      types: {
         product: {
           fetch: customFetchMock,
         },
@@ -219,7 +219,7 @@ test("throws error when custom fetcher returns array of not valid output", async
 
   const shopstoryClient = new ShopstoryClient(
     createTestConfig({
-      resourceTypes: {
+      types: {
         product: {
           fetch: customFetchMock,
         },
@@ -259,7 +259,7 @@ test("throws error when result of fetch function is data with circular reference
 
   const shopstoryClient = new ShopstoryClient(
     createTestConfig({
-      resourceTypes: {
+      types: {
         product: {
           fetch: async (resources) => {
             return resources.map((resource) => {
@@ -337,7 +337,7 @@ test("throws error when custom fetch function returned unresolved resources", as
 
   const shopstoryClient = new ShopstoryClient(
     createTestConfig({
-      resourceTypes: {
+      types: {
         product: {
           fetch: productCustomFetchMock,
         },
@@ -445,7 +445,7 @@ test("throws error when there is no config returned from API for remote content 
   const shopstoryClient = new ShopstoryClient(
     createTestConfig({
       accessToken: "test access token",
-      resourceTypes: {
+      types: {
         product: {
           fetch: async (resources) => {
             return resources.map((resource) => {

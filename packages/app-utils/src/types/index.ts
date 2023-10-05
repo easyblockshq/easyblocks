@@ -7,17 +7,17 @@ import {
   ComponentDefinitionShared,
   ConfigComponent,
   ContextParams,
-  CustomResourceSchemaProp,
   Devices,
   EditingFunction,
   EditingInfoBase,
   EventSink,
   ExternalData,
+  ExternalDefinition,
+  ExternalSchemaProp,
   FieldPortal,
   Locale,
   RefMap,
   Resource,
-  ResourceDefinition,
   ResponsiveValue,
   SchemaProp,
   Template,
@@ -71,8 +71,8 @@ export type InternalTextModifierDefinition = ComponentDefinitionShared & {
 export type CompilationContextType = {
   devices: Devices;
   theme: Theme;
-  resourceTypes: {
-    [key: string]: ResourceDefinition;
+  types: {
+    [key: string]: ExternalDefinition;
   };
   definitions: InternalComponentDefinitions;
   mainBreakpointIndex: string;
@@ -88,9 +88,9 @@ export type CompilationContextType = {
 export type CompilationRootContainer = {
   id: string;
   label?: string;
-  defaultConfig: ComponentConfig;
+  defaultConfig: Omit<ComponentConfig, "_id">;
   widths?: Record<string, string | number>;
-  schema?: Array<CustomResourceSchemaProp>;
+  schema?: Array<ExternalSchemaProp>;
 };
 
 export type ComponentConfigChangeFunction = (arg: {

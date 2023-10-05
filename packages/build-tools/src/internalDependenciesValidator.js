@@ -7,16 +7,17 @@ const path = require("node:path");
 function internalDependenciesValidator() {
   const packageJson = require(`${process.cwd()}/package.json`);
 
-  const { dependencies, devDependencies } = packageJson;
-
-  const internalDependencies = Object.keys(devDependencies).filter(
+  const internalDependencies = Object.keys(packageJson.devDependencies).filter(
     (name) =>
       name.startsWith("@easyblocks/") &&
       name.indexOf("build-tools") === -1 &&
       name !== "@easyblocks/editable-components"
   );
 
-  const packageDependencies = new Set(Object.keys(dependencies));
+  const packageDependencies = new Set(Object.keys(packageJson.dependencies));
+  const packagePeerDependencies = new Set(
+    Object.keys(packageJson.peerDependencies ?? [])
+  );
   const missingDependencies = new Set();
 
   for (const internalDependency of internalDependencies) {
@@ -37,6 +38,7 @@ function internalDependenciesValidator() {
         !internalDependencyDependency.startsWith("@easyblocks/") &&
         !internalDependencyDependency.startsWith("@types") &&
         !packageDependencies.has(internalDependencyDependency) &&
+        !packagePeerDependencies.has(internalDependencyDependency) &&
         !missingDependencies.has(internalDependencyDependency)
       ) {
         missingDependencies.add(internalDependencyDependency);

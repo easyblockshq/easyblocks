@@ -1,7 +1,7 @@
 import { isResolvedCompoundExternalDataValue } from "@easyblocks/app-utils";
 import {
   ExternalDataCompoundResourceResolvedResult,
-  getResourceId,
+  getExternalReferenceLocationKey,
   Widget,
 } from "@easyblocks/core";
 import { Typography } from "@easyblocks/design-system";
@@ -37,16 +37,16 @@ function createDocumentDataWidgetComponent(type: string) {
   }: InternalWidgetComponentProps) {
     const { editorContext, externalData } = window.editorWindowAPI;
 
-    const documentResourcesIds = assertDefined(
+    const documentExternalLocationKeys = assertDefined(
       editorContext.activeRootContainer.schema
-    ).map((s) => getResourceId("$", s.prop));
+    ).map((s) => getExternalReferenceLocationKey("$", s.prop));
 
     const documentCompoundResources = Object.entries(externalData).filter<
       [string, ExternalDataCompoundResourceResolvedResult]
     >((r): r is [string, ExternalDataCompoundResourceResolvedResult] => {
       const [externalId, externalDataValue] = r;
       return (
-        documentResourcesIds.includes(externalId) &&
+        documentExternalLocationKeys.includes(externalId) &&
         isResolvedCompoundExternalDataValue(externalDataValue)
       );
     });

@@ -1,14 +1,11 @@
 import { mergeCompilationMeta } from "@easyblocks/app-utils";
-import {
-  CompilationMetadata,
-  ShopstoryClientDependencies,
-} from "@easyblocks/core";
+import { CompilationMetadata, CompilerModule } from "@easyblocks/core";
 import { compileInternal } from "../compileInternal";
 import { createCompilationContext } from "../createCompilationContext";
 import { getRootContainer } from "../getRootContainer";
 import { normalizeInput } from "../normalizeInput";
 
-export const compile: ShopstoryClientDependencies["compile"] = (
+export const compile: CompilerModule["compile"] = (
   content,
   config,
   contextParams

@@ -41,14 +41,12 @@ export const easyblocksConfig: Config = {
         {
           prop: "product",
           label: "Product",
-          type: "resource",
-          resourceType: "product",
+          type: "product",
         },
         {
           prop: "fallbackProduct",
           label: "Fallback product",
-          type: "resource",
-          resourceType: "product",
+          type: "product",
         },
       ],
     },
@@ -63,8 +61,7 @@ export const easyblocksConfig: Config = {
         {
           prop: "product",
           label: "Product",
-          type: "resource",
-          resourceType: "product",
+          type: "product",
         },
         {
           prop: "relatedProductsMode",
@@ -93,7 +90,7 @@ export const easyblocksConfig: Config = {
       ],
     },
   ],
-  resourceTypes: {
+  types: {
     image: {
       widgets: [mockImageWidget, pexelsImageWidget],
     },

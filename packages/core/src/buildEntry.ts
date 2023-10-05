@@ -1,24 +1,22 @@
-import {
-  getResourceFetchParams,
-  getResourceType,
-  isLocalTextResource,
-} from "./resourcesUtils";
-import {
+import { isLocalTextReference } from "./resourcesUtils";
+import type {
   ChangedExternalData,
   CompilationMetadata,
   CompiledShopstoryComponentConfig,
   ComponentConfig,
   Config,
   ExternalData,
-  ResourceWithSchemaProp,
-  ShopstoryClientDependencies,
+  ExternalParams,
+  ExternalSchemaProp,
+  ExternalWithSchemaProp,
+  CompilerModule,
 } from "./types";
 
 type BuildEntryOptions = {
   entry: ComponentConfig;
   config: Config;
   contextParams: { locale: string; rootContainer: string };
-  compiler: ShopstoryClientDependencies;
+  compiler: CompilerModule;
   externalData: ExternalData;
   isExternalDataChanged?: (
     externalData: {
@@ -50,7 +48,7 @@ function buildEntry({
   }
 
   const compilationResult = compiler.compile(entry, config, contextParams);
-  const resourcesWithSchemaProps = compiler.findResources(
+  const resourcesWithSchemaProps = compiler.findExternals(
     entry,
     config,
     contextParams
@@ -72,7 +70,7 @@ function buildEntry({
 export { buildEntry };
 
 function findChangedExternalData(
-  resourcesWithSchemaProps: Array<ResourceWithSchemaProp>,
+  resourcesWithSchemaProps: Array<ExternalWithSchemaProp>,
   externalData: ExternalData,
   isExternalDataPending: BuildEntryOptions["isExternalDataChanged"]
 ) {
@@ -85,7 +83,7 @@ function findChangedExternalData(
   ) {
     return (
       resource.externalId !== null &&
-      !isLocalTextResource(
+      !isLocalTextReference(
         {
           id: resource.externalId,
         },
@@ -96,25 +94,24 @@ function findChangedExternalData(
     );
   }
 
-  resourcesWithSchemaProps.forEach(({ id, resource, schemaProp }) => {
-    const type = getResourceType(schemaProp);
-    const fetchParams = getResourceFetchParams(schemaProp);
+  resourcesWithSchemaProps.forEach(({ id, externalReference, schemaProp }) => {
+    const fetchParams = getExternalFetchParams(schemaProp);
 
     const externalData = {
       id,
-      externalId: resource.id,
+      externalId: externalReference.id,
     };
 
     if (isExternalDataPending) {
       if (
         !isExternalDataPending(externalData, (resource) => {
-          return defaultIsExternalDataPending(id, resource, type);
+          return defaultIsExternalDataPending(id, resource, schemaProp.type);
         })
       ) {
         return;
       }
     } else {
-      return defaultIsExternalDataPending(id, externalData, type);
+      return defaultIsExternalDataPending(id, externalData, schemaProp.type);
     }
 
     if (changedExternalData[id]) {
@@ -122,12 +119,22 @@ function findChangedExternalData(
     }
 
     changedExternalData[id] = {
-      externalId: resource.id,
-      type,
-      widgetId: resource.widgetId,
+      externalId: externalReference.id,
+      type: schemaProp.type,
+      widgetId: externalReference.widgetId,
       fetchParams,
     };
   });
 
   return changedExternalData;
+}
+
+function getExternalFetchParams(
+  schemaProp: ExternalSchemaProp
+): ExternalParams | undefined {
+  if (schemaProp.type === "text") {
+    return;
+  }
+
+  return schemaProp.fetchParams;
 }
