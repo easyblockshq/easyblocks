@@ -32,10 +32,6 @@ import tokenFontStyles from "./components/TokenFont/TokenFont.styles";
 import { gridAuto } from "./components/Grid/Grid.auto";
 import grid2Styles from "./components/Grid/Grid.styles";
 
-import iconButtonStyles from "./components/IconButton/v1/IconButton.styles";
-
-import iconButton2Styles from "./components/IconButton/v2/IconButton.styles";
-
 import placeholderStyles from "./components/Placeholder/Placeholder.styles";
 import { StandardButtonNoCodeComponent } from "./components/StandardButton/StandardButton";
 
@@ -46,7 +42,6 @@ import { $sectionWrapperStyles } from "./components/SectionWrapper/SectionWrappe
 
 import { backgroundColorComponentDefinition } from "./components/$backgroundColor/$backgroundColor";
 import { buttonsComponentDefinition } from "./components/$buttons/$buttons";
-import { iconComponentDefinition } from "./components/$icon/$icon";
 import { imageComponentDefinition } from "./components/$image/image";
 import { richTextEditableComponent } from "./components/$richText/$richText";
 import { richTextBlockElementEditableComponent } from "./components/$richText/$richTextBlockElement/$richTextBlockElement";
@@ -656,8 +651,6 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
     imageComponentDefinition,
     videoComponentDefinition,
     buttonsComponentDefinition,
-
-    iconComponentDefinition,
 
     {
       id: "$separator",
@@ -1347,134 +1340,6 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
     },
 
     StandardButtonNoCodeComponent,
-
-    {
-      id: "$IconButton2",
-      label: "Basic Icon Button",
-      thumbnail:
-        "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_button.png",
-      type: "button",
-      styles: iconButton2Styles,
-      editing: () => {
-        return {
-          components: {
-            symbol: {
-              selectable: false,
-            },
-          },
-        };
-      },
-      schema: [
-        buttonActionSchemaProp,
-        {
-          ...buttonRequiredIconSchemaProp,
-          group: "Symbol",
-        },
-        {
-          prop: "hasBackground",
-          type: "boolean",
-          group: "Background",
-          label: "Enabled",
-          defaultValue: true,
-        },
-        {
-          prop: "backgroundColor",
-          type: "color",
-          defaultValue: {
-            ref: "$neutral",
-            value: "grey",
-          },
-          visible: (values) => {
-            return !!values.hasBackground;
-          },
-          group: "Background",
-          label: "Color",
-        },
-
-        {
-          prop: "hasBorder",
-          type: "boolean",
-          group: "Border and shadow",
-          label: "Border enabled",
-        },
-        {
-          prop: "borderWidth",
-          type: "string$",
-          defaultValue: "1",
-          group: "Border and shadow",
-          label: "Border width",
-          visible: (values) => {
-            return !!values.hasBorder;
-          },
-          normalize: pxValueNormalize(1, 16),
-        },
-        {
-          prop: "borderColor",
-          type: "color",
-          defaultValue: {
-            ref: "$dark",
-            value: "black",
-          },
-          group: "Border and shadow",
-          label: "Border color",
-          visible: (values) => {
-            return !!values.hasBorder;
-          },
-        },
-        {
-          prop: "boxShadow", // main image size
-          label: "Box shadow",
-          type: "stringToken",
-          tokenId: "boxShadows",
-          defaultValue: {
-            ref: "none",
-            value: "none",
-          },
-          group: "Border and shadow",
-        },
-
-        {
-          prop: "symbolSize",
-          label: "Symbol size",
-          type: "string$",
-          defaultValue: "24",
-          group: "Size",
-          normalize: pxValueNormalize(8, 128),
-        },
-        {
-          prop: "buttonSize",
-          label: "Button size",
-          type: "string$",
-          defaultValue: "32",
-          group: "Size",
-          visible: (values) => {
-            return (
-              values.hasBorder ||
-              values.hasBackground ||
-              values.boxShadow !== "none"
-            );
-          },
-        },
-        {
-          prop: "shape",
-          type: "select",
-          options: ["circle", "square"],
-          group: "Shape",
-          label: "Shape",
-          visible: (values) => {
-            return (
-              values.hasBorder ||
-              values.hasBackground ||
-              values.boxShadow !== "none"
-            );
-          },
-        },
-        {
-          ...buttonLabelSchemaProp,
-          group: "Accessibility",
-        },
-      ],
-    },
 
     playgroundComponentDefinition,
 

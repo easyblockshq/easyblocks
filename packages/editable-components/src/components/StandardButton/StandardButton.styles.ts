@@ -51,9 +51,10 @@ function styles(values: any) {
       ...sizeStyles,
 
       backgroundColor: hasBackground ? values.backgroundColor : "transparent",
-      borderRadius: isNaked
-        ? 0
-        : `${values.radius === "max" ? 9999 : values.radius}px`,
+      borderRadius:
+        isNaked || values.cornerMode === "sharp"
+          ? 0
+          : `${values.cornerMode === "circled" ? 9999 : values.cornerRadius}px`,
       borderWidth: hasBorder ? `${values.borderWidth}px` : 0,
       borderColor: values.borderColor,
       borderStyle: "solid",

@@ -120,38 +120,27 @@ export const StandardButtonNoCodeComponent: InternalRenderableComponentDefinitio
         },
       },
       {
-        prop: "radius",
+        prop: "cornerMode",
         type: "select$",
-        defaultValue: "0",
+        label: "Corners",
+        group: "General styles",
+        options: ["sharp", "circled", "custom"],
+      },
+      {
+        prop: "cornerRadius",
+        type: "string$",
         visible: (values) => {
           return (
-            values.hasBorder ||
-            values.hasBackground ||
-            values.boxShadow !== "none"
+            values.cornerMode === "custom" &&
+            (values.hasBorder ||
+              values.hasBackground ||
+              values.boxShadow !== "none")
           );
         },
         group: "General styles",
         label: "Corner radius",
-        options: [
-          "max",
-          "0",
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "7",
-          "8",
-          "9",
-          "10",
-          "11",
-          "12",
-          "13",
-          "14",
-          "15",
-          "16",
-        ],
+        normalize: pxValueNormalize(1, 50),
+        defaultValue: "8",
       },
 
       {
