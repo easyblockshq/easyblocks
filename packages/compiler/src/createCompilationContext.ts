@@ -98,27 +98,27 @@ export function createCompilationContext(
     containerWidths: {},
     boxShadows: {},
   };
-
-  // Main grid values
-  theme.space["grid.containerMargin"] = {
-    type: "dev",
-    value: normalizeSpace(themeScalarValueToResponsiveValue(32, devices)),
-  };
-
-  theme.space["grid.horizontalGap"] = {
-    type: "dev",
-    value: normalizeSpace(themeScalarValueToResponsiveValue(16, devices)),
-  };
-
-  theme.space["grid.verticalGap"] = {
-    type: "dev",
-    value: normalizeSpace(themeScalarValueToResponsiveValue(16, devices)),
-  };
-
-  theme.numberOfItemsInRow["grid"] = {
-    type: "dev",
-    value: themeScalarValueToResponsiveValue("4", devices),
-  }; // fill necessary to prevent auto
+  //
+  // // Main grid values
+  // theme.space["grid.containerMargin"] = {
+  //   type: "dev",
+  //   value: normalizeSpace(themeScalarValueToResponsiveValue(32, devices)),
+  // };
+  //
+  // theme.space["grid.horizontalGap"] = {
+  //   type: "dev",
+  //   value: normalizeSpace(themeScalarValueToResponsiveValue(16, devices)),
+  // };
+  //
+  // theme.space["grid.verticalGap"] = {
+  //   type: "dev",
+  //   value: normalizeSpace(themeScalarValueToResponsiveValue(16, devices)),
+  // };
+  //
+  // theme.numberOfItemsInRow["grid"] = {
+  //   type: "dev",
+  //   value: themeScalarValueToResponsiveValue("4", devices),
+  // }; // fill necessary to prevent auto
 
   // TODO: allow for custom breakpoints!!! What happens with old ones when the new ones show up?
 
