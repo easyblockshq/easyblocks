@@ -508,7 +508,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
     return {
       ...buildThemeDefinition(
         compilationContext.theme.colors,
-        "#000000",
+        { value: "#000000" },
         schemaProp,
         compilationContext,
         (x: any) => {
@@ -542,12 +542,12 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
       );
     }
 
-    let defaultKey: string;
+    let defaultKey: any;
 
     if (schemaProp.tokenId === "numberOfItemsInRow") {
       defaultKey = "4";
     } else if (schemaProp.tokenId === "aspectRatios") {
-      defaultKey = "$landscape";
+      defaultKey = { value: "1:1" }; //$landscape";
     } else if (schemaProp.tokenId === "containerWidths") {
       defaultKey = "none";
     } else if (schemaProp.tokenId === "boxShadows") {
@@ -619,7 +619,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
     return {
       ...buildThemeDefinition(
         compilationContext.theme.fonts,
-        "$body",
+        { value: { fontFamily: "sans-serif", fontSize: "16px" } },
         schemaProp,
         compilationContext,
         (x: any) => {
@@ -647,7 +647,9 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
     return {
       ...buildThemeDefinition(
         compilationContext.theme.space,
-        schemaProp.prefix ? schemaProp.prefix + ".default" : "0",
+        {
+          value: "10vw",
+        },
         schemaProp,
         compilationContext,
         (x: any) => {
@@ -1202,7 +1204,7 @@ function getFirstOptionValue(
 
 function buildThemeDefinition<T>(
   themeValues: { [key: string]: ThemeRefValue<ResponsiveValue<T>> },
-  defaultKey: any, // we must make sure that defaultKey is always correct
+  defaultValue: any, // we must make sure that defaultKey is always correct
   schemaProp:
     | ColorSchemaProp
     | SpaceSchemaProp
@@ -1213,7 +1215,7 @@ function buildThemeDefinition<T>(
   // shouldLinearize?: boolean
 ) {
   // Create default value
-  const defaultValue = Object.values(themeValues)[0];
+  // const defaultValue = Object.values(themeValues)[0];
 
   /**
    * TODO:

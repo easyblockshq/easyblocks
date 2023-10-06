@@ -858,9 +858,10 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         {
           prop: "numberOfItems",
           label: "Visible items",
-          type: "stringToken",
-          tokenId: "numberOfItemsInRow",
+          type: "select$",
           group: "Grid / Slider",
+          options: ["1", "2", "3", "4", "5", "6"],
+          defaultValue: "4",
           // visible: (values, { editorContext }) => {
           //   if (values.variant === "grid") {
           //     return true;

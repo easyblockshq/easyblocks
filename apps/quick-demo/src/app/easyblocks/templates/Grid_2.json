@@ -999,10 +999,7 @@
       },
       "numberOfItems": {
         "$res": true,
-        "xl": {
-          "ref": "2",
-          "value": "2"
-        }
+        "xl": "2"
       },
       "fractionalItemWidth": {
         "$res": true,
