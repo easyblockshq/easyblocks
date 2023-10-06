@@ -24,6 +24,7 @@ import BasicCard_7 from "./BasicCard_7.json";
 import video from "./video.json";
 
 import { Template } from "@easyblocks/core";
+import { buildRichTextNoCodeEntry } from "@easyblocks/editable-components";
 
 export const templates: Template[] = [
   {
@@ -174,5 +175,14 @@ export const templates: Template[] = [
     id: "Video_default",
     label: "Default",
     config: video,
+  },
+  {
+    id: "RichText_default",
+    label: "Default",
+    config: buildRichTextNoCodeEntry({
+      text: "Lorem ipsum",
+      color: "dark",
+      font: "body",
+    }),
   },
 ];

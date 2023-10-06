@@ -175,52 +175,51 @@ export const defaultTheme: Theme = {
     // },
   },
   icons: {
-    $sliderLeft: {
-      ...arrowLeftIcon,
-    },
-    $sliderRight: {
-      ...arrowRightIcon,
-    },
-    $play: {
-      ...playIcon,
-    },
-    $pause: {
-      ...pauseIcon,
-    },
-    $mute: {
-      ...muteIcon,
-    },
-    $unmute: {
-      ...unmuteIcon,
-    },
+    // $sliderLeft: {
+    //   ...arrowLeftIcon,
+    // },
+    // $sliderRight: {
+    //   ...arrowRightIcon,
+    // },
+    // $play: {
+    //   ...playIcon,
+    // },
+    // $pause: {
+    //   ...pauseIcon,
+    // },
+    // $mute: {
+    //   ...muteIcon,
+    // },
+    // $unmute: {
+    //   ...unmuteIcon,
+    // },
   },
   aspectRatios: {
-    $panoramic: {
-      value: "2:1",
-      type: "dev",
-      // label: "Panoramic",
-    },
-    $landscape: {
-      value: "16:9",
-      type: "dev",
-      // label: "Landscape",
-    },
-    $portrait: {
-      value: "4:5",
-      type: "dev",
-      // label: "Portrait",
-    },
-    $square: {
-      value: "1:1",
-      type: "dev",
-      // label: "Square",
-    },
-    $gridMainObjectDefault: {
-      value: "4:5",
-      type: "dev",
-
-      // label: "Grid main object default",
-    },
+    // $panoramic: {
+    //   value: "2:1",
+    //   type: "dev",
+    //   // label: "Panoramic",
+    // },
+    // $landscape: {
+    //   value: "16:9",
+    //   type: "dev",
+    //   // label: "Landscape",
+    // },
+    // $portrait: {
+    //   value: "4:5",
+    //   type: "dev",
+    //   // label: "Portrait",
+    // },
+    // $square: {
+    //   value: "1:1",
+    //   type: "dev",
+    //   // label: "Square",
+    // },
+    // $gridMainObjectDefault: {
+    //   value: "4:5",
+    //   type: "dev",
+    //   // label: "Grid main object default",
+    // },
   },
   numberOfItemsInRow: {
     "1": { value: "1", type: "dev" },

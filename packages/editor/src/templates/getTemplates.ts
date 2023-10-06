@@ -25,6 +25,7 @@ import { standardButton } from "./builtinTemplates/standardButton";
 import { getRemoteUserTemplates } from "./getRemoteUserTemplates";
 import { generateTextTemplate } from "./generateTextTemplate";
 import { getBuiltInTemplates } from "./getBuiltinTemplates";
+import { buildRichTextNoCodeEntry } from "@easyblocks/editable-components";
 
 function getDefaultTemplateForDefinition(
   def: InternalComponentDefinition,
@@ -33,7 +34,7 @@ function getDefaultTemplateForDefinition(
   // Text has different way of building a default config
   const config =
     def.id === "$richText"
-      ? generateTextTemplate(editorContext)
+      ? buildRichTextNoCodeEntry()
       : {
           _template: def.id,
         };
