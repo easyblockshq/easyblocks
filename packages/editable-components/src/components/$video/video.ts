@@ -117,9 +117,14 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
 
       {
         prop: "controlsPosition",
-        label: "Controls position",
+        label: "Position",
         type: "select$",
-        options: ["top-left", "top-right", "bottom-left", "bottom-right"],
+        options: [
+          { value: "top-left", label: "Top left" },
+          { value: "top-right", label: "Top right" },
+          { value: "bottom-left", label: "Bottom left" },
+          { value: "bottom-right", label: "Bottom right" },
+        ],
         visible: (values) => {
           return values.enablePlaybackControls;
         },

@@ -70,13 +70,6 @@ export const defaultTheme: Theme = {
     96: { value: "96px", type: "dev" },
     128: { value: "128px", type: "dev" },
     160: { value: "160px", type: "dev" },
-    "containerMargin.default": {
-      value: {
-        $res: true,
-        xl: "5vw",
-      },
-      type: "dev",
-    },
   },
   colors: {},
   fonts: {},

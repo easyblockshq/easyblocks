@@ -22,6 +22,9 @@ import BasicCard_5 from "./BasicCard_5.json";
 import BasicCard_6 from "./BasicCard_6.json";
 import BasicCard_7 from "./BasicCard_7.json";
 import video from "./video.json";
+import Button_standard from "./Button_standard.json";
+import Button_text from "./Button_text.json";
+import Button_icon_standard from "./Button_icon_standard.json";
 
 import { Template } from "@easyblocks/core";
 import { buildRichTextNoCodeEntry } from "@easyblocks/editable-components";
@@ -77,13 +80,13 @@ export const templates: Template[] = [
   },
   {
     id: "Grid_2",
-    config: Grid_1,
+    config: Grid_2,
     thumbnail:
       "https://images.ctfassets.net/blh4anz05qu1/7xzBKOoXjQTveWR0s2xrFk/38497275050b63a325b073060fe2a95e/Screenshot_2023-01-10_at_14.51.52.png",
   },
   {
     id: "Grid_3",
-    config: Grid_1,
+    config: Grid_3,
     thumbnail:
       "https://images.ctfassets.net/blh4anz05qu1/1MCxPW9bki1F7h0u91Dop5/1d588557a0bd940d66f21053c6d0bdc7/Screenshot_2023-01-10_at_14.55.28.png",
   },
@@ -184,5 +187,26 @@ export const templates: Template[] = [
       color: "dark",
       font: "body",
     }),
+  },
+  {
+    id: "Button_standard",
+    label: "Standard",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/1LdC2xsiaoytmv2PgAnQQD/379daa392c46ff7a33761fb6f0a7d889/Screenshot_2023-10-06_at_13.59.15.png",
+    config: Button_standard,
+  },
+  {
+    id: "Button_text",
+    label: "Text",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/7t6QX8UnUDcwvbVRvJrW5Z/fae0504fe745934fb70b182dfd704af2/Screenshot_2023-10-06_at_13.57.51.png",
+    config: Button_text,
+  },
+  {
+    id: "Button_icon",
+    label: "Icon standard",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/5qsvp8xUQZjayKaj5XNmil/84f6f90a3c5779390e9eaabce5a3e1d3/Screenshot_2023-10-06_at_14.03.11.png",
+    config: Button_icon_standard,
   },
 ];

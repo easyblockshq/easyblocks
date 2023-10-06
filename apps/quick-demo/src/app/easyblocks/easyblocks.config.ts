@@ -125,12 +125,12 @@ export const easyblocksConfig: Config = {
     {
       id: "transparent-grey-dark",
       label: "Transparent Dark",
-      value: "#363636",
+      value: "#36363680",
     },
     {
       id: "transparent-grey-light",
       label: "Transparent Light",
-      value: "#36363680",
+      value: "#D8D8D880",
     },
   ],
   fonts: [
@@ -265,6 +265,11 @@ export const easyblocksConfig: Config = {
     <path fill="currentColor" d="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z" />
 </svg>`,
     },
+    {
+      id: "heart",
+      label: "Heart",
+      value: `<svg viewBox="0 -960 960 960"><path fill="currentColor" d="m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z"/></svg>`,
+    },
   ],
   aspectRatios: [
     {
@@ -320,6 +325,16 @@ export const easyblocksConfig: Config = {
       id: "2xl",
       label: "2xl",
       value: "0 25px 50px -12px rgb(0 0 0 / 0.25)",
+    },
+  ],
+  space: [
+    {
+      id: "containerMargin.default",
+      value: "5vw",
+    },
+    {
+      id: "containerMargin.large",
+      value: "10vw",
     },
   ],
   resourceTypes: {

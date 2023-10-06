@@ -152,6 +152,9 @@ export const StandardButtonNoCodeComponent: InternalRenderableComponentDefinitio
           ref: "$body2.bold",
           value: {},
         },
+        visible: (values) => {
+          return values.variant !== "icon";
+        },
       },
       {
         prop: "underline",
@@ -172,6 +175,9 @@ export const StandardButtonNoCodeComponent: InternalRenderableComponentDefinitio
             label: "On (custom offset)",
           },
         ],
+        visible: (values) => {
+          return values.variant !== "icon";
+        },
       },
       {
         prop: "underlineOffset",
@@ -179,7 +185,7 @@ export const StandardButtonNoCodeComponent: InternalRenderableComponentDefinitio
         group: "Label styles",
         label: "Underline offset",
         visible: (values) => {
-          return values.underline === "on-custom";
+          return values.variant !== "icon" && values.underline === "on-custom";
         },
         normalize: pxValueNormalize(1, 16),
         defaultValue: "1",
