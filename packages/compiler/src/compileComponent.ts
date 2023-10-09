@@ -17,7 +17,6 @@ import {
   InternalRenderableComponentDefinition,
   isComponentConfig,
   isExternalSchemaProp,
-  isSchemaPropAction,
   isSchemaPropActionTextModifier,
   isSchemaPropCollection,
   isSchemaPropComponent,
@@ -48,12 +47,13 @@ import {
   EditingFunctionResult,
   EditingInfo,
   EventSourceType,
+  SpaceSchemaProp,
   FieldPortal,
   RefMap,
   SchemaProp,
   SerializedComponentDefinition,
-  SpaceSchemaProp,
   TrulyResponsiveValue,
+  isNoCodeComponentOfType,
 } from "@easyblocks/core";
 import {
   RichTextComponentConfig,
@@ -139,12 +139,9 @@ export function compileComponent(
 
   refMap = { ...refMap, ...(editableElement.$$$refs || {}) };
 
-  if (
-    componentDefinition.tags.length > 0 &&
-    componentDefinition.tags[0].startsWith("action")
-  ) {
-    throw new Error("compileComponent can never be called for action");
-  }
+  // if (isNoCodeComponentOfType(componentDefinition, "action")) {
+  //   throw new Error("compileComponent can never be called for action");
+  // }
 
   const ownProps = createOwnComponentProps({
     config: editableElement,
@@ -194,8 +191,7 @@ export function compileComponent(
     compilationContext
   );
 
-  const isCustomComponent = !editableElement._template.startsWith("$");
-  const isButton = componentDefinition.tags.includes("button");
+  // const isCustomComponent = !editableElement._template.startsWith("$");
 
   const { $width, $widthAuto } = calculateWidths(
     compilationContext,
@@ -227,8 +223,7 @@ export function compileComponent(
           ownPropsAfterAuto[schemaProp.prop],
           compilationContext,
           $width,
-          (schemaProp as SpaceSchemaProp).autoConstant ??
-            DEFAULT_SPACE_AUTO_CONSTANT
+          (schemaProp as SpaceSchemaProp).autoConstant ?? DEFAULT_SPACE_AUTO_CONSTANT
         );
       }
     });
@@ -244,8 +239,7 @@ export function compileComponent(
           value,
           compilationContext,
           $width,
-          (arg.itemSchemaProp as SpaceSchemaProp).autoConstant ??
-            DEFAULT_SPACE_AUTO_CONSTANT
+          (arg.itemSchemaProp as SpaceSchemaProp).autoConstant ?? DEFAULT_SPACE_AUTO_CONSTANT
         );
       }
 
@@ -319,16 +313,16 @@ export function compileComponent(
     );
 
     // Let's compile tracing
-    if (
-      componentDefinition.schema.some(({ prop }) => isTracingSchemaProp(prop))
-    ) {
-      compiled.tracing = {
-        traceId,
-        traceClicks,
-        traceImpressions,
-        type: tracingType(componentDefinition.tags, contextProps.tracingType),
-      };
-    }
+    // if (
+    //   componentDefinition.schema.some(({ prop }) => isTracingSchemaProp(prop))
+    // ) {
+    //   compiled.tracing = {
+    //     traceId,
+    //     traceClicks,
+    //     traceImpressions,
+    //     type: tracingType(componentDefinition.tags, contextProps.tracingType),
+    //   };
+    // }
 
     componentDefinition.schema.forEach((schemaProp: SchemaProp) => {
       if (
@@ -399,240 +393,22 @@ export function compileComponent(
     }
 
     // User-defined components don't need any more work
-    if (isCustomComponent) {
-      compiled.props = compiledValues; // for now we're not adding context values to custom components
 
-      const stylesOutput: Record<string, any> = {};
+    compiled = {
+      ...compiled,
+      components: {},
+      styled: {},
+    };
 
-      if (compilationContext.isEditing) {
-        editingInfo = buildDefaultEditingInfo(
-          componentDefinition,
-          configPrefix,
-          compilationContext as EditorContextType,
-          compiledValues,
-          editableElement._template
-        );
-      }
+    const renderableComponentDefinition =
+      componentDefinition as InternalRenderableComponentDefinition;
 
-      /**
-       * This is exception. If we have button we pass special context props to the symbol subcomponent (ignoreColor).
-       * Actually maybe custom components should also have compilation phase?
-       */
-
-      const isButton = componentDefinition.tags.includes("button");
-      if (isButton) {
-        stylesOutput.symbol = {
-          noInline: true,
-          ignoreColor: true,
-        };
-
-        if (
-          editingInfo?.components.symbol &&
-          "noInline" in editingInfo.components.symbol
-        ) {
-          editingInfo.components.symbol.noInline = true;
-        }
-      }
-
-      if (compilationContext.isEditing && editingInfo) {
-        applyEditingInfoToCompiledConfig(
-          compiled,
-          editingInfo,
-          parentComponentEditingInfo,
-          {
-            width: $width,
-            auto: $widthAuto,
-          }
-        );
-      }
-
-      subcomponentsContextProps = extractContextPropsFromStyles(stylesOutput);
-      // We are going to mutate this object so let's disconnect it from its source object
-      configAfterAuto = deepClone(ownProps);
-    } else {
-      compiled = {
-        ...compiled,
-        components: {},
-        styled: {},
-      };
-
-      const renderableComponentDefinition =
-        componentDefinition as InternalRenderableComponentDefinition;
-
-      if (compilationContext.isEditing) {
-        /**
-         * Let's build default editingOutput (fields and component output)
-         */
-
-        const editorContext = compilationContext as EditorContextType;
-
-        editingInfo = buildDefaultEditingInfo(
-          renderableComponentDefinition,
-          configPrefix,
-          editorContext,
-          compiledValues,
-          editableElement._template
-        );
-
-        /**
-         * Let's run custom editing function
-         */
-        if (renderableComponentDefinition.editing) {
-          const scalarizedConfig = scalarizeConfig(
-            compiledValues,
-            editorContext.breakpointIndex,
-            editorContext.devices,
-            renderableComponentDefinition.schema
-          );
-
-          const editingInfoInput = convertInternalEditingInfoToEditingInfo(
-            editingInfo,
-            configPrefix
-          );
-
-          const editingInfoResult = renderableComponentDefinition.editing({
-            values: scalarizedConfig,
-            editingInfo: editingInfoInput,
-            ...(componentDefinition.id === "$richText" ||
-            componentDefinition.id === "$richTextPart"
-              ? {
-                  __SECRET_INTERNALS__: {
-                    pathPrefix: configPrefix,
-                    editorContext,
-                  },
-                }
-              : {}),
-          });
-
-          if (editingInfoResult) {
-            const internalEditingInfo = convertEditingInfoToInternalEditingInfo(
-              editingInfoResult,
-              editingInfo,
-              componentDefinition,
-              editorContext,
-              configPrefix
-            );
-            deepObjectMergeWithoutArrays(editingInfo, internalEditingInfo);
-          }
-        }
-
-        /**
-         * Save to __editing
-         */
-
-        applyEditingInfoToCompiledConfig(
-          compiled,
-          editingInfo,
-          parentComponentEditingInfo,
-          {
-            width: $width,
-            auto: $widthAuto,
-          }
-        );
-
-        editingContextProps = editingInfo.components;
-      }
-
-      const { __props, ...stylesOutput } = resop2(
-        compiledValues,
-        (x, breakpointIndex) => {
-          if (!renderableComponentDefinition.styles) {
-            return {};
-          }
-
-          const device = compilationContext.devices.find(
-            (device) => device.id === breakpointIndex
-          )!;
-
-          return renderableComponentDefinition.styles(x, {
-            breakpointIndex,
-            device,
-            compilationContext,
-            $width: $width[breakpointIndex],
-            $widthAuto: $widthAuto[breakpointIndex],
-          });
-        },
-        compilationContext.devices,
-        renderableComponentDefinition
-      );
-
-      subcomponentsContextProps = extractContextPropsFromStyles(stylesOutput);
-
-      // Move all the boxes to _compiled
-      for (const key in stylesOutput) {
-        const value = stylesOutput[key];
-
-        const schemaProp = componentDefinition.schema.find(
-          (x) => x.prop === key
-        );
-
-        // Context props processed below
-        if (schemaProp) {
-          continue;
-        }
-
-        // If box
-
-        compiled.styled[key] = compileBoxes(value, compilationContext);
-      }
-
-      /**
-       * 1. We must move resources to props by default.
-       * 2. Compiled values at this point are "filled", all breakpoints are defined. It's OK for auto and compilation.
-       * 3. However, it's not OK for responsive resources (like image, video).
-       */
-      componentDefinition.schema.forEach((schemaProp: SchemaProp) => {
-        if (isExternalSchemaProp(schemaProp) || schemaProp.type === "text") {
-          // We simply copy ONLY the breakpoints which are defined in the raw data
-          compiled.props[schemaProp.prop] = Object.fromEntries(
-            Object.keys(editableElement[schemaProp.prop]).map((key) => {
-              return [key, compiledValues[schemaProp.prop][key]];
-            })
-          );
-        }
-      });
-
-      // we also add __props to props
-      compiled.props = {
-        ...__props,
-        ...compiled.props,
-      };
-
-      // We are going to mutate this object so let's disconnect it from its source object
-      configAfterAuto = deepClone(ownPropsAfterAuto);
-    }
-  }
-
-  if (compilationContext.isEditing) {
-    if (isCustomComponent) {
-      editingInfo = buildDefaultEditingInfo(
-        componentDefinition,
-        configPrefix,
-        compilationContext as EditorContextType,
-        compiledValues,
-        editableElement._template
-      );
-
-      /**
-       * This is exception. If we have button we pass special context props to the symbol subcomponent (ignoreColor).
-       * Actually maybe custom components should also have compilation phase?
-       */
-      if (isButton) {
-        if (
-          editingInfo?.components.symbol &&
-          "noInline" in editingInfo.components.symbol
-        ) {
-          editingInfo.components.symbol.noInline = true;
-        }
-      }
-    } else {
+    if (compilationContext.isEditing) {
       /**
        * Let's build default editingOutput (fields and component output)
        */
 
       const editorContext = compilationContext as EditorContextType;
-      const renderableComponentDefinition =
-        componentDefinition as InternalRenderableComponentDefinition;
 
       editingInfo = buildDefaultEditingInfo(
         renderableComponentDefinition,
@@ -683,6 +459,148 @@ export function compileComponent(
           deepObjectMergeWithoutArrays(editingInfo, internalEditingInfo);
         }
       }
+
+      /**
+       * Save to __editing
+       */
+
+      applyEditingInfoToCompiledConfig(
+        compiled,
+        editingInfo,
+        parentComponentEditingInfo,
+        {
+          width: $width,
+          auto: $widthAuto,
+        }
+      );
+
+      editingContextProps = editingInfo.components;
+    }
+
+    const { __props, ...stylesOutput } = resop2(
+      compiledValues,
+      (x, breakpointIndex) => {
+        if (!renderableComponentDefinition.styles) {
+          return {};
+        }
+
+        const device = compilationContext.devices.find(
+          (device) => device.id === breakpointIndex
+        )!;
+
+        return renderableComponentDefinition.styles(x, {
+          breakpointIndex,
+          device,
+          compilationContext,
+          $width: $width[breakpointIndex],
+          $widthAuto: $widthAuto[breakpointIndex],
+        });
+      },
+      compilationContext.devices,
+      renderableComponentDefinition
+    );
+
+    subcomponentsContextProps = extractContextPropsFromStyles(stylesOutput);
+
+    // Move all the boxes to _compiled
+    for (const key in stylesOutput) {
+      const value = stylesOutput[key];
+
+      const schemaProp = componentDefinition.schema.find((x) => x.prop === key);
+
+      // Context props processed below
+      if (schemaProp) {
+        continue;
+      }
+
+      // If box
+
+      compiled.styled[key] = compileBoxes(value, compilationContext);
+    }
+
+    /**
+     * 1. We must move resources to props by default.
+     * 2. Compiled values at this point are "filled", all breakpoints are defined. It's OK for auto and compilation.
+     * 3. However, it's not OK for responsive resources (like image, video).
+     */
+    componentDefinition.schema.forEach((schemaProp: SchemaProp) => {
+      if (isExternalSchemaProp(schemaProp) || schemaProp.type === "text") {
+        // We simply copy ONLY the breakpoints which are defined in the raw data
+        compiled.props[schemaProp.prop] = Object.fromEntries(
+          Object.keys(editableElement[schemaProp.prop]).map((key) => {
+            return [key, compiledValues[schemaProp.prop][key]];
+          })
+        );
+      }
+    });
+
+    // we also add __props to props
+    compiled.props = {
+      ...__props,
+      ...compiled.props,
+    };
+
+    // We are going to mutate this object so let's disconnect it from its source object
+    configAfterAuto = deepClone(ownPropsAfterAuto);
+  }
+
+  if (compilationContext.isEditing) {
+    /**
+     * Let's build default editingOutput (fields and component output)
+     */
+
+    const editorContext = compilationContext as EditorContextType;
+    const renderableComponentDefinition =
+      componentDefinition as InternalRenderableComponentDefinition;
+
+    editingInfo = buildDefaultEditingInfo(
+      renderableComponentDefinition,
+      configPrefix,
+      editorContext,
+      compiledValues,
+      editableElement._template
+    );
+
+    /**
+     * Let's run custom editing function
+     */
+    if (renderableComponentDefinition.editing) {
+      const scalarizedConfig = scalarizeConfig(
+        compiledValues,
+        editorContext.breakpointIndex,
+        editorContext.devices,
+        renderableComponentDefinition.schema
+      );
+
+      const editingInfoInput = convertInternalEditingInfoToEditingInfo(
+        editingInfo,
+        configPrefix
+      );
+
+      const editingInfoResult = renderableComponentDefinition.editing({
+        values: scalarizedConfig,
+        editingInfo: editingInfoInput,
+        ...(componentDefinition.id === "$richText" ||
+        componentDefinition.id === "$richTextPart"
+          ? {
+              __SECRET_INTERNALS__: {
+                pathPrefix: configPrefix,
+                editorContext,
+              },
+            }
+          : {}),
+      });
+
+      if (editingInfoResult) {
+        const internalEditingInfo = convertEditingInfoToInternalEditingInfo(
+          editingInfoResult,
+          editingInfo,
+          componentDefinition,
+          editorContext,
+          configPrefix
+        );
+        deepObjectMergeWithoutArrays(editingInfo, internalEditingInfo);
+      }
     }
 
     if (editingInfo)
@@ -709,7 +627,7 @@ export function compileComponent(
     editingContextProps,
     configPrefix,
     compiled,
-    isCustomComponent ? null : configAfterAuto,
+    configAfterAuto,
     cache
   );
 
@@ -904,7 +822,7 @@ function addComponentToSerializedComponentDefinitions(
     id: internalDefinition.id,
     label: internalDefinition.label,
     schema: internalDefinition.schema,
-    tags: internalDefinition.tags,
+    type: internalDefinition.type,
   };
 
   definitions.push(newDef);
@@ -936,31 +854,31 @@ function compileSubcomponents(
       ) {
         return;
       }
-
-      if (isSchemaPropAction(schemaProp)) {
-        const actionFieldValue: Array<ConfigComponent> =
-          editableElement[schemaProp.prop];
-
-        if (actionFieldValue.length > 0) {
-          const actionConfigPrefix = `${configPrefix}${
-            configPrefix === "" ? "" : "."
-          }${schemaProp.prop}.0`;
-
-          const compiledAction = compileAction(
-            editableElement[schemaProp.prop][0],
-            compilationContext,
-            meta,
-            actionConfigPrefix,
-            cache
-          );
-
-          compiledComponentConfig.actions[schemaProp.prop] = compiledAction;
-        } else {
-          compiledComponentConfig.actions[schemaProp.prop] = [];
-        }
-
-        return;
-      }
+      //
+      // if (isSchemaPropAction(schemaProp)) {
+      //   const actionFieldValue: Array<ConfigComponent> =
+      //     editableElement[schemaProp.prop];
+      //
+      //   if (actionFieldValue.length > 0) {
+      //     const actionConfigPrefix = `${configPrefix}${
+      //       configPrefix === "" ? "" : "."
+      //     }${schemaProp.prop}.0`;
+      //
+      //     const compiledAction = compileAction(
+      //       editableElement[schemaProp.prop][0],
+      //       compilationContext,
+      //       meta,
+      //       actionConfigPrefix,
+      //       cache
+      //     );
+      //
+      //     compiledComponentConfig.actions[schemaProp.prop] = compiledAction;
+      //   } else {
+      //     compiledComponentConfig.actions[schemaProp.prop] = [];
+      //   }
+      //
+      //   return;
+      // }
 
       const contextProps = subcomponentsContextProps[schemaProp.prop] || {};
 
@@ -1035,69 +953,71 @@ function compileSubcomponents(
   });
 }
 
-function compileAction(
-  editableElement: ConfigComponent,
-  compilationContext: CompilationContextType,
-  meta: any,
-  configPrefix: string,
-  cache: CompilationCache
-): [CompiledActionComponentConfig] {
-  let componentDefinition = findComponentDefinitionById(
-    editableElement._template,
-    compilationContext
-  );
-
-  if (!componentDefinition) {
-    componentDefinition = findComponentDefinitionById(
-      "$MissingAction",
-      compilationContext
-    )!;
-
-    editableElement = {
-      _template: componentDefinition.id,
-      _id: uniqueId(),
-    };
-  }
-
-  addComponentToSerializedComponentDefinitions(
-    editableElement,
-    meta,
-    componentDefinition.tags.includes("actionLink") ? "links" : "actions",
-    compilationContext
-  );
-
-  const compiledValues = compileComponentValues(
-    editableElement,
-    componentDefinition,
-    compilationContext,
-    cache
-  );
-
-  const compiled: CompiledActionComponentConfig = {
-    _template: editableElement._template,
-    _id: editableElement._id!,
-    props: compiledValues,
-  };
-
-  if (compilationContext.isEditing) {
-    const editorContext = compilationContext as EditorContextType;
-
-    const editingInfo = buildDefaultEditingInfo(
-      componentDefinition,
-      configPrefix,
-      editorContext,
-      compiledValues,
-      editableElement._template
-    );
-
-    compiled.__editing = {
-      // @ts-expect-error FIXME: field that holds Component$$$ schema prop
-      fields: editingInfo.fields,
-    };
-  }
-
-  return [compiled];
-}
+// function compileAction(
+//   editableElement: ConfigComponent,
+//   compilationContext: CompilationContextType,
+//   meta: any,
+//   configPrefix: string,
+//   cache: CompilationCache
+// ): [CompiledActionComponentConfig] {
+//   let componentDefinition = findComponentDefinitionById(
+//     editableElement._template,
+//     compilationContext
+//   );
+//
+//   if (!componentDefinition) {
+//     componentDefinition = findComponentDefinitionById(
+//       "$MissingAction",
+//       compilationContext
+//     )!;
+//
+//     editableElement = {
+//       _template: componentDefinition.id,
+//       _id: uniqueId(),
+//     };
+//   }
+//
+//   addComponentToSerializedComponentDefinitions(
+//     editableElement,
+//     meta,
+//     isNoCodeComponentOfType(componentDefinition, "actionLink")
+//       ? "links"
+//       : "actions",
+//     compilationContext
+//   );
+//
+//   const compiledValues = compileComponentValues(
+//     editableElement,
+//     componentDefinition,
+//     compilationContext,
+//     cache
+//   );
+//
+//   const compiled: CompiledActionComponentConfig = {
+//     _template: editableElement._template,
+//     _id: editableElement._id!,
+//     props: compiledValues,
+//   };
+//
+//   if (compilationContext.isEditing) {
+//     const editorContext = compilationContext as EditorContextType;
+//
+//     const editingInfo = buildDefaultEditingInfo(
+//       componentDefinition,
+//       configPrefix,
+//       editorContext,
+//       compiledValues,
+//       editableElement._template
+//     );
+//
+//     compiled.__editing = {
+//       // @ts-expect-error FIXME: field that holds Component$$$ schema prop
+//       fields: editingInfo.fields,
+//     };
+//   }
+//
+//   return [compiled];
+// }
 
 function calculateWidths(
   compilationContext: CompilationContextType,
@@ -1108,12 +1028,11 @@ function calculateWidths(
   const $widthAuto: TrulyResponsiveValue<boolean> = { $res: true };
 
   compilationContext.devices.forEach((device) => {
-    $width[device.id] =
-      contextProps.$width?.[device.id] ??
-      (componentDefinition?.tags.includes("section") ||
-      componentDefinition?.tags.includes("root")
-        ? device.w
-        : -1);
+    $width[device.id] = contextProps.$width?.[device.id] ?? -1;
+    // (isNoCodeComponentOfType(componentDefinition, "section") ||
+    // componentDefinition?.tags.includes("root")
+    //   ? device.w
+    //   : -1);
 
     $widthAuto[device.id] =
       contextProps.$widthAuto?.[device.id] ??
@@ -1213,15 +1132,15 @@ function resolveLocalisedValue<T>(
   }
 }
 
-function tracingType(tags: string[], overwrite?: EventSourceType) {
-  if (overwrite) {
-    return overwrite;
-  }
-
-  const types: EventSourceType[] = ["section", "card", "button", "item"];
-
-  return types.find((t) => tags.includes(t)) ?? "item";
-}
+// function tracingType(tags: string[], overwrite?: EventSourceType) {
+//   if (overwrite) {
+//     return overwrite;
+//   }
+//
+//   const types: EventSourceType[] = ["section", "card", "button", "item"];
+//
+//   return types.find((t) => tags.includes(t)) ?? "item";
+// }
 
 function compileTextModifier(
   modifierValue: ConfigComponent,

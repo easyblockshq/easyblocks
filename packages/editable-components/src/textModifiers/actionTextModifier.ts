@@ -222,7 +222,7 @@ const actionTextModifier: InternalTextModifierDefinition = {
 
     return styles;
   },
-  tags: ["actionTextModifier"],
+  type: "actionTextModifier",
 };
 
 type StandardActionStylesConfig =

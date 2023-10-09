@@ -154,6 +154,9 @@ const editing: RichTextEditingFunction = ({
 const richTextEditableComponent: InternalRenderableComponentDefinition<"$richText"> =
   {
     id: "$richText",
+    label: "Text",
+    thumbnail:
+      "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_text.png",
     schema: [
       {
         prop: "elements",
@@ -197,7 +200,7 @@ const richTextEditableComponent: InternalRenderableComponentDefinition<"$richTex
         group: "Text",
       },
     ],
-    tags: ["item", "notrace"],
+    type: "item",
     styles: richTextStyles,
     editing,
   };

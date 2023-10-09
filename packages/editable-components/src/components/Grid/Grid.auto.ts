@@ -42,13 +42,6 @@ function calculateContainerWidth(
 
 const MAGIC_NUMBER = 1;
 
-function tokenizeNumberOfItems(numberOfItems: number) {
-  return {
-    ref: numberOfItems.toString(),
-    value: numberOfItems.toString(),
-  };
-}
-
 export const gridAuto: AutoFunction = (
   config,
   compilationContext,
@@ -132,10 +125,7 @@ export const gridAuto: AutoFunction = (
   devices.forEach((device) => {
     const numberOfItems = config.numberOfItems[device.id];
     if (numberOfItems !== undefined) {
-      maxNumberOfItems = Math.max(
-        maxNumberOfItems,
-        parseInt(numberOfItems.value)
-      );
+      maxNumberOfItems = Math.max(maxNumberOfItems, parseInt(numberOfItems));
     }
   });
 
@@ -158,7 +148,7 @@ export const gridAuto: AutoFunction = (
           return {
             numberOfItems: values.numberOfItems,
             fractionalItemWidth:
-              config.Cards.length <= parseInt(values.numberOfItems.value)
+              config.Cards.length <= parseInt(values.numberOfItems)
                 ? "1"
                 : "1.25",
           };
@@ -177,10 +167,10 @@ export const gridAuto: AutoFunction = (
       }
 
       let minNumberOfItems = lowerDefinedValues.numberOfItems
-        ? parseInt(lowerDefinedValues.numberOfItems.value.value)
+        ? parseInt(lowerDefinedValues.numberOfItems.value)
         : 1;
       const maxNumberOfItems = parseInt(
-        higherDefinedValues.numberOfItems.value.value
+        higherDefinedValues.numberOfItems.value
       );
       const variant = closestDefinedValues.variant.value;
 
@@ -204,7 +194,7 @@ export const gridAuto: AutoFunction = (
          */
         const higherWidth = higherDefinedValues.numberOfItems.width;
         const higherNumberOfItems = parseInt(
-          higherDefinedValues.numberOfItems.value.value
+          higherDefinedValues.numberOfItems.value
         );
         const higherItemWidth = higherWidth / higherNumberOfItems;
         const current2ItemsWidth = width / 2;
@@ -262,7 +252,7 @@ export const gridAuto: AutoFunction = (
         const num = pair.numberOfItems + pair.fraction;
 
         const higherNumberOfItems = parseInt(
-          higherDefinedValues.numberOfItems.value.value
+          higherDefinedValues.numberOfItems.value
         );
         const higherIsRow = higherNumberOfItems <= config.Cards.length;
         const higherContainerWidth = calculateContainerWidth(
@@ -304,7 +294,7 @@ export const gridAuto: AutoFunction = (
       }
 
       return {
-        numberOfItems: tokenizeNumberOfItems(bestNum),
+        numberOfItems: bestNum.toString(),
         fractionalItemWidth: (bestFraction + 1).toString(),
       };
     }

@@ -1,48 +1,58 @@
-import { AnyTemplate, isTemplate } from "@easyblocks/app-utils";
 import { SSBasicRow, SSModal } from "@easyblocks/design-system";
 import React, { ChangeEvent, useState } from "react";
 import { useEditorContext } from "./EditorContext";
-import { getComponentLabelFromTemplate } from "./utils/getComponentLabelFromTemplate";
 import { Template } from "./types";
+import { TemplatePicker } from "./TemplatePicker";
 
-type SearchableSmallPickerModal = {
-  isOpen: boolean;
-  componentTypes: string[];
-  onClose: (template?: AnyTemplate) => void;
-};
-
-export const SearchableSmallPickerModal: React.FC<
-  SearchableSmallPickerModal
-> = (props) => {
+export const SearchableSmallPickerModal: TemplatePicker = ({
+  onClose,
+  templates,
+  isOpen,
+}) => {
   const editorContext = useEditorContext();
-  const templates = editorContext.templates?.[props.componentTypes[0]] ?? [];
+
+  const templatesDict = templates;
+  // const filteredTemplates = templates
+  //   ? Object.entries(templates).map(
+  //       ([componentId, { component, templates }]) => {
+  //         return templates[0];
+  //       }
+  //     )
+  //   : [];
+  //
+  // console.log("@@@", filteredTemplates);
 
   const [query, setQuery] = useState("");
 
   const trimmedQuery = query.trim().toLocaleLowerCase();
 
-  const filteredTemplates =
-    trimmedQuery === ""
-      ? templates
-      : templates.filter((template) => {
-          return (
-            (template.type || "").toLocaleLowerCase().includes(trimmedQuery) ||
-            (template.label || "").toLocaleLowerCase().includes(trimmedQuery) ||
-            (isTemplate(template) ? template.config._template || "" : "")
-              .toLocaleLowerCase()
-              .includes(trimmedQuery)
-          );
-        });
+  // const filteredTemplates =
+  //   trimmedQuery === ""
+  //     ? templates
+  //     : templates.filter((template) => {
+  //         return (
+  //           (template.type || "").toLocaleLowerCase().includes(trimmedQuery) ||
+  //           (template.label || "").toLocaleLowerCase().includes(trimmedQuery) ||
+  //           (isTemplate(template) ? template.config._template || "" : "")
+  //             .toLocaleLowerCase()
+  //             .includes(trimmedQuery)
+  //         );
+  //       });
 
-  const close = (template?: AnyTemplate) => {
+  const close = (template?: Template) => {
     setQuery("");
-    props.onClose(template);
+
+    if (!template) {
+      onClose();
+    } else {
+      onClose(template);
+    }
   };
 
   return (
     <SSModal
       mode={"center-small"}
-      isOpen={props.isOpen}
+      isOpen={isOpen}
       onRequestClose={() => {
         close(undefined);
       }}
@@ -57,39 +67,43 @@ export const SearchableSmallPickerModal: React.FC<
       }}
       headerSymbol={"S"}
     >
-      {filteredTemplates.map((template) => {
-        const hasTemplateLabel = !!template.label;
-        const componentName =
-          template.type ??
-          getComponentLabelFromTemplate(template, editorContext);
-        const isCustom =
-          isTemplate(template) && !template.config._template.startsWith("$");
+      {templatesDict === undefined && "Loading..."}
+      {templatesDict !== undefined &&
+        Object.entries(templatesDict).map(([, { templates, component }]) => {
+          const isOnlyOne = templates.length === 1;
+          const componentLabel = component.label ?? component.id;
 
-        return (
-          <SSBasicRow
-            key={template.id!}
-            title={hasTemplateLabel ? template.label! : componentName}
-            description={hasTemplateLabel ? componentName : undefined}
-            onClick={() => {
-              close(template);
-            }}
-            image={template.previewImage}
-            customTitle={isCustom && !hasTemplateLabel}
-            customDescription={isCustom && hasTemplateLabel}
-            tinyDescription={true}
-            onEdit={
-              isTemplate(template) && template.isRemoteUserDefined
-                ? () => {
-                    editorContext.actions.openTemplateModal({
-                      mode: "edit",
-                      template: template as Template,
-                    });
-                  }
-                : undefined
-            }
-          />
-        );
-      })}
+          return templates.map((template) => {
+            const templateLabel = template.label ?? template.id;
+
+            const title = isOnlyOne ? componentLabel : templateLabel;
+            const thumbnail = template.thumbnail ?? component.thumbnail;
+            const description = isOnlyOne ? undefined : componentLabel;
+
+            return (
+              <SSBasicRow
+                key={template.id!}
+                title={title}
+                description={description}
+                onClick={() => {
+                  close(template);
+                }}
+                image={thumbnail}
+                tinyDescription={true}
+                onEdit={
+                  template.isUserDefined
+                    ? () => {
+                        editorContext.actions.openTemplateModal({
+                          mode: "edit",
+                          template: template as Template,
+                        });
+                      }
+                    : undefined
+                }
+              />
+            );
+          });
+        })}
     </SSModal>
   );
 };

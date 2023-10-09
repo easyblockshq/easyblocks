@@ -20,10 +20,9 @@ import {
   Resource,
   ResponsiveValue,
   SchemaProp,
-  Template,
-  TemplateBase,
   Theme,
   TrulyResponsiveValue,
+  Template,
 } from "@easyblocks/core";
 import type { PartialDeep } from "type-fest";
 import { InternalAnyTinaField } from "../schema";
@@ -184,6 +183,7 @@ export type EditorContextType = CompilationContextType & {
   setFocussedField: (focusedFields: string | Array<string>) => void;
   actions: EditorActions;
   activeRootContainer: CompilationRootContainer;
+  templates?: Template[];
 };
 
 export type InternalCompilationOutput = {
@@ -222,12 +222,6 @@ export interface CompiledComponentCollectionValues {
   index: number;
   length: number;
 }
-
-export type SpecialTemplate = TemplateBase & {
-  specialRole: "card";
-};
-
-export type AnyTemplate = SpecialTemplate | Template;
 
 export type CompressedConfig = {
   __compressed: string;

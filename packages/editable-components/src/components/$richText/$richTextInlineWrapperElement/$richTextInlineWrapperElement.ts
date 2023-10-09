@@ -51,7 +51,6 @@ const richTextInlineWrapperElementEditableComponent: InternalRenderableComponent
       requiredActionTextModifierSchemaProp,
     ],
     styles: richTextInlineWrapperElementStyles,
-    tags: ["notrace"],
   };
 
 type RichTextInlineWrapperElementEditableComponentConfig =

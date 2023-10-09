@@ -10,7 +10,7 @@ const backgroundColorComponentDefinition: InternalRenderableComponentDefinition<
   {
     id: "$backgroundColor",
     label: "Color",
-    tags: ["image", "notrace"],
+    type: "image",
     styles: backgroundColorStyles,
     schema: [
       {

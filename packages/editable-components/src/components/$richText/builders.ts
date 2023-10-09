@@ -13,6 +13,52 @@ interface Identity {
   id: string;
 }
 
+function buildRichTextNoCodeEntry(options?: {
+  text?: string;
+  font?: string;
+  color?: string;
+  accessibilityRole?: string;
+}) {
+  const { accessibilityRole, font, color, text } = options ?? {};
+
+  const colorRefValue = {
+    ref: color,
+    value: "#000000",
+  };
+
+  const fontRefValue = {
+    ref: font,
+    value: {
+      fontFamily: "sans-serif",
+      fontSize: "16px",
+    },
+  };
+
+  return {
+    _id: uniqueId(),
+    _template: "$richText",
+    accessibilityRole: accessibilityRole ?? "div",
+    elements: {
+      en: [
+        buildRichTextBlockElementComponentConfig("paragraph", [
+          buildRichTextLineElementComponentConfig({
+            elements: [
+              buildRichTextPartComponentConfig({
+                color: colorRefValue,
+                font: fontRefValue,
+                value: text ?? "Lorem ipsum",
+              }),
+            ],
+          }),
+        ]),
+      ],
+    },
+    isListStyleAuto: true,
+    mainColor: colorRefValue,
+    mainFont: fontRefValue,
+  };
+}
+
 function buildRichTextComponentConfig({
   accessibilityRole,
   compilationContext,
@@ -134,6 +180,7 @@ function buildRichTextPartComponentConfig({
 }
 
 export {
+  buildRichTextNoCodeEntry,
   buildRichTextComponentConfig,
   buildRichTextBlockElementComponentConfig,
   buildRichTextBulletedListBlockElementComponentConfig,

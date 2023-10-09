@@ -5,14 +5,14 @@ function BannerCard2(props: any) {
     Container,
     SidePhotoContainer,
     ContentContainer,
-    Link,
+    // Link,
     Card1,
     Card2,
   } = props.__fromEditor.components;
 
   return (
     <Container>
-      <Link />
+      {/*<Link />*/}
 
       <SidePhotoContainer>
         <Card2 />

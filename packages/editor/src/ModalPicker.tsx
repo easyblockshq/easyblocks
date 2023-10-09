@@ -5,7 +5,12 @@ import {
   isSpecialTemplate,
 } from "@easyblocks/app-utils";
 import { normalize } from "@easyblocks/compiler";
-import { ComponentSchemaProp, ConfigComponent } from "@easyblocks/core";
+import {
+  ComponentSchemaProp,
+  ConfigComponent,
+  isNoCodeComponentOfType,
+  Template,
+} from "@easyblocks/core";
 import {
   optionalTextModifierSchemaProp,
   richTextInlineWrapperActionSchemaProp,
@@ -17,6 +22,9 @@ import { useEditorContext } from "./EditorContext";
 import { SearchableSmallPickerModal } from "./SearchableSmallPickerModal";
 import { SectionPickerModal } from "./SectionPicker";
 import { OpenComponentPickerConfig } from "./types";
+import { unrollAcceptsFieldIntoComponentIds } from "./unrollAcceptsFieldIntoComponentIds";
+import { TemplatesDictionary } from "./TemplatePicker";
+import { unrollAcceptsFieldIntoComponents } from "./unrollAcceptsFieldIntoComponents";
 
 type ModalProps = {
   config: OpenComponentPickerConfig;
@@ -53,13 +61,42 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
   }
 
   const componentTypes = config.componentTypes ?? schemaProp.componentTypes;
+  const components = unrollAcceptsFieldIntoComponents(
+    componentTypes,
+    editorContext
+  );
 
-  const defaultPickerMode =
-    componentTypes.includes("section") || componentTypes.includes("card")
-      ? "big"
-      : "small";
+  let templatesDictionary: TemplatesDictionary | undefined = undefined;
 
-  const pickerMode = schemaProp.picker || defaultPickerMode;
+  if (editorContext.templates) {
+    templatesDictionary = {};
+
+    components.forEach((component) => {
+      templatesDictionary![component.id] = {
+        component,
+        templates: [],
+      };
+
+      editorContext.templates!.forEach((template) => {
+        if (component.id === template.config._template) {
+          templatesDictionary![component.id].templates.push(template);
+        }
+      });
+
+      if (templatesDictionary![component.id].templates.length === 0) {
+        delete templatesDictionary![component.id];
+      }
+    });
+  }
+
+  const picker = schemaProp.picker ?? "compact";
+
+  // const defaultPickerMode =
+  //   componentTypes.includes("section") || componentTypes.includes("card")
+  //     ? "big"
+  //     : "small";
+  //
+  // const pickerMode = schemaProp.picker || defaultPickerMode;
 
   const close = (config: ConfigComponent) => {
     const _itemProps = {
@@ -84,44 +121,55 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
     onClose(newComponent);
   };
 
-  const onModalClose = (template?: AnyTemplate) => {
+  const onModalClose = (template?: Template) => {
     if (template) {
-      if (isSpecialTemplate(template)) {
-        editorContext.actions
-          .openComponentPicker({ path: config.path, componentTypes: ["card"] })
-          .then((config) => {
-            if (config) {
-              close(normalize(config, editorContext));
-            } else {
-              onClose();
-            }
-          });
-      } else {
-        close(normalize(template.config, editorContext));
-      }
+      close(normalize(template.config, editorContext));
     } else {
       onClose();
     }
   };
 
-  if (pickerMode === "small") {
-    modal = (
+  if (picker === "large" || picker === "large-3") {
+    return (
+      <SectionPickerModal
+        isOpen={true}
+        onClose={onModalClose}
+        templates={templatesDictionary}
+        mode={picker}
+      />
+    );
+  } else if (picker === "compact") {
+    console.log("COMPACT!!!!!", templatesDictionary);
+
+    return (
       <SearchableSmallPickerModal
         isOpen={true}
         onClose={onModalClose}
-        componentTypes={componentTypes}
+        templates={templatesDictionary}
       />
     );
   } else {
-    modal = (
-      <SectionPickerModal
-        isOpen={true}
-        onSelect={onModalClose}
-        onClose={onClose}
-        componentTypes={componentTypes}
-      />
-    );
+    throw new Error(`unknown template picker: "${picker}"`);
   }
 
-  return modal;
+  // if (pickerMode === "small") {
+  //   modal = (
+  //     <SearchableSmallPickerModal
+  //       isOpen={true}
+  //       onClose={onModalClose}
+  //       componentTypes={componentTypes}
+  //     />
+  //   );
+  // } else {
+  //   modal = (
+  //     <SectionPickerModal
+  //       isOpen={true}
+  //       onSelect={onModalClose}
+  //       onClose={onClose}
+  //       componentTypes={componentTypes}
+  //     />
+  //   );
+  // }
+
+  // return modal;
 };

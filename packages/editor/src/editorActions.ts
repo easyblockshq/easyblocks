@@ -5,7 +5,8 @@ import {
   Form,
   parsePath,
 } from "@easyblocks/app-utils";
-import { ComponentSchemaProp, ConfigComponent } from "@easyblocks/core";
+import { ComponentSchemaProp, ConfigComponent, isNoCodeComponentOfType } from "@easyblocks/core";
+
 import {
   assertDefined,
   dotNotationGet,
@@ -322,8 +323,8 @@ function removeItems(
       findComponentDefinitionById(templateId, compilationContext)
     );
     const isAction =
-      definition.tags.includes("action") ||
-      definition.tags.includes("actionLink");
+      isNoCodeComponentOfType(definition, "action") ||
+      isNoCodeComponentOfType(definition, "actionLink");
 
     // If we're removing item from the action field let's focus the component holding that field for better UX
     if (isAction) {
@@ -375,9 +376,10 @@ function replaceItems(
     editorContext.form.change(
       path,
       duplicateConfig(
-        newConfig && oldConfig
-          ? changeComponentConfig(oldConfig, newConfig, editorContext)
-          : newConfig,
+        // newConfig && oldConfig
+        //   ? changeComponentConfig(oldConfig, newConfig, editorContext)
+        //   : newConfig,
+        newConfig,
         editorContext
       )
     );

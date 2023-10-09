@@ -18,3 +18,4 @@ export { createFetchingContext } from "./createFetchingContext";
 export type { FetchingContext } from "./createFetchingContext";
 export { buildEntry } from "./buildEntry";
 export { buildDocument } from "./buildDocument";
+export { isNoCodeComponentOfType } from "./isNoCodeComponentOfType";

@@ -17,7 +17,6 @@ import TextEditor from "./$text/$text.editor";
 import TwoItems from "./$twoItems/$twoItems";
 import VideoClient from "./$video/$video.client";
 import VideoEditor from "./$video/$video.editor";
-import BannerCard_v1 from "./BannerCard/BannerCard";
 import BannerCard_v2 from "./BannerCard2/BannerCard2";
 import BasicCard from "./BasicCard/BasicCard.client";
 import CardPlaceholder from "./CardPlaceholder/CardPlaceholder.client";
@@ -47,9 +46,9 @@ const defaultEditableComponents = Object.freeze({
   "$video.client": VideoClient,
   "$video.editor": VideoEditor,
   $backgroundColor: BackgroundColor,
-  $BannerCard: BannerCard_v1,
+  // $BannerCard: BannerCard_v1,
   $BannerCard2: BannerCard_v2,
-  $BannerSection: SectionWrapper,
+  // $BannerSection: SectionWrapper,
   $BannerSection2: SectionWrapper,
   $BasicCard: BasicCard,
   $BasicCardBackground: BasicCard,
@@ -97,9 +96,9 @@ const defaultBuiltinClientOnlyEditableComponents = Object.freeze({
   "$text.client": TextClient,
   "$video.client": VideoClient,
   $backgroundColor: BackgroundColor,
-  $BannerCard: BannerCard_v1,
+  // $BannerCard: BannerCard_v1,
   $BannerCard2: BannerCard_v2,
-  $BannerSection: SectionWrapper,
+  // $BannerSection: SectionWrapper,
   $BannerSection2: SectionWrapper,
   $BasicCard: BasicCard,
   $BasicCardBackground: BasicCard,

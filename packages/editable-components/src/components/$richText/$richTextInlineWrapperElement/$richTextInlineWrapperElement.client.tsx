@@ -14,6 +14,7 @@ type RichTextActionElementProps = CompiledShopstoryComponentProps<
   __fromEditor: {
     components: {
       elements: Array<React.ComponentType>;
+      action?: React.ReactElement;
     };
   };
 };
@@ -21,13 +22,22 @@ type RichTextActionElementProps = CompiledShopstoryComponentProps<
 export default function RichTextActionElement(
   props: RichTextActionElementProps
 ) {
-  const { elements: Elements, Link } = props.__fromEditor.components;
+  const {
+    elements: Elements,
+    Link,
+    action: Action,
+  } = props.__fromEditor.components;
 
-  return (
+  const triggerElement = (
     <Link>
       {Elements.map((Element, index) => (
         <Element key={index} />
       ))}
     </Link>
   );
+
+  if (Action) {
+    return <Action.type {...Action.props} trigger={triggerElement} />;
+  }
+  return triggerElement;
 }

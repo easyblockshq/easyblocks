@@ -42,10 +42,6 @@ export function pathToCompiledPath(
 }
 
 function getPropertyNameFromSchemaProp(schemaProp: SchemaProp) {
-  if (isSchemaPropAction(schemaProp)) {
-    return "actions";
-  }
-
   if (
     isSchemaPropTextModifier(schemaProp) ||
     isSchemaPropActionTextModifier(schemaProp)

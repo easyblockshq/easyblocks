@@ -1,5 +1,10 @@
 /** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
-import type { ForwardRefRenderFunction, ReactNode, Ref } from "react";
+import type {
+  ForwardRefRenderFunction,
+  ReactElement,
+  ReactNode,
+  Ref,
+} from "react";
 
 function StandardButton(
   props: {
@@ -9,15 +14,20 @@ function StandardButton(
           HTMLButtonElement,
           { children: ReactNode }
         >;
+        IconWrapper: any;
+        Action: ReactElement;
       };
       props: {
         label: string | undefined;
+        icon: string;
+        variant: "label" | "icon" | "label-icon";
       };
     };
     forwardedRef: Ref<HTMLButtonElement>;
   } & Record<string, any>
 ) {
-  const { ButtonRoot } = props.__fromEditor.components;
+  const { ButtonRoot, IconWrapper, Action } = props.__fromEditor.components;
+  const variant = props.__fromEditor.props.variant;
 
   // Every Shopstory button is just a component that must have props and ref passed.
   const buttonProps: Record<string, any> = {
@@ -37,11 +47,23 @@ function StandardButton(
     }
   }
 
-  return (
+  const triggerElement = (
     <ButtonRoot {...buttonProps}>
-      <div>{props.__fromEditor.props.label ?? ""}</div>
+      {variant !== "icon" && <div>{props.__fromEditor.props.label ?? ""}</div>}
+      {variant !== "label" && (
+        <IconWrapper
+          dangerouslySetInnerHTML={{
+            __html: props.__fromEditor.props.icon,
+          }}
+        />
+      )}
     </ButtonRoot>
   );
+
+  if (Action) {
+    return <Action.type {...Action.props} trigger={triggerElement} />;
+  }
+  return triggerElement;
 }
 
 export default StandardButton;

@@ -52,7 +52,6 @@ const richTextBlockElementEditableComponent: InternalRenderableComponentDefiniti
       },
     ],
     styles: richTextBlockElementStyles,
-    tags: ["notrace"],
   };
 
 type RichTextBlockElementComponentConfig = EditableComponentToComponentConfig<

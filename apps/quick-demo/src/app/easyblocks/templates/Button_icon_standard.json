@@ -1,0 +1,51 @@
+{
+  "_id": "0b451178-04c0-408c-bba8-b7c12f98770e",
+  "_template": "$StandardButton",
+  "_master": "buttonDark",
+  "traceId": "$StandardButton-46adfa94",
+  "_itemProps": { "$buttons": { "Buttons": {} } },
+  "action": [],
+  "variant": "icon",
+  "label": {
+    "id": "local.169258f2-c6af-41df-96fb-1a05b34c86ad",
+    "value": { "en-US": "Click me" }
+  },
+  "icon": {
+    "ref": "arrowLeft",
+    "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"red\" width=\"100px\" height=\"100px\"><path d=\"M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z\"/></svg>"
+  },
+  "color": { "$res": true, "xl": { "value": "white", "ref": "white" } },
+  "minHeight": { "$res": true, "xl": "42" },
+  "minWidth": { "$res": true, "xl": "100" },
+  "horizontalPadding": { "$res": true, "xl": { "value": "16px", "ref": "16" } },
+  "gap": { "$res": true, "xl": { "value": "6px", "ref": "6" } },
+  "cornerMode": { "$res": true, "xl": "circled" },
+  "cornerRadius": { "$res": true, "xl": "12" },
+  "font": {
+    "$res": true,
+    "xl": {
+      "value": {
+        "$res": true,
+        "2xl": {
+          "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
+          "fontSize": 16,
+          "fontWeight": 500,
+          "lineHeight": 1.2
+        }
+      },
+      "ref": "body2.bold"
+    }
+  },
+  "underline": "off",
+  "underlineOffset": { "$res": true, "xl": "1" },
+  "iconSize": { "$res": true, "xl": "24" },
+  "hasBackground": true,
+  "backgroundColor": {
+    "$res": true,
+    "xl": { "value": "black", "ref": "dark" }
+  },
+  "hasBorder": false,
+  "borderWidth": { "$res": true, "xl": "1" },
+  "borderColor": { "$res": true, "xl": { "value": "black", "ref": "$dark" } },
+  "boxShadow": { "$res": true, "xl": { "value": "none", "ref": "none" } }
+}

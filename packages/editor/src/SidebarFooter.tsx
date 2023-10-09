@@ -9,11 +9,9 @@ import * as React from "react";
 import styled from "styled-components";
 import { useEditorContext } from "./EditorContext";
 import { ConfigComponent } from "@easyblocks/core";
-import { findRoleFromSchemaProp } from "./findRole";
 import { pathToCompiledPath } from "./pathToCompiledPath";
 import { stripRichTextPartSelection } from "@easyblocks/app-utils";
-import { parsePath } from "@easyblocks/app-utils";
-import { findComponentDefinitionById } from "@easyblocks/app-utils";
+import { findComponentDefinition } from "@easyblocks/app-utils";
 
 const IdWrapper = styled.div`
   display: block;
@@ -47,22 +45,8 @@ export function SidebarFooter(props: { paths: string[] }) {
   const width = widthInfo?.width?.xl;
   const widthAuto = widthInfo?.auto?.xl;
 
-  const parentInfo = parsePath(path, form).parent!;
-
-  const parentDefinition = findComponentDefinitionById(
-    parentInfo.templateId,
-    editorContext
-  );
-  const schema = parentDefinition!.schema.find(
-    (schemaProp) => schemaProp.prop === parentInfo.fieldName
-  )!;
-
-  const role = findRoleFromSchemaProp(schema);
-
-  const isSaveable =
-    role !== undefined &&
-    role !== "item" &&
-    !role.startsWith("$"); /* rich text part, etc */
+  const definition = findComponentDefinition(value, editorContext);
+  const isSaveable = !!definition?.allowSave;
 
   const showSaveAsTemplate =
     isSaveable &&

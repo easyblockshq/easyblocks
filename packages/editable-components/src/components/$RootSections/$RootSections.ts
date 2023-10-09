@@ -6,7 +6,6 @@ const rootSectionsComponentDefinition: InternalRenderableComponentDefinition<"$R
   {
     id: "$RootSections",
     styles: rootSectionStyles,
-    tags: ["root", "notrace"],
     editing: ({ editingInfo }) => {
       const data = editingInfo.components
         .data as Array<ChildComponentEditingInfo>;
@@ -38,6 +37,7 @@ const rootSectionsComponentDefinition: InternalRenderableComponentDefinition<"$R
         prop: "data",
         label: "data",
         type: "component-collection",
+        picker: "large",
         componentTypes: ["section"],
         itemFields: [
           {

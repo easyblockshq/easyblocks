@@ -5,8 +5,10 @@ import $twoItems from "./$twoItems.styles";
 const twoItemsComponentDefinition: InternalRenderableComponentDefinition<"$twoItems"> =
   {
     id: "$twoItems",
-    tags: ["item", "notrace"],
-    label: "Left / Right layout",
+    type: "item",
+    label: "Horizontal layout",
+    thumbnail:
+      "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_horizontal_layout.png",
     pasteSlots: ["Items"],
     styles: $twoItems,
     editing: ({ values, editingInfo }) => {

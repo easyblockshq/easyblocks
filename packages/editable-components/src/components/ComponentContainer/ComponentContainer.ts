@@ -4,7 +4,6 @@ import { componentContainerStyles } from "./ComponentContainer.styles";
 export const componentContainerDefinition: InternalRenderableComponentDefinition<"$ComponentContainer"> =
   {
     id: "$ComponentContainer",
-    tags: ["notrace"],
     styles: componentContainerStyles,
     schema: [
       {
