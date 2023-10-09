@@ -5,7 +5,7 @@ const iconComponentDefinition: InternalRenderableComponentDefinition<"$icon"> =
   {
     id: "$icon",
     styles: iconStyles,
-    tags: ["symbol", "notrace"],
+    type: "symbol",
     schema: [
       {
         prop: "icon",

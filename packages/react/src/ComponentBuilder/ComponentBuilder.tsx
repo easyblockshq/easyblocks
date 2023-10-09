@@ -54,8 +54,6 @@ import EditableComponentBuilderEditor from "../EditableComponentBuilder/Editable
 import EditableComponentBuilderClient from "../EditableComponentBuilder/EditableComponentBuilder.client";
 import MissingComponent from "../MissingComponent";
 import Placeholder from "../Placeholder";
-import { trace } from "./trace";
-import { withImpressionTracking } from "./withImpressionTracking";
 
 function buildBoxes(
   compiled: any,
@@ -76,16 +74,6 @@ function buildBoxes(
         stitches: meta.easyblocksProviderContext.stitches,
       };
 
-      if (compiled.__action) {
-        const actionWrapper = actionWrappers[compiled.__action];
-
-        if (!actionWrapper) {
-          throw new Error("Can't find action wrapper: " + compiled.__action);
-        }
-
-        return actionWrapper(Box, boxProps);
-      }
-
       return <Box {...boxProps} />;
     }
 
@@ -99,44 +87,6 @@ function buildBoxes(
   return compiled;
 }
 
-/**
- * the purpose of LinkWrapper is just to move passedProps into componentProps.
- *
- * It's much better DX for developers. All dev must do is pass componentProps to Component and all props are there:
- * - props like "as", "href", etc returned from actionWrapper
- * - "passedProps" from component code <Link data-custom-attr="test" />
- */
-function LinkWrapper(props: any) {
-  const {
-    LinkProvider,
-    Component,
-    componentProps,
-    values,
-    passedProps,
-    children,
-  } = props;
-
-  return React.createElement(LinkProvider, {
-    Component,
-    componentProps: {
-      children,
-      ...componentProps, // componentProps.children must be AFTER children, it's more important.
-      ...passedProps,
-    },
-    values,
-  });
-}
-
-const missingActionInstance = (name: string) => () => {
-  console.error(`Missing action instance in ShopstoryProvider for: ${name}`);
-};
-
-const missingLinkInstance =
-  (name: string) =>
-  ({ Component, componentProps, values }: any) => {
-    console.error(`Missing link instance in ShopstoryProvider for: ${name}`);
-    return <Component {...componentProps} />;
-  };
 
 function getComponentDefinition(
   compiled: CompiledComponentConfig,
@@ -287,6 +237,16 @@ function getCompiledSubcomponents(
     path = path + "." + meta.vars.locale;
   }
 
+  if (schemaProp.noInline) {
+    const elements = compiledArray.map((compiledChild, index) => <ComponentBuilder path={`${path}.${index}`} compiled={compiledChild} />);
+
+    if (isSchemaPropComponent(schemaProp)) {
+      return elements[0]
+    } else {
+      return elements;
+    }
+  }
+
   const EditableComponentBuilder = isEditing
     ? EditableComponentBuilderEditor
     : EditableComponentBuilderClient;
@@ -368,7 +328,13 @@ export type ComponentBuilderProps = {
 type ComponentBuilderComponent = React.FC<ComponentBuilderProps>;
 
 function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
-  const { compiled, passedProps, path } = props;
+  const { compiled, passedProps, path, ...restProps } = props;
+
+  const allPassedProps = {
+    ...passedProps,
+    ...restProps
+  }
+
   const easyblocksProvider = useEasyblocksProviderContext();
   const meta = useEasyblocksMetadata();
   const externalData = useEasyblocksExternalData();
@@ -386,8 +352,6 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
     definitions: meta.vars.definitions,
   })!;
 
-  const isComponentCustom = !componentDefinition.id.startsWith("$");
-  const isButton = componentDefinition.tags.includes("button");
   const component = getComponent(
     componentDefinition,
     easyblocksProvider,
@@ -406,149 +370,20 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
 
     if (isMissingComponent) {
       return (
-        <MissingComponent tags={[]} error={true}>
+        <MissingComponent error={true}>
           Missing
         </MissingComponent>
       );
     } else {
       return (
-        <MissingComponent tags={componentDefinition.tags} error={true}>
+        <MissingComponent component={componentDefinition} error={true}>
           Missing
         </MissingComponent>
       );
     }
   }
 
-  const traceEvent = isEditing
-    ? // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      (_: unknown) => {}
-    : trace(compiled, easyblocksProvider.eventSink ?? (() => {}));
-
-  const Component =
-    isEditing || !compiled.tracing?.traceImpressions
-      ? component
-      : withImpressionTracking(
-          {
-            callback: traceEvent,
-          },
-          component
-        );
-
-  // Actions and links
-  const actions: { [key: string]: any } = {};
-  const actionWrappers: { [key: string]: any } = {};
-
-  componentDefinition.schema.forEach((schemaProp) => {
-    // if action
-    if (isSchemaPropAction(schemaProp)) {
-      const actionConfig = compiled.actions[schemaProp.prop][0];
-
-      // If no action
-      if (!actionConfig) {
-        actionWrappers[schemaProp.prop] = (
-          Component: any,
-          props: { [key: string]: any }
-        ) => {
-          return <Component {...props} />;
-        };
-        actions[schemaProp.prop] = () => {};
-      } else {
-        const actionDefinition = getComponentDefinition(actionConfig, {
-          definitions: meta.vars.definitions,
-        });
-
-        if (!actionDefinition) {
-          throw new Error(
-            "Missing definition for action " + actionConfig._template
-          );
-        }
-
-        const actionParams: Record<string, any> = {};
-
-        actionDefinition.schema.forEach((schemaProp) => {
-          const propValue = actionConfig.props[schemaProp.prop];
-
-          if (isExternalSchemaProp(schemaProp)) {
-            if (isTrulyResponsiveValue(propValue)) {
-              throw new Error(
-                "Unexpected responsive value for resource within custom component"
-              );
-            }
-
-            const resolvedResourceProp = resolveExternalValue(
-              propValue,
-              actionConfig.props._id,
-              schemaProp,
-              externalData
-            );
-
-            actionParams[schemaProp.prop] = resolvedResourceProp;
-          } else {
-            actionParams[schemaProp.prop] = isLocalTextReference(
-              propValue,
-              "text"
-            )
-              ? propValue.value
-              : propValue;
-          }
-        });
-
-        // save action (for links too)
-        actions[schemaProp.prop] = () => {
-          const action =
-            meta.easyblocksProviderContext.actions[actionDefinition.id] ??
-            missingActionInstance(actionDefinition.id);
-          action(actionParams, null);
-        };
-
-        // if link action, we must save link provider
-        if (actionDefinition.tags.includes("actionLink")) {
-          const linkActionDefinition = actionDefinition;
-
-          actionWrappers[schemaProp.prop] = (
-            Component: any,
-            props: { [key: string]: any }
-          ) => {
-            return React.createElement(LinkWrapper, {
-              LinkProvider:
-                meta.easyblocksProviderContext.links[linkActionDefinition.id] ??
-                missingLinkInstance(actionDefinition.id),
-              Component,
-              componentProps: {
-                ...props,
-                as: "a",
-                onClick: (e: any) => {
-                  traceEvent("click");
-                  if (isEditing) {
-                    e.preventDefault();
-                    alert(`link action`);
-                  }
-                },
-              },
-              values: actionParams,
-            });
-          };
-        } else {
-          actionWrappers[schemaProp.prop] = (
-            Component: any,
-            props: { [key: string]: any }
-          ) => {
-            return React.createElement(Component, {
-              ...props,
-              as: "button",
-              onClick: (...args: any[]) => {
-                traceEvent("click");
-                actions[schemaProp.prop]();
-                if (props.onClick) {
-                  props.onClick(...args);
-                }
-              },
-            });
-          };
-        }
-      }
-    }
-  });
+  const Component = component;
 
   const renderabilityStatus = getRenderabilityStatus(
     compiled,
@@ -558,7 +393,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
 
   if (!renderabilityStatus.renderable) {
     return (
-      <MissingComponent tags={componentDefinition.tags}>
+      <MissingComponent component={componentDefinition}>
         {`Fill following fields to render the component: ${renderabilityStatus.fieldsRequiredToRender.join(
           ", "
         )}`}
@@ -574,80 +409,13 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
     );
   }
 
-  // If custom component
-  if (isComponentCustom) {
-    const componentProps = {
-      ...passedProps,
-    };
-
-    componentDefinition.schema.forEach((schemaProp) => {
-      if (isSchemaPropCollection(schemaProp)) {
-        throw new Error(
-          "component collection in custom components not yet supported"
-        );
-      }
-
-      if (isSchemaPropComponent(schemaProp)) {
-        const item = compiled.components[schemaProp.prop]?.[0];
-
-        if (!item) {
-          componentProps[schemaProp.prop] = undefined;
-        } else {
-          const contextProps =
-            compiled.__editing?.components[schemaProp.prop] || {};
-          const compiledArray = compiled.components[schemaProp.prop];
-
-          componentProps[schemaProp.prop] = getCompiledSubcomponents(
-            compiledArray,
-            contextProps,
-            schemaProp,
-            `${path}${pathSeparator}${schemaProp.prop}`,
-            meta,
-            isEditing
-          );
-        }
-      } else if (isExternalSchemaProp(schemaProp)) {
-        const resolvedResourceProp = resolveExternalValue(
-          compiled.props[schemaProp.prop],
-          compiled.props._id,
-          schemaProp,
-          externalData
-        );
-
-        if (isTrulyResponsiveValue(resolvedResourceProp)) {
-          throw new Error(
-            "Unexpected responsive value for resource within custom component"
-          );
-        }
-
-        componentProps[schemaProp.prop] = resolvedResourceProp;
-      } else {
-        componentProps[schemaProp.prop] = isLocalTextReference(
-          compiled.props[schemaProp.prop],
-          schemaProp.type
-        )
-          ? compiled.props[schemaProp.prop].value
-          : compiled.props[schemaProp.prop];
-      }
-      // TODO: set componentProps.__fromEditor to all the props that are NOT from schema (all passed)
-    });
-
-    // for button we wrap with action wrapper
-    if (isButton) {
-      delete componentProps.action;
-      return actionWrappers["action"](Component, componentProps);
-    }
-
-    return <Component {...componentProps} />;
-  }
-
   const shopstoryCompiledConfig = compiled as CompiledShopstoryComponentConfig;
 
   // Shopstory component
   const styled: { [key: string]: any } = buildBoxes(
     shopstoryCompiledConfig.styled,
     "",
-    actionWrappers,
+    {},
     meta
   );
 
@@ -655,7 +423,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
   componentDefinition.schema.forEach((schemaProp) => {
     if (
       isSchemaPropComponentOrComponentCollection(schemaProp) &&
-      !isSchemaPropAction(schemaProp) &&
+      // !isSchemaPropAction(schemaProp) &&
       !isSchemaPropActionTextModifier(schemaProp) &&
       !isSchemaPropTextModifier(schemaProp)
     ) {
@@ -677,7 +445,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { ref, ...restPassedProps } = passedProps || {};
+  const { ref, ...restPassedProps } = allPassedProps || {};
 
   const runtime = {
     eventSink: meta.easyblocksProviderContext.eventSink,
@@ -701,7 +469,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
         externalData
       ),
       components: styled,
-      actions,
+      // actions,
       React,
       __editing: shopstoryCompiledConfig.__editing,
       isEditing,
@@ -709,10 +477,6 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
       runtime,
     },
   };
-
-  if (isButton) {
-    return actionWrappers["action"](Component, componentProps);
-  }
 
   return <Component {...componentProps} />;
 }
@@ -722,37 +486,26 @@ function getComponent(
   easyblocksProvider: EasyblocksProviderContextValue,
   isEditing: boolean
 ) {
-  const isComponentCustom = !componentDefinition.id.startsWith("$");
-  const isButton = componentDefinition.tags.includes("button");
+  let component: any;
 
-  if (isComponentCustom) {
-    if (isButton) {
-      return easyblocksProvider.buttons[componentDefinition.id];
-    } else {
-      return easyblocksProvider.components[componentDefinition.id];
-    }
-  } else {
-    let component: any;
-
-    // We first try to find editor version of that component
-    if (isEditing) {
-      component =
-        easyblocksProvider.components[componentDefinition.id + ".editor"];
-    }
-
-    // If it still missing, we try to find client version of that component
-    if (!component) {
-      component =
-        easyblocksProvider.components[componentDefinition.id + ".client"];
-    }
-
-    if (!component) {
-      // In most cases we're going to pick component by its id
-      component = easyblocksProvider.components[componentDefinition.id];
-    }
-
-    return component;
+  // We first try to find editor version of that component
+  if (isEditing) {
+    component =
+      easyblocksProvider.components[componentDefinition.id + ".editor"];
   }
+
+  // If it still missing, we try to find client version of that component
+  if (!component) {
+    component =
+      easyblocksProvider.components[componentDefinition.id + ".client"];
+  }
+
+  if (!component) {
+    // In most cases we're going to pick component by its id
+    component = easyblocksProvider.components[componentDefinition.id];
+  }
+
+  return component;
 }
 
 function mapExternalProps(

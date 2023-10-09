@@ -14,8 +14,6 @@ import {
   useToaster,
 } from "@easyblocks/design-system";
 import { useEditorContext } from "./EditorContext";
-import { findComponentDefinitionById } from "@easyblocks/app-utils";
-import { findRolesInTags } from "./findRole";
 import { useApiClient } from "./infrastructure/ApiClientProvider";
 
 export type TemplateModalProps = {
@@ -63,16 +61,7 @@ export const TemplateModal: React.FC<TemplateModalProps> = (props) => {
     }
   );
 
-  const roles = findRolesInTags(
-    findComponentDefinitionById(config._template, editorContext)!.tags
-  );
-
   const masters: RoleMaster[] = [];
-  roles.forEach((role) => {
-    if (role.masters) {
-      masters.push(...role.masters);
-    }
-  });
 
   const label = template.label ?? "";
   const open = props.action !== undefined;

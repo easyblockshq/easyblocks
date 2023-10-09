@@ -5,6 +5,7 @@ import {
   isSchemaPropTextModifier,
   isTemplate,
   EditorContextType,
+  findComponentDefinition,
 } from "@easyblocks/app-utils";
 import { SchemaProp } from "@easyblocks/core";
 import { nonNullable, uniqueId } from "@easyblocks/utils";
@@ -149,13 +150,29 @@ function updateInlineWrapper(
         selectionRef.current = editor.selection;
       }
 
+      // const actionTextModifiers
+
       const defaultActionTextModifier: StandardActionStylesConfig | undefined =
-        editorContext.actions
-          .getTemplates(["actionTextModifier"])
-          .filter(isTemplate)
-          .find((template) => template.isDefaultTextModifier)?.config as
-          | StandardActionStylesConfig
-          | undefined;
+        editorContext.templates!.find((template) => {
+          const component = findComponentDefinition(
+            template.config,
+            editorContext
+          )!;
+
+          if (
+            component.type &&
+            (component.type === "actionTextModifier" ||
+              component.type.includes("component.type"))
+          ) {
+            return true;
+          }
+          return false;
+        })?.config as StandardActionStylesConfig | undefined;
+
+      // .getTemplates(["actionTextModifier"])
+      // .find((template) => template.isDefaultTextModifier)?.config as
+      // | StandardActionStylesConfig
+      // | undefined;
 
       if (!defaultActionTextModifier) {
         throw new Error("There is no default action text modifier defined!!!");

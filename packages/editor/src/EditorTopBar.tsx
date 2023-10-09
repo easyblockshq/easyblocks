@@ -95,7 +95,7 @@ export const EditorTopBar: React.FC<{
   });
 
   return (
-    <TopBar>
+    <TopBar ref={headingRef}>
       <TopBarLeft>
         <SSButtonGhost
           icon={SSIcons.Close}
@@ -131,7 +131,7 @@ export const EditorTopBar: React.FC<{
         </SSButtonGhost>
       </TopBarLeft>
 
-      <TopBarCenter ref={headingRef}>
+      <TopBarCenter>
         <DeviceSwitch
           devices={devices}
           deviceId={isFullScreen && !isEditing ? "fit-screen" : breakpointIndex}

@@ -15,7 +15,6 @@ for (let i = 4; i < 24; i++) {
 const stackComponentDefinition: InternalRenderableComponentDefinition<"$stack"> =
   {
     id: "$stack",
-    tags: ["notrace"],
     styles: $stackStyles,
     pasteSlots: ["Items"],
     editing: ({ values, editingInfo }) => {
@@ -90,6 +89,10 @@ const stackComponentDefinition: InternalRenderableComponentDefinition<"$stack"> 
             label: "Bottom",
             type: "space",
             group: "Margins",
+            defaultValue: {
+              ref: "0",
+              value: "0px",
+            },
           },
           {
             prop: "align",

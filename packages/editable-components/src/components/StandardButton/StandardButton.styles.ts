@@ -1,10 +1,24 @@
 import { box } from "../../box";
+import { cleanupIconSVG } from "../../cleanupIconSVG";
 
-function styles(config: any) {
-  const hasBackground: boolean = config.hasBackground;
-  const hasBorder: boolean = config.hasBorder;
-  const hasShadow: boolean = config.boxShadow !== "none";
+function styles(values: any) {
+  const hasBackground: boolean = values.hasBackground;
+  const hasBorder: boolean = values.hasBorder;
+  const hasShadow: boolean = values.boxShadow !== "none";
   const isNaked = !hasBackground && !hasBorder && !hasShadow;
+
+  const sizeStyles =
+    values.variant === "icon"
+      ? {
+          width: isNaked ? 0 : `${values.minHeight}px`,
+          height: isNaked ? 0 : `${values.minHeight}px`,
+        }
+      : {
+          minHeight: isNaked ? 0 : `${values.minHeight}px`,
+          minWidth: isNaked ? 0 : `${values.minWidth}px`,
+          paddingLeft: isNaked ? 0 : values.horizontalPadding,
+          paddingRight: isNaked ? 0 : values.horizontalPadding,
+        };
 
   const ButtonRoot = box(
     {
@@ -19,39 +33,52 @@ function styles(config: any) {
       // styles
       position: "relative",
       display: "flex",
+      flexDirection: "row",
       justifyContent: "center",
       alignItems: "center",
-      color: config.color,
-      ...config.font,
+      gap: values.gap,
+      color: values.color,
+      ...values.font,
       transition: "opacity .15s",
-      textDecoration: config.underline === "off" ? "none" : "underline",
+      textDecoration: values.underline === "off" ? "none" : "underline",
       textUnderlineOffset:
-        config.underline === "on-custom"
-          ? `${config.underlineOffset}px`
+        values.underline === "on-custom"
+          ? `${values.underlineOffset}px`
           : "auto",
       "&:hover": {
         opacity: 0.75,
       },
-      minHeight: isNaked ? 0 : `${config.minHeight}px`,
-      minWidth: isNaked ? 0 : `${config.minWidth}px`,
-      paddingLeft: isNaked ? 0 : config.horizontalPadding,
-      paddingRight: isNaked ? 0 : config.horizontalPadding,
+      ...sizeStyles,
 
-      backgroundColor: hasBackground ? config.backgroundColor : "transparent",
-      borderRadius: isNaked ? 0 : `${config.radius}px`,
-      borderWidth: hasBorder ? `${config.borderWidth}px` : 0,
-      borderColor: config.borderColor,
+      backgroundColor: hasBackground ? values.backgroundColor : "transparent",
+      borderRadius:
+        isNaked || values.cornerMode === "sharp"
+          ? 0
+          : `${values.cornerMode === "circled" ? 9999 : values.cornerRadius}px`,
+      borderWidth: hasBorder ? `${values.borderWidth}px` : 0,
+      borderColor: values.borderColor,
       borderStyle: "solid",
 
       whiteSpace: "nowrap",
       cursor: "pointer",
-      boxShadow: config.boxShadow,
+      boxShadow: values.boxShadow,
     },
     "button"
   );
 
   return {
     ButtonRoot,
+    IconWrapper: box({
+      display: "grid",
+      color: "currentColor",
+      width: `${values.iconSize}px`,
+      height: `${values.iconSize}px`,
+      position: "relative",
+    }),
+    __props: {
+      icon: cleanupIconSVG(values.icon),
+      variant: values.variant,
+    },
   };
 }
 

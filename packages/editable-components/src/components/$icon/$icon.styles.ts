@@ -1,4 +1,4 @@
-import { cleanupIconSVG } from "./cleanupIconSVG";
+import { cleanupIconSVG } from "../../cleanupIconSVG";
 import { box } from "../../box";
 
 export function iconStyles(values: any) {

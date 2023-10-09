@@ -5,7 +5,7 @@ const vimeoPlayerEditableComponent: InternalRenderableComponentDefinition<"$vime
   {
     id: "$vimeoPlayer",
     label: "Vimeo Player",
-    tags: ["item", "image"],
+    type: "image",
     schema: [
       {
         prop: "videoId",

@@ -32,12 +32,8 @@ import tokenFontStyles from "./components/TokenFont/TokenFont.styles";
 import { gridAuto } from "./components/Grid/Grid.auto";
 import grid2Styles from "./components/Grid/Grid.styles";
 
-import iconButtonStyles from "./components/IconButton/v1/IconButton.styles";
-
-import iconButton2Styles from "./components/IconButton/v2/IconButton.styles";
-
 import placeholderStyles from "./components/Placeholder/Placeholder.styles";
-import standardButtonStyles from "./components/StandardButton/StandardButton.styles";
+import { StandardButtonNoCodeComponent } from "./components/StandardButton/StandardButton";
 
 import $separatorStyles from "./components/Separator/Separator.styles";
 
@@ -46,7 +42,6 @@ import { $sectionWrapperStyles } from "./components/SectionWrapper/SectionWrappe
 
 import { backgroundColorComponentDefinition } from "./components/$backgroundColor/$backgroundColor";
 import { buttonsComponentDefinition } from "./components/$buttons/$buttons";
-import { iconComponentDefinition } from "./components/$icon/$icon";
 import { imageComponentDefinition } from "./components/$image/image";
 import { richTextEditableComponent } from "./components/$richText/$richText";
 import { richTextBlockElementEditableComponent } from "./components/$richText/$richTextBlockElement/$richTextBlockElement";
@@ -331,329 +326,29 @@ const sectionWrapperFieldsWithoutEscapeMargin = sectionWrapperFieldsProvider({
   fixedEscapeMarginValue: true,
 });
 
-const widthScalePreview = [
-  "100px",
-  "200px",
-  "300px",
-  "400px",
-  "500px",
-  "600px",
-  "700px",
-  "800px",
-  "900px",
-  "1000px",
-  "100%",
-  "auto",
-];
-
-const tokenFields = (defaultWidth?: string): SchemaProp[] => [
-  {
-    prop: "name",
-    type: "text",
-  },
-  {
-    prop: "paddingTop",
-    type: "space",
-  },
-  {
-    prop: "paddingBottom",
-    type: "space",
-  },
-  {
-    prop: "paddingLeft",
-    type: "space",
-  },
-  {
-    prop: "paddingRight",
-    type: "space",
-  },
-  {
-    prop: "backgroundColor",
-    type: "color",
-    defaultValue: {
-      ref: "transparent",
-      value: "transparent",
-    },
-  },
-  {
-    prop: "width",
-    type: "select$",
-    options: widthScalePreview,
-    defaultValue: defaultWidth,
-  },
-];
-
-const bannerFields: SchemaProp[] = [
-  {
-    prop: "cornerRadius",
-    label: "Corner radius",
-    type: "select$",
-    options: Array.from(Array(30).keys()).map((x) => x.toString()),
-    group: "General",
-  },
-  {
-    prop: "SideImage",
-    label: "Cover",
-    type: "component",
-    componentTypes: ["image"],
-    visible: true,
-    group: "Cover",
-  },
-  {
-    prop: "sideImagePosition", // main image size
-    label: "Position",
-    type: "select$",
-    options: [
-      { label: "Left", value: "left" },
-      { label: "Right", value: "right" },
-      { label: "Top", value: "top" },
-      { label: "Bottom", value: "bottom" },
-      { label: "Background", value: "background" },
-    ], // there is no "fit-content", because it doesn't make sense on mobile and it's actually very rare. If you want image, you don't want it to have some super narrow height, so the height is kind of "minimal" heihgt only.
-    group: "Cover",
-    visible: (values) => {
-      return values.SideImage.length > 0;
-    },
-  },
-  {
-    prop: "sideImageSize", // main image size
-    label: "Aspect ratio",
-    type: "stringToken",
-    tokenId: "aspectRatios", // "natural"
-    extraValues: ["grid-baseline", "natural", "100vh"],
-    group: "Cover",
-    defaultValue: {
-      ref: "$landscape",
-      value: "whatever", // will be normalized anyway
-    },
-    // defaultValue: "landscape",
-    visible: (values) => {
-      return values.SideImage.length > 0;
-    },
-  },
-
-  {
-    prop: "size", // main image size
-    label: "Size",
-    type: "stringToken",
-    tokenId: "aspectRatios",
-    extraValues: ["grid-baseline", "natural", "fit-content", "100vh"],
-    group: "Stack",
-    visible: (values) => {
-      return values.SideImage.length === 0;
-    },
-  },
-  {
-    prop: "contentPositionInBackgroundMode",
-    label: "Position",
-    type: "position",
-    group: "Stack",
-    visible: (values) => {
-      return (
-        values.SideImage.length > 0 && values.sideImagePosition === "background"
-      );
-    },
-    defaultValue: "bottom-center",
-  },
-
-  {
-    prop: "contentHorizontalMarginInBackgroundMode",
-    label: "Horizontal margin",
-    type: "space",
-    group: "Stack",
-    visible: (values) => {
-      return (
-        values.SideImage.length > 0 && values.sideImagePosition === "background"
-      );
-    },
-    defaultValue: {
-      value: "24px",
-      ref: "24",
-    },
-  },
-
-  {
-    prop: "contentVerticalMarginInBackgroundMode",
-    label: "Vertical margin",
-    type: "space",
-    group: "Stack",
-    visible: (values) => {
-      return (
-        values.SideImage.length > 0 && values.sideImagePosition === "background"
-      );
-    },
-    defaultValue: {
-      value: "24px",
-      ref: "24",
-    },
-  },
-  {
-    prop: "Background",
-    label: "Background",
-    type: "component",
-    componentTypes: ["image"],
-    visible: true,
-    group: "Stack",
-  },
-  /**
-   * Offset horizontal, vertical and corner radius make sense ONLY if background is set. Otherwise, they don't make sense. We should show as little fields as possible!!!
-   */
-  {
-    prop: "offsetHorizontal",
-    label: "Horizontal margin",
-    type: "space",
-    group: "Stack",
-    visible: (allValues) => {
-      return (
-        allValues.Background.length > 0 ||
-        (allValues.SideImage.length > 0 &&
-          (allValues.sideImagePosition === "left" ||
-            allValues.sideImagePosition === "right"))
-      ); // if side image is enabled and there is no background, this properly is only left gap (for image left) or right gap (for image right)
-    },
-    defaultValue: {
-      value: "24px",
-      ref: "24",
-    },
-  },
-  {
-    prop: "offsetHorizontalForVerticalImagePosition",
-    label: "Horizontal margin",
-    type: "space",
-    group: "Stack",
-    visible: (allValues) => {
-      return (
-        allValues.Background.length === 0 &&
-        allValues.SideImage.length > 0 &&
-        (allValues.sideImagePosition === "top" ||
-          allValues.sideImagePosition === "bottom")
-      );
-    },
-    defaultValue: {
-      value: "0px",
-      ref: "0",
-    },
-  },
-  {
-    prop: "offsetVertical",
-    label: "Vertical margin",
-    type: "space",
-    group: "Stack",
-    visible: (allValues) => {
-      return (
-        allValues.Background.length > 0 ||
-        (allValues.SideImage.length > 0 &&
-          (allValues.sideImagePosition === "top" ||
-            allValues.sideImagePosition === "bottom"))
-      ); // if side image is enabled and there is no background, this properly is only left gap (for image left) or right gap (for image right)
-    },
-    defaultValue: {
-      value: "24px",
-      ref: "24",
-    },
-  },
-
-  {
-    prop: "Stack",
-    label: "Stack",
-    type: "component-fixed",
-    componentType: "$stack",
-  },
-
-  {
-    prop: "stackAlign",
-    label: "Align",
-    type: "radio-group$",
-    options: [
-      {
-        value: "left",
-        label: "Left",
-        icon: "AlignLeft",
-        hideLabel: true,
-      },
-      {
-        value: "center",
-        label: "Center",
-        icon: "AlignCenter",
-        hideLabel: true,
-      },
-      {
-        value: "right",
-        label: "Right",
-        icon: "AlignRight",
-        hideLabel: true,
-      },
-    ],
-    defaultValue: "left",
-    group: "Stack",
-  },
-
-  {
-    prop: "positionHorizontal",
-    label: "Horizontal position",
-    type: "select$",
-    options: [
-      {
-        value: "left",
-        label: "Left",
-      },
-      {
-        value: "center",
-        label: "Center",
-      },
-      {
-        value: "right",
-        label: "Right",
-      },
-    ],
-    group: "Stack",
-  },
-
-  {
-    prop: "verticalAlign",
-    label: "Vertical position",
-    type: "select$",
-    options: [
-      {
-        value: "top",
-        label: "Top",
-      },
-      {
-        value: "center",
-        label: "Center",
-      },
-      {
-        value: "bottom",
-        label: "Bottom",
-      },
-    ],
-    group: "Stack",
-    visible: (values) => {
-      return (
-        values.SideImage.length === 0 ||
-        (values.SideImage.length > 0 &&
-          (values.sideImagePosition === "left" ||
-            values.sideImagePosition === "right"))
-      ); // if side image is enabled and there is no background, this properly is only left gap (for image left) or right gap (for image right)
-    },
-  },
-  buttonActionSchemaProp,
-];
-
 export const builtinEditableComponentsDefinitions: InternalRenderableComponentDefinition[] =
   [
     // root sections
     zoneComponentDefinition,
     rootSectionsComponentDefinition,
     rootGridComponentDefinition,
-    textEditableComponent,
-    iconComponentDefinition,
-    twoItemsComponentDefinition,
+
+    richTextEditableComponent,
+    richTextBlockElementEditableComponent,
+    richTextLineElementEditableComponent,
+    richTextPartEditableComponent,
+    richTextInlineWrapperElementEditableComponent,
+
+    imageComponentDefinition,
+    videoComponentDefinition,
+    buttonsComponentDefinition,
 
     {
       id: "$separator",
-      tags: ["item", "notrace"],
+      type: "item",
       label: "Separator",
+      thumbnail:
+        "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_separator.png",
       styles: $separatorStyles,
       schema: [
         {
@@ -690,37 +385,33 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         },
       ],
     },
+    twoItemsComponentDefinition,
+    textEditableComponent,
 
     backgroundColorComponentDefinition,
 
-    imageComponentDefinition,
-
-    videoComponentDefinition,
-
-    buttonsComponentDefinition,
-
     stackComponentDefinition,
 
-    {
-      id: "$BannerSection",
-      tags: ["section", "notrace"],
-      label: "Banner",
-      styles: $sectionWrapperStyles,
-      editing: sectionWrapperEditing,
-      pasteSlots: ["Component"],
-      schema: [
-        ...sectionWrapperFields,
-        {
-          prop: "Component",
-          type: "component-fixed",
-          componentType: "$BannerCard",
-        },
-      ],
-    },
+    // {
+    //   id: "$BannerSection",
+    //   type: "section",
+    //   label: "Banner",
+    //   styles: $sectionWrapperStyles,
+    //   editing: sectionWrapperEditing,
+    //   pasteSlots: ["Component"],
+    //   schema: [
+    //     ...sectionWrapperFields,
+    //     {
+    //       prop: "Component",
+    //       type: "component-fixed",
+    //       componentType: "$BannerCard",
+    //     },
+    //   ],
+    // },
     {
       id: "$BannerSection2",
-      tags: ["section", "notrace"],
-      label: "Banner",
+      type: "section",
+      label: "Hero Banner",
       styles: $sectionWrapperStyles,
       editing: sectionWrapperEditing,
       pasteSlots: ["Component"],
@@ -732,11 +423,12 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
           componentType: "$BannerCard2",
         },
       ],
+      allowSave: true,
     },
     {
       id: "$Grid",
-      tags: ["section", "notrace"],
-      label: "Grid / Slider",
+      type: "section",
+      label: "Collection",
       icon: "grid_3x3",
       styles: $sectionWrapperStyles,
       editing: sectionWrapperEditing,
@@ -750,10 +442,11 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         ...sectionWrapperFields.filter((x) => x.group !== "General"),
       ],
       pasteSlots: ["Component"],
+      allowSave: true,
     },
     {
       id: "$TwoCards",
-      tags: ["section", "notrace"],
+      type: "section",
       label: "Two Cards",
       styles: $sectionWrapperStyles,
       editing: sectionWrapperEditing,
@@ -770,9 +463,10 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
     {
       id: "$GridCard",
       pasteSlots: ["Cards"],
-      tags: ["card"],
+      type: "card",
       styles: grid2Styles,
       auto: gridAuto,
+      hideTemplates: true,
       editing: ({ values, editingInfo }) => {
         const fields = Object.fromEntries(
           editingInfo.fields.map((f) => [f.path, f])
@@ -818,6 +512,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
           prop: "Cards",
           type: "component-collection",
           componentTypes: ["card"],
+          picker: "large-3",
           itemFields: [
             {
               prop: "itemSize",
@@ -854,9 +549,10 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         {
           prop: "numberOfItems",
           label: "Visible items",
-          type: "stringToken",
-          tokenId: "numberOfItemsInRow",
+          type: "select$",
           group: "Grid / Slider",
+          options: ["1", "2", "3", "4", "5", "6"],
+          defaultValue: "4",
           // visible: (values, { editorContext }) => {
           //   if (values.variant === "grid") {
           //     return true;
@@ -1107,132 +803,37 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         },
       ],
     },
-    {
-      id: "$TokenSection",
-      tags: ["token", "notrace"],
-      styles: tokenStyles,
-      schema: [
-        ...tokenFields("100%"),
-        {
-          prop: "Component",
-          type: "component",
-          componentTypes: ["section"],
-        },
-      ],
-    },
-    {
-      id: "$TokenCard",
-      tags: ["token", "notrace"],
-      styles: tokenStyles,
-      schema: [
-        ...tokenFields("600px"),
-        {
-          prop: "Component",
-          type: "component",
-          componentTypes: ["card"],
-        },
-      ],
-    },
-    {
-      id: "$TokenButton",
-      tags: ["token"],
-      styles: tokenStyles,
-      schema: [
-        ...tokenFields("auto"),
-        {
-          prop: "Component",
-          type: "component",
-          componentTypes: ["button"],
-        },
-      ],
-    },
-    {
-      id: "$TokenColor",
-      tags: ["token", "notrace"],
-      styles: tokenColorStyles,
-      schema: [
-        {
-          prop: "name",
-          type: "text",
-        },
-        {
-          prop: "color",
-          label: "Color hex (#xxxxxx)",
-          type: "text",
-          defaultValue: "#ffffff",
-        },
-      ],
-    },
-
-    {
-      id: "$TokenFont",
-      tags: ["token", "notrace"],
-      styles: tokenFontStyles,
-      schema: [
-        {
-          prop: "name",
-          type: "text",
-        },
-        {
-          prop: "exampleTextLength",
-          type: "radio-group",
-          options: ["short", "medium", "long"],
-        },
-        {
-          prop: "family",
-          type: "text",
-          defaultValue: "sans-serif",
-        },
-        {
-          prop: "weight",
-          type: "text",
-          defaultValue: "500",
-        },
-        {
-          prop: "size",
-          type: "space",
-        },
-        {
-          prop: "letterSpacing",
-          type: "text",
-          defaultValue: "0",
-        },
-        {
-          prop: "isUppercase",
-          type: "boolean",
-        },
-      ],
-    },
-
-    {
-      id: "$BannerCard",
-      tags: ["card"],
-      pasteSlots: ["SideImage", "Stack"],
-      styles: bannerCardStyles,
-      auto: bannerCardAuto,
-      schema: bannerFields,
-      editing: () => {
-        return {
-          components: {
-            SideImage: {
-              selectable: false,
-            },
-            Background: {
-              selectable: false,
-            },
-            Stack: {
-              selectable: false,
-            },
-          },
-        };
-      },
-    },
+    // {
+    //   id: "$BannerCard",
+    //   type: "card",
+    //   pasteSlots: ["SideImage", "Stack"],
+    //   styles: bannerCardStyles,
+    //   auto: bannerCardAuto,
+    //   schema: bannerFields,
+    //   editing: () => {
+    //     return {
+    //       components: {
+    //         SideImage: {
+    //           selectable: false,
+    //         },
+    //         Background: {
+    //           selectable: false,
+    //         },
+    //         Stack: {
+    //           selectable: false,
+    //         },
+    //       },
+    //     };
+    //   },
+    // },
     {
       id: "$TwoCardsCard",
-      tags: ["card"],
+      type: "card",
       auto: twoCardsAuto,
       styles: twoCardsStyles,
       change: twoCardsChange,
+      hideTemplates: true,
+      allowSave: true,
       editing: ({ values, editingInfo }) => {
         const fields = Object.fromEntries(
           editingInfo.fields.map((f) => [f.path, f])
@@ -1421,420 +1022,23 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         },
       ],
     },
-    {
-      id: "$IconButton",
-      tags: ["button"],
-      styles: iconButtonStyles,
-      editing: () => {
-        return {
-          components: {
-            symbol: {
-              selectable: false,
-            },
-          },
-        };
-      },
-      schema: [
-        buttonActionSchemaProp,
-        buttonLabelSchemaProp,
-        buttonRequiredIconSchemaProp,
-        {
-          prop: "symbolSize",
-          label: "Symbol size",
-          type: "select$",
-          options: ["8", "16", "20", "24", "32", "40", "48", "64"],
-          defaultValue: "24",
-          group: "Properties",
-          // visible: false FIXME: when we can pass icon size to the icon we will hide this field from here
-        },
-        {
-          prop: "buttonSize",
-          label: "Button size",
-          type: "space",
-          defaultValue: {
-            value: "32px",
-            ref: "32",
-          },
-          group: "Properties",
-        },
-        {
-          prop: "shape",
-          type: "select",
-          options: ["circle", "square"],
-          group: "Properties",
-        },
-        {
-          prop: "backgroundColor",
-          label: "Background color",
-          type: "color",
-          group: "Properties",
-          defaultValue: {
-            ref: "transparent",
-            value: "transparent",
-          },
-        },
-        {
-          prop: "border",
-          label: "Border width",
-          type: "select",
-          options: ["0", "1", "2", "3", "4", "5", "6", "7", "8"],
-        },
-        {
-          prop: "borderColor",
-          label: "Border color",
-          type: "color",
-          visible: (values: any) => {
-            return values.border !== "0";
-          },
-        },
-      ],
-    },
-
-    {
-      id: "$IconButton2",
-      label: "Basic Icon Button",
-      tags: ["button"],
-      styles: iconButton2Styles,
-      editing: () => {
-        return {
-          components: {
-            symbol: {
-              selectable: false,
-            },
-          },
-        };
-      },
-      schema: [
-        buttonActionSchemaProp,
-        {
-          ...buttonRequiredIconSchemaProp,
-          group: "Symbol",
-        },
-        {
-          prop: "hasBackground",
-          type: "boolean",
-          group: "Background",
-          label: "Enabled",
-          defaultValue: true,
-        },
-        {
-          prop: "backgroundColor",
-          type: "color",
-          defaultValue: {
-            ref: "$neutral",
-            value: "grey",
-          },
-          visible: (values) => {
-            return !!values.hasBackground;
-          },
-          group: "Background",
-          label: "Color",
-        },
-
-        {
-          prop: "hasBorder",
-          type: "boolean",
-          group: "Border and shadow",
-          label: "Border enabled",
-        },
-        {
-          prop: "borderWidth",
-          type: "string$",
-          defaultValue: "1",
-          group: "Border and shadow",
-          label: "Border width",
-          visible: (values) => {
-            return !!values.hasBorder;
-          },
-          normalize: pxValueNormalize(1, 16),
-        },
-        {
-          prop: "borderColor",
-          type: "color",
-          defaultValue: {
-            ref: "$dark",
-            value: "black",
-          },
-          group: "Border and shadow",
-          label: "Border color",
-          visible: (values) => {
-            return !!values.hasBorder;
-          },
-        },
-        {
-          prop: "boxShadow", // main image size
-          label: "Box shadow",
-          type: "stringToken",
-          tokenId: "boxShadows",
-          defaultValue: {
-            ref: "none",
-            value: "none",
-          },
-          group: "Border and shadow",
-        },
-
-        {
-          prop: "symbolSize",
-          label: "Symbol size",
-          type: "string$",
-          defaultValue: "24",
-          group: "Size",
-          normalize: pxValueNormalize(8, 128),
-        },
-        {
-          prop: "buttonSize",
-          label: "Button size",
-          type: "string$",
-          defaultValue: "32",
-          group: "Size",
-          visible: (values) => {
-            return (
-              values.hasBorder ||
-              values.hasBackground ||
-              values.boxShadow !== "none"
-            );
-          },
-        },
-        {
-          prop: "shape",
-          type: "select",
-          options: ["circle", "square"],
-          group: "Shape",
-          label: "Shape",
-          visible: (values) => {
-            return (
-              values.hasBorder ||
-              values.hasBackground ||
-              values.boxShadow !== "none"
-            );
-          },
-        },
-        {
-          ...buttonLabelSchemaProp,
-          group: "Accessibility",
-        },
-      ],
-    },
 
     {
       id: "$Placeholder",
-      tags: ["card", "notrace"],
+      type: "card",
       styles: placeholderStyles,
+      hideTemplates: true,
       schema: [],
     },
 
-    {
-      id: "$StandardButton",
-      label: "Basic Button",
-      tags: ["button"],
-      styles: standardButtonStyles,
-      schema: [
-        buttonActionSchemaProp,
-        buttonLabelSchemaProp,
-        {
-          ...buttonOptionalIconSchemaProp,
-          visible: false,
-        },
-        {
-          prop: "font",
-          type: "font",
-          group: "Font",
-          label: "Style",
-          defaultValue: {
-            ref: "$body2.bold",
-            value: {},
-          },
-        },
-        {
-          prop: "color",
-          type: "color",
-          group: "Font",
-          label: "Color",
-          defaultValue: {
-            ref: "$dark",
-            value: "?",
-          },
-        },
-        {
-          prop: "underline",
-          type: "select",
-          group: "Font",
-          label: "Underline",
-          options: [
-            {
-              value: "off",
-              label: "Off",
-            },
-            {
-              value: "on",
-              label: "On",
-            },
-            {
-              value: "on-custom",
-              label: "On (custom offset)",
-            },
-          ],
-        },
-        {
-          prop: "underlineOffset",
-          type: "string$",
-          group: "Font",
-          label: "Underline offset",
-          visible: (values) => {
-            return values.underline === "on-custom";
-          },
-          normalize: pxValueNormalize(1, 16),
-          defaultValue: "1",
-        },
-        {
-          prop: "hasBackground",
-          type: "boolean",
-          group: "Background",
-          label: "Enabled",
-          defaultValue: true,
-        },
-        {
-          prop: "backgroundColor",
-          type: "color",
-          defaultValue: {
-            ref: "$neutral",
-            value: "grey",
-          },
-          visible: (values) => {
-            return !!values.hasBackground;
-          },
-          group: "Background",
-          label: "Color",
-        },
-
-        {
-          prop: "hasBorder",
-          type: "boolean",
-          group: "Border and shadow",
-          label: "Border enabled",
-        },
-        {
-          prop: "borderWidth",
-          type: "string$",
-          defaultValue: "1",
-          group: "Border and shadow",
-          label: "Border width",
-          visible: (values) => {
-            return !!values.hasBorder;
-          },
-          normalize: pxValueNormalize(1, 16),
-        },
-        {
-          prop: "borderColor",
-          type: "color",
-          defaultValue: {
-            ref: "$dark",
-            value: "black",
-          },
-          group: "Border and shadow",
-          label: "Border color",
-          visible: (values) => {
-            return !!values.hasBorder;
-          },
-        },
-        {
-          prop: "boxShadow", // main image size
-          label: "Box shadow",
-          type: "stringToken",
-          tokenId: "boxShadows",
-          defaultValue: {
-            ref: "none",
-            value: "none",
-          },
-          group: "Border and shadow",
-        },
-        {
-          prop: "minHeight",
-          type: "string$",
-          defaultValue: "42",
-          group: "Size",
-          label: "Min height",
-          visible: (values) => {
-            return values.hasBorder || values.hasBackground;
-          },
-          normalize: pxValueNormalize(0, 256),
-        },
-        {
-          prop: "minWidth",
-          type: "string$",
-          defaultValue: "100",
-          group: "Size",
-          label: "Min width",
-          visible: (values) => {
-            return values.hasBorder || values.hasBackground;
-          },
-          normalize: pxValueNormalize(0, 512),
-        },
-        {
-          prop: "horizontalPadding",
-          type: "space",
-          group: "Size",
-          label: "Left / Right padding",
-          visible: (values) => {
-            return values.hasBorder || values.hasBackground;
-          },
-          defaultValue: {
-            ref: "16",
-            value: "16px",
-          },
-        },
-        {
-          prop: "radius",
-          type: "string$",
-          defaultValue: "0",
-          visible: (values) => {
-            return (
-              values.hasBorder ||
-              values.hasBackground ||
-              values.boxShadow !== "none"
-            );
-          },
-          group: "Shape",
-          label: "Corner radius",
-          normalize: pxValueNormalize(0, 16),
-        },
-      ],
-    },
-
-    // {
-    //   id: "$MissingComponent",
-    //   schema: [
-    //     {
-    //       prop: "error",
-    //       type: "string",
-    //       visible: false,
-    //     },
-    //   ],
-    //   tags: ["notrace"],
-    //   styles: () => ({}),
-    //   editing: () => ({
-    //     components: {},
-    //     fields: [],
-    //   }),
-    // },
-
-    // {
-    //   id: "$MissingAction",
-    //   schema: [],
-    //   tags: ["action", "notrace"],
-    //   styles: () => ({}),
-    //   editing: () => ({
-    //     components: {},
-    //     fields: [],
-    //   }),
-    // },
+    StandardButtonNoCodeComponent,
 
     playgroundComponentDefinition,
 
     {
       id: "$BannerCard2",
-      label: "Banner Card",
-      tags: ["card"],
+      label: "Basic Card",
+      type: "card",
       pasteSlots: ["SideImage", "Stack"],
       styles: bannerCard2Styles,
       auto: bannerCard2Auto,
@@ -2120,15 +1324,10 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
           group: "Content Card",
         },
 
-        buttonActionSchemaProp,
+        // buttonActionSchemaProp,
       ],
     },
 
-    richTextEditableComponent,
-    richTextBlockElementEditableComponent,
-    richTextLineElementEditableComponent,
-    richTextPartEditableComponent,
-    richTextInlineWrapperElementEditableComponent,
     vimeoPlayerEditableComponent,
     basicCardDefinition,
     basicBackgroundCardDefinition,
@@ -2137,6 +1336,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
 
     {
       id: "$MissingComponent",
+      label: "Missing",
       schema: [
         {
           prop: "error",
@@ -2144,11 +1344,11 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
           visible: false,
         },
       ],
-      tags: ["notrace"],
     },
-    {
-      id: "$MissingAction",
-      schema: [],
-      tags: ["action", "notrace"],
-    },
+    // {
+    //   id: "$MissingAction",
+    //   label: "Missing",
+    //   schema: [],
+    //   type: "action",
+    // },
   ];

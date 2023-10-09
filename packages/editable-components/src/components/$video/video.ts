@@ -17,7 +17,9 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
   {
     id: "$video",
     label: "Video",
-    tags: ["image", "item"],
+    thumbnail:
+      "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_video.png",
+    type: ["image", "item"],
     styles: videoStyles,
     editing: ({ values, editingInfo }) => {
       let fields = [...editingInfo.fields];
@@ -58,9 +60,9 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         required: true,
         componentTypes: ["button"],
         group: "Playback control",
-        visible: (values) => {
-          return values.enablePlaybackControls;
-        },
+        // visible: (values) => {
+        //   return values.enablePlaybackControls;
+        // },
       },
       {
         prop: "PauseButton",
@@ -69,9 +71,9 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         required: true,
         componentTypes: ["button"],
         group: "Playback control",
-        visible: (values) => {
-          return values.enablePlaybackControls;
-        },
+        // visible: (values) => {
+        //   return values.enablePlaybackControls;
+        // },
       },
       {
         prop: "autoplay",
@@ -97,9 +99,9 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         required: true,
         componentTypes: ["button"],
         group: "Sound control",
-        visible: (values) => {
-          return values.enableSoundControls;
-        },
+        // visible: (values) => {
+        //   return values.enableSoundControls;
+        // },
       },
       {
         prop: "UnmuteButton",
@@ -108,16 +110,21 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         required: true,
         componentTypes: ["button"],
         group: "Sound control",
-        visible: (values) => {
-          return values.enableSoundControls;
-        },
+        // visible: (values) => {
+        //   return values.enableSoundControls;
+        // },
       },
 
       {
         prop: "controlsPosition",
-        label: "Controls position",
+        label: "Position",
         type: "select$",
-        options: ["top-left", "top-right", "bottom-left", "bottom-right"],
+        options: [
+          { value: "top-left", label: "Top left" },
+          { value: "top-right", label: "Top right" },
+          { value: "bottom-left", label: "Bottom left" },
+          { value: "bottom-right", label: "Bottom right" },
+        ],
         visible: (values) => {
           return values.enablePlaybackControls;
         },

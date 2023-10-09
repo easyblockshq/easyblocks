@@ -14,7 +14,6 @@ const rootGridComponentDefinition: InternalRenderableComponentDefinition<"$RootG
         },
       };
     },
-    tags: ["root", "notrace"],
     schema: [
       {
         prop: "data",

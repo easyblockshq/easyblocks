@@ -16,7 +16,6 @@ import { BasicCardCompiledValues } from "./BasicCard.types";
 export const basicCardDefinition: InternalRenderableComponentDefinition<"$BasicCard"> =
   {
     id: "$BasicCard",
-    tags: ["notrace"],
     pasteSlots: ["Stack"],
     styles: basicCardStyles,
     // @ts-expect-error

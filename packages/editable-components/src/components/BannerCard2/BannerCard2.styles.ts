@@ -164,7 +164,8 @@ function styles(
    *
    */
 
-  const shouldActivateCardLink = !isEditing && config.action.length > 0;
+  // const shouldActivateCardLink = !isEditing && config.action.length > 0;
+  const shouldActivateCardLink = false; // for now card links are disabled
 
   const borderInfo = getBorderInfo(config);
 
@@ -294,20 +295,20 @@ function styles(
       pointerEvents: shouldActivateCardLink ? "none" : "auto",
       ...rootStyles,
     }),
-
-    Link: box({
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      opacity: 0,
-      cursor: "pointer",
-
-      display: shouldActivateCardLink ? "block" : "none",
-      pointerEvents: "auto",
-      __action: "action",
-    }),
+    //
+    // Link: box({
+    //   position: "absolute",
+    //   top: 0,
+    //   left: 0,
+    //   width: "100%",
+    //   height: "100%",
+    //   opacity: 0,
+    //   cursor: "pointer",
+    //
+    //   display: shouldActivateCardLink ? "block" : "none",
+    //   pointerEvents: "auto",
+    //   // __action: "action",
+    // }),
 
     SidePhotoContainer: box({
       position: "relative",

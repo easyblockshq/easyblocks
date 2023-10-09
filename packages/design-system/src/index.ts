@@ -37,3 +37,4 @@ export {
   TooltipContent,
   TooltipTrigger,
 } from "./Tooltip/Tooltip";
+export * from "./NavigationController/NavigationController";

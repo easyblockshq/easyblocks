@@ -28,7 +28,6 @@ const richTextLineElementEditableComponent: InternalRenderableComponentDefinitio
       },
     ],
     styles: richTextLineElementStyles,
-    tags: ["notrace"],
   };
 
 type RichTextLineElementComponentConfig = EditableComponentToComponentConfig<

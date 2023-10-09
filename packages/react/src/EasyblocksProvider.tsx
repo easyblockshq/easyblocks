@@ -1,7 +1,6 @@
 "use client";
 import React, { createContext, ReactNode, useContext } from "react";
 import { ImageProps, StandardImage } from "./StandardImage";
-import { StandardLinkProvider } from "./StandardLink";
 import { ActionHandler, LinkProvider, EasyblocksButton } from "./types";
 import { easyblocksStitchesInstances } from "./ssr";
 import { createStitches } from "@stitches/core";
@@ -53,10 +52,7 @@ function createEasyblocksProviderContextValue(
     components: props.components ?? {},
     buttons: props.buttons ?? {},
     actions: props.actions ?? {},
-    links: {
-      ...props.links,
-      $StandardLink: StandardLinkProvider,
-    },
+    links: props.links ?? {},
     Image: props.Image ?? StandardImage,
     eventSink: props.eventSink ?? function () {},
     stitches: easyblocksStitchesInstances[0],

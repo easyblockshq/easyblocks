@@ -231,11 +231,16 @@ const SubComponentPanelButton = ({
     `Shopstory can’t find custom component with id: ${config._template} in your project. Please contact your developers to resolve this issue.`;
   const showError = componentDefinition === undefined;
 
-  const sidebarPreview = componentDefinition?.getEditorSidebarPreview?.(
-    config,
-    externalData,
-    editorContext
-  );
+  const sidebarPreview =
+    componentDefinition?.getEditorSidebarPreview?.(
+      config,
+      externalData,
+      editorContext
+    ) ??
+    (componentDefinition?.thumbnail && {
+      type: "image",
+      url: componentDefinition.thumbnail,
+    });
 
   const thumbnail: ThumbnailType | undefined = (() => {
     if (!sidebarPreview) {

@@ -1,5 +1,4 @@
 import {
-  AnyTemplate,
   CompilationContextType,
   componentPickerClosed,
   ComponentPickerOpenedEvent,
@@ -37,6 +36,7 @@ import {
   Locale,
   LocalisedDocument,
   NonEmptyRenderableContent,
+  Template,
 } from "@easyblocks/core";
 import { SSColors, SSFonts, useToaster } from "@easyblocks/design-system";
 import { assertDefined } from "@easyblocks/utils";
@@ -575,9 +575,7 @@ const EditorContent = ({
 
   const isMaster = !!props.config.__masterEnvironment;
 
-  const [templates, setTemplates] = useState<
-    Record<string, AnyTemplate[]> | undefined
-  >(undefined);
+  const [templates, setTemplates] = useState<Template[] | undefined>(undefined);
 
   const [openTemplateModalAction, setOpenTemplateModalAction] = useState<
     OpenTemplateModalAction | undefined
@@ -678,13 +676,6 @@ const EditorContent = ({
     logSelectedItems: () => {
       logItems(editorContext.form, focussedField);
     },
-    getTemplates(componentTypes) {
-      if (!templates) {
-        return [];
-      }
-
-      return templates[componentTypes[0]] ?? [];
-    },
   };
 
   const [isAdminMode, setAdminMode] = useState(false);
@@ -696,9 +687,11 @@ const EditorContent = ({
   }, [externalData]);
 
   const syncTemplates = () => {
-    getTemplates(editorContext, apiClient).then((newTemplates) => {
-      setTemplates(newTemplates);
-    });
+    getTemplates(editorContext, apiClient, props.config.templates ?? []).then(
+      (newTemplates) => {
+        setTemplates(newTemplates);
+      }
+    );
   };
 
   useEffect(() => {

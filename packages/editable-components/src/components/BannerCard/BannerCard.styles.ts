@@ -362,19 +362,19 @@ function styles(
       ...rootStyles,
     }),
 
-    Link: box({
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      opacity: 0,
-      cursor: "pointer",
-
-      display: shouldActivateCardLink ? "block" : "none",
-      pointerEvents: shouldActivateCardLink ? "auto" : "none",
-      __action: "action",
-    }),
+    // Link: box({
+    //   position: "absolute",
+    //   top: 0,
+    //   left: 0,
+    //   width: "100%",
+    //   height: "100%",
+    //   opacity: 0,
+    //   cursor: "pointer",
+    //
+    //   display: shouldActivateCardLink ? "block" : "none",
+    //   pointerEvents: shouldActivateCardLink ? "auto" : "none",
+    //   __action: "action",
+    // }),
 
     SidePhotoContainer: box({
       // display: mainImageOn ? "block" : "none",

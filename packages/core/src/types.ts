@@ -213,7 +213,7 @@ export type FontSchemaProp = SchemaPropShared<
 
 export type IconSchemaProp = SchemaPropShared<"icon", RefValue<string>>;
 
-export type ComponentPickerType = "large" | "small";
+export type ComponentPickerType = "large" | "large-3" | "compact";
 
 export type PassedField =
   | { name: string; label: string; showWhen?: any; group?: string }
@@ -382,26 +382,52 @@ export interface TracingEvent {
 
 export type EventSink = (event: TracingEvent) => void;
 
-export type TemplateBase = {
-  id?: string;
-  label?: string;
-  type?: string;
-  previewImage?: string;
-  group?: string;
+
+export type UserDefinedTemplate = {
+  id: string;
+  label: string;
+  thumbnail?: string;
+  config: ConfigComponent;
+  isUserDefined: true;
 };
 
-export type Template = TemplateBase & {
-  isGroupEmptyTemplate?: boolean;
-  mapTo?: string | string[];
-  isDefaultTextModifier?: boolean; // maybe to remove in the future. But we need to know which template is default text modifier!
-  config: ComponentConfig;
-  configId?: string;
-  isRemoteUserDefined?: boolean;
-  previewSettings?: {
-    width: number;
-    widthAuto: boolean;
-  };
+export type InternalTemplate = {
+  id: string;
+  label?: string;
+  thumbnail?: string;
+  config: ConfigComponent;
+  isUserDefined?: false;
 };
+
+export type Template = InternalTemplate | UserDefinedTemplate;
+
+//
+// export type Template = {
+//   id?: string;
+//   label?: string;
+//   thumbnail?: string;
+//
+//   config: ConfigComponent
+//
+//   isUserDefined?: boolean,
+//
+//
+//   // type?: string;
+//   // previewImage?: string;
+//   // group?: string;
+//   // isGroupEmptyTemplate?: boolean;
+//   // mapTo?: string | string[];
+//
+//   // isDefaultTextModifier?: boolean; // maybe to remove in the future. But we need to know which template is default text modifier!
+//
+//   // config: ConfigComponent;
+//   // configId?: string;
+//   // isRemoteUserDefined?: boolean;
+//   // previewSettings?: {
+//   //   width: number;
+//   //   widthAuto: boolean;
+//   // };
+// };
 
 type RuntimeConfigThemeValue<T> = {
   id: string;
@@ -454,13 +480,21 @@ export type RootContainer = {
 type EditableComponentDefinition = {
   id: string;
   schema: Array<SchemaProp>;
-  tags: Array<string>;
+  type?: string | string[];
   label?: string;
   styles?: any;
   editing?: any;
   auto?: any;
   pasteSlots?: Array<string>;
 };
+
+//
+// type EditableComponentDefinition = {
+//   id: string;
+//   schema: Array<SchemaProp>;
+//   type?: string | string[];
+//   label?: string;
+// };
 
 export type Config = {
   accessToken: string;
@@ -475,9 +509,7 @@ export type Config = {
   boxShadows?: RuntimeConfigThemeValue<string>[];
   containerWidths?: RuntimeConfigThemeValue<number>[];
   buttons?: ButtonCustomComponent[];
-  components?: Array<EditableComponentDefinition | CustomComponent>;
-  actions?: CustomAction[];
-  links?: CustomLink[];
+  components?: Array<EditableComponentDefinition>;
   devices?: ConfigDevices;
   textModifiers?: Array<CustomTextModifier>;
   __masterEnvironment?: boolean;
@@ -485,6 +517,7 @@ export type Config = {
   locales?: Array<Locale>;
   rootContainers?: Record<string, RootContainer>;
   disableCustomTemplates?: boolean;
+  templates?: InternalTemplate[];
 };
 
 export type PreviewMetadata =
@@ -650,8 +683,10 @@ type SidebarPreviewVariant = { description?: string } & (
 export type ComponentDefinitionShared<Identifier extends string = string> = {
   id: Identifier;
   label?: string;
-  tags: string[];
+  type?: string | string[];
   schema: SchemaProp[];
+  thumbnail?: string;
+
   change?: ComponentConfigChangeFunction;
   icon?: "link" | "grid_3x3";
   getEditorSidebarPreview?: (
@@ -660,6 +695,9 @@ export type ComponentDefinitionShared<Identifier extends string = string> = {
     editorContext: EditorSidebarPreviewOptions
   ) => SidebarPreviewVariant | undefined;
   previewImage?: string;
+
+  hideTemplates?: boolean;
+  allowSave?: boolean;
 };
 
 export type SerializedRenderableComponentDefinition =

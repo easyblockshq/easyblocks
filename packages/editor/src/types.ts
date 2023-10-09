@@ -93,7 +93,6 @@ export type ActionsType = {
     configChangeCallback: Callback
   ) => void;
   logSelectedItems: () => void;
-  getTemplates: (componentTypes: Array<string>) => Array<AnyTemplate>;
   notify: (message: string) => void;
 };
 

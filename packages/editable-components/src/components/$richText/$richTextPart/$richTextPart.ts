@@ -136,7 +136,6 @@ const richTextPartEditableComponent: InternalRenderableComponentDefinition<"$ric
       },
     ],
     editing,
-    tags: ["notrace"],
     styles: richTextPartStyles,
   };
 

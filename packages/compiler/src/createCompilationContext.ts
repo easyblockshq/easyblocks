@@ -1,13 +1,6 @@
 import {
-  buttonActionSchemaProp,
-  buttonLabelSchemaProp,
-  buttonOptionalIconSchemaProp,
-  buttonRequiredIconSchemaProp,
   CompilationContextType,
   DEFAULT_DEVICES,
-  InternalActionComponentDefinition,
-  InternalLinkDefinition,
-  InternalRenderableComponentDefinition,
   InternalTextModifierDefinition,
   parseSpacing,
   responsiveValueMap,
@@ -21,14 +14,10 @@ import {
   EditorLauncherProps,
   ExternalSchemaProp,
   ResponsiveValue,
-  SchemaProp,
   Spacing,
   Theme,
 } from "@easyblocks/core";
-import {
-  actionTextModifier,
-  StandardLink,
-} from "@easyblocks/editable-components";
+import { actionTextModifier } from "@easyblocks/editable-components";
 import { buildFullTheme } from "./buildFullTheme";
 import {
   themeObjectValueToResponsiveValue,
@@ -99,27 +88,6 @@ export function createCompilationContext(
     boxShadows: {},
   };
 
-  // Main grid values
-  theme.space["grid.containerMargin"] = {
-    type: "dev",
-    value: normalizeSpace(themeScalarValueToResponsiveValue(32, devices)),
-  };
-
-  theme.space["grid.horizontalGap"] = {
-    type: "dev",
-    value: normalizeSpace(themeScalarValueToResponsiveValue(16, devices)),
-  };
-
-  theme.space["grid.verticalGap"] = {
-    type: "dev",
-    value: normalizeSpace(themeScalarValueToResponsiveValue(16, devices)),
-  };
-
-  theme.numberOfItemsInRow["grid"] = {
-    type: "dev",
-    value: themeScalarValueToResponsiveValue("4", devices),
-  }; // fill necessary to prevent auto
-
   // TODO: allow for custom breakpoints!!! What happens with old ones when the new ones show up?
 
   if (config.space) {
@@ -155,23 +123,6 @@ export function createCompilationContext(
       };
     });
   }
-
-  // if (config.tokenMapping?.colors) {
-  //   for (const masterTokenId in config.tokenMapping?.colors) {
-  //     const mappedTokenId = config.tokenMapping?.colors[masterTokenId];
-  //     const mappedToken = config.colors?.find(
-  //       (token) => token.id === mappedTokenId
-  //     );
-  //
-  //     if (mappedToken) {
-  //       theme.tokenMapping.colors[masterTokenId] = mappedTokenId;
-  //     } else {
-  //       console.warn(
-  //         `Wrong token mapping. Token "${mappedTokenId}" doesn't exist, you try to map ${masterTokenId} to it.`
-  //       );
-  //     }
-  //   }
-  // }
 
   if (config.fonts) {
     // fonts are a bit more complex because they're objects
@@ -240,87 +191,7 @@ export function createCompilationContext(
   const fetchingContext = createFetchingContext(config);
   const rootContainers = buildRootContainers(config.rootContainers, devices);
 
-  const actions: Array<InternalActionComponentDefinition> = (
-    config.actions || []
-  ).map((action) => ({
-    ...action,
-    tags: ["action"],
-  }));
-
-  const components: Array<InternalRenderableComponentDefinition> = [
-    ...(config.components || []).map((component) => {
-      if ("tags" in component) {
-        return component;
-      }
-
-      const customComponent: InternalRenderableComponentDefinition = {
-        id: component.id,
-        schema: component.schema,
-        tags: [component.type ?? "item"],
-        previewImage: component.previewImage,
-        label: component.label,
-      };
-
-      return customComponent;
-    }),
-    ...(config.buttons || []).map((component) => {
-      const customComponent = {
-        ...component,
-        tags: ["button"],
-      };
-
-      // Check if user didn't set label / symbol properties
-      const userDefinedLabel = component.schema.find(
-        (schemaProp) => schemaProp.prop === "label"
-      );
-      if (userDefinedLabel) {
-        throw new Error(
-          `Your custom component "${component.id}" have a prop named "label". You can't use it as it's a reserved prop.`
-        );
-      }
-      const userDefinedSymbol = component.schema.find(
-        (schemaProp) => schemaProp.prop === "symbol"
-      );
-      if (userDefinedSymbol) {
-        throw new Error(
-          `Your custom component "${component.id}" have a prop named "symbol". You can't use it as it's a reserved prop.`
-        );
-      }
-
-      const buttonSchemaProps: SchemaProp[] = [];
-
-      buttonSchemaProps.push(buttonActionSchemaProp);
-
-      const { label, symbol } = component.builtinProps || {};
-
-      if (label !== "off") {
-        buttonSchemaProps.push(buttonLabelSchemaProp);
-      } else {
-        buttonSchemaProps.push({ ...buttonLabelSchemaProp, visible: false });
-      }
-
-      if (symbol === "optional") {
-        buttonSchemaProps.push(buttonOptionalIconSchemaProp);
-      } else if (symbol === "on") {
-        buttonSchemaProps.push(buttonRequiredIconSchemaProp);
-      } else {
-        buttonSchemaProps.push({
-          ...buttonOptionalIconSchemaProp,
-          visible: false, // by default symbol is not visible
-        });
-      }
-
-      customComponent.schema = [
-        ...buttonSchemaProps,
-        ...customComponent.schema.map((x) => ({
-          ...x,
-          group: x.group || "Properties",
-        })),
-      ];
-
-      return customComponent;
-    }),
-  ];
+  const components = config.components ?? [];
 
   const activeRootContainer = rootContainers.find(
     (r) => r.id === rootContainer
@@ -356,32 +227,23 @@ export function createCompilationContext(
     });
   }
 
-  const links: Array<InternalLinkDefinition> = [
-    StandardLink,
-    ...(config.links || []).map((linkConfig) => ({
-      ...linkConfig,
-      tags: ["actionLink"],
-    })),
-  ];
-
   const textModifiers: Array<InternalTextModifierDefinition> = [
+    actionTextModifier,
     {
       id: "$MissingTextModifier",
-      tags: ["actionTextModifier"],
+      type: "actionTextModifier",
       schema: [],
       apply: () => {
         return {};
       },
     },
-    actionTextModifier,
     ...(config.textModifiers ?? []).map((modifier) => {
       return {
         ...modifier,
-        tags: [
+        type:
           modifier.type === "text"
             ? "textModifier"
             : `${modifier.type}TextModifier`,
-        ],
       };
     }),
   ];
@@ -391,8 +253,8 @@ export function createCompilationContext(
     theme: buildFullTheme(theme),
     definitions: {
       components,
-      actions,
-      links,
+      actions: [],
+      links: [],
       textModifiers,
     },
     types: fetchingContext.types,
@@ -438,6 +300,10 @@ function buildRootContainers(
               containerWidth > currentDevice.w ? "100%" : containerWidth,
             ];
           })
+        );
+      } else {
+        resultRootContainer.widths = Object.fromEntries(
+          devices.map((device) => [device.id, device.w])
         );
       }
 

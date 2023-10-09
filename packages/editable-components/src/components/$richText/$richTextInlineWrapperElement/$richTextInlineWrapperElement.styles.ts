@@ -11,22 +11,9 @@ type RichTextActionElementStateAndProps = {
 };
 
 export default function styles(
-  {
-    action,
-    elements,
-    // textModifier,
-    actionTextModifier,
-  }: RichTextActionElementStateAndProps,
+  { action, elements, actionTextModifier }: RichTextActionElementStateAndProps,
   t: CompiledComponentStylesToolkit
 ) {
-  const actionStyles =
-    action.length > 0
-      ? {
-          __action: "action",
-          background: "transparent",
-        }
-      : {};
-
   const { modifierStyles, childStyles } = getTextModifierStyles(
     actionTextModifier,
     t.compilationContext
@@ -47,7 +34,6 @@ export default function styles(
     Link: box(
       {
         pointerEvents: "auto",
-        ...actionStyles,
         ...modifierStyles,
       },
       t.compilationContext.isEditing ? "span" : "a"

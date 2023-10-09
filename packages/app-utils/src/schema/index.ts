@@ -70,10 +70,7 @@ export function isSchemaPropComponentOrComponentCollection(
 export function isSchemaPropAction(schemaProp: SchemaProp) {
   return (
     schemaProp.type === "component" &&
-    ((schemaProp as ComponentSchemaProp).componentTypes?.includes("action") ||
-      (schemaProp as ComponentSchemaProp).componentTypes?.includes(
-        "actionLink"
-      ))
+    (schemaProp as ComponentSchemaProp).componentTypes?.includes("action")
   );
 }
 

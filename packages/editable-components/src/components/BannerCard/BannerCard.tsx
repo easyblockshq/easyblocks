@@ -11,12 +11,12 @@ function BannerCard(props: any) {
     StackContainer,
     StackInnerContainer,
     SideImage,
-    Link,
+    // Link,
   } = props.__fromEditor.components;
 
   return (
     <Container>
-      <Link />
+      {/*<Link />*/}
 
       <SidePhotoContainer>
         <SideImage />

@@ -1,0 +1,213 @@
+{
+  "_id": "a1aeb01c-abef-4232-b290-4d72ea4ab70f",
+  "_template": "$Grid",
+  "traceId": "$Grid-02f1062e",
+  "_itemProps": {
+    "$RootSections": {
+      "data": {
+        "topMargin": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
+        "bottomMargin": { "$res": true, "xl": { "value": "32px", "ref": "32" } }
+      }
+    }
+  },
+  "hide": { "$res": true, "xl": false },
+  "Component": [
+    {
+      "_id": "d7934ab7-b32a-45dd-85a1-b2deccdb0f97",
+      "_template": "$GridCard",
+      "traceId": "$GridCard-b549ac8a",
+      "Cards": [],
+      "variant": { "$res": true, "xl": "slider" },
+      "numberOfItems": { "$res": true, "xl": "4" },
+      "fractionalItemWidth": { "$res": true, "xl": "1.25" },
+      "columnGap": { "$res": true, "xl": { "value": "16px", "ref": "16" } },
+      "rowGap": { "$res": true, "xl": { "value": "16px", "ref": "16" } },
+      "verticalAlign": { "$res": true, "xl": "top" },
+      "showSliderControls": { "$res": true, "xl": false },
+      "shouldSliderItemsBeVisibleOnMargin": { "$res": true, "xl": true },
+      "gridMainObjectAspectRatio": {
+        "$res": true,
+        "xl": { "value": "4:5", "ref": "$gridMainObjectDefault" }
+      },
+      "borderEnabled": false,
+      "borderColor": {
+        "$res": true,
+        "xl": { "value": "black", "ref": "$dark" }
+      },
+      "borderTop": { "$res": true, "xl": "1" },
+      "borderBottom": { "$res": true, "xl": "1" },
+      "borderLeft": { "$res": true, "xl": "1" },
+      "borderRight": { "$res": true, "xl": "1" },
+      "borderInner": { "$res": true, "xl": "1" },
+      "paddingTop": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
+      "paddingBottom": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
+      "paddingLeft": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
+      "paddingRight": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
+      "LeftArrow": [
+        {
+          "_id": "f6a1a035-a9a2-4c82-94cc-fd4d627831a0",
+          "_template": "$StandardButton",
+          "_master": "buttonDark",
+          "traceId": "$StandardButton-4b752bd7",
+          "_itemProps": { "$GridCard": { "LeftArrow": {} } },
+          "action": [],
+          "variant": "icon",
+          "label": {
+            "id": "local.8a624c6d-731a-457a-801d-d4ac802527a3",
+            "value": { "en-US": "Click me" }
+          },
+          "icon": {
+            "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"red\" width=\"100px\" height=\"100px\"><path d=\"M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z\"/></svg>",
+            "ref": "arrowLeft"
+          },
+          "color": { "$res": true, "xl": { "ref": "dark", "value": "black" } },
+          "minHeight": { "$res": true, "xl": "42" },
+          "minWidth": { "$res": true, "xl": "100" },
+          "horizontalPadding": {
+            "$res": true,
+            "xl": { "value": "16px", "ref": "16" }
+          },
+          "gap": { "$res": true, "xl": { "value": "6px", "ref": "6" } },
+          "cornerMode": { "$res": true, "xl": "circled" },
+          "cornerRadius": { "$res": true, "xl": "12" },
+          "font": {
+            "$res": true,
+            "xl": {
+              "value": {
+                "$res": true,
+                "2xl": {
+                  "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
+                  "fontSize": 16,
+                  "fontWeight": 500,
+                  "lineHeight": 1.2
+                }
+              },
+              "ref": "body2.bold"
+            }
+          },
+          "underline": "off",
+          "underlineOffset": { "$res": true, "xl": "1" },
+          "iconSize": { "$res": true, "xl": "24" },
+          "hasBackground": true,
+          "backgroundColor": {
+            "$res": true,
+            "xl": { "ref": "transparent-grey-light", "value": "#D8D8D880" }
+          },
+          "hasBorder": false,
+          "borderWidth": { "$res": true, "xl": "1" },
+          "borderColor": {
+            "$res": true,
+            "xl": { "value": "black", "ref": "$dark" }
+          },
+          "boxShadow": {
+            "$res": true,
+            "xl": { "value": "none", "ref": "none" }
+          }
+        }
+      ],
+      "leftArrowPlacement": { "$res": true, "xl": "center" },
+      "leftArrowOffset": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
+      "RightArrow": [
+        {
+          "_id": "1b082e6b-5e5f-458d-b994-b137c2b89ecb",
+          "_template": "$StandardButton",
+          "_master": "buttonDark",
+          "traceId": "$StandardButton-33c4e595",
+          "_itemProps": { "$GridCard": { "RightArrow": {} } },
+          "action": [],
+          "variant": "icon",
+          "label": {
+            "id": "local.5d8a4d7d-4ece-44f5-bf4e-daae6bae469b",
+            "value": { "en-US": "Click me" }
+          },
+          "icon": {
+            "ref": "arrowRight",
+            "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z\"/></svg>"
+          },
+          "color": { "$res": true, "xl": { "ref": "dark", "value": "black" } },
+          "minHeight": { "$res": true, "xl": "42" },
+          "minWidth": { "$res": true, "xl": "100" },
+          "horizontalPadding": {
+            "$res": true,
+            "xl": { "value": "16px", "ref": "16" }
+          },
+          "gap": { "$res": true, "xl": { "value": "6px", "ref": "6" } },
+          "cornerMode": { "$res": true, "xl": "circled" },
+          "cornerRadius": { "$res": true, "xl": "12" },
+          "font": {
+            "$res": true,
+            "xl": {
+              "value": {
+                "$res": true,
+                "2xl": {
+                  "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
+                  "fontSize": 16,
+                  "fontWeight": 500,
+                  "lineHeight": 1.2
+                }
+              },
+              "ref": "body2.bold"
+            }
+          },
+          "underline": "off",
+          "underlineOffset": { "$res": true, "xl": "1" },
+          "iconSize": { "$res": true, "xl": "24" },
+          "hasBackground": true,
+          "backgroundColor": {
+            "$res": true,
+            "xl": { "ref": "transparent-grey-light", "value": "#D8D8D880" }
+          },
+          "hasBorder": false,
+          "borderWidth": { "$res": true, "xl": "1" },
+          "borderColor": {
+            "$res": true,
+            "xl": { "value": "black", "ref": "$dark" }
+          },
+          "boxShadow": {
+            "$res": true,
+            "xl": { "value": "none", "ref": "none" }
+          }
+        }
+      ],
+      "rightArrowPlacement": { "$res": true, "xl": "center" },
+      "rightArrowOffset": { "$res": true, "xl": { "value": "0px", "ref": "0" } }
+    }
+  ],
+  "containerMargin": {
+    "$res": true,
+    "xl": {
+      "value": { "$res": true, "xl": "5vw" },
+      "ref": "containerMargin.default"
+    }
+  },
+  "containerMaxWidth": {
+    "$res": true,
+    "xl": { "value": "none", "ref": "none" }
+  },
+  "escapeMargin": { "$res": true, "xl": false },
+  "headerMode": "none",
+  "layout1Stack": "left",
+  "layout2Stacks": { "$res": true, "xl": "left-right" },
+  "layout2StacksVerticalAlign": { "$res": true, "xl": "center" },
+  "headerStacksGap": { "$res": true, "xl": { "value": "12px", "ref": "12" } },
+  "headerSectionGap": { "$res": true, "xl": { "value": "12px", "ref": "12" } },
+  "footerSectionGap": { "$res": true, "xl": { "value": "12px", "ref": "12" } },
+  "HeaderStack": [
+    {
+      "_id": "c853d2c3-2405-4e9c-aab8-565f8203ef83",
+      "_template": "$stack",
+      "traceId": "$stack-af8854fe",
+      "Items": []
+    }
+  ],
+  "HeaderSecondaryStack": [
+    {
+      "_id": "43ec4c36-7507-4018-baa0-f1a4836e0949",
+      "_template": "$stack",
+      "traceId": "$stack-8e996987",
+      "Items": []
+    }
+  ],
+  "Background__": [],
+  "padding": { "$res": true, "xl": { "value": "24px", "ref": "24" } }
+}

@@ -4,12 +4,10 @@ import { Media } from "../Media/Media";
 import { ShopifyProduct } from "@/data/shopify";
 import { formatPrice } from "@/data/shopify/formatPrice";
 
-const ProductCard: FC<{
-  product: ShopifyProduct;
-  relatedProductsMode: "enabled" | "disabled" | "onHover";
-  withBackdrop: Boolean;
-}> = (props) => {
-  const { product, relatedProductsMode, withBackdrop } = props;
+const ProductCard: FC = (props: any) => {
+  const withBackdrop : boolean = props.__fromEditor.props.withBackdrop;
+  const relatedProductsMode : string = props.__fromEditor.props.relatedProductsMode;
+  const product: ShopifyProduct = props.__fromEditor.props.product;
 
   return (
     <div className={`pb-6`} key={product.id}>

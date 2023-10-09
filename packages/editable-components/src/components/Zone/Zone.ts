@@ -11,7 +11,6 @@ const zoneComponentDefinition: InternalRenderableComponentDefinition<"$Zone"> =
       },
     ],
     styles: () => ({}),
-    tags: [],
   };
 
 export { zoneComponentDefinition };
