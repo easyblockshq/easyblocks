@@ -1,10 +1,4 @@
-import {
-  buttonActionSchemaProp,
-  buttonLabelSchemaProp,
-  buttonOptionalIconSchemaProp,
-  buttonRequiredIconSchemaProp,
-  InternalRenderableComponentDefinition,
-} from "@easyblocks/app-utils";
+import { InternalRenderableComponentDefinition } from "@easyblocks/app-utils";
 import {
   ChildComponentEditingInfo,
   EditingComponentFields,
@@ -14,20 +8,11 @@ import {
 } from "@easyblocks/core";
 import { range } from "@easyblocks/utils";
 
-import { bannerCardAuto } from "./components/BannerCard/BannerCard.auto";
-import bannerCardStyles from "./components/BannerCard/BannerCard.styles";
-
 import { bannerCard2Auto } from "./components/BannerCard2/BannerCard2.auto";
 import bannerCard2Styles from "./components/BannerCard2/BannerCard2.styles";
 
 import { twoCardsChange } from "./components/TwoCards/TwoCards.change";
 import twoCardsStyles from "./components/TwoCards/TwoCards.styles";
-
-import tokenStyles from "./components/Token/Token.styles";
-
-import tokenColorStyles from "./components/TokenColor/TokenColor.styles";
-
-import tokenFontStyles from "./components/TokenFont/TokenFont.styles";
 
 import { gridAuto } from "./components/Grid/Grid.auto";
 import grid2Styles from "./components/Grid/Grid.styles";
@@ -1039,7 +1024,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
       id: "$BannerCard2",
       label: "Basic Card",
       type: "card",
-      pasteSlots: ["SideImage", "Stack"],
+      pasteSlots: ["Card1", "Card2"],
       styles: bannerCard2Styles,
       auto: bannerCard2Auto,
       editing: ({ values, editingInfo }) => {

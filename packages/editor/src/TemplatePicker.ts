@@ -13,4 +13,6 @@ export type TemplatePickerProps = {
   onClose: (template?: Template) => void;
 };
 
-export type TemplatePicker<T = {}> = React.FC<TemplatePickerProps & T>;
+export type TemplatePicker<T = Record<never, never>> = React.FC<
+  TemplatePickerProps & T
+>;

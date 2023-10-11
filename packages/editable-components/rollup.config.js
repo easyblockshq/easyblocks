@@ -10,7 +10,7 @@ import {
   isProduction,
   reactGlobals,
 } from "@easyblocks/build-tools";
-import { visualizer } from "rollup-plugin-visualizer";
+import visualizer from "rollup-plugin-visualizer";
 import packageJson from "./package.json";
 
 /**
@@ -70,7 +70,7 @@ const baseConfig = {
     "Separator/Separator.client": "src/components/Separator/Separator.tsx",
     "Stack/Stack.client": "src/components/$stack/$stack.tsx",
     "StandardButton/StandardButton.client":
-      "src/components/StandardButton/StandardButton.tsx",
+      "src/components/StandardButton/StandardButton.client.tsx",
     "TokenButton/TokenButton.client": "src/components/Token/Token.tsx",
     "TokenColor/TokenColor.client": "src/components/TokenColor/TokenColor.tsx",
     "TokenFont/TokenFont.client": "src/components/TokenFont/TokenFont.tsx",

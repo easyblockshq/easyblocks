@@ -5,15 +5,17 @@ import {
   Form,
   parsePath,
 } from "@easyblocks/app-utils";
-import { ComponentSchemaProp, ConfigComponent, isNoCodeComponentOfType } from "@easyblocks/core";
-
+import {
+  ComponentSchemaProp,
+  ConfigComponent,
+  isNoCodeComponentOfType,
+} from "@easyblocks/core";
 import {
   assertDefined,
   dotNotationGet,
   last,
   preOrderPathComparator,
 } from "@easyblocks/utils";
-import { changeComponentConfig } from "./changeComponentConfig";
 import { EditorContextType } from "./EditorContext";
 import { ResolveDestination } from "./paste/destinationResolver";
 import { PasteCommand } from "./paste/manager";
@@ -192,14 +194,14 @@ function moveItems(
         moveItem(form, {
           from: index,
           name: parentPath,
-          to: index - 1,
+          to: index - 2,
         });
 
         if (!wasAnyFieldWithinCurrentGroupMoved) {
           wasAnyFieldWithinCurrentGroupMoved = true;
         }
 
-        nextFocusedFields.push(`${parentPath}.${index - 1}`);
+        nextFocusedFields.push(`${parentPath}.${index - 2}`);
       });
     });
 

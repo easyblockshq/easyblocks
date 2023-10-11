@@ -2,6 +2,7 @@ import {
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
   ComponentFixedSchemaProp,
+  ComponentPickerType,
   ComponentSchemaProp,
   ExternalSchemaProp,
   Field,
@@ -11,8 +12,6 @@ import {
 import { InternalComponentDefinition } from "../types";
 
 type SchemaProp = CoreSchemaProp | Component$$$SchemaProp;
-
-type ComponentPickerType = "large" | "small";
 
 export type Component$$$SchemaProp = SchemaPropShared<"component$$$", never> & {
   definition: InternalComponentDefinition;

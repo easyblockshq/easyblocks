@@ -115,13 +115,34 @@ function itemInserted(
   };
 }
 
+type ItemMovedEvent = MessageEvent<
+  ShopstoryEditorEventData<
+    "@shopstory-editor/item-moved",
+    {
+      fromPath: string;
+      toPath: string;
+    }
+  >
+>;
+
+function itemMoved(
+  payload: InferShopstoryEditorEventData<ItemMovedEvent>["payload"]
+): InferShopstoryEditorEventData<ItemMovedEvent> {
+  return {
+    type: "@shopstory-editor/item-moved",
+    payload,
+  };
+}
+
 export {
   selectionFramePositionChanged,
   richTextChangedEvent,
   componentPickerOpened,
   componentPickerClosed,
   itemInserted,
+  itemMoved,
 };
+
 export type {
   ShopstoryEditorEventData,
   InferShopstoryEditorEventData,
@@ -130,4 +151,5 @@ export type {
   ComponentPickerOpenedEvent,
   ComponentPickerClosedEvent,
   ItemInsertedEvent,
+  ItemMovedEvent,
 };

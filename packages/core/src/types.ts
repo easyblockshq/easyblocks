@@ -226,6 +226,7 @@ export type ComponentSchemaProp = SchemaPropShared<
   componentTypes: string[];
   picker?: ComponentPickerType;
   required?: boolean;
+  noInline?: boolean;
 };
 
 export type ComponentCollectionSchemaProp = SchemaPropShared<
@@ -237,12 +238,13 @@ export type ComponentCollectionSchemaProp = SchemaPropShared<
   hideFields?: string[];
   itemFields?: SchemaProp[];
   passFields?: PassedField[];
+  noInline?: boolean;
 };
 
 export type ComponentCollectionLocalisedSchemaProp = Omit<
   ComponentCollectionSchemaProp,
   "type"
-> & { type: "component-collection-localised" };
+> & { type: "component-collection-localised"; noInline?: boolean };
 
 export type ComponentFixedSchemaProp = SchemaPropShared<
   "component-fixed",
@@ -252,6 +254,7 @@ export type ComponentFixedSchemaProp = SchemaPropShared<
   picker?: ComponentPickerType;
   hideFields?: string[];
   passFields?: PassedField[];
+  noInline?: boolean;
 }; // we don't want to set default value for nested components
 
 export type TextSchemaProp = SchemaPropShared<
@@ -381,7 +384,6 @@ export interface TracingEvent {
 }
 
 export type EventSink = (event: TracingEvent) => void;
-
 
 export type UserDefinedTemplate = {
   id: string;
@@ -703,6 +705,7 @@ export type ComponentDefinitionShared<Identifier extends string = string> = {
 export type SerializedRenderableComponentDefinition =
   ComponentDefinitionShared & {
     componentCode?: string; // optional because it might be also an action or built-in component
+    pasteSlots?: Array<string>;
   };
 
 export type SerializedActionComponentDefinition = ComponentDefinitionShared;
@@ -918,6 +921,7 @@ export type CompilationMetadata = {
   vars: {
     devices: Devices;
     locale: string;
+    definitions: SerializedComponentDefinitions;
     [key: string]: any;
   };
 };

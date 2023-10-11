@@ -81,4 +81,5 @@ export const defaultTheme: Theme = {
   boxShadows: {
     none: { value: "none", type: "dev" },
   },
+  numberOfItemsInRow: {},
 };

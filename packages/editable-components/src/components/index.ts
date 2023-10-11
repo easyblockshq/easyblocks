@@ -27,7 +27,7 @@ import IconButton_v2 from "./IconButton/v2/IconButton";
 import Placeholder from "./Placeholder/Placeholder";
 import Playground from "./Playground/Playground.client";
 import Separator from "./Separator/Separator";
-import StandardButton from "./StandardButton/StandardButton";
+import StandardButton from "./StandardButton/StandardButton.client";
 import Token from "./Token/Token";
 import TokenColor from "./TokenColor/TokenColor";
 import TokenFont from "./TokenFont/TokenFont";

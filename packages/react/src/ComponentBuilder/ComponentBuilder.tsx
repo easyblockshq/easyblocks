@@ -10,9 +10,7 @@ import {
   isCompoundExternalDataValue,
   isEmptyRenderableContent,
   isExternalSchemaProp,
-  isSchemaPropAction,
   isSchemaPropActionTextModifier,
-  isSchemaPropCollection,
   isSchemaPropComponent,
   isSchemaPropComponentOrComponentCollection,
   isSchemaPropTextModifier,
@@ -50,8 +48,8 @@ import {
   EasyblocksProviderContextValue,
   useEasyblocksProviderContext,
 } from "../EasyblocksProvider";
-import EditableComponentBuilderEditor from "../EditableComponentBuilder/EditableComponentBuilder";
 import EditableComponentBuilderClient from "../EditableComponentBuilder/EditableComponentBuilder.client";
+import EditableComponentBuilderEditor from "../EditableComponentBuilder/EditableComponentBuilder.editor";
 import MissingComponent from "../MissingComponent";
 import Placeholder from "../Placeholder";
 
@@ -86,7 +84,6 @@ function buildBoxes(
   }
   return compiled;
 }
-
 
 function getComponentDefinition(
   compiled: CompiledComponentConfig,
@@ -217,6 +214,7 @@ function getRenderabilityStatus(
 }
 
 function getCompiledSubcomponents(
+  id: string,
   compiledArray: (
     | CompiledShopstoryComponentConfig
     | CompiledCustomComponentConfig
@@ -238,10 +236,12 @@ function getCompiledSubcomponents(
   }
 
   if (schemaProp.noInline) {
-    const elements = compiledArray.map((compiledChild, index) => <ComponentBuilder path={`${path}.${index}`} compiled={compiledChild} />);
+    const elements = compiledArray.map((compiledChild, index) => (
+      <ComponentBuilder path={`${path}.${index}`} compiled={compiledChild} />
+    ));
 
     if (isSchemaPropComponent(schemaProp)) {
-      return elements[0]
+      return elements[0];
     } else {
       return elements;
     }
@@ -276,6 +276,8 @@ function getCompiledSubcomponents(
     const type = getComponentMainType(componentTypes);
     elements = [
       <Placeholder
+        id={id}
+        path={path}
         type={type}
         onClick={() => {
           function handleComponentPickerCloseMessage(
@@ -330,10 +332,10 @@ type ComponentBuilderComponent = React.FC<ComponentBuilderProps>;
 function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
   const { compiled, passedProps, path, ...restProps } = props;
 
-  const allPassedProps = {
+  const allPassedProps: Record<string, any> = {
     ...passedProps,
-    ...restProps
-  }
+    ...restProps,
+  };
 
   const easyblocksProvider = useEasyblocksProviderContext();
   const meta = useEasyblocksMetadata();
@@ -369,11 +371,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
     }
 
     if (isMissingComponent) {
-      return (
-        <MissingComponent error={true}>
-          Missing
-        </MissingComponent>
-      );
+      return <MissingComponent error={true}>Missing</MissingComponent>;
     } else {
       return (
         <MissingComponent component={componentDefinition} error={true}>
@@ -434,6 +432,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
         shopstoryCompiledConfig.components[schemaProp.prop];
 
       styled[schemaProp.prop] = getCompiledSubcomponents(
+        compiled._id,
         compiledChildren,
         contextProps,
         schemaProp,

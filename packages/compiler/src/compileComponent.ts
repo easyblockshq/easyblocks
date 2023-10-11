@@ -34,7 +34,6 @@ import {
   AnyEditingField,
   ChildComponentEditingInfo,
   CompilationMetadata,
-  CompiledActionComponentConfig,
   CompiledCustomComponentConfig,
   CompiledShopstoryComponentConfig,
   CompiledTextModifier,
@@ -46,14 +45,13 @@ import {
   EditingField,
   EditingFunctionResult,
   EditingInfo,
-  EventSourceType,
-  SpaceSchemaProp,
   FieldPortal,
   RefMap,
   SchemaProp,
-  SerializedComponentDefinition,
+  SerializedComponentDefinitions,
+  SerializedRenderableComponentDefinition,
+  SpaceSchemaProp,
   TrulyResponsiveValue,
-  isNoCodeComponentOfType,
 } from "@easyblocks/core";
 import {
   RichTextComponentConfig,
@@ -82,7 +80,6 @@ import { compileFromSchema } from "./compileFromSchema";
 import { ConfigComponentCompilationOutput } from "./definitions";
 import { getMostCommonValueFromRichTextParts } from "./getMostCommonValueFromRichTextParts";
 import { linearizeSpace } from "./linearizeSpace";
-import { isTracingSchemaProp } from "./tracing";
 
 type ComponentCompilationArtifacts = {
   compiledComponentConfig:
@@ -195,8 +192,7 @@ export function compileComponent(
 
   const { $width, $widthAuto } = calculateWidths(
     compilationContext,
-    contextProps,
-    componentDefinition
+    contextProps
   );
 
   if (hasComponentConfigChanged) {
@@ -223,7 +219,8 @@ export function compileComponent(
           ownPropsAfterAuto[schemaProp.prop],
           compilationContext,
           $width,
-          (schemaProp as SpaceSchemaProp).autoConstant ?? DEFAULT_SPACE_AUTO_CONSTANT
+          (schemaProp as SpaceSchemaProp).autoConstant ??
+            DEFAULT_SPACE_AUTO_CONSTANT
         );
       }
     });
@@ -239,7 +236,8 @@ export function compileComponent(
           value,
           compilationContext,
           $width,
-          (arg.itemSchemaProp as SpaceSchemaProp).autoConstant ?? DEFAULT_SPACE_AUTO_CONSTANT
+          (arg.itemSchemaProp as SpaceSchemaProp).autoConstant ??
+            DEFAULT_SPACE_AUTO_CONSTANT
         );
       }
 
@@ -804,7 +802,7 @@ function flattenItemProps(
 function addComponentToSerializedComponentDefinitions(
   component: ConfigComponent,
   meta: CompilationMetadata,
-  componentType: string,
+  componentType: keyof SerializedComponentDefinitions,
   compilationContext: CompilationContextType
 ) {
   const definitions = meta.vars.definitions[componentType];
@@ -818,12 +816,16 @@ function addComponentToSerializedComponentDefinitions(
     compilationContext
   ) as InternalRenderableComponentDefinition;
 
-  const newDef: SerializedComponentDefinition = {
+  const newDef: SerializedRenderableComponentDefinition = {
     id: internalDefinition.id,
     label: internalDefinition.label,
     schema: internalDefinition.schema,
     type: internalDefinition.type,
   };
+
+  if (compilationContext.isEditing) {
+    newDef.pasteSlots = internalDefinition.pasteSlots ?? [];
+  }
 
   definitions.push(newDef);
 }
@@ -1021,19 +1023,13 @@ function compileSubcomponents(
 
 function calculateWidths(
   compilationContext: CompilationContextType,
-  contextProps: ContextProps,
-  componentDefinition: InternalComponentDefinition | undefined
+  contextProps: ContextProps
 ) {
   const $width: TrulyResponsiveValue<number> = { $res: true };
   const $widthAuto: TrulyResponsiveValue<boolean> = { $res: true };
 
   compilationContext.devices.forEach((device) => {
     $width[device.id] = contextProps.$width?.[device.id] ?? -1;
-    // (isNoCodeComponentOfType(componentDefinition, "section") ||
-    // componentDefinition?.tags.includes("root")
-    //   ? device.w
-    //   : -1);
-
     $widthAuto[device.id] =
       contextProps.$widthAuto?.[device.id] ??
       ($width[device.id] === -1 ? true : false);

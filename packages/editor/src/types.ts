@@ -1,4 +1,3 @@
-import { AnyTemplate } from "@easyblocks/app-utils";
 import {
   CompiledShopstoryComponentConfig,
   ComponentConfig,

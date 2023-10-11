@@ -1,4 +1,3 @@
-import { isTemplate } from "@easyblocks/app-utils";
 import { CompiledShopstoryComponentConfig, Template } from "@easyblocks/core";
 import {
   SSButtonGhostColor,
@@ -119,10 +118,6 @@ function getTemplatePreviewImage(
   template: Template,
   editorContext: EditorContextType
 ): string | undefined {
-  if (!isTemplate(template)) {
-    return;
-  }
-
   // template.previewImage is always most important and overrides other sources of preview
   if (template.thumbnail) {
     return template.thumbnail;
@@ -204,7 +199,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
 
         <div></div>
 
-        {isTemplate(template) && template.isUserDefined && (
+        {template.isUserDefined && (
           <SSButtonGhostColor
             className={"editButton"}
             onClick={() => {

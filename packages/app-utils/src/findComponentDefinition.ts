@@ -1,4 +1,5 @@
 import { ConfigComponent } from "@easyblocks/core";
+import { toArray } from "@easyblocks/utils";
 import { splitTemplateName } from "./splitTemplateName";
 import {
   InternalComponentDefinition,
@@ -78,7 +79,9 @@ function $findComponentDefinitionsByTag(
   tag: string,
   context?: AnyContextWithDefinitions
 ): InternalComponentDefinition[] {
-  return allDefs(context).filter((def) => def.tags.includes(tag));
+  return allDefs(context).filter((def) =>
+    toArray(def.type ?? []).includes(tag)
+  );
 }
 
 function $findComponentDefinitionsByComponentType(

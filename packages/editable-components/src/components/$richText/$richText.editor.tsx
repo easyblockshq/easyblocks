@@ -24,6 +24,7 @@ import React, {
   useState,
 } from "react";
 import {
+  BaseSelection,
   createEditor,
   Descendant,
   Editor,
@@ -153,6 +154,7 @@ function RichText(props: RichTextProps) {
   const lastChangeReason = useRef<"external" | "text-input" | "paste">(
     "text-input"
   );
+  const [isEnabled, setIsEnabled] = useState(false);
   const previousRichTextComponentConfig = useRef<RichTextComponentConfig>();
 
   const isConfigChanged = !isConfigEqual(
@@ -500,6 +502,10 @@ function RichText(props: RichTextProps) {
   );
 
   function handleEditableChange(value: Array<Descendant>): void {
+    if (!isEnabled) {
+      return;
+    }
+
     // Editor's value can be changed from outside ex. sidebar or history undo/redo. If the last reason for change
     // was "external", we skip this change. In case we would like to start typing immediately after undo/redo we
     // set last change reason to `text-input`.
@@ -531,6 +537,10 @@ function RichText(props: RichTextProps) {
   }
 
   function handleEditableFocus(): void {
+    if (!isEnabled) {
+      return;
+    }
+
     lastChangeReason.current = "text-input";
 
     // When value for current locale is empty we present the value from fallback.
@@ -608,6 +618,7 @@ function RichText(props: RichTextProps) {
   function handleEditableBlur(): void {
     lastChangeReason.current = "external";
     setIsDecorationActive(true);
+    setIsEnabled(false);
   }
 
   // When copying content from content editable, Slate will copy HTML content of selected nodes
@@ -687,6 +698,7 @@ function RichText(props: RichTextProps) {
     const getStyles = stitches.css({
       display: "flex",
       ...responsiveAlignmentStyles,
+      // cursor: !isEnabled ? "default" : "text",
       "& *::selection": {
         backgroundColor: "#b4d5fe",
       },
@@ -711,11 +723,27 @@ function RichText(props: RichTextProps) {
     isDecorationActive,
     localizedRichTextElements,
     fallbackRichTextElements,
+    isEnabled,
   ]);
+
+  const selectionBeforeEnabling = useRef<BaseSelection>(null);
 
   return (
     <Slate editor={editor} value={editorValue} onChange={handleEditableChange}>
-      <div>
+      <div
+      // onDoubleClick={() => {
+      //   // if (isEnabled) {
+      //   //   return;
+      //   // }
+
+      //   setIsEnabled(true);
+      // }}
+      // onMouseDown={(event) => {
+      //   if (isEnabled) {
+      //     event.stopPropagation();
+      //   }
+      // }}
+      >
         {/* this wrapper div prevents from Chrome bug where "pointer-events: none" on contenteditable is ignored*/}
         <Editable
           className={contentEditableClassname}
@@ -728,6 +756,29 @@ function RichText(props: RichTextProps) {
           onBlur={handleEditableBlur}
           onCopy={handleEditableCopy}
           onPaste={handleEditablePaste}
+          onClick={(event) => {
+            if (event.detail === 1) {
+              JSON.stringify(editor.selection, null, 2);
+              selectionBeforeEnabling.current = editor.selection;
+            }
+
+            if (event.detail === 2) {
+              if (isEnabled) {
+                return false;
+              }
+
+              event.preventDefault();
+              setIsEnabled(true);
+              Transforms.setSelection(editor, selectionBeforeEnabling.current!);
+              selectionBeforeEnabling.current = null;
+            }
+          }}
+          onMouseDown={(event) => {
+            if (isEnabled) {
+              event.stopPropagation();
+            }
+          }}
+          readOnly={!isEnabled}
         />
       </div>
     </Slate>
