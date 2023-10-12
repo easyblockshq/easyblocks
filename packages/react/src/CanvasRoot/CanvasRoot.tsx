@@ -47,8 +47,8 @@ function CanvasRoot(props: CanvasRootProps) {
     <div
       style={rootInlineStyle}
       ref={rootNodeRef}
-      onClick={(event) => {
-        if (editorContext.isEditing && !event.defaultPrevented) {
+      onClick={() => {
+        if (editorContext.isEditing) {
           editorContext.setFocussedField([]);
         }
       }}

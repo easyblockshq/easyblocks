@@ -111,8 +111,14 @@ export function BlocksControls({
         disabled ||
         isMultiSelection ||
         isEntryComponentOrComponentFixed ||
-        (!isActive && !isAncestorComponentActive && !isSiblingComponentActive),
-      droppable: disabled || !canDraggedComponentBeDropped,
+        (!isActive &&
+          !isAncestorComponentActive &&
+          !isSiblingComponentActive &&
+          !isChildComponentActive),
+      droppable:
+        disabled ||
+        isEntryComponentOrComponentFixed ||
+        !canDraggedComponentBeDropped,
     },
     strategy:
       direction === "horizontal"

@@ -698,7 +698,7 @@ function RichText(props: RichTextProps) {
     const getStyles = stitches.css({
       display: "flex",
       ...responsiveAlignmentStyles,
-      // cursor: !isEnabled ? "default" : "text",
+      cursor: !isEnabled ? "inherit" : "text",
       "& *::selection": {
         backgroundColor: "#b4d5fe",
       },
