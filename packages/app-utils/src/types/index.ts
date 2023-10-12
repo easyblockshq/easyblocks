@@ -170,7 +170,6 @@ type EditorActions = {
     configChangeCallback: Callback
   ) => void;
   logSelectedItems: () => void;
-  getTemplates: (componentTypes: Array<string>) => Array<AnyTemplate>;
 };
 
 export type EditorContextType = CompilationContextType & {
@@ -209,7 +208,7 @@ export type EditableComponentToComponentConfig<
   EditableComponent extends {
     id: string;
     label?: string;
-    tags: string[];
+    type?: string | string[];
     schema: Array<SchemaProp>;
   }
 > = ComponentConfigBase<EditableComponent["id"]> & {

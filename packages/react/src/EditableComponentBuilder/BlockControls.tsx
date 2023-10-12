@@ -1,32 +1,51 @@
+import { useDndContext } from "@dnd-kit/core";
+import {
+  horizontalListSortingStrategy,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import {
   isConfigPathRichTextPart,
+  parsePath,
   RICH_TEXT_PART_CONFIG_PATH_REGEXP,
 } from "@easyblocks/app-utils";
+import {
+  CompiledCustomComponentConfig,
+  CompiledShopstoryComponentConfig,
+  ComponentCollectionSchemaProp,
+  SerializedRenderableComponentDefinition,
+} from "@easyblocks/core";
+import { EditorContextType } from "@easyblocks/editor";
+import { toArray } from "@easyblocks/utils";
 import React from "react";
 import { useEasyblocksMetadata } from "../EasyblocksMetadataProvider";
 import { SelectionFrameController } from "./SelectionFrameController";
 
 interface BlocksControlsProps {
-  children: React.ReactChild | React.ReactChild[];
+  children: React.ReactNode;
   path: string;
   disabled?: boolean;
+  direction: "horizontal" | "vertical";
+  id: string;
+  templateId: string;
+  compiled: CompiledShopstoryComponentConfig | CompiledCustomComponentConfig;
 }
 export function BlocksControls({
   children,
   path,
   disabled,
+  direction,
+  id,
+  compiled,
 }: BlocksControlsProps) {
-  const { focussedField, setFocussedField } =
-    window.parent.editorWindowAPI.editorContext;
+  const { focussedField, setFocussedField, form } = window.parent
+    .editorWindowAPI.editorContext as EditorContextType;
 
   const meta = useEasyblocksMetadata();
-
-  if (disabled) {
-    return <>{children}</>;
-  }
+  const dndContext = useDndContext();
 
   const isActive = focussedField
-    .map((focusedField: string) => {
+    .map((focusedField) => {
       // If the focused field is rich text part path, we want to show the frame around rich text parent component.
       if (isConfigPathRichTextPart(focusedField)) {
         return focusedField.replace(RICH_TEXT_PART_CONFIG_PATH_REGEXP, "");
@@ -36,9 +55,74 @@ export function BlocksControls({
     })
     .includes(path);
 
-  const childIsActive = focussedField.some((focusedField: string) =>
+  const isChildComponentActive = focussedField.some((focusedField) =>
     focusedField.startsWith(path)
   );
+
+  const entryPathParseResult = parsePath(path, form);
+  const entryComponentDefinition = meta.vars.definitions.components.find(
+    (c) => c.id === entryPathParseResult.parent!.templateId
+  );
+
+  // `component-fixed` can't be moved by design. `component` could be, but right now we only support collections.
+  const isEntryComponentOrComponentFixed =
+    entryComponentDefinition!.schema.some(
+      (s) =>
+        s.prop === entryPathParseResult.parent!.fieldName &&
+        (s.type === "component" || s.type === "component-fixed")
+    );
+
+  const isAncestorComponentActive = focussedField.some((f) =>
+    entryPathParseResult.parent!.path.startsWith(f)
+  );
+
+  const isMultiSelection = focussedField.length > 1;
+
+  const isSiblingComponentActive = focussedField.some((f) => {
+    const pathWithoutIndexPart = path.split(".").slice(0, -1).join(".");
+    const regexp = new RegExp(`^${pathWithoutIndexPart}\\.\\d+$`);
+    return regexp.test(f);
+  });
+
+  const draggedEntryPathParseResult = dndContext.active
+    ? parsePath(dndContext.active.data.current!.path, form)
+    : null;
+
+  const draggedComponentDefinition = draggedEntryPathParseResult
+    ? meta.vars.definitions.components.find(
+        (c) => c.id === draggedEntryPathParseResult.templateId
+      )
+    : null;
+
+  const canDraggedComponentBeDropped =
+    entryComponentDefinition && draggedComponentDefinition
+      ? getAllowedComponentTypes(entryComponentDefinition).some((type) => {
+          return toArray(draggedComponentDefinition.type ?? []).includes(type);
+        })
+      : true;
+
+  const sortable = useSortable({
+    id,
+    data: {
+      path,
+    },
+    disabled: {
+      draggable:
+        disabled ||
+        isMultiSelection ||
+        isEntryComponentOrComponentFixed ||
+        (!isActive && !isAncestorComponentActive && !isSiblingComponentActive),
+      droppable: disabled || !canDraggedComponentBeDropped,
+    },
+    strategy:
+      direction === "horizontal"
+        ? horizontalListSortingStrategy
+        : verticalListSortingStrategy,
+  });
+
+  if (disabled) {
+    return <>{children}</>;
+  }
 
   const focusOnBlock = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
@@ -69,7 +153,7 @@ export function BlocksControls({
       if (isMultipleSelection) {
         if (focussedField.includes(path)) {
           const result = focussedField.filter(
-            (fieldName: string) => fieldName !== path
+            (fieldName) => fieldName !== path
           );
 
           if (result.length > 0) {
@@ -97,11 +181,29 @@ export function BlocksControls({
   return (
     <SelectionFrameController
       isActive={isActive}
-      isChildrenSelectionDisabled={!isActive && !childIsActive}
+      isChildrenSelectionDisabled={!isActive && !isChildComponentActive}
       onSelect={focusOnBlock}
       stitches={meta.easyblocksProviderContext.stitches}
+      sortable={sortable}
+      id={id}
+      direction={direction}
     >
       {children}
     </SelectionFrameController>
   );
+}
+
+function getAllowedComponentTypes(
+  componentDefinition: SerializedRenderableComponentDefinition
+) {
+  const collectionSchemaProps =
+    componentDefinition.schema.filter<ComponentCollectionSchemaProp>(
+      (s): s is ComponentCollectionSchemaProp =>
+        s.type === "component-collection"
+    );
+
+  const allowedComponentTypes = collectionSchemaProps.flatMap(
+    (s) => s.componentTypes
+  );
+  return Array.from(new Set(allowedComponentTypes));
 }

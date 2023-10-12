@@ -3,7 +3,6 @@ import {
   isSchemaPropAction,
   isSchemaPropActionTextModifier,
   isSchemaPropTextModifier,
-  isTemplate,
   EditorContextType,
   findComponentDefinition,
 } from "@easyblocks/app-utils";

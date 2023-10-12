@@ -1,9 +1,14 @@
 import { SSColors, Typography } from "@easyblocks/design-system";
+import { ReactNode } from "react";
 
-const Color: React.FC<{ color: string }> = ({ color, children }) => {
+const Color: React.FC<{ color: string; children: ReactNode }> = ({
+  color,
+  children,
+}) => {
   return (
     <div>
       <div style={{ marginBottom: "8px" }}>
+        {/* @ts-ignore */}
         <Typography variant={"body"}>{children}</Typography>
       </div>
       <div

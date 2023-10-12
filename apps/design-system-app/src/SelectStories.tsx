@@ -1,15 +1,18 @@
-import { SSSelect, Typography } from "@easyblocks/design-system";
+import { Select, SelectItem, Typography } from "@easyblocks/design-system";
+import { useState } from "react";
 
 export function SelectStories() {
+  const [value, setValue] = useState("");
+
   return (
     <div>
       <Typography variant={"label"}>Select</Typography>
       <br />
-      <SSSelect>
-        <option value={"one"}>Long option</option>
-        <option value={"two"}>Two</option>
-        <option value={"three"}>Three</option>
-      </SSSelect>
+      <Select value={value} onChange={setValue}>
+        <SelectItem value={"one"}>Long SelectItem</SelectItem>
+        <SelectItem value={"two"}>Two</SelectItem>
+        <SelectItem value={"three"}>Three</SelectItem>
+      </Select>
     </div>
   );
 }

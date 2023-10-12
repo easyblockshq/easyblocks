@@ -237,10 +237,12 @@ const SubComponentPanelButton = ({
       externalData,
       editorContext
     ) ??
-    (componentDefinition?.thumbnail && {
-      type: "image",
-      url: componentDefinition.thumbnail,
-    });
+    (componentDefinition?.thumbnail
+      ? {
+          type: "image",
+          url: componentDefinition.thumbnail,
+        }
+      : undefined);
 
   const thumbnail: ThumbnailType | undefined = (() => {
     if (!sidebarPreview) {

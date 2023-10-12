@@ -11,20 +11,23 @@ import {
   IApiClient,
   UserDefinedTemplate,
   InternalTemplate,
+  ComponentConfig,
 } from "@easyblocks/core";
 import { EditorContextType } from "../EditorContext";
 import { getRemoteUserTemplates } from "./getRemoteUserTemplates";
 import { buildRichTextNoCodeEntry } from "@easyblocks/editable-components";
+import { uniqueId } from "@easyblocks/utils";
 
 function getDefaultTemplateForDefinition(
   def: InternalComponentDefinition
 ): InternalTemplate {
   // Text has different way of building a default config
-  const config =
+  const config: ComponentConfig =
     def.id === "$richText"
       ? buildRichTextNoCodeEntry()
       : {
           _template: def.id,
+          _id: uniqueId(),
         };
 
   return {

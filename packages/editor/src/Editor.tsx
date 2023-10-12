@@ -6,7 +6,9 @@ import {
   findComponentDefinitionById,
   findConfigById,
   ItemInsertedEvent,
+  ItemMovedEvent,
   mergeCompilationMeta,
+  parsePath,
   responsiveValueForceGet,
   useEditorGlobalKeyboardShortcuts,
 } from "@easyblocks/app-utils";
@@ -39,7 +41,7 @@ import {
   Template,
 } from "@easyblocks/core";
 import { SSColors, SSFonts, useToaster } from "@easyblocks/design-system";
-import { assertDefined } from "@easyblocks/utils";
+import { assertDefined, dotNotationGet } from "@easyblocks/utils";
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
 import styled from "styled-components";
@@ -423,6 +425,12 @@ function useBuiltContent(
             vars: {
               devices: editorContext.devices,
               locale: contextParams.locale,
+              definitions: {
+                actions: [],
+                components: [],
+                links: [],
+                textModifiers: [],
+              },
             },
           };
 
@@ -803,7 +811,9 @@ const EditorContent = ({
   useEffect(() => {
     window.addEventListener(
       "message",
-      (event: ComponentPickerOpenedEvent | ItemInsertedEvent) => {
+      (
+        event: ComponentPickerOpenedEvent | ItemInsertedEvent | ItemMovedEvent
+      ) => {
         if (event.data.type === "@shopstory-editor/component-picker-opened") {
           actions
             .openComponentPicker({ path: event.data.payload.path })
@@ -820,6 +830,63 @@ const EditorContent = ({
 
         if (event.data.type === "@shopstory-editor/item-inserted") {
           actions.insertItem(event.data.payload);
+        }
+
+        if (event.data.type === "@shopstory-editor/item-moved") {
+          const { fromPath, toPath } = event.data.payload;
+          console.log(
+            "🚀 ~ useEffect ~ event.data.payload:",
+            event.data.payload
+          );
+          const fromPathParseResult = parsePath(fromPath, editorContext.form);
+          const toPathParseResult = parsePath(toPath, editorContext.form);
+
+          if (
+            fromPathParseResult.parent!.path === toPathParseResult.parent!.path
+          ) {
+            if (fromPathParseResult.index === toPathParseResult.index) {
+              return;
+            }
+
+            actions.runChange(() => {
+              form.mutators.move(
+                `${
+                  fromPathParseResult.parent!.path
+                    ? fromPathParseResult.parent!.path + "."
+                    : ""
+                }${fromPathParseResult.parent!.fieldName}`,
+                fromPathParseResult.index!,
+                toPathParseResult.index!
+              );
+
+              return [toPath];
+            });
+          } else {
+            actions.runChange(() => {
+              const newConfig = duplicateConfig(
+                dotNotationGet(form.values, fromPath),
+                editorContext
+              );
+
+              const insertionPath = `${toPathParseResult.parent!.path}.${
+                toPathParseResult.parent!.fieldName
+              }${
+                toPathParseResult.fieldName
+                  ? `.${toPathParseResult.index}.${toPathParseResult.fieldName}`
+                  : ""
+              }`;
+
+              form.mutators.insert(
+                insertionPath,
+                toPathParseResult.index!,
+                newConfig
+              );
+
+              actions.removeItems([fromPath]);
+
+              return [toPathParseResult.fieldName ? `${toPath}.0` : toPath];
+            });
+          }
         }
       }
     );

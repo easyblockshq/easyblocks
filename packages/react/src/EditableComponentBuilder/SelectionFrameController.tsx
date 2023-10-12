@@ -1,4 +1,6 @@
+import type { useSortable } from "@dnd-kit/sortable";
 import { selectionFramePositionChanged } from "@easyblocks/app-utils";
+import { SSColors } from "@easyblocks/design-system";
 import React, { MouseEvent, ReactNode, useEffect, useState } from "react";
 
 type SelectionFrameControllerProps = {
@@ -7,6 +9,9 @@ type SelectionFrameControllerProps = {
   onSelect: (event: MouseEvent<HTMLElement>) => void;
   children: ReactNode;
   stitches: any;
+  sortable: ReturnType<typeof useSortable>;
+  id: string;
+  direction: "horizontal" | "vertical";
 };
 
 function SelectionFrameController({
@@ -15,6 +20,9 @@ function SelectionFrameController({
   children,
   onSelect,
   stitches,
+  sortable,
+  id,
+  direction,
 }: SelectionFrameControllerProps) {
   const [node, setNode] = useState<HTMLDivElement | null>(null);
 
@@ -22,6 +30,8 @@ function SelectionFrameController({
     node,
     isDisabled: !isActive,
   });
+
+  const isInsertingBefore = sortable.activeIndex > sortable.index;
 
   const wrapperClassName = stitches.css({
     position: "relative",
@@ -32,7 +42,7 @@ function SelectionFrameController({
       userSelect: "none !important",
     },
 
-    "&::after": {
+    "&[data-draggable-active=false]::after": {
       content: `''`,
       boxSizing: "border-box",
       display: "block",
@@ -61,15 +71,57 @@ function SelectionFrameController({
     "&[data-active=true]:hover::after": {
       opacity: 1,
     },
+
+    "&[data-draggable-over=true]::before": {
+      position: "absolute",
+      ...(direction === "horizontal"
+        ? {
+            top: 0,
+            bottom: 0,
+            [isInsertingBefore ? "left" : "right"]: "0px",
+            height: "100%",
+            width: "4px",
+          }
+        : {
+            left: 0,
+            right: 0,
+            [isInsertingBefore ? "top" : "bottom"]: "0px",
+            width: "100%",
+            height: "4px",
+          }),
+
+      display: "block",
+      content: "''",
+      backgroundColor: SSColors.blue50,
+      zIndex: 9999999,
+    },
+
+    "&[data-draggable-active=true]": {
+      opacity: 0.5,
+    },
+
+    "&[data-draggable-dragging=true]": {
+      cursor: "grabbing",
+    },
   });
 
   return (
     <div
       data-active={isActive}
       data-children-selection-disabled={isChildrenSelectionDisabled}
+      data-draggable-dragging={sortable.active !== null}
+      data-draggable-over={sortable.isOver}
+      data-draggable-active={
+        sortable.active !== null && sortable.active?.id === id
+      }
       className={wrapperClassName().className}
-      ref={setNode}
+      ref={(node) => {
+        setNode(node);
+        sortable.setNodeRef(node);
+      }}
       onClick={onSelect}
+      {...sortable.attributes}
+      {...sortable.listeners}
     >
       {children}
     </div>

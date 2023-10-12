@@ -6,7 +6,7 @@ import nodeResolve from "@rollup/plugin-node-resolve";
 import replace from "@rollup/plugin-replace";
 import { getFullySpecifiedEnvs } from "@easyblocks/build-tools";
 import path from "node:path";
-import { visualizer } from "rollup-plugin-visualizer";
+import visualizer from "rollup-plugin-visualizer";
 
 const extensions = [".js", ".jsx", ".ts", ".tsx"];
 

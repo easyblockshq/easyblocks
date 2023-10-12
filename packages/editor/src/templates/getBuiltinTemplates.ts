@@ -1,6 +1,6 @@
-import { Template } from "@easyblocks/core";
 import { createClient, Entry } from "contentful";
 import { isComponentConfig } from "@easyblocks/app-utils";
+import { Template } from "../types";
 
 export async function getBuiltInTemplates(
   isMaster: boolean

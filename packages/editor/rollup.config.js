@@ -10,7 +10,7 @@ import {
   isDevelopment,
   isProduction,
 } from "@easyblocks/build-tools";
-import { visualizer } from "rollup-plugin-visualizer";
+import visualizer from "rollup-plugin-visualizer";
 import preserveDirectives from "rollup-plugin-preserve-directives";
 import packageJson from "./package.json";
 

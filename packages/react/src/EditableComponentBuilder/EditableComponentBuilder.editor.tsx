@@ -1,17 +1,15 @@
+import { ContextProps } from "@easyblocks/app-utils";
 import {
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
   ComponentFixedSchemaProp,
   ComponentSchemaProp,
 } from "@easyblocks/core";
-
-import { ContextProps } from "@easyblocks/app-utils";
-
 import React, { FC } from "react";
-import { BlocksControls } from "./BlockControls";
 import ComponentBuilder, {
   ComponentBuilderProps,
 } from "../ComponentBuilder/ComponentBuilder";
+import { BlocksControls } from "./BlockControls";
 
 type EditableComponentBuilderProps = ComponentBuilderProps & {
   schemaProp:
@@ -27,9 +25,17 @@ type EditableComponentBuilderComponent = FC<EditableComponentBuilderProps>;
 
 function EditableComponentBuilder(props: EditableComponentBuilderProps) {
   const { path, compiled, passedProps } = props;
+  // const dndContext = useDndContext();
 
-  return (
-    <BlocksControls path={path} disabled={compiled.__editing?.noInline}>
+  const content = (
+    <BlocksControls
+      path={path}
+      id={compiled._id}
+      templateId={compiled._template}
+      disabled={compiled.__editing?.noInline}
+      direction={compiled.__editing?.direction ?? "vertical"}
+      compiled={compiled}
+    >
       <ComponentBuilder
         compiled={compiled}
         path={path}
@@ -37,6 +43,8 @@ function EditableComponentBuilder(props: EditableComponentBuilderProps) {
       />
     </BlocksControls>
   );
+
+  return content;
 }
 
 export default EditableComponentBuilder;

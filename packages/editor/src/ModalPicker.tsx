@@ -1,14 +1,11 @@
 import {
-  AnyTemplate,
   duplicateConfig,
   findComponentDefinition,
-  isSpecialTemplate,
 } from "@easyblocks/app-utils";
 import { normalize } from "@easyblocks/compiler";
 import {
   ComponentSchemaProp,
   ConfigComponent,
-  isNoCodeComponentOfType,
   Template,
 } from "@easyblocks/core";
 import {
@@ -21,9 +18,8 @@ import React, { FC } from "react";
 import { useEditorContext } from "./EditorContext";
 import { SearchableSmallPickerModal } from "./SearchableSmallPickerModal";
 import { SectionPickerModal } from "./SectionPicker";
-import { OpenComponentPickerConfig } from "./types";
-import { unrollAcceptsFieldIntoComponentIds } from "./unrollAcceptsFieldIntoComponentIds";
 import { TemplatesDictionary } from "./TemplatePicker";
+import { OpenComponentPickerConfig } from "./types";
 import { unrollAcceptsFieldIntoComponents } from "./unrollAcceptsFieldIntoComponents";
 
 type ModalProps = {

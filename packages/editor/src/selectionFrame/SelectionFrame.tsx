@@ -86,6 +86,12 @@ function SelectionFrame({ width, height, scaleFactor }: SelectionFrameProps) {
           event.data.payload.container
         );
       }
+
+      // if (event.data.type === "@shopstory-editor/dragging-started") {
+      //   console.log("hide");
+
+      //   hideAddButtons();
+      // }
     }
 
     window.addEventListener("message", handleSelectionFrameMessages);

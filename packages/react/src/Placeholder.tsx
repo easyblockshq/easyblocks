@@ -1,5 +1,7 @@
+import { useSortable } from "@dnd-kit/sortable";
 import { SSColors, SSFonts } from "@easyblocks/design-system";
 import React, { FC } from "react";
+import { useEasyblocksMetadata } from "./EasyblocksMetadataProvider";
 
 export type PlaceholderProps = {
   onClick: () => void;
@@ -8,10 +10,13 @@ export type PlaceholderProps = {
   autoWidth?: boolean;
   label: string;
   meta: any;
+  sortable: ReturnType<typeof useSortable>;
 };
 
 function Placeholder(props: PlaceholderProps) {
-  const stitches = props.meta.easyblocksProviderContext.stitches;
+  const {
+    easyblocksProviderContext: { stitches },
+  } = useEasyblocksMetadata();
   const styles: Record<string, any> = {};
 
   if (props.width) {
@@ -44,6 +49,12 @@ function Placeholder(props: PlaceholderProps) {
     "&:hover": {
       backgroundColor: SSColors.blue10,
     },
+    "&[data-draggable-over=true]": {
+      backgroundColor: SSColors.blue10,
+    },
+    "&[data-draggable-dragging=true]": {
+      cursor: "grabbing",
+    },
   });
 
   const content = (
@@ -53,6 +64,8 @@ function Placeholder(props: PlaceholderProps) {
         event.stopPropagation();
         props.onClick();
       }}
+      data-draggable-over={props.sortable.isOver}
+      data-draggable-dragging={props.sortable.active !== null}
     >
       <svg
         width="16"
@@ -68,7 +81,12 @@ function Placeholder(props: PlaceholderProps) {
   );
 
   return (
-    <div className={rootClassName()}>
+    <div
+      className={rootClassName()}
+      ref={props.sortable.setDroppableNodeRef}
+      {...props.sortable.attributes}
+      {...props.sortable.listeners}
+    >
       <div
         style={{
           position: "relative",
@@ -82,6 +100,8 @@ function Placeholder(props: PlaceholderProps) {
 }
 
 type TypePlaceholderComponentBuilderProps = {
+  id: string;
+  path: string;
   type: string;
   onClick: () => void;
   meta: any;
@@ -92,6 +112,17 @@ type PlaceholderBuilderComponent = FC<TypePlaceholderComponentBuilderProps>;
 export default function TypePlaceholder(
   props: TypePlaceholderComponentBuilderProps
 ) {
+  const sortable = useSortable({
+    id: `placeholder.${props.id}`,
+    data: {
+      path: props.path,
+    },
+    disabled: {
+      draggable: true,
+      droppable: false,
+    },
+  });
+
   const { type } = props;
 
   let placeholderWidth: number | undefined = undefined;
@@ -136,6 +167,7 @@ export default function TypePlaceholder(
       label={placeholderLabel}
       onClick={props.onClick}
       meta={props.meta}
+      sortable={sortable}
     />
   );
 }

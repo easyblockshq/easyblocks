@@ -1,4 +1,4 @@
-function editorVariable(name: string) {
+function editorVariable<T extends string>(name: T): `--shopstory-editor-${T}` {
   return `--shopstory-editor-${name}`;
 }
 
