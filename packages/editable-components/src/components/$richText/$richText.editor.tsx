@@ -203,13 +203,17 @@ function RichText(props: RichTextProps) {
     // Content editable can be blurred, but the component can remain active ex. we select some text within content editable
     // and want to update its color from the sidebar.
     function handleRichTextBlur() {
-      if (!editor.selection) {
-        return;
-      }
-
       const isRichTextActive = focussedField.some((focusedField) =>
         focusedField.startsWith(path)
       );
+
+      if (!isRichTextActive && isEnabled) {
+        setIsEnabled(false);
+      }
+
+      if (!editor.selection) {
+        return;
+      }
 
       if (!isRichTextActive) {
         Transforms.deselect(editor);
@@ -230,7 +234,7 @@ function RichText(props: RichTextProps) {
         }
       }
     },
-    [focussedField]
+    [focussedField, isEnabled]
   );
 
   useEffect(() => {
@@ -528,7 +532,10 @@ function RichText(props: RichTextProps) {
         contextParams.locale
       );
 
-      scheduleFocusedFieldsChange(nextFocusedFields ?? []);
+      if (nextFocusedFields) {
+        scheduleFocusedFieldsChange(nextFocusedFields);
+      }
+
       return;
     }
 
@@ -618,7 +625,6 @@ function RichText(props: RichTextProps) {
   function handleEditableBlur(): void {
     lastChangeReason.current = "external";
     setIsDecorationActive(true);
-    setIsEnabled(false);
   }
 
   // When copying content from content editable, Slate will copy HTML content of selected nodes
@@ -683,7 +689,7 @@ function RichText(props: RichTextProps) {
     }
   }
 
-  const contentEditableClassname = useMemo(() => {
+  const contentEditableClassName = useMemo(() => {
     const responsiveAlignmentStyles = mapResponsiveAlignmentToStyles(
       props.__fromEditor.props.align,
       { devices: editorContext.devices, resop }
@@ -699,6 +705,9 @@ function RichText(props: RichTextProps) {
       display: "flex",
       ...responsiveAlignmentStyles,
       cursor: !isEnabled ? "inherit" : "text",
+      "& *": {
+        pointerEvents: isEnabled ? "auto" : "none",
+      },
       "& *::selection": {
         backgroundColor: "#b4d5fe",
       },
@@ -746,7 +755,7 @@ function RichText(props: RichTextProps) {
       >
         {/* this wrapper div prevents from Chrome bug where "pointer-events: none" on contenteditable is ignored*/}
         <Editable
-          className={contentEditableClassname}
+          className={contentEditableClassName}
           placeholder="Here goes text content"
           decorate={decorate}
           renderElement={renderElement}
@@ -756,26 +765,20 @@ function RichText(props: RichTextProps) {
           onBlur={handleEditableBlur}
           onCopy={handleEditableCopy}
           onPaste={handleEditablePaste}
-          onClick={(event) => {
+          onMouseDown={(event) => {
+            if (isEnabled) {
+              event.stopPropagation();
+              return;
+            }
+
             if (event.detail === 1) {
               JSON.stringify(editor.selection, null, 2);
               selectionBeforeEnabling.current = editor.selection;
             }
 
             if (event.detail === 2) {
-              if (isEnabled) {
-                return false;
-              }
-
               event.preventDefault();
               setIsEnabled(true);
-              Transforms.setSelection(editor, selectionBeforeEnabling.current!);
-              selectionBeforeEnabling.current = null;
-            }
-          }}
-          onMouseDown={(event) => {
-            if (isEnabled) {
-              event.stopPropagation();
             }
           }}
           readOnly={!isEnabled}
