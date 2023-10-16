@@ -5,6 +5,7 @@ import {
   duplicateConfig,
   findComponentDefinitionById,
   findConfigById,
+  Form,
   ItemInsertedEvent,
   ItemMovedEvent,
   mergeCompilationMeta,
@@ -833,58 +834,72 @@ const EditorContent = ({
         }
 
         if (event.data.type === "@shopstory-editor/item-moved") {
-          const { fromPath, toPath } = event.data.payload;
-          console.log(
-            "🚀 ~ useEffect ~ event.data.payload:",
-            event.data.payload
-          );
+          const { fromPath, toPath, placement } = event.data.payload;
+
           const fromPathParseResult = parsePath(fromPath, editorContext.form);
           const toPathParseResult = parsePath(toPath, editorContext.form);
 
           if (
-            fromPathParseResult.parent!.path === toPathParseResult.parent!.path
+            !fromPathParseResult.parent ||
+            !toPathParseResult.parent ||
+            fromPathParseResult.index === undefined ||
+            toPathParseResult === undefined
           ) {
-            if (fromPathParseResult.index === toPathParseResult.index) {
-              return;
-            }
+            return;
+          }
+
+          if (
+            fromPathParseResult.parent.path === toPathParseResult.parent.path
+          ) {
+            const pathToMove = `${
+              fromPathParseResult.parent.path
+                ? fromPathParseResult.parent.path + "."
+                : ""
+            }${fromPathParseResult.parent.fieldName}`;
 
             actions.runChange(() => {
               form.mutators.move(
-                `${
-                  fromPathParseResult.parent!.path
-                    ? fromPathParseResult.parent!.path + "."
-                    : ""
-                }${fromPathParseResult.parent!.fieldName}`,
-                fromPathParseResult.index!,
-                toPathParseResult.index!
+                pathToMove,
+                fromPathParseResult.index,
+                toPathParseResult.index
               );
 
               return [toPath];
             });
           } else {
+            const isToPathPlaceholder =
+              toPathParseResult.fieldName !== undefined;
+
+            const insertionPath = `${toPathParseResult.parent.path}.${
+              toPathParseResult.parent.fieldName
+            }${
+              isToPathPlaceholder
+                ? `.${toPathParseResult.index}.${toPathParseResult.fieldName}`
+                : ""
+            }`;
+
             actions.runChange(() => {
               const newConfig = duplicateConfig(
                 dotNotationGet(form.values, fromPath),
                 editorContext
               );
 
-              const insertionPath = `${toPathParseResult.parent!.path}.${
-                toPathParseResult.parent!.fieldName
-              }${
-                toPathParseResult.fieldName
-                  ? `.${toPathParseResult.index}.${toPathParseResult.fieldName}`
-                  : ""
-              }`;
-
-              form.mutators.insert(
-                insertionPath,
-                toPathParseResult.index!,
-                newConfig
+              const insertionIndex = calculateInsertionIndex(
+                fromPath,
+                toPath,
+                placement,
+                form
               );
+
+              form.mutators.insert(insertionPath, insertionIndex, newConfig);
 
               actions.removeItems([fromPath]);
 
-              return [toPathParseResult.fieldName ? `${toPath}.0` : toPath];
+              return [
+                isToPathPlaceholder
+                  ? `${insertionPath}.0`
+                  : `${insertionPath}.${insertionIndex}`,
+              ];
             });
           }
         }
@@ -1180,4 +1195,70 @@ function adaptRemoteConfig(
   const withoutLocalizedFlag = removeLocalizedFlag(config, compilationContext);
   const normalized = normalize(withoutLocalizedFlag, compilationContext);
   return normalized;
+}
+
+function calculateInsertionIndex(
+  fromPath: string,
+  toPath: string,
+  placement: "before" | "after" | undefined,
+  form: Form
+) {
+  const mostCommonPath = getMostCommonSubPath(fromPath, toPath);
+  const mostCommonPathParseResult = parsePath(mostCommonPath ?? "", form);
+  const toPathParseResult = parsePath(toPath, form);
+
+  // If there is no index in common path, it means that we're moving items between two sections
+  if (mostCommonPathParseResult.index === undefined) {
+    const fromPathRootSectionIndex = +fromPath.split(".")[1];
+    const toPathRootSectionIndex = +toPath.split(".")[1];
+
+    if (fromPathRootSectionIndex > toPathRootSectionIndex) {
+      if (placement) {
+        if (placement === "before") {
+          return toPathParseResult.index!;
+        }
+
+        return toPathParseResult.index! + 1;
+      }
+
+      return toPathParseResult.index!;
+    }
+
+    if (placement) {
+      if (placement === "before") {
+        return toPathParseResult.index!;
+      }
+
+      return toPathParseResult.index! + 1;
+    }
+
+    return toPathParseResult.index! + 1;
+  }
+
+  return toPathParseResult.index! + 1;
+}
+
+function getMostCommonSubPath(path1: string, path2: string) {
+  const fromPathParts = path1.split(".");
+  const toPathParts = path2.split(".");
+
+  let mostCommonPathParts: Array<string> | undefined = undefined;
+
+  for (let i = 0; i < Math.min(fromPathParts.length, toPathParts.length); i++) {
+    const currentFromPathPart = fromPathParts[i];
+    const currentToPathPart = toPathParts[i];
+
+    if (currentFromPathPart !== currentToPathPart) {
+      break;
+    }
+
+    if (!mostCommonPathParts) {
+      mostCommonPathParts = [currentFromPathPart];
+      continue;
+    }
+
+    mostCommonPathParts.push(currentFromPathPart);
+  }
+
+  return mostCommonPathParts?.join(".");
 }

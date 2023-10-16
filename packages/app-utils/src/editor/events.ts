@@ -1,18 +1,11 @@
 import type { ComponentConfig, SchemaProp } from "@easyblocks/core";
 import { serialize } from "@easyblocks/utils";
-import type { ConditionalExcept } from "type-fest";
 import type { Component$$$SchemaProp } from "../schema";
 
 type ShopstoryEditorEventData<
   Type extends `@shopstory-editor/${string}${string}`,
   Payload = never
-> = ConditionalExcept<
-  {
-    type: Type;
-    payload: Payload;
-  },
-  never
->;
+> = Payload extends never ? { type: Type } : { type: Type; payload: Payload };
 
 type InferShopstoryEditorEventData<Event> = Event extends MessageEvent<
   ShopstoryEditorEventData<infer Type, infer Payload>
@@ -121,6 +114,7 @@ type ItemMovedEvent = MessageEvent<
     {
       fromPath: string;
       toPath: string;
+      placement?: "before" | "after";
     }
   >
 >;
@@ -142,7 +136,6 @@ export {
   itemInserted,
   itemMoved,
 };
-
 export type {
   ShopstoryEditorEventData,
   InferShopstoryEditorEventData,

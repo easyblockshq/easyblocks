@@ -19,13 +19,13 @@ type EditableComponentBuilderProps = ComponentBuilderProps & {
     | ComponentCollectionLocalisedSchemaProp;
   contextProps: ContextProps;
   index: number;
+  length: number;
 };
 
 type EditableComponentBuilderComponent = FC<EditableComponentBuilderProps>;
 
 function EditableComponentBuilder(props: EditableComponentBuilderProps) {
-  const { path, compiled, passedProps } = props;
-  // const dndContext = useDndContext();
+  const { path, compiled, passedProps, index, length } = props;
 
   const content = (
     <BlocksControls
@@ -35,6 +35,8 @@ function EditableComponentBuilder(props: EditableComponentBuilderProps) {
       disabled={compiled.__editing?.noInline}
       direction={compiled.__editing?.direction ?? "vertical"}
       compiled={compiled}
+      index={index}
+      length={length}
     >
       <ComponentBuilder
         compiled={compiled}

@@ -15,9 +15,10 @@ import {
   ComponentCollectionSchemaProp,
   SerializedRenderableComponentDefinition,
 } from "@easyblocks/core";
+import { SSColors } from "@easyblocks/design-system";
 import { EditorContextType } from "@easyblocks/editor";
 import { toArray } from "@easyblocks/utils";
-import React from "react";
+import React, { Fragment } from "react";
 import { useEasyblocksMetadata } from "../EasyblocksMetadataProvider";
 import { SelectionFrameController } from "./SelectionFrameController";
 
@@ -29,6 +30,8 @@ interface BlocksControlsProps {
   id: string;
   templateId: string;
   compiled: CompiledShopstoryComponentConfig | CompiledCustomComponentConfig;
+  index: number;
+  length: number;
 }
 export function BlocksControls({
   children,
@@ -36,7 +39,8 @@ export function BlocksControls({
   disabled,
   direction,
   id,
-  compiled,
+  index,
+  length,
 }: BlocksControlsProps) {
   const { focussedField, setFocussedField, form } = window.parent
     .editorWindowAPI.editorContext as EditorContextType;
@@ -101,6 +105,11 @@ export function BlocksControls({
         })
       : true;
 
+  const isDroppableDisabled =
+    disabled ||
+    isEntryComponentOrComponentFixed ||
+    !canDraggedComponentBeDropped;
+
   const sortable = useSortable({
     id,
     data: {
@@ -115,10 +124,7 @@ export function BlocksControls({
           !isAncestorComponentActive &&
           !isSiblingComponentActive &&
           !isChildComponentActive),
-      droppable:
-        disabled ||
-        isEntryComponentOrComponentFixed ||
-        !canDraggedComponentBeDropped,
+      droppable: isDroppableDisabled,
     },
     strategy:
       direction === "horizontal"
@@ -184,18 +190,48 @@ export function BlocksControls({
     }
   };
 
+  const isActivePathInDifferentCollection =
+    sortable.active &&
+    !isPathsParentEqual(sortable.active.data.current!.path, path);
+
   return (
-    <SelectionFrameController
-      isActive={isActive}
-      isChildrenSelectionDisabled={!isActive && !isChildComponentActive}
-      onSelect={focusOnBlock}
-      stitches={meta.easyblocksProviderContext.stitches}
-      sortable={sortable}
-      id={id}
-      direction={direction}
-    >
-      {children}
-    </SelectionFrameController>
+    <Fragment>
+      {!isDroppableDisabled &&
+        isActivePathInDifferentCollection &&
+        sortable.activeIndex < sortable.index &&
+        index === 0 && (
+          <DroppablePlaceholder
+            id={id}
+            direction={direction}
+            path={path}
+            position="before"
+          />
+        )}
+
+      <SelectionFrameController
+        isActive={isActive}
+        isChildrenSelectionDisabled={!isActive && !isChildComponentActive}
+        onSelect={focusOnBlock}
+        stitches={meta.easyblocksProviderContext.stitches}
+        sortable={sortable}
+        id={id}
+        direction={direction}
+      >
+        {children}
+      </SelectionFrameController>
+
+      {!isDroppableDisabled &&
+        isActivePathInDifferentCollection &&
+        sortable.activeIndex > sortable.index &&
+        index === length - 1 && (
+          <DroppablePlaceholder
+            id={id}
+            direction={direction}
+            path={path}
+            position="after"
+          />
+        )}
+    </Fragment>
   );
 }
 
@@ -212,4 +248,89 @@ function getAllowedComponentTypes(
     (s) => s.componentTypes
   );
   return Array.from(new Set(allowedComponentTypes));
+}
+
+function isPathsParentEqual(path1: string, path2: string) {
+  const activePathParts = path1.split(".");
+  const currentPathParts = path2.split(".");
+
+  return (
+    activePathParts.slice(0, -1).join(".") ===
+    currentPathParts.slice(0, -1).join(".")
+  );
+}
+
+function DroppablePlaceholder({
+  id,
+  direction,
+  path,
+  position,
+}: {
+  id: string;
+  direction: string;
+  path: string;
+  position: "before" | "after";
+}) {
+  const meta = useEasyblocksMetadata();
+
+  const sortable = useSortable({
+    id: `${id}.${position}`,
+    data: {
+      path,
+    },
+    disabled: {
+      draggable: true,
+      droppable: false,
+    },
+  });
+
+  const isInsertingBefore = sortable.activeIndex > sortable.index;
+
+  const wrapperStyles = meta.easyblocksProviderContext.stitches.css({
+    position: "absolute",
+    [position === "before" ? "top" : "bottom"]:
+      direction === "vertical" ? "-100%" : 0,
+    [position === "before" ? "left" : "right"]:
+      direction === "horizontal" ? "-100%" : 0,
+    height: "100%",
+    background: "transparent",
+    width: "100%",
+
+    "&::before": {
+      display: "block",
+      content: "''",
+      backgroundColor: SSColors.blue50,
+      zIndex: 9999999,
+      position: "absolute",
+      opacity: 0,
+    },
+    "&[data-draggable-over=true]::before": {
+      opacity: 1,
+      ...(direction === "horizontal"
+        ? {
+            top: 0,
+            bottom: 0,
+            [isInsertingBefore ? "left" : "right"]: "0px",
+            height: "100%",
+            width: "4px",
+          }
+        : {
+            left: 0,
+            right: 0,
+            [isInsertingBefore ? "top" : "bottom"]: "0px",
+            width: "100%",
+            height: "4px",
+          }),
+    },
+  });
+
+  return (
+    <div
+      data-draggable-over={sortable.isOver}
+      className={wrapperStyles().className}
+      ref={sortable.setNodeRef}
+      {...sortable.attributes}
+      {...sortable.listeners}
+    />
+  );
 }

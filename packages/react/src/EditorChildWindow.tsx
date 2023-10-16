@@ -84,10 +84,14 @@ export function EasyblocksCanvas() {
                 window.parent.editorWindowAPI.editorContext.setFocussedField(
                   activeData.path
                 );
-              } else if (overData.sortable.index !== -1) {
+              } else {
                 const itemMovedEvent = itemMoved({
                   fromPath: activeData.path,
-                  toPath: overData.path ?? event.over.id.toString(),
+                  toPath: overData.path,
+                  placement: event.over.id.toString().split(".")[1] as
+                    | "after"
+                    | "before"
+                    | undefined,
                 });
 
                 requestAnimationFrame(() => {
@@ -140,9 +144,11 @@ function getSortableItems(
           return;
         }
 
+        sortableItems.push(`${value[0]._id}.before`);
         sortableItems.push(
           ...(value as Array<ComponentConfig>).map((v) => v._id)
         );
+        sortableItems.push(`${value.at(-1)._id}.after`);
       }
     }
   );

@@ -256,6 +256,7 @@ function getCompiledSubcomponents(
       compiled={compiledChild}
       schemaProp={schemaProp}
       index={index}
+      length={compiledArray.length}
       contextProps={contextProps}
       path={`${path}.${index}`}
     />
