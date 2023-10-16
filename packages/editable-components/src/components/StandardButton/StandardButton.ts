@@ -1,10 +1,5 @@
 import standardButtonStyles from "./StandardButton.styles";
-import {
-  buttonActionSchemaProp,
-  buttonLabelSchemaProp,
-  buttonOptionalIconSchemaProp,
-  InternalRenderableComponentDefinition,
-} from "@easyblocks/app-utils";
+import { InternalRenderableComponentDefinition } from "@easyblocks/app-utils";
 
 export const StandardButtonNoCodeComponent: InternalRenderableComponentDefinition<"$StandardButton"> =
   {
@@ -23,7 +18,9 @@ export const StandardButtonNoCodeComponent: InternalRenderableComponentDefinitio
         type: "component", // for now actions are components
         noInline: true,
         componentTypes: ["action"],
-        visible: true,
+        visible: (values) => {
+          return values.noAction !== true;
+        },
         group: "Action",
         defaultValue: [],
         isLabelHidden: true,

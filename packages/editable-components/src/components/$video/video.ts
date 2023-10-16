@@ -13,13 +13,15 @@ import {
 import { assertDefined, last } from "@easyblocks/utils";
 import videoStyles from "./$video.styles";
 
+const VIDEO_THUMBNAIL_URL =
+  "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_video.png";
+
 const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> =
   {
     id: "$video",
     label: "Video",
-    thumbnail:
-      "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_video.png",
-    type: ["image", "item"],
+    thumbnail: VIDEO_THUMBNAIL_URL,
+    type: "item",
     styles: videoStyles,
     editing: ({ values, editingInfo }) => {
       let fields = [...editingInfo.fields];
@@ -44,7 +46,6 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         label: "Aspect Ratio",
         type: "stringToken",
         tokenId: "aspectRatios",
-        extraValues: ["grid-baseline"],
       },
       {
         prop: "enablePlaybackControls",
@@ -162,8 +163,6 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
 
       if (!device) {
         return {
-          type: "icon",
-          icon: "link",
           description: "None",
         };
       }
@@ -175,8 +174,6 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
 
       if (activeVideoValue.id == null) {
         return {
-          type: "icon",
-          icon: "link",
           description: "None",
         };
       }
@@ -192,8 +189,6 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
 
       if (!videoExternalValue || "error" in videoExternalValue) {
         return {
-          type: "icon",
-          icon: "link",
           description: "None",
         };
       }
@@ -201,8 +196,6 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
       if (isCompoundExternalDataValue(videoExternalValue)) {
         if (!activeVideoValue.key) {
           return {
-            type: "icon",
-            icon: "link",
             description: "None",
           };
         }
@@ -212,8 +205,6 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
 
         if (!resolvedCompoundExternalDataResult) {
           return {
-            type: "icon",
-            icon: "link",
             description: "None",
           };
         }
@@ -224,8 +215,6 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         const imageFileNameWithoutQueryParams = imageFileName.split("?")[0];
 
         return {
-          type: "image",
-          url: (resolvedCompoundExternalDataResult.value as VideoSrc).url,
           description: imageFileNameWithoutQueryParams,
         };
       }
@@ -237,8 +226,6 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
       const videoFileNameWithoutQueryParams = videoFileName.split("?")[0];
 
       return {
-        type: "icon",
-        icon: "link",
         description: videoFileNameWithoutQueryParams,
       };
     },

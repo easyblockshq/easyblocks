@@ -229,23 +229,23 @@ export function createCompilationContext(
 
   const textModifiers: Array<InternalTextModifierDefinition> = [
     actionTextModifier,
-    {
-      id: "$MissingTextModifier",
-      type: "actionTextModifier",
-      schema: [],
-      apply: () => {
-        return {};
-      },
-    },
-    ...(config.textModifiers ?? []).map((modifier) => {
-      return {
-        ...modifier,
-        type:
-          modifier.type === "text"
-            ? "textModifier"
-            : `${modifier.type}TextModifier`,
-      };
-    }),
+    // {
+    //   id: "$MissingTextModifier",
+    //   type: "actionTextModifier",
+    //   schema: [],
+    //   apply: () => {
+    //     return {};
+    //   },
+    // },
+    // ...(config.textModifiers ?? []).map((modifier) => {
+    //   return {
+    //     ...modifier,
+    //     type:
+    //       modifier.type === "text"
+    //         ? "textModifier"
+    //         : `${modifier.type}TextModifier`,
+    //   };
+    // }),
   ];
 
   const compilationContext: CompilationContextType = {

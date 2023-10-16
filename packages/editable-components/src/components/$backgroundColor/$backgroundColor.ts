@@ -9,8 +9,7 @@ import { backgroundColorStyles } from "./$backgroundColor.styles";
 const backgroundColorComponentDefinition: InternalRenderableComponentDefinition<"$backgroundColor"> =
   {
     id: "$backgroundColor",
-    label: "Color",
-    type: "image",
+    label: "Solid color",
     styles: backgroundColorStyles,
     schema: [
       {
@@ -28,8 +27,6 @@ const backgroundColorComponentDefinition: InternalRenderableComponentDefinition<
 
       if (!device) {
         return {
-          type: "icon",
-          icon: "link",
           description: "None",
         };
       }
@@ -44,8 +41,10 @@ const backgroundColorComponentDefinition: InternalRenderableComponentDefinition<
       }
 
       return {
-        type: "solid",
-        color: activeColorValue.value,
+        thumbnail: {
+          type: "color",
+          color: activeColorValue.value,
+        },
         description: activeColorValue.ref ?? activeColorValue.value,
       };
     },

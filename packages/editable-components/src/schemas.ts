@@ -287,7 +287,7 @@ export const sectionWrapperFieldsProvider = (options: {
       label: "Outer Background",
       type: "component",
       group: "Section background",
-      componentTypes: ["image"],
+      componentTypes: ["$backgroundColor", "$image", "$video"],
       visible: true,
     },
     {
@@ -1051,6 +1051,16 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
 
         const card1Fields: (typeof editingInfo)["fields"] = [];
 
+        const card1Size = {
+          type: "field",
+          path: `Card1.0.size`,
+        };
+
+        const card1Background = {
+          type: "field",
+          path: `Card1.0.Background`,
+        };
+
         const card1StackFields: Array<EditingComponentFields> = [
           {
             type: "fields",
@@ -1095,76 +1105,134 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
           }
         }
 
-        if (isNoneMode) {
-          newFields = [...fieldsBefore, ...card1StackFields, ...fieldsAfter];
-        } else if (isBackgroundMode) {
-          newFields = [
-            ...fieldsBefore,
-            ...card2FieldPortalsAll,
-            ...card1StackFields,
-            ...fieldsAfter,
-          ];
-        } else if (isBackgroundWithSeparateStackMode) {
-          newFields = [
-            ...fieldsBefore,
-            ...card2FieldPortalsAll,
-            ...fieldsAfter,
-          ];
-        } else if (values.mode === "left" || values.mode === "right") {
-          fields.sideModeWidth.visible = true;
-          newFields = [
-            ...fieldsBefore,
-            ...card2FieldPortalsBasic,
-            ...fieldsAfter,
-          ];
-        } else if (values.mode === "top" || values.mode === "bottom") {
-          newFields = [
-            ...fieldsBefore,
-            ...card2FieldPortalsBasic,
-            ...fieldsAfter,
-          ];
-        }
+        // if (isNoneMode) {
+        //   newFields = [...fieldsBefore, ...card1StackFields, ...fieldsAfter];
+        // } else if (isBackgroundMode) {
+        //   newFields = [
+        //     ...fieldsBefore,
+        //     ...card2FieldPortalsAll,
+        //     ...card1StackFields,
+        //     ...fieldsAfter,
+        //   ];
+        // } else if (isBackgroundWithSeparateStackMode) {
+        //   newFields = [
+        //     ...fieldsBefore,
+        //     ...card2FieldPortalsAll,
+        //     ...fieldsAfter,
+        //   ];
+        // } else if (values.mode === "left" || values.mode === "right") {
+        //   fields.sideModeWidth.visible = true;
+        //   newFields = [
+        //     ...fieldsBefore,
+        //     ...card2FieldPortalsBasic,
+        //     ...fieldsAfter,
+        //   ];
+        // } else if (values.mode === "top" || values.mode === "bottom") {
+        //   newFields = [
+        //     ...fieldsBefore,
+        //     ...card2FieldPortalsBasic,
+        //     ...fieldsAfter,
+        //   ];
+        // }
 
         if (isBackgroundWithSeparateStackMode) {
           const { fieldsHorizontal, fieldsVertical } =
             bannerCard2SeparateStackModeController(values);
 
-          for (const key in fields) {
-            if (key.startsWith("backgroundMode")) {
-              card1Fields.push(fields[key]);
-            }
-          }
+          // for (const key in fields) {
+          //
+          //   if (key.startsWith("backgroundMode")) {
+          //     card1Fields.push({...fields[key]});
+          //   }
 
-          fields.backgroundModePosition.visible = true;
-          fields.backgroundModeEdgeMarginProtection.visible = true;
+          const backgroundModePosition: EditingField = {
+            ...fields["backgroundModePosition"],
+            group: "Placement",
+          };
+          const backgroundModeEdgeMarginProtection: EditingField = {
+            ...fields["backgroundModeEdgeMarginProtection"],
+            group: "Placement",
+          };
+          const backgroundModePaddingLeft: EditingField = {
+            ...fields["backgroundModePaddingLeft"],
+            group: "Placement",
+          };
+          const backgroundModePaddingRight: EditingField = {
+            ...fields["backgroundModePaddingRight"],
+            group: "Placement",
+          };
+          const backgroundModePaddingTop: EditingField = {
+            ...fields["backgroundModePaddingTop"],
+            group: "Placement",
+          };
+          const backgroundModePaddingBottom: EditingField = {
+            ...fields["backgroundModePaddingBottom"],
+            group: "Placement",
+          };
+
+          backgroundModePosition.visible = true;
+          backgroundModeEdgeMarginProtection.visible = true;
 
           if (arePaddingFieldsSeparate(fieldsHorizontal)) {
             if (fieldsHorizontal.start !== null) {
-              fields.backgroundModePaddingLeft.visible = true;
+              backgroundModePaddingLeft.visible = true;
             }
             if (fieldsHorizontal.end !== null) {
-              fields.backgroundModePaddingRight.visible = true;
+              backgroundModePaddingRight.visible = true;
             }
           } else {
             if (fieldsHorizontal.both !== null) {
-              fields.backgroundModePaddingLeft.visible = true;
-              fields.backgroundModePaddingLeft.label = "Offset horizontal";
+              backgroundModePaddingLeft.visible = true;
+              backgroundModePaddingLeft.label = "Offset horizontal";
             }
           }
 
           if (arePaddingFieldsSeparate(fieldsVertical)) {
             if (fieldsVertical.start !== null) {
-              fields.backgroundModePaddingTop.visible = true;
+              backgroundModePaddingTop.visible = true;
             }
             if (fieldsVertical.end !== null) {
-              fields.backgroundModePaddingBottom.visible = true;
+              backgroundModePaddingBottom.visible = true;
             }
           } else {
             if (fieldsVertical.both !== null) {
-              fields.backgroundModePaddingTop.visible = true;
-              fields.backgroundModePaddingTop.label = "Offset vertical";
+              backgroundModePaddingTop.visible = true;
+              backgroundModePaddingTop.label = "Offset vertical";
             }
           }
+
+          card1Fields.push(
+            backgroundModePosition,
+            backgroundModePaddingLeft,
+            backgroundModePaddingRight,
+            backgroundModePaddingTop,
+            backgroundModePaddingBottom,
+            backgroundModeEdgeMarginProtection
+          );
+          // }
+
+          newFields = [
+            ...fieldsBefore,
+            // card1Background,
+            // ...card1StackFields,
+            ...card2FieldPortalsAll,
+            ...fieldsAfter,
+          ];
+        } else if (isNoneMode) {
+          newFields = [
+            ...fieldsBefore,
+            card1Size,
+            card1Background,
+            ...card1StackFields,
+            ...fieldsAfter,
+          ];
+        } else {
+          newFields = [
+            ...fieldsBefore,
+            card1Background,
+            ...card1StackFields,
+            ...fieldsAfter,
+          ];
         }
 
         return {
@@ -1172,18 +1240,19 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
 
           components: {
             Card1: {
-              selectable: !(isBackgroundMode || isNoneMode),
+              selectable: isBackgroundWithSeparateStackMode, //!(isBackgroundMode || isNoneMode),
               fields: card1Fields,
-              passedSize: "none",
+              // passedSize: isNoneMode ? "__undefined__" : "none", // "__undefined__" is a shit workaround for things going messy when "undefined" is set and responsiveness
             },
             Card2: {
-              selectable: !(
-                isBackgroundMode ||
-                isNoneMode ||
-                isBackgroundWithSeparateStackMode
-              ),
-              passedSize: "auto",
+              selectable: !isBackgroundWithSeparateStackMode,
+              // passedSize: "gowno"
+
+              // passedSize: "__undefined__",
             },
+            // Background: {
+            //   selectable: false
+            // }
           },
         };
       },
@@ -1196,6 +1265,15 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
           group: "General",
         },
         ...borderSchemaProps("General"),
+
+        // {
+        //   prop: "Background",
+        //   label: "Background",
+        //   type: "component",
+        //   componentTypes: ["$backgroundColor", "$image", "$video"],
+        //   visible: true,
+        //   group: "General",
+        // },
 
         {
           prop: "Card1",
@@ -1215,14 +1293,14 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
           type: "select$",
           options: [
             { value: "none", label: "none" },
-            { value: "background", label: "background" },
+            // { value: "background", label: "background" },
             { value: "left", label: "left" },
             { value: "right", label: "right" },
             { value: "top", label: "top" },
             { value: "bottom", label: "bottom" },
             {
               value: "background-separate-stack",
-              label: "background (stack separate)",
+              label: "background",
             },
           ], // there is no "fit-content", because it doesn't make sense on mobile and it's actually very rare. If you want image, you don't want it to have some super narrow height, so the height is kind of "minimal" heihgt only.
           group: "Cover",

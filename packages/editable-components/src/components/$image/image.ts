@@ -49,7 +49,7 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
         label: "Aspect Ratio",
         type: "stringToken",
         tokenId: "aspectRatios",
-        extraValues: ["grid-baseline", "natural"],
+        extraValues: ["natural"],
       },
       buttonActionSchemaProp,
     ],
@@ -66,8 +66,6 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
 
       if (!device) {
         return {
-          type: "icon",
-          icon: "link",
           description: "None",
         };
       }
@@ -79,8 +77,6 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
 
       if (activeImageValue.id === null) {
         return {
-          type: "icon",
-          icon: "link",
           description: "None",
         };
       }
@@ -96,8 +92,6 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
 
       if (!imageExternalValue || "error" in imageExternalValue) {
         return {
-          type: "icon",
-          icon: "link",
           description: "None",
         };
       }
@@ -105,8 +99,6 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
       if (isCompoundExternalDataValue(imageExternalValue)) {
         if (!activeImageValue.key) {
           return {
-            type: "icon",
-            icon: "link",
             description: "None",
           };
         }
@@ -116,8 +108,6 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
 
         if (!resolvedCompoundExternalValueResult) {
           return {
-            type: "icon",
-            icon: "link",
             description: "None",
           };
         }
@@ -128,8 +118,10 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
         const imageFileNameWithoutQueryParams = imageFileName.split("?")[0];
 
         return {
-          type: "image",
-          url: (resolvedCompoundExternalValueResult.value as ImageSrc).url,
+          thumbnail: {
+            type: "image",
+            src: (resolvedCompoundExternalValueResult.value as ImageSrc).url,
+          },
           description: imageFileNameWithoutQueryParams,
         };
       }
@@ -141,8 +133,10 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
       const imageFileNameWithoutQueryParams = imageFileName.split("?")[0];
 
       return {
-        type: "image",
-        url: imageResourceValue.url,
+        thumbnail: {
+          type: "image",
+          src: imageResourceValue.url,
+        },
         description: imageFileNameWithoutQueryParams,
       };
     },

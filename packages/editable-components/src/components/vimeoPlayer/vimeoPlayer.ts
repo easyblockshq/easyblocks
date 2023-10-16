@@ -5,7 +5,6 @@ const vimeoPlayerEditableComponent: InternalRenderableComponentDefinition<"$vime
   {
     id: "$vimeoPlayer",
     label: "Vimeo Player",
-    type: "image",
     schema: [
       {
         prop: "videoId",
@@ -17,7 +16,6 @@ const vimeoPlayerEditableComponent: InternalRenderableComponentDefinition<"$vime
         label: "Aspect Ratio",
         type: "stringToken",
         tokenId: "aspectRatios",
-        extraValues: ["grid-baseline"],
       },
       {
         prop: "isAutoPlay",
