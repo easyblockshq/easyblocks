@@ -1,0 +1,522 @@
+{
+  "_id": "e897b5ed-2aef-4be9-b61d-40d83498b59f",
+  "_template": "$BannerCard2",
+  "traceId": "$BannerCard2-d36b5068",
+  "_itemProps": {
+    "$GridCard": {
+      "Cards": {
+        "itemSize": { "$res": true, "xl": "1x1" },
+        "verticalAlign": { "$res": true, "xl": "auto" }
+      }
+    }
+  },
+  "cornerRadius": { "$res": true, "xl": "0" },
+  "borderWidth": { "$res": true, "xl": "0" },
+  "borderColor": { "$res": true, "xl": { "value": "black", "ref": "$dark" } },
+  "borderTop": { "$res": true, "xl": "1" },
+  "borderBottom": { "$res": true, "xl": "1" },
+  "borderLeft": { "$res": true, "xl": "1" },
+  "borderRight": { "$res": true, "xl": "1" },
+  "boxShadow": { "$res": true, "xl": { "value": "none", "ref": "none" } },
+  "Card1": [
+    {
+      "_id": "4716b1da-7c2b-4263-bf43-4b1bee452a48",
+      "_template": "$BasicCard",
+      "traceId": "$BasicCard-e458c588",
+      "size": { "$res": true, "xl": { "value": "4:5", "ref": "portrait" } },
+      "Background": [
+        {
+          "_id": "e96374a3-c439-4c71-a5c9-799cdf40b612",
+          "_template": "$video",
+          "traceId": "$video-78f8ca10",
+          "_itemProps": { "$BasicCard": { "Background": {} } },
+          "image": {
+            "$res": true,
+            "xl": { "id": "NLwnsZTiR2B8dSYEaPkT5", "widgetId": "mockVideo" }
+          },
+          "aspectRatio": {
+            "$res": true,
+            "xl": { "value": "16:9", "ref": "$landscape" }
+          },
+          "enablePlaybackControls": true,
+          "PlayButton": [
+            {
+              "_id": "9294b078-f699-4efe-b19d-ac7274f51e22",
+              "_template": "$StandardButton",
+              "traceId": "$StandardButton-279efcaa",
+              "_itemProps": { "$video": { "PlayButton": {} } },
+              "Action": [],
+              "variant": "icon",
+              "label": {
+                "id": "local.2632e10c-abb9-401c-882f-585007878a65",
+                "value": { "en-US": "Play" }
+              },
+              "icon": {
+                "value": "<svg viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M8,5.14V19.14L19,12.14L8,5.14Z\" /></svg>",
+                "ref": "play"
+              },
+              "color": {
+                "$res": true,
+                "xl": { "value": "#ffffff", "ref": "white" }
+              },
+              "minHeight": { "$res": true, "xl": "32" },
+              "minWidth": { "$res": true, "xl": "100" },
+              "horizontalPadding": {
+                "$res": true,
+                "xl": { "value": "16px", "ref": "16" }
+              },
+              "gap": { "$res": true, "xl": { "value": "6px", "ref": "6" } },
+              "cornerMode": { "$res": true, "xl": "circled" },
+              "cornerRadius": { "$res": true, "xl": "8" },
+              "font": {
+                "$res": true,
+                "xl": {
+                  "value": {
+                    "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
+                    "fontSize": 16,
+                    "fontWeight": 500,
+                    "lineHeight": 1.2
+                  },
+                  "ref": "$body2.bold"
+                }
+              },
+              "underline": "off",
+              "underlineOffset": { "$res": true, "xl": "1" },
+              "iconSize": { "$res": true, "xl": "20" },
+              "hasBackground": true,
+              "backgroundColor": {
+                "$res": true,
+                "xl": { "value": "#36363680", "ref": "transparent-grey-dark" }
+              },
+              "hasBorder": false,
+              "borderWidth": { "$res": true, "xl": "1" },
+              "borderColor": {
+                "$res": true,
+                "xl": { "value": "black", "ref": "$dark" }
+              },
+              "boxShadow": {
+                "$res": true,
+                "xl": { "value": "none", "ref": "none" }
+              }
+            }
+          ],
+          "PauseButton": [
+            {
+              "_id": "79adb47e-de3d-4cb7-89ca-c2156cd44623",
+              "_template": "$StandardButton",
+              "traceId": "$StandardButton-9db5c081",
+              "_itemProps": { "$video": { "PauseButton": {} } },
+              "Action": [],
+              "variant": "icon",
+              "label": {
+                "id": "local.d99855eb-6ace-45c5-ab9b-918ac017860c",
+                "value": { "en-US": "Pause" }
+              },
+              "icon": {
+                "value": "<svg style=\"width:24px;height:24px\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M14,19H18V5H14M6,19H10V5H6V19Z\" /></svg>",
+                "ref": "pause"
+              },
+              "color": {
+                "$res": true,
+                "xl": { "value": "#ffffff", "ref": "white" }
+              },
+              "minHeight": { "$res": true, "xl": "32" },
+              "minWidth": { "$res": true, "xl": "100" },
+              "horizontalPadding": {
+                "$res": true,
+                "xl": { "value": "16px", "ref": "16" }
+              },
+              "gap": { "$res": true, "xl": { "value": "6px", "ref": "6" } },
+              "cornerMode": { "$res": true, "xl": "circled" },
+              "cornerRadius": { "$res": true, "xl": "8" },
+              "font": {
+                "$res": true,
+                "xl": {
+                  "value": {
+                    "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
+                    "fontSize": 16,
+                    "fontWeight": 500,
+                    "lineHeight": 1.2
+                  },
+                  "ref": "$body2.bold"
+                }
+              },
+              "underline": "off",
+              "underlineOffset": { "$res": true, "xl": "1" },
+              "iconSize": { "$res": true, "xl": "20" },
+              "hasBackground": true,
+              "backgroundColor": {
+                "$res": true,
+                "xl": { "value": "#36363680", "ref": "transparent-grey-dark" }
+              },
+              "hasBorder": false,
+              "borderWidth": { "$res": true, "xl": "1" },
+              "borderColor": {
+                "$res": true,
+                "xl": { "value": "black", "ref": "$dark" }
+              },
+              "boxShadow": {
+                "$res": true,
+                "xl": { "value": "none", "ref": "none" }
+              }
+            }
+          ],
+          "autoplay": true,
+          "enableSoundControls": true,
+          "MuteButton": [
+            {
+              "_id": "938f6941-7bf4-4d7d-bec4-ecdec54f6b1f",
+              "_template": "$StandardButton",
+              "traceId": "$StandardButton-dad9203a",
+              "_itemProps": { "$video": { "MuteButton": {} } },
+              "Action": [],
+              "variant": "icon",
+              "label": {
+                "id": "local.160c7396-327d-415a-b418-871cabb4cee7",
+                "value": { "en-US": "Mute" }
+              },
+              "icon": {
+                "value": "<svg viewBox=\"0 0 24 24\">\n    <path fill=\"currentColor\" d=\"M12,4L9.91,6.09L12,8.18M4.27,3L3,4.27L7.73,9H3V15H7L12,20V13.27L16.25,17.53C15.58,18.04 14.83,18.46 14,18.7V20.77C15.38,20.45 16.63,19.82 17.68,18.96L19.73,21L21,19.73L12,10.73M19,12C19,12.94 18.8,13.82 18.46,14.64L19.97,16.15C20.62,14.91 21,13.5 21,12C21,7.72 18,4.14 14,3.23V5.29C16.89,6.15 19,8.83 19,12M16.5,12C16.5,10.23 15.5,8.71 14,7.97V10.18L16.45,12.63C16.5,12.43 16.5,12.21 16.5,12Z\" />\n</svg>",
+                "ref": "mute"
+              },
+              "color": {
+                "$res": true,
+                "xl": { "value": "#ffffff", "ref": "white" }
+              },
+              "minHeight": { "$res": true, "xl": "32" },
+              "minWidth": { "$res": true, "xl": "100" },
+              "horizontalPadding": {
+                "$res": true,
+                "xl": { "value": "16px", "ref": "16" }
+              },
+              "gap": { "$res": true, "xl": { "value": "6px", "ref": "6" } },
+              "cornerMode": { "$res": true, "xl": "circled" },
+              "cornerRadius": { "$res": true, "xl": "8" },
+              "font": {
+                "$res": true,
+                "xl": {
+                  "value": {
+                    "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
+                    "fontSize": 16,
+                    "fontWeight": 500,
+                    "lineHeight": 1.2
+                  },
+                  "ref": "$body2.bold"
+                }
+              },
+              "underline": "off",
+              "underlineOffset": { "$res": true, "xl": "1" },
+              "iconSize": { "$res": true, "xl": "20" },
+              "hasBackground": true,
+              "backgroundColor": {
+                "$res": true,
+                "xl": { "value": "#36363680", "ref": "transparent-grey-dark" }
+              },
+              "hasBorder": false,
+              "borderWidth": { "$res": true, "xl": "1" },
+              "borderColor": {
+                "$res": true,
+                "xl": { "value": "black", "ref": "$dark" }
+              },
+              "boxShadow": {
+                "$res": true,
+                "xl": { "value": "none", "ref": "none" }
+              }
+            }
+          ],
+          "UnmuteButton": [
+            {
+              "_id": "39f11422-acae-4e52-aa15-2c115638ca31",
+              "_template": "$StandardButton",
+              "traceId": "$StandardButton-162f1ae3",
+              "_itemProps": { "$video": { "UnmuteButton": {} } },
+              "Action": [],
+              "variant": "icon",
+              "label": {
+                "id": "local.67b7e356-bade-45d8-96ff-3d22815785a8",
+                "value": { "en-US": "Unmute" }
+              },
+              "icon": {
+                "value": "<svg viewBox=\"0 0 24 24\">\n    <path fill=\"currentColor\" d=\"M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z\" />\n</svg>",
+                "ref": "unmute"
+              },
+              "color": {
+                "$res": true,
+                "xl": { "value": "#ffffff", "ref": "white" }
+              },
+              "minHeight": { "$res": true, "xl": "32" },
+              "minWidth": { "$res": true, "xl": "100" },
+              "horizontalPadding": {
+                "$res": true,
+                "xl": { "value": "16px", "ref": "16" }
+              },
+              "gap": { "$res": true, "xl": { "value": "6px", "ref": "6" } },
+              "cornerMode": { "$res": true, "xl": "circled" },
+              "cornerRadius": { "$res": true, "xl": "8" },
+              "font": {
+                "$res": true,
+                "xl": {
+                  "value": {
+                    "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
+                    "fontSize": 16,
+                    "fontWeight": 500,
+                    "lineHeight": 1.2
+                  },
+                  "ref": "$body2.bold"
+                }
+              },
+              "underline": "off",
+              "underlineOffset": { "$res": true, "xl": "1" },
+              "iconSize": { "$res": true, "xl": "20" },
+              "hasBackground": true,
+              "backgroundColor": {
+                "$res": true,
+                "xl": { "value": "#36363680", "ref": "transparent-grey-dark" }
+              },
+              "hasBorder": false,
+              "borderWidth": { "$res": true, "xl": "1" },
+              "borderColor": {
+                "$res": true,
+                "xl": { "value": "black", "ref": "$dark" }
+              },
+              "boxShadow": {
+                "$res": true,
+                "xl": { "value": "none", "ref": "none" }
+              }
+            }
+          ],
+          "controlsPosition": { "$res": true, "xl": "bottom-right" },
+          "margin": { "$res": true, "xl": { "value": "8px", "ref": "8" } },
+          "gap": { "$res": true, "xl": { "value": "6px", "ref": "6" } }
+        }
+      ],
+      "borderWidth": { "$res": true, "xl": "0" },
+      "borderColor": {
+        "$res": true,
+        "xl": { "value": "black", "ref": "$dark" }
+      },
+      "borderTop": { "$res": true, "xl": "1" },
+      "borderBottom": { "$res": true, "xl": "1" },
+      "borderLeft": { "$res": true, "xl": "1" },
+      "borderRight": { "$res": true, "xl": "1" },
+      "boxShadow": { "$res": true, "xl": { "value": "none", "ref": "none" } },
+      "cornerRadius": { "$res": true, "xl": "0" },
+      "enableContent": true,
+      "position": { "$res": true, "xl": "center-center" },
+      "paddingLeft": { "$res": true, "xl": { "value": "24px", "ref": "24" } },
+      "paddingRight": { "$res": true, "xl": { "value": "24px", "ref": "24" } },
+      "paddingTop": { "$res": true, "xl": { "value": "24px", "ref": "24" } },
+      "paddingBottom": { "$res": true, "xl": { "value": "24px", "ref": "24" } },
+      "paddingLeftExternal": {
+        "$res": true,
+        "xl": { "value": "0px", "ref": "0" }
+      },
+      "paddingRightExternal": {
+        "$res": true,
+        "xl": { "value": "0px", "ref": "0" }
+      },
+      "paddingTopExternal": {
+        "$res": true,
+        "xl": { "value": "0px", "ref": "0" }
+      },
+      "paddingBottomExternal": {
+        "$res": true,
+        "xl": { "value": "0px", "ref": "0" }
+      },
+      "edgeMarginProtection": { "$res": true, "xl": true },
+      "Stack": [
+        {
+          "_id": "f6c040e5-678a-410c-a567-aab5710472a3",
+          "_template": "$stack",
+          "traceId": "$stack-795aebb6",
+          "Items": [
+            {
+              "_id": "5bcf8635-fa46-4709-8b4b-9ed63a6a6eeb",
+              "_template": "$richText",
+              "traceId": "$richText-4b8545b9",
+              "_itemProps": {
+                "$stack": {
+                  "Items": {
+                    "width": { "$res": true, "xl": "512px" },
+                    "marginBottom": {
+                      "$res": true,
+                      "xl": { "value": "0px", "ref": "0" }
+                    },
+                    "align": { "$res": true, "xl": "center" }
+                  }
+                }
+              },
+              "elements": {
+                "en-US": [
+                  {
+                    "_template": "$richTextBlockElement",
+                    "elements": [
+                      {
+                        "_template": "$richTextLineElement",
+                        "elements": [
+                          {
+                            "_id": "35dd2aab-df0f-4de0-87ee-a08c619271a9",
+                            "_template": "$richTextPart",
+                            "color": {
+                              "$res": true,
+                              "xl": { "ref": "grey_01", "value": "#f9f8f3" }
+                            },
+                            "font": {
+                              "$res": true,
+                              "xl": {
+                                "value": {
+                                  "$res": true,
+                                  "2xl": {
+                                    "fontSize": 20,
+                                    "lineHeight": 1.8,
+                                    "fontFamily": "test-soehne-mono"
+                                  }
+                                },
+                                "ref": "body"
+                              }
+                            },
+                            "value": "New in"
+                          }
+                        ],
+                        "_id": "4d7684e9-1094-4ad4-a08a-c45a5462ab7f"
+                      },
+                      {
+                        "_template": "$richTextLineElement",
+                        "elements": [
+                          {
+                            "_id": "a6dcc165-ad7e-469b-abb7-bebbf325ff76",
+                            "_template": "$richTextPart",
+                            "color": {
+                              "$res": true,
+                              "xl": { "ref": "grey_01", "value": "#f9f8f3" }
+                            },
+                            "font": {
+                              "$res": true,
+                              "xl": {
+                                "ref": "heading2",
+                                "value": {
+                                  "$res": true,
+                                  "sm": {
+                                    "fontFamily": "test-national-2",
+                                    "fontSize": 24,
+                                    "lineHeight": 1.2,
+                                    "fontWeight": 700
+                                  },
+                                  "2xl": {
+                                    "fontFamily": "test-national-2",
+                                    "fontSize": 36,
+                                    "lineHeight": 1.2,
+                                    "fontWeight": 700
+                                  }
+                                }
+                              }
+                            },
+                            "value": "Accessories"
+                          }
+                        ],
+                        "_id": "e69e4301-73e7-4866-8b24-61c7730c675f"
+                      }
+                    ],
+                    "type": "paragraph",
+                    "_id": "f931fe28-930a-4656-9b42-4933ae3dab57"
+                  }
+                ]
+              },
+              "accessibilityRole": "div",
+              "isListStyleAuto": true,
+              "mainFont": {
+                "$res": true,
+                "xl": {
+                  "value": {
+                    "$res": true,
+                    "2xl": {
+                      "fontSize": 20,
+                      "lineHeight": 1.8,
+                      "fontFamily": "test-soehne-mono"
+                    }
+                  },
+                  "ref": "body"
+                }
+              },
+              "mainColor": {
+                "$res": true,
+                "xl": { "value": "#000000", "ref": "dark" }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "Card2": [
+    {
+      "_id": "5067c9c4-368e-4a71-b40c-5e19464bd352",
+      "_template": "$BasicCardBackground",
+      "traceId": "$BasicCardBackground-dc924482",
+      "size": { "$res": true, "xl": { "value": "1:1" } },
+      "Background": [],
+      "borderWidth": { "$res": true, "xl": "0" },
+      "borderColor": {
+        "$res": true,
+        "xl": { "value": "black", "ref": "$dark" }
+      },
+      "borderTop": { "$res": true, "xl": "1" },
+      "borderBottom": { "$res": true, "xl": "1" },
+      "borderLeft": { "$res": true, "xl": "1" },
+      "borderRight": { "$res": true, "xl": "1" },
+      "boxShadow": { "$res": true, "xl": { "value": "none", "ref": "none" } },
+      "cornerRadius": { "$res": true, "xl": "0" },
+      "enableContent": true,
+      "position": { "$res": true, "xl": "top-left" },
+      "paddingLeft": { "$res": true, "xl": { "value": "24px", "ref": "24" } },
+      "paddingRight": { "$res": true, "xl": { "value": "24px", "ref": "24" } },
+      "paddingTop": { "$res": true, "xl": { "value": "24px", "ref": "24" } },
+      "paddingBottom": { "$res": true, "xl": { "value": "24px", "ref": "24" } },
+      "paddingLeftExternal": {
+        "$res": true,
+        "xl": { "value": "0px", "ref": "0" }
+      },
+      "paddingRightExternal": {
+        "$res": true,
+        "xl": { "value": "0px", "ref": "0" }
+      },
+      "paddingTopExternal": {
+        "$res": true,
+        "xl": { "value": "0px", "ref": "0" }
+      },
+      "paddingBottomExternal": {
+        "$res": true,
+        "xl": { "value": "0px", "ref": "0" }
+      },
+      "edgeMarginProtection": { "$res": true, "xl": true },
+      "Stack": [
+        {
+          "_id": "613c44a2-05ed-4d9f-828c-1f7fd611add5",
+          "_template": "$stack",
+          "traceId": "$stack-4c261999",
+          "Items": []
+        }
+      ]
+    }
+  ],
+  "mode": { "$res": true, "xl": "none" },
+  "sideModeWidth": { "$res": true, "xl": "50%" },
+  "backgroundModePosition": { "$res": true, "xl": "top-left" },
+  "backgroundModePaddingLeft": {
+    "$res": true,
+    "xl": { "value": "24px", "ref": "24" }
+  },
+  "backgroundModePaddingRight": {
+    "$res": true,
+    "xl": { "value": "24px", "ref": "24" }
+  },
+  "backgroundModePaddingTop": {
+    "$res": true,
+    "xl": { "value": "24px", "ref": "24" }
+  },
+  "backgroundModePaddingBottom": {
+    "$res": true,
+    "xl": { "value": "24px", "ref": "24" }
+  },
+  "backgroundModeEdgeMarginProtection": { "$res": true, "xl": true }
+}

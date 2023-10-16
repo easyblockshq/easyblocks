@@ -1,20 +1,20 @@
 {
-  "_id": "0b451178-04c0-408c-bba8-b7c12f98770e",
+  "_id": "0992713d-3b14-4b71-a1c3-d0ef71bf4b82",
   "_template": "$StandardButton",
   "_master": "buttonDark",
-  "traceId": "$StandardButton-46adfa94",
+  "traceId": "$StandardButton-04d7444a",
   "_itemProps": { "$buttons": { "Buttons": {} } },
-  "action": [],
+  "Action": [],
   "variant": "icon",
   "label": {
-    "id": "local.169258f2-c6af-41df-96fb-1a05b34c86ad",
+    "id": "local.40f661ba-fde6-4648-9cb1-4df64a32a08a",
     "value": { "en-US": "Click me" }
   },
   "icon": {
-    "ref": "arrowLeft",
-    "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"red\" width=\"100px\" height=\"100px\"><path d=\"M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z\"/></svg>"
+    "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"red\" width=\"100px\" height=\"100px\"><path d=\"M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z\"/></svg>",
+    "ref": "arrowLeft"
   },
-  "color": { "$res": true, "xl": { "value": "white", "ref": "white" } },
+  "color": { "$res": true, "xl": { "value": "#ffffff", "ref": "white" } },
   "minHeight": { "$res": true, "xl": "42" },
   "minWidth": { "$res": true, "xl": "100" },
   "horizontalPadding": { "$res": true, "xl": { "value": "16px", "ref": "16" } },
@@ -24,16 +24,15 @@
   "font": {
     "$res": true,
     "xl": {
+      "ref": "body2",
       "value": {
         "$res": true,
         "2xl": {
-          "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
-          "fontSize": 16,
-          "fontWeight": 500,
-          "lineHeight": 1.2
+          "fontSize": 13,
+          "lineHeight": 1.8,
+          "fontFamily": "test-soehne-mono"
         }
-      },
-      "ref": "body2.bold"
+      }
     }
   },
   "underline": "off",
@@ -42,7 +41,7 @@
   "hasBackground": true,
   "backgroundColor": {
     "$res": true,
-    "xl": { "value": "black", "ref": "dark" }
+    "xl": { "ref": "grey_05", "value": "#252525" }
   },
   "hasBorder": false,
   "borderWidth": { "$res": true, "xl": "1" },
