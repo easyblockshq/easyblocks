@@ -34,6 +34,7 @@ import { NoomaBannerSection1 } from "@/app/easyblocks/templates/nooma/BannerSect
 import { NoomaBannerSection2 } from "@/app/easyblocks/templates/nooma/BannerSection2/NoomaBannerSection2";
 import { NoomaBannerSection3 } from "@/app/easyblocks/templates/nooma/BannerSection3/NoomaBannerSection3";
 import { NoomaBannerSection4 } from "@/app/easyblocks/templates/nooma/BannerSection4/NoomaBannerSection4";
+import { NoomaBannerSection5 } from "@/app/easyblocks/templates/nooma/BannerSection5/NoomaBannerSection5";
 import { NoomaTwoCards1 } from "@/app/easyblocks/templates/nooma/TwoCards1/NoomaTwoCards1";
 import { NoomaTwoCards2 } from "@/app/easyblocks/templates/nooma/TwoCards2/NoomaTwoCards2";
 import { NoomaTwoCards3 } from "@/app/easyblocks/templates/nooma/TwoCards3/NoomaTwoCards3";
@@ -46,6 +47,13 @@ import { NoomaGrid5 } from "@/app/easyblocks/templates/nooma/Grid5/NoomaGrid5";
 import { NoomaSlider1 } from "@/app/easyblocks/templates/nooma/Slider1/NoomaSlider1";
 import { NoomaSlider2 } from "@/app/easyblocks/templates/nooma/Slider2/NoomaSlider2";
 
+import { NoomaBasicCard1 } from "@/app/easyblocks/templates/nooma/BasicCard1/NoomaBasicCard1";
+import { NoomaProductCard1 } from "@/app/easyblocks/templates/nooma/ProductCard1/NoomaProductCard1";
+import { NoomaBasicCard2 } from "@/app/easyblocks/templates/nooma/BasicCard2/NoomaBasicCard2";
+import { NoomaBasicCard3 } from "@/app/easyblocks/templates/nooma/BasicCard3/NoomaBasicCard3";
+import { NoomaBasicCard4 } from "@/app/easyblocks/templates/nooma/BasicCard4/NoomaBasicCard4";
+import { NoomaBasicCard5 } from "@/app/easyblocks/templates/nooma/BasicCard5/NoomaBasicCard5";
+
 export const templates: Template[] = [
   {
     id: "BannerSection2_Empty",
@@ -55,6 +63,7 @@ export const templates: Template[] = [
   NoomaBannerSection1,
   NoomaBannerSection2,
   NoomaBannerSection3,
+  NoomaBannerSection5,
   // {
   //   id: "BannerSection2_1",
   //   config: BannerSection2_1,
@@ -128,6 +137,14 @@ export const templates: Template[] = [
   NoomaTwoCards2,
   NoomaTwoCards3,
   NoomaTwoCards4,
+
+  NoomaBasicCard1,
+  NoomaBasicCard2,
+  NoomaBasicCard3,
+  NoomaBasicCard4,
+  NoomaBasicCard5,
+
+  NoomaProductCard1,
 
   // {
   //   id: "TwoCards_1",
@@ -233,15 +250,15 @@ export const templates: Template[] = [
   {
     id: "Button_standard_light",
     label: "Standard light",
-    // thumbnail:
-    //   "https://images.ctfassets.net/blh4anz05qu1/1LdC2xsiaoytmv2PgAnQQD/379daa392c46ff7a33761fb6f0a7d889/Screenshot_2023-10-06_at_13.59.15.png",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/5ZjWVxfWfAPLYivhp1nlUQ/360d5cb90b75cd51ad099447b2e4a5b1/Screenshot_2023-10-16_at_16.27.32.png",
     config: Button_standard_light,
   },
   {
     id: "Button_text",
     label: "Text",
     thumbnail:
-      "https://images.ctfassets.net/blh4anz05qu1/7t6QX8UnUDcwvbVRvJrW5Z/fae0504fe745934fb70b182dfd704af2/Screenshot_2023-10-06_at_13.57.51.png",
+      "https://images.ctfassets.net/blh4anz05qu1/7t6QX8UnUDcwvbVRvJrW5Z/6ce07aa0d99eee0977fb447e8a39810e/Screenshot_2023-10-16_at_16.28.54.png",
     config: Button_text,
   },
   {
