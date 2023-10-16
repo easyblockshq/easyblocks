@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
 @font-face {
   font-family: "test-national-2";
   src: url("fonts/test-national-2-regular.woff2") format("woff2");

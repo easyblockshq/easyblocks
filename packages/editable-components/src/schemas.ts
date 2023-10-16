@@ -842,13 +842,13 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
               fields: [
                 {
                   ...fields.card1Width,
-                  hidden: false,
+                  visible: true,
                   group: "Placement and size",
                   label: "Width",
                 },
                 {
                   ...fields.card1EscapeMargin,
-                  hidden: false,
+                  visible: true,
                   group: "Placement and size",
                   label: "Escape margin",
                 },
@@ -871,13 +871,13 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
               fields: [
                 {
                   ...fields.card2Width,
-                  hidden: false,
+                  visible: true,
                   group: "Placement and size",
                   label: "Width",
                 },
                 {
                   ...fields.card2EscapeMargin,
-                  hidden: false,
+                  visible: true,
                   group: "Placement and size",
                   label: "Escape margin",
                 },
@@ -904,11 +904,13 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         {
           prop: "Card1",
           type: "component",
+          picker: "large-3",
           componentTypes: ["card"],
         },
         {
           prop: "Card2",
           type: "component",
+          picker: "large-3",
           componentTypes: ["card"],
         },
         {

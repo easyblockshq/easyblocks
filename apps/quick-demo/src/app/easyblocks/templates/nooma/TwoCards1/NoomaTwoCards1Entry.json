@@ -1,0 +1,692 @@
+{
+  "_id": "53cc88d3-9dce-47a0-8b9b-01c8bf19190b",
+  "_template": "$TwoCards",
+  "traceId": "$TwoCards-baea2ab0",
+  "_itemProps": {
+    "$RootSections": {
+      "data": {
+        "topMargin": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
+        "bottomMargin": { "$res": true, "xl": { "value": "32px", "ref": "32" } }
+      }
+    }
+  },
+  "containerMargin": { "$res": true, "xl": { "value": "10vw" } },
+  "containerMaxWidth": {
+    "$res": true,
+    "xl": { "value": "none", "ref": "none" }
+  },
+  "escapeMargin": { "$res": true, "xl": true },
+  "hide": { "$res": true, "xl": false },
+  "headerMode": "none",
+  "layout1Stack": "left",
+  "layout2Stacks": { "$res": true, "xl": "left-right" },
+  "layout2StacksVerticalAlign": { "$res": true, "xl": "center" },
+  "headerStacksGap": { "$res": true, "xl": { "value": "12px", "ref": "12" } },
+  "headerSectionGap": { "$res": true, "xl": { "value": "12px", "ref": "12" } },
+  "footerSectionGap": { "$res": true, "xl": { "value": "12px", "ref": "12" } },
+  "HeaderStack": [
+    {
+      "_id": "ae116e07-de87-4857-8d9c-01d8e9bc0259",
+      "_template": "$stack",
+      "traceId": "$stack-d034b970",
+      "Items": []
+    }
+  ],
+  "HeaderSecondaryStack": [
+    {
+      "_id": "4e22e451-4aa2-4061-b068-d3e92b7edc2c",
+      "_template": "$stack",
+      "traceId": "$stack-e68a37f8",
+      "Items": []
+    }
+  ],
+  "Background__": [
+    {
+      "_id": "11d0c0c8-0786-44b4-969e-10e0316c99ff",
+      "_template": "$backgroundColor",
+      "traceId": "$backgroundColor-c8ff8a29",
+      "_itemProps": { "$TwoCards": { "Background__": {} } },
+      "color": { "$res": true, "xl": { "ref": "yellow", "value": "#FCF0C5" } }
+    }
+  ],
+  "padding": { "$res": true, "xl": { "ref": "48", "value": "48px" } },
+  "Component": [
+    {
+      "_id": "78114641-8471-4f63-8dc3-e5a7bc2fcd8f",
+      "_template": "$TwoCardsCard",
+      "traceId": "$TwoCardsCard-64aa7a69",
+      "Card1": [
+        {
+          "_id": "e1249a08-d243-41a8-a2c9-362f1ad3b969",
+          "_template": "$BannerCard2",
+          "traceId": "$BannerCard2-2e7b96eb",
+          "_itemProps": { "$TwoCardsCard": { "Card1": {} } },
+          "cornerRadius": { "$res": true, "xl": "0" },
+          "borderWidth": { "$res": true, "xl": "0" },
+          "borderColor": {
+            "$res": true,
+            "xl": { "value": "black", "ref": "$dark" }
+          },
+          "borderTop": { "$res": true, "xl": "1" },
+          "borderBottom": { "$res": true, "xl": "1" },
+          "borderLeft": { "$res": true, "xl": "1" },
+          "borderRight": { "$res": true, "xl": "1" },
+          "boxShadow": {
+            "$res": true,
+            "xl": { "value": "none", "ref": "none" }
+          },
+          "Card1": [
+            {
+              "_id": "6ef81b6f-b403-489e-ab8a-304b713c283d",
+              "_template": "$BasicCard",
+              "traceId": "$BasicCard-d4ca135f",
+              "size": { "$res": true, "xl": { "value": "1:1" } },
+              "Background": [],
+              "borderWidth": { "$res": true, "xl": "0" },
+              "borderColor": {
+                "$res": true,
+                "xl": { "value": "black", "ref": "$dark" }
+              },
+              "borderTop": { "$res": true, "xl": "1" },
+              "borderBottom": { "$res": true, "xl": "1" },
+              "borderLeft": { "$res": true, "xl": "1" },
+              "borderRight": { "$res": true, "xl": "1" },
+              "boxShadow": {
+                "$res": true,
+                "xl": { "value": "none", "ref": "none" }
+              },
+              "cornerRadius": { "$res": true, "xl": "0" },
+              "enableContent": true,
+              "position": { "$res": true, "xl": "top-left" },
+              "paddingLeft": {
+                "$res": true,
+                "xl": { "value": "24px", "ref": "24" }
+              },
+              "paddingRight": {
+                "$res": true,
+                "xl": { "value": "24px", "ref": "24" }
+              },
+              "paddingTop": {
+                "$res": true,
+                "xl": { "value": "24px", "ref": "24" }
+              },
+              "paddingBottom": {
+                "$res": true,
+                "xl": { "value": "24px", "ref": "24" }
+              },
+              "paddingLeftExternal": {
+                "$res": true,
+                "xl": { "value": "0px", "ref": "0" }
+              },
+              "paddingRightExternal": {
+                "$res": true,
+                "xl": { "value": "0px", "ref": "0" }
+              },
+              "paddingTopExternal": {
+                "$res": true,
+                "xl": { "value": "0px", "ref": "0" }
+              },
+              "paddingBottomExternal": {
+                "$res": true,
+                "xl": { "value": "0px", "ref": "0" }
+              },
+              "edgeMarginProtection": { "$res": true, "xl": true },
+              "Stack": [
+                {
+                  "_id": "9878b117-a544-4b1d-8c05-bfff93031b13",
+                  "_template": "$stack",
+                  "traceId": "$stack-01c0537a",
+                  "Items": [
+                    {
+                      "_id": "b65eea2c-9565-4c9d-b94c-445499c26122",
+                      "_template": "$richText",
+                      "traceId": "$richText-bd8e50a9",
+                      "_itemProps": {
+                        "$stack": {
+                          "Items": {
+                            "width": { "$res": true, "xl": "512px" },
+                            "marginBottom": {
+                              "$res": true,
+                              "xl": { "value": "0px", "ref": "0" }
+                            },
+                            "align": { "$res": true, "xl": "left" }
+                          }
+                        }
+                      },
+                      "elements": {
+                        "en-US": [
+                          {
+                            "_template": "$richTextBlockElement",
+                            "elements": [
+                              {
+                                "_template": "$richTextLineElement",
+                                "elements": [
+                                  {
+                                    "_id": "84e1b1ff-17b4-45e8-92e8-2e4ba50af815",
+                                    "_template": "$richTextPart",
+                                    "color": {
+                                      "$res": true,
+                                      "xl": {
+                                        "value": "#000000",
+                                        "ref": "dark"
+                                      }
+                                    },
+                                    "font": {
+                                      "$res": true,
+                                      "xl": {
+                                        "ref": "heading3",
+                                        "value": {
+                                          "$res": true,
+                                          "2xl": {
+                                            "fontFamily": "test-national-2",
+                                            "fontSize": 21,
+                                            "lineHeight": 1.4,
+                                            "fontWeight": 600
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "value": "Make it stand out"
+                                  }
+                                ],
+                                "_id": "07a4daca-fc6e-4ce2-b90c-ffa6ac9c8ae1"
+                              }
+                            ],
+                            "type": "paragraph",
+                            "_id": "5368dc1a-5a50-4ddb-ba23-a9b5dbbf0572"
+                          }
+                        ]
+                      },
+                      "accessibilityRole": "div",
+                      "isListStyleAuto": true,
+                      "mainFont": {
+                        "$res": true,
+                        "xl": {
+                          "value": {
+                            "$res": true,
+                            "2xl": {
+                              "fontSize": 20,
+                              "lineHeight": 1.8,
+                              "fontFamily": "test-soehne-mono"
+                            }
+                          },
+                          "ref": "body"
+                        }
+                      },
+                      "mainColor": {
+                        "$res": true,
+                        "xl": { "value": "#000000", "ref": "dark" }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "Card2": [
+            {
+              "_id": "e82ff4c7-2247-412a-acef-89e4eacb0d1c",
+              "_template": "$BasicCardBackground",
+              "traceId": "$BasicCardBackground-e9971bba",
+              "size": { "$res": true, "xl": { "value": "1:1" } },
+              "Background": [],
+              "borderWidth": { "$res": true, "xl": "0" },
+              "borderColor": {
+                "$res": true,
+                "xl": { "value": "black", "ref": "$dark" }
+              },
+              "borderTop": { "$res": true, "xl": "1" },
+              "borderBottom": { "$res": true, "xl": "1" },
+              "borderLeft": { "$res": true, "xl": "1" },
+              "borderRight": { "$res": true, "xl": "1" },
+              "boxShadow": {
+                "$res": true,
+                "xl": { "value": "none", "ref": "none" }
+              },
+              "cornerRadius": { "$res": true, "xl": "0" },
+              "enableContent": true,
+              "position": { "$res": true, "xl": "top-left" },
+              "paddingLeft": {
+                "$res": true,
+                "xl": { "value": "24px", "ref": "24" }
+              },
+              "paddingRight": {
+                "$res": true,
+                "xl": { "value": "24px", "ref": "24" }
+              },
+              "paddingTop": {
+                "$res": true,
+                "xl": { "value": "24px", "ref": "24" }
+              },
+              "paddingBottom": {
+                "$res": true,
+                "xl": { "value": "24px", "ref": "24" }
+              },
+              "paddingLeftExternal": {
+                "$res": true,
+                "xl": { "value": "0px", "ref": "0" }
+              },
+              "paddingRightExternal": {
+                "$res": true,
+                "xl": { "value": "0px", "ref": "0" }
+              },
+              "paddingTopExternal": {
+                "$res": true,
+                "xl": { "value": "0px", "ref": "0" }
+              },
+              "paddingBottomExternal": {
+                "$res": true,
+                "xl": { "value": "0px", "ref": "0" }
+              },
+              "edgeMarginProtection": { "$res": true, "xl": true },
+              "Stack": [
+                {
+                  "_id": "f4ee8e49-5eb9-48c3-a103-a0b6d9c3a86c",
+                  "_template": "$stack",
+                  "traceId": "$stack-d891f241",
+                  "Items": []
+                }
+              ]
+            }
+          ],
+          "mode": { "$res": true, "xl": "none" },
+          "sideModeWidth": { "$res": true, "xl": "50%" },
+          "backgroundModePosition": { "$res": true, "xl": "top-left" },
+          "backgroundModePaddingLeft": {
+            "$res": true,
+            "xl": { "value": "24px", "ref": "24" }
+          },
+          "backgroundModePaddingRight": {
+            "$res": true,
+            "xl": { "value": "24px", "ref": "24" }
+          },
+          "backgroundModePaddingTop": {
+            "$res": true,
+            "xl": { "value": "24px", "ref": "24" }
+          },
+          "backgroundModePaddingBottom": {
+            "$res": true,
+            "xl": { "value": "24px", "ref": "24" }
+          },
+          "backgroundModeEdgeMarginProtection": { "$res": true, "xl": true }
+        }
+      ],
+      "Card2": [
+        {
+          "_id": "20f6cccc-f930-407d-8517-35aec44eba8f",
+          "_template": "$BannerCard2",
+          "traceId": "$BannerCard2-65542ffb",
+          "_itemProps": { "$TwoCardsCard": { "Card2": {} } },
+          "cornerRadius": { "$res": true, "xl": "0" },
+          "borderWidth": { "$res": true, "xl": "0" },
+          "borderColor": {
+            "$res": true,
+            "xl": { "value": "black", "ref": "$dark" }
+          },
+          "borderTop": { "$res": true, "xl": "1" },
+          "borderBottom": { "$res": true, "xl": "1" },
+          "borderLeft": { "$res": true, "xl": "1" },
+          "borderRight": { "$res": true, "xl": "1" },
+          "boxShadow": {
+            "$res": true,
+            "xl": { "value": "none", "ref": "none" }
+          },
+          "Card1": [
+            {
+              "_id": "ccc22537-e374-4478-8be8-3f3a724c0f31",
+              "_template": "$BasicCard",
+              "traceId": "$BasicCard-d0ac4813",
+              "size": { "$res": true, "xl": { "value": "1:1" } },
+              "Background": [],
+              "borderWidth": { "$res": true, "xl": "0" },
+              "borderColor": {
+                "$res": true,
+                "xl": { "value": "black", "ref": "$dark" }
+              },
+              "borderTop": { "$res": true, "xl": "1" },
+              "borderBottom": { "$res": true, "xl": "1" },
+              "borderLeft": { "$res": true, "xl": "1" },
+              "borderRight": { "$res": true, "xl": "1" },
+              "boxShadow": {
+                "$res": true,
+                "xl": { "value": "none", "ref": "none" }
+              },
+              "cornerRadius": { "$res": true, "xl": "0" },
+              "enableContent": true,
+              "position": { "$res": true, "xl": "top-left" },
+              "paddingLeft": {
+                "$res": true,
+                "xl": { "value": "24px", "ref": "24" }
+              },
+              "paddingRight": {
+                "$res": true,
+                "xl": { "value": "24px", "ref": "24" }
+              },
+              "paddingTop": {
+                "$res": true,
+                "xl": { "value": "24px", "ref": "24" }
+              },
+              "paddingBottom": {
+                "$res": true,
+                "xl": { "value": "24px", "ref": "24" }
+              },
+              "paddingLeftExternal": {
+                "$res": true,
+                "xl": { "value": "0px", "ref": "0" }
+              },
+              "paddingRightExternal": {
+                "$res": true,
+                "xl": { "value": "0px", "ref": "0" }
+              },
+              "paddingTopExternal": {
+                "$res": true,
+                "xl": { "value": "0px", "ref": "0" }
+              },
+              "paddingBottomExternal": {
+                "$res": true,
+                "xl": { "value": "0px", "ref": "0" }
+              },
+              "edgeMarginProtection": { "$res": true, "xl": true },
+              "Stack": [
+                {
+                  "_id": "a71824b0-9cb8-4ee1-9501-29772ab93def",
+                  "_template": "$stack",
+                  "traceId": "$stack-b16ebf22",
+                  "Items": [
+                    {
+                      "_id": "91c15045-5b5e-4ab5-b7d2-8b7f45d7309f",
+                      "_template": "$separator",
+                      "traceId": "$separator-9a1eef54",
+                      "_itemProps": {
+                        "$stack": {
+                          "Items": {
+                            "width": { "$res": true, "xl": "512px" },
+                            "marginBottom": {
+                              "$res": true,
+                              "xl": { "ref": "32", "value": "32px" }
+                            },
+                            "align": { "$res": true, "xl": "left" }
+                          }
+                        }
+                      },
+                      "color": {
+                        "$res": true,
+                        "xl": { "value": "#000000", "ref": "black" }
+                      },
+                      "height": { "$res": true, "xl": "1" }
+                    },
+                    {
+                      "_id": "d0e8a196-95d3-49aa-b7ee-a166b3da4a73",
+                      "_template": "$richText",
+                      "traceId": "$richText-d6e3cde0",
+                      "_itemProps": {
+                        "$stack": {
+                          "Items": {
+                            "width": { "$res": true, "xl": "512px" },
+                            "marginBottom": {
+                              "$res": true,
+                              "xl": { "ref": "32", "value": "32px" }
+                            },
+                            "align": { "$res": true, "xl": "left" }
+                          }
+                        }
+                      },
+                      "elements": {
+                        "en-US": [
+                          {
+                            "_template": "$richTextBlockElement",
+                            "elements": [
+                              {
+                                "_template": "$richTextLineElement",
+                                "elements": [
+                                  {
+                                    "_id": "b6a4e36e-37af-441a-b478-ab1e2170277c",
+                                    "_template": "$richTextPart",
+                                    "color": {
+                                      "$res": true,
+                                      "xl": {
+                                        "value": "#000000",
+                                        "ref": "dark"
+                                      }
+                                    },
+                                    "font": {
+                                      "$res": true,
+                                      "xl": {
+                                        "ref": "body2",
+                                        "value": {
+                                          "$res": true,
+                                          "2xl": {
+                                            "fontSize": 13,
+                                            "lineHeight": 1.8,
+                                            "fontFamily": "test-soehne-mono"
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                                  }
+                                ],
+                                "_id": "b08dda79-12ab-4680-b8bc-d52e08dc1710"
+                              }
+                            ],
+                            "type": "paragraph",
+                            "_id": "904c8567-128b-4469-b108-438a6252fd3f"
+                          }
+                        ]
+                      },
+                      "accessibilityRole": "div",
+                      "isListStyleAuto": true,
+                      "mainFont": {
+                        "$res": true,
+                        "xl": {
+                          "value": {
+                            "$res": true,
+                            "2xl": {
+                              "fontSize": 20,
+                              "lineHeight": 1.8,
+                              "fontFamily": "test-soehne-mono"
+                            }
+                          },
+                          "ref": "body"
+                        }
+                      },
+                      "mainColor": {
+                        "$res": true,
+                        "xl": { "value": "#000000", "ref": "dark" }
+                      }
+                    },
+                    {
+                      "_id": "fc8fd1ea-eab9-47ef-85bd-0e22f437273c",
+                      "_template": "$buttons",
+                      "traceId": "$buttons-05db4434",
+                      "_itemProps": {
+                        "$stack": {
+                          "Items": {
+                            "width": { "$res": true, "xl": "512px" },
+                            "marginBottom": {
+                              "$res": true,
+                              "xl": { "value": "0px", "ref": "0" }
+                            },
+                            "align": { "$res": true, "xl": "left" }
+                          }
+                        }
+                      },
+                      "verticalLayout": false,
+                      "gap": {
+                        "$res": true,
+                        "xl": { "value": "12px", "ref": "12" }
+                      },
+                      "Buttons": [
+                        {
+                          "_id": "71d8a00e-2aee-4155-9ae7-9ae5241e3122",
+                          "_template": "$StandardButton",
+                          "_master": "buttonDark",
+                          "traceId": "$StandardButton-9a4fa49e",
+                          "_itemProps": { "$buttons": { "Buttons": {} } },
+                          "Action": [],
+                          "variant": "label",
+                          "label": {
+                            "id": "local.cdac3bb2-3ec6-42c2-ba5b-a307fec42ffa",
+                            "value": { "en-US": "Learn more" }
+                          },
+                          "icon": {
+                            "value": "<svg viewBox=\"0 -960 960 960\"><path fill=\"currentColor\" d=\"m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z\"/></svg>",
+                            "ref": "heart"
+                          },
+                          "color": {
+                            "$res": true,
+                            "xl": { "ref": "grey_05", "value": "#252525" }
+                          },
+                          "minHeight": { "$res": true, "xl": "42" },
+                          "minWidth": { "$res": true, "xl": "100" },
+                          "horizontalPadding": {
+                            "$res": true,
+                            "xl": { "value": "16px", "ref": "16" }
+                          },
+                          "gap": {
+                            "$res": true,
+                            "xl": { "value": "6px", "ref": "6" }
+                          },
+                          "cornerMode": { "$res": true, "xl": "custom" },
+                          "cornerRadius": { "$res": true, "xl": "12" },
+                          "font": {
+                            "$res": true,
+                            "xl": {
+                              "value": {
+                                "$res": true,
+                                "2xl": {
+                                  "fontSize": 13,
+                                  "lineHeight": 1.8,
+                                  "fontFamily": "test-soehne-mono"
+                                }
+                              },
+                              "ref": "body2"
+                            }
+                          },
+                          "underline": "off",
+                          "underlineOffset": { "$res": true, "xl": "1" },
+                          "iconSize": { "$res": true, "xl": "20" },
+                          "hasBackground": false,
+                          "backgroundColor": {
+                            "$res": true,
+                            "xl": { "value": "#252525", "ref": "grey_05" }
+                          },
+                          "hasBorder": true,
+                          "borderWidth": { "$res": true, "xl": "1" },
+                          "borderColor": {
+                            "$res": true,
+                            "xl": { "value": "black", "ref": "$dark" }
+                          },
+                          "boxShadow": {
+                            "$res": true,
+                            "xl": { "value": "none", "ref": "none" }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "Card2": [
+            {
+              "_id": "945a46e4-378e-492e-a06a-33ac4ece1c47",
+              "_template": "$BasicCardBackground",
+              "traceId": "$BasicCardBackground-533aea10",
+              "size": { "$res": true, "xl": { "value": "1:1" } },
+              "Background": [],
+              "borderWidth": { "$res": true, "xl": "0" },
+              "borderColor": {
+                "$res": true,
+                "xl": { "value": "black", "ref": "$dark" }
+              },
+              "borderTop": { "$res": true, "xl": "1" },
+              "borderBottom": { "$res": true, "xl": "1" },
+              "borderLeft": { "$res": true, "xl": "1" },
+              "borderRight": { "$res": true, "xl": "1" },
+              "boxShadow": {
+                "$res": true,
+                "xl": { "value": "none", "ref": "none" }
+              },
+              "cornerRadius": { "$res": true, "xl": "0" },
+              "enableContent": true,
+              "position": { "$res": true, "xl": "top-left" },
+              "paddingLeft": {
+                "$res": true,
+                "xl": { "value": "24px", "ref": "24" }
+              },
+              "paddingRight": {
+                "$res": true,
+                "xl": { "value": "24px", "ref": "24" }
+              },
+              "paddingTop": {
+                "$res": true,
+                "xl": { "value": "24px", "ref": "24" }
+              },
+              "paddingBottom": {
+                "$res": true,
+                "xl": { "value": "24px", "ref": "24" }
+              },
+              "paddingLeftExternal": {
+                "$res": true,
+                "xl": { "value": "0px", "ref": "0" }
+              },
+              "paddingRightExternal": {
+                "$res": true,
+                "xl": { "value": "0px", "ref": "0" }
+              },
+              "paddingTopExternal": {
+                "$res": true,
+                "xl": { "value": "0px", "ref": "0" }
+              },
+              "paddingBottomExternal": {
+                "$res": true,
+                "xl": { "value": "0px", "ref": "0" }
+              },
+              "edgeMarginProtection": { "$res": true, "xl": true },
+              "Stack": [
+                {
+                  "_id": "3162fcf8-05cd-476a-91f3-c33984eb55b8",
+                  "_template": "$stack",
+                  "traceId": "$stack-0a137750",
+                  "Items": []
+                }
+              ]
+            }
+          ],
+          "mode": { "$res": true, "xl": "none" },
+          "sideModeWidth": { "$res": true, "xl": "50%" },
+          "backgroundModePosition": { "$res": true, "xl": "top-left" },
+          "backgroundModePaddingLeft": {
+            "$res": true,
+            "xl": { "value": "24px", "ref": "24" }
+          },
+          "backgroundModePaddingRight": {
+            "$res": true,
+            "xl": { "value": "24px", "ref": "24" }
+          },
+          "backgroundModePaddingTop": {
+            "$res": true,
+            "xl": { "value": "24px", "ref": "24" }
+          },
+          "backgroundModePaddingBottom": {
+            "$res": true,
+            "xl": { "value": "24px", "ref": "24" }
+          },
+          "backgroundModeEdgeMarginProtection": { "$res": true, "xl": true }
+        }
+      ],
+      "card1Width": { "$res": true, "xl": "12" },
+      "card1EscapeMargin": { "$res": true, "xl": false },
+      "card2Width": { "$res": true, "xl": "12" },
+      "card2EscapeMargin": { "$res": true, "xl": false },
+      "verticalLayout": { "$res": true, "xl": "align-top" },
+      "verticalOffset": { "$res": true, "xl": "-4" },
+      "collapse": { "$res": true, "xl": false },
+      "gap": { "$res": true, "xl": { "ref": "48", "value": "48px" } },
+      "verticalGap": { "$res": true, "xl": { "value": "24px", "ref": "24" } },
+      "invertCollapsed": false
+    }
+  ]
+}

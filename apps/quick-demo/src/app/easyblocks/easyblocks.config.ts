@@ -54,7 +54,6 @@ export const easyblocksConfig: Config = {
       ],
     },
   },
-  // textModifiers: [actionTextModifier],
   components: [
     ...builtinEditableComponentsDefinitions,
     {
@@ -152,30 +151,61 @@ export const easyblocksConfig: Config = {
   ],
   colors: [
     {
-      id: "dark",
+      id: "grey_05",
+      label: "Dark",
+      value: "#252525",
+    },
+    {
+      id: "grey_01",
+      label: "Light",
+      value: "#f9f8f3",
+    },
+    {
+      id: "beige_01",
+      label: "Beige",
+      value: "#f1f0ea",
+    },
+    {
+      id: "yellow",
+      label: "Yellow",
+      value: "#FCF0C5",
+    },
+    {
+      id: "green",
+      label: "Green",
+      value: "#BFD1AC",
+    },
+    {
+      id: "grey_02",
+      label: "Grey 2",
+      value: "#bdbdbd",
+    },
+    {
+      id: "grey_03",
+      label: "Grey 3",
+      value: "#a0a09d",
+    },
+    {
+      id: "grey_04",
+      label: "Grey 4",
+      value: "#4F4F4F",
+    },
+    {
+      id: "black",
       label: "Black",
-      value: "black",
+      value: "#000000",
     },
     {
       id: "white",
       label: "White",
-      value: "white",
-    },
-    {
-      id: "dark-grey",
-      label: "Dark Grey",
-      value: "#363636",
-    },
-    {
-      id: "light-grey",
-      label: "Light Grey",
-      value: "#F2F2F2",
+      value: "#ffffff",
     },
     {
       id: "transparent",
       label: "Transparent",
       value: "transparent",
     },
+
     {
       id: "transparent-grey-dark",
       label: "Transparent Dark",
@@ -192,58 +222,30 @@ export const easyblocksConfig: Config = {
       id: "body",
       label: "Body",
       value: {
-        fontFamily: MASTER_FONT_FAMILY,
         fontSize: 20,
-        fontWeight: 400,
-        lineHeight: 1.2,
-        "@xs": {
-          fontSize: 18,
-        },
-      },
-    },
-    {
-      id: "body.bold",
-      label: "Body (bold)",
-      value: {
-        fontFamily: MASTER_FONT_FAMILY,
-        fontSize: 20,
-        fontWeight: 500,
-        lineHeight: 1.2,
-        "@xs": {
-          fontSize: 18,
-        },
+        lineHeight: 1.8,
+        fontFamily: "test-soehne-mono",
       },
     },
     {
       id: "body2",
       label: "Body small",
       value: {
-        fontFamily: MASTER_FONT_FAMILY,
-        fontSize: 16,
-        fontWeight: 400,
-        lineHeight: 1.2,
-      },
-    },
-    {
-      id: "body2.bold",
-      label: "Body small (bold)",
-      value: {
-        fontFamily: MASTER_FONT_FAMILY,
-        fontSize: 16,
-        fontWeight: 500,
-        lineHeight: 1.2,
+        fontSize: 13,
+        lineHeight: 1.8,
+        fontFamily: "test-soehne-mono",
       },
     },
     {
       id: "heading1",
       label: "Heading 1",
       value: {
-        fontFamily: MASTER_FONT_FAMILY,
-        fontSize: 64,
-        fontWeight: 500,
+        fontFamily: "test-national-2",
+        fontSize: 48,
         lineHeight: 1.2,
-        "@xs": {
-          fontSize: 36,
+        fontWeight: 700,
+        "@sm": {
+          fontSize: 36, // responsiveness is easy
         },
       },
     },
@@ -251,12 +253,12 @@ export const easyblocksConfig: Config = {
       id: "heading2",
       label: "Heading 2",
       value: {
-        fontFamily: MASTER_FONT_FAMILY,
-        fontSize: 48,
-        fontWeight: 500,
+        fontFamily: "test-national-2",
+        fontSize: 36,
         lineHeight: 1.2,
-        "@xs": {
-          fontSize: 32,
+        fontWeight: 700,
+        "@sm": {
+          fontSize: 24, // responsiveness is easy
         },
       },
     },
@@ -264,23 +266,30 @@ export const easyblocksConfig: Config = {
       id: "heading3",
       label: "Heading 3",
       value: {
-        fontFamily: MASTER_FONT_FAMILY,
-        fontSize: 32,
-        fontWeight: 500,
-        lineHeight: 1.2,
-        "@xs": {
-          fontSize: 28,
-        },
+        fontFamily: "test-national-2",
+        fontSize: 21,
+        lineHeight: 1.4,
+        fontWeight: 600,
       },
     },
     {
       id: "heading4",
       label: "Heading 4",
       value: {
-        fontFamily: MASTER_FONT_FAMILY,
-        fontSize: 24,
-        fontWeight: 500,
-        lineHeight: 1.2,
+        fontFamily: "test-national-2",
+        fontSize: 16,
+        lineHeight: 1.4,
+        fontWeight: 600,
+      },
+    },
+    {
+      id: "heading5",
+      label: "Heading 5",
+      value: {
+        fontFamily: "test-national-2",
+        fontSize: 13,
+        lineHeight: 1.4,
+        fontWeight: 600,
       },
     },
   ],
