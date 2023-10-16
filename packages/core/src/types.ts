@@ -195,7 +195,7 @@ export type StringTokenSchemaProp = SchemaPropShared<
     | "aspectRatios"
     | "containerWidths"
     | "boxShadows";
-  extraValues?: string[]; // extra values are usually non-token values that are displayed in the select as if they were tokens, the component must understand them
+  extraValues?: Array<string | { value: string; label: string }>; // extra values are usually non-token values that are displayed in the select as if they were tokens, the component must understand them
 };
 
 export type SpaceSchemaProp = SchemaPropShared<
@@ -673,14 +673,15 @@ export type ComponentConfigChangeFunction = (arg: {
   closestDefinedValues: Record<string, any>;
 }) => Record<string, any>;
 
-type SidebarPreviewVariant = { description?: string } & (
-  | {
-      type: "image";
-      url: string;
-    }
-  | { type: "solid"; color: string }
-  | { type: "icon"; icon?: "link" | "grid_3x3" }
-);
+export type SidebarPreviewVariant = {
+  description?: string;
+  thumbnail?:
+    | {
+        type: "image";
+        src: string;
+      }
+    | { type: "color"; color: string };
+};
 
 export type ComponentDefinitionShared<Identifier extends string = string> = {
   id: Identifier;

@@ -10,6 +10,7 @@ import {
   ComponentFixedSchemaProp,
   ComponentSchemaProp,
   ConfigComponent,
+  SidebarPreviewVariant,
 } from "@easyblocks/core";
 import {
   SSButtonGhost,
@@ -236,38 +237,15 @@ const SubComponentPanelButton = ({
       config,
       externalData,
       editorContext
-    ) ??
-    (componentDefinition?.thumbnail
-      ? {
-          type: "image",
-          url: componentDefinition.thumbnail,
-        }
-      : undefined);
+    ) ?? {};
 
-  const thumbnail: ThumbnailType | undefined = (() => {
-    if (!sidebarPreview) {
-      return;
-    }
-
-    if (sidebarPreview.type === "icon" && sidebarPreview.icon) {
-      return {
-        type: "icon",
-        icon: sidebarPreview.icon,
-      };
-    } else if (sidebarPreview.type === "image") {
-      return {
-        type: "image",
-        src: sidebarPreview.url,
-      };
-    } else if (sidebarPreview.type === "solid") {
-      return {
-        type: "color",
-        color: sidebarPreview.color,
-      };
-    }
-
-    return;
-  })();
+  const defaultThumbnail: ThumbnailType | undefined =
+    componentDefinition?.thumbnail
+      ? { type: "image", src: componentDefinition.thumbnail }
+      : undefined;
+  const thumbnail: ThumbnailType | undefined =
+    sidebarPreview.thumbnail ?? defaultThumbnail;
+  const description: string | undefined = sidebarPreview.description;
 
   return showError ? (
     <Error>{label}</Error>
@@ -276,7 +254,7 @@ const SubComponentPanelButton = ({
       <ThumbnailButton
         onClick={onExpand}
         label={label}
-        description={sidebarPreview?.description}
+        description={description}
         thumbnail={thumbnail}
       />
 

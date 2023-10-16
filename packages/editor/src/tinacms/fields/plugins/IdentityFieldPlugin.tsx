@@ -82,15 +82,6 @@ function IdentityField({ input, field }: IdentityFieldProps) {
     editorContext.actions.removeItems(configPaths);
   }
 
-  const IconComponent =
-    componentDefinition?.icon !== undefined
-      ? componentDefinition.icon === "link"
-        ? SSIcons.Link
-        : componentDefinition.icon === "grid_3x3"
-        ? SSIcons.Grid3x3
-        : null
-      : null;
-
   const titleContent = (
     <div
       css={css`
@@ -99,7 +90,6 @@ function IdentityField({ input, field }: IdentityFieldProps) {
         gap: 2px;
       `}
     >
-      {IconComponent !== null && <IconComponent size={16} />}
       <Typography
         css={css`
           line-height: 14px;

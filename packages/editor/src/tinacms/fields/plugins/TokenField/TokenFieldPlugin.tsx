@@ -35,7 +35,7 @@ interface TokenField<TokenValue = unknown> extends Field {
   tokens: { [key: string]: ThemeRefValue<TokenValue> };
   normalizeCustomValue?: (value: string) => any;
   allowCustom?: boolean;
-  extraValues?: string[];
+  extraValues?: Array<string | { value: string; label: string }>;
 }
 
 interface TokenFieldProps<TokenValue>
@@ -47,6 +47,25 @@ interface TokenFieldProps<TokenValue>
 }
 
 const CUSTOM_OPTION_VALUE = "__custom__";
+
+function extraValuesIncludes(
+  extraValues: Array<string | { value: string; label: string }>,
+  value: string
+) {
+  for (let i = 0; i < extraValues.length; i++) {
+    const extraValue = extraValues[i];
+    if (typeof extraValue === "string") {
+      if (extraValue === value) {
+        return true;
+      }
+    } else {
+      if (extraValue.value === value) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
 
 function TokenFieldComponent<TokenValue>({
   input,
@@ -73,10 +92,17 @@ function TokenFieldComponent<TokenValue>({
   // Extra values are displayed in select
   if (extraValues) {
     extraValues.forEach((extraValue) => {
-      options.push({
-        id: extraValue,
-        label: extraValue,
-      });
+      if (typeof extraValue === "string") {
+        options.push({
+          id: extraValue,
+          label: extraValue,
+        });
+      } else {
+        options.push({
+          id: extraValue.value,
+          label: extraValue.label,
+        });
+      }
     });
   }
 
@@ -95,7 +121,8 @@ function TokenFieldComponent<TokenValue>({
   const isExtraValueSelected =
     !isMixedFieldValue(input.value) &&
     !input.value.ref &&
-    extraValues.includes(
+    extraValuesIncludes(
+      extraValues,
       isTrulyResponsiveValue(input.value.value)
         ? (responsiveValueGetDefinedValue(
             // not sure about usage of responsiveValueGet without widths here
@@ -153,7 +180,7 @@ function TokenFieldComponent<TokenValue>({
       queueMicrotask(() => {
         customValueTextFieldRef.current?.focus();
       });
-    } else if (extraValues.includes(selectedValue)) {
+    } else if (extraValuesIncludes(extraValues, selectedValue)) {
       input.onChange({
         value: selectedValue,
       });

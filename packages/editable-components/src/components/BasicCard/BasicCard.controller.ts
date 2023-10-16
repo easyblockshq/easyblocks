@@ -295,8 +295,9 @@ export function basicCardController(config: BasicCardCompiledValues) {
   };
 
   const shouldUsePassedSize =
-    config.passedSize !== undefined && config.passedSize !== "auto";
+    config.passedSize !== undefined && config.passedSize !== "__undefined__";
   const size = shouldUsePassedSize ? config.passedSize : config.size;
+
   const backgroundAspectRatio =
     size === "fit-background"
       ? "natural"

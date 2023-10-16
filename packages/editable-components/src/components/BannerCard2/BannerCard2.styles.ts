@@ -201,7 +201,7 @@ function styles(
     gridBaseLineHeight: config.gridBaseLineHeight,
     $width: $widthCard2,
     $widthAuto: false,
-    passedSize: "auto",
+    // passedSize: "__undefined__",
     passedNoBorders: true,
 
     edgeLeft: false,
@@ -226,6 +226,8 @@ function styles(
     Card1.edgeRightMargin = edgeInfo.edgeRightMargin;
     Card1.edgeTop = borderInfo.top || edgeInfo.edgeTop;
     Card1.edgeBottom = borderInfo.bottom || edgeInfo.edgeBottom;
+
+    Card1.passedSize = "__undefined__";
   } else if (config.mode === "background") {
     Card1.edgeLeft = true;
     Card1.edgeLeftMargin = edgeInfo.edgeLeftMargin;
@@ -276,7 +278,7 @@ function styles(
     Card1.edgeBottom = true;
     Card1.useExternalPaddingLeft = !borderInfo.left;
     Card1.useExternalPaddingRight = !borderInfo.right;
-    Card1.passedSize = "auto";
+    // Card1.passedSize = "auto";
 
     Card2.edgeLeft = edgeInfo.edgeLeft;
     Card2.edgeLeftMargin = edgeInfo.edgeLeftMargin;

@@ -70,6 +70,7 @@ const actionTextModifier: InternalTextModifierDefinition = {
       ],
       label: "Underline",
       group: "Underline",
+      defaultValue: "enabled",
     },
     {
       prop: "opacity",
@@ -77,6 +78,7 @@ const actionTextModifier: InternalTextModifierDefinition = {
       options: OPACITY_OPTIONS,
       label: "Opacity",
       group: "Opacity",
+      defaultValue: "1",
     },
     {
       prop: "hoverOpacity",
@@ -87,6 +89,7 @@ const actionTextModifier: InternalTextModifierDefinition = {
       visible: ({ underline }) => {
         return underline !== "none";
       },
+      defaultValue: "0.7",
     },
     {
       prop: "hoverOpacityAnimationDuration",
@@ -115,6 +118,7 @@ const actionTextModifier: InternalTextModifierDefinition = {
       ],
       label: "Duration",
       group: "Animation",
+      defaultValue: "100ms",
     },
   ],
   apply: ({

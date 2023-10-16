@@ -4,6 +4,8 @@ import {
   ComponentSchemaProp,
   EditingFunctionInput,
   SchemaProp,
+  Select$SchemaProp,
+  StringTokenSchemaProp,
 } from "@easyblocks/core";
 import { borderSchemaProps } from "../../borderHelpers";
 import {
@@ -16,6 +18,7 @@ import { BasicCardCompiledValues } from "./BasicCard.types";
 export const basicCardDefinition: InternalRenderableComponentDefinition<"$BasicCard"> =
   {
     id: "$BasicCard",
+    label: "Banner Stack",
     pasteSlots: ["Stack"],
     styles: basicCardStyles,
     // @ts-expect-error
@@ -132,14 +135,22 @@ export const basicCardDefinition: InternalRenderableComponentDefinition<"$BasicC
         label: "Size",
         type: "stringToken",
         tokenId: "aspectRatios",
-        extraValues: ["grid-baseline", "fit-content", "fit-background"],
+        extraValues: [
+          { value: "fit-background", label: "Fit Background" },
+          { value: "fit-content", label: "Fit content" },
+        ],
         group: "General",
       },
       {
         prop: "Background",
         label: "Background",
         type: "component",
-        componentTypes: ["image"],
+        componentTypes: [
+          "$backgroundColor",
+          "$image",
+          "$video",
+          "$vimeoPlayer",
+        ],
         visible: true,
         group: "Background",
       },
@@ -281,9 +292,15 @@ export const basicCardDefinition: InternalRenderableComponentDefinition<"$BasicC
 const basicBackgroundCardSchema: SchemaProp[] = [...basicCardDefinition.schema];
 
 // extra values don't have "fit-background"
-// const sizeSchemaProp = basicBackgroundCardSchema.find(
-//   (schemaProp) => schemaProp.prop === "size"
-// ) as StringTokenSchemaProp;
+const sizeSchemaPropIndex = basicBackgroundCardSchema.findIndex(
+  (schemaProp) => schemaProp.prop === "size"
+);
+
+basicBackgroundCardSchema[sizeSchemaPropIndex] = {
+  ...basicBackgroundCardSchema[sizeSchemaPropIndex],
+  extraValues: [{ value: "fit-background", label: "Fit Background" }],
+} as StringTokenSchemaProp;
+
 // sizeSchemaProp.extraValues = ["grid-baseline", "fit-background"];
 
 // background is required
