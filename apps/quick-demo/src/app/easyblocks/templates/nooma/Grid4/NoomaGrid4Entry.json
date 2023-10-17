@@ -1,7 +1,7 @@
 {
-  "_id": "49a94299-90dc-4932-9fee-d592f4e1d665",
+  "_id": "a16de0eb-64f5-471a-8be8-99dfb7a0ccf6",
   "_template": "$Grid",
-  "traceId": "$Grid-9afbd49f",
+  "traceId": "$Grid-954e92b7",
   "_itemProps": {
     "$RootSections": {
       "data": {
@@ -13,14 +13,14 @@
   "hide": { "$res": true, "xl": false },
   "Component": [
     {
-      "_id": "ffeaae89-fa81-4fc6-be43-3ff474fc3dfd",
+      "_id": "11c2ef70-2837-4ef6-aa7d-62dc01298d95",
       "_template": "$GridCard",
-      "traceId": "$GridCard-25ef912f",
+      "traceId": "$GridCard-ed192f61",
       "Cards": [
         {
-          "_id": "66b53a22-a17c-47a5-9953-680b20bc3469",
+          "_id": "f8715624-f731-44a7-a579-1e527f942ffa",
           "_template": "ProductCard",
-          "traceId": "ProductCard-a9ef12d0",
+          "traceId": "ProductCard-abaf432a",
           "_itemProps": {
             "$GridCard": {
               "Cards": {
@@ -37,9 +37,9 @@
           "withBackdrop": false
         },
         {
-          "_id": "e8ef0782-6e0d-4c33-bbf5-61346a6e1709",
+          "_id": "7c0c3bcb-d4b6-4448-a1c4-b5dfaca423f8",
           "_template": "ProductCard",
-          "traceId": "ProductCard-ad2c0bad",
+          "traceId": "ProductCard-d62d73f3",
           "_itemProps": {
             "$GridCard": {
               "Cards": {
@@ -56,9 +56,9 @@
           "withBackdrop": false
         },
         {
-          "_id": "d95f08e1-09fc-481b-84c0-121b3d892aeb",
+          "_id": "1ce2cbcb-a30f-41d1-b08f-0d5bd861153f",
           "_template": "ProductCard",
-          "traceId": "ProductCard-b06cbaf3",
+          "traceId": "ProductCard-cd9d7212",
           "_itemProps": {
             "$GridCard": {
               "Cards": {
@@ -75,9 +75,9 @@
           "withBackdrop": false
         },
         {
-          "_id": "aa55327e-f905-407e-bbeb-9542ac3c2102",
+          "_id": "1b27f7bc-712f-43fc-a47c-7a98f4b4609b",
           "_template": "ProductCard",
-          "traceId": "ProductCard-26b14f98",
+          "traceId": "ProductCard-5139c2b9",
           "_itemProps": {
             "$GridCard": {
               "Cards": {
@@ -94,9 +94,9 @@
           "withBackdrop": false
         },
         {
-          "_id": "ea050a2a-b317-4826-a224-c71e4c81ccef",
+          "_id": "439fb4a5-9925-4e75-b2b3-4ac583b3f090",
           "_template": "ProductCard",
-          "traceId": "ProductCard-5bc125ae",
+          "traceId": "ProductCard-2dcd88d5",
           "_itemProps": {
             "$GridCard": {
               "Cards": {
@@ -113,9 +113,9 @@
           "withBackdrop": false
         },
         {
-          "_id": "5181dbec-2deb-4447-b7ab-8baf8a2e49e6",
+          "_id": "3e7b205b-2d50-4aad-b4d5-496078b5b083",
           "_template": "ProductCard",
-          "traceId": "ProductCard-bddf3d76",
+          "traceId": "ProductCard-02eea7c8",
           "_itemProps": {
             "$GridCard": {
               "Cards": {
@@ -132,9 +132,9 @@
           "withBackdrop": false
         },
         {
-          "_id": "7568357c-1484-4746-99f6-e69521d4ddc8",
+          "_id": "2828babb-0c70-426f-b57e-f3c41db44140",
           "_template": "ProductCard",
-          "traceId": "ProductCard-9cd5ec73",
+          "traceId": "ProductCard-22a3d5c2",
           "_itemProps": {
             "$GridCard": {
               "Cards": {
@@ -151,9 +151,9 @@
           "withBackdrop": false
         },
         {
-          "_id": "c3296dc6-8174-4801-9c84-0b955f2be39d",
+          "_id": "5c137275-3ac3-4ed6-aa29-4d127d2a15f5",
           "_template": "ProductCard",
-          "traceId": "ProductCard-3a518bde",
+          "traceId": "ProductCard-9eb84265",
           "_itemProps": {
             "$GridCard": {
               "Cards": {
@@ -170,9 +170,9 @@
           "withBackdrop": false
         },
         {
-          "_id": "3619ba64-31e4-45b7-9b47-2664c5be09fd",
+          "_id": "ee4ec947-85a3-424e-b85b-49f4180ecabb",
           "_template": "ProductCard",
-          "traceId": "ProductCard-9e6dbf9e",
+          "traceId": "ProductCard-b9ffa160",
           "_itemProps": {
             "$GridCard": {
               "Cards": {
@@ -189,9 +189,9 @@
           "withBackdrop": false
         },
         {
-          "_id": "6cc28b26-0336-4647-a761-d279c276bef5",
+          "_id": "8ad2655b-ef1d-4e60-8804-4aa5b422b034",
           "_template": "ProductCard",
-          "traceId": "ProductCard-608f599b",
+          "traceId": "ProductCard-26df7d1e",
           "_itemProps": {
             "$GridCard": {
               "Cards": {
@@ -236,20 +236,132 @@
       "paddingRight": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
       "LeftArrow": [
         {
-          "_id": "a5bb42b4-072d-49a0-945c-60036d72cc9c",
-          "_template": "$IconButton2",
-          "_master": "buttonSliderLeft",
-          "traceId": "$IconButton2-3b8b5048"
+          "_id": "da412c70-837e-4f0b-8dce-5c052862c85b",
+          "_template": "$StandardButton",
+          "_master": "buttonDark",
+          "traceId": "$StandardButton-c16a0bc3",
+          "_itemProps": { "$GridCard": { "LeftArrow": {} } },
+          "Action": [],
+          "variant": "icon",
+          "label": {
+            "id": "local.ae1ec831-3266-4c84-b556-8635cdcefc75",
+            "value": { "en-US": "Click me" }
+          },
+          "icon": {
+            "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"red\" width=\"100px\" height=\"100px\"><path d=\"M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z\"/></svg>",
+            "ref": "arrowLeft"
+          },
+          "color": {
+            "$res": true,
+            "xl": { "ref": "grey_05", "value": "#252525" }
+          },
+          "minHeight": { "$res": true, "xl": "42" },
+          "minWidth": { "$res": true, "xl": "100" },
+          "horizontalPadding": {
+            "$res": true,
+            "xl": { "value": "16px", "ref": "16" }
+          },
+          "gap": { "$res": true, "xl": { "value": "6px", "ref": "6" } },
+          "cornerMode": { "$res": true, "xl": "circled" },
+          "cornerRadius": { "$res": true, "xl": "12" },
+          "font": {
+            "$res": true,
+            "xl": {
+              "value": {
+                "$res": true,
+                "2xl": {
+                  "fontSize": 13,
+                  "lineHeight": 1.8,
+                  "fontFamily": "test-soehne-mono"
+                }
+              },
+              "ref": "body2"
+            }
+          },
+          "underline": "off",
+          "underlineOffset": { "$res": true, "xl": "1" },
+          "iconSize": { "$res": true, "xl": "24" },
+          "hasBackground": true,
+          "backgroundColor": {
+            "$res": true,
+            "xl": { "ref": "transparent-grey-light", "value": "#D8D8D880" }
+          },
+          "hasBorder": false,
+          "borderWidth": { "$res": true, "xl": "1" },
+          "borderColor": {
+            "$res": true,
+            "xl": { "value": "black", "ref": "$dark" }
+          },
+          "boxShadow": {
+            "$res": true,
+            "xl": { "value": "none", "ref": "none" }
+          }
         }
       ],
       "leftArrowPlacement": { "$res": true, "xl": "center" },
       "leftArrowOffset": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
       "RightArrow": [
         {
-          "_id": "6adbabf6-a9c1-4d1e-8d97-845ec9866c11",
-          "_template": "$IconButton2",
-          "_master": "buttonSliderRight",
-          "traceId": "$IconButton2-ef004a28"
+          "_id": "33ff6b2c-cef9-4ea0-800d-5b5e1c5c289a",
+          "_template": "$StandardButton",
+          "_master": "buttonDark",
+          "traceId": "$StandardButton-fc16cab4",
+          "_itemProps": { "$GridCard": { "RightArrow": {} } },
+          "Action": [],
+          "variant": "icon",
+          "label": {
+            "id": "local.cd33d64d-2ef8-46ca-b2f6-81fab3b7862e",
+            "value": { "en-US": "Click me" }
+          },
+          "icon": {
+            "ref": "arrowRight",
+            "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z\"/></svg>"
+          },
+          "color": {
+            "$res": true,
+            "xl": { "ref": "grey_05", "value": "#252525" }
+          },
+          "minHeight": { "$res": true, "xl": "42" },
+          "minWidth": { "$res": true, "xl": "100" },
+          "horizontalPadding": {
+            "$res": true,
+            "xl": { "value": "16px", "ref": "16" }
+          },
+          "gap": { "$res": true, "xl": { "value": "6px", "ref": "6" } },
+          "cornerMode": { "$res": true, "xl": "circled" },
+          "cornerRadius": { "$res": true, "xl": "12" },
+          "font": {
+            "$res": true,
+            "xl": {
+              "value": {
+                "$res": true,
+                "2xl": {
+                  "fontSize": 13,
+                  "lineHeight": 1.8,
+                  "fontFamily": "test-soehne-mono"
+                }
+              },
+              "ref": "body2"
+            }
+          },
+          "underline": "off",
+          "underlineOffset": { "$res": true, "xl": "1" },
+          "iconSize": { "$res": true, "xl": "24" },
+          "hasBackground": true,
+          "backgroundColor": {
+            "$res": true,
+            "xl": { "ref": "transparent-grey-light", "value": "#D8D8D880" }
+          },
+          "hasBorder": false,
+          "borderWidth": { "$res": true, "xl": "1" },
+          "borderColor": {
+            "$res": true,
+            "xl": { "value": "black", "ref": "$dark" }
+          },
+          "boxShadow": {
+            "$res": true,
+            "xl": { "value": "none", "ref": "none" }
+          }
         }
       ],
       "rightArrowPlacement": { "$res": true, "xl": "center" },
@@ -277,17 +389,17 @@
   "footerSectionGap": { "$res": true, "xl": { "value": "12px", "ref": "12" } },
   "HeaderStack": [
     {
-      "_id": "c979d406-9827-48b2-b684-685ef6d178d2",
+      "_id": "02a7d9da-4ea5-4858-847d-8617041d020f",
       "_template": "$stack",
-      "traceId": "$stack-ece6de0c",
+      "traceId": "$stack-c0a47fcf",
       "Items": []
     }
   ],
   "HeaderSecondaryStack": [
     {
-      "_id": "776ff17f-1536-453b-b235-da5be0bd001e",
+      "_id": "5c5c1271-235c-4d3a-8277-18b487478947",
       "_template": "$stack",
-      "traceId": "$stack-428ea7a2",
+      "traceId": "$stack-96f069c7",
       "Items": []
     }
   ],

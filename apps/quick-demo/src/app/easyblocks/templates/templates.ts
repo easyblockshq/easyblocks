@@ -1,31 +1,32 @@
-import BannerSection2_1 from "./BannerSection2_1.json";
-import BannerSection2_2 from "./BannerSection2_2.json";
-import BannerSection2_3 from "./BannerSection2_3.json";
-import BannerSection2_4 from "./BannerSection2_4.json";
-import BannerSection2_empty from "./BannerSection2_empty.json";
-import Grid_1 from "./Grid_1.json";
-import Grid_2 from "./Grid_2.json";
-import Grid_3 from "./Grid_3.json";
-import Grid_empty from "./Grid_empty.json";
-import Slider_1 from "./Slider_1.json";
-import Slider_empty from "./Slider_empty.json";
-import TwoCards_1 from "./TwoCards_1.json";
-import TwoCards_2 from "./TwoCards_2.json";
-import TwoCards_3 from "./TwoCards_3.json";
-import TwoCards_4 from "./TwoCards_4.json";
-import TwoCards_empty from "./TwoCards_empty.json";
-import BasicCard_1 from "./BasicCard_1.json";
-import BasicCard_2 from "./BasicCard_2.json";
-import BasicCard_3 from "./BasicCard_3.json";
-import BasicCard_4 from "./BasicCard_4.json";
-import BasicCard_5 from "./BasicCard_5.json";
-import BasicCard_6 from "./BasicCard_6.json";
-import BasicCard_7 from "./BasicCard_7.json";
-import video from "./video.json";
-import Button_standard from "./Button_standard.json";
-import Button_standard_light from "./Button_standard_light.json";
-import Button_text from "./Button_text.json";
-import Button_icon_standard from "./Button_icon_standard.json";
+import BannerSection2_1 from "./basic/BannerSection2_1.json";
+import BannerSection2_2 from "./basic/BannerSection2_2.json";
+import BannerSection2_3 from "./basic/BannerSection2_3.json";
+import BannerSection2_4 from "./basic/BannerSection2_4.json";
+import BannerSection2_empty from "./basic/BannerSection2_empty.json";
+import Grid_1 from "./basic/Grid_1.json";
+import Grid_2 from "./basic/Grid_2.json";
+import Grid_3 from "./basic/Grid_3.json";
+import Grid_empty from "./basic/Grid_empty.json";
+import Slider_1 from "./basic/Slider_1.json";
+import Slider_empty from "./basic/Slider_empty.json";
+import TwoCards_1 from "./basic/TwoCards_1.json";
+import TwoCards_2 from "./basic/TwoCards_2.json";
+import TwoCards_3 from "./basic/TwoCards_3.json";
+import TwoCards_4 from "./basic/TwoCards_4.json";
+import TwoCards_empty from "./basic/TwoCards_empty.json";
+import BasicCard_empty from "./basic/BasicCard_empty.json";
+import BasicCard_1 from "./basic/BasicCard_1.json";
+import BasicCard_2 from "./basic/BasicCard_2.json";
+import BasicCard_3 from "./basic/BasicCard_3.json";
+import BasicCard_4 from "./basic/BasicCard_4.json";
+import BasicCard_5 from "./basic/BasicCard_5.json";
+import BasicCard_6 from "./basic/BasicCard_6.json";
+import BasicCard_7 from "./basic/BasicCard_7.json";
+import video from "./basic/video.json";
+import Button_standard from "./basic/Button_standard.json";
+import Button_standard_light from "./basic/Button_standard_light.json";
+import Button_text from "./basic/Button_text.json";
+import Button_icon_standard from "./basic/Button_icon_standard.json";
 
 import { Template } from "@easyblocks/core";
 import { buildRichTextNoCodeEntry } from "@easyblocks/editable-components";
@@ -138,6 +139,10 @@ export const templates: Template[] = [
   NoomaTwoCards3,
   NoomaTwoCards4,
 
+  {
+    id: "BasicCard_Empty",
+    config: BasicCard_empty,
+  },
   NoomaBasicCard1,
   NoomaBasicCard2,
   NoomaBasicCard3,
@@ -237,7 +242,7 @@ export const templates: Template[] = [
     label: "Default",
     config: buildRichTextNoCodeEntry({
       text: "Lorem ipsum",
-      color: "dark",
+      color: "grey_05",
       font: "body",
     }),
   },

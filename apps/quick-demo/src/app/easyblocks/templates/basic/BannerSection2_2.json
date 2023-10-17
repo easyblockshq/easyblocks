@@ -1,7 +1,7 @@
 {
-  "_id": "2a3930a4-7637-45db-a1c1-99776eeceaa0",
+  "_id": "607c9af5-e69c-42f6-b565-1df6a1458800",
   "_template": "$BannerSection2",
-  "traceId": "$BannerSection2-30fdf4d9",
+  "traceId": "$BannerSection2-e9468378",
   "_itemProps": {
     "$RootSections": {
       "data": {
@@ -21,7 +21,7 @@
     "$res": true,
     "xl": { "value": "none", "ref": "none" }
   },
-  "escapeMargin": { "$res": true, "xl": true },
+  "escapeMargin": { "$res": true, "xl": false },
   "hide": { "$res": true, "xl": false },
   "headerMode": "none",
   "layout1Stack": "left",
@@ -32,17 +32,17 @@
   "footerSectionGap": { "$res": true, "xl": { "value": "12px", "ref": "12" } },
   "HeaderStack": [
     {
-      "_id": "680bce8e-3df5-4509-bee9-ef9c5d1792be",
+      "_id": "4ac786cc-e5bd-4c03-9096-d72c3bbf7cdf",
       "_template": "$stack",
-      "traceId": "$stack-b9390863",
+      "traceId": "$stack-71f43136",
       "Items": []
     }
   ],
   "HeaderSecondaryStack": [
     {
-      "_id": "5d219dec-2faf-452b-9d52-8cd094628f37",
+      "_id": "40930a4b-3112-4110-9c86-9df1ff80b033",
       "_template": "$stack",
-      "traceId": "$stack-9882c1ef",
+      "traceId": "$stack-b0d31b7c",
       "Items": []
     }
   ],
@@ -50,9 +50,9 @@
   "padding": { "$res": true, "xl": { "value": "24px", "ref": "24" } },
   "Component": [
     {
-      "_id": "9a58e152-eb14-4cef-96a0-94b11ff679de",
+      "_id": "745c4d59-1e47-4fba-8973-aec79548866e",
       "_template": "$BannerCard2",
-      "traceId": "$BannerCard2-af3c2758",
+      "traceId": "$BannerCard2-68860122",
       "cornerRadius": { "$res": true, "xl": "0" },
       "borderWidth": { "$res": true, "xl": "0" },
       "borderColor": {
@@ -66,9 +66,9 @@
       "boxShadow": { "$res": true, "xl": { "value": "none", "ref": "none" } },
       "Card1": [
         {
-          "_id": "e5ef4951-ef45-460b-8400-51108d32c7bc",
+          "_id": "4e313498-642c-4c60-886b-f952f18a6f31",
           "_template": "$BasicCard",
-          "traceId": "$BasicCard-79ab94b2",
+          "traceId": "$BasicCard-3171f585",
           "size": { "$res": true, "xl": { "value": "fit-content" } },
           "Background": [],
           "borderWidth": { "$res": true, "xl": "0" },
@@ -86,7 +86,7 @@
           },
           "cornerRadius": { "$res": true, "xl": "0" },
           "enableContent": true,
-          "position": { "$res": true, "xl": "center-center" },
+          "position": { "$res": true, "xl": "top-center" },
           "paddingLeft": {
             "$res": true,
             "xl": { "value": "24px", "ref": "24" }
@@ -101,7 +101,7 @@
           },
           "paddingBottom": {
             "$res": true,
-            "xl": { "value": "32px", "ref": "32" }
+            "xl": { "value": "48px", "ref": "48" }
           },
           "paddingLeftExternal": {
             "$res": true,
@@ -122,14 +122,14 @@
           "edgeMarginProtection": { "$res": true, "xl": true },
           "Stack": [
             {
-              "_id": "31155604-0907-4183-850b-4945d6d34053",
+              "_id": "128c469f-865b-4118-8a09-efb11125cc1b",
               "_template": "$stack",
-              "traceId": "$stack-334e176b",
+              "traceId": "$stack-87f1dd47",
               "Items": [
                 {
-                  "_id": "78b9c3f6-e278-48e3-aabf-970b8ad60741",
+                  "_id": "a62f4e8a-3cb7-4f40-bb70-9279f69945de",
                   "_template": "$richText",
-                  "traceId": "$richText-8fd6b193",
+                  "traceId": "$richText-56da6853",
                   "_itemProps": {
                     "$stack": {
                       "Items": {
@@ -145,20 +145,20 @@
                   "elements": {
                     "en-US": [
                       {
-                        "_id": "997151a2-31fa-4a4b-af2b-409d63d15c71",
+                        "_id": "d4c156d2-b8b3-4010-9323-dff9fb622e7c",
                         "_template": "$richTextBlockElement",
-                        "traceId": "$richTextBlockElement-dccac03b",
+                        "traceId": "$richTextBlockElement-715bc8c6",
                         "type": "paragraph",
                         "elements": [
                           {
-                            "_id": "bc535518-e4a1-46ed-a7ef-1e72ce029665",
+                            "_id": "e56b97b7-34f7-4567-b0a4-c1b14912954c",
                             "_template": "$richTextLineElement",
-                            "traceId": "$richTextLineElement-acf67965",
+                            "traceId": "$richTextLineElement-5b3b2e8b",
                             "elements": [
                               {
-                                "_id": "7a2ca946-95bb-4baa-8d02-cc3c55c9369c",
+                                "_id": "9fff05ad-991f-4608-81bd-423706c81a7d",
                                 "_template": "$richTextPart",
-                                "traceId": "$richTextPart-706ba910",
+                                "traceId": "$richTextPart-9e047947",
                                 "value": "Heading goes here",
                                 "font": {
                                   "$res": true,
@@ -183,7 +183,7 @@
                                 },
                                 "color": {
                                   "$res": true,
-                                  "xl": { "ref": "dark", "value": "black" }
+                                  "xl": { "ref": "grey_05", "value": "black" }
                                 }
                               }
                             ]
@@ -213,9 +213,9 @@
                   }
                 },
                 {
-                  "_id": "535a36c2-7af0-4735-81b2-221605ca91c0",
+                  "_id": "dc942ab0-bc34-4a0b-8456-3fab4dcbd6fa",
                   "_template": "$richText",
-                  "traceId": "$richText-62be6969",
+                  "traceId": "$richText-08cbafe9",
                   "_itemProps": {
                     "$stack": {
                       "Items": {
@@ -231,20 +231,20 @@
                   "elements": {
                     "en-US": [
                       {
-                        "_id": "c392c7c9-f15c-45b8-a4bd-f46a9fe51d67",
+                        "_id": "b3d3d6cc-6374-4873-a9a5-4b73fdd993da",
                         "_template": "$richTextBlockElement",
-                        "traceId": "$richTextBlockElement-e50eb89d",
+                        "traceId": "$richTextBlockElement-bb710084",
                         "type": "paragraph",
                         "elements": [
                           {
-                            "_id": "2fbdff99-b352-4bb6-85c4-ef24b5821c8e",
+                            "_id": "47bd9438-804e-4ab9-b2cd-1c87d1549ab8",
                             "_template": "$richTextLineElement",
-                            "traceId": "$richTextLineElement-91e36e31",
+                            "traceId": "$richTextLineElement-840e0b6f",
                             "elements": [
                               {
-                                "_id": "64abf4f2-fa73-480f-b737-5883e3f668f1",
+                                "_id": "df0da60d-c7ed-457f-8a2d-4c2f3799a320",
                                 "_template": "$richTextPart",
-                                "traceId": "$richTextPart-197ab10b",
+                                "traceId": "$richTextPart-834cb859",
                                 "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
                                 "font": {
                                   "$res": true,
@@ -269,7 +269,7 @@
                                 },
                                 "color": {
                                   "$res": true,
-                                  "xl": { "ref": "dark", "value": "black" }
+                                  "xl": { "ref": "grey_05", "value": "black" }
                                 }
                               }
                             ]
@@ -298,9 +298,9 @@
                   }
                 },
                 {
-                  "_id": "6476827b-1fb0-4f27-a76b-002b3057aa90",
+                  "_id": "94eed9a0-224e-4ab9-8753-07083ffd27fd",
                   "_template": "$buttons",
-                  "traceId": "$buttons-5c3949ed",
+                  "traceId": "$buttons-d93617be",
                   "_itemProps": {
                     "$stack": {
                       "Items": {
@@ -320,16 +320,16 @@
                   },
                   "Buttons": [
                     {
-                      "_id": "d7208c95-f291-4327-8986-80956631ce19",
+                      "_id": "9e16d1b2-00eb-4382-9718-ae7d4ade059b",
                       "_template": "$StandardButton",
                       "_master": "buttonDark",
-                      "traceId": "$StandardButton-187e4898",
+                      "traceId": "$StandardButton-cd1ca9ee",
                       "_itemProps": { "$buttons": { "Buttons": {} } },
                       "action": [],
                       "variant": "label",
                       "label": {
-                        "id": "local.0a5ffdee-c5ce-45be-afe2-d50ce9f08462",
-                        "value": { "en-US": "Click me" }
+                        "id": "local.a797f663-5083-45cc-8466-c84e844843f5",
+                        "value": { "en-US": "Lorem ipsum" }
                       },
                       "icon": {
                         "value": "<svg viewBox=\"0 -960 960 960\"><path fill=\"currentColor\" d=\"m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z\"/></svg>"
@@ -371,7 +371,7 @@
                       "hasBackground": true,
                       "backgroundColor": {
                         "$res": true,
-                        "xl": { "value": "black", "ref": "dark" }
+                        "xl": { "value": "black", "ref": "grey_05" }
                       },
                       "hasBorder": false,
                       "borderWidth": { "$res": true, "xl": "1" },
@@ -385,16 +385,16 @@
                       }
                     },
                     {
-                      "_id": "407d9ca7-9614-4608-8e4b-a2398a153cf6",
+                      "_id": "c8c49001-8382-4b65-9db6-dc8aa3a26d48",
                       "_template": "$StandardButton",
                       "_master": "buttonDark",
-                      "traceId": "$StandardButton-eab0a5f3",
+                      "traceId": "$StandardButton-35abe37d",
                       "_itemProps": { "$buttons": { "Buttons": {} } },
                       "action": [],
                       "variant": "label",
                       "label": {
-                        "id": "local.f4bebe8b-d88d-41a3-913f-fced7e0490ab",
-                        "value": { "en-US": "Click me" }
+                        "id": "local.43eff2df-c1dc-46e9-a5f8-fa4bec86514d",
+                        "value": { "en-US": "Lorem ipsum" }
                       },
                       "icon": {
                         "value": "<svg viewBox=\"0 -960 960 960\"><path fill=\"currentColor\" d=\"m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z\"/></svg>"
@@ -436,7 +436,7 @@
                       "hasBackground": true,
                       "backgroundColor": {
                         "$res": true,
-                        "xl": { "value": "black", "ref": "dark" }
+                        "xl": { "value": "black", "ref": "grey_05" }
                       },
                       "hasBorder": false,
                       "borderWidth": { "$res": true, "xl": "1" },
@@ -458,19 +458,28 @@
       ],
       "Card2": [
         {
-          "_id": "fc340493-96d0-4dd0-b3b4-51556eb8a06f",
+          "_id": "1903a645-56a6-4ef1-b1d6-fa717edda759",
           "_template": "$BasicCardBackground",
-          "traceId": "$BasicCardBackground-f605b370",
-          "size": { "$res": true, "xl": { "value": "fit-content" } },
+          "traceId": "$BasicCardBackground-d7f65e1f",
+          "size": {
+            "$res": true,
+            "xl": { "ref": "panoramic", "value": "2:1" },
+            "xs": { "value": "4:5", "ref": "$portrait" }
+          },
           "Background": [
             {
-              "_id": "2f69e490-1667-4cf1-86a2-796de489eed3",
-              "_template": "$backgroundColor",
-              "traceId": "$backgroundColor-b76e9791",
-              "color": {
+              "_id": "e902247c-7602-4a72-9576-8bfbb0a42f91",
+              "_template": "$image",
+              "traceId": "$image-5245e3c8",
+              "image": {
                 "$res": true,
-                "xl": { "ref": "light-grey", "value": "#F2F2F2" }
-              }
+                "xl": { "id": null, "widgetId": "mockImage" }
+              },
+              "aspectRatio": {
+                "$res": true,
+                "xl": { "value": "2:1", "ref": "$landscape" }
+              },
+              "action": []
             }
           ],
           "borderWidth": { "$res": true, "xl": "0" },
@@ -524,15 +533,15 @@
           "edgeMarginProtection": { "$res": true, "xl": true },
           "Stack": [
             {
-              "_id": "512a63ba-6a8a-47b6-bc01-3505c07997c7",
+              "_id": "3c3665f5-bba0-4fe6-a83d-127d4f02a7a0",
               "_template": "$stack",
-              "traceId": "$stack-1fd63f5b",
+              "traceId": "$stack-770e1dfc",
               "Items": []
             }
           ]
         }
       ],
-      "mode": { "$res": true, "xl": "background" },
+      "mode": { "$res": true, "xl": "top" },
       "sideModeWidth": { "$res": true, "xl": "50%" },
       "backgroundModePosition": { "$res": true, "xl": "bottom-center" },
       "backgroundModePaddingLeft": {

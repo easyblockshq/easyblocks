@@ -323,7 +323,7 @@
                         "$res": true,
                         "xl": {
                           "value": "#000000",
-                          "ref": "dark"
+                          "ref": "grey_05"
                         }
                       }
                     },
@@ -386,7 +386,7 @@
                             "$res": true,
                             "xl": {
                               "value": "black",
-                              "ref": "dark"
+                              "ref": "grey_05"
                             }
                           },
                           "minHeight": {
@@ -876,7 +876,7 @@
             "$res": true,
             "xl": {
               "value": "black",
-              "ref": "dark"
+              "ref": "grey_05"
             }
           },
           "minHeight": {
@@ -1000,7 +1000,7 @@
             "$res": true,
             "xl": {
               "value": "black",
-              "ref": "dark"
+              "ref": "grey_05"
             }
           },
           "minHeight": {
@@ -1240,7 +1240,7 @@
             "$res": true,
             "xl": {
               "value": "#000000",
-              "ref": "dark"
+              "ref": "grey_05"
             }
           }
         }

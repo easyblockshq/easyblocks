@@ -227,7 +227,7 @@
                           },
                           "color": {
                             "$res": true,
-                            "xl": { "ref": "dark", "value": "black" }
+                            "xl": { "ref": "grey_05", "value": "black" }
                           },
                           "minHeight": { "$res": true, "xl": "42" },
                           "minWidth": { "$res": true, "xl": "100" },
@@ -598,7 +598,7 @@
                           },
                           "color": {
                             "$res": true,
-                            "xl": { "ref": "dark", "value": "black" }
+                            "xl": { "ref": "grey_05", "value": "black" }
                           },
                           "minHeight": { "$res": true, "xl": "42" },
                           "minWidth": { "$res": true, "xl": "100" },
@@ -969,7 +969,7 @@
                           },
                           "color": {
                             "$res": true,
-                            "xl": { "ref": "dark", "value": "black" }
+                            "xl": { "ref": "grey_05", "value": "black" }
                           },
                           "minHeight": { "$res": true, "xl": "42" },
                           "minWidth": { "$res": true, "xl": "100" },
@@ -1255,7 +1255,7 @@
                         },
                         "color": {
                           "$res": true,
-                          "xl": { "ref": "dark", "value": "black" }
+                          "xl": { "ref": "grey_05", "value": "black" }
                         }
                       }
                     ]

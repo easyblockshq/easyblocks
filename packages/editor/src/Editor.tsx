@@ -226,7 +226,7 @@ function EditorContainer(props: EditorContainerProps) {
   }, [apiClient, enabled, isPlayground, props.config.accessToken]);
 
   if (!enabled || !project) {
-    return <AuthenticationScreen>Authenticating...</AuthenticationScreen>;
+    return <AuthenticationScreen>Loading...</AuthenticationScreen>;
   }
 
   if (error) {

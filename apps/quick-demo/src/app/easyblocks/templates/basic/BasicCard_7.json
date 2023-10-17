@@ -142,7 +142,7 @@
                             },
                             "color": {
                               "$res": true,
-                              "xl": { "ref": "dark", "value": "black" }
+                              "xl": { "ref": "grey_05", "value": "black" }
                             }
                           }
                         ]
@@ -222,7 +222,7 @@
                             },
                             "color": {
                               "$res": true,
-                              "xl": { "ref": "dark", "value": "black" }
+                              "xl": { "ref": "grey_05", "value": "black" }
                             }
                           }
                         ]
