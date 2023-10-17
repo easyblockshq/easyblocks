@@ -43,11 +43,15 @@ function IdentityField({ input, field }: IdentityFieldProps) {
   const rootComponentId =
     editorContext.activeRootContainer.defaultConfig._template;
 
-  const isNonRemovable = parentSchemaProp
-    ? parentSchemaProp.type === "component-fixed" ||
-      (parentSchemaProp.type === "component" &&
-        (parentSchemaProp as ComponentSchemaProp).required)
-    : true;
+  const isNonRemovable =
+    (componentDefinition?.id.startsWith("$richText") &&
+      componentDefinition.id !== "$richText") ||
+    (parentSchemaProp
+      ? parentSchemaProp.type === "component-fixed" ||
+        (parentSchemaProp.type === "component" &&
+          (parentSchemaProp as ComponentSchemaProp).required)
+      : true);
+
   const isNonChangable =
     parentSchemaProp?.type === "component-fixed" ||
     componentDefinition?.id === "$richTextPart" ||

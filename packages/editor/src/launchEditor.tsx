@@ -13,11 +13,8 @@ import {
 } from "@easyblocks/design-system";
 import { raiseError } from "@easyblocks/utils";
 import isPropValid from "@emotion/is-prop-valid";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import React from "react";
 import { createRoot, Root } from "react-dom/client";
-import { HashRouter } from "react-router-dom";
 import { ShouldForwardProp, StyleSheetManager } from "styled-components";
 import { Editor } from "./Editor";
 import { GlobalStyles } from "./tinacms/styles";
@@ -27,14 +24,6 @@ type LaunchEditorProps = {
   externalData: FetchOutputResources;
   onExternalDataChange: ExternalDataChangeHandler;
 };
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-    },
-  },
-});
 
 const shouldForwardProp: ShouldForwardProp<"web"> = (propName, target) => {
   if (typeof target === "string") {
@@ -68,41 +57,36 @@ export function launchEditor(props: LaunchEditorProps) {
   }
 
   reactRoot.render(
-    <QueryClientProvider client={queryClient}>
-      <HashRouter>
-        <StyleSheetManager
-          shouldForwardProp={shouldForwardProp}
-          enableVendorPrefixes
-        >
-          <SSModalContext.Provider
-            value={() => {
-              return document.querySelector("#modalContainer");
-            }}
-          >
-            <GlobalStyles />
-            <SSModalStyles />
-            <TooltipProvider>
-              <div
-                id={"modalContainer"}
-                style={{ position: "fixed", left: 0, top: 0, zIndex: 100000 }}
-              />
-              <Editor
-                config={props.config}
-                contextParams={contextParams}
-                locales={locales}
-                mode={mode}
-                documentId={editorSearchParams.documentId}
-                rootContainer={rootContainer}
-                externalData={props.externalData}
-                onExternalDataChange={props.onExternalDataChange}
-              />
-            </TooltipProvider>
-            <Toaster containerStyle={{ zIndex: 100100 }} />
-          </SSModalContext.Provider>
-        </StyleSheetManager>
-      </HashRouter>
-      <ReactQueryDevtools />
-    </QueryClientProvider>
+    <StyleSheetManager
+      shouldForwardProp={shouldForwardProp}
+      enableVendorPrefixes
+    >
+      <SSModalContext.Provider
+        value={() => {
+          return document.querySelector("#modalContainer");
+        }}
+      >
+        <GlobalStyles />
+        <SSModalStyles />
+        <TooltipProvider>
+          <div
+            id={"modalContainer"}
+            style={{ position: "fixed", left: 0, top: 0, zIndex: 100000 }}
+          />
+          <Editor
+            config={props.config}
+            contextParams={contextParams}
+            locales={locales}
+            mode={mode}
+            documentId={editorSearchParams.documentId}
+            rootContainer={rootContainer}
+            externalData={props.externalData}
+            onExternalDataChange={props.onExternalDataChange}
+          />
+        </TooltipProvider>
+        <Toaster containerStyle={{ zIndex: 100100 }} />
+      </SSModalContext.Provider>
+    </StyleSheetManager>
   );
 }
 

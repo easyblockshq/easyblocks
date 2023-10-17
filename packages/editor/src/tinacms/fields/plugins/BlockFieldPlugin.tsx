@@ -10,7 +10,6 @@ import {
   ComponentFixedSchemaProp,
   ComponentSchemaProp,
   ConfigComponent,
-  SidebarPreviewVariant,
 } from "@easyblocks/core";
 import {
   SSButtonGhost,
@@ -97,7 +96,6 @@ const BlockField = ({ field, input, isLabelHidden }: BlockFieldProps) => {
           justify-content: space-between;
           align-items: center;
           padding: 4px 16px;
-          margin-bottom: 12px;
         `}
       >
         {config !== null && (
