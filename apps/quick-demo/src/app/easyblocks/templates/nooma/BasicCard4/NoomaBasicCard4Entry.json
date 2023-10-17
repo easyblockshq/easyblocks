@@ -143,7 +143,7 @@
               },
               "mainColor": {
                 "$res": true,
-                "xl": { "value": "#000000", "ref": "dark" }
+                "xl": { "value": "#000000", "ref": "grey_05" }
               }
             },
             {
@@ -223,7 +223,7 @@
               },
               "mainColor": {
                 "$res": true,
-                "xl": { "value": "#000000", "ref": "dark" }
+                "xl": { "value": "#000000", "ref": "grey_05" }
               }
             }
           ]

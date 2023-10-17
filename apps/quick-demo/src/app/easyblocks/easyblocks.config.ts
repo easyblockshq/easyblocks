@@ -116,6 +116,7 @@ export const easyblocksConfig: Config = {
           prop: "shouldOpenInNewWindow",
           label: "Open in new window?",
           type: "boolean",
+          defaultValue: true,
         },
       ],
       styles: (values: any) => {
@@ -398,6 +399,23 @@ export const easyblocksConfig: Config = {
     {
       id: "containerMargin.large",
       value: "10vw",
+    },
+  ],
+  containerWidths: [
+    {
+      id: "lg",
+      label: "Large",
+      value: 1280,
+    },
+    {
+      id: "md",
+      label: "Medium",
+      value: 1024,
+    },
+    {
+      id: "sm",
+      label: "Small",
+      value: 768,
     },
   ],
   types: {

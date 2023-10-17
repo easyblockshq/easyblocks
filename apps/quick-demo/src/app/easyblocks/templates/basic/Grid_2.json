@@ -162,7 +162,10 @@
                                     },
                                     "color": {
                                       "$res": true,
-                                      "xl": { "ref": "dark", "value": "black" }
+                                      "xl": {
+                                        "ref": "grey_05",
+                                        "value": "black"
+                                      }
                                     }
                                   }
                                 ]
@@ -227,7 +230,7 @@
                           },
                           "color": {
                             "$res": true,
-                            "xl": { "value": "black", "ref": "dark" }
+                            "xl": { "value": "black", "ref": "grey_05" }
                           },
                           "minHeight": { "$res": true, "xl": "42" },
                           "minWidth": { "$res": true, "xl": "100" },
@@ -533,7 +536,10 @@
                                     },
                                     "color": {
                                       "$res": true,
-                                      "xl": { "ref": "dark", "value": "black" }
+                                      "xl": {
+                                        "ref": "grey_05",
+                                        "value": "black"
+                                      }
                                     }
                                   }
                                 ]
@@ -598,7 +604,7 @@
                           },
                           "color": {
                             "$res": true,
-                            "xl": { "value": "black", "ref": "dark" }
+                            "xl": { "value": "black", "ref": "grey_05" }
                           },
                           "minHeight": { "$res": true, "xl": "42" },
                           "minWidth": { "$res": true, "xl": "100" },
@@ -884,7 +890,7 @@
                         },
                         "color": {
                           "$res": true,
-                          "xl": { "value": "black", "ref": "dark" }
+                          "xl": { "value": "black", "ref": "grey_05" }
                         }
                       }
                     ]

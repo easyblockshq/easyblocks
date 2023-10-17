@@ -1,7 +1,7 @@
 {
-  "_id": "566c25b0-d97a-42a8-8a9a-77ec4e5098be",
+  "_id": "c274d9ac-ce23-4de8-8668-72fbbd077d3d",
   "_template": "$BannerSection2",
-  "traceId": "$BannerSection2-55665d9e",
+  "traceId": "$BannerSection2-f0435fb5",
   "_itemProps": {
     "$RootSections": {
       "data": {
@@ -32,17 +32,17 @@
   "footerSectionGap": { "$res": true, "xl": { "value": "12px", "ref": "12" } },
   "HeaderStack": [
     {
-      "_id": "7c16f708-f473-4923-bc8b-89fee7297a11",
+      "_id": "32492c75-ef24-4b4e-8ad0-6b9dbe3b4930",
       "_template": "$stack",
-      "traceId": "$stack-31084870",
+      "traceId": "$stack-c68840c4",
       "Items": []
     }
   ],
   "HeaderSecondaryStack": [
     {
-      "_id": "c38cfc54-3a7d-4f31-b9ef-3a11c57f24d5",
+      "_id": "98c86516-d44c-4246-bef0-0c7359b9e690",
       "_template": "$stack",
-      "traceId": "$stack-0749b480",
+      "traceId": "$stack-23c1453f",
       "Items": []
     }
   ],
@@ -50,9 +50,9 @@
   "padding": { "$res": true, "xl": { "value": "24px", "ref": "24" } },
   "Component": [
     {
-      "_id": "da658068-198f-457b-8b17-806e50986a0c",
+      "_id": "18a789c2-4939-4786-a492-47f1738a9ee6",
       "_template": "$BannerCard2",
-      "traceId": "$BannerCard2-8cd078f3",
+      "traceId": "$BannerCard2-c504818c",
       "cornerRadius": { "$res": true, "xl": "0" },
       "borderWidth": { "$res": true, "xl": "0" },
       "borderColor": {
@@ -66,22 +66,11 @@
       "boxShadow": { "$res": true, "xl": { "value": "none", "ref": "none" } },
       "Card1": [
         {
-          "_id": "f2ad15ea-d10f-4f8c-87fc-2c1d723dbd8c",
+          "_id": "f8ff3a38-b814-4df2-b67c-be15091c1e1a",
           "_template": "$BasicCard",
-          "traceId": "$BasicCard-241ae4a0",
+          "traceId": "$BasicCard-d06425cb",
           "size": { "$res": true, "xl": { "value": "fit-content" } },
-          "Background": [
-            {
-              "_id": "5712c65e-f9e5-4560-9b9e-a97a6f1fb301",
-              "_template": "$backgroundColor",
-              "traceId": "$backgroundColor-6a7f5df6",
-              "_itemProps": { "$BasicCard": { "Background": {} } },
-              "color": {
-                "$res": true,
-                "xl": { "ref": "light-grey", "value": "#F2F2F2" }
-              }
-            }
-          ],
+          "Background": [],
           "borderWidth": { "$res": true, "xl": "0" },
           "borderColor": {
             "$res": true,
@@ -97,7 +86,7 @@
           },
           "cornerRadius": { "$res": true, "xl": "0" },
           "enableContent": true,
-          "position": { "$res": true, "xl": "center-left" },
+          "position": { "$res": true, "xl": "bottom-left" },
           "paddingLeft": {
             "$res": true,
             "xl": { "value": "24px", "ref": "24" }
@@ -133,14 +122,14 @@
           "edgeMarginProtection": { "$res": true, "xl": true },
           "Stack": [
             {
-              "_id": "22579857-cdd7-4060-8de7-f9a39e274065",
+              "_id": "0ca6b51c-7ab4-4040-b2f5-4f471567492c",
               "_template": "$stack",
-              "traceId": "$stack-1564a934",
+              "traceId": "$stack-b100039c",
               "Items": [
                 {
-                  "_id": "756cc018-552c-4e0b-8336-3c909f7062cb",
+                  "_id": "383ab895-bef5-439a-8b56-70ac9e4eb79d",
                   "_template": "$richText",
-                  "traceId": "$richText-545419de",
+                  "traceId": "$richText-88f515b5",
                   "_itemProps": {
                     "$stack": {
                       "Items": {
@@ -156,20 +145,20 @@
                   "elements": {
                     "en-US": [
                       {
-                        "_id": "79b58a9c-d36b-4885-a161-4e067ac0726b",
+                        "_id": "f9a44aaf-598e-4b7f-8c4b-93ecabb89bd3",
                         "_template": "$richTextBlockElement",
-                        "traceId": "$richTextBlockElement-2d12b223",
+                        "traceId": "$richTextBlockElement-4e83ad8d",
                         "type": "paragraph",
                         "elements": [
                           {
-                            "_id": "0c9f1ef3-d535-439d-bac1-d69f6a948431",
+                            "_id": "23f35af0-f2a5-423f-8155-45be785404ca",
                             "_template": "$richTextLineElement",
-                            "traceId": "$richTextLineElement-346fb733",
+                            "traceId": "$richTextLineElement-5dc096a9",
                             "elements": [
                               {
-                                "_id": "b207872a-8a0d-47bf-a1bf-ac7a7057bfdb",
+                                "_id": "bfeaea0d-dac4-4060-a5b7-bdd937d39b2c",
                                 "_template": "$richTextPart",
-                                "traceId": "$richTextPart-1bd1b2b7",
+                                "traceId": "$richTextPart-05dfba8a",
                                 "value": "Heading goes here",
                                 "font": {
                                   "$res": true,
@@ -194,7 +183,7 @@
                                 },
                                 "color": {
                                   "$res": true,
-                                  "xl": { "ref": "dark", "value": "black" }
+                                  "xl": { "ref": "white", "value": "white" }
                                 }
                               }
                             ]
@@ -209,11 +198,11 @@
                     "$res": true,
                     "xl": {
                       "value": {
-                        "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
+                        "@xs": { "fontSize": 32 },
                         "fontSize": 48,
+                        "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
                         "fontWeight": 500,
-                        "lineHeight": 1.2,
-                        "@xs": { "fontSize": 32 }
+                        "lineHeight": 1.2
                       },
                       "ref": "$heading2"
                     }
@@ -224,9 +213,9 @@
                   }
                 },
                 {
-                  "_id": "181cd232-6e80-4b9e-98b6-917e0dfb13ba",
+                  "_id": "1957f422-f64b-4133-b562-3e3ce382d804",
                   "_template": "$richText",
-                  "traceId": "$richText-d128e457",
+                  "traceId": "$richText-be7dbee1",
                   "_itemProps": {
                     "$stack": {
                       "Items": {
@@ -242,20 +231,20 @@
                   "elements": {
                     "en-US": [
                       {
-                        "_id": "c4e5a9e5-931c-4aec-be0d-bf26addb3d80",
+                        "_id": "17212cca-1816-4ea5-8af1-35420ae0ba97",
                         "_template": "$richTextBlockElement",
-                        "traceId": "$richTextBlockElement-ab2ed129",
+                        "traceId": "$richTextBlockElement-61fb6e43",
                         "type": "paragraph",
                         "elements": [
                           {
-                            "_id": "ac81408e-779c-4b15-81e1-a05a8c7f66d2",
+                            "_id": "4a6a0915-a5ea-45b0-83fe-25a81568c68e",
                             "_template": "$richTextLineElement",
-                            "traceId": "$richTextLineElement-5d0483b5",
+                            "traceId": "$richTextLineElement-d8b87a51",
                             "elements": [
                               {
-                                "_id": "1b5b3b79-b044-40e7-aff5-9c4b1e067825",
+                                "_id": "1f2efdb1-671b-4820-afb9-f457016f25c0",
                                 "_template": "$richTextPart",
-                                "traceId": "$richTextPart-c62b27da",
+                                "traceId": "$richTextPart-44dd07a6",
                                 "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
                                 "font": {
                                   "$res": true,
@@ -280,7 +269,7 @@
                                 },
                                 "color": {
                                   "$res": true,
-                                  "xl": { "ref": "dark", "value": "black" }
+                                  "xl": { "ref": "white", "value": "white" }
                                 }
                               }
                             ]
@@ -295,8 +284,8 @@
                     "$res": true,
                     "xl": {
                       "value": {
-                        "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
                         "fontSize": 16,
+                        "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
                         "fontWeight": 400,
                         "lineHeight": 1.2
                       },
@@ -309,9 +298,9 @@
                   }
                 },
                 {
-                  "_id": "5ccd2139-3c0a-4c6e-91f4-be4527567946",
+                  "_id": "92d4bb0f-06ed-463f-a1ed-832b7ad3ef25",
                   "_template": "$buttons",
-                  "traceId": "$buttons-db048bf7",
+                  "traceId": "$buttons-23f3144b",
                   "_itemProps": {
                     "$stack": {
                       "Items": {
@@ -331,15 +320,15 @@
                   },
                   "Buttons": [
                     {
-                      "_id": "ba738435-3289-49d5-9eb6-c63d0fb88191",
+                      "_id": "f453277f-0cfa-4c93-b6c1-b2b0006affee",
                       "_template": "$StandardButton",
-                      "_master": "buttonDark",
-                      "traceId": "$StandardButton-340c03c7",
+                      "_master": "buttonLight",
+                      "traceId": "$StandardButton-f76bd669",
                       "_itemProps": { "$buttons": { "Buttons": {} } },
                       "action": [],
                       "variant": "label",
                       "label": {
-                        "id": "local.4ab0eeb0-83c0-4913-a22e-e5fff04d898b",
+                        "id": "local.8275bee2-b282-4848-9f9d-bf69c122a7d7",
                         "value": { "en-US": "Lorem ipsum" }
                       },
                       "icon": {
@@ -347,7 +336,7 @@
                       },
                       "color": {
                         "$res": true,
-                        "xl": { "value": "white", "ref": "white" }
+                        "xl": { "ref": "grey_05", "value": "black" }
                       },
                       "minHeight": { "$res": true, "xl": "42" },
                       "minWidth": { "$res": true, "xl": "100" },
@@ -364,6 +353,7 @@
                       "font": {
                         "$res": true,
                         "xl": {
+                          "ref": "body2.bold",
                           "value": {
                             "$res": true,
                             "2xl": {
@@ -372,8 +362,7 @@
                               "fontWeight": 500,
                               "lineHeight": 1.2
                             }
-                          },
-                          "ref": "body2.bold"
+                          }
                         }
                       },
                       "underline": "off",
@@ -382,7 +371,7 @@
                       "hasBackground": true,
                       "backgroundColor": {
                         "$res": true,
-                        "xl": { "value": "black", "ref": "dark" }
+                        "xl": { "ref": "white", "value": "white" }
                       },
                       "hasBorder": false,
                       "borderWidth": { "$res": true, "xl": "1" },
@@ -396,15 +385,15 @@
                       }
                     },
                     {
-                      "_id": "02523780-cdf7-422d-802a-5574d420b49f",
+                      "_id": "6dcadc82-f44a-447c-9302-d0c1d00e1778",
                       "_template": "$StandardButton",
-                      "_master": "buttonDark",
-                      "traceId": "$StandardButton-dfe9f152",
+                      "_master": "buttonLight",
+                      "traceId": "$StandardButton-3d90df6e",
                       "_itemProps": { "$buttons": { "Buttons": {} } },
                       "action": [],
                       "variant": "label",
                       "label": {
-                        "id": "local.aa273f10-daed-4def-bbe4-07e2c2ba54cf",
+                        "id": "local.f9a48424-e065-4273-bf07-b9f69cfd5204",
                         "value": { "en-US": "Lorem ipsum" }
                       },
                       "icon": {
@@ -412,7 +401,7 @@
                       },
                       "color": {
                         "$res": true,
-                        "xl": { "value": "white", "ref": "white" }
+                        "xl": { "ref": "grey_05", "value": "black" }
                       },
                       "minHeight": { "$res": true, "xl": "42" },
                       "minWidth": { "$res": true, "xl": "100" },
@@ -429,6 +418,7 @@
                       "font": {
                         "$res": true,
                         "xl": {
+                          "ref": "body2.bold",
                           "value": {
                             "$res": true,
                             "2xl": {
@@ -437,8 +427,7 @@
                               "fontWeight": 500,
                               "lineHeight": 1.2
                             }
-                          },
-                          "ref": "body2.bold"
+                          }
                         }
                       },
                       "underline": "off",
@@ -447,7 +436,7 @@
                       "hasBackground": true,
                       "backgroundColor": {
                         "$res": true,
-                        "xl": { "value": "black", "ref": "dark" }
+                        "xl": { "ref": "white", "value": "white" }
                       },
                       "hasBorder": false,
                       "borderWidth": { "$res": true, "xl": "1" },
@@ -469,15 +458,19 @@
       ],
       "Card2": [
         {
-          "_id": "c52f2f99-693f-4ec5-87a5-5a7e313fba91",
+          "_id": "62e1698f-4074-433b-8a4f-6a213b90a9ee",
           "_template": "$BasicCardBackground",
-          "traceId": "$BasicCardBackground-af51a07b",
-          "size": { "$res": true, "xl": { "ref": "square", "value": "1:1" } },
+          "traceId": "$BasicCardBackground-38942915",
+          "size": {
+            "$res": true,
+            "xl": { "value": "2:1" },
+            "xs": { "value": "4:5", "ref": "$portrait" }
+          },
           "Background": [
             {
-              "_id": "91524906-e5d0-471f-826f-2830b3890734",
+              "_id": "ac3b329b-3d7a-40aa-8994-ce2c3a7e59ce",
               "_template": "$image",
-              "traceId": "$image-eb189b04",
+              "traceId": "$image-79f7314c",
               "image": {
                 "$res": true,
                 "xl": { "id": null, "widgetId": "mockImage" }
@@ -540,15 +533,15 @@
           "edgeMarginProtection": { "$res": true, "xl": true },
           "Stack": [
             {
-              "_id": "909918f6-4653-424f-928a-430ed223ec97",
+              "_id": "3525627b-d74c-4500-a6ed-2c1644f2b052",
               "_template": "$stack",
-              "traceId": "$stack-b5987f4a",
+              "traceId": "$stack-39e771ec",
               "Items": []
             }
           ]
         }
       ],
-      "mode": { "$res": true, "xl": "right" },
+      "mode": { "$res": true, "xl": "background" },
       "sideModeWidth": { "$res": true, "xl": "50%" },
       "backgroundModePosition": { "$res": true, "xl": "bottom-center" },
       "backgroundModePaddingLeft": {
