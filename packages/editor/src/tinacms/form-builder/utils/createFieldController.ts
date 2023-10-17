@@ -1,4 +1,5 @@
 import {
+  Component$$$SchemaProp,
   duplicateConfig,
   findComponentDefinitionById,
   findPathOfFirstAncestorOfType,
@@ -18,7 +19,12 @@ import {
   richTextInlineWrapperElementEditableComponent,
   richTextPartEditableComponent,
 } from "@easyblocks/editable-components";
-import { dotNotationGet, last, toArray } from "@easyblocks/utils";
+import {
+  assertDefined,
+  dotNotationGet,
+  last,
+  toArray,
+} from "@easyblocks/utils";
 import { EditorContextType } from "../../../EditorContext";
 import { getUniqueValues } from "../../fields/components/getUniqueValues";
 
@@ -71,15 +77,34 @@ function createFieldController({
         // For editor selection we can safely pick a first field name because:
         // * we only can select fields that are children of $richTextPart
         // * we only can update only single property
-        const { templateId } = parsePath(normalizedFieldName[0], form);
+        const { templateId, parent } = parsePath(normalizedFieldName[0], form);
 
         invalidateCache(normalizedFieldName[0], editorContext);
 
         if (
           templateId === richTextPartEditableComponent.id ||
-          templateId === richTextInlineWrapperElementEditableComponent.id
+          templateId === richTextInlineWrapperElementEditableComponent.id ||
+          parent?.templateId ===
+            richTextInlineWrapperElementEditableComponent.id
         ) {
-          let schemaPropNameToUpdate = last(normalizedFieldName[0].split("."));
+          let schemaPropNameToUpdate =
+            parent?.templateId ===
+            richTextInlineWrapperElementEditableComponent.id
+              ? parent.fieldName
+              : last(normalizedFieldName[0].split("."));
+
+          const updatingSchemaProp =
+            parent?.templateId ===
+              richTextInlineWrapperElementEditableComponent.id &&
+            field.schemaProp.type === "component$$$"
+              ? assertDefined(
+                  (
+                    field.schemaProp as Component$$$SchemaProp
+                  ).definition.schema.find(
+                    (s) => s.prop === schemaPropNameToUpdate
+                  )
+                )
+              : field.schemaProp;
 
           if (schemaPropNameToUpdate.startsWith("$")) {
             schemaPropNameToUpdate = schemaPropNameToUpdate.slice(1);
@@ -116,7 +141,7 @@ function createFieldController({
             canvasIframe.contentWindow.postMessage(
               richTextChangedEvent({
                 prop: schemaPropNameToUpdate,
-                schemaProp: field.schemaProp,
+                schemaProp: updatingSchemaProp,
                 values: [parsedValue],
               }),
               "*"

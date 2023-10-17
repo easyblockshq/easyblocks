@@ -1,4 +1,8 @@
-import { findComponentDefinitionById, parsePath } from "@easyblocks/app-utils";
+import {
+  findComponentDefinitionById,
+  isConfigPathRichTextPart,
+  parsePath,
+} from "@easyblocks/app-utils";
 import { ComponentSchemaProp, ConfigComponent, Field } from "@easyblocks/core";
 import { SSButtonGhost, SSIcons, Typography } from "@easyblocks/design-system";
 import { toArray } from "@easyblocks/utils";
@@ -83,7 +87,12 @@ function IdentityField({ input, field }: IdentityFieldProps) {
     if (isNonRemovable) {
       return;
     }
-    editorContext.actions.removeItems(configPaths);
+
+    if (editorContext.focussedField.some(isConfigPathRichTextPart)) {
+      input.onChange([]);
+    } else {
+      editorContext.actions.removeItems(configPaths);
+    }
   }
 
   const titleContent = (
