@@ -98,10 +98,8 @@ export function compileComponent(
   parentComponentEditingInfo?:
     | EditingInfoComponent
     | EditingInfoComponentCollection,
-  configPrefix?: string
+  configPrefix = ""
 ): ComponentCompilationArtifacts {
-  configPrefix = configPrefix ?? "";
-
   if (!isComponentConfig(editableElement)) {
     console.error(
       "[compile] wrong input for compileComponent",
@@ -135,10 +133,6 @@ export function compileComponent(
   }
 
   refMap = { ...refMap, ...(editableElement.$$$refs || {}) };
-
-  // if (isNoCodeComponentOfType(componentDefinition, "action")) {
-  //   throw new Error("compileComponent can never be called for action");
-  // }
 
   const ownProps = createOwnComponentProps({
     config: editableElement,

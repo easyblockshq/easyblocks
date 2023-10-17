@@ -311,7 +311,7 @@ function RichText(props: RichTextProps) {
     return () => {
       window.removeEventListener("message", handleRichTextChanged);
     };
-  }, []);
+  }, [richTextConfig, path]);
 
   const decorate = createTextSelectionDecorator(editor, { isDecorationActive });
   const Elements = extractElementsFromCompiledComponents(props.__fromEditor);
