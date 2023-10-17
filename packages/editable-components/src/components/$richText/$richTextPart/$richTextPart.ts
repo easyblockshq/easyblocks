@@ -38,6 +38,10 @@ const editing: RichTextEditingFunction = ({
         group: ["Size", "Margins"],
       },
     },
+    {
+      type: "field",
+      path: `${richTextPath}.align`,
+    },
     ...editingInfo.fields,
     {
       type: "field",
