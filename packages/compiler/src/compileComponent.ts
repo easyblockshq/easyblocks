@@ -421,8 +421,18 @@ export function compileComponent(
           renderableComponentDefinition.schema
         );
 
+        const identityEditingField = assertDefined(
+          editingInfo.fields.find((f) => f.prop === "$myself")
+        );
+
+        const editingInfoWithoutIdentityField: InternalEditingInfo = {
+          ...editingInfo,
+          // Filter out identity field, since it's not users responsibility to care of it.
+          fields: editingInfo.fields.filter((f) => f.prop !== "$myself"),
+        };
+
         const editingInfoInput = convertInternalEditingInfoToEditingInfo(
-          editingInfo,
+          editingInfoWithoutIdentityField,
           configPrefix
         );
 
@@ -448,6 +458,8 @@ export function compileComponent(
             editorContext,
             configPrefix
           );
+
+          internalEditingInfo.fields?.unshift(identityEditingField);
           deepObjectMergeWithoutArrays(editingInfo, internalEditingInfo);
         }
       }
