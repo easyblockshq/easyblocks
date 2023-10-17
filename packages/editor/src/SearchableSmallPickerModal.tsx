@@ -54,6 +54,7 @@ export const SearchableSmallPickerModal: TemplatePicker = ({
     if (!template) {
       onClose();
     } else {
+      // @ts-expect-error
       onClose(template);
     }
   };

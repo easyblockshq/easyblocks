@@ -26,7 +26,7 @@ const assetMetadataSchema = z.object({
 });
 
 const handler: AuthenticatedNextApiHandler = async (req, res, accessToken) => {
-  const projectId = req.query.projectId;
+  const { projectId, ids } = req.query;
 
   if (Array.isArray(projectId)) {
     return res.status(400).json({ error: "projectId can't be array" });
@@ -61,9 +61,9 @@ const handler: AuthenticatedNextApiHandler = async (req, res, accessToken) => {
 
     let files = assetsQueryResult.data;
 
-    if (req.query.ids) {
+    if (ids) {
       files = assetsQueryResult.data.filter((file) =>
-        toArray(req.query.ids).includes(file.id)
+        toArray(ids).includes(file.id)
       );
     }
 

@@ -215,6 +215,7 @@ export const templates: Template[] = [
   {
     id: "ButtonGroup_default",
     label: "Default",
+    // @ts-expect-error
     config: {
       _template: "$buttons",
       gap: {

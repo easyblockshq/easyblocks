@@ -1053,12 +1053,12 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
 
         const card1Fields: (typeof editingInfo)["fields"] = [];
 
-        const card1Size = {
+        const card1Size: EditingField = {
           type: "field",
           path: `Card1.0.size`,
         };
 
-        const card1Background = {
+        const card1Background: EditingField = {
           type: "field",
           path: `Card1.0.Background`,
         };

@@ -696,6 +696,7 @@ const EditorContent = ({
   }, [externalData]);
 
   const syncTemplates = () => {
+    // @ts-expect-error
     getTemplates(editorContext, apiClient, props.config.templates ?? []).then(
       (newTemplates) => {
         setTemplates(newTemplates);

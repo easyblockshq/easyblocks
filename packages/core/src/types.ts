@@ -519,7 +519,7 @@ export type Config = {
   locales?: Array<Locale>;
   rootContainers?: Record<string, RootContainer>;
   disableCustomTemplates?: boolean;
-  templates?: InternalTemplate[];
+  templates?: Template[];
 };
 
 export type PreviewMetadata =
