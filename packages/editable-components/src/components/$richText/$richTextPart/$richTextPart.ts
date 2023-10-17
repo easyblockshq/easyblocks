@@ -38,7 +38,7 @@ const editing: RichTextEditingFunction = ({
         group: ["Size", "Margins"],
       },
     },
-    ...editingInfo.fields.slice(1),
+    ...editingInfo.fields,
     {
       type: "field",
       path: `${richTextBlockPath}.type`,
@@ -115,6 +115,7 @@ const editing: RichTextEditingFunction = ({
 const richTextPartEditableComponent: InternalRenderableComponentDefinition<"$richTextPart"> =
   {
     id: "$richTextPart",
+    label: "Text",
     schema: [
       {
         prop: "value",
