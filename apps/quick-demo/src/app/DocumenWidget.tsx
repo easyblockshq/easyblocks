@@ -89,7 +89,7 @@ const DocumenWidget: React.FC<{
         <DialogPortal>
           <DialogOverlay className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50" />
           <DialogContent
-            className="fixed top-[50%] left-[50%] w-[calc(100vw-48px)] h-[calc(100vh-48px)] bg-white translate-x-[-50%] translate-y-[-50%] drop-shadow-xl"
+            className="fixed top-[50%] left-[50%] w-[calc(100vw-48px)] h-[calc(100vh-48px)] bg-white translate-x-[-50%] translate-y-[-50%] shadow-xl"
             onPointerDownOutside={(event) => {
               event.preventDefault();
             }}
