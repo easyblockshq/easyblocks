@@ -29,6 +29,8 @@ function VideoRenderer(props: VideoRendererProps) {
   const [muted, setMuted] = useState(true);
   const [playing, setPlaying] = useState(autoplay);
 
+  const videoUrl = !video ? null : video.url;
+
   useEffect(() => {
     const video = videoRef.current;
 
@@ -42,7 +44,9 @@ function VideoRenderer(props: VideoRendererProps) {
     }
   }, [muted, playing]);
 
-  const videoUrl = !video ? null : video.url;
+  useEffect(() => {
+    videoRef.current?.load();
+  }, [videoUrl]);
 
   return (
     <div style={{ position: "relative", width: "100%", height: "100%" }}>
