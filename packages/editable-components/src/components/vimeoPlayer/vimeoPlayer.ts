@@ -5,6 +5,8 @@ const vimeoPlayerEditableComponent: InternalRenderableComponentDefinition<"$vime
   {
     id: "$vimeoPlayer",
     label: "Vimeo Player",
+    thumbnail:
+      "https://shopstory.s3.eu-central-1.amazonaws.com/picker_vimeo.png",
     schema: [
       {
         prop: "videoId",

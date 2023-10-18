@@ -102,7 +102,7 @@ export const easyblocksConfig: Config = {
     },
     {
       id: "$Link",
-      label: "Basic Link",
+      label: "Link",
       type: "action",
       thumbnail:
         "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_link.png",

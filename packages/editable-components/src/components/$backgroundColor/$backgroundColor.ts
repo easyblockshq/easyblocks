@@ -11,6 +11,8 @@ const backgroundColorComponentDefinition: InternalRenderableComponentDefinition<
     id: "$backgroundColor",
     label: "Solid color",
     styles: backgroundColorStyles,
+    thumbnail:
+      "https://shopstory.s3.eu-central-1.amazonaws.com/picker_solid_color.png",
     schema: [
       {
         prop: "color",

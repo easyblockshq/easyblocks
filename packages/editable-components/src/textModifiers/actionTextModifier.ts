@@ -14,6 +14,8 @@ const OPACITY_OPTIONS = Array.from({ length: 10 }, (_, index) => {
 
 const actionTextModifier: InternalTextModifierDefinition = {
   id: "$StandardActionStyles",
+  thumbnail:
+    "https://shopstory.s3.eu-central-1.amazonaws.com/picker_basic_styling.png",
   label: "Basic styles",
   schema: [
     {
