@@ -154,7 +154,7 @@ export const MediaPicker: React.FC<{
   }, []);
 
   return (
-    <div>
+    <div className="w-full">
       <ThumbnailButton
         onClick={() => {
           setOpen(true);
