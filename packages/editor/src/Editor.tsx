@@ -688,6 +688,7 @@ const EditorContent = ({
   };
 
   const [isAdminMode, setAdminMode] = useState(false);
+  const [isFullScreen, setFullScreen] = useState(false);
 
   useEffect(() => {
     window.editorWindowAPI.externalData = externalData;
@@ -739,6 +740,7 @@ const EditorContent = ({
       compilationContext.rootContainers.find((r) => r.id === rootContainer)
     ),
     disableCustomTemplates: props.config.disableCustomTemplates ?? false,
+    isFullScreen,
   };
 
   if (editorContext.activeRootContainer.schema) {
@@ -808,7 +810,13 @@ const EditorContent = ({
     if (window.editorWindowAPI.onUpdate) {
       window.editorWindowAPI.onUpdate();
     }
-  }, [renderableContent, focussedField, isEditing, breakpointIndex]);
+  }, [
+    renderableContent,
+    focussedField,
+    isEditing,
+    breakpointIndex,
+    isFullScreen,
+  ]);
 
   useEffect(() => {
     window.addEventListener(
@@ -921,8 +929,6 @@ const EditorContent = ({
     uniqueSourceIdentifier,
     editorContext
   );
-
-  const [isFullScreen, setFullScreen] = useState(false);
 
   const { height, scaleFactor, width, iframeContainerRef } = useIframeSize({
     isScalingEnabled: !isFullScreen && isEditing,

@@ -36,12 +36,13 @@ function CanvasRoot(props: CanvasRootProps) {
         container.id === editorContext.rootContainer
     );
 
-  const rootInlineStyle = rootContainer?.widths
-    ? {
-        maxWidth: rootContainer.widths[editorContext.breakpointIndex],
-        margin: "0 auto",
-      }
-    : undefined;
+  const rootInlineStyle =
+    !editorContext.isFullScreen && rootContainer?.widths
+      ? {
+          maxWidth: rootContainer.widths[editorContext.breakpointIndex],
+          margin: "0 auto",
+        }
+      : undefined;
 
   return (
     <div

@@ -41,6 +41,7 @@ export type EditorContextType = BaseEditorContextType & {
   };
   isPlayground: boolean;
   disableCustomTemplates: boolean;
+  isFullScreen: boolean;
 };
 
 export const EditorContext = React.createContext<EditorContextType | null>(
