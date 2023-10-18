@@ -76,6 +76,13 @@ function internalBuildTinaFields(
             (field) => !isFieldPortal(field) && field.prop === item.fieldName
           );
 
+          if (portalFieldFields.length === 0) {
+            console.warn(
+              `Missing field "${item.fieldName}" at path "${item.source}" in portal for component ${compiledComponent._template}`
+            );
+            return;
+          }
+
           const portalField = {
             ...portalFieldFields[0],
             ...item.overrides,
