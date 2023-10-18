@@ -1,7 +1,7 @@
 {
-  "_id": "adcca16c-7b2b-499f-aa10-6d2c9decebf0",
+  "_id": "2f534d7c-2551-4b43-a1b7-74100291dd4b",
   "_template": "$Grid",
-  "traceId": "$Grid-e2cccf1a",
+  "traceId": "$Grid-ff373813",
   "_itemProps": {
     "$RootSections": {
       "data": {
@@ -13,14 +13,14 @@
   "hide": { "$res": true, "xl": false },
   "Component": [
     {
-      "_id": "ef28389b-d183-4845-8f14-cdfe1790c56c",
+      "_id": "858e5ef3-763f-49ab-8747-204da4ab4ade",
       "_template": "$GridCard",
-      "traceId": "$GridCard-a243a386",
+      "traceId": "$GridCard-3804357b",
       "Cards": [
         {
-          "_id": "5e9f8ba8-0c32-4b82-91e6-020961cfcb73",
+          "_id": "5f7131e3-7404-4caf-80cd-5c1663380b7b",
           "_template": "$BannerCard2",
-          "traceId": "$BannerCard2-5a41bf52",
+          "traceId": "$BannerCard2-43ee6188",
           "_itemProps": {
             "$GridCard": {
               "Cards": {
@@ -33,7 +33,7 @@
           "borderWidth": { "$res": true, "xl": "0" },
           "borderColor": {
             "$res": true,
-            "xl": { "value": "black", "ref": "$dark" }
+            "xl": { "value": "black", "ref": "grey_05" }
           },
           "borderTop": { "$res": true, "xl": "1" },
           "borderBottom": { "$res": true, "xl": "1" },
@@ -45,18 +45,18 @@
           },
           "Card1": [
             {
-              "_id": "662c65de-9562-42d7-a87e-62d56effe57f",
+              "_id": "f04e6610-1f57-4fa5-ad52-e1e409238c86",
               "_template": "$BasicCard",
-              "traceId": "$BasicCard-f947d6d5",
+              "traceId": "$BasicCard-6fda2c44",
               "size": {
                 "$res": true,
                 "xl": { "value": "1:1", "ref": "square" }
               },
               "Background": [
                 {
-                  "_id": "71df92f3-6c3b-4c30-96e3-6558ee52d3fc",
+                  "_id": "8bf49389-8ad4-47b1-ad6b-18e6e9b520bc",
                   "_template": "$backgroundColor",
-                  "traceId": "$backgroundColor-70a72f77",
+                  "traceId": "$backgroundColor-cf142301",
                   "_itemProps": { "$BasicCard": { "Background": {} } },
                   "color": {
                     "$res": true,
@@ -67,7 +67,7 @@
               "borderWidth": { "$res": true, "xl": "0" },
               "borderColor": {
                 "$res": true,
-                "xl": { "value": "black", "ref": "$dark" }
+                "xl": { "value": "black", "ref": "grey_05" }
               },
               "borderTop": { "$res": true, "xl": "1" },
               "borderBottom": { "$res": true, "xl": "1" },
@@ -115,14 +115,14 @@
               "edgeMarginProtection": { "$res": true, "xl": true },
               "Stack": [
                 {
-                  "_id": "694f7d5b-ce48-4411-8873-5bf446765c05",
+                  "_id": "5e46525a-4a34-4591-af5f-7e0e7ecf9695",
                   "_template": "$stack",
-                  "traceId": "$stack-05d7542d",
+                  "traceId": "$stack-71665613",
                   "Items": [
                     {
-                      "_id": "13b85a06-a4f7-4d15-8f3e-c5698acee6cb",
+                      "_id": "e425be97-7c9a-4452-8cc2-b298c262bfd9",
                       "_template": "$richText",
-                      "traceId": "$richText-ebd8786e",
+                      "traceId": "$richText-4802103f",
                       "_itemProps": {
                         "$stack": {
                           "Items": {
@@ -138,20 +138,20 @@
                       "elements": {
                         "en-US": [
                           {
-                            "_id": "13f838bc-1614-4534-b7e7-770989f7d195",
+                            "_id": "70147449-9622-418a-bd34-42968b65e326",
                             "_template": "$richTextBlockElement",
-                            "traceId": "$richTextBlockElement-bfdce65b",
+                            "traceId": "$richTextBlockElement-232466ee",
                             "type": "paragraph",
                             "elements": [
                               {
-                                "_id": "345ec115-f20d-4441-959f-ec003978ad26",
+                                "_id": "4461ea6d-9a4e-4e05-b953-ad00a4731622",
                                 "_template": "$richTextLineElement",
-                                "traceId": "$richTextLineElement-5b7c5de3",
+                                "traceId": "$richTextLineElement-4e6e7834",
                                 "elements": [
                                   {
-                                    "_id": "1fd5e16f-49ed-41a0-a7c7-843125aba729",
+                                    "_id": "7a6a4803-b963-4164-b605-7fd16f304e27",
                                     "_template": "$richTextPart",
-                                    "traceId": "$richTextPart-0ba31789",
+                                    "traceId": "$richTextPart-0e2cee63",
                                     "value": "NEW ARRIVALS",
                                     "font": {
                                       "$res": true,
@@ -209,138 +209,21 @@
           ],
           "Card2": [
             {
-              "_id": "82a23dbc-e766-4dcf-9b60-8fa126313127",
+              "_id": "efdc9751-13a5-47d9-923d-af736fe31da1",
               "_template": "$BasicCardBackground",
-              "traceId": "$BasicCardBackground-a946b4b1",
-              "size": { "$res": true, "xl": { "value": "1:1" } },
-              "Background": [],
-              "borderWidth": { "$res": true, "xl": "0" },
-              "borderColor": {
-                "$res": true,
-                "xl": { "value": "black", "ref": "$dark" }
-              },
-              "borderTop": { "$res": true, "xl": "1" },
-              "borderBottom": { "$res": true, "xl": "1" },
-              "borderLeft": { "$res": true, "xl": "1" },
-              "borderRight": { "$res": true, "xl": "1" },
-              "boxShadow": {
-                "$res": true,
-                "xl": { "value": "none", "ref": "none" }
-              },
-              "cornerRadius": { "$res": true, "xl": "0" },
-              "enableContent": true,
-              "position": { "$res": true, "xl": "top-left" },
-              "paddingLeft": {
-                "$res": true,
-                "xl": { "value": "24px", "ref": "24" }
-              },
-              "paddingRight": {
-                "$res": true,
-                "xl": { "value": "24px", "ref": "24" }
-              },
-              "paddingTop": {
-                "$res": true,
-                "xl": { "value": "24px", "ref": "24" }
-              },
-              "paddingBottom": {
-                "$res": true,
-                "xl": { "value": "24px", "ref": "24" }
-              },
-              "paddingLeftExternal": {
-                "$res": true,
-                "xl": { "value": "0px", "ref": "0" }
-              },
-              "paddingRightExternal": {
-                "$res": true,
-                "xl": { "value": "0px", "ref": "0" }
-              },
-              "paddingTopExternal": {
-                "$res": true,
-                "xl": { "value": "0px", "ref": "0" }
-              },
-              "paddingBottomExternal": {
-                "$res": true,
-                "xl": { "value": "0px", "ref": "0" }
-              },
-              "edgeMarginProtection": { "$res": true, "xl": true },
-              "Stack": [
-                {
-                  "_id": "340601fd-9fa6-4e86-a1a2-4d95b09e248a",
-                  "_template": "$stack",
-                  "traceId": "$stack-6e3a7f8b",
-                  "Items": []
-                }
-              ]
-            }
-          ],
-          "mode": { "$res": true, "xl": "none" },
-          "sideModeWidth": { "$res": true, "xl": "50%" },
-          "backgroundModePosition": { "$res": true, "xl": "top-left" },
-          "backgroundModePaddingLeft": {
-            "$res": true,
-            "xl": { "value": "24px", "ref": "24" }
-          },
-          "backgroundModePaddingRight": {
-            "$res": true,
-            "xl": { "value": "24px", "ref": "24" }
-          },
-          "backgroundModePaddingTop": {
-            "$res": true,
-            "xl": { "value": "24px", "ref": "24" }
-          },
-          "backgroundModePaddingBottom": {
-            "$res": true,
-            "xl": { "value": "24px", "ref": "24" }
-          },
-          "backgroundModeEdgeMarginProtection": { "$res": true, "xl": true }
-        },
-        {
-          "_id": "0c0f15db-4903-4b47-a4fe-582d1bee211a",
-          "_template": "$BannerCard2",
-          "traceId": "$BannerCard2-22984bca",
-          "_itemProps": {
-            "$GridCard": {
-              "Cards": {
-                "itemSize": { "$res": true, "xl": "1x1" },
-                "verticalAlign": { "$res": true, "xl": "auto" }
-              }
-            }
-          },
-          "cornerRadius": { "$res": true, "xl": "0" },
-          "borderWidth": { "$res": true, "xl": "0" },
-          "borderColor": {
-            "$res": true,
-            "xl": { "value": "black", "ref": "$dark" }
-          },
-          "borderTop": { "$res": true, "xl": "1" },
-          "borderBottom": { "$res": true, "xl": "1" },
-          "borderLeft": { "$res": true, "xl": "1" },
-          "borderRight": { "$res": true, "xl": "1" },
-          "boxShadow": {
-            "$res": true,
-            "xl": { "value": "none", "ref": "none" }
-          },
-          "Card1": [
-            {
-              "_id": "58f3751d-e7c2-4ee7-bfc2-c59f51ffc4a6",
-              "_template": "$BasicCard",
-              "traceId": "$BasicCard-7b9346a4",
-              "size": {
-                "$res": true,
-                "xl": { "value": "1:1", "ref": "square" }
-              },
+              "traceId": "$BasicCardBackground-e388b5f3",
+              "size": { "$res": true, "xl": { "value": "fit-background" } },
               "Background": [
                 {
-                  "_id": "97768af5-3b3d-4c46-a999-74b05d792cab",
+                  "_id": "5e8974a9-084f-488f-9cf7-6d3b3429caec",
                   "_template": "$image",
-                  "traceId": "$image-79799a35",
-                  "_itemProps": { "$BasicCard": { "Background": {} } },
+                  "traceId": "$image-b2170474",
+                  "_itemProps": {
+                    "$BasicCardBackground": { "Background": {} }
+                  },
                   "image": {
                     "$res": true,
-                    "xl": {
-                      "id": "2S7lwAKRDhY0dPN3PUNqev",
-                      "widgetId": "mockImage"
-                    }
+                    "xl": { "id": null, "widgetId": "mockImage" }
                   },
                   "aspectRatio": { "$res": true, "xl": { "value": "1:1" } },
                   "action": []
@@ -349,163 +232,7 @@
               "borderWidth": { "$res": true, "xl": "0" },
               "borderColor": {
                 "$res": true,
-                "xl": { "value": "black", "ref": "$dark" }
-              },
-              "borderTop": { "$res": true, "xl": "1" },
-              "borderBottom": { "$res": true, "xl": "1" },
-              "borderLeft": { "$res": true, "xl": "1" },
-              "borderRight": { "$res": true, "xl": "1" },
-              "boxShadow": {
-                "$res": true,
-                "xl": { "value": "none", "ref": "none" }
-              },
-              "cornerRadius": { "$res": true, "xl": "0" },
-              "enableContent": true,
-              "position": { "$res": true, "xl": "bottom-center" },
-              "paddingLeft": {
-                "$res": true,
-                "xl": { "value": "24px", "ref": "24" }
-              },
-              "paddingRight": {
-                "$res": true,
-                "xl": { "value": "24px", "ref": "24" }
-              },
-              "paddingTop": {
-                "$res": true,
-                "xl": { "value": "24px", "ref": "24" }
-              },
-              "paddingBottom": {
-                "$res": true,
-                "xl": { "value": "24px", "ref": "24" }
-              },
-              "paddingLeftExternal": {
-                "$res": true,
-                "xl": { "value": "0px", "ref": "0" }
-              },
-              "paddingRightExternal": {
-                "$res": true,
-                "xl": { "value": "0px", "ref": "0" }
-              },
-              "paddingTopExternal": {
-                "$res": true,
-                "xl": { "value": "0px", "ref": "0" }
-              },
-              "paddingBottomExternal": {
-                "$res": true,
-                "xl": { "value": "0px", "ref": "0" }
-              },
-              "edgeMarginProtection": { "$res": true, "xl": true },
-              "Stack": [
-                {
-                  "_id": "9183b0da-1606-412c-b490-8cd53f5df2e4",
-                  "_template": "$stack",
-                  "traceId": "$stack-4bb7936a",
-                  "Items": [
-                    {
-                      "_id": "1c90518c-ccb0-40f3-82a6-fa6b0461ad0e",
-                      "_template": "$buttons",
-                      "traceId": "$buttons-bb26525e",
-                      "_itemProps": {
-                        "$stack": {
-                          "Items": {
-                            "width": { "$res": true, "xl": "512px" },
-                            "marginBottom": {
-                              "$res": true,
-                              "xl": { "value": "0px", "ref": "0" }
-                            },
-                            "align": { "$res": true, "xl": "center" }
-                          }
-                        }
-                      },
-                      "verticalLayout": false,
-                      "gap": {
-                        "$res": true,
-                        "xl": { "value": "12px", "ref": "12" }
-                      },
-                      "Buttons": [
-                        {
-                          "_id": "ea59be6a-c8c0-46cb-8ed4-1cc9e45f0458",
-                          "_template": "$StandardButton",
-                          "_master": "buttonDark",
-                          "traceId": "$StandardButton-2983955a",
-                          "_itemProps": { "$buttons": { "Buttons": {} } },
-                          "Action": [],
-                          "variant": "label",
-                          "label": {
-                            "id": "local.c34f58c0-4e59-4a4d-affd-f03764ad2a54",
-                            "value": { "en-US": "Tables" }
-                          },
-                          "icon": {
-                            "value": "<svg viewBox=\"0 -960 960 960\"><path fill=\"currentColor\" d=\"m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z\"/></svg>",
-                            "ref": "heart"
-                          },
-                          "color": {
-                            "$res": true,
-                            "xl": { "value": "#252525", "ref": "grey_05" }
-                          },
-                          "minHeight": { "$res": true, "xl": "42" },
-                          "minWidth": { "$res": true, "xl": "100" },
-                          "horizontalPadding": {
-                            "$res": true,
-                            "xl": { "value": "16px", "ref": "16" }
-                          },
-                          "gap": {
-                            "$res": true,
-                            "xl": { "value": "6px", "ref": "6" }
-                          },
-                          "cornerMode": { "$res": true, "xl": "sharp" },
-                          "cornerRadius": { "$res": true, "xl": "12" },
-                          "font": {
-                            "$res": true,
-                            "xl": {
-                              "value": {
-                                "$res": true,
-                                "2xl": {
-                                  "fontSize": 13,
-                                  "lineHeight": 1.8,
-                                  "fontFamily": "test-soehne-mono"
-                                }
-                              },
-                              "ref": "body2"
-                            }
-                          },
-                          "underline": "off",
-                          "underlineOffset": { "$res": true, "xl": "1" },
-                          "iconSize": { "$res": true, "xl": "20" },
-                          "hasBackground": true,
-                          "backgroundColor": {
-                            "$res": true,
-                            "xl": { "value": "#ffffff", "ref": "white" }
-                          },
-                          "hasBorder": false,
-                          "borderWidth": { "$res": true, "xl": "1" },
-                          "borderColor": {
-                            "$res": true,
-                            "xl": { "value": "black", "ref": "$dark" }
-                          },
-                          "boxShadow": {
-                            "$res": true,
-                            "xl": { "value": "none", "ref": "none" }
-                          }
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "Card2": [
-            {
-              "_id": "9fba6247-1e3c-49cc-9e6a-d81eca114734",
-              "_template": "$BasicCardBackground",
-              "traceId": "$BasicCardBackground-81bfcdfe",
-              "size": { "$res": true, "xl": { "value": "1:1" } },
-              "Background": [],
-              "borderWidth": { "$res": true, "xl": "0" },
-              "borderColor": {
-                "$res": true,
-                "xl": { "value": "black", "ref": "$dark" }
+                "xl": { "value": "black", "ref": "grey_05" }
               },
               "borderTop": { "$res": true, "xl": "1" },
               "borderBottom": { "$res": true, "xl": "1" },
@@ -553,9 +280,9 @@
               "edgeMarginProtection": { "$res": true, "xl": true },
               "Stack": [
                 {
-                  "_id": "5c7cd4d5-8503-45ce-b8c7-42fff01a4ded",
+                  "_id": "6ced4912-5c79-4811-8070-fdf8961ac7c8",
                   "_template": "$stack",
-                  "traceId": "$stack-b46c60d4",
+                  "traceId": "$stack-a7389dc1",
                   "Items": []
                 }
               ]
@@ -583,9 +310,9 @@
           "backgroundModeEdgeMarginProtection": { "$res": true, "xl": true }
         },
         {
-          "_id": "43988857-8138-4213-b0d9-fbde212f9998",
+          "_id": "c3cbd699-e4d7-49f1-8c51-7d22a2a88004",
           "_template": "$BannerCard2",
-          "traceId": "$BannerCard2-37d6bb4d",
+          "traceId": "$BannerCard2-5f24a27d",
           "_itemProps": {
             "$GridCard": {
               "Cards": {
@@ -598,7 +325,7 @@
           "borderWidth": { "$res": true, "xl": "0" },
           "borderColor": {
             "$res": true,
-            "xl": { "value": "black", "ref": "$dark" }
+            "xl": { "value": "black", "ref": "grey_05" }
           },
           "borderTop": { "$res": true, "xl": "1" },
           "borderBottom": { "$res": true, "xl": "1" },
@@ -610,18 +337,18 @@
           },
           "Card1": [
             {
-              "_id": "5616f337-ff3a-4f5c-ad13-dea1c73d5ac7",
+              "_id": "1f132d9f-dcf2-4616-ad7c-3611385b6be2",
               "_template": "$BasicCard",
-              "traceId": "$BasicCard-784d2060",
+              "traceId": "$BasicCard-593222d8",
               "size": {
                 "$res": true,
                 "xl": { "value": "1:1", "ref": "square" }
               },
               "Background": [
                 {
-                  "_id": "a0263294-1024-46b1-8714-8feb45064a56",
+                  "_id": "162e3b94-41c5-4269-b2b9-da801a409530",
                   "_template": "$image",
-                  "traceId": "$image-6875edff",
+                  "traceId": "$image-c3ef9778",
                   "_itemProps": { "$BasicCard": { "Background": {} } },
                   "image": {
                     "$res": true,
@@ -637,7 +364,7 @@
               "borderWidth": { "$res": true, "xl": "0" },
               "borderColor": {
                 "$res": true,
-                "xl": { "value": "black", "ref": "$dark" }
+                "xl": { "value": "black", "ref": "grey_05" }
               },
               "borderTop": { "$res": true, "xl": "1" },
               "borderBottom": { "$res": true, "xl": "1" },
@@ -685,14 +412,14 @@
               "edgeMarginProtection": { "$res": true, "xl": true },
               "Stack": [
                 {
-                  "_id": "98576ef0-f822-434d-9f9b-f0de5c54bd34",
+                  "_id": "b2716a82-b0e2-45b7-b6e6-71e13ff6e1c7",
                   "_template": "$stack",
-                  "traceId": "$stack-ef25c1f2",
+                  "traceId": "$stack-631d9ab4",
                   "Items": [
                     {
-                      "_id": "5bb9667e-9c38-461a-9801-7a55e0668674",
+                      "_id": "425c16d4-e3ae-4e7f-9582-ba29713b7f27",
                       "_template": "$buttons",
-                      "traceId": "$buttons-62e2b914",
+                      "traceId": "$buttons-73972a1a",
                       "_itemProps": {
                         "$stack": {
                           "Items": {
@@ -712,15 +439,15 @@
                       },
                       "Buttons": [
                         {
-                          "_id": "fa31c5ad-d51b-4c3c-b07c-fff0f6e60f5b",
+                          "_id": "b1345e03-4087-4c9a-a3f8-c201026b38d3",
                           "_template": "$StandardButton",
                           "_master": "buttonDark",
-                          "traceId": "$StandardButton-cfa92806",
+                          "traceId": "$StandardButton-cfb81ad3",
                           "_itemProps": { "$buttons": { "Buttons": {} } },
                           "Action": [],
                           "variant": "label",
                           "label": {
-                            "id": "local.81c0d430-2d6d-44ba-95b6-5b24ffc55c31",
+                            "id": "local.4f1636ce-35f4-4a54-9763-a1f05bc52249",
                             "value": { "en-US": "Accessories" }
                           },
                           "icon": {
@@ -769,7 +496,7 @@
                           "borderWidth": { "$res": true, "xl": "1" },
                           "borderColor": {
                             "$res": true,
-                            "xl": { "value": "black", "ref": "$dark" }
+                            "xl": { "value": "black", "ref": "grey_05" }
                           },
                           "boxShadow": {
                             "$res": true,
@@ -785,15 +512,30 @@
           ],
           "Card2": [
             {
-              "_id": "a5f469da-2732-4226-8d4e-2fa0b970c576",
+              "_id": "036f7e78-f720-4d8e-94ba-300ea8f76035",
               "_template": "$BasicCardBackground",
-              "traceId": "$BasicCardBackground-97cc37a5",
-              "size": { "$res": true, "xl": { "value": "1:1" } },
-              "Background": [],
+              "traceId": "$BasicCardBackground-92e2efa1",
+              "size": { "$res": true, "xl": { "value": "fit-background" } },
+              "Background": [
+                {
+                  "_id": "f183b24b-5fcc-4f35-8c77-ca7a299ad3ea",
+                  "_template": "$image",
+                  "traceId": "$image-d866bdb7",
+                  "_itemProps": {
+                    "$BasicCardBackground": { "Background": {} }
+                  },
+                  "image": {
+                    "$res": true,
+                    "xl": { "id": null, "widgetId": "mockImage" }
+                  },
+                  "aspectRatio": { "$res": true, "xl": { "value": "1:1" } },
+                  "action": []
+                }
+              ],
               "borderWidth": { "$res": true, "xl": "0" },
               "borderColor": {
                 "$res": true,
-                "xl": { "value": "black", "ref": "$dark" }
+                "xl": { "value": "black", "ref": "grey_05" }
               },
               "borderTop": { "$res": true, "xl": "1" },
               "borderBottom": { "$res": true, "xl": "1" },
@@ -841,9 +583,9 @@
               "edgeMarginProtection": { "$res": true, "xl": true },
               "Stack": [
                 {
-                  "_id": "f4395229-d918-453a-98e0-ee8360d0a17b",
+                  "_id": "3983316e-2ac4-4626-a203-f4f77e544848",
                   "_template": "$stack",
-                  "traceId": "$stack-41c4275c",
+                  "traceId": "$stack-71662e9b",
                   "Items": []
                 }
               ]
@@ -871,9 +613,9 @@
           "backgroundModeEdgeMarginProtection": { "$res": true, "xl": true }
         },
         {
-          "_id": "4c436504-acb5-48ec-a4ea-cc84c86d6f96",
+          "_id": "eff30e81-e151-493c-91ba-4eb6a6ef15a4",
           "_template": "$BannerCard2",
-          "traceId": "$BannerCard2-686ee3d4",
+          "traceId": "$BannerCard2-8f4d64a7",
           "_itemProps": {
             "$GridCard": {
               "Cards": {
@@ -886,7 +628,7 @@
           "borderWidth": { "$res": true, "xl": "0" },
           "borderColor": {
             "$res": true,
-            "xl": { "value": "black", "ref": "$dark" }
+            "xl": { "value": "black", "ref": "grey_05" }
           },
           "borderTop": { "$res": true, "xl": "1" },
           "borderBottom": { "$res": true, "xl": "1" },
@@ -898,18 +640,18 @@
           },
           "Card1": [
             {
-              "_id": "4a4d2b1a-4948-40a8-ad10-aa2293ba1227",
+              "_id": "be98fb8f-c3fc-4fdf-84e8-350778082e2a",
               "_template": "$BasicCard",
-              "traceId": "$BasicCard-0c4c7b8d",
+              "traceId": "$BasicCard-d761ba87",
               "size": {
                 "$res": true,
                 "xl": { "value": "1:1", "ref": "square" }
               },
               "Background": [
                 {
-                  "_id": "9e4ca2eb-5026-43bb-b00e-8cf33a837204",
+                  "_id": "55ecbe1a-0e1d-4d3b-b624-40f31e9db969",
                   "_template": "$image",
-                  "traceId": "$image-26b196c9",
+                  "traceId": "$image-5e869f96",
                   "_itemProps": { "$BasicCard": { "Background": {} } },
                   "image": {
                     "$res": true,
@@ -925,7 +667,7 @@
               "borderWidth": { "$res": true, "xl": "0" },
               "borderColor": {
                 "$res": true,
-                "xl": { "value": "black", "ref": "$dark" }
+                "xl": { "value": "black", "ref": "grey_05" }
               },
               "borderTop": { "$res": true, "xl": "1" },
               "borderBottom": { "$res": true, "xl": "1" },
@@ -973,14 +715,14 @@
               "edgeMarginProtection": { "$res": true, "xl": true },
               "Stack": [
                 {
-                  "_id": "892e6de2-5ad0-460f-a752-7d5a1433b92b",
+                  "_id": "c10bad1d-47c3-43a9-b444-23a9230947fa",
                   "_template": "$stack",
-                  "traceId": "$stack-719490f0",
+                  "traceId": "$stack-5c27bf74",
                   "Items": [
                     {
-                      "_id": "07c7cb90-9135-4714-b2df-ad39e1e2c4c1",
+                      "_id": "54b01b97-d276-4e2a-af50-74d8e74498d3",
                       "_template": "$buttons",
-                      "traceId": "$buttons-58e38605",
+                      "traceId": "$buttons-5759a039",
                       "_itemProps": {
                         "$stack": {
                           "Items": {
@@ -1000,15 +742,15 @@
                       },
                       "Buttons": [
                         {
-                          "_id": "96e41509-c24c-4df5-9ec1-aaf3278044b0",
+                          "_id": "a508b2c8-6538-4414-af62-9b8fa3bddba4",
                           "_template": "$StandardButton",
                           "_master": "buttonDark",
-                          "traceId": "$StandardButton-d1d02850",
+                          "traceId": "$StandardButton-a1c825e1",
                           "_itemProps": { "$buttons": { "Buttons": {} } },
                           "Action": [],
                           "variant": "label",
                           "label": {
-                            "id": "local.16ed3cc7-ad6a-4f40-ae74-c9634e219db4",
+                            "id": "local.93ec2f04-4344-4fc0-a731-15bafca486e3",
                             "value": { "en-US": "Candles" }
                           },
                           "icon": {
@@ -1057,7 +799,7 @@
                           "borderWidth": { "$res": true, "xl": "1" },
                           "borderColor": {
                             "$res": true,
-                            "xl": { "value": "black", "ref": "$dark" }
+                            "xl": { "value": "black", "ref": "grey_05" }
                           },
                           "boxShadow": {
                             "$res": true,
@@ -1073,15 +815,30 @@
           ],
           "Card2": [
             {
-              "_id": "f092f704-2c33-41e8-81e7-56ef6a6dc035",
+              "_id": "3f88aa44-402c-4ff1-9ffe-5ba2d3577465",
               "_template": "$BasicCardBackground",
-              "traceId": "$BasicCardBackground-5f824609",
-              "size": { "$res": true, "xl": { "value": "1:1" } },
-              "Background": [],
+              "traceId": "$BasicCardBackground-cf0bce85",
+              "size": { "$res": true, "xl": { "value": "fit-background" } },
+              "Background": [
+                {
+                  "_id": "aebc9e4f-d745-4625-8fe9-6615aef1f325",
+                  "_template": "$image",
+                  "traceId": "$image-6cc9654a",
+                  "_itemProps": {
+                    "$BasicCardBackground": { "Background": {} }
+                  },
+                  "image": {
+                    "$res": true,
+                    "xl": { "id": null, "widgetId": "mockImage" }
+                  },
+                  "aspectRatio": { "$res": true, "xl": { "value": "1:1" } },
+                  "action": []
+                }
+              ],
               "borderWidth": { "$res": true, "xl": "0" },
               "borderColor": {
                 "$res": true,
-                "xl": { "value": "black", "ref": "$dark" }
+                "xl": { "value": "black", "ref": "grey_05" }
               },
               "borderTop": { "$res": true, "xl": "1" },
               "borderBottom": { "$res": true, "xl": "1" },
@@ -1129,9 +886,9 @@
               "edgeMarginProtection": { "$res": true, "xl": true },
               "Stack": [
                 {
-                  "_id": "a24137bd-7a64-4fb3-ab17-fbb4ba859e13",
+                  "_id": "92e302e5-a857-4b9b-8aad-1b91dec8b7e9",
                   "_template": "$stack",
-                  "traceId": "$stack-22f6677c",
+                  "traceId": "$stack-39f94ae7",
                   "Items": []
                 }
               ]
@@ -1159,9 +916,9 @@
           "backgroundModeEdgeMarginProtection": { "$res": true, "xl": true }
         },
         {
-          "_id": "2c0140f9-33d5-4e2d-9250-00594130b6e0",
+          "_id": "cb16a535-9df3-453d-9bbb-b96338e378d6",
           "_template": "$BannerCard2",
-          "traceId": "$BannerCard2-28771ef7",
+          "traceId": "$BannerCard2-fc845502",
           "_itemProps": {
             "$GridCard": {
               "Cards": {
@@ -1174,7 +931,7 @@
           "borderWidth": { "$res": true, "xl": "0" },
           "borderColor": {
             "$res": true,
-            "xl": { "value": "black", "ref": "$dark" }
+            "xl": { "value": "black", "ref": "grey_05" }
           },
           "borderTop": { "$res": true, "xl": "1" },
           "borderBottom": { "$res": true, "xl": "1" },
@@ -1186,18 +943,18 @@
           },
           "Card1": [
             {
-              "_id": "88397e48-35bc-4504-8195-f5741fcf1629",
+              "_id": "0f1b1686-a97d-48a1-95e6-4c6c6a406923",
               "_template": "$BasicCard",
-              "traceId": "$BasicCard-a420d8f7",
+              "traceId": "$BasicCard-04552339",
               "size": {
                 "$res": true,
                 "xl": { "value": "1:1", "ref": "square" }
               },
               "Background": [
                 {
-                  "_id": "3912f3fb-8b93-4a1e-8f46-11dfea2a3a18",
+                  "_id": "8c478133-5b3d-496e-b0a9-2a82a91c37e7",
                   "_template": "$image",
-                  "traceId": "$image-37a9cdde",
+                  "traceId": "$image-69836b50",
                   "_itemProps": { "$BasicCard": { "Background": {} } },
                   "image": {
                     "$res": true,
@@ -1213,7 +970,7 @@
               "borderWidth": { "$res": true, "xl": "0" },
               "borderColor": {
                 "$res": true,
-                "xl": { "value": "black", "ref": "$dark" }
+                "xl": { "value": "black", "ref": "grey_05" }
               },
               "borderTop": { "$res": true, "xl": "1" },
               "borderBottom": { "$res": true, "xl": "1" },
@@ -1261,14 +1018,14 @@
               "edgeMarginProtection": { "$res": true, "xl": true },
               "Stack": [
                 {
-                  "_id": "06dcae35-7f34-4fec-8a7f-271379856d6c",
+                  "_id": "6b56af56-90e9-449b-ba15-7978637127f2",
                   "_template": "$stack",
-                  "traceId": "$stack-64ae09e2",
+                  "traceId": "$stack-996a6988",
                   "Items": [
                     {
-                      "_id": "c9fc07f1-fb55-412e-8b38-7341a1cd7f0d",
+                      "_id": "c06b7161-ebde-448d-8314-b41361ccc273",
                       "_template": "$buttons",
-                      "traceId": "$buttons-3f37af9d",
+                      "traceId": "$buttons-f6136937",
                       "_itemProps": {
                         "$stack": {
                           "Items": {
@@ -1288,15 +1045,15 @@
                       },
                       "Buttons": [
                         {
-                          "_id": "e72953dd-946c-4726-b4b6-eb59e572e0f2",
+                          "_id": "4c968a89-a736-40b1-91c5-4aba05e11cc0",
                           "_template": "$StandardButton",
                           "_master": "buttonDark",
-                          "traceId": "$StandardButton-7375eace",
+                          "traceId": "$StandardButton-f063ee27",
                           "_itemProps": { "$buttons": { "Buttons": {} } },
                           "Action": [],
                           "variant": "label",
                           "label": {
-                            "id": "local.a3e6cb86-3e41-4f4f-8bc2-613896229687",
+                            "id": "local.9a77f82d-8d4c-4939-9bf8-050ea419951b",
                             "value": { "en-US": "Side tables" }
                           },
                           "icon": {
@@ -1345,7 +1102,7 @@
                           "borderWidth": { "$res": true, "xl": "1" },
                           "borderColor": {
                             "$res": true,
-                            "xl": { "value": "black", "ref": "$dark" }
+                            "xl": { "value": "black", "ref": "grey_05" }
                           },
                           "boxShadow": {
                             "$res": true,
@@ -1361,15 +1118,30 @@
           ],
           "Card2": [
             {
-              "_id": "a82ffc57-1c45-432b-8f14-730947a66f96",
+              "_id": "fd7f2c43-fd8d-492d-b2ed-baec56d588e3",
               "_template": "$BasicCardBackground",
-              "traceId": "$BasicCardBackground-008b6ad8",
-              "size": { "$res": true, "xl": { "value": "1:1" } },
-              "Background": [],
+              "traceId": "$BasicCardBackground-df2d4a21",
+              "size": { "$res": true, "xl": { "value": "fit-background" } },
+              "Background": [
+                {
+                  "_id": "334369c0-bef0-4c61-8ef5-3b599ff95dcc",
+                  "_template": "$image",
+                  "traceId": "$image-d1439942",
+                  "_itemProps": {
+                    "$BasicCardBackground": { "Background": {} }
+                  },
+                  "image": {
+                    "$res": true,
+                    "xl": { "id": null, "widgetId": "mockImage" }
+                  },
+                  "aspectRatio": { "$res": true, "xl": { "value": "1:1" } },
+                  "action": []
+                }
+              ],
               "borderWidth": { "$res": true, "xl": "0" },
               "borderColor": {
                 "$res": true,
-                "xl": { "value": "black", "ref": "$dark" }
+                "xl": { "value": "black", "ref": "grey_05" }
               },
               "borderTop": { "$res": true, "xl": "1" },
               "borderBottom": { "$res": true, "xl": "1" },
@@ -1417,9 +1189,9 @@
               "edgeMarginProtection": { "$res": true, "xl": true },
               "Stack": [
                 {
-                  "_id": "6b72654e-d44b-4040-8332-fcba891024fd",
+                  "_id": "ad618f4d-abe7-4e7b-a4f1-f2185809d327",
                   "_template": "$stack",
-                  "traceId": "$stack-ee920b5b",
+                  "traceId": "$stack-cdc64cb3",
                   "Items": []
                 }
               ]
@@ -1447,9 +1219,9 @@
           "backgroundModeEdgeMarginProtection": { "$res": true, "xl": true }
         },
         {
-          "_id": "0a3a298d-e15a-4671-95ea-d2a654223d79",
+          "_id": "94c83181-8627-452c-8331-2a9dd2ed4a12",
           "_template": "$BannerCard2",
-          "traceId": "$BannerCard2-71800d51",
+          "traceId": "$BannerCard2-1b7e1dd8",
           "_itemProps": {
             "$GridCard": {
               "Cards": {
@@ -1462,7 +1234,7 @@
           "borderWidth": { "$res": true, "xl": "0" },
           "borderColor": {
             "$res": true,
-            "xl": { "value": "black", "ref": "$dark" }
+            "xl": { "value": "black", "ref": "grey_05" }
           },
           "borderTop": { "$res": true, "xl": "1" },
           "borderBottom": { "$res": true, "xl": "1" },
@@ -1474,18 +1246,18 @@
           },
           "Card1": [
             {
-              "_id": "bf2ef06c-6a25-41ce-9317-a7bdc8937d5f",
+              "_id": "d9070c9d-7ef4-488f-a810-c6e962c67973",
               "_template": "$BasicCard",
-              "traceId": "$BasicCard-71f4f7ac",
+              "traceId": "$BasicCard-38c9d7e8",
               "size": {
                 "$res": true,
                 "xl": { "value": "1:1", "ref": "square" }
               },
               "Background": [
                 {
-                  "_id": "a2518b70-1ca0-421c-b75d-184e017e90a3",
+                  "_id": "b6e78e27-efc3-409f-b602-3b7f4dbbf451",
                   "_template": "$image",
-                  "traceId": "$image-85c99560",
+                  "traceId": "$image-b4cb4c21",
                   "_itemProps": { "$BasicCard": { "Background": {} } },
                   "image": {
                     "$res": true,
@@ -1501,7 +1273,7 @@
               "borderWidth": { "$res": true, "xl": "0" },
               "borderColor": {
                 "$res": true,
-                "xl": { "value": "black", "ref": "$dark" }
+                "xl": { "value": "black", "ref": "grey_05" }
               },
               "borderTop": { "$res": true, "xl": "1" },
               "borderBottom": { "$res": true, "xl": "1" },
@@ -1549,14 +1321,14 @@
               "edgeMarginProtection": { "$res": true, "xl": true },
               "Stack": [
                 {
-                  "_id": "98bf4d00-16fd-47ec-8ab4-693fe632652c",
+                  "_id": "fa6b7093-72f2-48b9-8ab8-8af234257374",
                   "_template": "$stack",
-                  "traceId": "$stack-a5bd1768",
+                  "traceId": "$stack-92030eb6",
                   "Items": [
                     {
-                      "_id": "81306352-4cdb-4010-9d31-2367168954b3",
+                      "_id": "369a0273-457e-4e99-a4f7-c86d8f1aac9e",
                       "_template": "$buttons",
-                      "traceId": "$buttons-9261df03",
+                      "traceId": "$buttons-e54ae74b",
                       "_itemProps": {
                         "$stack": {
                           "Items": {
@@ -1576,15 +1348,15 @@
                       },
                       "Buttons": [
                         {
-                          "_id": "d8c82acf-1e0c-4d87-bc50-05b006bb8a44",
+                          "_id": "96a03ec6-e79f-4277-98d2-4c6dda2ee2c7",
                           "_template": "$StandardButton",
                           "_master": "buttonDark",
-                          "traceId": "$StandardButton-d7cb9c9f",
+                          "traceId": "$StandardButton-5825d033",
                           "_itemProps": { "$buttons": { "Buttons": {} } },
                           "Action": [],
                           "variant": "label",
                           "label": {
-                            "id": "local.449a8c94-85e4-403f-af2b-659cc933cc4b",
+                            "id": "local.73e4cb68-f819-41b6-baa1-d3535825eb6c",
                             "value": { "en-US": "Bookends" }
                           },
                           "icon": {
@@ -1633,7 +1405,7 @@
                           "borderWidth": { "$res": true, "xl": "1" },
                           "borderColor": {
                             "$res": true,
-                            "xl": { "value": "black", "ref": "$dark" }
+                            "xl": { "value": "black", "ref": "grey_05" }
                           },
                           "boxShadow": {
                             "$res": true,
@@ -1649,15 +1421,30 @@
           ],
           "Card2": [
             {
-              "_id": "c5b9aece-846b-49e2-a5f7-1e863159ef10",
+              "_id": "1a674099-2594-4964-9f73-c94cd744c714",
               "_template": "$BasicCardBackground",
-              "traceId": "$BasicCardBackground-b922b30d",
-              "size": { "$res": true, "xl": { "value": "1:1" } },
-              "Background": [],
+              "traceId": "$BasicCardBackground-cafc4bfc",
+              "size": { "$res": true, "xl": { "value": "fit-background" } },
+              "Background": [
+                {
+                  "_id": "fb7f167f-969b-4ca6-8e89-c753c477a958",
+                  "_template": "$image",
+                  "traceId": "$image-39855d43",
+                  "_itemProps": {
+                    "$BasicCardBackground": { "Background": {} }
+                  },
+                  "image": {
+                    "$res": true,
+                    "xl": { "id": null, "widgetId": "mockImage" }
+                  },
+                  "aspectRatio": { "$res": true, "xl": { "value": "1:1" } },
+                  "action": []
+                }
+              ],
               "borderWidth": { "$res": true, "xl": "0" },
               "borderColor": {
                 "$res": true,
-                "xl": { "value": "black", "ref": "$dark" }
+                "xl": { "value": "black", "ref": "grey_05" }
               },
               "borderTop": { "$res": true, "xl": "1" },
               "borderBottom": { "$res": true, "xl": "1" },
@@ -1705,9 +1492,9 @@
               "edgeMarginProtection": { "$res": true, "xl": true },
               "Stack": [
                 {
-                  "_id": "8059e099-434d-4c3f-be59-d3869a18b02c",
+                  "_id": "e1bf4075-7104-41f5-9704-516685f7178e",
                   "_template": "$stack",
-                  "traceId": "$stack-7a35937b",
+                  "traceId": "$stack-1e5b4250",
                   "Items": []
                 }
               ]
@@ -1735,9 +1522,9 @@
           "backgroundModeEdgeMarginProtection": { "$res": true, "xl": true }
         },
         {
-          "_id": "d5ac296e-ecdf-412e-ab43-1e2cc9c59def",
+          "_id": "9845e380-a094-4755-8548-78bbd8208a04",
           "_template": "$BannerCard2",
-          "traceId": "$BannerCard2-59d05087",
+          "traceId": "$BannerCard2-81ec55a6",
           "_itemProps": {
             "$GridCard": {
               "Cards": {
@@ -1750,7 +1537,7 @@
           "borderWidth": { "$res": true, "xl": "0" },
           "borderColor": {
             "$res": true,
-            "xl": { "value": "black", "ref": "$dark" }
+            "xl": { "value": "black", "ref": "grey_05" }
           },
           "borderTop": { "$res": true, "xl": "1" },
           "borderBottom": { "$res": true, "xl": "1" },
@@ -1762,18 +1549,18 @@
           },
           "Card1": [
             {
-              "_id": "9f0d8c2c-b20d-4f11-aeaf-4f86c42c743d",
+              "_id": "3341fdbc-ec83-4cef-8624-4fd021ce71de",
               "_template": "$BasicCard",
-              "traceId": "$BasicCard-f21b4756",
+              "traceId": "$BasicCard-045f49cd",
               "size": {
                 "$res": true,
                 "xl": { "value": "1:1", "ref": "square" }
               },
               "Background": [
                 {
-                  "_id": "bbe49dd0-52b8-44a8-bc48-932be8a8f55f",
+                  "_id": "cd983ba4-840a-4a0e-8c1a-a9831aaa2756",
                   "_template": "$image",
-                  "traceId": "$image-5389601d",
+                  "traceId": "$image-0363832d",
                   "_itemProps": { "$BasicCard": { "Background": {} } },
                   "image": {
                     "$res": true,
@@ -1789,7 +1576,7 @@
               "borderWidth": { "$res": true, "xl": "0" },
               "borderColor": {
                 "$res": true,
-                "xl": { "value": "black", "ref": "$dark" }
+                "xl": { "value": "black", "ref": "grey_05" }
               },
               "borderTop": { "$res": true, "xl": "1" },
               "borderBottom": { "$res": true, "xl": "1" },
@@ -1837,14 +1624,14 @@
               "edgeMarginProtection": { "$res": true, "xl": true },
               "Stack": [
                 {
-                  "_id": "49d8d35d-049a-4bbc-8133-2f0ae26cf5ce",
+                  "_id": "9315fb10-64af-4afd-9c26-79bac15f2734",
                   "_template": "$stack",
-                  "traceId": "$stack-c0b79297",
+                  "traceId": "$stack-313cc0fa",
                   "Items": [
                     {
-                      "_id": "3c46792e-854a-43e9-a1ff-c5f043cee9b6",
+                      "_id": "54b844bd-0ceb-4063-9318-46f59cf3e83b",
                       "_template": "$buttons",
-                      "traceId": "$buttons-e58aeeab",
+                      "traceId": "$buttons-48d627c0",
                       "_itemProps": {
                         "$stack": {
                           "Items": {
@@ -1864,15 +1651,15 @@
                       },
                       "Buttons": [
                         {
-                          "_id": "cbd407bd-80e2-43a3-8daf-48b23643e3a2",
+                          "_id": "d8a70bab-26a5-4954-b90e-a4f6b9d1e3d5",
                           "_template": "$StandardButton",
                           "_master": "buttonDark",
-                          "traceId": "$StandardButton-1c0b97ca",
+                          "traceId": "$StandardButton-26e817ef",
                           "_itemProps": { "$buttons": { "Buttons": {} } },
                           "Action": [],
                           "variant": "label",
                           "label": {
-                            "id": "local.8380d189-6434-4214-bb60-a3e87d6a3e2b",
+                            "id": "local.613998a1-cab1-455d-b828-52603ac0d452",
                             "value": { "en-US": "Shelving" }
                           },
                           "icon": {
@@ -1921,7 +1708,7 @@
                           "borderWidth": { "$res": true, "xl": "1" },
                           "borderColor": {
                             "$res": true,
-                            "xl": { "value": "black", "ref": "$dark" }
+                            "xl": { "value": "black", "ref": "grey_05" }
                           },
                           "boxShadow": {
                             "$res": true,
@@ -1937,15 +1724,30 @@
           ],
           "Card2": [
             {
-              "_id": "9af6901d-3db6-4e98-a909-4b458eabad8f",
+              "_id": "873a752d-32b2-49c6-a7e2-fcde70fa7907",
               "_template": "$BasicCardBackground",
-              "traceId": "$BasicCardBackground-9852f59a",
-              "size": { "$res": true, "xl": { "value": "1:1" } },
-              "Background": [],
+              "traceId": "$BasicCardBackground-e8cdcd33",
+              "size": { "$res": true, "xl": { "value": "fit-background" } },
+              "Background": [
+                {
+                  "_id": "9a9c00fd-9edf-473a-a189-03291b1e7c55",
+                  "_template": "$image",
+                  "traceId": "$image-39562c14",
+                  "_itemProps": {
+                    "$BasicCardBackground": { "Background": {} }
+                  },
+                  "image": {
+                    "$res": true,
+                    "xl": { "id": null, "widgetId": "mockImage" }
+                  },
+                  "aspectRatio": { "$res": true, "xl": { "value": "1:1" } },
+                  "action": []
+                }
+              ],
               "borderWidth": { "$res": true, "xl": "0" },
               "borderColor": {
                 "$res": true,
-                "xl": { "value": "black", "ref": "$dark" }
+                "xl": { "value": "black", "ref": "grey_05" }
               },
               "borderTop": { "$res": true, "xl": "1" },
               "borderBottom": { "$res": true, "xl": "1" },
@@ -1993,9 +1795,9 @@
               "edgeMarginProtection": { "$res": true, "xl": true },
               "Stack": [
                 {
-                  "_id": "02712546-5cc6-4e1e-9fc2-dc0c0b4a2005",
+                  "_id": "74384d8e-c14b-48f9-8445-19677f254c32",
                   "_template": "$stack",
-                  "traceId": "$stack-15bc3080",
+                  "traceId": "$stack-9f1ea050",
                   "Items": []
                 }
               ]
@@ -2023,9 +1825,9 @@
           "backgroundModeEdgeMarginProtection": { "$res": true, "xl": true }
         },
         {
-          "_id": "47b0c298-231a-4545-a6d1-f00177fa8e1a",
+          "_id": "e86ab6ce-2036-4717-82f9-5bc7f2f9e7af",
           "_template": "$BannerCard2",
-          "traceId": "$BannerCard2-9c9babe0",
+          "traceId": "$BannerCard2-9fb81d28",
           "_itemProps": {
             "$GridCard": {
               "Cards": {
@@ -2038,7 +1840,7 @@
           "borderWidth": { "$res": true, "xl": "0" },
           "borderColor": {
             "$res": true,
-            "xl": { "value": "black", "ref": "$dark" }
+            "xl": { "value": "black", "ref": "grey_05" }
           },
           "borderTop": { "$res": true, "xl": "1" },
           "borderBottom": { "$res": true, "xl": "1" },
@@ -2050,18 +1852,18 @@
           },
           "Card1": [
             {
-              "_id": "13825539-037e-41b1-abb6-76169b444df7",
+              "_id": "ac47fdef-5957-4973-932e-72f98a0f3cbe",
               "_template": "$BasicCard",
-              "traceId": "$BasicCard-658768b4",
+              "traceId": "$BasicCard-7c29ea64",
               "size": {
                 "$res": true,
                 "xl": { "value": "1:1", "ref": "square" }
               },
               "Background": [
                 {
-                  "_id": "75f5b578-cc88-435d-8be7-5d7dea280435",
+                  "_id": "f422557d-e81e-4f57-9344-7268ff15ea55",
                   "_template": "$image",
-                  "traceId": "$image-9b2f6630",
+                  "traceId": "$image-dfb90726",
                   "_itemProps": { "$BasicCard": { "Background": {} } },
                   "image": {
                     "$res": true,
@@ -2077,7 +1879,7 @@
               "borderWidth": { "$res": true, "xl": "0" },
               "borderColor": {
                 "$res": true,
-                "xl": { "value": "black", "ref": "$dark" }
+                "xl": { "value": "black", "ref": "grey_05" }
               },
               "borderTop": { "$res": true, "xl": "1" },
               "borderBottom": { "$res": true, "xl": "1" },
@@ -2125,14 +1927,14 @@
               "edgeMarginProtection": { "$res": true, "xl": true },
               "Stack": [
                 {
-                  "_id": "842e6a93-fde9-41ca-acec-6b9ab331144e",
+                  "_id": "835b1841-ab0b-40d7-b9de-5d0f1d6c9f9d",
                   "_template": "$stack",
-                  "traceId": "$stack-afc49607",
+                  "traceId": "$stack-795be68a",
                   "Items": [
                     {
-                      "_id": "b62d3981-d21f-4992-a141-62c2207ca916",
+                      "_id": "41f72c01-d81e-4071-9020-053ae15f94b9",
                       "_template": "$buttons",
-                      "traceId": "$buttons-f03e2bef",
+                      "traceId": "$buttons-bc4df7d8",
                       "_itemProps": {
                         "$stack": {
                           "Items": {
@@ -2152,15 +1954,15 @@
                       },
                       "Buttons": [
                         {
-                          "_id": "4892f149-fc3e-40d0-9581-9ca338ff7c74",
+                          "_id": "c47a386a-e49f-46e6-81c9-3c0c8e57473d",
                           "_template": "$StandardButton",
                           "_master": "buttonDark",
-                          "traceId": "$StandardButton-558fc980",
+                          "traceId": "$StandardButton-99283c15",
                           "_itemProps": { "$buttons": { "Buttons": {} } },
                           "Action": [],
                           "variant": "label",
                           "label": {
-                            "id": "local.aac45ba4-f1fb-4e79-8c5a-0eb383749f2f",
+                            "id": "local.58853c4d-63fa-44ae-af39-c95dd7ad2590",
                             "value": { "en-US": "Serving" }
                           },
                           "icon": {
@@ -2209,7 +2011,7 @@
                           "borderWidth": { "$res": true, "xl": "1" },
                           "borderColor": {
                             "$res": true,
-                            "xl": { "value": "black", "ref": "$dark" }
+                            "xl": { "value": "black", "ref": "grey_05" }
                           },
                           "boxShadow": {
                             "$res": true,
@@ -2225,15 +2027,30 @@
           ],
           "Card2": [
             {
-              "_id": "8470448b-03c8-42e0-aa03-61c24595138b",
+              "_id": "fc7b5254-1e4f-46bb-b548-8e343525eeb2",
               "_template": "$BasicCardBackground",
-              "traceId": "$BasicCardBackground-dd9aa81f",
-              "size": { "$res": true, "xl": { "value": "1:1" } },
-              "Background": [],
+              "traceId": "$BasicCardBackground-3ce72413",
+              "size": { "$res": true, "xl": { "value": "fit-background" } },
+              "Background": [
+                {
+                  "_id": "936b3ab0-2297-4744-9bb2-2522a6ca890f",
+                  "_template": "$image",
+                  "traceId": "$image-49b31eb4",
+                  "_itemProps": {
+                    "$BasicCardBackground": { "Background": {} }
+                  },
+                  "image": {
+                    "$res": true,
+                    "xl": { "id": null, "widgetId": "mockImage" }
+                  },
+                  "aspectRatio": { "$res": true, "xl": { "value": "1:1" } },
+                  "action": []
+                }
+              ],
               "borderWidth": { "$res": true, "xl": "0" },
               "borderColor": {
                 "$res": true,
-                "xl": { "value": "black", "ref": "$dark" }
+                "xl": { "value": "black", "ref": "grey_05" }
               },
               "borderTop": { "$res": true, "xl": "1" },
               "borderBottom": { "$res": true, "xl": "1" },
@@ -2281,9 +2098,9 @@
               "edgeMarginProtection": { "$res": true, "xl": true },
               "Stack": [
                 {
-                  "_id": "f9c81e39-6281-4431-95ac-8f2a9a8f8633",
+                  "_id": "52854407-fce5-4254-9acf-a46d15501e88",
                   "_template": "$stack",
-                  "traceId": "$stack-54096e69",
+                  "traceId": "$stack-89ce5e54",
                   "Items": []
                 }
               ]
@@ -2314,7 +2131,7 @@
       "variant": { "$res": true, "xl": "slider" },
       "numberOfItems": { "$res": true, "xl": "3" },
       "fractionalItemWidth": { "$res": true, "xl": "1.25" },
-      "columnGap": { "$res": true, "xl": { "ref": "0", "value": "0px" } },
+      "columnGap": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
       "rowGap": { "$res": true, "xl": { "value": "1px", "ref": "1" } },
       "verticalAlign": { "$res": true, "xl": "top" },
       "showSliderControls": { "$res": true, "xl": false },
@@ -2326,7 +2143,7 @@
       "borderEnabled": false,
       "borderColor": {
         "$res": true,
-        "xl": { "value": "black", "ref": "$dark" }
+        "xl": { "value": "black", "ref": "grey_05" }
       },
       "borderTop": { "$res": true, "xl": "1" },
       "borderBottom": { "$res": true, "xl": "1" },
@@ -2339,15 +2156,15 @@
       "paddingRight": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
       "LeftArrow": [
         {
-          "_id": "82269014-f73c-4bfa-8157-c0d138a6f766",
+          "_id": "58b1c19e-fb4a-45dc-9444-fdbe9e0297f8",
           "_template": "$StandardButton",
           "_master": "buttonDark",
-          "traceId": "$StandardButton-e8bfb121",
+          "traceId": "$StandardButton-8ad37e10",
           "_itemProps": { "$GridCard": { "LeftArrow": {} } },
           "Action": [],
           "variant": "icon",
           "label": {
-            "id": "local.ef4a197b-1540-4528-91d0-f9fa7d879630",
+            "id": "local.dea2a1a3-4909-4957-9285-e559354f68c5",
             "value": { "en-US": "Click me" }
           },
           "icon": {
@@ -2394,7 +2211,7 @@
           "borderWidth": { "$res": true, "xl": "1" },
           "borderColor": {
             "$res": true,
-            "xl": { "value": "black", "ref": "$dark" }
+            "xl": { "value": "black", "ref": "grey_05" }
           },
           "boxShadow": {
             "$res": true,
@@ -2409,15 +2226,15 @@
       },
       "RightArrow": [
         {
-          "_id": "38af5f29-d9ab-48a9-af77-47e655bf65d0",
+          "_id": "8641ccf3-2dbe-4c10-b8d8-bfd6fcc2a185",
           "_template": "$StandardButton",
           "_master": "buttonDark",
-          "traceId": "$StandardButton-20ac7693",
+          "traceId": "$StandardButton-f11fa357",
           "_itemProps": { "$GridCard": { "RightArrow": {} } },
           "Action": [],
           "variant": "icon",
           "label": {
-            "id": "local.1cc6d1f5-1841-4423-9096-152b34d151a1",
+            "id": "local.250b28ac-b0b6-46cf-80c1-bd1a30869e60",
             "value": { "en-US": "Click me" }
           },
           "icon": {
@@ -2464,7 +2281,7 @@
           "borderWidth": { "$res": true, "xl": "1" },
           "borderColor": {
             "$res": true,
-            "xl": { "value": "black", "ref": "$dark" }
+            "xl": { "value": "black", "ref": "grey_05" }
           },
           "boxShadow": {
             "$res": true,
@@ -2500,17 +2317,17 @@
   "footerSectionGap": { "$res": true, "xl": { "value": "12px", "ref": "12" } },
   "HeaderStack": [
     {
-      "_id": "e2aa2efc-418a-463b-a3be-1bbef68ea61d",
+      "_id": "9f829c0c-4242-4833-86df-6d0f8539799e",
       "_template": "$stack",
-      "traceId": "$stack-5993692e",
+      "traceId": "$stack-a77560b3",
       "Items": []
     }
   ],
   "HeaderSecondaryStack": [
     {
-      "_id": "5935f4d1-07d9-429d-87f9-60a27ad4f78e",
+      "_id": "ea660296-5a1a-49b7-b7d8-b14ad0494396",
       "_template": "$stack",
-      "traceId": "$stack-10900d9c",
+      "traceId": "$stack-67fca833",
       "Items": []
     }
   ],

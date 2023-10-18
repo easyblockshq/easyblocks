@@ -1,115 +1,63 @@
 {
-  "_id": "1a892f3d-3aac-4797-8cb0-3b48cd3b197b",
+  "_id": "bac947ee-3011-4b04-8291-882ee8f7d540",
   "_template": "$Grid",
-  "traceId": "$Grid-ae2ee123",
+  "traceId": "$Grid-6eed96cf",
   "_itemProps": {
     "$RootSections": {
       "data": {
-        "topMargin": {
-          "$res": true,
-          "xl": {
-            "value": "0px",
-            "ref": "0"
-          }
-        },
-        "bottomMargin": {
-          "$res": true,
-          "xl": {
-            "value": "32px",
-            "ref": "32"
-          }
-        }
+        "topMargin": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
+        "bottomMargin": { "$res": true, "xl": { "value": "32px", "ref": "32" } }
       }
     }
   },
-  "hide": {
-    "$res": true,
-    "xl": false
-  },
+  "hide": { "$res": true, "xl": false },
   "Component": [
     {
-      "_id": "a2c9ae70-f8ff-46ab-af71-d8370a2a00a2",
+      "_id": "089bb528-91a3-4265-aa75-ff81b5e55912",
       "_template": "$GridCard",
-      "traceId": "$GridCard-db33034b",
+      "traceId": "$GridCard-cb6227aa",
       "Cards": [
         {
-          "_id": "ac8afe38-7a8c-4fcb-a125-be28c0fcbc3d",
+          "_id": "0f61eed7-729e-4c45-b071-b59f9eb6a9c1",
           "_template": "$BannerCard2",
-          "traceId": "$BannerCard2-3a53a69f",
+          "traceId": "$BannerCard2-aac2858e",
           "_itemProps": {
             "$GridCard": {
               "Cards": {
-                "itemSize": {
-                  "$res": true,
-                  "xl": "2x2"
-                },
-                "verticalAlign": {
-                  "$res": true,
-                  "xl": "auto"
-                }
+                "itemSize": { "$res": true, "xl": "2x2" },
+                "verticalAlign": { "$res": true, "xl": "auto" }
               }
             }
           },
-          "cornerRadius": {
-            "$res": true,
-            "xl": "0"
-          },
-          "borderWidth": {
-            "$res": true,
-            "xl": "0"
-          },
+          "cornerRadius": { "$res": true, "xl": "0" },
+          "borderWidth": { "$res": true, "xl": "0" },
           "borderColor": {
             "$res": true,
-            "xl": {
-              "value": "black",
-              "ref": "$dark"
-            }
+            "xl": { "value": "black", "ref": "grey_05" }
           },
-          "borderTop": {
-            "$res": true,
-            "xl": "1"
-          },
-          "borderBottom": {
-            "$res": true,
-            "xl": "1"
-          },
-          "borderLeft": {
-            "$res": true,
-            "xl": "1"
-          },
-          "borderRight": {
-            "$res": true,
-            "xl": "1"
-          },
+          "borderTop": { "$res": true, "xl": "1" },
+          "borderBottom": { "$res": true, "xl": "1" },
+          "borderLeft": { "$res": true, "xl": "1" },
+          "borderRight": { "$res": true, "xl": "1" },
           "boxShadow": {
             "$res": true,
-            "xl": {
-              "value": "none",
-              "ref": "none"
-            }
+            "xl": { "value": "none", "ref": "none" }
           },
           "Card1": [
             {
-              "_id": "6c24d447-2ad9-4487-af53-5bbd67c620d4",
+              "_id": "18378815-931b-4424-a533-c7bb0c6023a4",
               "_template": "$BasicCard",
-              "traceId": "$BasicCard-8b2507c4",
+              "traceId": "$BasicCard-df1b005d",
               "size": {
                 "$res": true,
-                "xl": {
-                  "ref": "portrait",
-                  "value": "4:5"
-                }
+                "xl": { "value": "4:5", "ref": "portrait" }
               },
               "Background": [
                 {
-                  "_id": "a07a9d29-b6d2-49a9-9e5c-e8139e4e8468",
+                  "_id": "2b7b2c1a-829c-466d-b7f1-2f3da2fbe741",
                   "_template": "$image",
-                  "traceId": "$image-6de856f4",
-                  "_itemProps": {
-                    "$BasicCard": {
-                      "Background": {}
-                    }
-                  },
+                  "traceId": "$image-67a95825",
+                  "_itemProps": { "$BasicCard": { "Background": {} } },
                   "image": {
                     "$res": true,
                     "xl": {
@@ -117,171 +65,102 @@
                       "widgetId": "mockImage"
                     }
                   },
-                  "aspectRatio": {
-                    "$res": true,
-                    "xl": {
-                      "value": "1:1"
-                    }
-                  },
+                  "aspectRatio": { "$res": true, "xl": { "value": "1:1" } },
                   "action": []
                 }
               ],
-              "borderWidth": {
-                "$res": true,
-                "xl": "0"
-              },
+              "borderWidth": { "$res": true, "xl": "0" },
               "borderColor": {
                 "$res": true,
-                "xl": {
-                  "value": "black",
-                  "ref": "$dark"
-                }
+                "xl": { "value": "black", "ref": "grey_05" }
               },
-              "borderTop": {
-                "$res": true,
-                "xl": "1"
-              },
-              "borderBottom": {
-                "$res": true,
-                "xl": "1"
-              },
-              "borderLeft": {
-                "$res": true,
-                "xl": "1"
-              },
-              "borderRight": {
-                "$res": true,
-                "xl": "1"
-              },
+              "borderTop": { "$res": true, "xl": "1" },
+              "borderBottom": { "$res": true, "xl": "1" },
+              "borderLeft": { "$res": true, "xl": "1" },
+              "borderRight": { "$res": true, "xl": "1" },
               "boxShadow": {
                 "$res": true,
-                "xl": {
-                  "value": "none",
-                  "ref": "none"
-                }
+                "xl": { "value": "none", "ref": "none" }
               },
-              "cornerRadius": {
-                "$res": true,
-                "xl": "0"
-              },
+              "cornerRadius": { "$res": true, "xl": "0" },
               "enableContent": true,
-              "position": {
-                "$res": true,
-                "xl": "top-right"
-              },
+              "position": { "$res": true, "xl": "top-right" },
               "paddingLeft": {
                 "$res": true,
-                "xl": {
-                  "value": "24px",
-                  "ref": "24"
-                }
+                "xl": { "value": "24px", "ref": "24" }
               },
               "paddingRight": {
                 "$res": true,
-                "xl": {
-                  "value": "24px",
-                  "ref": "24"
-                }
+                "xl": { "value": "24px", "ref": "24" }
               },
               "paddingTop": {
                 "$res": true,
-                "xl": {
-                  "value": "24px",
-                  "ref": "24"
-                }
+                "xl": { "value": "24px", "ref": "24" }
               },
               "paddingBottom": {
                 "$res": true,
-                "xl": {
-                  "value": "24px",
-                  "ref": "24"
-                }
+                "xl": { "value": "24px", "ref": "24" }
               },
               "paddingLeftExternal": {
                 "$res": true,
-                "xl": {
-                  "value": "0px",
-                  "ref": "0"
-                }
+                "xl": { "value": "0px", "ref": "0" }
               },
               "paddingRightExternal": {
                 "$res": true,
-                "xl": {
-                  "value": "0px",
-                  "ref": "0"
-                }
+                "xl": { "value": "0px", "ref": "0" }
               },
               "paddingTopExternal": {
                 "$res": true,
-                "xl": {
-                  "value": "0px",
-                  "ref": "0"
-                }
+                "xl": { "value": "0px", "ref": "0" }
               },
               "paddingBottomExternal": {
                 "$res": true,
-                "xl": {
-                  "value": "0px",
-                  "ref": "0"
-                }
+                "xl": { "value": "0px", "ref": "0" }
               },
-              "edgeMarginProtection": {
-                "$res": true,
-                "xl": true
-              },
+              "edgeMarginProtection": { "$res": true, "xl": true },
               "Stack": [
                 {
-                  "_id": "7d15f2d0-05b5-4ac7-9eb1-9552922e1a1a",
+                  "_id": "e6949dc7-9fdb-42ab-b7ee-b42cfd54e30d",
                   "_template": "$stack",
-                  "traceId": "$stack-e80e2caf",
+                  "traceId": "$stack-d6d4aec7",
                   "Items": [
                     {
-                      "_id": "d5ad72a8-fac3-4c50-8fef-8ee8892646af",
+                      "_id": "bfdc978d-381c-472a-8be6-96505f54f062",
                       "_template": "$richText",
-                      "traceId": "$richText-440e8934",
+                      "traceId": "$richText-ee83d62d",
                       "_itemProps": {
                         "$stack": {
                           "Items": {
-                            "width": {
-                              "$res": true,
-                              "xl": "224px"
-                            },
+                            "width": { "$res": true, "xl": "224px" },
                             "marginBottom": {
                               "$res": true,
-                              "xl": {
-                                "ref": "12",
-                                "value": "12px"
-                              }
+                              "xl": { "value": "12px", "ref": "12" }
                             },
-                            "align": {
-                              "$res": true,
-                              "xl": "left"
-                            }
+                            "align": { "$res": true, "xl": "left" }
                           }
                         }
                       },
                       "elements": {
                         "en-US": [
                           {
+                            "_id": "4fc64d57-408d-4b62-a4ef-85ba05d8dfbe",
                             "_template": "$richTextBlockElement",
+                            "traceId": "$richTextBlockElement-c0f78751",
+                            "type": "paragraph",
                             "elements": [
                               {
+                                "_id": "7d523415-a264-42d4-9cf5-82b353cf7796",
                                 "_template": "$richTextLineElement",
+                                "traceId": "$richTextLineElement-a7558ddd",
                                 "elements": [
                                   {
-                                    "_id": "a8e7ad68-a15f-4331-acb4-6552c429f399",
+                                    "_id": "f4c55653-59bc-4c89-89b3-d2f27d82892d",
                                     "_template": "$richTextPart",
-                                    "color": {
-                                      "$res": true,
-                                      "xl": {
-                                        "ref": "grey_05",
-                                        "value": "#252525"
-                                      }
-                                    },
+                                    "traceId": "$richTextPart-02420dd2",
+                                    "value": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
                                     "font": {
                                       "$res": true,
                                       "xl": {
-                                        "ref": "body2",
                                         "value": {
                                           "$res": true,
                                           "2xl": {
@@ -289,17 +168,21 @@
                                             "lineHeight": 1.8,
                                             "fontFamily": "test-soehne-mono"
                                           }
-                                        }
+                                        },
+                                        "ref": "body2"
                                       }
                                     },
-                                    "value": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                                    "color": {
+                                      "$res": true,
+                                      "xl": {
+                                        "value": "#252525",
+                                        "ref": "grey_05"
+                                      }
+                                    }
                                   }
-                                ],
-                                "_id": "76eb53bc-5578-4f4c-85bb-c921de123988"
+                                ]
                               }
-                            ],
-                            "type": "paragraph",
-                            "_id": "8dd69d6a-4756-4586-8d62-11099307e1ae"
+                            ]
                           }
                         ]
                       },
@@ -321,108 +204,65 @@
                       },
                       "mainColor": {
                         "$res": true,
-                        "xl": {
-                          "value": "#000000",
-                          "ref": "grey_05"
-                        }
+                        "xl": { "value": "#252525", "ref": "grey_05" }
                       }
                     },
                     {
-                      "_id": "1aecc464-2fc1-43f4-a50f-527a2b3daf93",
+                      "_id": "4c3c26ec-a6aa-43b3-9cb1-5b40e2959f4c",
                       "_template": "$buttons",
-                      "traceId": "$buttons-95bb9bac",
+                      "traceId": "$buttons-40090467",
                       "_itemProps": {
                         "$stack": {
                           "Items": {
-                            "width": {
-                              "$res": true,
-                              "xl": "224px"
-                            },
+                            "width": { "$res": true, "xl": "224px" },
                             "marginBottom": {
                               "$res": true,
-                              "xl": {
-                                "value": "0px",
-                                "ref": "0"
-                              }
+                              "xl": { "value": "0px", "ref": "0" }
                             },
-                            "align": {
-                              "$res": true,
-                              "xl": "left"
-                            }
+                            "align": { "$res": true, "xl": "left" }
                           }
                         }
                       },
                       "verticalLayout": false,
                       "gap": {
                         "$res": true,
-                        "xl": {
-                          "value": "12px",
-                          "ref": "12"
-                        }
+                        "xl": { "value": "12px", "ref": "12" }
                       },
                       "Buttons": [
                         {
-                          "_id": "f7e1ddec-d5c6-4edd-b3ce-54150c015519",
+                          "_id": "7fe0312d-00c9-430e-a97c-349387a247bf",
                           "_template": "$StandardButton",
                           "_master": "buttonDark",
-                          "traceId": "$StandardButton-610fb1b4",
-                          "_itemProps": {
-                            "$buttons": {
-                              "Buttons": {}
-                            }
-                          },
+                          "traceId": "$StandardButton-529b42d5",
+                          "_itemProps": { "$buttons": { "Buttons": {} } },
                           "Action": [],
                           "variant": "label",
                           "label": {
-                            "id": "local.1021a9da-9898-4f08-ab30-02a404afda29",
-                            "value": {
-                              "en-US": "Discover"
-                            }
+                            "id": "local.4059d805-cc3d-489f-9194-0152f04e6ac8",
+                            "value": { "en-US": "Discover" }
                           },
                           "icon": {
                             "value": "<svg viewBox=\"0 -960 960 960\"><path fill=\"currentColor\" d=\"m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z\"/></svg>"
                           },
                           "color": {
                             "$res": true,
-                            "xl": {
-                              "value": "black",
-                              "ref": "grey_05"
-                            }
+                            "xl": { "value": "#252525", "ref": "grey_05" }
                           },
-                          "minHeight": {
-                            "$res": true,
-                            "xl": "42"
-                          },
-                          "minWidth": {
-                            "$res": true,
-                            "xl": "100"
-                          },
+                          "minHeight": { "$res": true, "xl": "42" },
+                          "minWidth": { "$res": true, "xl": "100" },
                           "horizontalPadding": {
                             "$res": true,
-                            "xl": {
-                              "value": "16px",
-                              "ref": "16"
-                            }
+                            "xl": { "value": "16px", "ref": "16" }
                           },
                           "gap": {
                             "$res": true,
-                            "xl": {
-                              "value": "6px",
-                              "ref": "6"
-                            }
+                            "xl": { "value": "6px", "ref": "6" }
                           },
-                          "cornerMode": {
-                            "$res": true,
-                            "xl": "sharp"
-                          },
-                          "cornerRadius": {
-                            "$res": true,
-                            "xl": "12"
-                          },
+                          "cornerMode": { "$res": true, "xl": "sharp" },
+                          "cornerRadius": { "$res": true, "xl": "12" },
                           "font": {
                             "$res": true,
                             "xl": {
-                              "ref": "body2",
                               "value": {
                                 "$res": true,
                                 "2xl": {
@@ -430,44 +270,27 @@
                                   "lineHeight": 1.8,
                                   "fontFamily": "test-soehne-mono"
                                 }
-                              }
+                              },
+                              "ref": "body2"
                             }
                           },
                           "underline": "on-custom",
-                          "underlineOffset": {
-                            "$res": true,
-                            "xl": "4"
-                          },
-                          "iconSize": {
-                            "$res": true,
-                            "xl": "24"
-                          },
+                          "underlineOffset": { "$res": true, "xl": "4" },
+                          "iconSize": { "$res": true, "xl": "24" },
                           "hasBackground": false,
                           "backgroundColor": {
                             "$res": true,
-                            "xl": {
-                              "value": "#F2F2F2",
-                              "ref": "light-grey"
-                            }
+                            "xl": { "value": "#F2F2F2", "ref": "light-grey" }
                           },
                           "hasBorder": false,
-                          "borderWidth": {
-                            "$res": true,
-                            "xl": "1"
-                          },
+                          "borderWidth": { "$res": true, "xl": "1" },
                           "borderColor": {
                             "$res": true,
-                            "xl": {
-                              "value": "black",
-                              "ref": "$dark"
-                            }
+                            "xl": { "value": "black", "ref": "grey_05" }
                           },
                           "boxShadow": {
                             "$res": true,
-                            "xl": {
-                              "value": "none",
-                              "ref": "none"
-                            }
+                            "xl": { "value": "none", "ref": "none" }
                           }
                         }
                       ]
@@ -479,189 +302,115 @@
           ],
           "Card2": [
             {
-              "_id": "c781b6d2-5a97-4283-b877-d8721ca11976",
+              "_id": "97e333af-52d5-4aa4-844b-9c65aa0f5b2c",
               "_template": "$BasicCardBackground",
-              "traceId": "$BasicCardBackground-8fa53505",
-              "size": {
-                "$res": true,
-                "xl": {
-                  "value": "1:1"
+              "traceId": "$BasicCardBackground-0f47b909",
+              "size": { "$res": true, "xl": { "value": "fit-background" } },
+              "Background": [
+                {
+                  "_id": "eba8fd55-84cc-45fd-b5b1-152d3b90232e",
+                  "_template": "$image",
+                  "traceId": "$image-84507d72",
+                  "_itemProps": {
+                    "$BasicCardBackground": { "Background": {} }
+                  },
+                  "image": {
+                    "$res": true,
+                    "xl": { "id": null, "widgetId": "mockImage" }
+                  },
+                  "aspectRatio": { "$res": true, "xl": { "value": "1:1" } },
+                  "action": []
                 }
-              },
-              "Background": [],
-              "borderWidth": {
-                "$res": true,
-                "xl": "0"
-              },
+              ],
+              "borderWidth": { "$res": true, "xl": "0" },
               "borderColor": {
                 "$res": true,
-                "xl": {
-                  "value": "black",
-                  "ref": "$dark"
-                }
+                "xl": { "value": "black", "ref": "grey_05" }
               },
-              "borderTop": {
-                "$res": true,
-                "xl": "1"
-              },
-              "borderBottom": {
-                "$res": true,
-                "xl": "1"
-              },
-              "borderLeft": {
-                "$res": true,
-                "xl": "1"
-              },
-              "borderRight": {
-                "$res": true,
-                "xl": "1"
-              },
+              "borderTop": { "$res": true, "xl": "1" },
+              "borderBottom": { "$res": true, "xl": "1" },
+              "borderLeft": { "$res": true, "xl": "1" },
+              "borderRight": { "$res": true, "xl": "1" },
               "boxShadow": {
                 "$res": true,
-                "xl": {
-                  "value": "none",
-                  "ref": "none"
-                }
+                "xl": { "value": "none", "ref": "none" }
               },
-              "cornerRadius": {
-                "$res": true,
-                "xl": "0"
-              },
+              "cornerRadius": { "$res": true, "xl": "0" },
               "enableContent": true,
-              "position": {
-                "$res": true,
-                "xl": "top-left"
-              },
+              "position": { "$res": true, "xl": "top-left" },
               "paddingLeft": {
                 "$res": true,
-                "xl": {
-                  "value": "24px",
-                  "ref": "24"
-                }
+                "xl": { "value": "24px", "ref": "24" }
               },
               "paddingRight": {
                 "$res": true,
-                "xl": {
-                  "value": "24px",
-                  "ref": "24"
-                }
+                "xl": { "value": "24px", "ref": "24" }
               },
               "paddingTop": {
                 "$res": true,
-                "xl": {
-                  "value": "24px",
-                  "ref": "24"
-                }
+                "xl": { "value": "24px", "ref": "24" }
               },
               "paddingBottom": {
                 "$res": true,
-                "xl": {
-                  "value": "24px",
-                  "ref": "24"
-                }
+                "xl": { "value": "24px", "ref": "24" }
               },
               "paddingLeftExternal": {
                 "$res": true,
-                "xl": {
-                  "value": "0px",
-                  "ref": "0"
-                }
+                "xl": { "value": "0px", "ref": "0" }
               },
               "paddingRightExternal": {
                 "$res": true,
-                "xl": {
-                  "value": "0px",
-                  "ref": "0"
-                }
+                "xl": { "value": "0px", "ref": "0" }
               },
               "paddingTopExternal": {
                 "$res": true,
-                "xl": {
-                  "value": "0px",
-                  "ref": "0"
-                }
+                "xl": { "value": "0px", "ref": "0" }
               },
               "paddingBottomExternal": {
                 "$res": true,
-                "xl": {
-                  "value": "0px",
-                  "ref": "0"
-                }
+                "xl": { "value": "0px", "ref": "0" }
               },
-              "edgeMarginProtection": {
-                "$res": true,
-                "xl": true
-              },
+              "edgeMarginProtection": { "$res": true, "xl": true },
               "Stack": [
                 {
-                  "_id": "756df2ca-3452-480a-9c0e-a05cea4a2ea3",
+                  "_id": "5bd513f0-e605-4fd2-8f5d-65246ed41111",
                   "_template": "$stack",
-                  "traceId": "$stack-ac1b224a",
+                  "traceId": "$stack-067011b9",
                   "Items": []
                 }
               ]
             }
           ],
-          "mode": {
-            "$res": true,
-            "xl": "none"
-          },
-          "sideModeWidth": {
-            "$res": true,
-            "xl": "50%"
-          },
-          "backgroundModePosition": {
-            "$res": true,
-            "xl": "top-left"
-          },
+          "mode": { "$res": true, "xl": "none" },
+          "sideModeWidth": { "$res": true, "xl": "50%" },
+          "backgroundModePosition": { "$res": true, "xl": "top-left" },
           "backgroundModePaddingLeft": {
             "$res": true,
-            "xl": {
-              "value": "24px",
-              "ref": "24"
-            }
+            "xl": { "value": "24px", "ref": "24" }
           },
           "backgroundModePaddingRight": {
             "$res": true,
-            "xl": {
-              "value": "24px",
-              "ref": "24"
-            }
+            "xl": { "value": "24px", "ref": "24" }
           },
           "backgroundModePaddingTop": {
             "$res": true,
-            "xl": {
-              "value": "24px",
-              "ref": "24"
-            }
+            "xl": { "value": "24px", "ref": "24" }
           },
           "backgroundModePaddingBottom": {
             "$res": true,
-            "xl": {
-              "value": "24px",
-              "ref": "24"
-            }
+            "xl": { "value": "24px", "ref": "24" }
           },
-          "backgroundModeEdgeMarginProtection": {
-            "$res": true,
-            "xl": true
-          }
+          "backgroundModeEdgeMarginProtection": { "$res": true, "xl": true }
         },
         {
-          "_id": "80d0d774-92ee-4283-81a0-924e9aa2dbe6",
+          "_id": "0bdd6dcc-b082-4e60-a41a-b36524b5d25f",
           "_template": "ProductCard",
-          "traceId": "ProductCard-dff0111d",
+          "traceId": "ProductCard-fc5eab46",
           "_itemProps": {
             "$GridCard": {
               "Cards": {
-                "itemSize": {
-                  "$res": true,
-                  "xl": "1x1"
-                },
-                "verticalAlign": {
-                  "$res": true,
-                  "xl": "auto"
-                }
+                "itemSize": { "$res": true, "xl": "1x1" },
+                "verticalAlign": { "$res": true, "xl": "auto" }
               }
             }
           },
@@ -673,20 +422,14 @@
           "withBackdrop": false
         },
         {
-          "_id": "28dbe6db-79c8-4ec4-9c15-a201ae64935f",
+          "_id": "a6382fd3-a07a-4006-984d-7b9ecc7d47e2",
           "_template": "ProductCard",
-          "traceId": "ProductCard-53d8d537",
+          "traceId": "ProductCard-f2c87911",
           "_itemProps": {
             "$GridCard": {
               "Cards": {
-                "itemSize": {
-                  "$res": true,
-                  "xl": "1x1"
-                },
-                "verticalAlign": {
-                  "$res": true,
-                  "xl": "auto"
-                }
+                "itemSize": { "$res": true, "xl": "1x1" },
+                "verticalAlign": { "$res": true, "xl": "auto" }
               }
             }
           },
@@ -698,20 +441,14 @@
           "withBackdrop": false
         },
         {
-          "_id": "b1824226-42f5-43bc-afde-d2632cd8627f",
+          "_id": "7b9885c7-38c2-4c63-bd9a-92ef1a1e11e3",
           "_template": "ProductCard",
-          "traceId": "ProductCard-20aeecb6",
+          "traceId": "ProductCard-60b62a77",
           "_itemProps": {
             "$GridCard": {
               "Cards": {
-                "itemSize": {
-                  "$res": true,
-                  "xl": "1x1"
-                },
-                "verticalAlign": {
-                  "$res": true,
-                  "xl": "auto"
-                }
+                "itemSize": { "$res": true, "xl": "1x1" },
+                "verticalAlign": { "$res": true, "xl": "auto" }
               }
             }
           },
@@ -723,20 +460,14 @@
           "withBackdrop": false
         },
         {
-          "_id": "6e6a6c56-258d-4d6e-aa65-dc7f7cd04b68",
+          "_id": "0e96e2aa-8026-4e8e-8484-1cdf8575436b",
           "_template": "ProductCard",
-          "traceId": "ProductCard-50b0b30e",
+          "traceId": "ProductCard-535d4ca9",
           "_itemProps": {
             "$GridCard": {
               "Cards": {
-                "itemSize": {
-                  "$res": true,
-                  "xl": "1x1"
-                },
-                "verticalAlign": {
-                  "$res": true,
-                  "xl": "auto"
-                }
+                "itemSize": { "$res": true, "xl": "1x1" },
+                "verticalAlign": { "$res": true, "xl": "auto" }
               }
             }
           },
@@ -748,125 +479,44 @@
           "withBackdrop": false
         }
       ],
-      "variant": {
-        "$res": true,
-        "xl": "grid"
-      },
-      "numberOfItems": {
-        "$res": true,
-        "xl": "4"
-      },
-      "fractionalItemWidth": {
-        "$res": true,
-        "xl": "1.25"
-      },
-      "columnGap": {
-        "$res": true,
-        "xl": {
-          "value": "0px",
-          "ref": "0"
-        }
-      },
-      "rowGap": {
-        "$res": true,
-        "xl": {
-          "value": "16px",
-          "ref": "16"
-        }
-      },
-      "verticalAlign": {
-        "$res": true,
-        "xl": "top"
-      },
-      "showSliderControls": {
-        "$res": true,
-        "xl": false
-      },
-      "shouldSliderItemsBeVisibleOnMargin": {
-        "$res": true,
-        "xl": true
-      },
+      "variant": { "$res": true, "xl": "grid" },
+      "numberOfItems": { "$res": true, "xl": "4" },
+      "fractionalItemWidth": { "$res": true, "xl": "1.25" },
+      "columnGap": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
+      "rowGap": { "$res": true, "xl": { "value": "16px", "ref": "16" } },
+      "verticalAlign": { "$res": true, "xl": "top" },
+      "showSliderControls": { "$res": true, "xl": false },
+      "shouldSliderItemsBeVisibleOnMargin": { "$res": true, "xl": true },
       "gridMainObjectAspectRatio": {
         "$res": true,
-        "xl": {
-          "value": "4:5",
-          "ref": "$gridMainObjectDefault"
-        }
+        "xl": { "value": "4:5", "ref": "$gridMainObjectDefault" }
       },
       "borderEnabled": false,
       "borderColor": {
         "$res": true,
-        "xl": {
-          "value": "black",
-          "ref": "$dark"
-        }
+        "xl": { "value": "black", "ref": "grey_05" }
       },
-      "borderTop": {
-        "$res": true,
-        "xl": "1"
-      },
-      "borderBottom": {
-        "$res": true,
-        "xl": "1"
-      },
-      "borderLeft": {
-        "$res": true,
-        "xl": "1"
-      },
-      "borderRight": {
-        "$res": true,
-        "xl": "1"
-      },
-      "borderInner": {
-        "$res": true,
-        "xl": "1"
-      },
-      "paddingTop": {
-        "$res": true,
-        "xl": {
-          "value": "0px",
-          "ref": "0"
-        }
-      },
-      "paddingBottom": {
-        "$res": true,
-        "xl": {
-          "value": "0px",
-          "ref": "0"
-        }
-      },
-      "paddingLeft": {
-        "$res": true,
-        "xl": {
-          "value": "0px",
-          "ref": "0"
-        }
-      },
-      "paddingRight": {
-        "$res": true,
-        "xl": {
-          "value": "0px",
-          "ref": "0"
-        }
-      },
+      "borderTop": { "$res": true, "xl": "1" },
+      "borderBottom": { "$res": true, "xl": "1" },
+      "borderLeft": { "$res": true, "xl": "1" },
+      "borderRight": { "$res": true, "xl": "1" },
+      "borderInner": { "$res": true, "xl": "1" },
+      "paddingTop": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
+      "paddingBottom": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
+      "paddingLeft": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
+      "paddingRight": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
       "LeftArrow": [
         {
-          "_id": "4de697bf-f4b7-4e95-8782-cb17084312b8",
+          "_id": "e84009a2-6187-4982-ba76-e7901f70cbc2",
           "_template": "$StandardButton",
           "_master": "buttonDark",
-          "traceId": "$StandardButton-d715bc0c",
-          "_itemProps": {
-            "$GridCard": {
-              "LeftArrow": {}
-            }
-          },
+          "traceId": "$StandardButton-238ae2f0",
+          "_itemProps": { "$GridCard": { "LeftArrow": {} } },
           "Action": [],
           "variant": "icon",
           "label": {
-            "id": "local.ca83b167-0687-4385-824b-03fb838d91bb",
-            "value": {
-              "en-US": "Click me"
-            }
+            "id": "local.4cae7dc5-f738-419b-8aa8-17c9e37cc027",
+            "value": { "en-US": "Click me" }
           },
           "icon": {
             "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"red\" width=\"100px\" height=\"100px\"><path d=\"M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z\"/></svg>",
@@ -874,41 +524,17 @@
           },
           "color": {
             "$res": true,
-            "xl": {
-              "value": "black",
-              "ref": "grey_05"
-            }
+            "xl": { "value": "#252525", "ref": "grey_05" }
           },
-          "minHeight": {
-            "$res": true,
-            "xl": "42"
-          },
-          "minWidth": {
-            "$res": true,
-            "xl": "100"
-          },
+          "minHeight": { "$res": true, "xl": "42" },
+          "minWidth": { "$res": true, "xl": "100" },
           "horizontalPadding": {
             "$res": true,
-            "xl": {
-              "value": "16px",
-              "ref": "16"
-            }
+            "xl": { "value": "16px", "ref": "16" }
           },
-          "gap": {
-            "$res": true,
-            "xl": {
-              "value": "6px",
-              "ref": "6"
-            }
-          },
-          "cornerMode": {
-            "$res": true,
-            "xl": "circled"
-          },
-          "cornerRadius": {
-            "$res": true,
-            "xl": "12"
-          },
+          "gap": { "$res": true, "xl": { "value": "6px", "ref": "6" } },
+          "cornerMode": { "$res": true, "xl": "circled" },
+          "cornerRadius": { "$res": true, "xl": "12" },
           "font": {
             "$res": true,
             "xl": {
@@ -925,72 +551,39 @@
             }
           },
           "underline": "off",
-          "underlineOffset": {
-            "$res": true,
-            "xl": "1"
-          },
-          "iconSize": {
-            "$res": true,
-            "xl": "24"
-          },
+          "underlineOffset": { "$res": true, "xl": "1" },
+          "iconSize": { "$res": true, "xl": "24" },
           "hasBackground": true,
           "backgroundColor": {
             "$res": true,
-            "xl": {
-              "value": "#D8D8D880",
-              "ref": "transparent-grey-light"
-            }
+            "xl": { "value": "#D8D8D880", "ref": "transparent-grey-light" }
           },
           "hasBorder": false,
-          "borderWidth": {
-            "$res": true,
-            "xl": "1"
-          },
+          "borderWidth": { "$res": true, "xl": "1" },
           "borderColor": {
             "$res": true,
-            "xl": {
-              "value": "black",
-              "ref": "$dark"
-            }
+            "xl": { "value": "black", "ref": "grey_05" }
           },
           "boxShadow": {
             "$res": true,
-            "xl": {
-              "value": "none",
-              "ref": "none"
-            }
+            "xl": { "value": "none", "ref": "none" }
           }
         }
       ],
-      "leftArrowPlacement": {
-        "$res": true,
-        "xl": "center"
-      },
-      "leftArrowOffset": {
-        "$res": true,
-        "xl": {
-          "value": "0px",
-          "ref": "0"
-        }
-      },
+      "leftArrowPlacement": { "$res": true, "xl": "center" },
+      "leftArrowOffset": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
       "RightArrow": [
         {
-          "_id": "bf7bc485-7f38-4607-a778-1793afc55d94",
+          "_id": "746c54db-ba25-4250-ae35-7eeccc94abb8",
           "_template": "$StandardButton",
           "_master": "buttonDark",
-          "traceId": "$StandardButton-1b050d61",
-          "_itemProps": {
-            "$GridCard": {
-              "RightArrow": {}
-            }
-          },
+          "traceId": "$StandardButton-1e833287",
+          "_itemProps": { "$GridCard": { "RightArrow": {} } },
           "Action": [],
           "variant": "icon",
           "label": {
-            "id": "local.4698e12d-5ccc-48bb-a54e-e0c137eac4ff",
-            "value": {
-              "en-US": "Click me"
-            }
+            "id": "local.28e149bb-b093-47f9-8164-7105c53ec9d5",
+            "value": { "en-US": "Click me" }
           },
           "icon": {
             "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z\"/></svg>",
@@ -998,41 +591,17 @@
           },
           "color": {
             "$res": true,
-            "xl": {
-              "value": "black",
-              "ref": "grey_05"
-            }
+            "xl": { "value": "#252525", "ref": "grey_05" }
           },
-          "minHeight": {
-            "$res": true,
-            "xl": "42"
-          },
-          "minWidth": {
-            "$res": true,
-            "xl": "100"
-          },
+          "minHeight": { "$res": true, "xl": "42" },
+          "minWidth": { "$res": true, "xl": "100" },
           "horizontalPadding": {
             "$res": true,
-            "xl": {
-              "value": "16px",
-              "ref": "16"
-            }
+            "xl": { "value": "16px", "ref": "16" }
           },
-          "gap": {
-            "$res": true,
-            "xl": {
-              "value": "6px",
-              "ref": "6"
-            }
-          },
-          "cornerMode": {
-            "$res": true,
-            "xl": "circled"
-          },
-          "cornerRadius": {
-            "$res": true,
-            "xl": "12"
-          },
+          "gap": { "$res": true, "xl": { "value": "6px", "ref": "6" } },
+          "cornerMode": { "$res": true, "xl": "circled" },
+          "cornerRadius": { "$res": true, "xl": "12" },
           "font": {
             "$res": true,
             "xl": {
@@ -1049,174 +618,111 @@
             }
           },
           "underline": "off",
-          "underlineOffset": {
-            "$res": true,
-            "xl": "1"
-          },
-          "iconSize": {
-            "$res": true,
-            "xl": "24"
-          },
+          "underlineOffset": { "$res": true, "xl": "1" },
+          "iconSize": { "$res": true, "xl": "24" },
           "hasBackground": true,
           "backgroundColor": {
             "$res": true,
-            "xl": {
-              "value": "#D8D8D880",
-              "ref": "transparent-grey-light"
-            }
+            "xl": { "value": "#D8D8D880", "ref": "transparent-grey-light" }
           },
           "hasBorder": false,
-          "borderWidth": {
-            "$res": true,
-            "xl": "1"
-          },
+          "borderWidth": { "$res": true, "xl": "1" },
           "borderColor": {
             "$res": true,
-            "xl": {
-              "value": "black",
-              "ref": "$dark"
-            }
+            "xl": { "value": "black", "ref": "grey_05" }
           },
           "boxShadow": {
             "$res": true,
-            "xl": {
-              "value": "none",
-              "ref": "none"
-            }
+            "xl": { "value": "none", "ref": "none" }
           }
         }
       ],
-      "rightArrowPlacement": {
-        "$res": true,
-        "xl": "center"
-      },
-      "rightArrowOffset": {
-        "$res": true,
-        "xl": {
-          "value": "0px",
-          "ref": "0"
-        }
-      }
+      "rightArrowPlacement": { "$res": true, "xl": "center" },
+      "rightArrowOffset": { "$res": true, "xl": { "value": "0px", "ref": "0" } }
     }
   ],
   "containerMargin": {
     "$res": true,
     "xl": {
-      "value": {
-        "$res": true,
-        "xl": "5vw"
-      },
+      "value": { "$res": true, "xl": "5vw" },
       "ref": "containerMargin.default"
     }
   },
   "containerMaxWidth": {
     "$res": true,
-    "xl": {
-      "value": "none",
-      "ref": "none"
-    }
+    "xl": { "value": "none", "ref": "none" }
   },
-  "escapeMargin": {
-    "$res": true,
-    "xl": true
-  },
+  "escapeMargin": { "$res": true, "xl": true },
   "headerMode": "1-stack",
   "layout1Stack": "center",
-  "layout2Stacks": {
-    "$res": true,
-    "xl": "left-right"
-  },
-  "layout2StacksVerticalAlign": {
-    "$res": true,
-    "xl": "center"
-  },
-  "headerStacksGap": {
-    "$res": true,
-    "xl": {
-      "value": "12px",
-      "ref": "12"
-    }
-  },
-  "headerSectionGap": {
-    "$res": true,
-    "xl": {
-      "ref": "32",
-      "value": "32px"
-    }
-  },
-  "footerSectionGap": {
-    "$res": true,
-    "xl": {
-      "value": "12px",
-      "ref": "12"
-    }
-  },
+  "layout2Stacks": { "$res": true, "xl": "left-right" },
+  "layout2StacksVerticalAlign": { "$res": true, "xl": "center" },
+  "headerStacksGap": { "$res": true, "xl": { "value": "12px", "ref": "12" } },
+  "headerSectionGap": { "$res": true, "xl": { "value": "32px", "ref": "32" } },
+  "footerSectionGap": { "$res": true, "xl": { "value": "12px", "ref": "12" } },
   "HeaderStack": [
     {
-      "_id": "9f932e6a-3e0d-47af-9017-87e2154b18b0",
+      "_id": "9e63141c-1702-4314-9128-519397f8c8a5",
       "_template": "$stack",
-      "traceId": "$stack-4b76e6cc",
+      "traceId": "$stack-599a4568",
       "Items": [
         {
-          "_id": "e3a9f7ff-e4a6-4396-ae0b-4f1eaafb694a",
+          "_id": "044ac5dc-716f-4bb5-a3f2-d6bbc7ad6531",
           "_template": "$richText",
-          "traceId": "$richText-c758ffd6",
+          "traceId": "$richText-931f951f",
           "_itemProps": {
             "$stack": {
               "Items": {
-                "width": {
-                  "$res": true,
-                  "xl": "512px"
-                },
+                "width": { "$res": true, "xl": "512px" },
                 "marginBottom": {
                   "$res": true,
-                  "xl": {
-                    "value": "0px",
-                    "ref": "0"
-                  }
+                  "xl": { "value": "0px", "ref": "0" }
                 },
-                "align": {
-                  "$res": true,
-                  "xl": "left"
-                }
+                "align": { "$res": true, "xl": "left" }
               }
             }
           },
           "elements": {
             "en-US": [
               {
+                "_id": "4bea1f5f-5451-4ece-82ce-a3fd91f8d93b",
                 "_template": "$richTextBlockElement",
+                "traceId": "$richTextBlockElement-76e06a30",
+                "type": "paragraph",
                 "elements": [
                   {
+                    "_id": "bc8dab92-5784-4172-a524-4868eb9faaea",
                     "_template": "$richTextLineElement",
+                    "traceId": "$richTextLineElement-a9cf1708",
                     "elements": [
                       {
-                        "_id": "5a8d5d7c-c25f-4c64-9763-854fa1e6175d",
+                        "_id": "2c5e9f5f-036e-46c7-a428-a847258dc0f0",
                         "_template": "$richTextPart",
-                        "color": {
-                          "ref": "black",
-                          "value": "black"
-                        },
+                        "traceId": "$richTextPart-37d2b564",
+                        "value": "Teidi shelving unit",
                         "font": {
-                          "ref": "heading3",
-                          "value": {
-                            "$res": true,
-                            "2xl": {
-                              "fontFamily": "test-national-2",
-                              "fontSize": 21,
-                              "lineHeight": 1.4,
-                              "fontWeight": 600
-                            }
+                          "$res": true,
+                          "xl": {
+                            "value": {
+                              "$res": true,
+                              "2xl": {
+                                "fontFamily": "test-national-2",
+                                "fontSize": 21,
+                                "lineHeight": 1.4,
+                                "fontWeight": 600
+                              }
+                            },
+                            "ref": "heading3"
                           }
                         },
-                        "value": "Teidi shelving unit"
+                        "color": {
+                          "$res": true,
+                          "xl": { "value": "#000000", "ref": "black" }
+                        }
                       }
-                    ],
-                    "_id": "9dce6e34-ce5a-4be2-a565-6e34dd37fac9"
+                    ]
                   }
-                ],
-                "type": "paragraph",
-                "_id": "c408d824-c583-4efa-94b6-37b535593d35"
+                ]
               }
             ]
           },
@@ -1238,10 +744,7 @@
           },
           "mainColor": {
             "$res": true,
-            "xl": {
-              "value": "#000000",
-              "ref": "grey_05"
-            }
+            "xl": { "value": "#252525", "ref": "grey_05" }
           }
         }
       ]
@@ -1249,18 +752,12 @@
   ],
   "HeaderSecondaryStack": [
     {
-      "_id": "19bf688c-bced-4de1-83d9-ec293e2ac144",
+      "_id": "595fc800-78d6-4d28-b775-783dc21d0d72",
       "_template": "$stack",
-      "traceId": "$stack-087e7047",
+      "traceId": "$stack-d3907ce7",
       "Items": []
     }
   ],
   "Background__": [],
-  "padding": {
-    "$res": true,
-    "xl": {
-      "value": "24px",
-      "ref": "24"
-    }
-  }
+  "padding": { "$res": true, "xl": { "value": "24px", "ref": "24" } }
 }

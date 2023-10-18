@@ -1,7 +1,7 @@
 {
-  "_id": "69549e50-412d-4cc9-8aad-96d1523faa41",
+  "_id": "0711d8f5-b9c9-4032-b08d-d364bc7557c9",
   "_template": "$TwoCards",
-  "traceId": "$TwoCards-e8681597",
+  "traceId": "$TwoCards-620f9130",
   "_itemProps": {
     "$RootSections": {
       "data": {
@@ -13,8 +13,8 @@
   "containerMargin": {
     "$res": true,
     "xl": {
-      "ref": "containerMargin.default",
-      "value": { "$res": true, "xl": "5vw" }
+      "value": { "$res": true, "xl": "5vw" },
+      "ref": "containerMargin.default"
     }
   },
   "containerMaxWidth": {
@@ -32,25 +32,25 @@
   "footerSectionGap": { "$res": true, "xl": { "value": "12px", "ref": "12" } },
   "HeaderStack": [
     {
-      "_id": "f07380f3-948f-48da-bbc1-59d31eff6cd5",
+      "_id": "6c5bdc11-3e96-4d72-b817-ac6221aa9224",
       "_template": "$stack",
-      "traceId": "$stack-9d53af35",
+      "traceId": "$stack-64b420f1",
       "Items": []
     }
   ],
   "HeaderSecondaryStack": [
     {
-      "_id": "62029793-1c2d-4181-9770-0eb2dec7a167",
+      "_id": "0d5fc869-74e7-4aa0-97c7-97dcf5b6679b",
       "_template": "$stack",
-      "traceId": "$stack-2e7a8f6f",
+      "traceId": "$stack-e73acb0b",
       "Items": []
     }
   ],
   "Background__": [
     {
-      "_id": "57f4fb0d-7915-477d-9f69-95889b0b21d5",
+      "_id": "ef8da0d2-93d5-496a-bb6f-ae05700e1387",
       "_template": "$backgroundColor",
-      "traceId": "$backgroundColor-ab3c7c45",
+      "traceId": "$backgroundColor-2843b7e1",
       "_itemProps": { "$TwoCards": { "Background__": {} } },
       "color": { "$res": true, "xl": { "value": "#BFD1AC", "ref": "green" } }
     }
@@ -58,20 +58,20 @@
   "padding": { "$res": true, "xl": { "value": "48px", "ref": "48" } },
   "Component": [
     {
-      "_id": "58183555-81d9-432f-bf55-014329e2fb82",
+      "_id": "16ef0cbd-4235-4830-b3ee-c0735c598cf6",
       "_template": "$TwoCardsCard",
-      "traceId": "$TwoCardsCard-2949c0f1",
+      "traceId": "$TwoCardsCard-189473d6",
       "Card1": [
         {
-          "_id": "353c49a1-acbe-4711-9c19-6b92b37a37a9",
+          "_id": "70ff2d87-5dd0-456b-97cc-ce92b09d2c01",
           "_template": "$BannerCard2",
-          "traceId": "$BannerCard2-ec92ab2d",
+          "traceId": "$BannerCard2-6a50d5c9",
           "_itemProps": { "$TwoCardsCard": { "Card1": {} } },
           "cornerRadius": { "$res": true, "xl": "0" },
           "borderWidth": { "$res": true, "xl": "0" },
           "borderColor": {
             "$res": true,
-            "xl": { "value": "black", "ref": "$dark" }
+            "xl": { "value": "black", "ref": "grey_05" }
           },
           "borderTop": { "$res": true, "xl": "1" },
           "borderBottom": { "$res": true, "xl": "1" },
@@ -83,15 +83,15 @@
           },
           "Card1": [
             {
-              "_id": "79f602ab-4858-4137-be40-1951030f48ab",
+              "_id": "2146e58b-7cab-40b1-8ce2-625db275daac",
               "_template": "$BasicCard",
-              "traceId": "$BasicCard-b0edc4d4",
-              "size": { "$res": true, "xl": { "value": "1:1" } },
+              "traceId": "$BasicCard-b2c13607",
+              "size": { "$res": true, "xl": { "value": "fit-content" } },
               "Background": [],
               "borderWidth": { "$res": true, "xl": "0" },
               "borderColor": {
                 "$res": true,
-                "xl": { "value": "black", "ref": "$dark" }
+                "xl": { "value": "black", "ref": "grey_05" }
               },
               "borderTop": { "$res": true, "xl": "1" },
               "borderBottom": { "$res": true, "xl": "1" },
@@ -139,14 +139,14 @@
               "edgeMarginProtection": { "$res": true, "xl": true },
               "Stack": [
                 {
-                  "_id": "37e8505f-3f48-4cec-bc0d-d1e4a13b6e2e",
+                  "_id": "2ce0bf3a-7886-40e1-8680-7f842151f3a6",
                   "_template": "$stack",
-                  "traceId": "$stack-3aaf151f",
+                  "traceId": "$stack-92e89a2c",
                   "Items": [
                     {
-                      "_id": "51dc8e3a-210b-40a5-b3bd-ab2f712fec37",
+                      "_id": "06f622be-54a6-4877-b61e-a256f6905c14",
                       "_template": "$richText",
-                      "traceId": "$richText-f2ed1a22",
+                      "traceId": "$richText-fd8fcb96",
                       "_itemProps": {
                         "$stack": {
                           "Items": {
@@ -162,20 +162,20 @@
                       "elements": {
                         "en-US": [
                           {
-                            "_id": "322331ab-e886-443e-ad35-196e4dc40f8c",
+                            "_id": "930df0e2-53c0-4270-abda-a5a77ae36d79",
                             "_template": "$richTextBlockElement",
-                            "traceId": "$richTextBlockElement-811ab737",
+                            "traceId": "$richTextBlockElement-5a87f155",
                             "type": "paragraph",
                             "elements": [
                               {
-                                "_id": "4e0fdfe1-dfd9-4052-85b6-c1310e224f49",
+                                "_id": "f2b6c1e3-ccc1-457e-9d33-2d8ecdcdf8ad",
                                 "_template": "$richTextLineElement",
-                                "traceId": "$richTextLineElement-783e4e9a",
+                                "traceId": "$richTextLineElement-4fff18c9",
                                 "elements": [
                                   {
-                                    "_id": "67c2b1b2-8bb4-474b-b71d-cbce5123cdd2",
+                                    "_id": "87f68ae4-c5e8-442d-a952-866aa0446d49",
                                     "_template": "$richTextPart",
-                                    "traceId": "$richTextPart-65967ab9",
+                                    "traceId": "$richTextPart-c14c97d1",
                                     "value": "Kitchen stories",
                                     "font": {
                                       "$res": true,
@@ -223,13 +223,13 @@
                       },
                       "mainColor": {
                         "$res": true,
-                        "xl": { "value": "#000000", "ref": "grey_05" }
+                        "xl": { "value": "#252525", "ref": "grey_05" }
                       }
                     },
                     {
-                      "_id": "98e37a37-cdce-479c-9675-f4da9c493f75",
+                      "_id": "9b83108a-4804-4069-8e42-43e205716219",
                       "_template": "$richText",
-                      "traceId": "$richText-f89b7ecb",
+                      "traceId": "$richText-64ee6447",
                       "_itemProps": {
                         "$stack": {
                           "Items": {
@@ -245,20 +245,20 @@
                       "elements": {
                         "en-US": [
                           {
-                            "_id": "9737345b-a39c-404a-b2a1-d7811817e03e",
+                            "_id": "d2505f36-4645-4981-b646-3ddbbcd184f5",
                             "_template": "$richTextBlockElement",
-                            "traceId": "$richTextBlockElement-9226df8c",
+                            "traceId": "$richTextBlockElement-df49c783",
                             "type": "paragraph",
                             "elements": [
                               {
-                                "_id": "2be76e2d-4a8b-4b76-b6dc-0a01267fee1f",
+                                "_id": "47603894-5f64-49bb-9ad3-a75c4b2a57a6",
                                 "_template": "$richTextLineElement",
-                                "traceId": "$richTextLineElement-aa2cac8d",
+                                "traceId": "$richTextLineElement-fca02215",
                                 "elements": [
                                   {
-                                    "_id": "b235e90e-5f32-4267-92a5-dcf7c5106aa6",
+                                    "_id": "be9edcc2-4cc5-4581-b77c-bc05fe21e7db",
                                     "_template": "$richTextPart",
-                                    "traceId": "$richTextPart-eb9702a0",
+                                    "traceId": "$richTextPart-81c0a9f3",
                                     "value": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
                                     "font": {
                                       "$res": true,
@@ -306,20 +306,20 @@
                       },
                       "mainColor": {
                         "$res": true,
-                        "xl": { "value": "#000000", "ref": "grey_05" }
+                        "xl": { "value": "#252525", "ref": "grey_05" }
                       }
                     },
                     {
-                      "_id": "551705a3-6da9-45d9-a50b-ba9d5269ae60",
+                      "_id": "95ba119e-f885-4e41-b1ec-a5afa05ecca6",
                       "_template": "$buttons",
-                      "traceId": "$buttons-1a49d399",
+                      "traceId": "$buttons-1fbcee73",
                       "_itemProps": {
                         "$stack": {
                           "Items": {
                             "width": { "$res": true, "xl": "512px" },
                             "marginBottom": {
                               "$res": true,
-                              "xl": { "ref": "48", "value": "48px" }
+                              "xl": { "value": "48px", "ref": "48" }
                             },
                             "align": { "$res": true, "xl": "left" }
                           }
@@ -332,15 +332,15 @@
                       },
                       "Buttons": [
                         {
-                          "_id": "43e0537d-8500-475e-bdc3-829479630c61",
+                          "_id": "862f078a-6dd3-4f15-9cc4-f5bc454051dc",
                           "_template": "$StandardButton",
                           "_master": "buttonDark",
-                          "traceId": "$StandardButton-217e3fc9",
+                          "traceId": "$StandardButton-4c947f16",
                           "_itemProps": { "$buttons": { "Buttons": {} } },
                           "Action": [],
                           "variant": "label",
                           "label": {
-                            "id": "local.27dabc6a-1f2a-439c-8c2c-2436f9dd300a",
+                            "id": "local.b3599e7f-8671-4877-b3b4-5d54a4230320",
                             "value": { "en-US": "Learn more" }
                           },
                           "icon": {
@@ -388,7 +388,7 @@
                           "borderWidth": { "$res": true, "xl": "1" },
                           "borderColor": {
                             "$res": true,
-                            "xl": { "value": "black", "ref": "$dark" }
+                            "xl": { "value": "black", "ref": "grey_05" }
                           },
                           "boxShadow": {
                             "$res": true,
@@ -398,9 +398,9 @@
                       ]
                     },
                     {
-                      "_id": "31326812-8c4b-420a-a580-e537574f6f9d",
+                      "_id": "15582c49-5bfa-47e6-aab4-fc351e7f3bff",
                       "_template": "$image",
-                      "traceId": "$image-2d94bf93",
+                      "traceId": "$image-ea25a4ad",
                       "_itemProps": {
                         "$stack": {
                           "Items": {
@@ -433,24 +433,21 @@
           ],
           "Card2": [
             {
-              "_id": "9760e403-ad55-42ce-aa0a-de4cbe21ba19",
+              "_id": "e0b22253-15ae-472c-98fb-6676f9b747df",
               "_template": "$BasicCardBackground",
-              "traceId": "$BasicCardBackground-2a9ad93a",
+              "traceId": "$BasicCardBackground-42307969",
               "size": { "$res": true, "xl": { "value": "fit-background" } },
               "Background": [
                 {
-                  "_id": "c3f27c92-4308-4d71-982c-01f9309b81f8",
+                  "_id": "d4f721db-f75b-4d43-9a6a-08d95112c856",
                   "_template": "$image",
-                  "traceId": "$image-75ef5911",
+                  "traceId": "$image-6acc961a",
                   "_itemProps": {
                     "$BasicCardBackground": { "Background": {} }
                   },
                   "image": {
                     "$res": true,
-                    "xl": {
-                      "id": "b3h4SyrjadkmOzn1chdMo",
-                      "widgetId": "mockImage"
-                    }
+                    "xl": { "id": null, "widgetId": "mockImage" }
                   },
                   "aspectRatio": { "$res": true, "xl": { "value": "1:1" } },
                   "action": []
@@ -459,7 +456,7 @@
               "borderWidth": { "$res": true, "xl": "0" },
               "borderColor": {
                 "$res": true,
-                "xl": { "value": "black", "ref": "$dark" }
+                "xl": { "value": "black", "ref": "grey_05" }
               },
               "borderTop": { "$res": true, "xl": "1" },
               "borderBottom": { "$res": true, "xl": "1" },
@@ -507,9 +504,9 @@
               "edgeMarginProtection": { "$res": true, "xl": true },
               "Stack": [
                 {
-                  "_id": "8fad0abd-0b6f-4bd5-9572-eefe8a6f76ca",
+                  "_id": "ccab6ba8-8bd1-4a6e-a62f-ca87febdd14c",
                   "_template": "$stack",
-                  "traceId": "$stack-68feac47",
+                  "traceId": "$stack-8db7a6f2",
                   "Items": []
                 }
               ]
@@ -539,15 +536,15 @@
       ],
       "Card2": [
         {
-          "_id": "bdd48d6e-b185-4b87-b5bc-3808e652f158",
+          "_id": "a0ed28b5-263d-4c50-ac88-29197779334d",
           "_template": "$BannerCard2",
-          "traceId": "$BannerCard2-7629e650",
+          "traceId": "$BannerCard2-19b04c82",
           "_itemProps": { "$TwoCardsCard": { "Card2": {} } },
           "cornerRadius": { "$res": true, "xl": "0" },
           "borderWidth": { "$res": true, "xl": "0" },
           "borderColor": {
             "$res": true,
-            "xl": { "value": "black", "ref": "$dark" }
+            "xl": { "value": "black", "ref": "grey_05" }
           },
           "borderTop": { "$res": true, "xl": "1" },
           "borderBottom": { "$res": true, "xl": "1" },
@@ -559,15 +556,15 @@
           },
           "Card1": [
             {
-              "_id": "ab4d7a01-7bf0-4dec-a9c1-8f1d7b3b74ab",
+              "_id": "41916024-c901-4936-8aba-953eccfa1d60",
               "_template": "$BasicCard",
-              "traceId": "$BasicCard-25981eba",
+              "traceId": "$BasicCard-74e6e7a9",
               "size": { "$res": true, "xl": { "value": "fit-background" } },
               "Background": [
                 {
-                  "_id": "af525534-ca67-42b1-abd0-80054125769a",
+                  "_id": "c22f430e-d888-4bfe-9557-d43169e42afa",
                   "_template": "$image",
-                  "traceId": "$image-c561afda",
+                  "traceId": "$image-55ee27cc",
                   "_itemProps": { "$BasicCard": { "Background": {} } },
                   "image": {
                     "$res": true,
@@ -583,7 +580,7 @@
               "borderWidth": { "$res": true, "xl": "0" },
               "borderColor": {
                 "$res": true,
-                "xl": { "value": "black", "ref": "$dark" }
+                "xl": { "value": "black", "ref": "grey_05" }
               },
               "borderTop": { "$res": true, "xl": "1" },
               "borderBottom": { "$res": true, "xl": "1" },
@@ -631,9 +628,9 @@
               "edgeMarginProtection": { "$res": true, "xl": true },
               "Stack": [
                 {
-                  "_id": "4a3894ef-2930-4613-81b0-00330ec10b13",
+                  "_id": "e8b41be1-82b8-4070-99db-c932f1097274",
                   "_template": "$stack",
-                  "traceId": "$stack-2e83521c",
+                  "traceId": "$stack-f2ee7e0b",
                   "Items": []
                 }
               ]
@@ -641,15 +638,30 @@
           ],
           "Card2": [
             {
-              "_id": "fa70f49f-f3a8-48df-a75b-c2384e5ec0cb",
+              "_id": "cc494119-aa40-49c7-8239-3ff0db9c3ecc",
               "_template": "$BasicCardBackground",
-              "traceId": "$BasicCardBackground-a9f83943",
-              "size": { "$res": true, "xl": { "value": "1:1" } },
-              "Background": [],
+              "traceId": "$BasicCardBackground-47a94a20",
+              "size": { "$res": true, "xl": { "value": "fit-background" } },
+              "Background": [
+                {
+                  "_id": "e954ca64-d986-4490-b241-33fe2467f3e2",
+                  "_template": "$image",
+                  "traceId": "$image-0c23de68",
+                  "_itemProps": {
+                    "$BasicCardBackground": { "Background": {} }
+                  },
+                  "image": {
+                    "$res": true,
+                    "xl": { "id": null, "widgetId": "mockImage" }
+                  },
+                  "aspectRatio": { "$res": true, "xl": { "value": "1:1" } },
+                  "action": []
+                }
+              ],
               "borderWidth": { "$res": true, "xl": "0" },
               "borderColor": {
                 "$res": true,
-                "xl": { "value": "black", "ref": "$dark" }
+                "xl": { "value": "black", "ref": "grey_05" }
               },
               "borderTop": { "$res": true, "xl": "1" },
               "borderBottom": { "$res": true, "xl": "1" },
@@ -697,9 +709,9 @@
               "edgeMarginProtection": { "$res": true, "xl": true },
               "Stack": [
                 {
-                  "_id": "992d92b3-3fce-440c-952f-c2b3c69cb2c2",
+                  "_id": "2b96e8b8-2905-4152-92b4-f4d0d6620eac",
                   "_template": "$stack",
-                  "traceId": "$stack-344e354f",
+                  "traceId": "$stack-a585d523",
                   "Items": []
                 }
               ]
@@ -734,7 +746,7 @@
       "verticalLayout": { "$res": true, "xl": "align-top" },
       "verticalOffset": { "$res": true, "xl": "-4" },
       "collapse": { "$res": true, "xl": false },
-      "gap": { "$res": true, "xl": { "ref": "0", "value": "0px" } },
+      "gap": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
       "verticalGap": { "$res": true, "xl": { "value": "24px", "ref": "24" } },
       "invertCollapsed": false
     }

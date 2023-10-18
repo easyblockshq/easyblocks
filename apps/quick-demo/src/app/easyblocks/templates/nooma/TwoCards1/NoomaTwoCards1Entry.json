@@ -1,7 +1,7 @@
 {
-  "_id": "53cc88d3-9dce-47a0-8b9b-01c8bf19190b",
+  "_id": "a8338fd1-2f08-4253-a972-2a32e9011fa8",
   "_template": "$TwoCards",
-  "traceId": "$TwoCards-baea2ab0",
+  "traceId": "$TwoCards-0168d245",
   "_itemProps": {
     "$RootSections": {
       "data": {
@@ -26,46 +26,46 @@
   "footerSectionGap": { "$res": true, "xl": { "value": "12px", "ref": "12" } },
   "HeaderStack": [
     {
-      "_id": "ae116e07-de87-4857-8d9c-01d8e9bc0259",
+      "_id": "6043a0e8-ee65-454a-a6d9-a23dd612a3c6",
       "_template": "$stack",
-      "traceId": "$stack-d034b970",
+      "traceId": "$stack-7326261a",
       "Items": []
     }
   ],
   "HeaderSecondaryStack": [
     {
-      "_id": "4e22e451-4aa2-4061-b068-d3e92b7edc2c",
+      "_id": "ebc3db6e-65cb-45c0-a0e9-9040c36709e0",
       "_template": "$stack",
-      "traceId": "$stack-e68a37f8",
+      "traceId": "$stack-96e882f6",
       "Items": []
     }
   ],
   "Background__": [
     {
-      "_id": "11d0c0c8-0786-44b4-969e-10e0316c99ff",
+      "_id": "3dad7215-78e6-4602-9597-b9d183883b47",
       "_template": "$backgroundColor",
-      "traceId": "$backgroundColor-c8ff8a29",
+      "traceId": "$backgroundColor-f1668bd2",
       "_itemProps": { "$TwoCards": { "Background__": {} } },
-      "color": { "$res": true, "xl": { "ref": "yellow", "value": "#FCF0C5" } }
+      "color": { "$res": true, "xl": { "value": "#FCF0C5", "ref": "yellow" } }
     }
   ],
-  "padding": { "$res": true, "xl": { "ref": "48", "value": "48px" } },
+  "padding": { "$res": true, "xl": { "value": "48px", "ref": "48" } },
   "Component": [
     {
-      "_id": "78114641-8471-4f63-8dc3-e5a7bc2fcd8f",
+      "_id": "21e8a85b-9391-4fef-b690-2373ed11baf4",
       "_template": "$TwoCardsCard",
-      "traceId": "$TwoCardsCard-64aa7a69",
+      "traceId": "$TwoCardsCard-97534b7a",
       "Card1": [
         {
-          "_id": "e1249a08-d243-41a8-a2c9-362f1ad3b969",
+          "_id": "51abd0f1-ae5d-41f3-9d4b-5a5a9bf32815",
           "_template": "$BannerCard2",
-          "traceId": "$BannerCard2-2e7b96eb",
+          "traceId": "$BannerCard2-08f546c9",
           "_itemProps": { "$TwoCardsCard": { "Card1": {} } },
           "cornerRadius": { "$res": true, "xl": "0" },
           "borderWidth": { "$res": true, "xl": "0" },
           "borderColor": {
             "$res": true,
-            "xl": { "value": "black", "ref": "$dark" }
+            "xl": { "value": "black", "ref": "grey_05" }
           },
           "borderTop": { "$res": true, "xl": "1" },
           "borderBottom": { "$res": true, "xl": "1" },
@@ -77,15 +77,15 @@
           },
           "Card1": [
             {
-              "_id": "6ef81b6f-b403-489e-ab8a-304b713c283d",
+              "_id": "74b909a7-124a-408d-83ee-06358ce89723",
               "_template": "$BasicCard",
-              "traceId": "$BasicCard-d4ca135f",
+              "traceId": "$BasicCard-3fd036f4",
               "size": { "$res": true, "xl": { "value": "1:1" } },
               "Background": [],
               "borderWidth": { "$res": true, "xl": "0" },
               "borderColor": {
                 "$res": true,
-                "xl": { "value": "black", "ref": "$dark" }
+                "xl": { "value": "black", "ref": "grey_05" }
               },
               "borderTop": { "$res": true, "xl": "1" },
               "borderBottom": { "$res": true, "xl": "1" },
@@ -133,14 +133,14 @@
               "edgeMarginProtection": { "$res": true, "xl": true },
               "Stack": [
                 {
-                  "_id": "9878b117-a544-4b1d-8c05-bfff93031b13",
+                  "_id": "31d87a0d-cd6c-40e7-b939-b079a88038d6",
                   "_template": "$stack",
-                  "traceId": "$stack-01c0537a",
+                  "traceId": "$stack-e2fda441",
                   "Items": [
                     {
-                      "_id": "b65eea2c-9565-4c9d-b94c-445499c26122",
+                      "_id": "dcd4dae0-d8e9-495f-87a2-0c5de1d4b7ec",
                       "_template": "$richText",
-                      "traceId": "$richText-bd8e50a9",
+                      "traceId": "$richText-49e085f0",
                       "_itemProps": {
                         "$stack": {
                           "Items": {
@@ -156,25 +156,24 @@
                       "elements": {
                         "en-US": [
                           {
+                            "_id": "ae171151-777d-44b9-b4eb-d8f3b3bd2964",
                             "_template": "$richTextBlockElement",
+                            "traceId": "$richTextBlockElement-9045d35f",
+                            "type": "paragraph",
                             "elements": [
                               {
+                                "_id": "5cf63e59-7b80-405e-8192-10b525b84ba6",
                                 "_template": "$richTextLineElement",
+                                "traceId": "$richTextLineElement-d89ba395",
                                 "elements": [
                                   {
-                                    "_id": "84e1b1ff-17b4-45e8-92e8-2e4ba50af815",
+                                    "_id": "71c3384d-f92f-43f1-a9fe-83f85f2c93c5",
                                     "_template": "$richTextPart",
-                                    "color": {
-                                      "$res": true,
-                                      "xl": {
-                                        "value": "#000000",
-                                        "ref": "grey_05"
-                                      }
-                                    },
+                                    "traceId": "$richTextPart-761fde7f",
+                                    "value": "Make it stand out",
                                     "font": {
                                       "$res": true,
                                       "xl": {
-                                        "ref": "heading3",
                                         "value": {
                                           "$res": true,
                                           "2xl": {
@@ -183,17 +182,21 @@
                                             "lineHeight": 1.4,
                                             "fontWeight": 600
                                           }
-                                        }
+                                        },
+                                        "ref": "heading3"
                                       }
                                     },
-                                    "value": "Make it stand out"
+                                    "color": {
+                                      "$res": true,
+                                      "xl": {
+                                        "value": "#252525",
+                                        "ref": "grey_05"
+                                      }
+                                    }
                                   }
-                                ],
-                                "_id": "07a4daca-fc6e-4ce2-b90c-ffa6ac9c8ae1"
+                                ]
                               }
-                            ],
-                            "type": "paragraph",
-                            "_id": "5368dc1a-5a50-4ddb-ba23-a9b5dbbf0572"
+                            ]
                           }
                         ]
                       },
@@ -215,7 +218,7 @@
                       },
                       "mainColor": {
                         "$res": true,
-                        "xl": { "value": "#000000", "ref": "grey_05" }
+                        "xl": { "value": "#252525", "ref": "grey_05" }
                       }
                     }
                   ]
@@ -225,15 +228,30 @@
           ],
           "Card2": [
             {
-              "_id": "e82ff4c7-2247-412a-acef-89e4eacb0d1c",
+              "_id": "c5871ba0-5b32-4317-9c96-6a02e6cc1510",
               "_template": "$BasicCardBackground",
-              "traceId": "$BasicCardBackground-e9971bba",
-              "size": { "$res": true, "xl": { "value": "1:1" } },
-              "Background": [],
+              "traceId": "$BasicCardBackground-e4a1f615",
+              "size": { "$res": true, "xl": { "value": "fit-background" } },
+              "Background": [
+                {
+                  "_id": "23f21378-c24a-4c59-ac41-912c4379b3cb",
+                  "_template": "$image",
+                  "traceId": "$image-71ef6675",
+                  "_itemProps": {
+                    "$BasicCardBackground": { "Background": {} }
+                  },
+                  "image": {
+                    "$res": true,
+                    "xl": { "id": null, "widgetId": "mockImage" }
+                  },
+                  "aspectRatio": { "$res": true, "xl": { "value": "1:1" } },
+                  "action": []
+                }
+              ],
               "borderWidth": { "$res": true, "xl": "0" },
               "borderColor": {
                 "$res": true,
-                "xl": { "value": "black", "ref": "$dark" }
+                "xl": { "value": "black", "ref": "grey_05" }
               },
               "borderTop": { "$res": true, "xl": "1" },
               "borderBottom": { "$res": true, "xl": "1" },
@@ -281,9 +299,9 @@
               "edgeMarginProtection": { "$res": true, "xl": true },
               "Stack": [
                 {
-                  "_id": "f4ee8e49-5eb9-48c3-a103-a0b6d9c3a86c",
+                  "_id": "6307c52c-138b-46d1-a44c-eb9155e4e842",
                   "_template": "$stack",
-                  "traceId": "$stack-d891f241",
+                  "traceId": "$stack-5fc8d6c2",
                   "Items": []
                 }
               ]
@@ -313,15 +331,15 @@
       ],
       "Card2": [
         {
-          "_id": "20f6cccc-f930-407d-8517-35aec44eba8f",
+          "_id": "f2508db4-2519-432b-9a4a-163a7fae9582",
           "_template": "$BannerCard2",
-          "traceId": "$BannerCard2-65542ffb",
+          "traceId": "$BannerCard2-80a1e6b4",
           "_itemProps": { "$TwoCardsCard": { "Card2": {} } },
           "cornerRadius": { "$res": true, "xl": "0" },
           "borderWidth": { "$res": true, "xl": "0" },
           "borderColor": {
             "$res": true,
-            "xl": { "value": "black", "ref": "$dark" }
+            "xl": { "value": "black", "ref": "grey_05" }
           },
           "borderTop": { "$res": true, "xl": "1" },
           "borderBottom": { "$res": true, "xl": "1" },
@@ -333,15 +351,15 @@
           },
           "Card1": [
             {
-              "_id": "ccc22537-e374-4478-8be8-3f3a724c0f31",
+              "_id": "65622c6e-cf18-4688-b80a-8a9da423e5cf",
               "_template": "$BasicCard",
-              "traceId": "$BasicCard-d0ac4813",
-              "size": { "$res": true, "xl": { "value": "1:1" } },
+              "traceId": "$BasicCard-87dbdc11",
+              "size": { "$res": true, "xl": { "value": "fit-content" } },
               "Background": [],
               "borderWidth": { "$res": true, "xl": "0" },
               "borderColor": {
                 "$res": true,
-                "xl": { "value": "black", "ref": "$dark" }
+                "xl": { "value": "black", "ref": "grey_05" }
               },
               "borderTop": { "$res": true, "xl": "1" },
               "borderBottom": { "$res": true, "xl": "1" },
@@ -389,21 +407,21 @@
               "edgeMarginProtection": { "$res": true, "xl": true },
               "Stack": [
                 {
-                  "_id": "a71824b0-9cb8-4ee1-9501-29772ab93def",
+                  "_id": "56e8ac2a-8563-4e8e-83d9-29c9669a226d",
                   "_template": "$stack",
-                  "traceId": "$stack-b16ebf22",
+                  "traceId": "$stack-d5a76a95",
                   "Items": [
                     {
-                      "_id": "91c15045-5b5e-4ab5-b7d2-8b7f45d7309f",
+                      "_id": "097b5e9e-8862-45e0-a8f4-da7b4ac204c0",
                       "_template": "$separator",
-                      "traceId": "$separator-9a1eef54",
+                      "traceId": "$separator-dbe6d278",
                       "_itemProps": {
                         "$stack": {
                           "Items": {
                             "width": { "$res": true, "xl": "512px" },
                             "marginBottom": {
                               "$res": true,
-                              "xl": { "ref": "32", "value": "32px" }
+                              "xl": { "value": "32px", "ref": "32" }
                             },
                             "align": { "$res": true, "xl": "left" }
                           }
@@ -416,16 +434,16 @@
                       "height": { "$res": true, "xl": "1" }
                     },
                     {
-                      "_id": "d0e8a196-95d3-49aa-b7ee-a166b3da4a73",
+                      "_id": "7bc997f2-4d89-402d-a5b2-149cdf788435",
                       "_template": "$richText",
-                      "traceId": "$richText-d6e3cde0",
+                      "traceId": "$richText-30e062b7",
                       "_itemProps": {
                         "$stack": {
                           "Items": {
                             "width": { "$res": true, "xl": "512px" },
                             "marginBottom": {
                               "$res": true,
-                              "xl": { "ref": "32", "value": "32px" }
+                              "xl": { "value": "32px", "ref": "32" }
                             },
                             "align": { "$res": true, "xl": "left" }
                           }
@@ -434,25 +452,24 @@
                       "elements": {
                         "en-US": [
                           {
+                            "_id": "a89429c1-5b6a-4008-be86-cdaa5064bbf0",
                             "_template": "$richTextBlockElement",
+                            "traceId": "$richTextBlockElement-7dd209e1",
+                            "type": "paragraph",
                             "elements": [
                               {
+                                "_id": "f7e76557-9295-4a5b-ba8c-43e98eadf947",
                                 "_template": "$richTextLineElement",
+                                "traceId": "$richTextLineElement-e77172a3",
                                 "elements": [
                                   {
-                                    "_id": "b6a4e36e-37af-441a-b478-ab1e2170277c",
+                                    "_id": "a377d60c-1cd7-4138-8173-360871256b52",
                                     "_template": "$richTextPart",
-                                    "color": {
-                                      "$res": true,
-                                      "xl": {
-                                        "value": "#000000",
-                                        "ref": "grey_05"
-                                      }
-                                    },
+                                    "traceId": "$richTextPart-9367016d",
+                                    "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
                                     "font": {
                                       "$res": true,
                                       "xl": {
-                                        "ref": "body2",
                                         "value": {
                                           "$res": true,
                                           "2xl": {
@@ -460,17 +477,21 @@
                                             "lineHeight": 1.8,
                                             "fontFamily": "test-soehne-mono"
                                           }
-                                        }
+                                        },
+                                        "ref": "body2"
                                       }
                                     },
-                                    "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                                    "color": {
+                                      "$res": true,
+                                      "xl": {
+                                        "value": "#252525",
+                                        "ref": "grey_05"
+                                      }
+                                    }
                                   }
-                                ],
-                                "_id": "b08dda79-12ab-4680-b8bc-d52e08dc1710"
+                                ]
                               }
-                            ],
-                            "type": "paragraph",
-                            "_id": "904c8567-128b-4469-b108-438a6252fd3f"
+                            ]
                           }
                         ]
                       },
@@ -492,13 +513,13 @@
                       },
                       "mainColor": {
                         "$res": true,
-                        "xl": { "value": "#000000", "ref": "grey_05" }
+                        "xl": { "value": "#252525", "ref": "grey_05" }
                       }
                     },
                     {
-                      "_id": "fc8fd1ea-eab9-47ef-85bd-0e22f437273c",
+                      "_id": "53633ef4-2a53-4d05-87ad-57616db0bd9f",
                       "_template": "$buttons",
-                      "traceId": "$buttons-05db4434",
+                      "traceId": "$buttons-79f779a4",
                       "_itemProps": {
                         "$stack": {
                           "Items": {
@@ -518,15 +539,15 @@
                       },
                       "Buttons": [
                         {
-                          "_id": "71d8a00e-2aee-4155-9ae7-9ae5241e3122",
+                          "_id": "9854296a-44fe-44b7-ad3d-fe007c2aaad9",
                           "_template": "$StandardButton",
                           "_master": "buttonDark",
-                          "traceId": "$StandardButton-9a4fa49e",
+                          "traceId": "$StandardButton-4e2ea381",
                           "_itemProps": { "$buttons": { "Buttons": {} } },
                           "Action": [],
                           "variant": "label",
                           "label": {
-                            "id": "local.cdac3bb2-3ec6-42c2-ba5b-a307fec42ffa",
+                            "id": "local.fc1c2253-31ea-4806-83f7-00b83d550d2b",
                             "value": { "en-US": "Learn more" }
                           },
                           "icon": {
@@ -535,7 +556,7 @@
                           },
                           "color": {
                             "$res": true,
-                            "xl": { "ref": "grey_05", "value": "#252525" }
+                            "xl": { "value": "#252525", "ref": "grey_05" }
                           },
                           "minHeight": { "$res": true, "xl": "42" },
                           "minWidth": { "$res": true, "xl": "100" },
@@ -575,7 +596,7 @@
                           "borderWidth": { "$res": true, "xl": "1" },
                           "borderColor": {
                             "$res": true,
-                            "xl": { "value": "black", "ref": "$dark" }
+                            "xl": { "value": "black", "ref": "grey_05" }
                           },
                           "boxShadow": {
                             "$res": true,
@@ -591,15 +612,30 @@
           ],
           "Card2": [
             {
-              "_id": "945a46e4-378e-492e-a06a-33ac4ece1c47",
+              "_id": "a8c74c62-d2ec-4232-8de6-f504b14a1075",
               "_template": "$BasicCardBackground",
-              "traceId": "$BasicCardBackground-533aea10",
-              "size": { "$res": true, "xl": { "value": "1:1" } },
-              "Background": [],
+              "traceId": "$BasicCardBackground-40319f9e",
+              "size": { "$res": true, "xl": { "value": "fit-background" } },
+              "Background": [
+                {
+                  "_id": "47b0b648-73a0-4ccc-9d9d-56cd8630c3b0",
+                  "_template": "$image",
+                  "traceId": "$image-8198cf10",
+                  "_itemProps": {
+                    "$BasicCardBackground": { "Background": {} }
+                  },
+                  "image": {
+                    "$res": true,
+                    "xl": { "id": null, "widgetId": "mockImage" }
+                  },
+                  "aspectRatio": { "$res": true, "xl": { "value": "1:1" } },
+                  "action": []
+                }
+              ],
               "borderWidth": { "$res": true, "xl": "0" },
               "borderColor": {
                 "$res": true,
-                "xl": { "value": "black", "ref": "$dark" }
+                "xl": { "value": "black", "ref": "grey_05" }
               },
               "borderTop": { "$res": true, "xl": "1" },
               "borderBottom": { "$res": true, "xl": "1" },
@@ -647,9 +683,9 @@
               "edgeMarginProtection": { "$res": true, "xl": true },
               "Stack": [
                 {
-                  "_id": "3162fcf8-05cd-476a-91f3-c33984eb55b8",
+                  "_id": "c0931a29-b413-46bb-af51-c75cf8f736da",
                   "_template": "$stack",
-                  "traceId": "$stack-0a137750",
+                  "traceId": "$stack-52ca5c18",
                   "Items": []
                 }
               ]
@@ -684,7 +720,7 @@
       "verticalLayout": { "$res": true, "xl": "align-top" },
       "verticalOffset": { "$res": true, "xl": "-4" },
       "collapse": { "$res": true, "xl": false },
-      "gap": { "$res": true, "xl": { "ref": "48", "value": "48px" } },
+      "gap": { "$res": true, "xl": { "value": "48px", "ref": "48" } },
       "verticalGap": { "$res": true, "xl": { "value": "24px", "ref": "24" } },
       "invertCollapsed": false
     }

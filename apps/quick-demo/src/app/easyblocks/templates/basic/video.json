@@ -67,7 +67,7 @@
       "borderWidth": { "$res": true, "xl": "1" },
       "borderColor": {
         "$res": true,
-        "xl": { "value": "black", "ref": "$dark" }
+        "xl": { "value": "black", "ref": "grey_05" }
       },
       "boxShadow": { "$res": true, "xl": { "value": "none", "ref": "none" } }
     }
@@ -122,7 +122,7 @@
       "borderWidth": { "$res": true, "xl": "1" },
       "borderColor": {
         "$res": true,
-        "xl": { "value": "black", "ref": "$dark" }
+        "xl": { "value": "black", "ref": "grey_05" }
       },
       "boxShadow": { "$res": true, "xl": { "value": "none", "ref": "none" } }
     }
@@ -179,7 +179,7 @@
       "borderWidth": { "$res": true, "xl": "1" },
       "borderColor": {
         "$res": true,
-        "xl": { "value": "black", "ref": "$dark" }
+        "xl": { "value": "black", "ref": "grey_05" }
       },
       "boxShadow": { "$res": true, "xl": { "value": "none", "ref": "none" } }
     }
@@ -234,7 +234,7 @@
       "borderWidth": { "$res": true, "xl": "1" },
       "borderColor": {
         "$res": true,
-        "xl": { "value": "black", "ref": "$dark" }
+        "xl": { "value": "black", "ref": "grey_05" }
       },
       "boxShadow": { "$res": true, "xl": { "value": "none", "ref": "none" } }
     }

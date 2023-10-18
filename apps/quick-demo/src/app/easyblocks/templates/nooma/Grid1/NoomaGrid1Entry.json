@@ -109,7 +109,7 @@
       "borderEnabled": false,
       "borderColor": {
         "$res": true,
-        "xl": { "value": "black", "ref": "$dark" }
+        "xl": { "value": "black", "ref": "grey_05" }
       },
       "borderTop": { "$res": true, "xl": "1" },
       "borderBottom": { "$res": true, "xl": "1" },
@@ -177,7 +177,7 @@
           "borderWidth": { "$res": true, "xl": "1" },
           "borderColor": {
             "$res": true,
-            "xl": { "value": "black", "ref": "$dark" }
+            "xl": { "value": "black", "ref": "grey_05" }
           },
           "boxShadow": {
             "$res": true,
@@ -244,7 +244,7 @@
           "borderWidth": { "$res": true, "xl": "1" },
           "borderColor": {
             "$res": true,
-            "xl": { "value": "black", "ref": "$dark" }
+            "xl": { "value": "black", "ref": "grey_05" }
           },
           "boxShadow": {
             "$res": true,
