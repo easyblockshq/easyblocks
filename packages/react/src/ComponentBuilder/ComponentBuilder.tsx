@@ -156,61 +156,43 @@ function getRenderabilityStatus(
   }
 
   for (const resourceSchemaProp of requiredExternalFields) {
-    const compiledResourceValue = compiled.props[resourceSchemaProp.prop];
-    const isResponsiveResource = isTrulyResponsiveValue(compiledResourceValue);
-    const resourcesIds = Object.keys(externalData).filter((id) =>
-      isResponsiveResource
-        ? isExternalValueDefinedForAnyDevice(id, resourceSchemaProp)
-        : id ===
-          getExternalReferenceLocationKey(compiled._id, resourceSchemaProp.prop)
-    );
-    const resources = resourcesIds.map((id) => externalData[id]);
-    // const resourceValues = resources.map((r) => getResourceValue(r));
+    const externalReference: ResponsiveValue<ExternalReference> =
+      compiled.props[resourceSchemaProp.prop];
 
-    // const isLoading =
-    //   status.isLoading ||
-    //   (resources !== undefined &&
-    //     (resources.status === "loading" ||
-    //       (resources.status === "success" &&
-    //         isEmptyRenderableContent(resourceValues))));
-    const isLoading = false;
-
-    status.isLoading = isLoading;
-
-    const isDefined =
-      resources.length > 0 &&
-      resources.every((r) => "value" in r && r.value); /*&&
-      (isRenderableContent(resourceValues)
-        ? isNonEmptyRenderableContent(resourceValues)
-        : true);*/
-
-    status.renderable = status.renderable && isDefined;
-
-    if (!isDefined) {
-      status.fieldsRequiredToRender.push(
-        resourceSchemaProp.label || resourceSchemaProp.prop
+    if (isTrulyResponsiveValue(externalReference)) {
+      throw new Error(
+        "Responsive value for external reference not implemented yet"
       );
     }
+
+    if (externalReference.id) {
+      const externalReferenceLocationKey = getExternalReferenceLocationKey(
+        compiled._id,
+        resourceSchemaProp.prop
+      );
+      const externalValue = externalData[externalReferenceLocationKey];
+      status.isLoading = status.isLoading || externalValue === undefined;
+      const isDefined =
+        externalValue !== undefined && !("error" in externalValue);
+      status.renderable = status.renderable && isDefined;
+
+      if (!isDefined && !status.isLoading) {
+        status.fieldsRequiredToRender.push(
+          resourceSchemaProp.label || resourceSchemaProp.prop
+        );
+      }
+
+      continue;
+    }
+
+    status.isLoading = false;
+    status.renderable = false;
+    status.fieldsRequiredToRender.push(
+      resourceSchemaProp.label || resourceSchemaProp.prop
+    );
   }
 
   return status;
-
-  function isExternalValueDefinedForAnyDevice(
-    externalDataId: string,
-    externalSchemaProp: ExternalSchemaProp
-  ) {
-    return meta.vars.devices
-      .map((d) => d.id)
-      .some(
-        (deviceId) =>
-          externalDataId ===
-          getExternalReferenceLocationKey(
-            compiled._id,
-            externalSchemaProp.prop,
-            deviceId
-          )
-      );
-  }
 }
 
 function getCompiledSubcomponents(
