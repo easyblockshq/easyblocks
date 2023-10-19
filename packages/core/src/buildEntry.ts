@@ -111,7 +111,15 @@ function findChangedExternalData(
         return;
       }
     } else {
-      return defaultIsExternalDataPending(id, externalData, schemaProp.type);
+      const isPendingDefault = defaultIsExternalDataPending(
+        id,
+        externalData,
+        schemaProp.type
+      );
+
+      if (!isPendingDefault) {
+        return;
+      }
     }
 
     if (changedExternalData[id]) {
