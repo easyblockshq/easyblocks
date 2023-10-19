@@ -1108,7 +1108,7 @@ function useIframeSize({
     return () => {
       window.removeEventListener("resize", updateTransform);
     };
-  }, [currentDevice.w]);
+  }, [currentDevice.w, currentDeviceIndex, devices, isScalingEnabled]);
 
   return {
     width: displayedWidth,
