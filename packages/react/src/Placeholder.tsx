@@ -1,5 +1,9 @@
+import { useDndContext } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
+import { parsePath } from "@easyblocks/app-utils";
 import { SSColors, SSFonts } from "@easyblocks/design-system";
+import { EditorContextType } from "@easyblocks/editor";
+import { toArray } from "@easyblocks/utils";
 import React, { FC } from "react";
 import { useEasyblocksMetadata } from "./EasyblocksMetadataProvider";
 
@@ -112,6 +116,25 @@ type PlaceholderBuilderComponent = FC<TypePlaceholderComponentBuilderProps>;
 export default function TypePlaceholder(
   props: TypePlaceholderComponentBuilderProps
 ) {
+  const { form } = window.parent.editorWindowAPI
+    .editorContext as EditorContextType;
+  const meta = useEasyblocksMetadata();
+  const dndContext = useDndContext();
+
+  const draggedEntryPathParseResult = dndContext.active
+    ? parsePath(dndContext.active.data.current!.path, form)
+    : null;
+
+  const draggedComponentDefinition = draggedEntryPathParseResult
+    ? meta.vars.definitions.components.find(
+        (c) => c.id === draggedEntryPathParseResult.templateId
+      )
+    : null;
+
+  const canDraggedComponentBeDropped = draggedComponentDefinition
+    ? toArray(draggedComponentDefinition.type ?? []).includes(props.type)
+    : true;
+
   const sortable = useSortable({
     id: `placeholder.${props.id}`,
     data: {
@@ -119,7 +142,7 @@ export default function TypePlaceholder(
     },
     disabled: {
       draggable: true,
-      droppable: false,
+      droppable: !canDraggedComponentBeDropped,
     },
   });
 
