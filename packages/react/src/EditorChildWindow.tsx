@@ -1,4 +1,11 @@
-import { DndContext, MouseSensor, useSensor } from "@dnd-kit/core";
+import {
+  CollisionDetection,
+  DndContext,
+  MouseSensor,
+  pointerWithin,
+  rectIntersection,
+  useSensor,
+} from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
 import {
   configTraverse,
@@ -19,6 +26,19 @@ const dragDataSchema = z.object({
     index: z.number(),
   }),
 });
+
+function customCollisionDetection(args: Parameters<CollisionDetection>[0]) {
+  // First, let's see if there are any collisions with the pointer
+  const pointerCollisions = pointerWithin(args);
+
+  // Collision detection algorithms return an array of collisions
+  if (pointerCollisions.length > 0) {
+    return pointerCollisions;
+  }
+
+  // If there are no collisions with the pointer, return rectangle intersections
+  return rectIntersection(args);
+}
 
 export function EasyblocksCanvas() {
   const { meta, compiled, externalData, editorContext } =
@@ -65,6 +85,7 @@ export function EasyblocksCanvas() {
       <CanvasRoot>
         <DndContext
           sensors={[mouseSensor]}
+          collisionDetection={customCollisionDetection}
           onDragStart={(event) => {
             document.documentElement.style.cursor = "grabbing";
             activeDraggedEntryPath.current = dragDataSchema.parse(
