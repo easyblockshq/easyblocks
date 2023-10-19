@@ -47,19 +47,24 @@ export const DocumenWidgetInline: React.FC<{
     };
   }, [editorIframeNode, router]);
 
-  const rootContainer = document?.rootContainer ?? "content";
+  // canvas URL must be calculated once
+  const [canvasUrl] = useState(() => {
+    const rootContainer = document?.rootContainer ?? "content";
 
-  let canvasUrl = `${
-    window.location.origin
-  }/easyblocks-editor?rootContainer=${rootContainer}&mode=app&source=sales-app&contextParams=${JSON.stringify(
-    {
-      locale: "en-US",
+    let canvasUrl = `${
+      window.location.origin
+    }/easyblocks-editor?rootContainer=${rootContainer}&mode=app&source=sales-app&contextParams=${JSON.stringify(
+      {
+        locale: "en-US",
+      }
+    )}`;
+
+    if (document) {
+      canvasUrl += `&documentId=${document.id}`;
     }
-  )}`;
 
-  if (document) {
-    canvasUrl += `&documentId=${document.id}`;
-  }
+    return canvasUrl;
+  });
 
   if (!isOpen) {
     return null;

@@ -34,7 +34,6 @@ export type EasyblocksProviderContextValue =
   };
 const EasyblocksProviderContext =
   createContext<EasyblocksProviderContextValue | null>(null);
-EasyblocksProviderContext.displayName = "Shopstory";
 
 function createEasyblocksProviderContextValue(
   props: EasyblocksContextState = {}

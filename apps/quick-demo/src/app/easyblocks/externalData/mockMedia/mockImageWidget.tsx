@@ -1,3 +1,4 @@
+"use client";
 import { Widget } from "@easyblocks/core";
 import { MediaPicker } from "./MediaPicker";
 

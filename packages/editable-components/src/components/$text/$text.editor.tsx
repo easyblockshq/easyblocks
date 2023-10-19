@@ -1,4 +1,5 @@
 /** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
+"use client";
 import { dotNotationGet } from "@easyblocks/utils";
 import type { CompiledShopstoryComponentProps } from "../../types";
 import { InlineTextarea } from "./InlineTextarea";

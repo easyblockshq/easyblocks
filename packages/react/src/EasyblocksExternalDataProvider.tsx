@@ -1,3 +1,4 @@
+"use client";
 import type { ExternalData } from "@easyblocks/core";
 import React, { createContext, useContext } from "react";
 

@@ -11,216 +11,6 @@
       "types": "./dist/types/index.d.ts",
       "browser": "./dist/es/index.js",
       "node": "./dist/cjs/index.js"
-    },
-    "./BackgroundColor/BackgroundColor.client": {
-      "types": "./dist/types/components/$backgroundColor/$backgroundColor.client.d.ts",
-      "import": "./dist/es/BackgroundColor/BackgroundColor.client.js",
-      "node": "./dist/cjs/BackgroundColor/BackgroundColor.client.js"
-    },
-    "./Image/Image.client": {
-      "types": "./dist/types/components/$image/$image.client.d.ts",
-      "import": "./dist/es/Image/Image.client.js",
-      "node": "./dist/cjs/Image/Image.client.js"
-    },
-    "./Image/Image.editor": {
-      "types": "./dist/types/components/$image/$image.editor.d.ts",
-      "import": "./dist/es/Image/Image.editor.js",
-      "node": "./dist/cjs/Image/Image.editor.js"
-    },
-    "./RichText/RichText.client": {
-      "types": "./dist/types/components/$richText/$richText.client.d.ts",
-      "import": "./dist/es/RichText/RichText.client.js",
-      "node": "./dist/cjs/RichText/RichText.client.js"
-    },
-    "./RichText/RichText.editor": {
-      "types": "./dist/types/components/$richText/$richText.editor.d.ts",
-      "import": "./dist/es/RichText/RichText.editor.js",
-      "node": "./dist/cjs/RichText/RichText.editor.js"
-    },
-    "./RichText/RichTextBlockElement.client": {
-      "types": "./dist/types/components/$richText/$richTextBlockElement/$richTextBlockElement.client.d.ts",
-      "import": "./dist/es/RichText/RichTextBlockElement.client.js",
-      "node": "./dist/cjs/RichText/RichTextBlockElement.client.js"
-    },
-    "./RichText/RichTextInlineWrapperElement.client": {
-      "types": "./dist/types/components/$richText/$richTextInlineWrapperElement/$richTextInlineWrapperElement.client.d.ts",
-      "import": "./dist/es/RichText/RichTextInlineWrapperElement.client.js",
-      "node": "./dist/cjs/RichText/RichTextInlineWrapperElement.client.js"
-    },
-    "./RichText/RichTextLineElement.client": {
-      "types": "./dist/types/components/$richText/$richTextLineElement/$richTextLineElement.client.d.ts",
-      "import": "./dist/es/RichText/RichTextLineElement.client.js",
-      "node": "./dist/cjs/RichText/RichTextLineElement.client.js"
-    },
-    "./RichText/RichTextPart.client": {
-      "types": "./dist/types/components/$richText/$richTextPart/$richTextPart.client.d.ts",
-      "import": "./dist/es/RichText/RichTextPart.client.js",
-      "node": "./dist/cjs/RichText/RichTextPart.client.js"
-    },
-    "./Text/Text.client": {
-      "types": "./dist/types/components/$text/$text.client.d.ts",
-      "import": "./dist/es/Text/Text.client.js",
-      "node": "./dist/cjs/Text/Text.client.js"
-    },
-    "./Text/Text.editor": {
-      "types": "./dist/types/components/$text/$text.editor.d.ts",
-      "import": "./dist/es/Text/Text.editor.js",
-      "node": "./dist/cjs/Text/Text.editor.js"
-    },
-    "./Video/Video.client": {
-      "types": "./dist/types/components/$video/$video.client.d.ts",
-      "import": "./dist/es/Video/Video.client.js",
-      "node": "./dist/cjs/Video/Video.client.js"
-    },
-    "./Video/Video.editor": {
-      "types": "./dist/types/components/$video/$video.editor.d.ts",
-      "import": "./dist/es/Video/Video.editor.js",
-      "node": "./dist/cjs/Video/Video.editor.js"
-    },
-    "./RootSections/RootSections.client": {
-      "types": "./dist/types/components/$RootSections/$RootSections.client.d.ts",
-      "import": "./dist/es/RootSections/RootSections.client.js",
-      "node": "./dist/cjs/RootSections/RootSections.client.js"
-    },
-    "./RootGrid/RootGrid.client": {
-      "types": "./dist/types/components/$RootGrid/$RootGrid.client.d.ts",
-      "import": "./dist/es/RootGrid/RootGrid.client.js",
-      "node": "./dist/cjs/RootGrid/RootGrid.client.js"
-    },
-    "./BannerCard/BannerCard.client": {
-      "types": "./dist/types/components/BannerCard/BannerCard.d.ts",
-      "import": "./dist/es/BannerCard/BannerCard.client.js",
-      "node": "./dist/cjs/BannerCard/BannerCard.client.js"
-    },
-    "./BannerCard2/BannerCard2.client": {
-      "types": "./dist/types/components/BannerCard2/BannerCard2.d.ts",
-      "import": "./dist/es/BannerCard2/BannerCard2.client.js",
-      "node": "./dist/cjs/BannerCard2/BannerCard2.client.js"
-    },
-    "./BannerSection/BannerSection.client": {
-      "types": "./dist/types/components/SectionWrapper/SectionWrapper.d.ts",
-      "import": "./dist/es/BannerSection/BannerSection.client.js",
-      "node": "./dist/cjs/BannerSection/BannerSection.client.js"
-    },
-    "./BannerSection2/BannerSection2.client": {
-      "types": "./dist/types/components/SectionWrapper/SectionWrapper.d.ts",
-      "import": "./dist/es/BannerSection2/BannerSection2.client.js",
-      "node": "./dist/cjs/BannerSection2/BannerSection2.client.js"
-    },
-    "./BasicCard/BasicCard.client": {
-      "types": "./dist/types/components/BasicCard/BasicCard.client.d.ts",
-      "import": "./dist/es/BasicCard/BasicCard.client.js",
-      "node": "./dist/cjs/BasicCard/BasicCard.client.js"
-    },
-    "./BasicCardBackground/BasicCardBackground.client": {
-      "types": "./dist/types/components/BasicCard/BasicCard.client.d.ts",
-      "import": "./dist/es/BasicCard/BasicCard.client.js",
-      "node": "./dist/cjs/BasicCard/BasicCard.client.js"
-    },
-    "./Buttons/Buttons.client": {
-      "types": "./dist/types/components/$buttons/$buttons.client.d.ts",
-      "import": "./dist/es/Buttons/Buttons.client.js",
-      "node": "./dist/cjs/Buttons/Buttons.client.js"
-    },
-    "./CardPlaceholder/CardPlaceholder.client": {
-      "types": "./dist/types/components/CardPlaceholder/CardPlaceholder.client.d.ts",
-      "import": "./dist/es/CardPlaceholder/CardPlaceholder.client.js",
-      "node": "./dist/cjs/CardPlaceholder/CardPlaceholder.client.js"
-    },
-    "./ComponentContainer/ComponentContainer.client": {
-      "types": "./dist/types/components/ComponentContainer/ComponentContainer.client.d.ts",
-      "import": "./dist/es/ComponentContainer/ComponentContainer.client.js",
-      "node": "./dist/cjs/ComponentContainer/ComponentContainer.client.js"
-    },
-    "./Grid/Grid.client": {
-      "types": "./dist/types/components/SectionWrapper/SectionWrapper.d.ts",
-      "import": "./dist/es/Grid/Grid.client.js",
-      "node": "./dist/cjs/Grid/Grid.client.js"
-    },
-    "./GridCard/GridCard.client": {
-      "types": "./dist/types/components/Grid/Grid.d.ts",
-      "import": "./dist/es/GridCard/GridCard.client.js",
-      "node": "./dist/cjs/GridCard/GridCard.client.js"
-    },
-    "./Icon/Icon.client": {
-      "types": "./dist/types/components/$icon/$icon.client.d.ts",
-      "import": "./dist/es/Icon/Icon.client.js",
-      "node": "./dist/cjs/Icon/Icon.client.js"
-    },
-    "./IconButton/v1/IconButton.client": {
-      "types": "./dist/types/components/IconButton/v1/IconButton.d.ts",
-      "import": "./dist/es/IconButton/v1/IconButton.client.js",
-      "node": "./dist/cjs/IconButton/v1/IconButton.client.js"
-    },
-    "./IconButton/v2/IconButton.client": {
-      "types": "./dist/types/components/IconButton/v2/IconButton.d.ts",
-      "import": "./dist/es/IconButton/v2/IconButton.client.js",
-      "node": "./dist/cjs/IconButton/v2/IconButton.client.js"
-    },
-    "./Placeholder/Placeholder.client": {
-      "types": "./dist/types/components/Placeholder/Placeholder.d.ts",
-      "import": "./dist/es/Placeholder/Placeholder.client.js",
-      "node": "./dist/cjs/Placeholder/Placeholder.client.js"
-    },
-    "./Playground/Playground.client": {
-      "types": "./dist/types/components/Playground/Playground.client.d.ts",
-      "import": "./dist/es/Playground/Playground.client.js",
-      "node": "./dist/cjs/Playground/Playground.client.js"
-    },
-    "./Separator/Separator.client": {
-      "types": "./dist/types/components/Separator/Separator.d.ts",
-      "import": "./dist/es/Separator/Separator.client.js",
-      "node": "./dist/cjs/Separator/Separator.client.js"
-    },
-    "./Stack/Stack.client": {
-      "types": "./dist/types/components/$stack/$stack.d.ts",
-      "import": "./dist/es/Stack/Stack.client.js",
-      "node": "./dist/cjs/Stack/Stack.client.js"
-    },
-    "./StandardButton/StandardButton.client": {
-      "types": "./dist/types/components/StandardButton/StandardButton.d.ts",
-      "import": "./dist/es/StandardButton/StandardButton.client.js",
-      "node": "./dist/cjs/StandardButton/StandardButton.client.js"
-    },
-    "./TokenButton/TokenButton.client": {
-      "types": "./dist/types/components/Token/Token.d.ts",
-      "import": "./dist/es/TokenButton/TokenButton.client.js",
-      "node": "./dist/cjs/TokenButton/TokenButton.client.js"
-    },
-    "./TokenColor/TokenColor.client": {
-      "types": "./dist/types/components/TokenColor/TokenColor.d.ts",
-      "import": "./dist/es/TokenColor/TokenColor.client.js",
-      "node": "./dist/cjs/TokenColor/TokenColor.client.js"
-    },
-    "./TokenFont/TokenFont.client": {
-      "types": "./dist/types/components/TokenFont/TokenFont.d.ts",
-      "import": "./dist/es/TokenFont/TokenFont.client.js",
-      "node": "./dist/cjs/TokenFont/TokenFont.client.js"
-    },
-    "./TwoCards/TwoCards.client": {
-      "types": "./dist/types/components/SectionWrapper/SectionWrapper.d.ts",
-      "import": "./dist/es/TwoCards/TwoCards.client.js",
-      "node": "./dist/cjs/TwoCards/TwoCards.client.js"
-    },
-    "./TwoCardsCard/TwoCardsCard.client": {
-      "types": "./dist/types/components/TwoCards/TwoCards.d.ts",
-      "import": "./dist/es/TwoCards/TwoCards.client.js",
-      "node": "./dist/cjs/TwoCards/TwoCards.client.js"
-    },
-    "./TwoItems/TwoItems.client": {
-      "types": "./dist/types/components/$twoItems/$twoItems.d.ts",
-      "import": "./dist/es/TwoItems/TwoItems.client.js",
-      "node": "./dist/cjs/TwoItems/TwoItems.client.js"
-    },
-    "./VimeoPlayer/VimeoPlayer.client": {
-      "types": "./dist/types/components/vimeoPlayer/vimeoPlayer.client.d.ts",
-      "import": "./dist/es/VimeoPlayer/VimeoPlayer.client.js",
-      "node": "./dist/cjs/VimeoPlayer/VimeoPlayer.client.js"
-    },
-    "./Zone/Zone.client": {
-      "types": "./dist/types/components/Zone/Zone.client.d.ts",
-      "import": "./dist/es/Zone/Zone.client.js",
-      "node": "./dist/cjs/Zone/Zone.client.js"
     }
   },
   "scripts": {
@@ -240,19 +30,19 @@
     "react-textarea-autosize": ">=7.1",
     "slate": "0.77.2",
     "slate-react": "0.77.2",
-    "type-fest": "^3.13.1"
+    "type-fest": "^3.13.1",
+    "postcss-value-parser": "^3.3.0"
   },
   "devDependencies": {
     "@jest/types": "^26.6.2",
     "@easyblocks/app-utils": "^1.5.2",
     "@easyblocks/build-tools": "^1.5.2",
-    "@easyblocks/reduce-css-calc": "link:../reduce-css-calc",
-    "@easyblocks/utils": "link:../utils",
+    "@easyblocks/reduce-css-calc": "workspace:*",
+    "@easyblocks/utils": "workspace:*",
     "@types/jest": "^26.0.20",
     "@types/lodash": "^4.14.194",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
-    "@types/vimeo__player": "^2.18.0",
-    "postcss-value-parser": "^3.3.0"
+    "@types/vimeo__player": "^2.18.0"
   }
 }

@@ -1,6 +1,7 @@
 import { Devices, Locale } from "@easyblocks/core";
 import {
   SSButtonGhost,
+  SSButtonSecondary,
   SSButtonPrimary,
   SSColors,
   SSIcons,
@@ -10,6 +11,8 @@ import {
   TooltipTrigger,
   TooltipContent,
   Typography,
+  SSToggleButton,
+  SSToggle,
 } from "@easyblocks/design-system";
 import React, { ReactNode, useRef } from "react";
 import styled from "styled-components";
@@ -49,7 +52,7 @@ const TopBarRight = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 8px;
+  gap: 16px;
 `;
 
 const TopBarCenter = styled.div`
@@ -149,13 +152,31 @@ export const EditorTopBar: React.FC<{
       </TopBarCenter>
 
       <TopBarRight>
-        <SSButtonPrimary
-          onClick={() => {
-            onIsEditingChange();
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            gap: "6px",
+            alignItems: "center",
           }}
         >
-          {isEditing ? "Preview" : "Edit"}
-        </SSButtonPrimary>
+          <Typography variant={"body"}>Edit mode</Typography>{" "}
+          <SSToggle
+            checked={isEditing}
+            onChange={() => {
+              onIsEditingChange();
+            }}
+          />
+        </div>
+
+        {/*<SSButtonSecondary*/}
+        {/*  onClick={() => {*/}
+        {/*    // onIsEditingChange();*/}
+        {/*  }}*/}
+        {/*  icon={SSIcons.OpenInNew}*/}
+        {/*>*/}
+        {/*  Preview*/}
+        {/*</SSButtonSecondary>*/}
 
         {/*<SSSelect*/}
         {/*    value={locale}*/}

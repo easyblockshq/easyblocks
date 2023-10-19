@@ -1,3 +1,4 @@
+"use client";
 import { builtinEditableComponents } from "@easyblocks/editable-components";
 import { EasyblocksProvider } from "@easyblocks/react";
 import { ProductCard } from "@/components/ProductCard/ProductCard";

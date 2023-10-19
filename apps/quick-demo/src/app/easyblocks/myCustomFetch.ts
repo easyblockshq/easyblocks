@@ -1,6 +1,6 @@
 import { ChangedExternalData, ExternalData } from "@easyblocks/core";
-import { fetchPexelsResources } from "./resources/pexels";
-import { fetchProductResources } from "./resources/product";
+import { fetchPexelsResources } from "./resources/pexels/fetchPexelsResources";
+import { fetchProductResources } from "./resources/product/fetchProductResources";
 import { fetchMockImages } from "./externalData/mockMedia/fetchMockImages";
 import { fetchMockVideos } from "./externalData/mockMedia/fetchMockVideos";
 

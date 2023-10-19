@@ -1,3 +1,4 @@
+import { serialize } from "@easyblocks/utils";
 import { z } from "zod";
 import { buildEntry } from "./buildEntry";
 import { ApiClient } from "./infrastructure/apiClient";
@@ -47,7 +48,7 @@ async function buildDocument({
   return {
     renderableDocument: {
       renderableContent,
-      meta: meta,
+      meta: serialize(meta),
       configAfterAuto,
     },
     externalData,
@@ -130,7 +131,7 @@ function parseAccessTokenPayload(accessToken: string) {
 }
 
 function decodePayload(payload: string) {
-  if (typeof window === undefined) {
+  if (typeof global === "object") {
     const decodedPayload = Buffer.from(payload, "base64").toString("utf-8");
 
     return decodedPayload;

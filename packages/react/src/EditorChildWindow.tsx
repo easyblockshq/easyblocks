@@ -19,6 +19,7 @@ import CanvasRoot from "./CanvasRoot/CanvasRoot";
 import { Easyblocks } from "./Easyblocks";
 import { EasyblocksMetadataProvider } from "./EasyblocksMetadataProvider";
 import { useForceRerender } from "./hooks/useForceRerender";
+("use client");
 
 const dragDataSchema = z.object({
   path: z.string(),

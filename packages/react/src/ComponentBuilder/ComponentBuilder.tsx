@@ -1,5 +1,5 @@
 /** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
-
+"use client";
 import {
   ComponentPickerClosedEvent,
   componentPickerOpened,

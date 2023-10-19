@@ -1,53 +1,14 @@
 import { ChangedExternalData, ExternalData, Widget } from "@easyblocks/core";
 
-import {
-  fetchProducts,
-  fetchProductById,
-  fetchProductsByIds,
-} from "@/data/shopify";
+import { fetchProductsByIds } from "@/data/shopify";
 
-import { SimplePicker } from "@easyblocks/design-system";
-
-const productWidget: Widget = {
-  id: "product",
-  label: "Product",
-  component: function ProductWidgetComponent({ id, onChange }) {
-    return (
-      <SimplePicker
-        value={id}
-        onChange={onChange}
-        getItems={async (query) => {
-          const products = await fetchProducts(query);
-
-          return products.map((product: any) => ({
-            id: product.id,
-            title: product.title,
-            thumbnail: product.primaryImage?.mediaObject?.src,
-          }));
-        }}
-        getItemById={async (id) => {
-          const product = await fetchProductById(id);
-          if (!product) {
-            throw new Error("can't find product");
-          }
-
-          return {
-            id: product.id,
-            title: product.title,
-            thumbnail: product.primaryImage?.mediaObject?.src,
-          };
-        }}
-        placeholder="Pick a product"
-      />
-    );
-  },
-};
+import { PRODUCT_WIDGET_ID } from "./productShared";
 
 async function fetchProductResources(
   externalData: ChangedExternalData
 ): Promise<ExternalData> {
   const allResources = Object.entries(externalData).filter(
-    ([, resource]) => resource.widgetId === productWidget.id
+    ([, resource]) => resource.widgetId === PRODUCT_WIDGET_ID
   );
 
   if (allResources.length === 0) {
@@ -118,4 +79,4 @@ function isGid(id: string) {
   return id.startsWith("gid://shopify/");
 }
 
-export { productWidget, fetchProductResources };
+export { fetchProductResources };

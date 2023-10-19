@@ -1,3 +1,4 @@
+"use client";
 import type { Config, ExternalData } from "@easyblocks/core";
 import React, { useEffect, useState } from "react";
 import { EasyblocksCanvas } from "./EditorChildWindow";

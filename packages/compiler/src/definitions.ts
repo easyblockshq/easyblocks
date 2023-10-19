@@ -963,7 +963,9 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         {},
         {
           id: null,
-          widgetId: compilationContext.types[schemaProp.type]?.widgets[0]?.id,
+          widgetId: compilationContext.isEditing
+            ? compilationContext.types[schemaProp.type]?.widgets[0]?.id
+            : "",
         },
         externalNormalize(schemaProp.type)
       );

@@ -9,9 +9,7 @@ function internalDependenciesValidator() {
 
   const internalDependencies = Object.keys(packageJson.devDependencies).filter(
     (name) =>
-      name.startsWith("@easyblocks/") &&
-      name.indexOf("build-tools") === -1 &&
-      name !== "@easyblocks/editable-components"
+      name.startsWith("@easyblocks/") && name.indexOf("build-tools") === -1
   );
 
   const packageDependencies = new Set(Object.keys(packageJson.dependencies));
