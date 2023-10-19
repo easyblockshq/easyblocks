@@ -1,33 +1,34 @@
+import { z } from "zod";
 import { buildEntry } from "./buildEntry";
 import { ApiClient } from "./infrastructure/apiClient";
 import { ShopstoryAccessTokenApiAuthenticationStrategy } from "./infrastructure/ShopstoryAccessTokenApiAuthenticationStrategy";
 import { loadCompilerScript } from "./loadScripts";
 import { getFallbackLocaleForLocale } from "./locales";
-import {
+import type {
   ChangedExternalData,
   ComponentConfig,
   Config,
-  Document,
   RenderableDocument,
 } from "./types";
 
 async function buildDocument({
-  document,
+  documentId,
   config,
   locale,
 }: {
-  document: Document;
+  documentId: string;
   config: Config;
   locale: string;
 }): Promise<{
   renderableDocument: RenderableDocument;
   externalData: ChangedExternalData;
 }> {
-  const entry = await resolveEntryForDocument({
-    document,
+  const { entry, rootContainer } = await resolveEntryForDocument({
+    documentId,
     config,
     locale,
   });
+
   const compiler = await loadCompilerScript();
 
   const { meta, externalData, renderableContent, configAfterAuto } = buildEntry(
@@ -36,7 +37,7 @@ async function buildDocument({
       config,
       contextParams: {
         locale,
-        rootContainer: document.rootContainer,
+        rootContainer,
       },
       compiler,
       externalData: {},
@@ -56,37 +57,37 @@ async function buildDocument({
 export { buildDocument };
 
 async function resolveEntryForDocument({
-  document,
+  documentId,
   config,
   locale,
 }: {
-  document: Document;
+  documentId: string;
   config: Config;
   locale: string;
-}): Promise<ComponentConfig> {
-  if (document.config) {
-    return document.config;
-  }
-
+}): Promise<{ entry: ComponentConfig; rootContainer: string }> {
   const apiClient = new ApiClient(
     new ShopstoryAccessTokenApiAuthenticationStrategy(config.accessToken)
   );
   const locales = buildLocalesWithFallbacksForLocale(config.locales, locale);
+  const { projectId } = parseAccessTokenPayload(config.accessToken);
 
   try {
     const documentResponse = await apiClient.documents.getDocumentById({
-      documentId: document.documentId,
-      projectId: document.projectId,
+      documentId,
+      projectId: projectId,
       locales,
     });
 
     if (!documentResponse) {
-      throw new Error(`Document with id ${document.documentId} not found.`);
+      throw new Error(`Document with id ${documentId} not found.`);
     }
 
-    return documentResponse.config.config;
+    return {
+      entry: documentResponse.config.config,
+      rootContainer: documentResponse.root_container!,
+    };
   } catch {
-    throw new Error(`Error fetching document with id ${document.documentId}.`);
+    throw new Error(`Error fetching document with id ${documentId}.`);
   }
 }
 
@@ -114,4 +115,37 @@ function buildLocalesWithFallbacksForLocale(
   }
 
   return resultLocales;
+}
+
+const accessTokenPayloadSchema = z.object({ project_id: z.string() });
+
+function parseAccessTokenPayload(accessToken: string) {
+  const base64UrlEncodedPayload = accessToken.split(".")[1];
+  const decodedPayload = decodePayload(base64UrlEncodedPayload);
+  const payload = accessTokenPayloadSchema.parse(JSON.parse(decodedPayload));
+
+  return {
+    projectId: payload.project_id,
+  };
+}
+
+function decodePayload(payload: string) {
+  if (typeof window === undefined) {
+    const decodedPayload = Buffer.from(payload, "base64").toString("utf-8");
+
+    return decodedPayload;
+  }
+
+  const base64EncodedPayload = payload.replace(/-/g, "+").replace(/_/g, "/");
+  const decodedPayload = decodeURIComponent(
+    window
+      .atob(base64EncodedPayload)
+      .split("")
+      .map(function (c) {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join("")
+  );
+
+  return decodedPayload;
 }

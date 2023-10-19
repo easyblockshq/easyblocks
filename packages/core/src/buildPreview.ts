@@ -1,5 +1,6 @@
-import { getAppUrlRoot } from "@easyblocks/utils";
-import { buildDocument } from "./buildDocument";
+import { getAppUrlRoot, serialize } from "@easyblocks/utils";
+import { buildEntry } from "./buildEntry";
+import { loadCompilerScript } from "./loadScripts";
 import { Config, ContextParams } from "./types";
 
 export async function buildPreview(
@@ -24,22 +25,32 @@ export async function buildPreview(
 
   const data = await response.json();
 
-  const { externalData, renderableDocument } = await buildDocument({
-    document: {
-      documentId,
-      projectId,
-      rootContainer: "content",
-      config: {
+  const compiler = await loadCompilerScript();
+
+  const { externalData, renderableContent, meta, configAfterAuto } =
+    await buildEntry({
+      compiler,
+      contextParams: {
+        ...contextParams,
+        rootContainer: data.root_container,
+      },
+      entry: {
         _id: "root",
         _template: "$ComponentContainer",
         widthAuto: widthAuto ?? false,
         width: width ?? 5000,
         Component: [data.config.config],
       },
-    },
-    config: { ...config, accessToken },
-    locale: contextParams.locale,
-  });
+      config: { ...config, accessToken },
+      externalData: {},
+    });
 
-  return { renderableDocument, externalData };
+  return {
+    renderableDocument: {
+      renderableContent,
+      meta: serialize(meta),
+      configAfterAuto,
+    },
+    externalData,
+  };
 }
