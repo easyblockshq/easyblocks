@@ -23,8 +23,8 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { flushSync } from "react-dom";
 import {
-  BaseSelection,
   createEditor,
   Descendant,
   Editor,
@@ -707,6 +707,7 @@ function RichText(props: RichTextProps) {
       cursor: !isEnabled ? "inherit" : "text",
       "& *": {
         pointerEvents: isEnabled ? "auto" : "none",
+        userSelect: isEnabled ? "auto" : "none",
       },
       "& *::selection": {
         backgroundColor: "#b4d5fe",
@@ -735,24 +736,9 @@ function RichText(props: RichTextProps) {
     isEnabled,
   ]);
 
-  const selectionBeforeEnabling = useRef<BaseSelection>(null);
-
   return (
     <Slate editor={editor} value={editorValue} onChange={handleEditableChange}>
-      <div
-      // onDoubleClick={() => {
-      //   // if (isEnabled) {
-      //   //   return;
-      //   // }
-
-      //   setIsEnabled(true);
-      // }}
-      // onMouseDown={(event) => {
-      //   if (isEnabled) {
-      //     event.stopPropagation();
-      //   }
-      // }}
-      >
+      <div>
         {/* this wrapper div prevents from Chrome bug where "pointer-events: none" on contenteditable is ignored*/}
         <Editable
           className={contentEditableClassName}
@@ -771,14 +757,34 @@ function RichText(props: RichTextProps) {
               return;
             }
 
-            if (event.detail === 1) {
-              JSON.stringify(editor.selection, null, 2);
-              selectionBeforeEnabling.current = editor.selection;
-            }
-
             if (event.detail === 2) {
               event.preventDefault();
-              setIsEnabled(true);
+
+              flushSync(() => {
+                setIsEnabled(true);
+              });
+
+              ReactEditor.focus(editor);
+
+              const editorSelectionRange = {
+                anchor: Editor.start(editor, []),
+                focus: Editor.end(editor, []),
+              };
+
+              Transforms.setSelection(editor, editorSelectionRange);
+              const editorSelectionDOMRange = ReactEditor.toDOMRange(
+                editor,
+                editorSelectionRange
+              );
+
+              window
+                .getSelection()
+                ?.setBaseAndExtent(
+                  editorSelectionDOMRange.startContainer,
+                  editorSelectionDOMRange.startOffset,
+                  editorSelectionDOMRange.endContainer,
+                  editorSelectionDOMRange.endOffset
+                );
             }
           }}
           readOnly={!isEnabled}
