@@ -30,7 +30,7 @@ export default async function Page({
       >
         <div className={"text-xl font-semibold mb-3"}>Easyblocks demo</div>
         <div className={"text-md text-neutral-700 max-w-xl"}>
-          Below we're rendering the content you built in Easyblocks demo.
+          Below we are rendering the content you built in Easyblocks demo.
           Easyblocks content can be rendered anywhere within your project.
         </div>
       </div>
