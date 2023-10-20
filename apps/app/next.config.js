@@ -1,7 +1,10 @@
 const path = require("node:path");
+const transpileModules = require("next-transpile-modules");
+
+const withTM = transpileModules(["@easyblocks/app-utils", "@easyblocks/utils"]);
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig = withTM({
   reactStrictMode: true,
   swcMinify: true,
   compiler: {
@@ -38,21 +41,8 @@ const nextConfig = {
           { key: "Access-Control-Allow-Headers", value: "*" },
         ],
       },
-      {
-        source: "/editor.js",
-        headers: [
-          { key: "Access-Control-Allow-Credentials", value: "true" },
-          { key: "Access-Control-Allow-Origin", value: "*" },
-          {
-            key: "Access-Control-Allow-Methods",
-            value: "GET,OPTIONS",
-          },
-          { key: "Access-Control-Allow-Headers", value: "*" },
-        ],
-      },
     ];
   },
-  transpilePackages: ["@easyblocks/design-system"],
-};
+});
 
 module.exports = nextConfig;
