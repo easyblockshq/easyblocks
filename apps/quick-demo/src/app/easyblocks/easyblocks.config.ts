@@ -484,5 +484,6 @@ export const easyblocksConfig: Config = {
     },
   },
   disableCustomTemplates: true,
+  hideCloseButton: true,
   templates,
 };

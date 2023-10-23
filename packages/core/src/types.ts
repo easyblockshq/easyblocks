@@ -519,6 +519,7 @@ export type Config = {
   locales?: Array<Locale>;
   rootContainers?: Record<string, RootContainer>;
   disableCustomTemplates?: boolean;
+  hideCloseButton?: boolean;
   templates?: Template[];
 };
 

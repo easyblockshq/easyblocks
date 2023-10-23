@@ -740,6 +740,7 @@ const EditorContent = ({
       compilationContext.rootContainers.find((r) => r.id === rootContainer)
     ),
     disableCustomTemplates: props.config.disableCustomTemplates ?? false,
+
     isFullScreen,
   };
 
@@ -999,6 +1000,7 @@ const EditorContent = ({
               onAdminModeChange={(val) => {
                 setAdminMode(val);
               }}
+              hideCloseButton={props.config.hideCloseButton ?? false}
             />
             <SidebarAndContentContainer height={appHeight}>
               <ContentContainer

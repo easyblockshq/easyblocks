@@ -78,6 +78,7 @@ export const EditorTopBar: React.FC<{
   isFullScreen: boolean;
   setFullScreen: (x: boolean) => void;
   onAdminModeChange: (x: boolean) => void;
+  hideCloseButton: boolean;
 }> = ({
   onClose,
   onBreakpointChange,
@@ -90,6 +91,7 @@ export const EditorTopBar: React.FC<{
   isFullScreen,
   setFullScreen,
   onAdminModeChange,
+  hideCloseButton,
 }) => {
   const headingRef = useRef<HTMLDivElement>(null);
 
@@ -100,20 +102,25 @@ export const EditorTopBar: React.FC<{
   return (
     <TopBar ref={headingRef}>
       <TopBarLeft>
-        <SSButtonGhost
-          icon={SSIcons.Close}
-          hideLabel
-          onClick={() => {
-            if (onClose) {
-              onClose();
-            }
-          }}
-        >
-          Close
-        </SSButtonGhost>
-        <div
-          style={{ height: "100%", background: SSColors.black10, width: 1 }}
-        />
+        {!hideCloseButton && (
+          <>
+            <SSButtonGhost
+              icon={SSIcons.Close}
+              hideLabel
+              onClick={() => {
+                if (onClose) {
+                  onClose();
+                }
+              }}
+            >
+              Close
+            </SSButtonGhost>
+
+            <div
+              style={{ height: "100%", background: SSColors.black10, width: 1 }}
+            />
+          </>
+        )}
         <SSButtonGhost
           icon={SSIcons.Undo}
           hideLabel
