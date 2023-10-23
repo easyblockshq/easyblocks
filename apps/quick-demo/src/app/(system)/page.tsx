@@ -11,6 +11,7 @@ export default function MainPage() {
     undefined
   );
   const [isOpen, setOpen] = useState<boolean>(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   useEffect(() => {
     const documentRaw = localStorage.getItem(DOCUMENT_KEY);
@@ -33,86 +34,140 @@ export default function MainPage() {
 
   return (
     <div className={"relative w-full h-screen flex flex-row"}>
-      <div
-        className={
-          "basis-72 p-3 border-r-neutral-200 border-r flex flex-col justify-between"
-        }
-      >
-        <div>
-          <h2 className={"text-xl font-semibold mb-8"}>Easyblocks demo</h2>
-          <p className={"text-sm mb-4 text-black-2 max-w-lg"}>
-            On the right side you see a demo of an embeddable Easyblocks editor
-            configured for building simple landing page content.
-          </p>
-
-          <p className={"text-sm mb-4 text-black-2 max-w-lg"}>
-            The most important{" "}
-            <a
-              href={"https://docs.easyblocks.io/#no-code-components"}
-              target={"_blank"}
-              className={linkClasses}
+      {!sidebarOpen && (
+        <div
+          className={
+            "basis-8 border-r-neutral-200 border-r flex flex-col items-center px-2 pt-[7px]"
+          }
+        >
+          <button
+            type="button"
+            className="hover:border border-neutral-200 rounded-sm w-[28px] h-[28px] flex justify-center items-center text-black-1 active:bg-neutral-200"
+            onClick={() => {
+              setSidebarOpen(true);
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 -960 960 960"
+              className={"w-5 h-5"}
             >
-              No-Code Components
-            </a>{" "}
-            in this example are: Hero Banner, Collection, Two Cards section,
-            Basic Card and a very simple Product Card.
-          </p>
+              <path d="m531.692-480-184-184L376-692.308 588.308-480 376-267.692 347.692-296l184-184Z" />
+            </svg>
+          </button>
 
-          <div
-            className={"max-w-lg h-[1px] bg-neutral-200 mb-5 mt-5 mt-10"}
-          ></div>
-
-          <p className={"text-sm mb-4 text-black-2 max-w-lg"}>
-            Easyblocks is a super-flexible visual builder framework. It helps
-            developers build completely customized visual builders in weeks
-            instead of years. Check the docs link below for more info.
-          </p>
-
-          <p className={"text-sm mb-4 text-black-2 max-w-lg"}>
-            <a
-              href={"https://docs.easyblocks.io/"}
-              target={"_blank"}
-              className={linkClasses}
-            >
-              Easyblocks documentation
-              <ArrowRightIcon />
-            </a>
-          </p>
+          <h2
+            className={"text-md font-semibold mt-6"}
+            style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}
+          >
+            Easyblocks demo
+          </h2>
         </div>
+      )}
 
-        <div>
-          {document && (
-            <div>
-              <p
-                className={"text-sm mb-0.5 text-black-2 max-w-lg font-semibold"}
+      {sidebarOpen && (
+        <div
+          className={
+            "basis-72 px-3 pt-[7px] border-r-neutral-200 border-r flex flex-col justify-between"
+          }
+        >
+          <div className={"flex flex-col"}>
+            <button
+              type="button"
+              className="hover:border border-neutral-200 rounded-sm w-[28px] h-[28px] flex items-center justify-center text-black-1 active:bg-neutral-200 mr-[-4px] self-end"
+              onClick={() => {
+                setSidebarOpen(false);
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 -960 960 960"
+                className={"w-5 h-5"}
               >
-                Last content update
-              </p>
-              <p className={"text-sm text-black-2 max-w-lg mb-1"}>
-                {formatDate(new Date(document.updatedAt))}
-              </p>
-              {document && (
-                <p className={"text-sm text-black-2 max-w-lg"}>
-                  <a
-                    href={`${window.location.origin}/page/${document.id}`}
-                    target={"_blank"}
-                    className={linkClasses}
-                  >
-                    Preview link
-                    <ArrowRightIcon />
-                  </a>
+                <path d="M560-267.692 347.692-480 560-692.308 588.308-664l-184 184 184 184L560-267.692Z" />
+              </svg>
+            </button>
+
+            <h2 className={"text-xl font-semibold  mb-8 mt-10"}>
+              Easyblocks demo
+            </h2>
+
+            <p className={"text-sm mb-4 text-black-2 max-w-lg"}>
+              On the right side you see a demo of an embeddable Easyblocks
+              editor configured for building simple landing page content.
+            </p>
+
+            <p className={"text-sm mb-4 text-black-2 max-w-lg"}>
+              The most important{" "}
+              <a
+                href={"https://docs.easyblocks.io/#no-code-components"}
+                target={"_blank"}
+                className={linkClasses}
+              >
+                No-Code Components
+              </a>{" "}
+              in this example are: Hero Banner, Collection, Two Cards section,
+              Basic Card and a very simple Product Card.
+            </p>
+
+            <div
+              className={"max-w-lg h-[1px] bg-neutral-200 mb-5 mt-5 mt-10"}
+            ></div>
+
+            <p className={"text-sm mb-4 text-black-2 max-w-lg"}>
+              Easyblocks is a super-flexible visual builder framework. It helps
+              developers build completely customized visual builders in weeks
+              instead of years. Check the docs link below for more info.
+            </p>
+
+            <p className={"text-sm mb-4 text-black-2 max-w-lg"}>
+              <a
+                href={"https://docs.easyblocks.io/"}
+                target={"_blank"}
+                className={linkClasses}
+              >
+                Easyblocks documentation
+                <ArrowRightIcon />
+              </a>
+            </p>
+          </div>
+
+          <div>
+            {document && (
+              <div>
+                <p
+                  className={
+                    "text-sm mb-0.5 text-black-2 max-w-lg font-semibold"
+                  }
+                >
+                  Last content update
                 </p>
-              )}
-            </div>
-          )}
+                <p className={"text-sm text-black-2 max-w-lg mb-1"}>
+                  {formatDate(new Date(document.updatedAt))}
+                </p>
+                {document && (
+                  <p className={"text-sm text-black-2 max-w-lg"}>
+                    <a
+                      href={`${window.location.origin}/page/${document.id}`}
+                      target={"_blank"}
+                      className={linkClasses}
+                    >
+                      Preview link
+                      <ArrowRightIcon />
+                    </a>
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/*<div className={"max-w-lg h-[1px] bg-neutral-200 mb-4 mt-10"}></div>*/}
+
+          {/*<p className={"text-sm mb-3 text-black-2 max-w-lg"}>*/}
+          {/*  For the purpose of this demo the content is stored in Local Storage.*/}
+          {/*</p>*/}
         </div>
-
-        {/*<div className={"max-w-lg h-[1px] bg-neutral-200 mb-4 mt-10"}></div>*/}
-
-        {/*<p className={"text-sm mb-3 text-black-2 max-w-lg"}>*/}
-        {/*  For the purpose of this demo the content is stored in Local Storage.*/}
-        {/*</p>*/}
-      </div>
+      )}
 
       <div className={"flex-auto grid bg-white-1"}>
         <DocumenWidgetInline

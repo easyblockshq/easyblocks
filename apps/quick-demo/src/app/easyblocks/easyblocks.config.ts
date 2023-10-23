@@ -5,6 +5,7 @@ import { builtinEditableComponentsDefinitions } from "@easyblocks/editable-compo
 import { mockImageWidget } from "./externalData/mockMedia/mockImageWidget";
 import { pexelsImageWidget } from "./resources/pexels/pexelsImageWidget";
 import { productWidget } from "./resources/product/productWidget";
+import starterTemplate from "./templates/starterTemplate.json";
 
 if (!process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN) {
   throw new Error("Missing NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN");
@@ -29,10 +30,7 @@ export const easyblocksConfig: Config = {
   rootContainers: {
     content: {
       label: "Content document template",
-      defaultConfig: {
-        _template: "$RootSections",
-        data: [],
-      },
+      defaultConfig: starterTemplate,
     },
     product: {
       label: "Product document template",

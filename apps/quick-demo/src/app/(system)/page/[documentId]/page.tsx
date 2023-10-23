@@ -22,10 +22,10 @@ export default async function Page({
   const fetchedExternalData = await fetch(externalData);
 
   return (
-    <div>
+    <div className={"bg-white-1"}>
       <div
         className={
-          "container mx-auto text-center my-28 p-5 flex justify-center flex-col items-center"
+          "container mx-auto text-center py-28 px-5 flex justify-center flex-col items-center"
         }
       >
         <div className={"text-xl font-semibold mb-3"}>Easyblocks demo</div>
