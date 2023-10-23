@@ -68,7 +68,7 @@ export default function MainPage() {
       {sidebarOpen && (
         <div
           className={
-            "basis-72 px-3 pt-[7px] border-r-neutral-200 border-r flex flex-col justify-between"
+            "basis-72 px-3 pt-[7px] pb-3 border-r-neutral-200 border-r flex flex-col justify-between"
           }
         >
           <div className={"flex flex-col"}>
