@@ -47,7 +47,11 @@ export default function MainPage() {
 
           <p className={"text-sm mb-4 text-black-2 max-w-lg"}>
             The most important{" "}
-            <a href={"#"} className={linkClasses}>
+            <a
+              href={"https://docs.easyblocks.io/#no-code-components"}
+              target={"_blank"}
+              className={linkClasses}
+            >
               No-Code Components
             </a>{" "}
             are Hero Banner, Collection, Two Cards section, Basic Card and very
@@ -55,7 +59,11 @@ export default function MainPage() {
           </p>
 
           <p className={"text-sm mb-4 text-black-2 max-w-lg"}>
-            <a href={"#"} className={linkClasses}>
+            <a
+              href={"https://docs.easyblocks.io/"}
+              target={"_blank"}
+              className={linkClasses}
+            >
               Easyblocks documentation
               <ArrowRightIcon />
             </a>
