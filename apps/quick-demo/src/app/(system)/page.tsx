@@ -41,7 +41,7 @@ export default function MainPage() {
         <div>
           <h2 className={"text-xl font-semibold mb-8"}>Easyblocks demo</h2>
           <p className={"text-sm mb-4 text-black-2 max-w-lg"}>
-            On the right side you see a demo of embeddable Easyblocks editor
+            On the right side you see a demo of an embeddable Easyblocks editor
             configured for building simple landing page content.
           </p>
 
@@ -54,8 +54,18 @@ export default function MainPage() {
             >
               No-Code Components
             </a>{" "}
-            are Hero Banner, Collection, Two Cards section, Basic Card and very
-            simple Product Card.
+            in this example are: Hero Banner, Collection, Two Cards section,
+            Basic Card and a very simple Product Card.
+          </p>
+
+          <div
+            className={"max-w-lg h-[1px] bg-neutral-200 mb-5 mt-5 mt-10"}
+          ></div>
+
+          <p className={"text-sm mb-4 text-black-2 max-w-lg"}>
+            Easyblocks is a super-flexible visual builder framework. It helps
+            developers build completely customized visual builders in weeks
+            instead of years. Check the docs link below for more info.
           </p>
 
           <p className={"text-sm mb-4 text-black-2 max-w-lg"}>
