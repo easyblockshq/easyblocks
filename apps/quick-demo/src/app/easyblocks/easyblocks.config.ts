@@ -166,14 +166,70 @@ export const easyblocksConfig: Config = {
     },
     {
       id: "yellow",
-      label: "Yellow",
+      label: "Lemonade Yellow",
       value: "#FCF0C5",
     },
     {
-      id: "green",
-      label: "Green",
-      value: "#BFD1AC",
+      id: "golden-yellow",
+      label: "Golden Yellow",
+      value: "#FCF0C5",
     },
+    {
+      id: "lavender",
+      label: "Lavender",
+      value: "#E1E2ED",
+    },
+    {
+      id: "olive",
+      label: "Olive",
+      value: "#A9A886",
+    },
+    {
+      id: "green",
+      label: "Mint",
+      value: "#ACC3AD",
+    },
+    {
+      id: "emerald",
+      label: "Emerald",
+      value: "#8BC6AD",
+    },
+    {
+      id: "dusty-rose",
+      label: "Dusty Rose",
+      value: "#DBBDD1",
+    },
+    {
+      id: "terracotta",
+      label: "Terracotta",
+      value: "#823735",
+    },
+    {
+      id: "sky-blue",
+      label: "Sky Blue",
+      value: "#7DABDA",
+    },
+    {
+      id: "dark-blue",
+      label: "Dark Blue",
+      value: "#31426A",
+    },
+    {
+      id: "olive",
+      label: "Olive",
+      value: "#A9A886",
+    },
+    {
+      id: "dusty-blue",
+      label: "Dusty Blue",
+      value: "#ACB4BA",
+    },
+    {
+      id: "blush",
+      label: "Blush",
+      value: "#ECDBCF",
+    },
+
     {
       id: "grey_02",
       label: "Grey 2",
