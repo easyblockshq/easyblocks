@@ -154,7 +154,12 @@ const SectionCard: React.FC<SectionCardProps> = ({
     <CardRoot>
       <ImageContainer ref={imageRef} onClick={onSelect} mode={mode}>
         {previewImage && <CardImg src={previewImage} />}
-        {!previewImage && (
+        {!previewImage && template.thumbnailLabel && (
+          <CardImgPlaceholder>
+            <span style={{ color: "#6c6c6c" }}>{template.thumbnailLabel}</span>
+          </CardImgPlaceholder>
+        )}
+        {!previewImage && !template.thumbnailLabel && (
           <CardImgPlaceholder>
             <svg
               xmlns="http://www.w3.org/2000/svg"

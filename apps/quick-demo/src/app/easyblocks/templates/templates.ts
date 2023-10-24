@@ -59,6 +59,7 @@ export const templates: Template[] = [
   {
     id: "BannerSection2_Empty",
     config: BannerSection2_empty,
+    thumbnailLabel: "Empty Hero Banner",
   },
   NoomaBannerSection4,
   NoomaBannerSection1,
@@ -92,10 +93,12 @@ export const templates: Template[] = [
   {
     id: "Slider_empty",
     config: Slider_empty,
+    thumbnailLabel: "Empty Slider",
   },
   {
     id: "Grid_empty",
     config: Grid_empty,
+    thumbnailLabel: "Empty Grid",
   },
   NoomaGrid1,
   NoomaGrid2,
@@ -132,6 +135,7 @@ export const templates: Template[] = [
   {
     id: "TwoCards_Empty",
     config: TwoCards_empty,
+    thumbnailLabel: "Empty Two Cards",
   },
 
   NoomaTwoCards1,
@@ -142,6 +146,7 @@ export const templates: Template[] = [
   {
     id: "BasicCard_Empty",
     config: BasicCard_empty,
+    thumbnailLabel: "Empty Basic Card",
   },
   NoomaBasicCard1,
   NoomaBasicCard2,
