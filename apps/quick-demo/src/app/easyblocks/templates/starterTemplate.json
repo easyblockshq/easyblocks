@@ -32,7 +32,8 @@
         "xl": {
           "value": {
             "$res": true,
-            "xl": "5vw"
+            "md": "5vw",
+            "lg": "8vw"
           },
           "ref": "containerMargin.default"
         }
@@ -40,8 +41,8 @@
       "containerMaxWidth": {
         "$res": true,
         "xl": {
-          "ref": "none",
-          "value": "none"
+          "value": "none",
+          "ref": "none"
         }
       },
       "escapeMargin": {
@@ -297,7 +298,6 @@
                         }
                       },
                       "elements": {
-                        "__localized": true,
                         "en-US": [
                           {
                             "_id": "0fe93a63-e0af-4e22-8f93-1aaca738c25f",
@@ -400,24 +400,23 @@
                         }
                       },
                       "elements": {
-                        "__localized": true,
                         "en-US": [
                           {
                             "_id": "cd581ae8-0e4c-4244-a7b4-c32450ea3fe7",
                             "_template": "$richTextBlockElement",
-                            "traceId": "$richTextBlockElement-76a56c4e",
+                            "traceId": "$richTextBlockElement-fe34654c",
                             "type": "paragraph",
                             "elements": [
                               {
                                 "_id": "6d1012c5-3d01-4bc4-8214-aab7ac86e27d",
                                 "_template": "$richTextLineElement",
-                                "traceId": "$richTextLineElement-f8bb315b",
+                                "traceId": "$richTextLineElement-cf3a0229",
                                 "elements": [
                                   {
                                     "_id": "405b48fc-20ae-4a8f-a1e9-d05d2d0195f1",
                                     "_template": "$richTextPart",
-                                    "traceId": "$richTextPart-6424dded",
-                                    "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
+                                    "traceId": "$richTextPart-c02487af",
+                                    "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do this is cool and gets even cooler incididunt ut labore.",
                                     "font": {
                                       "$res": true,
                                       "xl": {
@@ -505,117 +504,6 @@
                       },
                       "Buttons": [
                         {
-                          "_id": "6f1dfec5-42f8-407d-8a56-7140e093352e",
-                          "_template": "$StandardButton",
-                          "_master": "buttonDark",
-                          "traceId": "$StandardButton-407bd601",
-                          "_itemProps": {
-                            "$buttons": {
-                              "Buttons": {}
-                            }
-                          },
-                          "Action": [],
-                          "variant": "label",
-                          "label": {
-                            "__localized": true,
-                            "id": "local.9527ef97-4451-4912-bbf8-1d5101180b73",
-                            "value": {
-                              "en-US": "Show now"
-                            }
-                          },
-                          "icon": {
-                            "value": "<svg viewBox=\"0 -960 960 960\"><path fill=\"currentColor\" d=\"m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z\"/></svg>",
-                            "ref": "heart"
-                          },
-                          "color": {
-                            "$res": true,
-                            "xl": {
-                              "value": "#f9f8f3",
-                              "ref": "grey_01"
-                            }
-                          },
-                          "minHeight": {
-                            "$res": true,
-                            "xl": "42"
-                          },
-                          "minWidth": {
-                            "$res": true,
-                            "xl": "100"
-                          },
-                          "horizontalPadding": {
-                            "$res": true,
-                            "xl": {
-                              "value": "16px",
-                              "ref": "16"
-                            }
-                          },
-                          "gap": {
-                            "$res": true,
-                            "xl": {
-                              "value": "6px",
-                              "ref": "6"
-                            }
-                          },
-                          "cornerMode": {
-                            "$res": true,
-                            "xl": "custom"
-                          },
-                          "cornerRadius": {
-                            "$res": true,
-                            "xl": "12"
-                          },
-                          "font": {
-                            "$res": true,
-                            "xl": {
-                              "value": {
-                                "$res": true,
-                                "2xl": {
-                                  "fontSize": 13,
-                                  "lineHeight": 1.8,
-                                  "fontFamily": "test-soehne-mono"
-                                }
-                              },
-                              "ref": "body2"
-                            }
-                          },
-                          "underline": "off",
-                          "underlineOffset": {
-                            "$res": true,
-                            "xl": "1"
-                          },
-                          "iconSize": {
-                            "$res": true,
-                            "xl": "20"
-                          },
-                          "hasBackground": true,
-                          "backgroundColor": {
-                            "$res": true,
-                            "xl": {
-                              "value": "#252525",
-                              "ref": "grey_05"
-                            }
-                          },
-                          "hasBorder": false,
-                          "borderWidth": {
-                            "$res": true,
-                            "xl": "1"
-                          },
-                          "borderColor": {
-                            "$res": true,
-                            "xl": {
-                              "value": "#252525",
-                              "ref": "grey_05"
-                            }
-                          },
-                          "boxShadow": {
-                            "$res": true,
-                            "xl": {
-                              "value": "none",
-                              "ref": "none"
-                            }
-                          }
-                        },
-                        {
                           "_id": "5d0efb92-7d0b-46b9-be9c-4d0ae490afa9",
                           "_template": "$StandardButton",
                           "_master": "buttonDark",
@@ -628,7 +516,6 @@
                           "Action": [],
                           "variant": "label",
                           "label": {
-                            "__localized": true,
                             "id": "local.bf4eeb58-e17d-4194-ad60-06d743208357",
                             "value": {
                               "en-US": "Learn more"
@@ -707,6 +594,116 @@
                             }
                           },
                           "hasBorder": true,
+                          "borderWidth": {
+                            "$res": true,
+                            "xl": "1"
+                          },
+                          "borderColor": {
+                            "$res": true,
+                            "xl": {
+                              "value": "#252525",
+                              "ref": "grey_05"
+                            }
+                          },
+                          "boxShadow": {
+                            "$res": true,
+                            "xl": {
+                              "value": "none",
+                              "ref": "none"
+                            }
+                          }
+                        },
+                        {
+                          "_id": "6f1dfec5-42f8-407d-8a56-7140e093352e",
+                          "_template": "$StandardButton",
+                          "_master": "buttonDark",
+                          "traceId": "$StandardButton-407bd601",
+                          "_itemProps": {
+                            "$buttons": {
+                              "Buttons": {}
+                            }
+                          },
+                          "Action": [],
+                          "variant": "label",
+                          "label": {
+                            "id": "local.9527ef97-4451-4912-bbf8-1d5101180b73",
+                            "value": {
+                              "en-US": "Show now"
+                            }
+                          },
+                          "icon": {
+                            "value": "<svg viewBox=\"0 -960 960 960\"><path fill=\"currentColor\" d=\"m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z\"/></svg>",
+                            "ref": "heart"
+                          },
+                          "color": {
+                            "$res": true,
+                            "xl": {
+                              "value": "#f9f8f3",
+                              "ref": "grey_01"
+                            }
+                          },
+                          "minHeight": {
+                            "$res": true,
+                            "xl": "42"
+                          },
+                          "minWidth": {
+                            "$res": true,
+                            "xl": "100"
+                          },
+                          "horizontalPadding": {
+                            "$res": true,
+                            "xl": {
+                              "value": "16px",
+                              "ref": "16"
+                            }
+                          },
+                          "gap": {
+                            "$res": true,
+                            "xl": {
+                              "value": "6px",
+                              "ref": "6"
+                            }
+                          },
+                          "cornerMode": {
+                            "$res": true,
+                            "xl": "custom"
+                          },
+                          "cornerRadius": {
+                            "$res": true,
+                            "xl": "12"
+                          },
+                          "font": {
+                            "$res": true,
+                            "xl": {
+                              "value": {
+                                "$res": true,
+                                "2xl": {
+                                  "fontSize": 13,
+                                  "lineHeight": 1.8,
+                                  "fontFamily": "test-soehne-mono"
+                                }
+                              },
+                              "ref": "body2"
+                            }
+                          },
+                          "underline": "off",
+                          "underlineOffset": {
+                            "$res": true,
+                            "xl": "1"
+                          },
+                          "iconSize": {
+                            "$res": true,
+                            "xl": "20"
+                          },
+                          "hasBackground": true,
+                          "backgroundColor": {
+                            "$res": true,
+                            "xl": {
+                              "value": "#252525",
+                              "ref": "grey_05"
+                            }
+                          },
+                          "hasBorder": false,
                           "borderWidth": {
                             "$res": true,
                             "xl": "1"
@@ -1177,7 +1174,6 @@
               "Action": [],
               "variant": "icon",
               "label": {
-                "__localized": true,
                 "id": "local.a7ad2403-077b-46af-9488-85f8e9a1cff7",
                 "value": {
                   "en-US": "Click me"
@@ -1302,7 +1298,6 @@
               "Action": [],
               "variant": "icon",
               "label": {
-                "__localized": true,
                 "id": "local.6ca58c11-2454-4a7f-a8c0-bd9077865a1d",
                 "value": {
                   "en-US": "Click me"
@@ -1420,7 +1415,8 @@
         "xl": {
           "value": {
             "$res": true,
-            "xl": "5vw"
+            "md": "5vw",
+            "lg": "8vw"
           },
           "ref": "containerMargin.default"
         }
@@ -1428,8 +1424,8 @@
       "containerMaxWidth": {
         "$res": true,
         "xl": {
-          "ref": "lg",
-          "value": "1280"
+          "ref": "none",
+          "value": "none"
         }
       },
       "escapeMargin": {
@@ -1499,7 +1495,6 @@
                 }
               },
               "elements": {
-                "__localized": true,
                 "en-US": [
                   {
                     "_id": "08bfac36-eebe-4baa-ae65-71d196d6d0bf",
@@ -1606,8 +1601,8 @@
             "bottomMargin": {
               "$res": true,
               "xl": {
-                "value": "0px",
-                "ref": "0"
+                "ref": "0",
+                "value": "0px"
               }
             }
           }
@@ -1618,7 +1613,8 @@
         "xl": {
           "value": {
             "$res": true,
-            "xl": "5vw"
+            "md": "5vw",
+            "lg": "8vw"
           },
           "ref": "containerMargin.default"
         }
@@ -1626,8 +1622,8 @@
       "containerMaxWidth": {
         "$res": true,
         "xl": {
-          "ref": "lg",
-          "value": "1280"
+          "value": "none",
+          "ref": "none"
         }
       },
       "escapeMargin": {
@@ -1911,7 +1907,6 @@
                             }
                           },
                           "elements": {
-                            "__localized": true,
                             "en-US": [
                               {
                                 "_id": "4992d404-7fc4-42fb-98b9-dd378168cb18",
@@ -2014,7 +2009,6 @@
                             }
                           },
                           "elements": {
-                            "__localized": true,
                             "en-US": [
                               {
                                 "_id": "1547ca05-d540-45a7-9420-e69e24b47159",
@@ -2131,7 +2125,6 @@
                               "Action": [],
                               "variant": "label",
                               "label": {
-                                "__localized": true,
                                 "id": "local.a2571a0b-6a01-4ec6-9021-2a5ebafe2e15",
                                 "value": {
                                   "en-US": "Show now"
@@ -2944,23 +2937,24 @@
       "containerMargin": {
         "$res": true,
         "xl": {
+          "ref": "containerMargin.default",
           "value": {
             "$res": true,
-            "xl": "5vw"
-          },
-          "ref": "containerMargin.default"
+            "md": "5vw",
+            "lg": "8vw"
+          }
         }
       },
       "containerMaxWidth": {
         "$res": true,
         "xl": {
-          "ref": "lg",
-          "value": "1280"
+          "value": "none",
+          "ref": "none"
         }
       },
       "escapeMargin": {
         "$res": true,
-        "xl": true
+        "xl": false
       },
       "hide": {
         "$res": true,
@@ -3240,7 +3234,6 @@
                         }
                       },
                       "elements": {
-                        "__localized": true,
                         "en-US": [
                           {
                             "_id": "07702fc4-c363-453c-9af3-bb89c0bfc1d8",
@@ -3343,7 +3336,6 @@
                         }
                       },
                       "elements": {
-                        "__localized": true,
                         "en-US": [
                           {
                             "_id": "a8deb39f-2c13-4624-ad25-bbe61810e374",
@@ -3460,7 +3452,6 @@
                           "Action": [],
                           "variant": "label",
                           "label": {
-                            "__localized": true,
                             "id": "local.798807ba-c5d7-490d-a2ab-104b2e79c8b2",
                             "value": {
                               "en-US": "Discover"
@@ -3996,7 +3987,6 @@
                             }
                           },
                           "elements": {
-                            "__localized": true,
                             "en-US": [
                               {
                                 "_id": "581c8ff2-e41b-41d3-bb16-aaf06e5772a7",
@@ -4093,7 +4083,6 @@
                             }
                           },
                           "elements": {
-                            "__localized": true,
                             "en-US": [
                               {
                                 "_id": "4c075662-40f7-48f7-a50b-8d7c4522e673",
@@ -4567,7 +4556,6 @@
                             }
                           },
                           "elements": {
-                            "__localized": true,
                             "en-US": [
                               {
                                 "_id": "887cf395-4986-4fbb-bf2f-e6ea98eaeffd",
@@ -4664,7 +4652,6 @@
                             }
                           },
                           "elements": {
-                            "__localized": true,
                             "en-US": [
                               {
                                 "_id": "301e0a5e-98fd-4a9d-8733-21977f0fa616",
@@ -5051,7 +5038,6 @@
               "Action": [],
               "variant": "icon",
               "label": {
-                "__localized": true,
                 "id": "local.4227ca13-40a0-4f66-a3be-7f0b60e33ce8",
                 "value": {
                   "en-US": "Click me"
@@ -5175,7 +5161,6 @@
               "Action": [],
               "variant": "icon",
               "label": {
-                "__localized": true,
                 "id": "local.c88d8674-367a-418d-874f-5329149be6a1",
                 "value": {
                   "en-US": "Click me"
@@ -5290,18 +5275,19 @@
       "containerMargin": {
         "$res": true,
         "xl": {
+          "ref": "containerMargin.default",
           "value": {
             "$res": true,
-            "xl": "10vw"
-          },
-          "ref": "containerMargin.large"
+            "md": "5vw",
+            "lg": "8vw"
+          }
         }
       },
       "containerMaxWidth": {
         "$res": true,
         "xl": {
-          "ref": "md",
-          "value": "1024"
+          "value": "1024",
+          "ref": "md"
         }
       },
       "escapeMargin": {
@@ -5371,7 +5357,6 @@
                 }
               },
               "elements": {
-                "__localized": true,
                 "en-US": [
                   {
                     "_id": "33e45185-8559-46fd-80db-bb41b2b067b0",
@@ -5504,7 +5489,6 @@
                   "Action": [],
                   "variant": "label",
                   "label": {
-                    "__localized": true,
                     "id": "local.98ede691-8644-4aac-89be-a2ceacafc269",
                     "value": {
                       "en-US": "Shop Atik Tables"
@@ -6017,7 +6001,6 @@
               "Action": [],
               "variant": "icon",
               "label": {
-                "__localized": true,
                 "id": "local.d8131f1e-26c3-44b6-b5e9-8c887da61138",
                 "value": {
                   "en-US": "Click me"
@@ -6142,7 +6125,6 @@
               "Action": [],
               "variant": "icon",
               "label": {
-                "__localized": true,
                 "id": "local.60a0a273-0e13-47ce-9c22-36f6f07cd612",
                 "value": {
                   "en-US": "Click me"
@@ -6260,7 +6242,8 @@
         "xl": {
           "value": {
             "$res": true,
-            "xl": "5vw"
+            "md": "5vw",
+            "lg": "8vw"
           },
           "ref": "containerMargin.default"
         }
@@ -6268,8 +6251,8 @@
       "containerMaxWidth": {
         "$res": true,
         "xl": {
-          "ref": "lg",
-          "value": "1280"
+          "ref": "none",
+          "value": "none"
         }
       },
       "escapeMargin": {
@@ -6339,7 +6322,6 @@
                 }
               },
               "elements": {
-                "__localized": true,
                 "en-US": [
                   {
                     "_id": "26b1b19f-a3f6-4bfa-96ae-c036f92bf9be",
@@ -6446,8 +6428,8 @@
             "bottomMargin": {
               "$res": true,
               "xl": {
-                "ref": "0",
-                "value": "0px"
+                "value": "0px",
+                "ref": "0"
               }
             }
           }
@@ -6458,7 +6440,8 @@
         "xl": {
           "value": {
             "$res": true,
-            "xl": "5vw"
+            "md": "5vw",
+            "lg": "8vw"
           },
           "ref": "containerMargin.default"
         }
@@ -6758,7 +6741,6 @@
                             }
                           },
                           "elements": {
-                            "__localized": true,
                             "en-US": [
                               {
                                 "_id": "236d5362-5964-4cf6-9f35-4608bc044a5b",
@@ -6861,7 +6843,6 @@
                             }
                           },
                           "elements": {
-                            "__localized": true,
                             "en-US": [
                               {
                                 "_id": "19322d25-8280-4762-900a-a2fbcdd53f6f",
@@ -6978,7 +6959,6 @@
                               "Action": [],
                               "variant": "label",
                               "label": {
-                                "__localized": true,
                                 "id": "local.c6ba99d2-ab8a-4461-bfb5-a012475701be",
                                 "value": {
                                   "en-US": "Discover"
@@ -7499,7 +7479,6 @@
                             }
                           },
                           "elements": {
-                            "__localized": true,
                             "en-US": [
                               {
                                 "_id": "671b8e68-642a-40c2-bbff-a8d8a82beedb",
@@ -7602,7 +7581,6 @@
                             }
                           },
                           "elements": {
-                            "__localized": true,
                             "en-US": [
                               {
                                 "_id": "9a4a434e-9da9-4a2b-8805-b20a01baa878",
@@ -7719,7 +7697,6 @@
                               "Action": [],
                               "variant": "label",
                               "label": {
-                                "__localized": true,
                                 "id": "local.297ad5ca-3ef4-4d26-b401-b9925048f3aa",
                                 "value": {
                                   "en-US": "Discover"

@@ -86,7 +86,7 @@ export const sectionWrapperFieldsProvider = (options: {
   return [
     {
       prop: "containerMargin",
-      label: "Container",
+      label: "Left / Right",
       type: "space",
       group: "Section margins",
       prefix: "containerMargin",

@@ -19,7 +19,7 @@ const rootSectionsComponentDefinition: InternalRenderableComponentDefinition<"$R
               fields = [
                 {
                   ...(data[index - 1].fields[1] as EditingField),
-                  label: "Top margin",
+                  label: "Top",
                 },
                 fields[1],
               ];

@@ -448,11 +448,20 @@ export const easyblocksConfig: Config = {
   space: [
     {
       id: "containerMargin.default",
-      value: "5vw",
+      label: "Standard",
+      value: {
+        "@md": "5vw",
+        "@lg": "8vw",
+      },
     },
     {
       id: "containerMargin.large",
-      value: "10vw",
+      label: "Large",
+      value: {
+        "@xs": "5vw",
+        "@md": "8vw",
+        "@lg": "12vw",
+      },
     },
   ],
   containerWidths: [
