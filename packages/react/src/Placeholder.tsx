@@ -6,13 +6,11 @@ import { EditorContextType } from "@easyblocks/editor";
 import { toArray } from "@easyblocks/utils";
 import React, { FC } from "react";
 import { useEasyblocksMetadata } from "./EasyblocksMetadataProvider";
+import { PlaceholderAppearance } from "@easyblocks/core";
 
 export type PlaceholderProps = {
   onClick: () => void;
-  width?: number;
-  height: number;
-  autoWidth?: boolean;
-  label: string;
+  appearance: PlaceholderAppearance;
   meta: any;
   sortable: ReturnType<typeof useSortable>;
 };
@@ -23,17 +21,18 @@ function Placeholder(props: PlaceholderProps) {
   } = useEasyblocksMetadata();
   const styles: Record<string, any> = {};
 
-  if (props.width) {
-    const aspectRatio = props.height / props.width;
-    styles.paddingBottom = `${aspectRatio * 100}%`;
-  } else {
-    styles.height = `${props.height}px`;
+  const { aspectRatio, width, height, label } = props.appearance;
+
+  if (height) {
+    styles.height = `${height}px`;
+  } else if (aspectRatio) {
+    styles.paddingBottom = `${(1 / aspectRatio) * 100}%`;
   }
 
   const rootClassName = stitches.css({
     border: `1px dashed ${SSColors.blue50}`,
     position: "relative",
-    width: `${props.autoWidth ? "auto" : props.width + "px"}`,
+    width: `${width ? `${width}px` : "auto"}`,
     height: "auto",
     transition: "all 0.1s",
   });
@@ -72,15 +71,21 @@ function Placeholder(props: PlaceholderProps) {
       data-draggable-dragging={props.sortable.active !== null}
     >
       <svg
-        width="16"
-        height="16"
-        viewBox="0 0 16 16"
+        width="15"
+        height="15"
+        viewBox="0 0 15 15"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        style={{ color: SSColors.blue50 }}
       >
-        <path d="M8 2V14M2 8H14" stroke={SSColors.blue50} />
+        <path
+          d="M8 2.75C8 2.47386 7.77614 2.25 7.5 2.25C7.22386 2.25 7 2.47386 7 2.75V7H2.75C2.47386 7 2.25 7.22386 2.25 7.5C2.25 7.77614 2.47386 8 2.75 8H7V12.25C7 12.5261 7.22386 12.75 7.5 12.75C7.77614 12.75 8 12.5261 8 12.25V8H12.25C12.5261 8 12.75 7.77614 12.75 7.5C12.75 7.22386 12.5261 7 12.25 7H8V2.75Z"
+          fill="currentColor"
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+        ></path>
       </svg>
-      &nbsp;&nbsp;{props.label}
+      {label && <span>&nbsp;&nbsp;{label}</span>}
     </div>
   );
 
@@ -106,6 +111,7 @@ function Placeholder(props: PlaceholderProps) {
 type TypePlaceholderComponentBuilderProps = {
   id: string;
   path: string;
+  appearance?: PlaceholderAppearance;
   type: string;
   onClick: () => void;
   meta: any;
@@ -148,46 +154,56 @@ export default function TypePlaceholder(
 
   const { type } = props;
 
-  let placeholderWidth: number | undefined = undefined;
-  let placeholderHeight: number;
-  let placeholderLabel: string;
-  let autoWidth = true;
+  let appearance: PlaceholderAppearance;
 
-  if (type === "section") {
-    placeholderWidth = 1920;
-    placeholderHeight = 600;
-    placeholderLabel = "Add section";
-  } else if (type === "card") {
-    placeholderWidth = 420;
-    placeholderHeight = 600;
-    placeholderLabel = "Add card";
-  } else if (type === "button") {
-    placeholderWidth = 250;
-    placeholderHeight = 50;
-    placeholderLabel = "Add button";
-    autoWidth = false;
-  } else if (type === "item") {
-    // placeholderWidth = 250;
-    placeholderHeight = 50;
-    placeholderLabel = "Add item";
-  } else if (type === "image") {
-    placeholderWidth = 250;
-    placeholderHeight = 250;
-    placeholderLabel = "Add image / video / solid color";
-  } else if (type === "icon") {
-    placeholderWidth = 50;
-    placeholderHeight = 50;
-    placeholderLabel = "Pick icon";
+  if (props.appearance) {
+    appearance = props.appearance;
   } else {
-    throw new Error("error, bad type: '" + type + "'");
+    if (type === "section") {
+      appearance = {
+        label: "Add section",
+        aspectRatio: 3.2,
+      };
+    } else if (type === "card") {
+      appearance = {
+        label: "Add card",
+        aspectRatio: 0.7,
+      };
+    } else if (type === "button") {
+      appearance = {
+        label: "Add button",
+        width: 250,
+        height: 50,
+      };
+    } else if (type === "item") {
+      appearance = {
+        label: "Add item",
+        // width: 250,
+        height: 50,
+      };
+    } else if (type === "image") {
+      appearance = {
+        label: "Add image",
+        aspectRatio: 1,
+      };
+    } else if (type === "icon") {
+      appearance = {
+        label: "Pick icon",
+        width: 50,
+        height: 50,
+      };
+    } else {
+      appearance = {
+        label: "Add",
+        width: 50,
+        aspectRatio: 1,
+      };
+    }
   }
 
   return (
     <Placeholder
-      width={placeholderWidth}
-      height={placeholderHeight}
-      autoWidth={autoWidth}
-      label={placeholderLabel}
+      appearance={appearance}
       onClick={props.onClick}
       meta={props.meta}
       sortable={sortable}

@@ -262,6 +262,7 @@ function getCompiledSubcomponents(
         id={id}
         path={path}
         type={type}
+        appearance={(schemaProp as ComponentSchemaProp).placeholderAppearance}
         onClick={() => {
           function handleComponentPickerCloseMessage(
             event: ComponentPickerClosedEvent

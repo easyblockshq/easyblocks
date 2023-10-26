@@ -6,6 +6,12 @@ type ScalarOrCollection<T> = T | Array<T>;
 
 export type RefMap = { [key: string]: ConfigComponent };
 
+export type PlaceholderAppearance = {
+  width?: number;
+  height?: number;
+  aspectRatio?: number;
+  label?: string;
+};
 export interface ConfigComponentIdentifier {
   id: string;
 }
@@ -227,6 +233,7 @@ export type ComponentSchemaProp = SchemaPropShared<
   picker?: ComponentPickerType;
   required?: boolean;
   noInline?: boolean;
+  placeholderAppearance?: PlaceholderAppearance;
 };
 
 export type ComponentCollectionSchemaProp = SchemaPropShared<
@@ -239,12 +246,17 @@ export type ComponentCollectionSchemaProp = SchemaPropShared<
   itemFields?: SchemaProp[];
   passFields?: PassedField[];
   noInline?: boolean;
+  placeholderAppearance?: PlaceholderAppearance;
 };
 
 export type ComponentCollectionLocalisedSchemaProp = Omit<
   ComponentCollectionSchemaProp,
   "type"
-> & { type: "component-collection-localised"; noInline?: boolean };
+> & {
+  type: "component-collection-localised";
+  noInline?: boolean;
+  placeholderAppearance?: PlaceholderAppearance;
+};
 
 export type ComponentFixedSchemaProp = SchemaPropShared<
   "component-fixed",
