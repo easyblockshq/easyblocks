@@ -46,10 +46,7 @@ export const EditorSidebar: React.FC<EditorSidebarProps> = (props) => {
   })();
 
   const areMultipleFieldsSelected = focussedField.length > 1;
-  const focusedFields =
-    focussedField.length === 0 && editorContext.activeRootContainer.schema
-      ? [""]
-      : focussedField;
+  const focusedFields = focussedField.length === 0 ? [""] : focussedField;
   const fieldsPerFocusedField = focusedFields.map((focusedField) => {
     return buildTinaFields(focusedField, editorContext);
   });

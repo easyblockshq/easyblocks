@@ -88,7 +88,7 @@ export type CompilationRootContainer = {
   id: string;
   label?: string;
   defaultConfig: Omit<ComponentConfig, "_id">;
-  widths?: Record<string, string | number>;
+  widths: Record<string, string | number>;
   schema?: Array<ExternalSchemaProp>;
 };
 

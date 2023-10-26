@@ -12,7 +12,6 @@ export * from "./configFindAllPaths";
 export * from "./configMap";
 export * from "./configTraverse";
 export * from "./duplicateConfig";
-export * from "./getDefaultConfig";
 export * from "./isComponentConfig";
 export * from "./traverseComponents";
 export {
@@ -88,9 +87,7 @@ const getComponentMainType = (componentTypes: string[]) => {
   } else if (componentTypes.includes("actionTextModifier")) {
     type = "actionTextModifier";
   } else {
-    // TODO: what if other types come here? TO DO!
-    console.error("no way to determine type for", componentTypes);
-    throw new Error(`no way to determine type for ${componentTypes}`);
+    type = "item";
   }
 
   return type;

@@ -63,7 +63,7 @@ export type EasyblocksProviderProps = {
   children: ReactNode;
 } & EasyblocksContextState;
 
-const EasyblocksProvider: React.FC<EasyblocksProviderProps> = (props) => {
+function EasyblocksProvider(props: EasyblocksProviderProps) {
   return (
     <EasyblocksProviderContext.Provider
       value={createEasyblocksProviderContextValue(props)}
@@ -71,7 +71,7 @@ const EasyblocksProvider: React.FC<EasyblocksProviderProps> = (props) => {
       {props.children}
     </EasyblocksProviderContext.Provider>
   );
-};
+}
 
 function useEasyblocksProviderContext() {
   const context = useContext(EasyblocksProviderContext);

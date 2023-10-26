@@ -1,5 +1,6 @@
 import {
   CompilationContextType,
+  CompilationRootContainer,
   DEFAULT_DEVICES,
   InternalTextModifierDefinition,
   parseSpacing,
@@ -14,6 +15,7 @@ import {
   EditorLauncherProps,
   ExternalSchemaProp,
   ResponsiveValue,
+  RootContainer,
   Spacing,
   Theme,
 } from "@easyblocks/core";
@@ -277,39 +279,48 @@ function buildRootContainers(
 
   if (rootContainers) {
     for (const [id, rootContainer] of Object.entries(rootContainers)) {
-      const resultRootContainer: CompilationContextType["rootContainers"][0] = {
+      const resultRootContainer: CompilationRootContainer = {
         id,
         label: rootContainer.label,
         defaultConfig: rootContainer.defaultConfig,
         schema: rootContainer.schema,
+        widths: buildRootContainerWidths(id, rootContainer, devices),
       };
-
-      if (rootContainer.widths) {
-        if (rootContainer.widths.length !== devices.length) {
-          throw new Error(
-            `Invalid number of widths for root container "${id}". Expected ${devices.length} widths, got ${rootContainer.widths.length}.`
-          );
-        }
-
-        resultRootContainer.widths = Object.fromEntries(
-          rootContainer.widths.map((containerWidth, index) => {
-            const currentDevice = devices[index];
-
-            return [
-              currentDevice.id,
-              containerWidth > currentDevice.w ? "100%" : containerWidth,
-            ];
-          })
-        );
-      } else {
-        resultRootContainer.widths = Object.fromEntries(
-          devices.map((device) => [device.id, device.w])
-        );
-      }
 
       resultRootContainers.push(resultRootContainer);
     }
   }
 
   return resultRootContainers;
+}
+
+function buildRootContainerWidths(
+  id: string,
+  rootContainer: RootContainer,
+  devices: Devices
+) {
+  let widths: CompilationRootContainer["widths"];
+
+  if (rootContainer.widths) {
+    if (rootContainer.widths.length !== devices.length) {
+      throw new Error(
+        `Invalid number of widths for root container "${id}". Expected ${devices.length} widths, got ${rootContainer.widths.length}.`
+      );
+    }
+
+    widths = Object.fromEntries(
+      rootContainer.widths.map((containerWidth, index) => {
+        const currentDevice = devices[index];
+
+        return [
+          currentDevice.id,
+          containerWidth > currentDevice.w ? "100%" : containerWidth,
+        ];
+      })
+    );
+  } else {
+    widths = Object.fromEntries(devices.map((device) => [device.id, device.w]));
+  }
+
+  return widths;
 }

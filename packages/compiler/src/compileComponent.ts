@@ -576,8 +576,18 @@ export function compileComponent(
         renderableComponentDefinition.schema
       );
 
+      const identityEditingField = assertDefined(
+        editingInfo.fields.find((f) => f.prop === "$myself")
+      );
+
+      const editingInfoWithoutIdentityField: InternalEditingInfo = {
+        ...editingInfo,
+        // Filter out identity field, since it's not users responsibility to care of it.
+        fields: editingInfo.fields.filter((f) => f.prop !== "$myself"),
+      };
+
       const editingInfoInput = convertInternalEditingInfoToEditingInfo(
-        editingInfo,
+        editingInfoWithoutIdentityField,
         configPrefix
       );
 
@@ -603,6 +613,8 @@ export function compileComponent(
           editorContext,
           configPrefix
         );
+
+        internalEditingInfo.fields?.unshift(identityEditingField);
         deepObjectMergeWithoutArrays(editingInfo, internalEditingInfo);
       }
     }
@@ -1691,6 +1703,7 @@ function convertEditingInfoToInternalEditingInfo(
           editorContext,
           configPrefix
         );
+
       internalEditingInfoFields.push(internalEditingInfoField);
     }
   }
@@ -1807,7 +1820,7 @@ function convertEditingFieldToInternalEditingField(
     // returns an array of paths.
     if (Array.isArray(field.path)) {
       const fieldName =
-        field.path[0].split(".").at(-1) ??
+        field.path[0]?.split(".").at(-1) ??
         raiseError("Expected field name to be present");
       const sources = field.path.map((p) =>
         p.split(".").slice(0, -1).join(".")
@@ -1820,8 +1833,7 @@ function convertEditingFieldToInternalEditingField(
       };
     }
 
-    // FIXME
-    const isAbsolutePath = field.path.split(".")[0] === "data";
+    const isAbsolutePath = isFieldPathAbsolutePath(field, editorContext);
 
     if (isAbsolutePath) {
       if (field.type === "fields") {
@@ -1966,6 +1978,33 @@ function convertEditingFieldToInternalEditingField(
   }
 
   throw new Error(`Unknown field type`);
+}
+
+function isFieldPathAbsolutePath(
+  field: AnyEditingField,
+  editorContext: EditorContextType
+) {
+  const pathFragments = field.path.split(".");
+  const rootValue = dotNotationGet(editorContext.form.values, "");
+  let currentPathFragmentIndex = 0;
+
+  let currentValue = dotNotationGet(
+    rootValue,
+    pathFragments[currentPathFragmentIndex]
+  );
+
+  while (currentValue) {
+    if (pathFragments.length - 1 === currentPathFragmentIndex) {
+      return true;
+    }
+
+    currentValue = dotNotationGet(
+      currentValue,
+      pathFragments[++currentPathFragmentIndex]
+    );
+  }
+
+  return false;
 }
 
 function toAbsolutePath(path: string, configPrefix: string | undefined) {
