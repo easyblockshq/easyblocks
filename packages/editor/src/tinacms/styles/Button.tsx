@@ -103,7 +103,8 @@ export const Button = styled.button<ButtonProps>`
     `};
 `;
 
-export const ICON_BUTTON_SIZE = 28;
+export const ICON_BUTTON_SIZE = 23;
+export const ICON_SIZE = 23;
 
 export const IconButton = styled(Button)`
   padding: 0;
@@ -120,23 +121,10 @@ export const IconButton = styled(Button)`
   align-items: center;
 
   svg {
-    width: 26px;
-    height: 26px;
+    width: ${ICON_SIZE}px;
+    height: ${ICON_SIZE}px;
     transition: all 150ms ease-out;
   }
-
-  ${(p) =>
-    p.small &&
-    css`
-      width: 28px;
-      height: 28px;
-      padding: 0;
-
-      svg {
-        width: 24px;
-        height: 24px;
-      }
-    `};
 
   ${(props) =>
     props.open &&
