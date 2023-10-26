@@ -136,7 +136,8 @@ function IdentityField({ input, field }: IdentityFieldProps) {
           font-weight: 700;
         `}
       >
-        {componentDefinition?.id === rootComponentId
+        {componentDefinition?.id === rootComponentId &&
+        editorContext.activeRootContainer
           ? editorContext.activeRootContainer.label ??
             `${editorContext.activeRootContainer.id} document template`
           : componentDefinition?.label ?? componentDefinition?.id}

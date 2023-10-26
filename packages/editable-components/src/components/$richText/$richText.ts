@@ -4,7 +4,6 @@ import {
   InternalRenderableComponentDefinition,
 } from "@easyblocks/app-utils";
 import {
-  EditingField,
   getFallbackLocaleForLocale,
   LocalisedConfigs,
   RefValue,
@@ -49,32 +48,37 @@ const editing: RichTextEditingFunction = ({
     }
   );
 
-  const richTextBlockPath = `${pathPrefix}.${richTextBlockPaths[0]}`;
-  const richTextBlockType = dotNotationGet(
-    editorContext.form.values,
-    `${richTextBlockPath}.type`
-  );
+  const richTextBlockPath =
+    richTextBlockPaths.length > 0
+      ? `${pathPrefix}.${richTextBlockPaths[0]}`
+      : undefined;
 
   const accessibilityRoleFieldIndex = editingInfo.fields.findIndex(
     (field) => field.path === "accessibilityRole"
   );
 
-  const fieldsBeforeAccessibilityRole = editingInfo.fields.slice(
-    0,
-    accessibilityRoleFieldIndex
-  );
+  const fieldsBeforeAccessibilityRole = editingInfo.fields
+    .slice(0, accessibilityRoleFieldIndex)
+    .filter((field) => {
+      if (field.path === "align" && values.passedAlign !== undefined) {
+        return false;
+      }
 
-  const listStyleField: EditingField = {
-    type: "field",
-    path: `${richTextBlockPath}.type`,
-    label: "List style",
-    group: "Text",
-    visible: richTextBlockPaths.length > 0,
-  };
+      return true;
+    });
 
   const fieldsAfterAccessibilityRole = editingInfo.fields
     .slice(accessibilityRoleFieldIndex)
     .map((field) => {
+      if (!richTextBlockPath) {
+        return field;
+      }
+
+      const richTextBlockType = dotNotationGet(
+        editorContext.form.values,
+        `${richTextBlockPath}.type`
+      );
+
       if (richTextBlockType !== "paragraph") {
         if (field.path === "accessibilityRole") {
           return {
@@ -83,7 +87,7 @@ const editing: RichTextEditingFunction = ({
           };
         }
 
-        if (field.path === "isListStyleAuto" && richTextBlockPaths.length > 0) {
+        if (field.path === "isListStyleAuto") {
           return {
             ...field,
             visible: true,
@@ -135,17 +139,26 @@ const editing: RichTextEditingFunction = ({
   return {
     fields: [
       ...fieldsBeforeAccessibilityRole,
-      {
-        type: "field",
-        path: richTextPartSources.map((source) => `${source}.font`),
-        visible: richTextPartSources.length > 0,
-      },
-      {
-        type: "field",
-        path: richTextPartSources.map((source) => `${source}.color`),
-        visible: richTextPartSources.length > 0,
-      },
-      listStyleField,
+      richTextPartSources.length > 0
+        ? {
+            type: "field",
+            path: richTextPartSources.map((source) => `${source}.font`),
+          }
+        : null,
+      richTextPartSources.length > 0
+        ? {
+            type: "field",
+            path: richTextPartSources.map((source) => `${source}.color`),
+          }
+        : null,
+      richTextBlockPath
+        ? {
+            type: "field",
+            path: `${richTextBlockPath}.type`,
+            label: "List style",
+            group: "Text",
+          }
+        : null,
       ...fieldsAfterAccessibilityRole,
     ].filter(nonNullable()),
   };
@@ -163,6 +176,33 @@ const richTextEditableComponent: InternalRenderableComponentDefinition<"$richTex
         type: "component-collection-localised",
         componentTypes: [richTextBlockElementEditableComponent.id],
         visible: false,
+      },
+      {
+        prop: "align",
+        label: "Align",
+        type: "radio-group$",
+        options: [
+          {
+            value: "left",
+            label: "Left",
+            icon: "AlignLeft",
+            hideLabel: true,
+          },
+          {
+            value: "center",
+            label: "Center",
+            icon: "AlignCenter",
+            hideLabel: true,
+          },
+          {
+            value: "right",
+            label: "Right",
+            icon: "AlignRight",
+            hideLabel: true,
+          },
+        ],
+        defaultValue: "left",
+        group: "Layout",
       },
       {
         prop: "accessibilityRole",

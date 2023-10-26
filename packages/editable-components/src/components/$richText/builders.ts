@@ -18,8 +18,9 @@ function buildRichTextNoCodeEntry(options?: {
   font?: string;
   color?: string;
   accessibilityRole?: string;
+  locale?: string;
 }) {
-  const { accessibilityRole, font, color, text } = options ?? {};
+  const { accessibilityRole, font, color, text, locale = "en" } = options ?? {};
 
   const colorRefValue = {
     ref: color,
@@ -39,7 +40,7 @@ function buildRichTextNoCodeEntry(options?: {
     _template: "$richText",
     accessibilityRole: accessibilityRole ?? "div",
     elements: {
-      en: [
+      [locale ?? "en"]: [
         buildRichTextBlockElementComponentConfig("paragraph", [
           buildRichTextLineElementComponentConfig({
             elements: [
