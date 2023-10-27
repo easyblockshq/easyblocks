@@ -636,6 +636,7 @@ export function compileComponent(
 
   compileSubcomponents(
     editableElement,
+    contextProps,
     subcomponentsContextProps,
     compilationContext,
     refMap,
@@ -850,6 +851,7 @@ function addComponentToSerializedComponentDefinitions(
 
 function compileSubcomponents(
   editableElement: ConfigComponent,
+  contextProps: ContextProps,
   subcomponentsContextProps: Record<string, Record<string, any>>,
   compilationContext: CompilationContextType,
   refMap: RefMap,
@@ -874,40 +876,54 @@ function compileSubcomponents(
       ) {
         return;
       }
-      //
-      // if (isSchemaPropAction(schemaProp)) {
-      //   const actionFieldValue: Array<ConfigComponent> =
-      //     editableElement[schemaProp.prop];
-      //
-      //   if (actionFieldValue.length > 0) {
-      //     const actionConfigPrefix = `${configPrefix}${
-      //       configPrefix === "" ? "" : "."
-      //     }${schemaProp.prop}.0`;
-      //
-      //     const compiledAction = compileAction(
-      //       editableElement[schemaProp.prop][0],
-      //       compilationContext,
-      //       meta,
-      //       actionConfigPrefix,
-      //       cache
-      //     );
-      //
-      //     compiledComponentConfig.actions[schemaProp.prop] = compiledAction;
-      //   } else {
-      //     compiledComponentConfig.actions[schemaProp.prop] = [];
-      //   }
-      //
-      //   return;
-      // }
 
-      const contextProps = subcomponentsContextProps[schemaProp.prop] || {};
+      const childContextProps =
+        subcomponentsContextProps[schemaProp.prop] || {};
+
+      // Subcomponents must always have $width and $widthAuto defined. If wasn't set explicitly then parent's one is used.
+      childContextProps.$width =
+        childContextProps.$width ?? contextProps.$width;
+      childContextProps.$widthAuto =
+        childContextProps.$widthAuto ?? contextProps.$widthAuto;
+
+      if (
+        schemaProp.type === "component-collection" ||
+        schemaProp.type === "component-collection-localised"
+      ) {
+        childContextProps.itemProps = childContextProps.itemProps ?? [];
+
+        let value: any[];
+        if (schemaProp.type === "component-collection") {
+          value = editableElement[schemaProp.prop];
+        } else {
+          const resolvedValue = resolveLocalisedValue(
+            editableElement[schemaProp.prop],
+            compilationContext
+          );
+          if (!resolvedValue) {
+            throw new Error("can't resolve localised value");
+          }
+          value = resolvedValue.value as any[];
+        }
+
+        value.forEach((_: any, index: number) => {
+          childContextProps.itemProps[index] =
+            childContextProps.itemProps[index] ?? {};
+          const itemPropContextProps = childContextProps.itemProps[index];
+
+          itemPropContextProps.$width =
+            itemPropContextProps.$width ?? contextProps.$width;
+          itemPropContextProps.$widthAuto =
+            itemPropContextProps.$widthAuto ?? contextProps.$widthAuto;
+        });
+      }
 
       const compilationOutput = compileFromSchema(
         editableElement[schemaProp.prop],
         schemaProp,
         compilationContext,
         cache,
-        contextProps,
+        childContextProps,
         meta,
         refMap,
         editingInfoComponents?.[schemaProp.prop],
@@ -972,72 +988,6 @@ function compileSubcomponents(
     }
   });
 }
-
-// function compileAction(
-//   editableElement: ConfigComponent,
-//   compilationContext: CompilationContextType,
-//   meta: any,
-//   configPrefix: string,
-//   cache: CompilationCache
-// ): [CompiledActionComponentConfig] {
-//   let componentDefinition = findComponentDefinitionById(
-//     editableElement._template,
-//     compilationContext
-//   );
-//
-//   if (!componentDefinition) {
-//     componentDefinition = findComponentDefinitionById(
-//       "$MissingAction",
-//       compilationContext
-//     )!;
-//
-//     editableElement = {
-//       _template: componentDefinition.id,
-//       _id: uniqueId(),
-//     };
-//   }
-//
-//   addComponentToSerializedComponentDefinitions(
-//     editableElement,
-//     meta,
-//     isNoCodeComponentOfType(componentDefinition, "actionLink")
-//       ? "links"
-//       : "actions",
-//     compilationContext
-//   );
-//
-//   const compiledValues = compileComponentValues(
-//     editableElement,
-//     componentDefinition,
-//     compilationContext,
-//     cache
-//   );
-//
-//   const compiled: CompiledActionComponentConfig = {
-//     _template: editableElement._template,
-//     _id: editableElement._id!,
-//     props: compiledValues,
-//   };
-//
-//   if (compilationContext.isEditing) {
-//     const editorContext = compilationContext as EditorContextType;
-//
-//     const editingInfo = buildDefaultEditingInfo(
-//       componentDefinition,
-//       configPrefix,
-//       editorContext,
-//       compiledValues,
-//       editableElement._template
-//     );
-//
-//     compiled.__editing = {
-//       // @ts-expect-error FIXME: field that holds Component$$$ schema prop
-//       fields: editingInfo.fields,
-//     };
-//   }
-//
-//   return [compiled];
-// }
 
 function calculateWidths(
   compilationContext: CompilationContextType,

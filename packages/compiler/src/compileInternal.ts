@@ -47,6 +47,7 @@ export function compileInternal(
 
   if (activeRootContainer?.widths) {
     contextProps.$width = activeRootContainer.widths;
+    contextProps.$widthAuto = false;
   }
 
   const compilationArtifacts = compileComponent(

@@ -312,10 +312,7 @@ function buildRootContainerWidths(
       rootContainer.widths.map((containerWidth, index) => {
         const currentDevice = devices[index];
 
-        return [
-          currentDevice.id,
-          containerWidth > currentDevice.w ? "100%" : containerWidth,
-        ];
+        return [currentDevice.id, Math.min(containerWidth, currentDevice.w)];
       })
     );
   } else {
