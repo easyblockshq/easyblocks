@@ -15,3 +15,4 @@ export {
   builtinEditableComponents,
   builtinClientOnlyEditableComponents,
 } from "./components";
+export { box } from "./box";

@@ -311,7 +311,6 @@ function buildRootContainerWidths(
     widths = Object.fromEntries(
       rootContainer.widths.map((containerWidth, index) => {
         const currentDevice = devices[index];
-
         return [currentDevice.id, Math.min(containerWidth, currentDevice.w)];
       })
     );
