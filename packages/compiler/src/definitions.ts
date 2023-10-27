@@ -66,6 +66,7 @@ import {
   TrulyResponsiveValue,
   UnresolvedResource,
 } from "@easyblocks/core";
+import { buildRichTextNoCodeEntry } from "@easyblocks/editable-components";
 import { uniqueId } from "@easyblocks/utils";
 import { CompilationCache } from "./CompilationCache";
 import { compileComponent } from "./compileComponent";
@@ -909,6 +910,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
             x[locale]
           );
         }
+
         return normalized;
       },
       compile: (
@@ -1483,6 +1485,23 @@ export function normalizeComponent(
 
   if (!ret.traceId) {
     ret.traceId = generateDefaultTraceId(ret);
+  }
+
+  // RichText is a really specific component. It must have concrete shape to work properly.
+  // When using prop of type `component-fixed` with `componentType: "$richText"` it's going to be initialized with empty
+  // `elements` property which in result will cause RichText to not work properly. To fix this, we're going
+  // to initialize `elements` with default template - the same that's being added when user adds RichText to Stack manually.
+  if (ret._template === "$richText") {
+    if (
+      Object.keys(ret.elements).length === 0 ||
+      ret.elements[compilationContext.contextParams.locale]?.length === 0
+    ) {
+      const richTextConfig = buildRichTextNoCodeEntry({
+        locale: compilationContext.contextParams.locale,
+      });
+
+      ret.elements = richTextConfig.elements;
+    }
   }
 
   return ret;

@@ -2,7 +2,7 @@ import {
   CompilationRootContainer,
   useEditorGlobalKeyboardShortcuts,
 } from "@easyblocks/app-utils";
-import React, { ReactNode, useEffect, useRef } from "react";
+import React, { ReactNode, useRef } from "react";
 
 type CanvasRootProps = {
   children: ReactNode;
@@ -11,22 +11,6 @@ type CanvasRootProps = {
 function CanvasRoot(props: CanvasRootProps) {
   const rootNodeRef = useRef<HTMLDivElement | null>(null);
   const { editorContext } = window.parent.editorWindowAPI;
-
-  useEffect(() => {
-    if (rootNodeRef.current && editorContext.isEditing) {
-      const listener = (e: MouseEvent) => {
-        e.preventDefault();
-      };
-
-      const rootNode = rootNodeRef.current;
-
-      rootNode.addEventListener("click", listener);
-
-      return () => {
-        rootNode.removeEventListener("click", listener);
-      };
-    }
-  }, [editorContext.isEditing]);
 
   useEditorGlobalKeyboardShortcuts(editorContext);
 

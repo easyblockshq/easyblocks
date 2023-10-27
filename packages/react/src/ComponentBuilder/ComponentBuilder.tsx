@@ -166,10 +166,12 @@ function getRenderabilityStatus(
     }
 
     if (externalReference.id) {
-      const externalReferenceLocationKey = getExternalReferenceLocationKey(
-        compiled._id,
-        resourceSchemaProp.prop
-      );
+      const externalReferenceLocationKey = externalReference.id.startsWith("$.")
+        ? externalReference.id
+        : getExternalReferenceLocationKey(
+            compiled._id,
+            resourceSchemaProp.prop
+          );
       const externalValue = externalData[externalReferenceLocationKey];
       status.isLoading = status.isLoading || externalValue === undefined;
       const isDefined =

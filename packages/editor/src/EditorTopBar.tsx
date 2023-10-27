@@ -1,18 +1,15 @@
 import { Devices, Locale } from "@easyblocks/core";
 import {
   SSButtonGhost,
-  SSButtonSecondary,
-  SSButtonPrimary,
   SSColors,
   SSIcons,
+  SSToggle,
   ToggleGroup,
   ToggleGroupItem,
   Tooltip,
-  TooltipTrigger,
   TooltipContent,
+  TooltipTrigger,
   Typography,
-  SSToggleButton,
-  SSToggle,
 } from "@easyblocks/design-system";
 import React, { ReactNode, useRef } from "react";
 import styled from "styled-components";
@@ -167,34 +164,21 @@ export const EditorTopBar: React.FC<{
             alignItems: "center",
           }}
         >
-          <Typography variant={"body"}>Edit mode</Typography>{" "}
+          <Typography
+            variant={"body"}
+            component="label"
+            htmlFor="easyblocks-edit-mode-button"
+          >
+            Edit mode
+          </Typography>{" "}
           <SSToggle
+            name="easyblocks-edit-mode-button"
             checked={isEditing}
             onChange={() => {
               onIsEditingChange();
             }}
           />
         </div>
-
-        {/*<SSButtonSecondary*/}
-        {/*  onClick={() => {*/}
-        {/*    // onIsEditingChange();*/}
-        {/*  }}*/}
-        {/*  icon={SSIcons.OpenInNew}*/}
-        {/*>*/}
-        {/*  Preview*/}
-        {/*</SSButtonSecondary>*/}
-
-        {/*<SSSelect*/}
-        {/*    value={locale}*/}
-        {/*    onChange={onLocaleChange}*/}
-        {/*>*/}
-        {/*  {locales.map((locale) => (*/}
-        {/*      <option key={locale.id} value={locale.id}>*/}
-        {/*        {locale.id}*/}
-        {/*      </option>*/}
-        {/*  ))}*/}
-        {/*</SSSelect>*/}
       </TopBarRight>
     </TopBar>
   );

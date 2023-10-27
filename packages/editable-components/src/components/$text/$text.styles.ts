@@ -1,7 +1,7 @@
 import { box } from "../../box";
 
 export default function (configProps: any) {
-  const align = configProps.align || "left";
+  const align = configProps.passedAlign || "left";
 
   const fontWithDefaults = {
     fontWeight: "initial",

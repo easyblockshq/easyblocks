@@ -2,11 +2,13 @@ import { Alignment } from "@easyblocks/app-utils";
 import { box } from "../../box";
 
 export default function styles(values: Record<string, any>) {
+  const align = values.passedAlign ?? values.align;
+
   return {
     Root: box({
       display: "flex",
-      justifyContent: mapAlignmentToFlexAlignment(values.align),
-      textAlign: values.align,
+      justifyContent: mapAlignmentToFlexAlignment(align),
+      textAlign: align,
     }),
     elements: {
       // We store values within $richText to allow for changing them from sidebar, but we use them inside of $richTextBlockElement.
@@ -15,11 +17,11 @@ export default function styles(values: Record<string, any>) {
         mainColor: values.mainColor,
         mainFont: values.mainFont,
         mainFontSize: values.mainFontSize,
-        align: values.align,
+        align,
       })),
     },
     __props: {
-      align: values.align,
+      align,
     },
   };
 }

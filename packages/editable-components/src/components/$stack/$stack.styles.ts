@@ -87,9 +87,9 @@ export default function (
     }),
     itemWrappers,
     Items: {
-      itemProps: compiled.Items.map((item: any, index: number) => {
+      itemProps: compiled.Items.map((item) => {
         return {
-          align: item.align,
+          passedAlign: item.align,
           $width: Math.min(
             item.width === "max" ? Number.MAX_VALUE : parseInt(item.width),
             $width -

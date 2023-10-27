@@ -745,8 +745,15 @@ const EditorContent = ({
   };
 
   if (editorContext.activeRootContainer.schema) {
-    ["image", "video", "text"].forEach((builtinExternalType) => {
-      // Make sure to add the document data widget to built-in resource definitions
+    const documentParamsTypes = editorContext.activeRootContainer.schema.map(
+      (s) => s.type
+    );
+    const types = Array.from(
+      new Set(["image", "video", "text", ...Object.keys(editorContext.types)])
+    ).filter((t) => !documentParamsTypes.includes(t) && editorContext.types[t]);
+
+    types.forEach((builtinExternalType) => {
+      // Make sure to add the document data widget to custom types
       if (
         !editorContext.types[builtinExternalType].widgets.some(
           (w) => w.id === "@easyblocks/document-data"
