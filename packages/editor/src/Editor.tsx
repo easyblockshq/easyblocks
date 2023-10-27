@@ -475,7 +475,7 @@ function useBuiltContent(
           const config = findConfigById(
             inputRawContent.current,
             editorContext,
-            configId
+            configId === "$" ? inputRawContent.current._id : configId
           );
 
           if (!config) {
