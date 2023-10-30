@@ -101,7 +101,10 @@ export function BlocksControls({
   const canDraggedComponentBeDropped =
     entryComponentDefinition && draggedComponentDefinition
       ? getAllowedComponentTypes(entryComponentDefinition).some((type) => {
-          return toArray(draggedComponentDefinition.type ?? []).includes(type);
+          return (
+            toArray(draggedComponentDefinition.type ?? []).includes(type) ||
+            draggedComponentDefinition.id === type
+          );
         })
       : true;
 
