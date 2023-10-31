@@ -1679,21 +1679,26 @@ function convertEditingInfoToInternalEditingInfo(
 
       if (Array.isArray(childEditingInfo)) {
         internalEditingInfoComponents[name] = {
-          items: childEditingInfo.map((editingInfoItem) => {
-            const result: EditingInfoComponent = {
-              fields:
-                editingInfoItem!.fields?.map((field) => {
-                  const internalEditingInfoField =
-                    convertEditingFieldToInternalEditingField(
-                      field,
-                      internalEditingInfo,
-                      componentDefinition,
-                      editorContext,
-                      configPrefix
-                    );
+          items: childEditingInfo.map((editingInfoItem, index) => {
+            const sourceInternalFields = (
+              sourceInternalEditingInfoComponent as EditingInfoComponentCollection
+            ).items[index].fields;
 
-                  return internalEditingInfoField;
-                }) ?? [],
+            const internalFields = editingInfoItem!.fields?.map((field) => {
+              const internalEditingInfoField =
+                convertEditingFieldToInternalEditingField(
+                  field,
+                  internalEditingInfo,
+                  componentDefinition,
+                  editorContext,
+                  configPrefix
+                );
+
+              return internalEditingInfoField;
+            });
+
+            const result: EditingInfoComponent = {
+              fields: internalFields ?? sourceInternalFields,
             };
 
             if (editingInfoItem.direction) {
