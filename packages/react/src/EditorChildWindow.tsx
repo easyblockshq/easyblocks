@@ -110,10 +110,9 @@ export function EasyblocksCanvas() {
                 const itemMovedEvent = itemMoved({
                   fromPath: activeData.path,
                   toPath: overData.path,
-                  placement: event.over.id.toString().split(".")[1] as
-                    | "after"
-                    | "before"
-                    | undefined,
+                  placement: ifValidPlacement(
+                    event.over.id.toString().split(".")[1]
+                  ),
                 });
 
                 requestAnimationFrame(() => {
@@ -176,4 +175,11 @@ function getSortableItems(
   );
 
   return sortableItems;
+}
+function ifValidPlacement(value: string): "before" | "after" | undefined {
+  if (value === "before" || value === "after") {
+    return value;
+  }
+
+  return;
 }

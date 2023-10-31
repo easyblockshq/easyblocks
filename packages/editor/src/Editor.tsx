@@ -884,22 +884,39 @@ const EditorContent = ({
               return [toPath];
             });
           } else {
+            // TODO: We should reuse logic of pasting items here, but we need to handle the case of pasting into placeholder (empty array)
             const isToPathPlaceholder =
               toPathParseResult.fieldName !== undefined;
 
-            const insertionPath = `${toPathParseResult.parent.path}.${
-              toPathParseResult.parent.fieldName
-            }${
+            const insertionPath = `${
+              toPathParseResult.parent.path === ""
+                ? ""
+                : toPathParseResult.parent.path + "."
+            }${toPathParseResult.parent.fieldName}${
               isToPathPlaceholder
                 ? `.${toPathParseResult.index}.${toPathParseResult.fieldName}`
                 : ""
             }`;
 
             actions.runChange(() => {
-              const newConfig = duplicateConfig(
+              let newConfig = duplicateConfig(
                 dotNotationGet(form.values, fromPath),
                 editorContext
               );
+
+              if (
+                !newConfig._itemProps[toPathParseResult.templateId]?.[
+                  toPathParseResult.fieldName!
+                ]
+              ) {
+                newConfig._itemProps = {
+                  [toPathParseResult.templateId]: {
+                    [toPathParseResult.fieldName!]: {},
+                  },
+                };
+
+                newConfig = normalize(newConfig, editorContext);
+              }
 
               const insertionIndex = calculateInsertionIndex(
                 fromPath,
@@ -1222,6 +1239,11 @@ function calculateInsertionIndex(
   const mostCommonPath = getMostCommonSubPath(fromPath, toPath);
   const mostCommonPathParseResult = parsePath(mostCommonPath ?? "", form);
   const toPathParseResult = parsePath(toPath, form);
+  const toPathNoCodeEntry = dotNotationGet(form.values, toPath);
+
+  if (toPathNoCodeEntry.length === 0) {
+    return 0;
+  }
 
   // If there is no index in common path, it means that we're moving items between two sections
   if (mostCommonPathParseResult.index === undefined) {
