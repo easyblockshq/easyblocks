@@ -32,6 +32,7 @@
     "@dnd-kit/sortable": "^7.0.2",
     "@easyblocks/core": "workspace:*",
     "@easyblocks/editor": "workspace:*",
+    "@easyblocks/editable-components": "workspace:*",
     "@stitches/core": "^1.2.5",
     "lodash": "^4.17.21",
     "zod": "^3.21.4"

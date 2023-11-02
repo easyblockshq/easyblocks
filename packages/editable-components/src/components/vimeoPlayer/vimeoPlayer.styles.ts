@@ -63,13 +63,5 @@ export default function styles(values: VimeoPlayerStateAndProps) {
       textAlign: "center",
       padding: 32,
     }),
-    __props: {
-      aspectRatio: values.aspectRatio,
-      isLoop: values.isLoop,
-      isAutoPlay: values.isAutoPlay,
-      isMuted: values.isMuted,
-      videoId: values.videoId,
-      areControlsDisabled: values.areControlsDisabled,
-    },
   };
 }

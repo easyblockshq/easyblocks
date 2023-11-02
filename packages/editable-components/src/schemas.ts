@@ -25,18 +25,13 @@ import $separatorStyles from "./components/Separator/Separator.styles";
 import { sectionWrapperEditing } from "./components/SectionWrapper/SectionWrapper.editing";
 import { $sectionWrapperStyles } from "./components/SectionWrapper/SectionWrapper.styles";
 
+import { borderSchemaProps } from "./borderHelpers";
 import { backgroundColorComponentDefinition } from "./components/$backgroundColor/$backgroundColor";
 import { buttonsComponentDefinition } from "./components/$buttons/$buttons";
 import { imageComponentDefinition } from "./components/$image/image";
-import { richTextEditableComponent } from "./components/$richText/$richText";
-import { richTextBlockElementEditableComponent } from "./components/$richText/$richTextBlockElement/$richTextBlockElement";
-import { richTextInlineWrapperElementEditableComponent } from "./components/$richText/$richTextInlineWrapperElement/$richTextInlineWrapperElement";
-import { richTextLineElementEditableComponent } from "./components/$richText/$richTextLineElement/$richTextLineElement";
-import { richTextPartEditableComponent } from "./components/$richText/$richTextPart/$richTextPart";
 import { rootGridComponentDefinition } from "./components/$RootGrid/$RootGrid";
 import { rootSectionsComponentDefinition } from "./components/$RootSections/$RootSections";
 import { stackComponentDefinition } from "./components/$stack/stack";
-import { textEditableComponent } from "./components/$text/$text";
 import { twoItemsComponentDefinition } from "./components/$twoItems/twoItems";
 import { videoComponentDefinition } from "./components/$video/video";
 import { bannerCard2SeparateStackModeController } from "./components/BannerCard2/BannerCard2.controller";
@@ -46,28 +41,12 @@ import {
 } from "./components/BasicCard/BasicCard";
 import { arePaddingFieldsSeparate } from "./components/BasicCard/BasicCard.controller";
 import { cardPlaceholderDefinition } from "./components/CardPlaceholder/CardPlaceholder";
+import { componentContainerDefinition } from "./components/ComponentContainer/ComponentContainer";
 import { playgroundComponentDefinition } from "./components/Playground/Playground";
 import { twoCardsAuto } from "./components/TwoCards/TwoCards.auto";
 import { TWO_CARDS_COL_NUM } from "./components/TwoCards/twoCardsConstants";
 import { vimeoPlayerEditableComponent } from "./components/vimeoPlayer/vimeoPlayer";
 import { zoneComponentDefinition } from "./components/Zone/Zone";
-import { componentContainerDefinition } from "./components/ComponentContainer/ComponentContainer";
-import { borderSchemaProps } from "./borderHelpers";
-
-function pxValueNormalize(from: number, to: number) {
-  return (x: string) => {
-    const num = parseInt(x);
-    if (isNaN(num)) {
-      return null;
-    }
-
-    if (num < from || num > to) {
-      return null;
-    }
-
-    return num.toString();
-  };
-}
 
 export const sectionWrapperFieldsProvider = (options: {
   fixedEscapeMarginValue?: boolean;
@@ -318,12 +297,6 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
     rootSectionsComponentDefinition,
     rootGridComponentDefinition,
 
-    richTextEditableComponent,
-    richTextBlockElementEditableComponent,
-    richTextLineElementEditableComponent,
-    richTextPartEditableComponent,
-    richTextInlineWrapperElementEditableComponent,
-
     imageComponentDefinition,
     videoComponentDefinition,
     buttonsComponentDefinition,
@@ -371,7 +344,6 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
       ],
     },
     twoItemsComponentDefinition,
-    textEditableComponent,
 
     backgroundColorComponentDefinition,
 

@@ -46,6 +46,7 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         label: "Aspect Ratio",
         type: "stringToken",
         tokenId: "aspectRatios",
+        buildOnly: true,
       },
       {
         prop: "enablePlaybackControls",

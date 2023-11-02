@@ -19,3 +19,5 @@ export type { FetchingContext } from "./createFetchingContext";
 export { buildEntry } from "./buildEntry";
 export { buildDocument } from "./buildDocument";
 export { isNoCodeComponentOfType } from "./isNoCodeComponentOfType";
+export { spacingToPx } from "./spacingToPx";
+export { box } from "./box";

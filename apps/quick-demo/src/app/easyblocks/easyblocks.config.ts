@@ -89,14 +89,6 @@ export const easyblocksConfig: Config = {
           type: "boolean",
         },
       ],
-      styles: (values: any) => {
-        return {
-          __props: {
-            relatedProductsMode: values.relatedProductsMode,
-            withBackdrop: values.withBackdrop,
-          },
-        };
-      },
     },
     {
       id: "$Link",
@@ -117,14 +109,6 @@ export const easyblocksConfig: Config = {
           defaultValue: true,
         },
       ],
-      styles: (values: any) => {
-        return {
-          __props: {
-            url: values.url,
-            shouldOpenInNewWindow: values.shouldOpenInNewWindow,
-          },
-        };
-      },
     },
     {
       id: "$AlertAction",
@@ -139,13 +123,6 @@ export const easyblocksConfig: Config = {
           defaultValue: "Lorem ipsum",
         },
       ],
-      styles: (values: any) => {
-        return {
-          __props: {
-            text: values.text,
-          },
-        };
-      },
     },
   ],
   colors: [

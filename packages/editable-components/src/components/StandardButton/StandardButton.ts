@@ -62,6 +62,7 @@ export const StandardButtonNoCodeComponent: InternalRenderableComponentDefinitio
         visible: (values) => {
           return values.variant !== "label";
         },
+        buildOnly: true,
       },
 
       {

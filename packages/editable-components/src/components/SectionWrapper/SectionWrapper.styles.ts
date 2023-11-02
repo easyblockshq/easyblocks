@@ -261,8 +261,5 @@ export function $sectionWrapperStyles(
       ...Component,
       tracingType: "section",
     },
-    __props: {
-      headerMode: compiled.headerMode,
-    },
   };
 }

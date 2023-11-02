@@ -1,11 +1,19 @@
 "use client";
-import React, { createContext, ReactNode, useContext } from "react";
-import { ImageProps, StandardImage } from "./StandardImage";
-import { ActionHandler, LinkProvider, EasyblocksButton } from "./types";
-import { easyblocksStitchesInstances } from "./ssr";
-import { createStitches } from "@stitches/core";
-import { resop } from "./resop";
 import { EventSink } from "@easyblocks/core";
+import {
+  RichTextBlockElementClient,
+  RichTextClient,
+  RichTextInlineWrapperElementClient,
+  RichTextLineElementClient,
+  RichTextPartClient,
+  TextClient,
+} from "@easyblocks/editable-components";
+import { createStitches } from "@stitches/core";
+import React, { createContext, ReactNode, useContext } from "react";
+import { resop } from "./resop";
+import { easyblocksStitchesInstances } from "./ssr";
+import { ImageProps, StandardImage } from "./StandardImage";
+import { ActionHandler, EasyblocksButton, LinkProvider } from "./types";
 
 type EasyblocksContextState = {
   actions?: { [name: string]: ActionHandler };
@@ -47,8 +55,18 @@ function createEasyblocksProviderContextValue(
     }
   }
 
+  const components: EasyblocksProviderContextValue["components"] = {
+    "$richText.client": RichTextClient,
+    $richTextBlockElement: RichTextBlockElementClient,
+    $richTextInlineWrapperElement: RichTextInlineWrapperElementClient,
+    $richTextLineElement: RichTextLineElementClient,
+    $richTextPart: RichTextPartClient,
+    "$text.client": TextClient,
+    ...(props.components ?? {}),
+  };
+
   return {
-    components: props.components ?? {},
+    components,
     buttons: props.buttons ?? {},
     actions: props.actions ?? {},
     links: props.links ?? {},

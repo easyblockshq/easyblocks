@@ -16,7 +16,6 @@ interface RichTextPartStateAndProps {
 export default function styles({
   color,
   font,
-  value,
   __modifierStyles,
 }: RichTextPartStateAndProps) {
   const fontWithDefaults = {
@@ -39,10 +38,5 @@ export default function styles({
       },
       "span"
     ),
-    __props: {
-      color,
-      font,
-      value,
-    },
   };
 }

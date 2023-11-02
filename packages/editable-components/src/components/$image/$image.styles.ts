@@ -23,7 +23,6 @@ export default function styles(configProps: Record<string, unknown>) {
     }),
     __props: {
       aspectRatio: configProps.passedAspectRatio ?? configProps.aspectRatio,
-      gridBaseLineHeight: configProps.gridBaseLineHeight,
     },
   };
 }

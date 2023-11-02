@@ -493,7 +493,7 @@ export type RootContainer = {
   schema?: Array<ExternalSchemaProp>;
 };
 
-type EditableComponentDefinition = {
+export type NoCodeComponentDefinition = {
   id: string;
   schema: Array<SchemaProp>;
   type?: string | string[];
@@ -503,14 +503,6 @@ type EditableComponentDefinition = {
   auto?: any;
   pasteSlots?: Array<string>;
 };
-
-//
-// type EditableComponentDefinition = {
-//   id: string;
-//   schema: Array<SchemaProp>;
-//   type?: string | string[];
-//   label?: string;
-// };
 
 export type Config = {
   accessToken: string;
@@ -525,7 +517,7 @@ export type Config = {
   boxShadows?: RuntimeConfigThemeValue<string>[];
   containerWidths?: RuntimeConfigThemeValue<number>[];
   buttons?: ButtonCustomComponent[];
-  components?: Array<EditableComponentDefinition>;
+  components?: Array<NoCodeComponentDefinition>;
   devices?: ConfigDevices;
   textModifiers?: Array<CustomTextModifier>;
   __masterEnvironment?: boolean;
@@ -582,6 +574,7 @@ export type SchemaPropShared<Type extends string, ValueType> = {
   description?: string;
   group?: string;
   defaultValue?: ValueType;
+  buildOnly?: boolean;
 };
 
 export type UnresolvedResource =

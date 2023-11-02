@@ -18,12 +18,14 @@
     "crypto-js": "^4.1.1",
     "lodash": "^4.17.21",
     "type-fest": "^3.0.0",
+    "postcss-value-parser": "^3.3.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.8",
     "@babel/core": "^7.12.10",
     "@babel/plugin-transform-runtime": "^7.15.0",
+    "@easyblocks/reduce-css-calc": "workspace:*",
     "@jest/types": "^26.6.2",
     "@playwright/test": "^1.31.2",
     "@easyblocks/build-tools": "^1.5.2",

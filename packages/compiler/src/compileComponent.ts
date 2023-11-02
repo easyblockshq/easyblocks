@@ -27,6 +27,7 @@ import {
   parsePath,
   resop2,
   responsiveValueFill,
+  responsiveValueNormalize,
   scalarizeConfig,
   splitTemplateName,
 } from "@easyblocks/app-utils";
@@ -109,7 +110,7 @@ export function compileComponent(
     throw new Error("[compile] wrong input for compileComponent");
   }
 
-  const cachedResult = cache.get(editableElement._id!);
+  const cachedResult = cache.get(editableElement._id);
   const { name, ref } = splitTemplateName(editableElement._template);
 
   let componentDefinition = findComponentDefinitionById(
@@ -118,10 +119,9 @@ export function compileComponent(
   );
 
   if (!componentDefinition) {
-    componentDefinition = findComponentDefinitionById(
-      "$MissingComponent",
-      compilationContext
-    )!;
+    componentDefinition = assertDefined(
+      findComponentDefinitionById("$MissingComponent", compilationContext)
+    );
 
     editableElement = {
       _template: componentDefinition.id,
@@ -150,7 +150,7 @@ export function compileComponent(
     | CompiledCustomComponentConfig
     | CompiledShopstoryComponentConfig = {
     _template: editableElement._template,
-    _id: editableElement._id!,
+    _id: editableElement._id,
     props: {},
     actions: {},
     components: {},
@@ -181,8 +181,6 @@ export function compileComponent(
     "components",
     compilationContext
   );
-
-  // const isCustomComponent = !editableElement._template.startsWith("$");
 
   const { $width, $widthAuto } = calculateWidths(
     compilationContext,
@@ -273,13 +271,12 @@ export function compileComponent(
     });
 
     // First we compile all the props and store them in compiledValues
-    const { traceId, traceClicks, traceImpressions, ..._compiledValues } =
-      compileComponentValues(
-        ownPropsAfterAuto,
-        componentDefinition,
-        compilationContext,
-        cache
-      );
+    const _compiledValues = compileComponentValues(
+      ownPropsAfterAuto,
+      componentDefinition,
+      compilationContext,
+      cache
+    );
 
     compiledValues = { ...deepClone(ownPropsAfterAuto), ..._compiledValues };
 
@@ -504,6 +501,8 @@ export function compileComponent(
       renderableComponentDefinition
     );
 
+    validateStylesProps(__props, componentDefinition);
+
     subcomponentsContextProps = extractContextPropsFromStyles(stylesOutput);
 
     // Move all the boxes to _compiled
@@ -522,18 +521,22 @@ export function compileComponent(
       compiled.styled[key] = compileBoxes(value, compilationContext);
     }
 
-    /**
-     * 1. We must move resources to props by default.
-     * 2. Compiled values at this point are "filled", all breakpoints are defined. It's OK for auto and compilation.
-     * 3. However, it's not OK for responsive resources (like image, video).
-     */
     componentDefinition.schema.forEach((schemaProp: SchemaProp) => {
+      if (schemaProp.buildOnly) {
+        return;
+      }
+
       if (isExternalSchemaProp(schemaProp) || schemaProp.type === "text") {
         // We simply copy ONLY the breakpoints which are defined in the raw data
         compiled.props[schemaProp.prop] = Object.fromEntries(
-          Object.keys(editableElement[schemaProp.prop]).map((key) => {
-            return [key, compiledValues[schemaProp.prop][key]];
+          Object.keys(editableElement[schemaProp.prop]).map((deviceId) => {
+            return [deviceId, compiledValues[schemaProp.prop][deviceId]];
           })
+        );
+      } else {
+        compiled.props[schemaProp.prop] = responsiveValueNormalize(
+          compiledValues[schemaProp.prop],
+          compilationContext.devices
         );
       }
     });
@@ -671,6 +674,25 @@ export function compileComponent(
     compiledComponentConfig: compiled,
     configAfterAuto,
   };
+}
+
+function validateStylesProps(
+  __props: Record<string, unknown>,
+  componentDefinition: InternalComponentDefinition
+) {
+  for (const key of Object.keys(__props)) {
+    const schemaProp = componentDefinition.schema.find((s) => s.prop === key);
+
+    if (!schemaProp) {
+      continue;
+    }
+
+    if (!schemaProp.buildOnly) {
+      throw new Error(
+        `You've returned property "${key}" in "__props" object that conflicts with the same prop in schema of component "${componentDefinition.id}". You can either change the property name or set the schema property as build-only (\`buildOnly: true\`).`
+      );
+    }
+  }
 }
 
 function logCompilationDebugOutput({

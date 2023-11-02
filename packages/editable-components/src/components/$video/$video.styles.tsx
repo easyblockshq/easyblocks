@@ -63,11 +63,6 @@ export default function styles(values: any) {
     UnmuteButton: {
       noAction: true,
     },
-    __props: {
-      enablePlaybackControls: values.enablePlaybackControls,
-      enableSoundControls: values.enableSoundControls,
-      autoplay: values.autoplay,
-      ...imageBoxes.__props,
-    },
+    __props: imageBoxes.__props,
   };
 }

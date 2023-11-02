@@ -33,8 +33,5 @@ export function cardPlaceholderStyles(config: any) {
       marginTop: "12px",
       ...config.font,
     }),
-    __props: {
-      value: config.value,
-    },
   };
 }

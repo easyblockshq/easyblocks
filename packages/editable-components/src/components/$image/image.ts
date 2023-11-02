@@ -50,6 +50,7 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
         type: "stringToken",
         tokenId: "aspectRatios",
         extraValues: ["natural"],
+        buildOnly: true,
       },
       buttonActionSchemaProp,
     ],

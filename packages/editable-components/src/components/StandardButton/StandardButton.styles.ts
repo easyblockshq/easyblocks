@@ -77,7 +77,6 @@ function styles(values: any) {
     }),
     __props: {
       icon: cleanupIconSVG(values.icon),
-      variant: values.variant,
     },
   };
 }
