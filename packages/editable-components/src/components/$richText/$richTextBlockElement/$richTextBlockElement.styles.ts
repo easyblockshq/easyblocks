@@ -100,8 +100,5 @@ export default function styles({
         align,
       })),
     },
-    __props: {
-      type: type,
-    },
   };
 }

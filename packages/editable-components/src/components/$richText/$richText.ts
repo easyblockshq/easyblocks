@@ -203,6 +203,7 @@ const richTextEditableComponent: InternalRenderableComponentDefinition<"$richTex
         ],
         defaultValue: "left",
         group: "Layout",
+        buildOnly: true,
       },
       {
         prop: "accessibilityRole",

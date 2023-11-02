@@ -535,6 +535,9 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      postcss-value-parser:
+        specifier: ^3.3.0
+        version: 3.3.1
       react:
         specifier: '>= 16.8'
         version: 17.0.2
@@ -557,6 +560,9 @@ importers:
       '@easyblocks/build-tools':
         specifier: ^1.5.2
         version: link:../build-tools
+      '@easyblocks/reduce-css-calc':
+        specifier: workspace:*
+        version: link:../reduce-css-calc
       '@easyblocks/test-utils':
         specifier: ^1.5.2
         version: link:../test-utils
@@ -957,6 +963,9 @@ importers:
       '@easyblocks/core':
         specifier: workspace:*
         version: link:../core
+      '@easyblocks/editable-components':
+        specifier: workspace:*
+        version: link:../editable-components
       '@easyblocks/editor':
         specifier: workspace:*
         version: link:../editor

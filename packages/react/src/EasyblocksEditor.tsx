@@ -86,16 +86,6 @@ export function EasyblocksEditor(props: EasyblocksEditorProps) {
   );
 }
 
-async function buildConfig(config: Config) {
-  const { accessToken } = parseQueryParams();
-  const accessTokenValue = accessToken ?? config.accessToken;
-
-  return {
-    ...config,
-    accessToken: accessTokenValue,
-  };
-}
-
 async function loadEditorModule() {
   const editorModule = await import("@easyblocks/editor");
   return editorModule;

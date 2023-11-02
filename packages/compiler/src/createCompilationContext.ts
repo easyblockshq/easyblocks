@@ -19,7 +19,15 @@ import {
   Spacing,
   Theme,
 } from "@easyblocks/core";
-import { actionTextModifier } from "@easyblocks/editable-components";
+import {
+  actionTextModifier,
+  richTextBlockElementEditableComponent,
+  richTextEditableComponent,
+  richTextInlineWrapperElementEditableComponent,
+  richTextLineElementEditableComponent,
+  richTextPartEditableComponent,
+  textEditableComponent,
+} from "@easyblocks/editable-components";
 import { buildFullTheme } from "./buildFullTheme";
 import {
   themeObjectValueToResponsiveValue,
@@ -193,7 +201,18 @@ export function createCompilationContext(
   const fetchingContext = createFetchingContext(config);
   const rootContainers = buildRootContainers(config.rootContainers, devices);
 
-  const components = config.components ?? [];
+  const components: CompilationContextType["definitions"]["components"] = [
+    textEditableComponent,
+    richTextEditableComponent,
+    richTextBlockElementEditableComponent,
+    richTextLineElementEditableComponent,
+    richTextInlineWrapperElementEditableComponent,
+    richTextPartEditableComponent,
+  ];
+
+  if (config.components) {
+    components.push(...config.components);
+  }
 
   const activeRootContainer = rootContainers.find(
     (r) => r.id === rootContainer
