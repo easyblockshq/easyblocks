@@ -906,7 +906,7 @@ importers:
         specifier: ^7.21.0
         version: 7.21.0
       '@easyblocks/core':
-        specifier: ^0.1.1
+        specifier: ^0.1.2
         version: link:../core
       '@easyblocks/design-system':
         specifier: workspace:*
