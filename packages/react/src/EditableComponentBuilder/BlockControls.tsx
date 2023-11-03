@@ -219,6 +219,7 @@ export function BlocksControls({
         sortable={sortable}
         id={id}
         direction={direction}
+        path={path}
       >
         {children}
       </SelectionFrameController>

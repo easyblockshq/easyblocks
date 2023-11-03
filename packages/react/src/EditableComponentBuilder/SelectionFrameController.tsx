@@ -12,6 +12,7 @@ type SelectionFrameControllerProps = {
   sortable: ReturnType<typeof useSortable>;
   id: string;
   direction: "horizontal" | "vertical";
+  path: string;
 };
 
 function SelectionFrameController({
@@ -23,6 +24,7 @@ function SelectionFrameController({
   sortable,
   id,
   direction,
+  path,
 }: SelectionFrameControllerProps) {
   const [node, setNode] = useState<HTMLDivElement | null>(null);
 
@@ -103,6 +105,21 @@ function SelectionFrameController({
     "&[data-draggable-dragging=true]": {
       cursor: "grabbing",
     },
+  });
+
+  useEffect(() => {
+    return () => {
+      // If the the node of active element is not in the DOM anymore we want to deselect it to prevent showing
+      // add buttons on the not existing element.
+      if (
+        isActive &&
+        node &&
+        !window.document.contains(node) &&
+        path === window.parent.editorWindowAPI.editorContext.focussedField[0]
+      ) {
+        window.parent.editorWindowAPI.editorContext.setFocussedField([]);
+      }
+    };
   });
 
   return (
