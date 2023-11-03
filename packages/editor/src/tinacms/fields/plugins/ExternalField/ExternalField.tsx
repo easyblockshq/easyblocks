@@ -68,6 +68,21 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
     externalValue !== undefined &&
     isResolvedCompoundExternalDataValue(externalValue);
 
+  if (isCompoundResourceValueSelectVisible) {
+    const selfValues = Object.entries(externalValue.value).filter(
+      ([, value]) => {
+        return value.type === field.schemaProp.type;
+      }
+    );
+
+    if (selfValues.length === 1 && !value.key) {
+      input.onChange({
+        ...value,
+        key: selfValues[0][0],
+      });
+    }
+  }
+
   return (
     <FieldMetaWrapper {...props} form={tinaForm} layout="column">
       <div
@@ -158,6 +173,10 @@ export function CompoundResourceValueSelect(props: {
     | { id: string; key: string | undefined };
   onResourceKeyChange: (id: string, key: string) => void;
 }) {
+  if (props.options.length === 1) {
+    return null;
+  }
+
   return (
     <Select
       onChange={(value) => {
