@@ -160,4 +160,8 @@ export type CMSInput = LocalisedDocument | LocalisedConfigs;
 export type InternalWidgetComponentProps = Omit<
   WidgetComponentProps,
   "onChange"
-> & { onChange: (id: string, key?: string) => void; resourceKey?: string };
+> & {
+  onChange: (id: string, key?: string) => void;
+  resourceKey?: string;
+  path?: string;
+};

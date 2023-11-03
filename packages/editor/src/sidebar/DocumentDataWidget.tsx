@@ -34,6 +34,7 @@ function createDocumentDataWidgetComponent(type: string) {
     id,
     onChange,
     resourceKey,
+    path,
   }: InternalWidgetComponentProps) {
     const { editorContext, externalData } = window.editorWindowAPI;
 
@@ -51,6 +52,34 @@ function createDocumentDataWidgetComponent(type: string) {
       );
     });
 
+    const options = documentCompoundResources.flatMap(
+      ([externalId, externalDataValue]) =>
+        getBasicResourcesOfType(externalDataValue.value, type).map((r) => {
+          const resourceSchemaProp = assertDefined(
+            editorContext.activeRootContainer.schema?.find(
+              (s) => s.prop === externalId.split(".")[1]
+            )
+          );
+
+          return {
+            id: externalId,
+            key: r.key,
+            label: `${resourceSchemaProp.label ?? resourceSchemaProp.prop} > ${
+              r.label ?? r.key
+            }`,
+          };
+        })
+    );
+
+    if (options.length === 1 && !id && path) {
+      // We perform form change manually to avoid storing this change in editor's history
+      editorContext.form.change(path, {
+        id: options[0].id,
+        key: options[0].key,
+        widgetId: "@easyblocks/document-data",
+      });
+    }
+
     if (!documentCompoundResources.length) {
       return (
         <Typography
@@ -65,24 +94,7 @@ function createDocumentDataWidgetComponent(type: string) {
 
     return (
       <CompoundResourceValueSelect
-        options={documentCompoundResources.flatMap(
-          ([externalId, externalDataValue]) =>
-            getBasicResourcesOfType(externalDataValue.value, type).map((r) => {
-              const resourceSchemaProp = assertDefined(
-                editorContext.activeRootContainer.schema?.find(
-                  (s) => s.prop === externalId.split(".")[1]
-                )
-              );
-
-              return {
-                id: externalId,
-                key: r.key,
-                label: `${
-                  resourceSchemaProp.label ?? resourceSchemaProp.prop
-                } > ${r.label ?? r.key}`,
-              };
-            })
-        )}
+        options={options}
         resource={
           id === null
             ? {

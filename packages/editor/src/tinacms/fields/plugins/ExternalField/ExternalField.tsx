@@ -61,26 +61,31 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
     ? externalData[externalReferenceLocationKey]
     : undefined;
 
-  const isCompoundResourceValueSelectVisible =
+  const isExternalValueResolvedCompoundExternalDataValue =
     !isMixedFieldValue(value) &&
     !isEmptyExternalReference(value) &&
-    !isIdReferenceToDocumentExternalValue(value.id) &&
     externalValue !== undefined &&
     isResolvedCompoundExternalDataValue(externalValue);
 
-  if (isCompoundResourceValueSelectVisible) {
-    const selfValues = Object.entries(externalValue.value).filter(
-      ([, value]) => {
-        return value.type === field.schemaProp.type;
-      }
-    );
+  const basicResources = isExternalValueResolvedCompoundExternalDataValue
+    ? getBasicResourcesOfType(externalValue.value, field.schemaProp.type)
+    : [];
 
-    if (selfValues.length === 1 && !value.key) {
-      input.onChange({
-        ...value,
-        key: selfValues[0][0],
-      });
-    }
+  const isCompoundResourceValueSelectVisible =
+    isExternalValueResolvedCompoundExternalDataValue &&
+    !isIdReferenceToDocumentExternalValue(value.id) &&
+    basicResources.length > 1;
+
+  if (
+    isExternalValueResolvedCompoundExternalDataValue &&
+    basicResources.length === 1 &&
+    !value.key
+  ) {
+    // We perform form change manually to avoid storing this change in editor's history
+    editorContext.form.change(fieldNames[0], {
+      ...value,
+      key: basicResources[0].key,
+    });
   }
 
   return (
@@ -117,6 +122,7 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
 
                   input.onChange(newValue);
                 }}
+                path={fieldNames[0]}
               />
             ) : (
               <MissingWidget type={field.schemaProp.type} />
@@ -124,10 +130,7 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
 
             {isCompoundResourceValueSelectVisible && (
               <CompoundResourceValueSelect
-                options={getBasicResourcesOfType(
-                  externalValue.value,
-                  field.schemaProp.type
-                ).map((r) => ({
+                options={basicResources.map((r) => ({
                   id: externalReferenceLocationKey,
                   key: r.key,
                   label: r.label ?? r.key,
@@ -177,10 +180,6 @@ export function CompoundResourceValueSelect(props: {
     | { id: string; key: string | undefined };
   onResourceKeyChange: (id: string, key: string) => void;
 }) {
-  if (props.options.length === 1) {
-    return null;
-  }
-
   return (
     <Select
       onChange={(value) => {
