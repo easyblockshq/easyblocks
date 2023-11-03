@@ -1,6 +1,6 @@
 {
   "name": "@easyblocks/media",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
   "types": "dist/index.d.ts",
@@ -29,10 +29,10 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.21.0",
-    "@radix-ui/react-dropdown-menu": "^2.0.5",
-    "@easyblocks/core": "^0.1.0",
-    "@easyblocks/editor": "workspace:*",
+    "@easyblocks/core": "^0.1.1",
     "@easyblocks/design-system": "workspace:*",
+    "@easyblocks/editor": "workspace:*",
+    "@radix-ui/react-dropdown-menu": "^2.0.5",
     "react-modal": "^3.12.1",
     "styled-components": "^5.3.3"
   },

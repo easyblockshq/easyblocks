@@ -1,6 +1,6 @@
 {
   "name": "@easyblocks/react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
   "types": "dist/index.d.ts",
@@ -31,8 +31,8 @@
     "@dnd-kit/core": "^6.0.8",
     "@dnd-kit/sortable": "^7.0.2",
     "@easyblocks/core": "workspace:*",
-    "@easyblocks/editor": "workspace:*",
     "@easyblocks/editable-components": "workspace:*",
+    "@easyblocks/editor": "workspace:*",
     "@stitches/core": "^1.2.5",
     "lodash": "^4.17.21",
     "zod": "^3.21.4"
