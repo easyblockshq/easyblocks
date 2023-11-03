@@ -1,12 +1,12 @@
 {
   "name": "@easyblocks/app-test-utils",
-  "version": "1.5.2",
+  "version": "0.1.0",
   "private": true,
   "sideEffect": false,
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "dependencies": {
-    "@easyblocks/app-utils": "^1.5.2",
+    "@easyblocks/app-utils": "^0.1.0",
     "@easyblocks/core": "workspace:*"
   }
 }

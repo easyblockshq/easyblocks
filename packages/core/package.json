@@ -1,6 +1,6 @@
 {
   "name": "@easyblocks/core",
-  "version": "1.5.2",
+  "version": "0.1.0",
   "description": "No-code ecommerce builder for headless CMS",
   "scripts": {
     "dev": "NODE_ENV=development concurrently -n bundle,emit-declarations 'rollup -c rollup.config.js --watch' 'tsc --watch --preserveWatchOutput'",
@@ -28,8 +28,8 @@
     "@easyblocks/reduce-css-calc": "workspace:*",
     "@jest/types": "^26.6.2",
     "@playwright/test": "^1.31.2",
-    "@easyblocks/build-tools": "^1.5.2",
-    "@easyblocks/test-utils": "^1.5.2",
+    "@easyblocks/build-tools": "^0.1.0",
+    "@easyblocks/test-utils": "^0.1.0",
     "@easyblocks/utils": "link:../utils",
     "@types/crypto-js": "^4.1.1",
     "@types/jest": "^26.0.20",

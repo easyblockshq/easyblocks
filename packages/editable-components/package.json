@@ -1,6 +1,6 @@
 {
   "name": "@easyblocks/editable-components",
-  "version": "1.5.2",
+  "version": "0.1.0",
   "private": true,
   "sideEffects": false,
   "main": "dist/cjs/index.js",
@@ -35,8 +35,8 @@
   },
   "devDependencies": {
     "@jest/types": "^26.6.2",
-    "@easyblocks/app-utils": "^1.5.2",
-    "@easyblocks/build-tools": "^1.5.2",
+    "@easyblocks/app-utils": "^0.1.0",
+    "@easyblocks/build-tools": "^0.1.0",
     "@easyblocks/reduce-css-calc": "workspace:*",
     "@easyblocks/utils": "workspace:*",
     "@types/jest": "^26.0.20",

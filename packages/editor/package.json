@@ -56,11 +56,11 @@
     "postcss-value-parser": "^3.3.0"
   },
   "devDependencies": {
-    "@easyblocks/build-tools": "^1.5.2",
-    "@easyblocks/app-utils": "^1.5.2",
-    "@easyblocks/compiler": "^1.5.2",
+    "@easyblocks/build-tools": "^0.1.0",
+    "@easyblocks/app-utils": "^0.1.0",
+    "@easyblocks/compiler": "^0.1.0",
     "@easyblocks/utils": "workspace:*",
-    "@easyblocks/test-utils": "^1.5.2",
+    "@easyblocks/test-utils": "^0.1.0",
     "@easyblocks/reduce-css-calc": "workspace:*",
     "@jest/types": "^26.6.2",
     "@tanstack/react-query-devtools": "^4.29.12",
@@ -81,5 +81,5 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
-  "version": "1.5.2"
+  "version": "0.1.0"
 }

@@ -46,5 +46,5 @@
     "playwright": "^1.25.2",
     "typescript": "^4.8.4"
   },
-  "version": "1.5.2"
+  "version": "0.1.0"
 }

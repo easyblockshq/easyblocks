@@ -1,6 +1,6 @@
 {
   "name": "@easyblocks/react",
-  "version": "1.5.2",
+  "version": "0.1.0",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
   "types": "dist/index.d.ts",
@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@easyblocks/app-utils": "workspace:*",
-    "@easyblocks/build-tools": "^1.5.2",
+    "@easyblocks/build-tools": "^0.1.0",
     "@easyblocks/design-system": "workspace:*",
     "@easyblocks/utils": "workspace:*",
     "@jest/types": "^26.6.2",

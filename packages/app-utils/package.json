@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@easyblocks/core": "workspace:*",
-    "@easyblocks/reduce-css-calc": "^1.5.2",
+    "@easyblocks/reduce-css-calc": "^0.1.0",
     "@easyblocks/utils": "link:../utils",
     "final-form": "^4.20.4",
     "final-form-arrays": "^3.0.1"
@@ -21,5 +21,5 @@
     "@types/react": "^18.2.20",
     "type-fest": "^3.8.0"
   },
-  "version": "1.5.2"
+  "version": "0.1.0"
 }

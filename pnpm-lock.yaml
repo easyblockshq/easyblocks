@@ -409,7 +409,7 @@ importers:
   packages/app-test-utils:
     dependencies:
       '@easyblocks/app-utils':
-        specifier: ^1.5.2
+        specifier: ^0.1.0
         version: link:../app-utils
       '@easyblocks/core':
         specifier: workspace:*
@@ -421,7 +421,7 @@ importers:
         specifier: workspace:*
         version: link:../core
       '@easyblocks/reduce-css-calc':
-        specifier: ^1.5.2
+        specifier: ^0.1.0
         version: link:../reduce-css-calc
       '@easyblocks/utils':
         specifier: link:../utils
@@ -457,16 +457,16 @@ importers:
   packages/compiler:
     dependencies:
       '@easyblocks/app-utils':
-        specifier: ^1.5.2
+        specifier: ^0.1.0
         version: link:../app-utils
       '@easyblocks/core':
         specifier: workspace:*
         version: link:../core
       '@easyblocks/editable-components':
-        specifier: ^1.5.2
+        specifier: ^0.1.0
         version: link:../editable-components
       '@easyblocks/reduce-css-calc':
-        specifier: ^1.5.2
+        specifier: ^0.1.0
         version: link:../reduce-css-calc
       '@easyblocks/utils':
         specifier: link:../utils
@@ -485,13 +485,13 @@ importers:
         version: 3.12.0
     devDependencies:
       '@easyblocks/app-test-utils':
-        specifier: ^1.5.2
+        specifier: ^0.1.0
         version: link:../app-test-utils
       '@easyblocks/build-tools':
-        specifier: ^1.5.2
+        specifier: ^0.1.0
         version: link:../build-tools
       '@easyblocks/test-utils':
-        specifier: ^1.5.2
+        specifier: ^0.1.0
         version: link:../test-utils
       '@jest/types':
         specifier: ^26.6.2
@@ -558,13 +558,13 @@ importers:
         specifier: ^7.15.0
         version: 7.21.0(@babel/core@7.21.3)
       '@easyblocks/build-tools':
-        specifier: ^1.5.2
+        specifier: ^0.1.0
         version: link:../build-tools
       '@easyblocks/reduce-css-calc':
         specifier: workspace:*
         version: link:../reduce-css-calc
       '@easyblocks/test-utils':
-        specifier: ^1.5.2
+        specifier: ^0.1.0
         version: link:../test-utils
       '@easyblocks/utils':
         specifier: link:../utils
@@ -667,7 +667,7 @@ importers:
         version: 6.0.7(babel-plugin-styled-components@2.0.7)(react-dom@18.2.0)(react@18.2.0)
     devDependencies:
       '@easyblocks/build-tools':
-        specifier: ^1.5.2
+        specifier: ^0.1.0
         version: link:../build-tools
       '@types/lodash':
         specifier: ^4.14.191
@@ -716,10 +716,10 @@ importers:
         version: 3.13.1
     devDependencies:
       '@easyblocks/app-utils':
-        specifier: ^1.5.2
+        specifier: ^0.1.0
         version: link:../app-utils
       '@easyblocks/build-tools':
-        specifier: ^1.5.2
+        specifier: ^0.1.0
         version: link:../build-tools
       '@easyblocks/reduce-css-calc':
         specifier: workspace:*
@@ -840,19 +840,19 @@ importers:
         version: 3.11.1
     devDependencies:
       '@easyblocks/app-utils':
-        specifier: ^1.5.2
+        specifier: ^0.1.0
         version: link:../app-utils
       '@easyblocks/build-tools':
-        specifier: ^1.5.2
+        specifier: ^0.1.0
         version: link:../build-tools
       '@easyblocks/compiler':
-        specifier: ^1.5.2
+        specifier: ^0.1.0
         version: link:../compiler
       '@easyblocks/reduce-css-calc':
         specifier: workspace:*
         version: link:../reduce-css-calc
       '@easyblocks/test-utils':
-        specifier: ^1.5.2
+        specifier: ^0.1.0
         version: link:../test-utils
       '@easyblocks/utils':
         specifier: workspace:*
@@ -906,7 +906,7 @@ importers:
         specifier: ^7.21.0
         version: 7.21.0
       '@easyblocks/core':
-        specifier: ^1.5.2
+        specifier: ^0.1.0
         version: link:../core
       '@easyblocks/design-system':
         specifier: workspace:*
@@ -931,7 +931,7 @@ importers:
         version: 5.3.9(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
     devDependencies:
       '@easyblocks/build-tools':
-        specifier: ^1.5.2
+        specifier: ^0.1.0
         version: link:../build-tools
       '@easyblocks/utils':
         specifier: workspace:*
@@ -989,7 +989,7 @@ importers:
         specifier: workspace:*
         version: link:../app-utils
       '@easyblocks/build-tools':
-        specifier: ^1.5.2
+        specifier: ^0.1.0
         version: link:../build-tools
       '@easyblocks/design-system':
         specifier: workspace:*

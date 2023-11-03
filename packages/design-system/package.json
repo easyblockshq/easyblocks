@@ -1,6 +1,6 @@
 {
   "name": "@easyblocks/design-system",
-  "version": "1.5.2",
+  "version": "0.1.0",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
   "types": "dist/index.d.ts",
@@ -34,7 +34,7 @@
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@types/react-modal": "^3.13.1",
-    "@easyblocks/build-tools": "^1.5.2"
+    "@easyblocks/build-tools": "^0.1.0"
   },
   "peerDependencies": {
     "react": ">=16.8"
