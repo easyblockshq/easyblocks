@@ -275,7 +275,7 @@ function WidgetsSelect({
     });
   }
 
-  if (availableWidgets.length === 1) {
+  if (availableWidgets.length <= 1) {
     return null;
   }
 

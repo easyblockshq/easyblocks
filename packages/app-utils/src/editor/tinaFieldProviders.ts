@@ -403,14 +403,10 @@ const tinaFieldProviders: TinaFieldProviders = {
       (w) => w.id === value.widgetId
     );
 
-    if (!fieldWidget) {
-      throw new Error(`Can't find widget named "${schemaProp.type}"`);
-    }
-
     return {
       ...getCommonFieldProps(schemaProp),
       component: "external",
-      externalField: fieldWidget.component,
+      externalField: fieldWidget?.component,
     };
   },
   position: (schemaProp) => {

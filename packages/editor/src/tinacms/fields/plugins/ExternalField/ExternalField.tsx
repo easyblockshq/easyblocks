@@ -13,7 +13,7 @@ import {
   TextSchemaProp,
   UnresolvedResource,
 } from "@easyblocks/core";
-import { Select, SelectItem } from "@easyblocks/design-system";
+import { Select, SelectItem, Typography } from "@easyblocks/design-system";
 import { dotNotationGet, toArray } from "@easyblocks/utils";
 import React, { ComponentType } from "react";
 import { useEditorContext } from "../../../../EditorContext";
@@ -28,7 +28,7 @@ import { FieldMetaWrapper } from "../wrapFieldWithMeta";
 
 interface ExternalField
   extends Field<AnyField, ExternalSchemaProp | TextSchemaProp> {
-  externalField: ComponentType<InternalWidgetComponentProps>;
+  externalField?: ComponentType<InternalWidgetComponentProps>;
 }
 
 interface ExternalFieldProps
@@ -101,22 +101,26 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
               gap: 8px;
             `}
           >
-            <ExternalField
-              id={value.id}
-              resourceKey={"key" in value ? value.key : undefined}
-              onChange={(newId, newKey) => {
-                const newValue: UnresolvedResource = {
-                  id: newId,
-                  widgetId: value.widgetId,
-                };
+            {ExternalField ? (
+              <ExternalField
+                id={value.id}
+                resourceKey={"key" in value ? value.key : undefined}
+                onChange={(newId, newKey) => {
+                  const newValue: UnresolvedResource = {
+                    id: newId,
+                    widgetId: value.widgetId,
+                  };
 
-                if (newKey) {
-                  newValue.key = newKey;
-                }
+                  if (newKey) {
+                    newValue.key = newKey;
+                  }
 
-                input.onChange(newValue);
-              }}
-            />
+                  input.onChange(newValue);
+                }}
+              />
+            ) : (
+              <MissingWidget type={field.schemaProp.type} />
+            )}
 
             {isCompoundResourceValueSelectVisible && (
               <CompoundResourceValueSelect
@@ -202,4 +206,8 @@ export function CompoundResourceValueSelect(props: {
       })}
     </Select>
   );
+}
+
+function MissingWidget(props: { type: string }) {
+  return <Typography>Missing widget for type "{props.type}".</Typography>;
 }
