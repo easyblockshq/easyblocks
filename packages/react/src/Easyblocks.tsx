@@ -1,6 +1,6 @@
 "use client";
 import type { ExternalData, RenderableDocument } from "@easyblocks/core";
-import React, { useEffect } from "react";
+import React, { ReactElement, useEffect } from "react";
 import ComponentBuilder from "./ComponentBuilder/ComponentBuilder";
 import { EasyblocksExternalDataProvider } from "./EasyblocksExternalDataProvider";
 import { EasyblocksMetadataProvider } from "./EasyblocksMetadataProvider";
@@ -8,9 +8,16 @@ import { EasyblocksMetadataProvider } from "./EasyblocksMetadataProvider";
 export type EasyblocksProps = {
   renderableDocument: RenderableDocument;
   externalData: ExternalData;
+  componentOverrides?: ComponentOverrides;
 };
 
-function Easyblocks({ renderableDocument, externalData }: EasyblocksProps) {
+export type ComponentOverrides = Record<string, ReactElement>;
+
+function Easyblocks({
+  renderableDocument,
+  externalData,
+  componentOverrides,
+}: EasyblocksProps) {
   useEffect(() => {
     document.documentElement.style.setProperty(
       "--shopstory-viewport-width",
@@ -20,17 +27,24 @@ function Easyblocks({ renderableDocument, externalData }: EasyblocksProps) {
     );
   });
 
-  if (renderableDocument.renderableContent === null) {
+  const renderableContent = renderableDocument.renderableContent;
+
+  if (renderableContent === null) {
     return null;
+  }
+
+  if (componentOverrides) {
+    const overridesEntries = Object.entries(componentOverrides);
+
+    overridesEntries.forEach(([componentProp, componentOverride]) => {
+      renderableContent.components[componentProp] = [componentOverride];
+    });
   }
 
   return (
     <EasyblocksMetadataProvider meta={renderableDocument.meta}>
       <EasyblocksExternalDataProvider externalData={externalData}>
-        <ComponentBuilder
-          compiled={renderableDocument.renderableContent}
-          path={""}
-        />
+        <ComponentBuilder compiled={renderableContent} path={""} />
       </EasyblocksExternalDataProvider>
     </EasyblocksMetadataProvider>
   );

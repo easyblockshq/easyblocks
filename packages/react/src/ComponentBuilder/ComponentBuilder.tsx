@@ -202,6 +202,7 @@ function getCompiledSubcomponents(
   compiledArray: (
     | CompiledShopstoryComponentConfig
     | CompiledCustomComponentConfig
+    | ReactElement
   )[],
   contextProps: ContextProps,
   schemaProp:
@@ -220,9 +221,13 @@ function getCompiledSubcomponents(
   }
 
   if (schemaProp.noInline) {
-    const elements = compiledArray.map((compiledChild, index) => (
-      <ComponentBuilder path={`${path}.${index}`} compiled={compiledChild} />
-    ));
+    const elements = compiledArray.map((compiledChild, index) =>
+      "_template" in compiledChild ? (
+        <ComponentBuilder path={`${path}.${index}`} compiled={compiledChild} />
+      ) : (
+        compiledChild
+      )
+    );
 
     if (isSchemaPropComponent(schemaProp)) {
       return elements[0];
@@ -235,16 +240,20 @@ function getCompiledSubcomponents(
     ? EditableComponentBuilderEditor
     : EditableComponentBuilderClient;
 
-  let elements = compiledArray.map((compiledChild, index) => (
-    <EditableComponentBuilder
-      compiled={compiledChild}
-      schemaProp={schemaProp}
-      index={index}
-      length={compiledArray.length}
-      contextProps={contextProps}
-      path={`${path}.${index}`}
-    />
-  ));
+  let elements = compiledArray.map((compiledChild, index) =>
+    "_template" in compiledChild ? (
+      <EditableComponentBuilder
+        compiled={compiledChild}
+        schemaProp={schemaProp}
+        index={index}
+        length={compiledArray.length}
+        contextProps={contextProps}
+        path={`${path}.${index}`}
+      />
+    ) : (
+      compiledChild
+    )
+  );
 
   // TODO: this code should be editor-only
   if (
