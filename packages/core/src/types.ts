@@ -1,4 +1,4 @@
-import { ComponentType } from "react";
+import { ComponentType, ReactElement } from "react";
 import { PartialDeep } from "type-fest";
 import { Locale } from "./locales";
 
@@ -845,6 +845,7 @@ export type CompiledCustomComponentConfig = CompiledComponentConfigBase & {
     [key: string]: (
       | CompiledShopstoryComponentConfig
       | CompiledCustomComponentConfig
+      | ReactElement
     )[];
   };
   textModifiers: Record<string, [CompiledTextModifier]>;

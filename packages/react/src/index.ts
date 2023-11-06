@@ -1,7 +1,7 @@
 export { EasyblocksEditor } from "./EasyblocksEditor";
 export type { EasyblocksEditorProps } from "./EasyblocksEditor";
 export { Easyblocks } from "./Easyblocks";
-export type { EasyblocksProps } from "./Easyblocks";
+export type { EasyblocksProps, ComponentOverrides } from "./Easyblocks";
 export { EasyblocksMetadataProvider } from "./EasyblocksMetadataProvider";
 export type { EasyblocksMetadataProviderProps } from "./EasyblocksMetadataProvider";
 export { EasyblocksProvider } from "./EasyblocksProvider";
