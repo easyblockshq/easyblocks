@@ -11,7 +11,6 @@ import {
   Field,
   getExternalReferenceLocationKey,
   TextSchemaProp,
-  UnresolvedResource,
 } from "@easyblocks/core";
 import { Select, SelectItem, Typography } from "@easyblocks/design-system";
 import { dotNotationGet, toArray } from "@easyblocks/utils";
@@ -53,9 +52,7 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
   const externalReferenceLocationKey = getExternalReferenceLocationKey(
     configId,
     field.schemaProp.prop,
-    field.schemaProp.type === "image" || field.schemaProp.type === "video"
-      ? editorContext.breakpointIndex
-      : undefined
+    field.schemaProp.responsive ? editorContext.breakpointIndex : undefined
   );
   const externalValue = externalReferenceLocationKey
     ? externalData[externalReferenceLocationKey]
@@ -111,7 +108,7 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
                 id={value.id}
                 resourceKey={"key" in value ? value.key : undefined}
                 onChange={(newId, newKey) => {
-                  const newValue: UnresolvedResource = {
+                  const newValue: ExternalReference = {
                     id: newId,
                     widgetId: value.widgetId,
                   };

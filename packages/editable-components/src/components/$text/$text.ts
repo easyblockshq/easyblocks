@@ -39,13 +39,15 @@ const textEditableComponent: InternalRenderableComponentDefinition<"$text"> = {
       prop: "accessibilityRole",
       type: "select",
       label: "Role",
-      options: [
-        { value: "p", label: "Paragraph" },
-        ...range(1, 6).map((index) => ({
-          value: `h${index}`,
-          label: `Heading ${index}`,
-        })),
-      ],
+      params: {
+        options: [
+          { value: "p", label: "Paragraph" },
+          ...range(1, 6).map((index) => ({
+            value: `h${index}`,
+            label: `Heading ${index}`,
+          })),
+        ],
+      },
       group: "Accessibility and SEO",
     },
   ],

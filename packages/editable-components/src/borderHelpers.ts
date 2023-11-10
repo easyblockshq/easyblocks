@@ -4,8 +4,11 @@ export const borderSchemaProps: (group: string) => SchemaProp[] = (group) => [
   {
     prop: "borderWidth",
     label: "Border width",
-    type: "select$",
-    options: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "unequal"],
+    type: "select",
+    responsive: true,
+    params: {
+      options: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "unequal"],
+    },
     group,
   },
   {
@@ -22,8 +25,9 @@ export const borderSchemaProps: (group: string) => SchemaProp[] = (group) => [
   {
     prop: "borderTop",
     label: "Border top",
-    type: "select$",
-    options: ["0", "1", "2", "3", "4", "5", "6", "7", "8"],
+    type: "select",
+    responsive: true,
+    params: { options: ["0", "1", "2", "3", "4", "5", "6", "7", "8"] },
     defaultValue: "1",
     visible: (x) => x.borderWidth === "unequal",
     group,
@@ -31,8 +35,9 @@ export const borderSchemaProps: (group: string) => SchemaProp[] = (group) => [
   {
     prop: "borderBottom",
     label: "Border bottom",
-    type: "select$",
-    options: ["0", "1", "2", "3", "4", "5", "6", "7", "8"],
+    type: "select",
+    responsive: true,
+    params: { options: ["0", "1", "2", "3", "4", "5", "6", "7", "8"] },
     defaultValue: "1",
     visible: (x) => x.borderWidth === "unequal",
     group,
@@ -40,8 +45,9 @@ export const borderSchemaProps: (group: string) => SchemaProp[] = (group) => [
   {
     prop: "borderLeft",
     label: "Border left",
-    type: "select$",
-    options: ["0", "1", "2", "3", "4", "5", "6", "7", "8"],
+    type: "select",
+    responsive: true,
+    params: { options: ["0", "1", "2", "3", "4", "5", "6", "7", "8"] },
     defaultValue: "1",
     visible: (x) => x.borderWidth === "unequal",
     group,
@@ -49,8 +55,9 @@ export const borderSchemaProps: (group: string) => SchemaProp[] = (group) => [
   {
     prop: "borderRight",
     label: "Border right",
-    type: "select$",
-    options: ["0", "1", "2", "3", "4", "5", "6", "7", "8"],
+    type: "select",
+    responsive: true,
+    params: { options: ["0", "1", "2", "3", "4", "5", "6", "7", "8"] },
     defaultValue: "1",
     visible: (x) => x.borderWidth === "unequal",
     group,
@@ -59,7 +66,7 @@ export const borderSchemaProps: (group: string) => SchemaProp[] = (group) => [
     prop: "boxShadow", // main image size
     label: "Box shadow",
     type: "stringToken",
-    tokenId: "boxShadows",
+    params: { tokenId: "boxShadows" },
     defaultValue: {
       ref: "none",
       value: "none",

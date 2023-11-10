@@ -22,7 +22,7 @@ export const cardPlaceholderDefinition: InternalRenderableComponentDefinition<"$
         prop: "aspectRatio",
         label: "Aspect ratio",
         type: "stringToken",
-        tokenId: "aspectRatios",
+        params: { tokenId: "aspectRatios" },
         defaultValue: {
           ref: "$portrait",
           value: "",

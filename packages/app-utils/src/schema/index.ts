@@ -13,7 +13,7 @@ import { InternalComponentDefinition } from "../types";
 
 type SchemaProp = CoreSchemaProp | Component$$$SchemaProp;
 
-export type Component$$$SchemaProp = SchemaPropShared<"component$$$", never> & {
+export type Component$$$SchemaProp = SchemaPropShared<"component$$$"> & {
   definition: InternalComponentDefinition;
   picker?: ComponentPickerType;
   required?: boolean;
@@ -91,12 +91,8 @@ const internalTypes = new Set<SchemaProp["type"]>([
   "string",
   "number",
   "boolean",
-  "string$",
-  "boolean$",
   "select",
-  "select$",
   "radio-group",
-  "radio-group$",
   "color",
   "space",
   "font",

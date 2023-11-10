@@ -307,6 +307,8 @@ const Editor = memo((props: EditorProps) => {
 
         setResolvedInput(resolvedInput);
       } catch (error) {
+        console.error(error);
+
         if (error instanceof Error) {
           setFetchError(error.message);
         }

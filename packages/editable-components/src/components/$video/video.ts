@@ -45,7 +45,9 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         prop: "aspectRatio", // main image size
         label: "Aspect Ratio",
         type: "stringToken",
-        tokenId: "aspectRatios",
+        params: {
+          tokenId: "aspectRatios",
+        },
         buildOnly: true,
       },
       {
@@ -120,13 +122,16 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
       {
         prop: "controlsPosition",
         label: "Position",
-        type: "select$",
-        options: [
-          { value: "top-left", label: "Top left" },
-          { value: "top-right", label: "Top right" },
-          { value: "bottom-left", label: "Bottom left" },
-          { value: "bottom-right", label: "Bottom right" },
-        ],
+        type: "select",
+        responsive: true,
+        params: {
+          options: [
+            { value: "top-left", label: "Top left" },
+            { value: "top-right", label: "Top right" },
+            { value: "bottom-left", label: "Bottom left" },
+            { value: "bottom-right", label: "Bottom right" },
+          ],
+        },
         visible: (values) => {
           return values.enablePlaybackControls;
         },

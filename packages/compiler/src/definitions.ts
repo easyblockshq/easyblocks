@@ -19,7 +19,6 @@ import {
   splitTemplateName,
 } from "@easyblocks/app-utils";
 import {
-  Boolean$SchemaProp,
   BooleanSchemaProp,
   Color,
   ColorSchemaProp,
@@ -47,24 +46,20 @@ import {
   Option,
   Position,
   PositionSchemaProp,
-  RadioGroup$SchemaProp,
   RadioGroupSchemaProp,
   RefMap,
   RefValue,
   ResponsiveValue,
   SchemaProp,
-  Select$SchemaProp,
   SelectSchemaProp,
   SerializedComponentDefinitions,
   SpaceSchemaProp,
   Spacing,
-  String$SchemaProp,
   StringSchemaProp,
   StringTokenSchemaProp,
   TextSchemaProp,
   ThemeRefValue,
   TrulyResponsiveValue,
-  UnresolvedResource,
 } from "@easyblocks/core";
 import { buildRichTextNoCodeEntry } from "@easyblocks/editable-components";
 import { uniqueId } from "@easyblocks/utils";
@@ -97,9 +92,7 @@ export type TextSchemaPropDefinition = SchemaPropDefinition<
   CompiledLocalTextReference | ExternalReference
 >;
 
-export type StringSchemaPropDefinition = SchemaPropDefinition<string, string>;
-
-export type String$SchemaPropDefinition = SchemaPropDefinition<
+export type StringSchemaPropDefinition = SchemaPropDefinition<
   ResponsiveValue<string>,
   ResponsiveValue<string>
 >;
@@ -107,28 +100,16 @@ export type String$SchemaPropDefinition = SchemaPropDefinition<
 export type NumberSchemaPropDefinition = SchemaPropDefinition<number, number>;
 
 export type BooleanSchemaPropDefinition = SchemaPropDefinition<
-  boolean,
-  boolean
->;
-
-export type Boolean$SchemaPropDefinition = SchemaPropDefinition<
   ResponsiveValue<boolean>,
   ResponsiveValue<boolean>
 >;
 
-export type SelectSchemaPropDefinition = SchemaPropDefinition<string, string>;
-
-export type RadioGroupSchemaPropDefinition = SchemaPropDefinition<
-  string,
-  string
->;
-
-export type Select$SchemaPropDefinition = SchemaPropDefinition<
+export type SelectSchemaPropDefinition = SchemaPropDefinition<
   ResponsiveValue<string>,
   ResponsiveValue<string>
 >;
 
-export type RadioGroup$SchemaPropDefinition = SchemaPropDefinition<
+export type RadioGroupSchemaPropDefinition = SchemaPropDefinition<
   ResponsiveValue<string>,
   ResponsiveValue<string>
 >;
@@ -205,10 +186,6 @@ export type SchemaPropDefinitionProviders = {
     schemaProp: StringSchemaProp,
     compilationContext: CompilationContextType
   ) => StringSchemaPropDefinition;
-  string$: (
-    schemaProp: String$SchemaProp,
-    compilationContext: CompilationContextType
-  ) => String$SchemaPropDefinition;
   number: (
     schemaProp: NumberSchemaProp,
     compilationContext: CompilationContextType
@@ -217,26 +194,14 @@ export type SchemaPropDefinitionProviders = {
     schemaProp: BooleanSchemaProp,
     compilationContext: CompilationContextType
   ) => BooleanSchemaPropDefinition;
-  boolean$: (
-    schemaProp: Boolean$SchemaProp,
-    compilationContext: CompilationContextType
-  ) => Boolean$SchemaPropDefinition;
   select: (
     schemaProp: SelectSchemaProp,
     compilationContext: CompilationContextType
   ) => SelectSchemaPropDefinition;
-  select$: (
-    schemaProp: Select$SchemaProp,
-    compilationContext: CompilationContextType
-  ) => Select$SchemaPropDefinition;
   "radio-group": (
     schemaProp: RadioGroupSchemaProp,
     compilationContext: CompilationContextType
   ) => RadioGroupSchemaPropDefinition;
-  "radio-group$": (
-    schemaProp: RadioGroup$SchemaProp,
-    compilationContext: CompilationContextType
-  ) => RadioGroup$SchemaPropDefinition;
   color: (
     schemaProp: ColorSchemaProp,
     compilationContext: CompilationContextType
@@ -413,27 +378,16 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
   },
 
   string: (schemaProp, compilationContext): StringSchemaPropDefinition => {
-    const normalize = getNormalize(
-      compilationContext,
-      schemaProp.defaultValue,
-      "",
-      (x) => (typeof x === "string" ? x : undefined)
-    );
-    return {
-      normalize,
-      compile: (x) => x,
-      getHash: (value) => {
-        return value;
-      },
-    };
-  },
-  string$: (schemaProp, compilationContext): String$SchemaPropDefinition => {
-    const normalize = getResponsiveNormalize(
-      compilationContext,
-      schemaProp.defaultValue,
-      "",
-      (x) => (typeof x === "string" ? x : undefined)
-    );
+    const normalize = schemaProp.responsive
+      ? getResponsiveNormalize(
+          compilationContext,
+          schemaProp.defaultValue,
+          "",
+          (x) => (typeof x === "string" ? x : undefined)
+        )
+      : getNormalize(compilationContext, schemaProp.defaultValue, "", (x) =>
+          typeof x === "string" ? x : undefined
+        );
 
     return {
       normalize,
@@ -449,25 +403,16 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
   },
 
   boolean: (schemaProp, compilationContext): BooleanSchemaPropDefinition => {
-    const normalize = getNormalize(
-      compilationContext,
-      schemaProp.defaultValue,
-      false,
-      (x) => (typeof x === "boolean" ? x : undefined)
-    );
-    return {
-      normalize,
-      compile: (x) => x,
-      getHash: (value) => value.toString(),
-    };
-  },
-  boolean$: (schemaProp, compilationContext): Boolean$SchemaPropDefinition => {
-    const normalize = getResponsiveNormalize(
-      compilationContext,
-      schemaProp.defaultValue,
-      false,
-      (x) => (typeof x === "boolean" ? x : undefined)
-    );
+    const normalize = schemaProp.responsive
+      ? getResponsiveNormalize(
+          compilationContext,
+          schemaProp.defaultValue,
+          false,
+          (x) => (typeof x === "boolean" ? x : undefined)
+        )
+      : getNormalize(compilationContext, schemaProp.defaultValue, false, (x) =>
+          typeof x === "boolean" ? x : undefined
+        );
 
     return {
       normalize,
@@ -484,12 +429,9 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
   },
 
   select: getSelectSchemaPropDefinition(),
+
   "radio-group": getSelectSchemaPropDefinition(),
 
-  select$: getResponsiveSelectSchemaPropDefinition(),
-  "radio-group$": getResponsiveSelectSchemaPropDefinition(),
-
-  // @ts-ignore TODO: temporary, we need to fix those types
   color: (schemaProp, compilationContext): ColorSchemaPropDefinition => {
     // @ts-ignore
     return {
@@ -522,25 +464,26 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
     schemaProp,
     compilationContext
   ): StringTokenSchemaPropDefinition => {
-    const themeValues = compilationContext.theme[schemaProp.tokenId];
+    const { tokenId } = schemaProp.params;
+    const themeValues = compilationContext.theme[tokenId];
     if (!themeValues) {
       throw new Error(
-        `string token with ID "${schemaProp.tokenId}" doesn't have any values.`
+        `string token with ID "${tokenId}" doesn't have any values.`
       );
     }
 
-    let defaultKey: any;
+    let defaultKey: string | RefValue<string>;
 
-    if (schemaProp.tokenId === "numberOfItemsInRow") {
+    if (tokenId === "numberOfItemsInRow") {
       defaultKey = "4";
-    } else if (schemaProp.tokenId === "aspectRatios") {
+    } else if (tokenId === "aspectRatios") {
       defaultKey = { value: "1:1" }; //$landscape";
-    } else if (schemaProp.tokenId === "containerWidths") {
+    } else if (tokenId === "containerWidths") {
       defaultKey = "none";
-    } else if (schemaProp.tokenId === "boxShadows") {
+    } else if (tokenId === "boxShadows") {
       defaultKey = "none";
     } else {
-      throw new Error("unknown token Id: " + schemaProp.tokenId);
+      throw new Error("unknown token Id: " + tokenId);
     }
 
     // @ts-ignore
@@ -959,8 +902,13 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
   },
 
   external: (schemaProp, compilationContext) => {
-    if (schemaProp.type === "image" || schemaProp.type === "video") {
-      const normalize = getResponsiveNormalize<UnresolvedResource>(
+    if (
+      schemaProp.responsive ||
+      schemaProp.type === "image" ||
+      schemaProp.type === "video"
+    ) {
+      // `image` and `video` are internals types that hold external references, but also are responsive by default.
+      const normalize = getResponsiveNormalize<ExternalReference>(
         compilationContext,
         {},
         {
@@ -975,7 +923,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
       return {
         normalize,
         compile: (x) => x,
-        getHash: resourceGetHash,
+        getHash: externalReferenceGetHash,
       };
     }
 
@@ -1107,37 +1055,28 @@ function getSelectSchemaPropDefinition() {
     compilationContext: CompilationContextType
   ): SelectSchemaPropDefinition => {
     return {
-      normalize: getNormalize(
-        compilationContext,
-        schemaProp.defaultValue,
-        getFirstOptionValue(schemaProp),
-        (x) => {
-          return isSelectValueCorrect(x, schemaProp.options) ? x : undefined;
-        }
-      ),
-      compile: (x: string) => x,
-      getHash: (value) => {
-        return value;
-      },
-    };
-  };
-}
-
-function getResponsiveSelectSchemaPropDefinition() {
-  return (
-    schemaProp: Select$SchemaProp | RadioGroup$SchemaProp,
-    compilationContext: CompilationContextType
-  ): Select$SchemaPropDefinition => {
-    return {
-      normalize: getResponsiveNormalize(
-        compilationContext,
-        schemaProp.defaultValue,
-        getFirstOptionValue(schemaProp),
-        (x) => {
-          return isSelectValueCorrect(x, schemaProp.options) ? x : undefined;
-        }
-      ),
-      compile: (x: ResponsiveValue<string>) => x,
+      normalize: schemaProp.responsive
+        ? getResponsiveNormalize(
+            compilationContext,
+            schemaProp.defaultValue,
+            getFirstOptionValue(schemaProp),
+            (x) => {
+              return isSelectValueCorrect(x, schemaProp.params.options)
+                ? x
+                : undefined;
+            }
+          )
+        : getNormalize(
+            compilationContext,
+            schemaProp.defaultValue,
+            getFirstOptionValue(schemaProp),
+            (x) => {
+              return isSelectValueCorrect(x, schemaProp.params.options)
+                ? x
+                : undefined;
+            }
+          ),
+      compile: (x) => x,
       getHash: (value, currentBreakpoint) => {
         if (isTrulyResponsiveValue(value)) {
           const breakpointValue = responsiveValueAt(value, currentBreakpoint);
@@ -1166,17 +1105,13 @@ function getSelectValue(arg: string | Option): string {
 }
 
 function getFirstOptionValue(
-  schemaProp:
-    | SelectSchemaProp
-    | RadioGroupSchemaProp
-    | Select$SchemaProp
-    | RadioGroup$SchemaProp
+  schemaProp: SelectSchemaProp | RadioGroupSchemaProp
 ) {
-  if (schemaProp.options.length === 0) {
+  if (schemaProp.params.options.length === 0) {
     throw new Error("Select field can't have 0 options");
   }
 
-  const firstOption: string | Option = schemaProp.options[0];
+  const firstOption: string | Option = schemaProp.params.options[0];
   const firstOptionValue: string =
     typeof firstOption === "object" ? firstOption.value : firstOption;
 
@@ -1374,15 +1309,15 @@ function externalNormalize(
   };
 }
 
-function resourceGetHash(
-  value: ResponsiveValue<UnresolvedResource>,
+function externalReferenceGetHash(
+  value: ResponsiveValue<ExternalReference>,
   breakpointIndex: string
 ): string | undefined {
   if (isTrulyResponsiveValue(value)) {
     const breakpointValue = responsiveValueAt(value, breakpointIndex);
 
     if (breakpointValue) {
-      return resourceGetHash(breakpointValue, breakpointIndex);
+      return externalReferenceGetHash(breakpointValue, breakpointIndex);
     }
 
     return;

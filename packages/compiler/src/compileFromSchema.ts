@@ -1,12 +1,10 @@
-import { RefMap, SchemaProp } from "@easyblocks/core";
-
-import { ContextProps } from "@easyblocks/app-utils";
-
 import {
   CompilationContextType,
+  ContextProps,
   EditingInfoComponent,
   EditingInfoComponentCollection,
 } from "@easyblocks/app-utils";
+import { RefMap, SchemaProp } from "@easyblocks/core";
 import { CompilationCache } from "./CompilationCache";
 import { getSchemaDefinition } from "./definitions";
 
@@ -25,13 +23,12 @@ export function compileFromSchema<T extends SchemaProp>(
   configPrefix?: string
 ) {
   return getSchemaDefinition(schemaProp, compilationContext).compile(
-    // @ts-expect-error //FIXME
     value,
-    contextProps,
+    contextProps as any,
     meta,
-    refMap,
+    refMap as any,
     editingInfoComponent,
-    configPrefix,
+    configPrefix as any,
     cache
   );
 }

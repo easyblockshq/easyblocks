@@ -16,6 +16,7 @@ import {
   isSchemaPropTextModifier,
   isTrulyResponsiveValue,
   itemInserted,
+  responsiveValueGetDefinedValue,
   responsiveValueMap,
   splitTemplateName,
 } from "@easyblocks/app-utils";
@@ -110,7 +111,7 @@ function getComponentDefinition(
 type RenderabilityStatus = {
   renderable: boolean;
   isLoading: boolean;
-  fieldsRequiredToRender: string[];
+  fieldsRequiredToRender: Set<string>;
 };
 
 function getRenderabilityStatus(
@@ -121,7 +122,7 @@ function getRenderabilityStatus(
   const status: RenderabilityStatus = {
     renderable: true,
     isLoading: false,
-    fieldsRequiredToRender: [],
+    fieldsRequiredToRender: new Set<string>(),
   };
 
   const componentDefinition = getComponentDefinition(compiled, {
@@ -129,7 +130,11 @@ function getRenderabilityStatus(
   });
 
   if (!componentDefinition) {
-    return { renderable: false, isLoading: false, fieldsRequiredToRender: [] };
+    return {
+      renderable: false,
+      isLoading: false,
+      fieldsRequiredToRender: new Set<string>(),
+    };
   }
 
   const mappedSchema = componentDefinition.schema.map((schema) => {
@@ -160,9 +165,54 @@ function getRenderabilityStatus(
       compiled.props[resourceSchemaProp.prop];
 
     if (isTrulyResponsiveValue(externalReference)) {
-      throw new Error(
-        "Responsive value for external reference not implemented yet"
+      const definedDeviceIds = Object.keys(externalReference).filter(
+        (id) => id !== "$res"
       );
+
+      for (const currentDeviceId of definedDeviceIds) {
+        if (status.isLoading || !status.renderable) {
+          return status;
+        }
+
+        const externalReferenceValue = responsiveValueGetDefinedValue(
+          externalReference,
+          currentDeviceId,
+          meta.vars.devices
+        );
+
+        if (!externalReferenceValue) {
+          status.isLoading = false;
+          status.renderable = false;
+          status.fieldsRequiredToRender.add(
+            resourceSchemaProp.label || resourceSchemaProp.prop
+          );
+          return status;
+        }
+
+        if (externalReferenceValue.id) {
+          const externalReferenceLocationKey =
+            externalReferenceValue.id.startsWith("$.")
+              ? externalReferenceValue.id
+              : getExternalReferenceLocationKey(
+                  compiled._id,
+                  resourceSchemaProp.prop,
+                  currentDeviceId
+                );
+          const externalValue = externalData[externalReferenceLocationKey];
+          status.isLoading = status.isLoading || externalValue === undefined;
+          const isDefined =
+            externalValue !== undefined && !("error" in externalValue);
+          status.renderable = status.renderable && isDefined;
+
+          if (!isDefined && !status.isLoading) {
+            status.fieldsRequiredToRender.add(
+              resourceSchemaProp.label || resourceSchemaProp.prop
+            );
+          }
+        }
+      }
+
+      return status;
     }
 
     if (externalReference.id) {
@@ -179,7 +229,7 @@ function getRenderabilityStatus(
       status.renderable = status.renderable && isDefined;
 
       if (!isDefined && !status.isLoading) {
-        status.fieldsRequiredToRender.push(
+        status.fieldsRequiredToRender.add(
           resourceSchemaProp.label || resourceSchemaProp.prop
         );
       }
@@ -189,7 +239,7 @@ function getRenderabilityStatus(
 
     status.isLoading = false;
     status.renderable = false;
-    status.fieldsRequiredToRender.push(
+    status.fieldsRequiredToRender.add(
       resourceSchemaProp.label || resourceSchemaProp.prop
     );
   }
@@ -385,9 +435,13 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
   );
 
   if (!renderabilityStatus.renderable) {
+    const fieldsRequiredToRender = Array.from(
+      renderabilityStatus.fieldsRequiredToRender
+    );
+
     return (
       <MissingComponent component={componentDefinition}>
-        {`Fill following fields to render the component: ${renderabilityStatus.fieldsRequiredToRender.join(
+        {`Fill following fields to render the component: ${fieldsRequiredToRender.join(
           ", "
         )}`}
 

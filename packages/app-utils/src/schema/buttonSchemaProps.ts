@@ -7,7 +7,6 @@ export const buttonActionSchemaProp: ComponentSchemaProp = {
   accepts: ["action"],
   visible: true,
   group: "Action",
-  defaultValue: [],
   isLabelHidden: true,
 };
 

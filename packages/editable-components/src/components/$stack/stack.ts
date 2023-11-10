@@ -79,8 +79,11 @@ const stackComponentDefinition: InternalRenderableComponentDefinition<"$stack"> 
           {
             prop: "width",
             label: "Max width",
-            type: "select$",
-            options: maxWidthScale,
+            type: "select",
+            responsive: true,
+            params: {
+              options: maxWidthScale,
+            },
             defaultValue: "512px",
             group: "Size",
           },
@@ -97,27 +100,30 @@ const stackComponentDefinition: InternalRenderableComponentDefinition<"$stack"> 
           {
             prop: "align",
             label: "Align",
-            type: "radio-group$",
-            options: [
-              {
-                value: "left",
-                label: "Left",
-                icon: "AlignLeft",
-                hideLabel: true,
-              },
-              {
-                value: "center",
-                label: "Center",
-                icon: "AlignCenter",
-                hideLabel: true,
-              },
-              {
-                value: "right",
-                label: "Right",
-                icon: "AlignRight",
-                hideLabel: true,
-              },
-            ],
+            type: "radio-group",
+            responsive: true,
+            params: {
+              options: [
+                {
+                  value: "left",
+                  label: "Left",
+                  icon: "AlignLeft",
+                  hideLabel: true,
+                },
+                {
+                  value: "center",
+                  label: "Center",
+                  icon: "AlignCenter",
+                  hideLabel: true,
+                },
+                {
+                  value: "right",
+                  label: "Right",
+                  icon: "AlignRight",
+                  hideLabel: true,
+                },
+              ],
+            },
             defaultValue: "left",
             group: "Layout",
           },

@@ -211,7 +211,7 @@ export function compileComponent(
           ownPropsAfterAuto[schemaProp.prop],
           compilationContext,
           $width,
-          (schemaProp as SpaceSchemaProp).autoConstant ??
+          (schemaProp as SpaceSchemaProp).params?.autoConstant ??
             DEFAULT_SPACE_AUTO_CONSTANT
         );
       }
@@ -228,7 +228,7 @@ export function compileComponent(
           value,
           compilationContext,
           $width,
-          (arg.itemSchemaProp as SpaceSchemaProp).autoConstant ??
+          (arg.itemSchemaProp as SpaceSchemaProp).params?.autoConstant ??
             DEFAULT_SPACE_AUTO_CONSTANT
         );
       }
@@ -522,7 +522,7 @@ export function compileComponent(
     }
 
     componentDefinition.schema.forEach((schemaProp: SchemaProp) => {
-      if (schemaProp.buildOnly) {
+      if ("buildOnly" in schemaProp && schemaProp.buildOnly) {
         return;
       }
 
@@ -683,7 +683,7 @@ function validateStylesProps(
   for (const key of Object.keys(__props)) {
     const schemaProp = componentDefinition.schema.find((s) => s.prop === key);
 
-    if (!schemaProp) {
+    if (!schemaProp || !("buildOnly" in schemaProp)) {
       continue;
     }
 
@@ -1848,6 +1848,7 @@ function convertEditingFieldToInternalEditingField(
             "$richTextInlineWrapperElement",
             editorContext
           )!,
+          defaultValue: [],
         },
         editorContext,
         []

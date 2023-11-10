@@ -1,10 +1,11 @@
 import {
   AnyTinaField,
-  Boolean$SchemaProp,
+  AnyValueSchemaProp,
   BooleanSchemaProp,
   ColorSchemaProp,
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
+  ComponentConfig,
   ComponentFixedSchemaProp,
   ComponentSchemaProp,
   ExternalSchemaProp,
@@ -13,19 +14,17 @@ import {
   LocalTextReference,
   NumberSchemaProp,
   PositionSchemaProp,
-  RadioGroup$SchemaProp,
   RadioGroupSchemaProp,
   ResponsiveValue,
   SchemaProp,
-  Select$SchemaProp,
   SelectSchemaProp,
   SpaceSchemaProp,
-  String$SchemaProp,
   StringSchemaProp,
   StringTokenSchemaProp,
   TextSchemaProp,
   ThemeRefValue,
 } from "@easyblocks/core";
+import { assertDefined } from "@easyblocks/utils";
 import { getMappedToken } from "../getMappedToken";
 import { responsiveValueGet } from "../responsive";
 import { isExternalSchemaProp } from "../schema";
@@ -53,19 +52,19 @@ function getCommonFieldProps(
 
 function buildThemeDefinition<T>(
   themeValues: { [key: string]: ThemeRefValue<ResponsiveValue<T>> },
-  schemaProp: SchemaProp & Partial<{ prefix: string }>,
+  schemaProp: AnyValueSchemaProp,
   allowCustom?: boolean,
   normalizeCustomValue: (value: string) => any = (x) => x
 ) {
   const outputThemeValues = { ...themeValues };
-  if (schemaProp.prefix) {
+  if ("params" in schemaProp && schemaProp.params.prefix) {
     for (const key in outputThemeValues) {
-      if (!key.startsWith((schemaProp as any).prefix + ".")) {
+      if (!key.startsWith(schemaProp.params!.prefix + ".")) {
         delete outputThemeValues[key];
       } else {
         outputThemeValues[key] = {
           ...outputThemeValues[key],
-          label: key.split(`${schemaProp.prefix}.`)[1],
+          label: key.split(`${schemaProp.params!.prefix}.`)[1],
         };
       }
     }
@@ -89,7 +88,11 @@ function buildThemeDefinition<T>(
      */
     hasAuto: false,
     tokens: outputThemeValues,
-    extraValues: (schemaProp as StringTokenSchemaProp).extraValues, // other fields might ignore it
+    extraValues:
+      schemaProp.type === "stringToken"
+        ? (schemaProp as Extract<AnyValueSchemaProp, { type: "stringToken" }>)
+            .params.extraValues
+        : undefined, // other fields might ignore it
     normalizeCustomValue,
     allowCustom,
     format: (x: any) => {
@@ -102,7 +105,13 @@ function buildThemeDefinition<T>(
 }
 
 type FieldProvider<
-  S extends SchemaProp,
+  S extends Exclude<
+    SchemaProp,
+    | ComponentSchemaProp
+    | ComponentFixedSchemaProp
+    | ComponentCollectionSchemaProp
+    | ComponentCollectionLocalisedSchemaProp
+  >,
   Value = Exclude<S["defaultValue"], undefined>
 > = (
   schemaProp: S,
@@ -113,23 +122,22 @@ type FieldProvider<
 export type TinaFieldProviders = {
   text: FieldProvider<TextSchemaProp>;
   string: FieldProvider<StringSchemaProp>;
-  string$: FieldProvider<String$SchemaProp>;
   number: FieldProvider<NumberSchemaProp>;
   boolean: FieldProvider<BooleanSchemaProp>;
-  boolean$: FieldProvider<Boolean$SchemaProp>;
   select: FieldProvider<SelectSchemaProp>;
-  select$: FieldProvider<Select$SchemaProp>;
   "radio-group": FieldProvider<RadioGroupSchemaProp>;
-  "radio-group$": FieldProvider<RadioGroup$SchemaProp>;
   color: FieldProvider<ColorSchemaProp>;
   stringToken: FieldProvider<StringTokenSchemaProp>;
   space: FieldProvider<SpaceSchemaProp>;
   font: FieldProvider<FontSchemaProp>;
   icon: FieldProvider<IconSchemaProp>;
-  component: FieldProvider<ComponentSchemaProp>;
-  "component-collection": FieldProvider<ComponentCollectionSchemaProp>;
+  component: FieldProvider<ComponentSchemaProp, [] | [ComponentConfig]>;
+  "component-collection": FieldProvider<
+    ComponentCollectionSchemaProp,
+    Array<ComponentConfig>
+  >;
   "component-collection-localised": FieldProvider<ComponentCollectionLocalisedSchemaProp>;
-  "component-fixed": FieldProvider<ComponentFixedSchemaProp>;
+  "component-fixed": FieldProvider<ComponentFixedSchemaProp, [ComponentConfig]>;
   component$$$: FieldProvider<ComponentFixedSchemaProp>;
   external: FieldProvider<ExternalSchemaProp>;
   position: FieldProvider<PositionSchemaProp>;
@@ -171,69 +179,72 @@ const tinaFieldProviders: TinaFieldProviders = {
       ...getCommonFieldProps(schemaProp),
       component: "number",
       step: 1,
-      min: schemaProp.min,
-      max: schemaProp.max,
+      min: schemaProp.params?.min,
+      max: schemaProp.params?.max,
     };
   },
   string: (schemaProp) => {
+    if (schemaProp.responsive) {
+      return {
+        ...getCommonFieldProps(schemaProp),
+        component: "responsive2",
+        subComponent: "text",
+        normalize: schemaProp.params?.normalize,
+      };
+    }
+
     return {
       ...getCommonFieldProps(schemaProp),
       component: "text",
-      normalize: schemaProp.normalize,
-    };
-  },
-  string$: (schemaProp) => {
-    return {
-      ...getCommonFieldProps(schemaProp),
-      component: "responsive2",
-      subComponent: "text",
-      normalize: schemaProp.normalize,
+      normalize: schemaProp.params?.normalize,
     };
   },
   boolean: (schemaProp) => {
+    if (schemaProp.responsive) {
+      return {
+        ...getCommonFieldProps(schemaProp),
+        component: "responsive2",
+        subComponent: "toggle",
+      };
+    }
+
     return {
       ...getCommonFieldProps(schemaProp),
       component: "toggle",
     };
   },
-  boolean$: (schemaProp) => {
-    return {
-      ...getCommonFieldProps(schemaProp),
-      component: "responsive2",
-      subComponent: "toggle",
-    };
-  },
   select: (schemaProp) => {
+    if (schemaProp.responsive) {
+      return {
+        ...getCommonFieldProps(schemaProp),
+        component: "responsive2",
+        subComponent: "select",
+        options: schemaProp.params.options,
+      };
+    }
+
     return {
       ...getCommonFieldProps(schemaProp),
       component: "select",
-      options: schemaProp.options,
+      options: schemaProp.params.options,
     };
   },
   "radio-group": (schemaProp) => {
+    if (schemaProp.responsive) {
+      return {
+        ...getCommonFieldProps(schemaProp),
+        component: "responsive2",
+        subComponent: "radio-group",
+        options: schemaProp.params.options,
+      };
+    }
+
     return {
       ...getCommonFieldProps(schemaProp),
       component: "radio-group",
-      options: schemaProp.options,
+      options: schemaProp.params.options,
     };
   },
-  select$: (schemaProp) => {
-    return {
-      ...getCommonFieldProps(schemaProp),
-      component: "responsive2",
-      subComponent: "select",
-      options: schemaProp.options,
-    };
-  },
-  "radio-group$": (schemaProp) => {
-    return {
-      ...getCommonFieldProps(schemaProp),
-      component: "responsive2",
-      subComponent: "radio-group",
-      options: schemaProp.options,
-    };
-  },
-
   color: (schemaProp, editorContext) => {
     return buildThemeDefinition(
       editorContext.theme.colors,
@@ -255,7 +266,7 @@ const tinaFieldProviders: TinaFieldProviders = {
     let allowCustom;
     let normalizeFunction;
 
-    if (schemaProp.tokenId === "aspectRatios") {
+    if (schemaProp.params.tokenId === "aspectRatios") {
       allowCustom = true;
       normalizeFunction = (x: any) => {
         const defaultValue = "3:2";
@@ -268,7 +279,7 @@ const tinaFieldProviders: TinaFieldProviders = {
         }
         return x;
       };
-    } else if (schemaProp.tokenId === "containerWidths") {
+    } else if (schemaProp.params.tokenId === "containerWidths") {
       allowCustom = true;
       normalizeFunction = (x: any) => {
         if (x === "none") {
@@ -294,7 +305,10 @@ const tinaFieldProviders: TinaFieldProviders = {
 
     return buildThemeDefinition(
       {
-        ...editorContext.theme[schemaProp.tokenId]!,
+        ...assertDefined(
+          editorContext.theme[schemaProp.params.tokenId],
+          `Missing theme value for token "${schemaProp.params.tokenId}"`
+        ),
       },
       schemaProp,
       allowCustom,
@@ -379,7 +393,7 @@ const tinaFieldProviders: TinaFieldProviders = {
 
     // TODO: Right now only image and video can hold responsive external reference
     // After introducing `responsive` property for type definition of external we should look at it
-    if (schemaProp.type === "image" || schemaProp.type === "video") {
+    if (schemaProp.responsive) {
       const currentDeviceValue =
         responsiveValueGet(value, editorContext.breakpointIndex) ?? value;
 
@@ -387,15 +401,11 @@ const tinaFieldProviders: TinaFieldProviders = {
         (w) => w.id === currentDeviceValue.widgetId
       );
 
-      if (!fieldWidget) {
-        throw new Error(`Can't find widget named "${schemaProp.type}"`);
-      }
-
       return {
         ...getCommonFieldProps(schemaProp),
         component: "responsive2",
         subComponent: "external",
-        externalField: fieldWidget.component,
+        externalField: fieldWidget?.component,
       };
     }
 

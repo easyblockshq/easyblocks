@@ -1,3 +1,4 @@
+import { assertDefined } from "@easyblocks/utils";
 import standardButtonStyles from "./StandardButton.styles";
 import { InternalRenderableComponentDefinition } from "@easyblocks/app-utils";
 
@@ -22,7 +23,6 @@ export const StandardButtonNoCodeComponent: InternalRenderableComponentDefinitio
           return values.noAction !== true;
         },
         group: "Action",
-        defaultValue: [],
         isLabelHidden: true,
       },
 
@@ -31,11 +31,13 @@ export const StandardButtonNoCodeComponent: InternalRenderableComponentDefinitio
         type: "select",
         group: "Label and Icon",
         label: "Variant",
-        options: [
-          { value: "label", label: "Label" },
-          { value: "icon", label: "Icon" },
-          { value: "label-icon", label: "Label + Icon" },
-        ],
+        params: {
+          options: [
+            { value: "label", label: "Label" },
+            { value: "icon", label: "Icon" },
+            { value: "label-icon", label: "Label + Icon" },
+          ],
+        },
       },
 
       {
@@ -77,18 +79,20 @@ export const StandardButtonNoCodeComponent: InternalRenderableComponentDefinitio
       },
       {
         prop: "minHeight",
-        type: "string$",
+        type: "string",
+        responsive: true,
         defaultValue: "42",
         group: "General styles",
         label: "Min height",
         visible: (values) => {
           return values.hasBorder || values.hasBackground;
         },
-        normalize: pxValueNormalize(0, 256),
+        params: { normalize: pxValueNormalize(0, 256) },
       },
       {
         prop: "minWidth",
-        type: "string$",
+        type: "string",
+        responsive: true,
         defaultValue: "100",
         group: "General styles",
         label: "Min width",
@@ -98,7 +102,7 @@ export const StandardButtonNoCodeComponent: InternalRenderableComponentDefinitio
             (values.hasBorder || values.hasBackground)
           );
         },
-        normalize: pxValueNormalize(0, 512),
+        params: { normalize: pxValueNormalize(0, 512) },
       },
       {
         prop: "horizontalPadding",
@@ -131,14 +135,16 @@ export const StandardButtonNoCodeComponent: InternalRenderableComponentDefinitio
       },
       {
         prop: "cornerMode",
-        type: "select$",
+        type: "select",
+        responsive: true,
         label: "Corners",
         group: "General styles",
-        options: ["sharp", "circled", "custom"],
+        params: { options: ["sharp", "circled", "custom"] },
       },
       {
         prop: "cornerRadius",
-        type: "string$",
+        type: "string",
+        responsive: true,
         visible: (values) => {
           return (
             values.cornerMode === "custom" &&
@@ -149,7 +155,7 @@ export const StandardButtonNoCodeComponent: InternalRenderableComponentDefinitio
         },
         group: "General styles",
         label: "Corner radius",
-        normalize: pxValueNormalize(1, 50),
+        params: { normalize: pxValueNormalize(1, 50) },
         defaultValue: "8",
       },
 
@@ -171,43 +177,47 @@ export const StandardButtonNoCodeComponent: InternalRenderableComponentDefinitio
         type: "select",
         group: "Label styles",
         label: "Underline",
-        options: [
-          {
-            value: "off",
-            label: "Off",
-          },
-          {
-            value: "on",
-            label: "On",
-          },
-          {
-            value: "on-custom",
-            label: "On (custom offset)",
-          },
-        ],
+        params: {
+          options: [
+            {
+              value: "off",
+              label: "Off",
+            },
+            {
+              value: "on",
+              label: "On",
+            },
+            {
+              value: "on-custom",
+              label: "On (custom offset)",
+            },
+          ],
+        },
         visible: (values) => {
           return values.variant !== "icon";
         },
       },
       {
         prop: "underlineOffset",
-        type: "string$",
+        type: "string",
+        responsive: true,
         group: "Label styles",
         label: "Underline offset",
         visible: (values) => {
           return values.variant !== "icon" && values.underline === "on-custom";
         },
-        normalize: pxValueNormalize(1, 16),
+        params: { normalize: pxValueNormalize(1, 16) },
         defaultValue: "1",
       },
 
       {
         prop: "iconSize",
         label: "Size",
-        type: "string$",
+        type: "string",
+        responsive: true,
         defaultValue: "24",
         group: "Icon styles",
-        normalize: pxValueNormalize(8, 128),
+        params: { normalize: pxValueNormalize(8, 128) },
         visible: (values) => {
           return values.variant !== "label";
         },
@@ -242,14 +252,15 @@ export const StandardButtonNoCodeComponent: InternalRenderableComponentDefinitio
       },
       {
         prop: "borderWidth",
-        type: "string$",
+        type: "string",
+        responsive: true,
         defaultValue: "1",
         group: "Border and shadow",
         label: "Border width",
         visible: (values) => {
           return !!values.hasBorder;
         },
-        normalize: pxValueNormalize(1, 16),
+        params: { normalize: pxValueNormalize(1, 16) },
       },
       {
         prop: "borderColor",
@@ -268,7 +279,7 @@ export const StandardButtonNoCodeComponent: InternalRenderableComponentDefinitio
         prop: "boxShadow", // main image size
         label: "Box shadow",
         type: "stringToken",
-        tokenId: "boxShadows",
+        params: { tokenId: "boxShadows" },
         defaultValue: {
           ref: "none",
           value: "none",
@@ -278,9 +289,10 @@ export const StandardButtonNoCodeComponent: InternalRenderableComponentDefinitio
     ],
     editing: ({ editingInfo, values }) => {
       const fields = editingInfo.fields;
-      const minHeightField = fields.find(
-        (field) => field.path === "minHeight"
-      )!;
+      const minHeightField = assertDefined(
+        fields.find((field) => field.path === "minHeight"),
+        "minHeight field not found in StandardButton component fields"
+      );
 
       if (values.variant === "icon") {
         minHeightField.label = "Size";

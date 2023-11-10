@@ -278,7 +278,7 @@ function createFieldController({
       const fieldValues = normalizedFieldName.map((fieldName) => {
         const propName = last(fieldName.split("."));
 
-        if (propName.startsWith("$")) {
+        if (propName.startsWith("$") && "defaultValue" in field.schemaProp) {
           return field.schemaProp.defaultValue;
         }
 
@@ -322,7 +322,6 @@ function createFieldController({
         );
 
         return getHash(
-          // @ts-expect-error Discriminated union of all schema prop definitions produces `never`, but we can safely ignore it for now.
           fieldValue,
           editorContext.breakpointIndex,
           editorContext.devices

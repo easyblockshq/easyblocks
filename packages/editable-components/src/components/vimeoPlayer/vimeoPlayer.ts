@@ -17,7 +17,7 @@ const vimeoPlayerEditableComponent: InternalRenderableComponentDefinition<"$vime
         prop: "aspectRatio",
         label: "Aspect Ratio",
         type: "stringToken",
-        tokenId: "aspectRatios",
+        params: { tokenId: "aspectRatios" },
       },
       {
         prop: "isAutoPlay",

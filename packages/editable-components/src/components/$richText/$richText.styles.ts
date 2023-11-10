@@ -1,7 +1,7 @@
 import { Alignment } from "@easyblocks/app-utils";
 import { box } from "../../box";
 
-export default function styles(values: Record<string, any>) {
+export function richTextStyles(values: Record<string, any>) {
   const align = values.passedAlign ?? values.align;
 
   return {

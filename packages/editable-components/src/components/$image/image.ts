@@ -48,8 +48,10 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
         prop: "aspectRatio", // main image size
         label: "Aspect Ratio",
         type: "stringToken",
-        tokenId: "aspectRatios",
-        extraValues: ["natural"],
+        params: {
+          tokenId: "aspectRatios",
+          extraValues: ["natural"],
+        },
         buildOnly: true,
       },
       buttonActionSchemaProp,
