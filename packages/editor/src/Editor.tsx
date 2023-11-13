@@ -10,7 +10,7 @@ import {
   ItemMovedEvent,
   mergeCompilationMeta,
   parsePath,
-  responsiveValueForceGet,
+  responsiveValueGet,
   useEditorGlobalKeyboardShortcuts,
 } from "@easyblocks/app-utils";
 import {
@@ -485,11 +485,11 @@ function useBuiltContent(
           }
 
           const value = breakpointIndex
-            ? responsiveValueForceGet(config[fieldName], breakpointIndex)
+            ? responsiveValueGet(config[fieldName], breakpointIndex)
             : config[fieldName];
 
           const hasExternalIdChanged =
-            value.id !== externalDataValue.externalId;
+            value === undefined || value.id !== externalDataValue.externalId;
 
           return hasExternalIdChanged;
         }
@@ -1081,8 +1081,8 @@ const EditorContent = ({
   );
 };
 
+export { EditorContainer as Editor, EditorContent };
 export type { EditorContentProps };
-export { EditorContent, EditorContainer as Editor };
 
 function useIframeSize({
   isScalingEnabled,

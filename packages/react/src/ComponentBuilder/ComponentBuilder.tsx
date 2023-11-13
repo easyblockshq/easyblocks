@@ -14,10 +14,10 @@ import {
   isSchemaPropComponent,
   isSchemaPropComponentOrComponentCollection,
   isSchemaPropTextModifier,
-  isTrulyResponsiveValue,
   itemInserted,
   responsiveValueGetDefinedValue,
   responsiveValueMap,
+  responsiveValueReduce,
   splitTemplateName,
 } from "@easyblocks/app-utils";
 import {
@@ -29,8 +29,10 @@ import {
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
   ComponentSchemaProp,
+  Devices,
   ExternalData,
   ExternalReference,
+  ExternalReferenceNonEmpty,
   ExternalSchemaProp,
   getExternalReferenceLocationKey,
   getExternalValue,
@@ -150,84 +152,22 @@ function getRenderabilityStatus(
     const externalReference: ResponsiveValue<ExternalReference> =
       compiled.props[resourceSchemaProp.prop];
 
-    if (isTrulyResponsiveValue(externalReference)) {
-      const definedDeviceIds = Object.keys(externalReference).filter(
-        (id) => id !== "$res"
-      );
-
-      for (const currentDeviceId of definedDeviceIds) {
-        if (status.isLoading || !status.renderable) {
-          return status;
-        }
-
-        const externalReferenceValue = responsiveValueGetDefinedValue(
-          externalReference,
-          currentDeviceId,
-          meta.vars.devices
-        );
-
-        if (!externalReferenceValue) {
-          status.isLoading = false;
-          status.renderable = false;
-          status.fieldsRequiredToRender.add(
-            resourceSchemaProp.label || resourceSchemaProp.prop
-          );
-          return status;
-        }
-
-        if (externalReferenceValue.id) {
-          const externalReferenceLocationKey =
-            externalReferenceValue.id.startsWith("$.")
-              ? externalReferenceValue.id
-              : getExternalReferenceLocationKey(
-                  compiled._id,
-                  resourceSchemaProp.prop,
-                  currentDeviceId
-                );
-          const externalValue = externalData[externalReferenceLocationKey];
-          status.isLoading = status.isLoading || externalValue === undefined;
-          const isDefined =
-            externalValue !== undefined && !("error" in externalValue);
-          status.renderable = status.renderable && isDefined;
-
-          if (!isDefined && !status.isLoading) {
-            status.fieldsRequiredToRender.add(
-              resourceSchemaProp.label || resourceSchemaProp.prop
-            );
-          }
-        }
-      }
-
-      return status;
-    }
-
-    if (externalReference.id) {
-      const externalReferenceLocationKey = externalReference.id.startsWith("$.")
-        ? externalReference.id
-        : getExternalReferenceLocationKey(
-            compiled._id,
-            resourceSchemaProp.prop
-          );
-      const externalValue = externalData[externalReferenceLocationKey];
-      status.isLoading = status.isLoading || externalValue === undefined;
-      const isDefined =
-        externalValue !== undefined && !("error" in externalValue);
-      status.renderable = status.renderable && isDefined;
-
-      if (!isDefined && !status.isLoading) {
-        status.fieldsRequiredToRender.add(
-          resourceSchemaProp.label || resourceSchemaProp.prop
-        );
-      }
-
-      continue;
-    }
-
-    status.isLoading = false;
-    status.renderable = false;
-    status.fieldsRequiredToRender.add(
-      resourceSchemaProp.label || resourceSchemaProp.prop
+    const fieldStatus = getFieldStatus(
+      externalReference,
+      externalData,
+      compiled._id,
+      resourceSchemaProp.prop,
+      meta.vars.devices
     );
+
+    status.isLoading = status.isLoading || fieldStatus.isLoading;
+    status.renderable = status.renderable && fieldStatus.renderable;
+
+    if (!fieldStatus.renderable && !fieldStatus.isLoading) {
+      status.fieldsRequiredToRender.add(
+        resourceSchemaProp.label || resourceSchemaProp.prop
+      );
+    }
   }
 
   return status;
@@ -345,7 +285,6 @@ function getCompiledSubcomponents(
     return elements;
   }
 }
-
 export type ComponentBuilderProps = {
   path: string;
   passedProps?: {
@@ -646,3 +585,87 @@ function resolveExternalValue(
 
 export default ComponentBuilder;
 export type { ComponentBuilderComponent };
+
+function getFieldStatus(
+  externalReference: ResponsiveValue<ExternalReference>,
+  externalData: ExternalData,
+  configId: string,
+  fieldName: string,
+  devices: Devices
+) {
+  return responsiveValueReduce(
+    externalReference,
+    (currentStatus, value, deviceId) => {
+      if (!deviceId) {
+        if (!value.id) {
+          return {
+            isLoading: false,
+            renderable: false,
+          };
+        }
+
+        const externalValue = getResolvedExternalDataValue(
+          externalData,
+          configId,
+          fieldName,
+          value
+        );
+
+        return {
+          isLoading: currentStatus.isLoading || externalValue === undefined,
+          renderable: currentStatus.renderable && externalValue !== undefined,
+        };
+      }
+
+      if (currentStatus.isLoading || !currentStatus.renderable) {
+        return currentStatus;
+      }
+
+      const externalReferenceValue = responsiveValueGetDefinedValue(
+        value,
+        deviceId,
+        devices
+      );
+
+      if (!externalReferenceValue || externalReferenceValue.id === null) {
+        return {
+          isLoading: false,
+          renderable: false,
+        };
+      }
+
+      const externalValue = getResolvedExternalDataValue(
+        externalData,
+        configId,
+        fieldName,
+        externalReferenceValue
+      );
+
+      return {
+        isLoading: currentStatus.isLoading || externalValue === undefined,
+        renderable: currentStatus.renderable && externalValue !== undefined,
+      };
+    },
+    { renderable: true, isLoading: false },
+    devices
+  );
+}
+
+function getResolvedExternalDataValue(
+  externalData: ExternalData,
+  configId: string,
+  fieldName: string,
+  value: ExternalReferenceNonEmpty
+) {
+  const externalReferenceLocationKey = value.id.startsWith("$.")
+    ? value.id
+    : getExternalReferenceLocationKey(configId, fieldName);
+
+  const externalValue = externalData[externalReferenceLocationKey];
+
+  if (externalValue === undefined || "error" in externalValue) {
+    return;
+  }
+
+  return externalValue;
+}
