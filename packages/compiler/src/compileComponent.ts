@@ -40,7 +40,6 @@ import {
   CompiledTextModifier,
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
-  ComponentFixedSchemaProp,
   ComponentSchemaProp,
   ConfigComponent,
   EditingField,
@@ -959,10 +958,7 @@ function compileSubcomponents(
 
       // Merge config after auto
       if (compilationContext.isEditing && configAfterAuto !== null) {
-        if (
-          schemaProp.type === "component" ||
-          schemaProp.type === "component-fixed"
-        ) {
+        if (schemaProp.type === "component") {
           configAfterAuto[schemaProp.prop] = [
             compilationOutput[0]?.configAfterAuto ?? [],
           ];
@@ -1258,7 +1254,6 @@ function buildDefaultEditingInfo(
       (schemaProp) => schemaProp.prop === parentInfo.fieldName
     ) as
       | ComponentSchemaProp
-      | ComponentFixedSchemaProp
       | ComponentCollectionSchemaProp
       | ComponentCollectionLocalisedSchemaProp;
 
@@ -1270,12 +1265,10 @@ function buildDefaultEditingInfo(
 
     let required: boolean;
 
-    if (parentSchemaProp.type === "component-fixed") {
-      required = true;
-    } else if (isSchemaPropCollection(parentSchemaProp)) {
-      required = false;
-    } else {
+    if (parentSchemaProp.type === "component") {
       required = !!parentSchemaProp.required;
+    } else {
+      required = false;
     }
 
     const headerSchemaProp: Component$$$SchemaProp = {
@@ -1899,7 +1892,10 @@ function convertEditingFieldToInternalEditingField(
             }
           }
 
-          if (componentSchemaProp.type === "component-fixed") {
+          if (
+            componentSchemaProp.type === "component" &&
+            componentSchemaProp.required
+          ) {
             const absoluteFieldPath = toAbsolutePath(
               pathFragments.slice(0, -1).join("."),
               configPrefix

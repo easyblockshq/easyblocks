@@ -266,14 +266,16 @@ export const sectionWrapperFieldsProvider = (options: {
     {
       prop: "HeaderStack",
       label: "Stack",
-      type: "component-fixed",
-      componentType: "$stack",
+      type: "component",
+      componentTypes: ["$stack"],
+      required: true,
     },
     {
       prop: "HeaderSecondaryStack",
       label: "Stack",
-      type: "component-fixed",
-      componentType: "$stack",
+      type: "component",
+      componentTypes: ["$stack"],
+      required: true,
     },
 
     // section background
@@ -368,22 +370,6 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
 
     stackComponentDefinition,
 
-    // {
-    //   id: "$BannerSection",
-    //   type: "section",
-    //   label: "Banner",
-    //   styles: $sectionWrapperStyles,
-    //   editing: sectionWrapperEditing,
-    //   pasteSlots: ["Component"],
-    //   schema: [
-    //     ...sectionWrapperFields,
-    //     {
-    //       prop: "Component",
-    //       type: "component-fixed",
-    //       componentType: "$BannerCard",
-    //     },
-    //   ],
-    // },
     {
       id: "$BannerSection2",
       type: "section",
@@ -395,8 +381,9 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         ...sectionWrapperFields,
         {
           prop: "Component",
-          type: "component-fixed",
-          componentType: "$BannerCard2",
+          type: "component",
+          componentTypes: ["$BannerCard2"],
+          required: true,
         },
       ],
       allowSave: true,
@@ -412,8 +399,9 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         ...sectionWrapperFields.filter((x) => x.group === "General"),
         {
           prop: "Component",
-          type: "component-fixed",
-          componentType: "$GridCard",
+          type: "component",
+          componentTypes: ["$GridCard"],
+          required: true,
         },
         ...sectionWrapperFields.filter((x) => x.group !== "General"),
       ],
@@ -430,8 +418,9 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         ...sectionWrapperFieldsWithoutEscapeMargin,
         {
           prop: "Component",
-          type: "component-fixed",
-          componentType: "$TwoCardsCard",
+          type: "component",
+          componentTypes: ["$TwoCardsCard"],
+          required: true,
         },
       ],
     },
@@ -1336,14 +1325,16 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         {
           prop: "Card1",
           label: "Card1",
-          type: "component-fixed",
-          componentType: "$BasicCard",
+          type: "component",
+          componentTypes: ["$BasicCard"],
+          required: true,
         },
         {
           prop: "Card2",
           label: "Card2",
-          type: "component-fixed",
-          componentType: "$BasicCardBackground",
+          type: "component",
+          componentTypes: ["$BasicCardBackground"],
+          required: true,
         },
         {
           prop: "mode", // main image size

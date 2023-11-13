@@ -3,7 +3,7 @@ import React from "react";
 import { isTrulyResponsiveValue } from "./isTrulyResponsiveValue";
 
 export function responsiveValueToSelectivelyDisplayedComponents<T>(
-  input: ResponsiveValue<T>,
+  input: ResponsiveValue<T | undefined>,
   callback: (
     arg: T | undefined,
     breakpointIndex?: string

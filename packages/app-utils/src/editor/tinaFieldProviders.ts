@@ -6,7 +6,6 @@ import {
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
   ComponentConfig,
-  ComponentFixedSchemaProp,
   ComponentSchemaProp,
   ExternalSchemaProp,
   FontSchemaProp,
@@ -108,7 +107,6 @@ type FieldProvider<
   S extends Exclude<
     SchemaProp,
     | ComponentSchemaProp
-    | ComponentFixedSchemaProp
     | ComponentCollectionSchemaProp
     | ComponentCollectionLocalisedSchemaProp
   >,
@@ -137,8 +135,7 @@ export type TinaFieldProviders = {
     Array<ComponentConfig>
   >;
   "component-collection-localised": FieldProvider<ComponentCollectionLocalisedSchemaProp>;
-  "component-fixed": FieldProvider<ComponentFixedSchemaProp, [ComponentConfig]>;
-  component$$$: FieldProvider<ComponentFixedSchemaProp>;
+  component$$$: FieldProvider<ComponentSchemaProp>;
   external: FieldProvider<ExternalSchemaProp>;
   position: FieldProvider<PositionSchemaProp>;
 };
@@ -355,13 +352,6 @@ const tinaFieldProviders: TinaFieldProviders = {
   },
 
   component: (schemaProp) => {
-    return {
-      ...getCommonFieldProps(schemaProp),
-      component: "ss-block",
-      schemaProp,
-    };
-  },
-  "component-fixed": (schemaProp) => {
     return {
       ...getCommonFieldProps(schemaProp),
       component: "ss-block",

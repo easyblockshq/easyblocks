@@ -38,8 +38,9 @@ describe("destinationResolver", () => {
           schema: [
             {
               prop: "Component",
-              type: "component-fixed",
-              componentType: "$GridCard",
+              type: "component",
+              componentTypes: ["$GridCard"],
+              required: true,
             },
           ],
           pasteSlots: ["Component"],

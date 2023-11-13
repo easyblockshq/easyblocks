@@ -40,6 +40,8 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         prop: "image",
         label: "Video",
         type: "video",
+        responsive: true,
+        optional: true,
       },
       {
         prop: "aspectRatio", // main image size

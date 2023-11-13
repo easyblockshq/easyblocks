@@ -43,6 +43,8 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
         prop: "image",
         type: "image",
         label: "Source",
+        responsive: true,
+        optional: true,
       },
       {
         prop: "aspectRatio", // main image size

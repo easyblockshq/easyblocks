@@ -28,7 +28,6 @@ import {
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
   ComponentConfig,
-  ComponentFixedSchemaProp,
   ComponentSchemaProp,
   ConfigComponent,
   Devices,
@@ -234,10 +233,6 @@ export type SchemaPropDefinitionProviders = {
     schemaProp: ComponentCollectionLocalisedSchemaProp,
     compilationContext: CompilationContextType
   ) => ComponentCollectionLocalisedSchemaPropDefinition;
-  "component-fixed": (
-    schemaProp: ComponentFixedSchemaProp,
-    compilationContext: CompilationContextType
-  ) => ComponentFixedSchemaPropDefinition;
   component$$$: (
     schemaProp: Component$$$SchemaProp,
     compilationContext: CompilationContextType
@@ -724,57 +719,6 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
       },
     };
   },
-  "component-fixed": (
-    schemaProp,
-    compilationContext: CompilationContextType
-  ): ComponentFixedSchemaPropDefinition => {
-    const normalize = (x: any) => {
-      if (!Array.isArray(x) || x.length === 0) {
-        return [
-          normalizeComponent(
-            { _template: schemaProp.componentType },
-            compilationContext
-          ),
-        ];
-      }
-
-      return [normalizeComponent(x[0], compilationContext)];
-    };
-
-    return {
-      normalize,
-      compile: (
-        arr,
-        contextProps,
-        serializedDefinitions,
-        refMap,
-        editingInfoComponent,
-        configPrefix,
-        cache
-      ) => {
-        const { configAfterAuto, compiledComponentConfig } = compileComponent(
-          arr[0] as ConfigComponent,
-          compilationContext,
-          contextProps,
-          serializedDefinitions,
-          refMap,
-          cache,
-          editingInfoComponent,
-          `${configPrefix}.0`
-        );
-
-        return [
-          {
-            configAfterAuto,
-            compiledComponentConfig,
-          },
-        ];
-      },
-      getHash: (value) => {
-        return value.map((v) => v._template).join(";");
-      },
-    };
-  },
 
   "component-collection": (
     _,
@@ -902,12 +846,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
   },
 
   external: (schemaProp, compilationContext) => {
-    if (
-      schemaProp.responsive ||
-      schemaProp.type === "image" ||
-      schemaProp.type === "video"
-    ) {
-      // `image` and `video` are internals types that hold external references, but also are responsive by default.
+    if (schemaProp.responsive) {
       const normalize = getResponsiveNormalize<ExternalReference>(
         compilationContext,
         {},
@@ -1423,7 +1362,7 @@ export function normalizeComponent(
   }
 
   // RichText is a really specific component. It must have concrete shape to work properly.
-  // When using prop of type `component-fixed` with `componentType: "$richText"` it's going to be initialized with empty
+  // When using prop of type `component` with `componentTypes: ["$richText"]` it's going to be initialized with empty
   // `elements` property which in result will cause RichText to not work properly. To fix this, we're going
   // to initialize `elements` with default template - the same that's being added when user adds RichText to Stack manually.
   if (ret._template === "$richText") {
@@ -1448,12 +1387,9 @@ export function getSchemaDefinition<
   schemaProp: T,
   compilationContext: CompilationContextType
 ): ReturnType<SchemaPropDefinitionProvider> {
-  const provider =
-    schemaProp.type === "image" ||
-    schemaProp.type === "video" ||
-    isExternalSchemaProp(schemaProp)
-      ? schemaPropDefinitions.external
-      : schemaPropDefinitions[schemaProp.type];
+  const provider = isExternalSchemaProp(schemaProp)
+    ? schemaPropDefinitions.external
+    : schemaPropDefinitions[schemaProp.type];
 
   return provider(schemaProp as any, compilationContext);
 }

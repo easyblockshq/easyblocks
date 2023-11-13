@@ -144,7 +144,7 @@ describe("insert", () => {
     definition                                        | schema
     ${createComponentDefinition({ tags: ["TAG_1"] })} | ${{ accepts: ["TAG_2"], type: "component", prop: "" }}
     ${createComponentDefinition({ id: "ID_1" })}      | ${{ accepts: ["ID_2"], type: "component-collection", prop: "" }}
-    ${createComponentDefinition({ tags: ["TAG_3"] })} | ${{ componentType: "TAG_3", type: "component-fixed", prop: "" }}
+    ${createComponentDefinition({ tags: ["TAG_3"] })} | ${{ accepts: ["TAG_3"], type: "component", prop: "", required: true }}
   `(
     "Should return null when items does not match the schema",
     ({ definition, schema }) => {

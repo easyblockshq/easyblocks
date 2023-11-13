@@ -208,35 +208,6 @@ describe("component-collection schema", () => {
   );
 });
 
-describe("component-fixed schema", () => {
-  const componentFixedSchemaTestCases: Array<
-    SchemaPropTestCaseArray<"component-fixed">
-  > = [
-    [[], ""],
-    [[{ _template: "test template" }], "test template"],
-    [
-      [{ _template: "test template1" }, { _template: "test template2" }],
-      "test template1;test template2",
-    ],
-  ];
-
-  test.each(componentFixedSchemaTestCases)(
-    'for %j returns "%s"',
-    (value, expected) => {
-      expect(
-        schemaPropDefinitions["component-fixed"](
-          {
-            prop: "testProp",
-            type: "component-fixed",
-            componentType: "",
-          },
-          testCompilationContext
-        ).getHash(value, "xl", [])
-      ).toBe(expected);
-    }
-  );
-});
-
 describe("custom schema", () => {
   const customSchemaTestCases: Array<SchemaPropTestCaseArray<"custom">> = [
     [{ id: "testId" }, "testId"],

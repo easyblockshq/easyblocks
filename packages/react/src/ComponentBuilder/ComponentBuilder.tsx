@@ -28,7 +28,6 @@ import {
   CompiledShopstoryComponentConfig,
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
-  ComponentFixedSchemaProp,
   ComponentSchemaProp,
   ExternalData,
   ExternalReference,
@@ -137,20 +136,7 @@ function getRenderabilityStatus(
     };
   }
 
-  const mappedSchema = componentDefinition.schema.map((schema) => {
-    if (schema.type === "image" || schema.type === "video") {
-      const optionalExternalSchemaProp: ExternalSchemaProp = {
-        ...(schema as ExternalSchemaProp),
-        optional: true,
-      };
-
-      return optionalExternalSchemaProp;
-    }
-
-    return schema;
-  });
-
-  const requiredExternalFields = mappedSchema.filter(
+  const requiredExternalFields = componentDefinition.schema.filter(
     (schemaProp): schemaProp is ExternalSchemaProp => {
       return isExternalSchemaProp(schemaProp) && !schemaProp.optional;
     }
@@ -257,7 +243,6 @@ function getCompiledSubcomponents(
   contextProps: ContextProps,
   schemaProp:
     | ComponentSchemaProp
-    | ComponentFixedSchemaProp
     | ComponentCollectionSchemaProp
     | ComponentCollectionLocalisedSchemaProp,
   path: string,
@@ -313,11 +298,8 @@ function getCompiledSubcomponents(
     // We don't want to show add button for this type
     schemaProp.type !== "component-collection-localised"
   ) {
-    const componentTypes =
-      schemaProp.type === "component-fixed"
-        ? [schemaProp.componentType]
-        : schemaProp.accepts;
-    const type = getComponentMainType(componentTypes);
+    const type = getComponentMainType(schemaProp.accepts);
+
     elements = [
       <Placeholder
         id={id}

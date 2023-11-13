@@ -365,8 +365,9 @@ const coreComponents: InternalRenderableComponentDefinition[] = [
       },
       {
         prop: "Card3Fixed",
-        type: "component-fixed",
-        componentType: "$EmptyComponent",
+        type: "component",
+        componentTypes: ["$EmptyComponent"],
+        required: true,
       },
       {
         prop: "Cards",
@@ -493,8 +494,9 @@ const coreComponents: InternalRenderableComponentDefinition[] = [
     schema: [
       {
         prop: "Card",
-        type: "component-fixed",
-        componentType: "$EmptyComponent2",
+        type: "component",
+        componentTypes: ["$EmptyComponent2"],
+        required: true,
       },
     ],
   },
@@ -2660,25 +2662,16 @@ describe("[component field] no parent context", () => {
   });
 });
 
-describe("[component-fixed field] no parent context", () => {
+describe("[component field required] no parent context", () => {
   const x = build(
     {
       prop: "blabla",
-      type: "component-fixed",
-      componentType: "$TestCard",
+      type: "component",
+      componentTypes: ["$TestCard"],
+      required: true,
     },
     editorContext
   );
-
-  /**
-   * Not running "simpleTest" and following field tests, because there's no "sidebar field" for component-fixed yet.
-   */
-
-  // test("field created correctly", () => {
-  //     expect(x.field.label).toBe("blabla");
-  //     expect(x.field.name).toBe("blabla");
-  //     expect(x.field.component).toBe("ss-block");
-  // })
 
   const DEFAULT_VALUE = [
     {
@@ -2851,50 +2844,6 @@ test("[component] works with empty subcomponents", () => {
   expect(item.actions.testAction[0].props.someText.value).toBe("Lorem ipsum");
   expect(item.actions.testAction[0].props.someSelect).toBe("two");
 });
-
-//
-// test("[component] throws when gets empty component-fixed structure", () => {
-//     function emptyCard1Fixed() {
-//         compileInternal(
-//             {
-//                 _template: "$TestSection",
-//             }
-//         , editorContext);
-//     }
-//
-//     expect(emptyCard1Fixed).toThrow();
-//
-//     function emptyNestedCard() {
-//         compileInternal(
-//             {
-//                 _template: "$TestSection",
-//                 Card3Fixed: [{
-//                     _template: '$EmptyComponent',
-//                     Card: []
-//                 }]
-//             }
-//         , editorContext);
-//     }
-//
-//     expect(emptyNestedCard).toThrow();
-//
-//     function cool() {
-//         compileInternal(
-//             {
-//                 _template: "$TestSection",
-//                 Card3Fixed: [{
-//                     _template: '$EmptyComponent',
-//                     Card: [{
-//                         _template: '$EmptyComponent2'
-//                     }]
-//                 }]
-//             }
-//         , editorContext);
-//     }
-//
-//     cool();
-//     // expect(cool).not.toThrow();
-// });
 
 function expectCorrectTestCard(input: any, output: any) {
   expect(output._template).toBe(input._template);

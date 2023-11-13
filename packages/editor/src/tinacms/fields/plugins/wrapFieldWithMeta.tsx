@@ -128,35 +128,42 @@ export function FieldMetaWrapper<
   const isExternalField =
     isExternalSchemaProp(schemaProp) ||
     (schemaProp.type === "text" && !input.value.id?.startsWith("local."));
-  const configPath = fieldNames[0].split(".").slice(0, -1).join(".");
-  const fieldValue = dotNotationGet(configAfterAuto, fieldNames[0]);
-  const config = dotNotationGet(configAfterAuto, configPath);
-  const externalValue = isExternalField
-    ? externalData[
-        getExternalReferenceLocationKey(
-          focussedField.length === 0 ? "$" : config._id,
-          schemaProp.prop,
-          isTrulyResponsiveValue(input.value)
-            ? responsiveValueFindDeviceWithDefinedValue(
-                input.value,
-                editorContext.breakpointIndex,
-                editorContext.devices
-              )?.id
-            : undefined
-        )
-      ]
+  const componentPaths = fieldNames.map((fieldName) =>
+    fieldName[0].split(".").slice(0, -1).join(".")
+  );
+  const fieldValues = fieldNames.map((f) => dotNotationGet(configAfterAuto, f));
+  const configs = componentPaths.map((c) => dotNotationGet(configAfterAuto, c));
+  const externalValues = isExternalField
+    ? configs.map(
+        (c) =>
+          externalData[
+            getExternalReferenceLocationKey(
+              focussedField.length === 0 ? "$" : c._id,
+              schemaProp.prop,
+              isTrulyResponsiveValue(input.value)
+                ? responsiveValueFindDeviceWithDefinedValue(
+                    input.value,
+                    editorContext.breakpointIndex,
+                    editorContext.devices
+                  )?.id
+                : undefined
+            )
+          ]
+      )
     : undefined;
 
-  const currentBreakpointFieldValue = responsiveValueForceGet(
-    fieldValue,
-    editorContext.breakpointIndex
+  const currentBreakpointFieldValues = fieldValues.map((v) =>
+    responsiveValueForceGet(v, editorContext.breakpointIndex)
   );
 
   const isLoadingExternalValue =
     isExternalField &&
-    !externalValue &&
-    !isEmptyExternalReference(currentBreakpointFieldValue) &&
-    !isIdReferenceToDocumentExternalValue(currentBreakpointFieldValue.id);
+    externalValues?.length === 0 &&
+    currentBreakpointFieldValues.every(
+      (v) =>
+        !isEmptyExternalReference(v) &&
+        !isIdReferenceToDocumentExternalValue(v.id)
+    );
 
   return (
     <FieldWrapper margin={false} layout={layout}>
@@ -165,7 +172,9 @@ export function FieldMetaWrapper<
           {renderLabel?.({ label }) ?? (
             <FieldLabel
               htmlFor={toArray(field.name).join(",")}
-              isError={externalValue !== undefined && "error" in externalValue}
+              isError={
+                externalValues !== undefined && "error" in externalValues
+              }
               {...triggerProps}
             >
               <span
@@ -199,7 +208,7 @@ export function FieldMetaWrapper<
             !isMixedValue && (
               <WidgetsSelect
                 schemaProp={schemaProp}
-                value={currentBreakpointFieldValue}
+                value={currentBreakpointFieldValues[0]}
                 onChange={(widgetId) => {
                   if (widgetId === "@easyblocks/local-text") {
                     const newFieldValue: LocalTextReference = {
@@ -239,9 +248,12 @@ export function FieldMetaWrapper<
 
       <FieldInputWrapper layout={layout}>{content}</FieldInputWrapper>
 
-      {externalValue && "error" in externalValue && (
-        <FieldError>{externalValue.error.message}</FieldError>
-      )}
+      {!isMixedFieldValue &&
+        isExternalField &&
+        externalValues!.length > 0 &&
+        "error" in externalValues![0] && (
+          <FieldError>{externalValues![0].error.message}</FieldError>
+        )}
     </FieldWrapper>
   );
 }

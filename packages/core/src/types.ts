@@ -250,14 +250,6 @@ export type ComponentCollectionLocalisedSchemaProp = Omit<
   placeholderAppearance?: PlaceholderAppearance;
 };
 
-export type ComponentFixedSchemaProp = SchemaPropShared<"component-fixed"> & {
-  componentType: string;
-  picker?: ComponentPickerType;
-  hideFields?: string[];
-  passFields?: PassedField[];
-  noInline?: boolean;
-}; // we don't want to set default value for nested components
-
 export type TextSchemaProp = ValueSchemaProp<
   "text",
   LocalTextReference | ExternalReference | string,
@@ -313,7 +305,6 @@ export type SchemaProp =
   | ComponentSchemaProp
   | ComponentCollectionSchemaProp
   | ComponentCollectionLocalisedSchemaProp
-  | ComponentFixedSchemaProp
   | PositionSchemaProp
   | ExternalSchemaProp;
 
