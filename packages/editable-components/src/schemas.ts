@@ -68,13 +68,17 @@ export const sectionWrapperFieldsProvider = (options: {
       label: "Left / Right",
       type: "space",
       group: "Section margins",
-      prefix: "containerMargin",
+      params: {
+        prefix: "containerMargin",
+      },
     },
     {
       prop: "containerMaxWidth", // main image size
       label: "Max width",
       type: "stringToken",
-      tokenId: "containerWidths",
+      params: {
+        tokenId: "containerWidths",
+      },
       defaultValue: {
         ref: "none",
         value: "none",
@@ -85,14 +89,16 @@ export const sectionWrapperFieldsProvider = (options: {
     {
       prop: "escapeMargin",
       label: "Escape",
-      type: "boolean$",
+      type: "boolean",
+      responsive: true,
       group: "Section margins",
       ...extraEscapeMarginProps,
     },
     {
       prop: "hide",
       label: "Hide",
-      type: "boolean$",
+      type: "boolean",
+      responsive: true,
       group: "General",
     },
 
@@ -101,11 +107,13 @@ export const sectionWrapperFieldsProvider = (options: {
       prop: "headerMode",
       label: "Variant",
       type: "select",
-      options: [
-        { value: "none", label: "No header" },
-        { value: "1-stack", label: "1 stack" },
-        { value: "2-stacks", label: "2 stacks" },
-      ],
+      params: {
+        options: [
+          { value: "none", label: "No header" },
+          { value: "1-stack", label: "1 stack" },
+          { value: "2-stacks", label: "2 stacks" },
+        ],
+      },
       group: "Section Header",
     },
     {
@@ -113,26 +121,28 @@ export const sectionWrapperFieldsProvider = (options: {
       label: "Position",
       type: "select",
       group: "Section Header",
-      options: [
-        {
-          value: "left",
-          label: "Left",
-          // icon: SSIcons.AlignLeft,
-          // hideLabel: true,
-        },
-        {
-          value: "center",
-          label: "Center",
-          // icon: SSIcons.AlignCenter,
-          // hideLabel: true,
-        },
-        {
-          value: "right",
-          label: "Right",
-          // icon: SSIcons.AlignRight,
-          // hideLabel: true,
-        },
-      ],
+      params: {
+        options: [
+          {
+            value: "left",
+            label: "Left",
+            // icon: SSIcons.AlignLeft,
+            // hideLabel: true,
+          },
+          {
+            value: "center",
+            label: "Center",
+            // icon: SSIcons.AlignCenter,
+            // hideLabel: true,
+          },
+          {
+            value: "right",
+            label: "Right",
+            // icon: SSIcons.AlignRight,
+            // hideLabel: true,
+          },
+        ],
+      },
       visible: (values) => {
         return values.headerMode === "1-stack";
       },
@@ -141,42 +151,45 @@ export const sectionWrapperFieldsProvider = (options: {
     {
       prop: "layout2Stacks",
       label: "Position",
-      type: "select$",
+      type: "select",
+      responsive: true,
       group: "Section Header",
-      options: [
-        {
-          value: "left-right",
-          label: "left + right",
-        },
-        {
-          value: "center-right",
-          label: "center + right",
-        },
-        {
-          value: "stacked-left",
-          label: "stacked left",
-        },
-        {
-          value: "stacked-center",
-          label: "stacked center",
-        },
-        {
-          value: "stacked-right",
-          label: "stacked right",
-        },
-        {
-          value: "below-left",
-          label: "above+below left",
-        },
-        {
-          value: "below-center",
-          label: "above+below center",
-        },
-        {
-          value: "below-right",
-          label: "above+below right",
-        },
-      ],
+      params: {
+        options: [
+          {
+            value: "left-right",
+            label: "left + right",
+          },
+          {
+            value: "center-right",
+            label: "center + right",
+          },
+          {
+            value: "stacked-left",
+            label: "stacked left",
+          },
+          {
+            value: "stacked-center",
+            label: "stacked center",
+          },
+          {
+            value: "stacked-right",
+            label: "stacked right",
+          },
+          {
+            value: "below-left",
+            label: "above+below left",
+          },
+          {
+            value: "below-center",
+            label: "above+below center",
+          },
+          {
+            value: "below-right",
+            label: "above+below right",
+          },
+        ],
+      },
       visible: (values) => {
         return values.headerMode === "2-stacks";
       },
@@ -184,9 +197,12 @@ export const sectionWrapperFieldsProvider = (options: {
     {
       prop: "layout2StacksVerticalAlign",
       label: "Align",
-      type: "select$",
+      type: "select",
+      responsive: true,
       group: "Section Header",
-      options: ["center", "top", "bottom"],
+      params: {
+        options: ["center", "top", "bottom"],
+      },
       visible: (values) => {
         return (
           values.headerMode === "2-stacks" &&
@@ -250,14 +266,16 @@ export const sectionWrapperFieldsProvider = (options: {
     {
       prop: "HeaderStack",
       label: "Stack",
-      type: "component-fixed",
-      componentType: "$stack",
+      type: "component",
+      componentTypes: ["$stack"],
+      required: true,
     },
     {
       prop: "HeaderSecondaryStack",
       label: "Stack",
-      type: "component-fixed",
-      componentType: "$stack",
+      type: "component",
+      componentTypes: ["$stack"],
+      required: true,
     },
 
     // section background
@@ -321,25 +339,28 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         {
           prop: "height",
           label: "Stroke width",
-          type: "select$",
-          options: [
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-          ],
+          type: "select",
+          responsive: true,
+          params: {
+            options: [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10",
+              "11",
+              "12",
+              "13",
+              "14",
+              "15",
+              "16",
+            ],
+          },
         },
       ],
     },
@@ -349,22 +370,6 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
 
     stackComponentDefinition,
 
-    // {
-    //   id: "$BannerSection",
-    //   type: "section",
-    //   label: "Banner",
-    //   styles: $sectionWrapperStyles,
-    //   editing: sectionWrapperEditing,
-    //   pasteSlots: ["Component"],
-    //   schema: [
-    //     ...sectionWrapperFields,
-    //     {
-    //       prop: "Component",
-    //       type: "component-fixed",
-    //       componentType: "$BannerCard",
-    //     },
-    //   ],
-    // },
     {
       id: "$BannerSection2",
       type: "section",
@@ -376,8 +381,9 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         ...sectionWrapperFields,
         {
           prop: "Component",
-          type: "component-fixed",
-          componentType: "$BannerCard2",
+          type: "component",
+          componentTypes: ["$BannerCard2"],
+          required: true,
         },
       ],
       allowSave: true,
@@ -393,8 +399,9 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         ...sectionWrapperFields.filter((x) => x.group === "General"),
         {
           prop: "Component",
-          type: "component-fixed",
-          componentType: "$GridCard",
+          type: "component",
+          componentTypes: ["$GridCard"],
+          required: true,
         },
         ...sectionWrapperFields.filter((x) => x.group !== "General"),
       ],
@@ -411,8 +418,9 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         ...sectionWrapperFieldsWithoutEscapeMargin,
         {
           prop: "Component",
-          type: "component-fixed",
-          componentType: "$TwoCardsCard",
+          type: "component",
+          componentTypes: ["$TwoCardsCard"],
+          required: true,
         },
       ],
     },
@@ -475,40 +483,52 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
               prop: "itemSize",
               label: "Item size",
               group: "General",
-              type: "select$",
-              options: ["1x1", "2x1", "2x2"],
+              type: "select",
+              responsive: true,
+              params: {
+                options: ["1x1", "2x1", "2x2"],
+              },
             },
             {
               prop: "verticalAlign",
               label: "Vertical align",
               group: "General",
-              type: "select$",
-              options: ["auto", "top", "center", "bottom", "stretch"],
+              type: "select",
+              responsive: true,
+              params: {
+                options: ["auto", "top", "center", "bottom", "stretch"],
+              },
             },
           ],
         },
         {
           prop: "variant",
           label: "Variant",
-          type: "radio-group$",
+          type: "radio-group",
+          responsive: true,
           group: "Grid / Slider",
-          options: [
-            {
-              value: "grid",
-              label: "Grid",
-            },
-            {
-              value: "slider",
-              label: "Slider",
-            },
-          ],
+          params: {
+            options: [
+              {
+                value: "grid",
+                label: "Grid",
+              },
+              {
+                value: "slider",
+                label: "Slider",
+              },
+            ],
+          },
         },
         {
           prop: "numberOfItems",
           label: "Visible items",
-          type: "select$",
+          type: "select",
+          responsive: true,
           group: "Grid / Slider",
-          options: ["1", "2", "3", "4", "5", "6"],
+          params: {
+            options: ["1", "2", "3", "4", "5", "6"],
+          },
           defaultValue: "4",
           // visible: (values, { editorContext }) => {
           //   if (values.variant === "grid") {
@@ -520,20 +540,23 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         {
           prop: "fractionalItemWidth",
           label: "Fraction",
-          type: "select$",
-          options: [
-            { value: "1", label: "none" },
-            { value: "1.25", label: "25%" },
-            { value: "1.5", label: "50%" },
-            { value: "1.75", label: "75%" },
+          type: "select",
+          responsive: true,
+          params: {
+            options: [
+              { value: "1", label: "none" },
+              { value: "1.25", label: "25%" },
+              { value: "1.5", label: "50%" },
+              { value: "1.75", label: "75%" },
 
-            // { value: "2", label: "50%" },
-            // { value: "1.66", label: "60%" },
-            // { value: "1.43", label: "70%" },
-            // { value: "1.25", label: "80%" },
-            // { value: "1.11", label: "90%" },
-            // { value: "1", label: "100%" },
-          ],
+              // { value: "2", label: "50%" },
+              // { value: "1.66", label: "60%" },
+              // { value: "1.43", label: "70%" },
+              // { value: "1.25", label: "80%" },
+              // { value: "1.11", label: "90%" },
+              // { value: "1", label: "100%" },
+            ],
+          },
           defaultValue: "1.25",
           group: "Grid / Slider",
           visible: (values, { editorContext }) => {
@@ -552,7 +575,9 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
             ref: "16",
             value: "16px",
           },
-          autoConstant: 16,
+          params: {
+            autoConstant: 16,
+          },
         },
         {
           prop: "rowGap",
@@ -564,26 +589,33 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
             ref: "16",
             value: "16px",
           },
-          autoConstant: 16,
+          params: {
+            autoConstant: 16,
+          },
         },
         {
           prop: "verticalAlign",
           label: "Vertical align",
-          type: "select$",
-          options: ["top", "center", "bottom", "stretch"],
+          type: "select",
+          responsive: true,
+          params: {
+            options: ["top", "center", "bottom", "stretch"],
+          },
           group: "Grid / Slider",
         },
         {
           prop: "showSliderControls",
           label: "Show slider controls?",
-          type: "boolean$",
+          type: "boolean",
+          responsive: true,
           visible: false,
           group: "Grid / Slider",
         },
         {
           prop: "shouldSliderItemsBeVisibleOnMargin",
           label: "Show items on margins?",
-          type: "boolean$",
+          type: "boolean",
+          responsive: true,
           visible: (values) => values.variant === "slider",
           group: "Grid / Slider",
           defaultValue: true,
@@ -593,7 +625,9 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
           prop: "gridMainObjectAspectRatio",
           label: "Main object aspect ratio",
           type: "stringToken",
-          tokenId: "aspectRatios",
+          params: {
+            tokenId: "aspectRatios",
+          },
           group: "Grid / Slider",
           defaultValue: {
             ref: "$gridMainObjectDefault",
@@ -621,8 +655,11 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         {
           prop: "borderTop",
           label: "Top width",
-          type: "select$",
-          options: ["0", "1", "2", "3", "4", "5", "6", "7", "8"],
+          type: "select",
+          responsive: true,
+          params: {
+            options: ["0", "1", "2", "3", "4", "5", "6", "7", "8"],
+          },
           defaultValue: "1",
           visible: (x) => !!x.borderEnabled,
           group: "Border",
@@ -630,8 +667,11 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         {
           prop: "borderBottom",
           label: "Bottom width",
-          type: "select$",
-          options: ["0", "1", "2", "3", "4", "5", "6", "7", "8"],
+          type: "select",
+          responsive: true,
+          params: {
+            options: ["0", "1", "2", "3", "4", "5", "6", "7", "8"],
+          },
           defaultValue: "1",
           visible: (x) => !!x.borderEnabled,
           group: "Border",
@@ -639,8 +679,11 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         {
           prop: "borderLeft",
           label: "Left width",
-          type: "select$",
-          options: ["0", "1", "2", "3", "4", "5", "6", "7", "8"],
+          type: "select",
+          responsive: true,
+          params: {
+            options: ["0", "1", "2", "3", "4", "5", "6", "7", "8"],
+          },
           defaultValue: "1",
           visible: (x) => !!x.borderEnabled,
           group: "Border",
@@ -648,8 +691,11 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         {
           prop: "borderRight",
           label: "Right width",
-          type: "select$",
-          options: ["0", "1", "2", "3", "4", "5", "6", "7", "8"],
+          type: "select",
+          responsive: true,
+          params: {
+            options: ["0", "1", "2", "3", "4", "5", "6", "7", "8"],
+          },
           defaultValue: "1",
           visible: (x) => !!x.borderEnabled,
           group: "Border",
@@ -657,8 +703,11 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         {
           prop: "borderInner",
           label: "Inner width",
-          type: "select$",
-          options: ["0", "1", "2", "3", "4", "5", "6", "7", "8"],
+          type: "select",
+          responsive: true,
+          params: {
+            options: ["0", "1", "2", "3", "4", "5", "6", "7", "8"],
+          },
           defaultValue: "1",
           visible: (x) => !!x.borderEnabled,
           group: "Border",
@@ -727,8 +776,11 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         {
           prop: "leftArrowPlacement",
           label: "Left arrow placement",
-          type: "select$",
-          options: ["inside", "center", "outside", "screen-edge"],
+          type: "select",
+          responsive: true,
+          params: {
+            options: ["inside", "center", "outside", "screen-edge"],
+          },
           group: "Placement",
         },
         {
@@ -748,8 +800,11 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         {
           prop: "rightArrowPlacement",
           label: "Right arrow placement",
-          type: "select$",
-          options: ["inside", "center", "outside", "screen-edge"],
+          type: "select",
+          responsive: true,
+          params: {
+            options: ["inside", "center", "outside", "screen-edge"],
+          },
           group: "Placement",
         },
         {
@@ -887,70 +942,85 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         },
         {
           prop: "card1Width",
-          type: "select$",
-          options: [
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-          ],
+          type: "select",
+          responsive: true,
+          params: {
+            options: [
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10",
+              "11",
+              "12",
+              "13",
+              "14",
+              "15",
+              "16",
+              "17",
+              "18",
+              "19",
+              "20",
+            ],
+          },
           defaultValue: "12",
         },
         {
           prop: "card1EscapeMargin",
-          type: "boolean$",
+          type: "boolean",
+          responsive: true,
           label: "Escape margin",
         },
         {
           prop: "card2Width",
-          type: "select$",
-          options: range(4, 20).map(String),
+          type: "select",
+          responsive: true,
+          params: {
+            options: range(4, 20).map(String),
+          },
           defaultValue: "12",
           label: "Width",
         },
         {
           prop: "card2EscapeMargin",
-          type: "boolean$",
+          type: "boolean",
+          responsive: true,
           label: "Escape margin",
         },
         {
           prop: "verticalLayout",
-          type: "select$",
-          options: [
-            { label: "Top", value: "align-top" },
-            { label: "Bottom", value: "align-bottom" },
-            { label: "Center", value: "center" },
-            { label: "Fit", value: "fit" },
-            { label: "Irregular", value: "irregular" },
-          ],
+          type: "select",
+          responsive: true,
+          params: {
+            options: [
+              { label: "Top", value: "align-top" },
+              { label: "Bottom", value: "align-bottom" },
+              { label: "Center", value: "center" },
+              { label: "Fit", value: "fit" },
+              { label: "Irregular", value: "irregular" },
+            ],
+          },
           label: "Align",
           group: "Layout",
         },
         {
           prop: "verticalOffset",
           label: "Offset",
-          type: "select$",
-          options: Array.from(Array(25).keys()).map((x) => `${x - 12}`),
+          type: "select",
+          responsive: true,
+          params: {
+            options: Array.from(Array(25).keys()).map((x) => `${x - 12}`),
+          },
           defaultValue: "-4",
           group: "Layout",
         },
         {
           prop: "collapse",
           label: "Stack cards",
-          type: "boolean$",
+          type: "boolean",
+          responsive: true,
           group: "Layout",
         },
         {
@@ -1234,8 +1304,11 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         {
           prop: "cornerRadius",
           label: "Corner radius",
-          type: "select$",
-          options: Array.from(Array(30).keys()).map((x) => x.toString()),
+          type: "select",
+          responsive: true,
+          params: {
+            options: Array.from(Array(30).keys()).map((x) => x.toString()),
+          },
           group: "General",
         },
         ...borderSchemaProps("General"),
@@ -1252,38 +1325,46 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         {
           prop: "Card1",
           label: "Card1",
-          type: "component-fixed",
-          componentType: "$BasicCard",
+          type: "component",
+          componentTypes: ["$BasicCard"],
+          required: true,
         },
         {
           prop: "Card2",
           label: "Card2",
-          type: "component-fixed",
-          componentType: "$BasicCardBackground",
+          type: "component",
+          componentTypes: ["$BasicCardBackground"],
+          required: true,
         },
         {
           prop: "mode", // main image size
           label: "Position",
-          type: "select$",
-          options: [
-            { value: "none", label: "none" },
-            // { value: "background", label: "background" },
-            { value: "left", label: "left" },
-            { value: "right", label: "right" },
-            { value: "top", label: "top" },
-            { value: "bottom", label: "bottom" },
-            {
-              value: "background-separate-stack",
-              label: "background",
-            },
-          ], // there is no "fit-content", because it doesn't make sense on mobile and it's actually very rare. If you want image, you don't want it to have some super narrow height, so the height is kind of "minimal" heihgt only.
+          type: "select",
+          responsive: true,
+          params: {
+            options: [
+              { value: "none", label: "none" },
+              // { value: "background", label: "background" },
+              { value: "left", label: "left" },
+              { value: "right", label: "right" },
+              { value: "top", label: "top" },
+              { value: "bottom", label: "bottom" },
+              {
+                value: "background-separate-stack",
+                label: "background",
+              },
+            ], // there is no "fit-content", because it doesn't make sense on mobile and it's actually very rare. If you want image, you don't want it to have some super narrow height, so the height is kind of "minimal" heihgt only.
+          },
           group: "Cover",
         },
         {
           prop: "sideModeWidth", // main image size
           label: "Width",
-          type: "select$",
-          options: ["25%", "33%", "40%", "50%", "60%", "66%", "75%"], // there is no "fit-content", because it doesn't make sense on mobile and it's actually very rare. If you want image, you don't want it to have some super narrow height, so the height is kind of "minimal" heihgt only.
+          type: "select",
+          responsive: true,
+          params: {
+            options: ["25%", "33%", "40%", "50%", "60%", "66%", "75%"], // there is no "fit-content", because it doesn't make sense on mobile and it's actually very rare. If you want image, you don't want it to have some super narrow height, so the height is kind of "minimal" heihgt only.
+          },
           group: "Cover",
           defaultValue: "50%",
         },
@@ -1356,7 +1437,8 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         {
           prop: "backgroundModeEdgeMarginProtection",
           label: "Snap to container margin",
-          type: "boolean$",
+          type: "boolean",
+          responsive: true,
           defaultValue: true,
           group: "Content Card",
         },

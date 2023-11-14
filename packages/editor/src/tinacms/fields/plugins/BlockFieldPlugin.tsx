@@ -6,11 +6,7 @@ import {
   InternalField,
   isConfigPathRichTextPart,
 } from "@easyblocks/app-utils";
-import {
-  ComponentFixedSchemaProp,
-  ComponentSchemaProp,
-  ConfigComponent,
-} from "@easyblocks/core";
+import { ComponentSchemaProp, ConfigComponent } from "@easyblocks/core";
 import {
   SSButtonGhost,
   SSColors,
@@ -36,10 +32,7 @@ import { GroupPanel, PanelBody } from "./GroupFieldPlugin";
 
 export interface BlocksFieldDefinition extends InternalField {
   component: "ss-block";
-  schemaProp:
-    | ComponentSchemaProp
-    | ComponentFixedSchemaProp
-    | Component$$$SchemaProp;
+  schemaProp: ComponentSchemaProp | Component$$$SchemaProp;
 }
 
 interface BlockFieldProps
@@ -56,10 +49,6 @@ const BlockField = ({ field, input, isLabelHidden }: BlockFieldProps) => {
   const editorContext = useEditorContext();
   const { actions } = editorContext;
   const { openComponentPicker } = actions;
-  const schemaProp = field.schemaProp;
-
-  const isConfigRequired =
-    schemaProp.type === "component-fixed" || schemaProp.required;
   const isMixed = isMixedFieldValue(input.value);
 
   const config: ConfigComponent | null = (() => {
@@ -112,7 +101,7 @@ const BlockField = ({ field, input, isLabelHidden }: BlockFieldProps) => {
                 }}
               />
             </div>
-            {!isConfigRequired && (
+            {!field.schemaProp.required && (
               <div style={{ flex: "0 0 auto", minWidth: 0 }}>
                 <SSButtonGhost
                   onClick={() => {

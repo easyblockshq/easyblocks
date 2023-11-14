@@ -88,8 +88,9 @@ const testCompilationContext: CompilationContextType = {
         schema: [
           {
             prop: "fixedChild",
-            type: "component-fixed",
-            componentType: "testComponent",
+            type: "component",
+            componentTypes: ["testComponent"],
+            required: true,
           },
         ],
         tags: [],
@@ -316,7 +317,7 @@ describe("duplicateItems", () => {
     });
   });
 
-  it("doesn't duplicate elements of type 'component-fixed'", () => {
+  it("doesn't duplicate elements of type 'component' that's required", () => {
     const form = createTestForm({
       initialValues: {
         _template: "testComponentWithComponentFixed",
@@ -892,7 +893,7 @@ describe("removeItems", () => {
     });
   });
 
-  it("doesn't remove elements of type 'component-fixed'", () => {
+  it("doesn't remove elements of type 'component' that're required", () => {
     const form = createTestForm({
       initialValues: {
         _template: "testComponentWithComponentFixed",
@@ -1060,8 +1061,9 @@ describe("pasteAction", () => {
       schema: [
         {
           prop: "Component",
-          type: "component-fixed",
-          componentType: "$GridCard",
+          type: "component",
+          componentTypes: ["$GridCard"],
+          required: true,
         },
       ],
       pasteSlots: ["Component"],
@@ -1202,7 +1204,7 @@ describe("pasteAction", () => {
     item                                          | destination | expectedInsertedPath
     ${{ _id: "id-2134", _template: "$GridCard" }} | ${"data.0"} | ${"data.0"}
   `(
-    "Will not replace component-fixed",
+    "Will not replace required component field",
     ({ item, destination, expectedInsertedPath }) => {
       const form = createTestForm({
         initialValues: {

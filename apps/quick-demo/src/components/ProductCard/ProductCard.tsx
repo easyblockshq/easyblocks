@@ -5,8 +5,9 @@ import { ShopifyProduct } from "@/data/shopify";
 import { formatPrice } from "@/data/shopify/formatPrice";
 
 const ProductCard: FC = (props: any) => {
-  const withBackdrop : boolean = props.__fromEditor.props.withBackdrop;
-  const relatedProductsMode : string = props.__fromEditor.props.relatedProductsMode;
+  const withBackdrop: boolean = props.__fromEditor.props.withBackdrop;
+  const relatedProductsMode: string =
+    props.__fromEditor.props.relatedProductsMode;
   const product: ShopifyProduct = props.__fromEditor.props.product;
 
   return (

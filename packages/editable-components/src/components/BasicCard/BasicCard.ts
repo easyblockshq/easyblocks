@@ -4,7 +4,6 @@ import {
   ComponentSchemaProp,
   EditingFunctionInput,
   SchemaProp,
-  Select$SchemaProp,
   StringTokenSchemaProp,
 } from "@easyblocks/core";
 import { borderSchemaProps } from "../../borderHelpers";
@@ -134,11 +133,13 @@ export const basicCardDefinition: InternalRenderableComponentDefinition<"$BasicC
         prop: "size", // main image size
         label: "Size",
         type: "stringToken",
-        tokenId: "aspectRatios",
-        extraValues: [
-          { value: "fit-background", label: "Fit Background" },
-          { value: "fit-content", label: "Fit content" },
-        ],
+        params: {
+          tokenId: "aspectRatios",
+          extraValues: [
+            { value: "fit-background", label: "Fit Background" },
+            { value: "fit-content", label: "Fit content" },
+          ],
+        },
         group: "General",
       },
       {
@@ -155,8 +156,11 @@ export const basicCardDefinition: InternalRenderableComponentDefinition<"$BasicC
       {
         prop: "cornerRadius",
         label: "Corner radius",
-        type: "select$",
-        options: Array.from(Array(30).keys()).map((x) => x.toString()),
+        type: "select",
+        responsive: true,
+        params: {
+          options: Array.from(Array(30).keys()).map((x) => x.toString()),
+        },
         group: "Border and shadow",
       },
 
@@ -261,7 +265,8 @@ export const basicCardDefinition: InternalRenderableComponentDefinition<"$BasicC
       {
         prop: "edgeMarginProtection",
         label: "Snap to container margin",
-        type: "boolean$",
+        type: "boolean",
+        responsive: true,
         defaultValue: true,
         group: "Stack",
       },
@@ -277,8 +282,9 @@ export const basicCardDefinition: InternalRenderableComponentDefinition<"$BasicC
       {
         prop: "Stack",
         label: "Stack",
-        type: "component-fixed",
-        componentType: "$stack",
+        type: "component",
+        componentTypes: ["$stack"],
+        required: true,
       },
     ],
   };
@@ -293,7 +299,11 @@ const sizeSchemaPropIndex = basicBackgroundCardSchema.findIndex(
 
 basicBackgroundCardSchema[sizeSchemaPropIndex] = {
   ...basicBackgroundCardSchema[sizeSchemaPropIndex],
-  extraValues: [{ value: "fit-background", label: "Fit Background" }],
+  params: {
+    ...(basicBackgroundCardSchema[sizeSchemaPropIndex] as StringTokenSchemaProp)
+      .params,
+    extraValues: [{ value: "fit-background", label: "Fit Background" }],
+  },
 } as StringTokenSchemaProp;
 
 // sizeSchemaProp.extraValues = ["grid-baseline", "fit-background"];

@@ -68,20 +68,22 @@ export const easyblocksConfig: Config = {
           prop: "relatedProductsMode",
           label: "Related products - mode",
           type: "select",
-          options: [
-            {
-              label: "Off",
-              value: "disabled",
-            },
-            {
-              label: "On",
-              value: "enabled",
-            },
-            {
-              label: "On hover",
-              value: "onHover",
-            },
-          ],
+          params: {
+            options: [
+              {
+                label: "Off",
+                value: "disabled",
+              },
+              {
+                label: "On",
+                value: "enabled",
+              },
+              {
+                label: "On hover",
+                value: "onHover",
+              },
+            ],
+          },
         },
         {
           prop: "withBackdrop",

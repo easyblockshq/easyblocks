@@ -40,7 +40,6 @@ import {
   CompiledTextModifier,
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
-  ComponentFixedSchemaProp,
   ComponentSchemaProp,
   ConfigComponent,
   EditingField,
@@ -211,7 +210,7 @@ export function compileComponent(
           ownPropsAfterAuto[schemaProp.prop],
           compilationContext,
           $width,
-          (schemaProp as SpaceSchemaProp).autoConstant ??
+          (schemaProp as SpaceSchemaProp).params?.autoConstant ??
             DEFAULT_SPACE_AUTO_CONSTANT
         );
       }
@@ -228,7 +227,7 @@ export function compileComponent(
           value,
           compilationContext,
           $width,
-          (arg.itemSchemaProp as SpaceSchemaProp).autoConstant ??
+          (arg.itemSchemaProp as SpaceSchemaProp).params?.autoConstant ??
             DEFAULT_SPACE_AUTO_CONSTANT
         );
       }
@@ -522,7 +521,7 @@ export function compileComponent(
     }
 
     componentDefinition.schema.forEach((schemaProp: SchemaProp) => {
-      if (schemaProp.buildOnly) {
+      if ("buildOnly" in schemaProp && schemaProp.buildOnly) {
         return;
       }
 
@@ -683,7 +682,7 @@ function validateStylesProps(
   for (const key of Object.keys(__props)) {
     const schemaProp = componentDefinition.schema.find((s) => s.prop === key);
 
-    if (!schemaProp) {
+    if (!schemaProp || !("buildOnly" in schemaProp)) {
       continue;
     }
 
@@ -959,10 +958,7 @@ function compileSubcomponents(
 
       // Merge config after auto
       if (compilationContext.isEditing && configAfterAuto !== null) {
-        if (
-          schemaProp.type === "component" ||
-          schemaProp.type === "component-fixed"
-        ) {
+        if (schemaProp.type === "component") {
           configAfterAuto[schemaProp.prop] = [
             compilationOutput[0]?.configAfterAuto ?? [],
           ];
@@ -1258,7 +1254,6 @@ function buildDefaultEditingInfo(
       (schemaProp) => schemaProp.prop === parentInfo.fieldName
     ) as
       | ComponentSchemaProp
-      | ComponentFixedSchemaProp
       | ComponentCollectionSchemaProp
       | ComponentCollectionLocalisedSchemaProp;
 
@@ -1270,12 +1265,10 @@ function buildDefaultEditingInfo(
 
     let required: boolean;
 
-    if (parentSchemaProp.type === "component-fixed") {
-      required = true;
-    } else if (isSchemaPropCollection(parentSchemaProp)) {
-      required = false;
-    } else {
+    if (parentSchemaProp.type === "component") {
       required = !!parentSchemaProp.required;
+    } else {
+      required = false;
     }
 
     const headerSchemaProp: Component$$$SchemaProp = {
@@ -1848,6 +1841,7 @@ function convertEditingFieldToInternalEditingField(
             "$richTextInlineWrapperElement",
             editorContext
           )!,
+          defaultValue: [],
         },
         editorContext,
         []
@@ -1898,7 +1892,10 @@ function convertEditingFieldToInternalEditingField(
             }
           }
 
-          if (componentSchemaProp.type === "component-fixed") {
+          if (
+            componentSchemaProp.type === "component" &&
+            componentSchemaProp.required
+          ) {
             const absoluteFieldPath = toAbsolutePath(
               pathFragments.slice(0, -1).join("."),
               configPrefix

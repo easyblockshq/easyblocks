@@ -2,7 +2,6 @@ import { ContextProps } from "@easyblocks/app-utils";
 import {
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
-  ComponentFixedSchemaProp,
   ComponentSchemaProp,
 } from "@easyblocks/core";
 import React, { FC } from "react";
@@ -14,7 +13,6 @@ import { BlocksControls } from "./BlockControls";
 type EditableComponentBuilderProps = ComponentBuilderProps & {
   schemaProp:
     | ComponentSchemaProp
-    | ComponentFixedSchemaProp
     | ComponentCollectionSchemaProp
     | ComponentCollectionLocalisedSchemaProp;
   contextProps: ContextProps;

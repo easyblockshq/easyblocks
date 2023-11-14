@@ -123,28 +123,18 @@ export type ButtonCustomComponent = CustomComponentShared & {
   };
 };
 
-export type StringSchemaProp = SchemaPropShared<"string", string> & {
-  normalize?: (x: string) => string | null;
-};
+export type StringSchemaProp = ValueSchemaProp<"string", string, "optional"> &
+  SchemaPropParams<{
+    normalize?: (x: string) => string | null;
+  }>;
 
-export type String$SchemaProp = SchemaPropShared<
-  "string$",
-  ResponsiveValue<string>
-> & {
-  normalize?: (x: string) => string | null;
-};
+export type NumberSchemaProp = ValueSchemaProp<"number", number, "optional"> &
+  SchemaPropParams<{
+    min?: number;
+    max?: number;
+  }>;
 
-export type NumberSchemaProp = SchemaPropShared<"number", number> & {
-  min?: number;
-  max?: number;
-};
-
-export type BooleanSchemaProp = SchemaPropShared<"boolean", boolean>;
-
-export type Boolean$SchemaProp = SchemaPropShared<
-  "boolean$",
-  ResponsiveValue<boolean>
->;
+export type BooleanSchemaProp = ValueSchemaProp<"boolean", boolean, "optional">;
 
 export type Option =
   | {
@@ -155,27 +145,25 @@ export type Option =
     }
   | string;
 
-export type SelectSchemaProp = SchemaPropShared<"select", string> & {
-  options: Option[];
-};
+export type SelectSchemaProp = ValueSchemaProp<"select", string, "optional"> &
+  SchemaPropParams<
+    {
+      options: Option[];
+    },
+    true
+  >;
 
-export type RadioGroupSchemaProp = SchemaPropShared<"radio-group", string> & {
-  options: Option[];
-};
-
-export type Select$SchemaProp = SchemaPropShared<
-  "select$",
-  ResponsiveValue<string>
-> & {
-  options: Option[];
-};
-
-export type RadioGroup$SchemaProp = SchemaPropShared<
-  "radio-group$",
-  ResponsiveValue<string>
-> & {
-  options: Option[];
-};
+export type RadioGroupSchemaProp = ValueSchemaProp<
+  "radio-group",
+  string,
+  "optional"
+> &
+  SchemaPropParams<
+    {
+      options: Option[];
+    },
+    true
+  >;
 
 /**
  * Why do Space, Color and Font have ValueType ResponsiveValue<RefValue<ResponsiveValue<Color>>> type? It's complex! (T is Color / Space / Font).
@@ -187,37 +175,46 @@ export type RadioGroup$SchemaProp = SchemaPropShared<
  * CompileType is obviously very simple because after compilation we just have "CSS output" which is basically responsive non-ref value (there's no concept of refs after compilation)
  */
 
-export type ColorSchemaProp = SchemaPropShared<
+export type ColorSchemaProp = ValueSchemaProp<
   "color",
-  ResponsiveValue<RefValue<Color>>
+  ResponsiveValue<RefValue<Color>>,
+  "forced"
 >;
 
-export type StringTokenSchemaProp = SchemaPropShared<
+export type StringTokenSchemaProp = ValueSchemaProp<
   "stringToken",
-  ResponsiveValue<RefValue<string>>
-> & {
-  tokenId:
-    | "numberOfItemsInRow"
-    | "aspectRatios"
-    | "containerWidths"
-    | "boxShadows";
-  extraValues?: Array<string | { value: string; label: string }>; // extra values are usually non-token values that are displayed in the select as if they were tokens, the component must understand them
-};
+  ResponsiveValue<RefValue<string>>,
+  "forced"
+> &
+  SchemaPropParams<
+    {
+      tokenId:
+        | "numberOfItemsInRow"
+        | "aspectRatios"
+        | "containerWidths"
+        | "boxShadows";
+      extraValues?: Array<string | { value: string; label: string }>; // extra values are usually non-token values that are displayed in the select as if they were tokens, the component must understand them
+    },
+    true
+  >;
 
-export type SpaceSchemaProp = SchemaPropShared<
+export type SpaceSchemaProp = ValueSchemaProp<
   "space",
-  ResponsiveValue<RefValue<Spacing>>
-> & {
-  prefix?: string;
-  autoConstant?: number;
-};
+  ResponsiveValue<RefValue<Spacing>>,
+  "forced"
+> &
+  SchemaPropParams<{
+    prefix?: string;
+    autoConstant?: number;
+  }>;
 
-export type FontSchemaProp = SchemaPropShared<
+export type FontSchemaProp = ValueSchemaProp<
   "font",
-  ResponsiveValue<RefValue<Font>>
+  ResponsiveValue<RefValue<Font>>,
+  "forced"
 >;
 
-export type IconSchemaProp = SchemaPropShared<"icon", RefValue<string>>;
+export type IconSchemaProp = ValueSchemaProp<"icon", RefValue<string>, "never">;
 
 export type ComponentPickerType = "large" | "large-3" | "compact";
 
@@ -225,10 +222,7 @@ export type PassedField =
   | { name: string; label: string; showWhen?: any; group?: string }
   | string;
 
-export type ComponentSchemaProp = SchemaPropShared<
-  "component",
-  [] | [ConfigComponent]
-> & {
+export type ComponentSchemaProp = SchemaPropShared<"component"> & {
   accepts: string[];
   picker?: ComponentPickerType;
   required?: boolean;
@@ -236,18 +230,16 @@ export type ComponentSchemaProp = SchemaPropShared<
   placeholderAppearance?: PlaceholderAppearance;
 };
 
-export type ComponentCollectionSchemaProp = SchemaPropShared<
-  "component-collection",
-  Array<ConfigComponent>
-> & {
-  accepts: string[];
-  picker?: ComponentPickerType;
-  hideFields?: string[];
-  itemFields?: SchemaProp[];
-  passFields?: PassedField[];
-  noInline?: boolean;
-  placeholderAppearance?: PlaceholderAppearance;
-};
+export type ComponentCollectionSchemaProp =
+  SchemaPropShared<"component-collection"> & {
+    accepts: string[];
+    picker?: ComponentPickerType;
+    hideFields?: string[];
+    itemFields?: SchemaProp[];
+    passFields?: PassedField[];
+    noInline?: boolean;
+    placeholderAppearance?: PlaceholderAppearance;
+  };
 
 export type ComponentCollectionLocalisedSchemaProp = Omit<
   ComponentCollectionSchemaProp,
@@ -258,20 +250,10 @@ export type ComponentCollectionLocalisedSchemaProp = Omit<
   placeholderAppearance?: PlaceholderAppearance;
 };
 
-export type ComponentFixedSchemaProp = SchemaPropShared<
-  "component-fixed",
-  Array<ConfigComponent>
-> & {
-  componentType: string;
-  picker?: ComponentPickerType;
-  hideFields?: string[];
-  passFields?: PassedField[];
-  noInline?: boolean;
-}; // we don't want to set default value for nested components
-
-export type TextSchemaProp = SchemaPropShared<
+export type TextSchemaProp = ValueSchemaProp<
   "text",
-  LocalTextReference | ExternalReference | string
+  LocalTextReference | ExternalReference | string,
+  "never"
 > & {
   normalize?: (x: string) => string | null;
   [key: string]: any;
@@ -283,14 +265,16 @@ export type PositionHorizontal = "left" | "center" | "right";
 
 export type Position = `${PositionVertical}-${PositionHorizontal}`;
 
-export type PositionSchemaProp = SchemaPropShared<
+export type PositionSchemaProp = ValueSchemaProp<
   "position",
-  ResponsiveValue<Position>
+  ResponsiveValue<Position>,
+  "forced"
 >;
 
-export type ExternalSchemaProp = SchemaPropShared<
+export type ExternalSchemaProp = ValueSchemaProp<
   string & Record<never, never>,
-  ExternalReference
+  ExternalReference,
+  "optional"
 > & {
   /**
    * Parameters passed to the widget.
@@ -305,16 +289,13 @@ export type ExternalSchemaProp = SchemaPropShared<
    */
   optional?: boolean;
 };
+
 export type SchemaProp =
   | StringSchemaProp
-  | String$SchemaProp
   | NumberSchemaProp
   | BooleanSchemaProp
-  | Boolean$SchemaProp
   | SelectSchemaProp
-  | Select$SchemaProp
   | RadioGroupSchemaProp
-  | RadioGroup$SchemaProp
   | ColorSchemaProp
   | SpaceSchemaProp
   | FontSchemaProp
@@ -324,7 +305,21 @@ export type SchemaProp =
   | ComponentSchemaProp
   | ComponentCollectionSchemaProp
   | ComponentCollectionLocalisedSchemaProp
-  | ComponentFixedSchemaProp
+  | PositionSchemaProp
+  | ExternalSchemaProp;
+
+export type AnyValueSchemaProp =
+  | StringSchemaProp
+  | NumberSchemaProp
+  | BooleanSchemaProp
+  | SelectSchemaProp
+  | RadioGroupSchemaProp
+  | ColorSchemaProp
+  | SpaceSchemaProp
+  | FontSchemaProp
+  | StringTokenSchemaProp
+  | IconSchemaProp
+  | TextSchemaProp
   | PositionSchemaProp
   | ExternalSchemaProp;
 
@@ -558,7 +553,7 @@ type EditorProps = {
 
 export type EditorLauncherProps = Omit<EditorProps, "config">;
 
-export type SchemaPropShared<Type extends string, ValueType> = {
+export type SchemaPropShared<Type extends string> = {
   type: Type;
   prop: string;
   label?: string;
@@ -573,9 +568,32 @@ export type SchemaPropShared<Type extends string, ValueType> = {
       ) => boolean);
   description?: string;
   group?: string;
-  defaultValue?: ValueType;
-  buildOnly?: boolean;
 };
+
+type ValueSchemaProp<
+  Type extends string,
+  ValueType,
+  Responsiveness extends "optional" | "forced" | "never"
+> = SchemaPropShared<Type> & {
+  defaultValue?: Responsiveness extends "optional" | "forced"
+    ? ResponsiveValue<ValueType>
+    : ValueType;
+  buildOnly?: boolean;
+  responsive?: Responsiveness extends "optional"
+    ? boolean
+    : Responsiveness extends "never"
+    ? false
+    : never;
+};
+
+export type SchemaPropParams<
+  T extends Record<string, unknown>,
+  Required extends boolean = false
+> = Required extends true
+  ? {
+      params: T;
+    }
+  : { params?: T };
 
 export type UnresolvedResource =
   | UnresolvedResourceNonEmpty
@@ -638,15 +656,6 @@ export type RejectedResource = ResourceIdentity & {
 export type Resource<Value = unknown> =
   | ResolvedResource<Value>
   | RejectedResource;
-
-export type SerializableResource =
-  | ResolvedResource
-  | Omit<RejectedResource, "value">;
-
-export type ExternalValueProp<ResourceValue = unknown> =
-  | (Omit<ResolvedResource, "value"> & { value: ResourceValue })
-  | (Omit<RejectedResource, "value"> & { value: undefined })
-  | null;
 
 export type DeviceRange = {
   id: DeviceId;

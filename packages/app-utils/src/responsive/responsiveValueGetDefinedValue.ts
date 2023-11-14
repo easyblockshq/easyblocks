@@ -53,7 +53,7 @@ export function responsiveValueGetDefinedValue<T>(
   value: ResponsiveValue<T>,
   breakpoint: string,
   devices: Devices,
-  widths: TrulyResponsiveValue<number>
+  widths?: TrulyResponsiveValue<number>
 ) {
   if (!isTrulyResponsiveValue(value)) {
     return value;

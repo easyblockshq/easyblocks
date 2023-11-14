@@ -52,24 +52,26 @@ const actionTextModifier: InternalTextModifierDefinition = {
     {
       prop: "underline",
       type: "select",
-      options: [
-        {
-          value: "none",
-          label: "Off",
-        },
-        {
-          value: "enabled",
-          label: "On",
-        },
-        {
-          value: "showOnHover",
-          label: "Show on hover",
-        },
-        {
-          value: "hideOnHover",
-          label: "Hide on hover",
-        },
-      ],
+      params: {
+        options: [
+          {
+            value: "none",
+            label: "Off",
+          },
+          {
+            value: "enabled",
+            label: "On",
+          },
+          {
+            value: "showOnHover",
+            label: "Show on hover",
+          },
+          {
+            value: "hideOnHover",
+            label: "Hide on hover",
+          },
+        ],
+      },
       label: "Underline",
       group: "Underline",
       defaultValue: "enabled",
@@ -77,7 +79,7 @@ const actionTextModifier: InternalTextModifierDefinition = {
     {
       prop: "opacity",
       type: "select",
-      options: OPACITY_OPTIONS,
+      params: { options: OPACITY_OPTIONS },
       label: "Opacity",
       group: "Opacity",
       defaultValue: "1",
@@ -85,7 +87,7 @@ const actionTextModifier: InternalTextModifierDefinition = {
     {
       prop: "hoverOpacity",
       type: "select",
-      options: OPACITY_OPTIONS,
+      params: { options: OPACITY_OPTIONS },
       label: "Hover opacity",
       group: "Opacity",
       visible: ({ underline }) => {
@@ -96,28 +98,30 @@ const actionTextModifier: InternalTextModifierDefinition = {
     {
       prop: "hoverOpacityAnimationDuration",
       type: "select",
-      options: [
-        {
-          value: "0ms",
-          label: "0ms",
-        },
-        {
-          value: "50ms",
-          label: "50ms",
-        },
-        {
-          value: "100ms",
-          label: "100ms",
-        },
-        {
-          value: "150ms",
-          label: "150ms",
-        },
-        {
-          value: "200ms",
-          label: "200ms",
-        },
-      ],
+      params: {
+        options: [
+          {
+            value: "0ms",
+            label: "0ms",
+          },
+          {
+            value: "50ms",
+            label: "50ms",
+          },
+          {
+            value: "100ms",
+            label: "100ms",
+          },
+          {
+            value: "150ms",
+            label: "150ms",
+          },
+          {
+            value: "200ms",
+            label: "200ms",
+          },
+        ],
+      },
       label: "Duration",
       group: "Animation",
       defaultValue: "100ms",

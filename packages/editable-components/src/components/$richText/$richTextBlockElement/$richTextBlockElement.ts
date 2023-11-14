@@ -40,7 +40,9 @@ const richTextBlockElementEditableComponent: InternalRenderableComponentDefiniti
       {
         prop: "type",
         type: "select",
-        options: RICH_TEXT_BLOCK_ELEMENT_TYPE_OPTIONS,
+        params: {
+          options: RICH_TEXT_BLOCK_ELEMENT_TYPE_OPTIONS,
+        },
         defaultValue: RICH_TEXT_BLOCK_ELEMENT_TYPES[2],
         label: "Type",
         group: "Text",

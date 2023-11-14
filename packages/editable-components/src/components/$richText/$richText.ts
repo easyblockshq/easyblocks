@@ -10,7 +10,7 @@ import {
   ResponsiveValue,
 } from "@easyblocks/core";
 import { dotNotationGet, nonNullable, range } from "@easyblocks/utils";
-import richTextStyles from "./$richText.styles";
+import { richTextStyles } from "./$richText.styles";
 import { RichTextEditingFunction } from "./$richText.types";
 import {
   RichTextBlockElementComponentConfig,
@@ -180,27 +180,30 @@ const richTextEditableComponent: InternalRenderableComponentDefinition<"$richTex
       {
         prop: "align",
         label: "Align",
-        type: "radio-group$",
-        options: [
-          {
-            value: "left",
-            label: "Left",
-            icon: "AlignLeft",
-            hideLabel: true,
-          },
-          {
-            value: "center",
-            label: "Center",
-            icon: "AlignCenter",
-            hideLabel: true,
-          },
-          {
-            value: "right",
-            label: "Right",
-            icon: "AlignRight",
-            hideLabel: true,
-          },
-        ],
+        type: "radio-group",
+        responsive: true,
+        params: {
+          options: [
+            {
+              value: "left",
+              label: "Left",
+              icon: "AlignLeft",
+              hideLabel: true,
+            },
+            {
+              value: "center",
+              label: "Center",
+              icon: "AlignCenter",
+              hideLabel: true,
+            },
+            {
+              value: "right",
+              label: "Right",
+              icon: "AlignRight",
+              hideLabel: true,
+            },
+          ],
+        },
         defaultValue: "left",
         group: "Layout",
         buildOnly: true,
@@ -209,13 +212,15 @@ const richTextEditableComponent: InternalRenderableComponentDefinition<"$richTex
         prop: "accessibilityRole",
         type: "select",
         label: "Role",
-        options: [
-          { value: "div", label: "Paragraph" },
-          ...range(1, 6).map((index) => ({
-            value: `h${index}`,
-            label: `Heading ${index}`,
-          })),
-        ],
+        params: {
+          options: [
+            { value: "div", label: "Paragraph" },
+            ...range(1, 6).map((index) => ({
+              value: `h${index}`,
+              label: `Heading ${index}`,
+            })),
+          ],
+        },
         group: "Accessibility and SEO",
       },
       {

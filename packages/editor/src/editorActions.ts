@@ -497,17 +497,12 @@ function isFieldRemovable(
       (schema) => schema.prop === fieldNameParent
     );
 
-    if (fieldSchema) {
-      if (fieldSchema.type === "component-fixed") {
-        return false;
-      }
-
-      if (
-        fieldSchema.type === "component" &&
-        (fieldSchema as ComponentSchemaProp).required
-      ) {
-        return false;
-      }
+    if (
+      fieldSchema &&
+      fieldSchema.type === "component" &&
+      (fieldSchema as ComponentSchemaProp).required
+    ) {
+      return false;
     }
   }
 

@@ -68,12 +68,12 @@ export function BlocksControls({
     (c) => c.id === entryPathParseResult.parent!.templateId
   );
 
-  // `component-fixed` can't be moved by design. `component` could be, but right now we only support collections.
+  // component` could be draggable, but right now we only support collections.
   const isEntryComponentOrComponentFixed =
     entryComponentDefinition!.schema.some(
       (s) =>
         s.prop === entryPathParseResult.parent!.fieldName &&
-        (s.type === "component" || s.type === "component-fixed")
+        s.type === "component"
     );
 
   const isAncestorComponentActive = focussedField.some((f) =>

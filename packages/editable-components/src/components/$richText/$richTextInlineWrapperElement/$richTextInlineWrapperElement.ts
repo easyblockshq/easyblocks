@@ -23,7 +23,6 @@ export const optionalTextModifierSchemaProp = textModifierSchemaProp({
     actionTextModifier,
   }: RichTextInlineWrapperElementEditableComponentConfig) =>
     actionTextModifier.length === 0,
-  defaultValue: [],
 });
 
 const requiredActionTextModifierSchemaProp: ComponentSchemaProp = {

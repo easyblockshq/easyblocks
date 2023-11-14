@@ -3,7 +3,7 @@ import { isTrulyResponsiveValue } from "./isTrulyResponsiveValue";
 
 export function responsiveValueReduce<T, AccT>(
   resVal: ResponsiveValue<T>,
-  reducer: (previousValue: AccT, currentVal: T) => AccT,
+  reducer: (previousValue: AccT, currentVal: T, deviceId?: string) => AccT,
   initialValue: AccT,
   devices: Devices
 ): AccT {
@@ -20,7 +20,7 @@ export function responsiveValueReduce<T, AccT>(
       continue;
     }
 
-    result = reducer(result, resVal[key] as T);
+    result = reducer(result, resVal[key] as T, key);
   }
 
   return result;

@@ -1,7 +1,6 @@
 import {
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
-  ComponentFixedSchemaProp,
   ComponentPickerType,
   ComponentSchemaProp,
   ExternalSchemaProp,
@@ -13,7 +12,7 @@ import { InternalComponentDefinition } from "../types";
 
 type SchemaProp = CoreSchemaProp | Component$$$SchemaProp;
 
-export type Component$$$SchemaProp = SchemaPropShared<"component$$$", never> & {
+export type Component$$$SchemaProp = SchemaPropShared<"component$$$"> & {
   definition: InternalComponentDefinition;
   picker?: ComponentPickerType;
   required?: boolean;
@@ -48,10 +47,8 @@ export function isSchemaPropCollection(
 
 export function isSchemaPropComponent(
   schemaProp: SchemaProp
-): schemaProp is ComponentSchemaProp | ComponentFixedSchemaProp {
-  return (
-    schemaProp.type === "component" || schemaProp.type === "component-fixed"
-  );
+): schemaProp is ComponentSchemaProp {
+  return schemaProp.type === "component";
 }
 
 export function isSchemaPropComponentOrComponentCollection(
@@ -59,8 +56,7 @@ export function isSchemaPropComponentOrComponentCollection(
 ): schemaProp is
   | ComponentCollectionLocalisedSchemaProp
   | ComponentCollectionSchemaProp
-  | ComponentSchemaProp
-  | ComponentFixedSchemaProp {
+  | ComponentSchemaProp {
   return (
     isSchemaPropCollection(schemaProp) || isSchemaPropComponent(schemaProp)
   );
@@ -91,12 +87,8 @@ const internalTypes = new Set<SchemaProp["type"]>([
   "string",
   "number",
   "boolean",
-  "string$",
-  "boolean$",
   "select",
-  "select$",
   "radio-group",
-  "radio-group$",
   "color",
   "space",
   "font",
@@ -105,7 +97,6 @@ const internalTypes = new Set<SchemaProp["type"]>([
   "text",
   "component",
   "component-collection",
-  "component-fixed",
   "position",
   "component$$$",
   "component-collection-localised",

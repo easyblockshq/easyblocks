@@ -1,4 +1,3 @@
-import { buttonActionSchemaProp } from "@easyblocks/app-utils";
 import { ComponentSchemaProp } from "@easyblocks/core";
 
 const richTextInlineWrapperActionSchemaProp: ComponentSchemaProp = {
@@ -14,7 +13,6 @@ const richTextInlineWrapperActionSchemaProp: ComponentSchemaProp = {
   accepts: ["action"],
   visible: true,
   group: "Action",
-  defaultValue: [],
   isLabelHidden: true,
 };
 

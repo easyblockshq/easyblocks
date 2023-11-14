@@ -97,8 +97,7 @@ function configMapInternal(
       });
     } else if (
       schemaProp.type === "component" ||
-      schemaProp.type === "component-collection" ||
-      schemaProp.type === "component-fixed"
+      schemaProp.type === "component-collection"
     ) {
       result[schemaProp.prop] = configMapArray(
         config[schemaProp.prop],

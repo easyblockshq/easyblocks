@@ -117,10 +117,7 @@ function destinationResolver({
               templateId: definition.id,
             }),
           });
-        } else if (
-          slotSchema.type === "component-fixed" ||
-          slotSchema.type === "component"
-        ) {
+        } else if (slotSchema.type === "component") {
           pathsQueue.push(`${slotPath}.0`);
         } else if (slotSchema.type === "component-collection") {
           pathsQueue.push(

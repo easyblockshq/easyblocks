@@ -1,8 +1,7 @@
 /**
  * This compilation function doesn't take schema. It means that it assumes couple of things:
  * 1. That input is ConfigComponent or 1-item array of. ConfigComponent. Basically it's a single component.
- * 2. It also assumes that component-fixed schema.
- * 3. Return format
+ * 2. Return format
  */
 
 import {

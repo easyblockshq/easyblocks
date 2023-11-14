@@ -14,9 +14,10 @@ import {
   isSchemaPropComponent,
   isSchemaPropComponentOrComponentCollection,
   isSchemaPropTextModifier,
-  isTrulyResponsiveValue,
   itemInserted,
+  responsiveValueGetDefinedValue,
   responsiveValueMap,
+  responsiveValueReduce,
   splitTemplateName,
 } from "@easyblocks/app-utils";
 import {
@@ -27,10 +28,11 @@ import {
   CompiledShopstoryComponentConfig,
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
-  ComponentFixedSchemaProp,
   ComponentSchemaProp,
+  Devices,
   ExternalData,
   ExternalReference,
+  ExternalReferenceNonEmpty,
   ExternalSchemaProp,
   getExternalReferenceLocationKey,
   getExternalValue,
@@ -110,7 +112,7 @@ function getComponentDefinition(
 type RenderabilityStatus = {
   renderable: boolean;
   isLoading: boolean;
-  fieldsRequiredToRender: string[];
+  fieldsRequiredToRender: Set<string>;
 };
 
 function getRenderabilityStatus(
@@ -121,7 +123,7 @@ function getRenderabilityStatus(
   const status: RenderabilityStatus = {
     renderable: true,
     isLoading: false,
-    fieldsRequiredToRender: [],
+    fieldsRequiredToRender: new Set<string>(),
   };
 
   const componentDefinition = getComponentDefinition(compiled, {
@@ -129,23 +131,14 @@ function getRenderabilityStatus(
   });
 
   if (!componentDefinition) {
-    return { renderable: false, isLoading: false, fieldsRequiredToRender: [] };
+    return {
+      renderable: false,
+      isLoading: false,
+      fieldsRequiredToRender: new Set<string>(),
+    };
   }
 
-  const mappedSchema = componentDefinition.schema.map((schema) => {
-    if (schema.type === "image" || schema.type === "video") {
-      const optionalExternalSchemaProp: ExternalSchemaProp = {
-        ...(schema as ExternalSchemaProp),
-        optional: true,
-      };
-
-      return optionalExternalSchemaProp;
-    }
-
-    return schema;
-  });
-
-  const requiredExternalFields = mappedSchema.filter(
+  const requiredExternalFields = componentDefinition.schema.filter(
     (schemaProp): schemaProp is ExternalSchemaProp => {
       return isExternalSchemaProp(schemaProp) && !schemaProp.optional;
     }
@@ -159,39 +152,22 @@ function getRenderabilityStatus(
     const externalReference: ResponsiveValue<ExternalReference> =
       compiled.props[resourceSchemaProp.prop];
 
-    if (isTrulyResponsiveValue(externalReference)) {
-      throw new Error(
-        "Responsive value for external reference not implemented yet"
+    const fieldStatus = getFieldStatus(
+      externalReference,
+      externalData,
+      compiled._id,
+      resourceSchemaProp.prop,
+      meta.vars.devices
+    );
+
+    status.isLoading = status.isLoading || fieldStatus.isLoading;
+    status.renderable = status.renderable && fieldStatus.renderable;
+
+    if (!fieldStatus.renderable && !fieldStatus.isLoading) {
+      status.fieldsRequiredToRender.add(
+        resourceSchemaProp.label || resourceSchemaProp.prop
       );
     }
-
-    if (externalReference.id) {
-      const externalReferenceLocationKey = externalReference.id.startsWith("$.")
-        ? externalReference.id
-        : getExternalReferenceLocationKey(
-            compiled._id,
-            resourceSchemaProp.prop
-          );
-      const externalValue = externalData[externalReferenceLocationKey];
-      status.isLoading = status.isLoading || externalValue === undefined;
-      const isDefined =
-        externalValue !== undefined && !("error" in externalValue);
-      status.renderable = status.renderable && isDefined;
-
-      if (!isDefined && !status.isLoading) {
-        status.fieldsRequiredToRender.push(
-          resourceSchemaProp.label || resourceSchemaProp.prop
-        );
-      }
-
-      continue;
-    }
-
-    status.isLoading = false;
-    status.renderable = false;
-    status.fieldsRequiredToRender.push(
-      resourceSchemaProp.label || resourceSchemaProp.prop
-    );
   }
 
   return status;
@@ -207,7 +183,6 @@ function getCompiledSubcomponents(
   contextProps: ContextProps,
   schemaProp:
     | ComponentSchemaProp
-    | ComponentFixedSchemaProp
     | ComponentCollectionSchemaProp
     | ComponentCollectionLocalisedSchemaProp,
   path: string,
@@ -263,11 +238,8 @@ function getCompiledSubcomponents(
     // We don't want to show add button for this type
     schemaProp.type !== "component-collection-localised"
   ) {
-    const componentTypes =
-      schemaProp.type === "component-fixed"
-        ? [schemaProp.componentType]
-        : schemaProp.accepts;
-    const type = getComponentMainType(componentTypes);
+    const type = getComponentMainType(schemaProp.accepts);
+
     elements = [
       <Placeholder
         id={id}
@@ -313,7 +285,6 @@ function getCompiledSubcomponents(
     return elements;
   }
 }
-
 export type ComponentBuilderProps = {
   path: string;
   passedProps?: {
@@ -385,9 +356,13 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
   );
 
   if (!renderabilityStatus.renderable) {
+    const fieldsRequiredToRender = Array.from(
+      renderabilityStatus.fieldsRequiredToRender
+    );
+
     return (
       <MissingComponent component={componentDefinition}>
-        {`Fill following fields to render the component: ${renderabilityStatus.fieldsRequiredToRender.join(
+        {`Fill following fields to render the component: ${fieldsRequiredToRender.join(
           ", "
         )}`}
 
@@ -610,3 +585,87 @@ function resolveExternalValue(
 
 export default ComponentBuilder;
 export type { ComponentBuilderComponent };
+
+function getFieldStatus(
+  externalReference: ResponsiveValue<ExternalReference>,
+  externalData: ExternalData,
+  configId: string,
+  fieldName: string,
+  devices: Devices
+) {
+  return responsiveValueReduce(
+    externalReference,
+    (currentStatus, value, deviceId) => {
+      if (!deviceId) {
+        if (!value.id) {
+          return {
+            isLoading: false,
+            renderable: false,
+          };
+        }
+
+        const externalValue = getResolvedExternalDataValue(
+          externalData,
+          configId,
+          fieldName,
+          value
+        );
+
+        return {
+          isLoading: currentStatus.isLoading || externalValue === undefined,
+          renderable: currentStatus.renderable && externalValue !== undefined,
+        };
+      }
+
+      if (currentStatus.isLoading || !currentStatus.renderable) {
+        return currentStatus;
+      }
+
+      const externalReferenceValue = responsiveValueGetDefinedValue(
+        value,
+        deviceId,
+        devices
+      );
+
+      if (!externalReferenceValue || externalReferenceValue.id === null) {
+        return {
+          isLoading: false,
+          renderable: false,
+        };
+      }
+
+      const externalValue = getResolvedExternalDataValue(
+        externalData,
+        configId,
+        fieldName,
+        externalReferenceValue
+      );
+
+      return {
+        isLoading: currentStatus.isLoading || externalValue === undefined,
+        renderable: currentStatus.renderable && externalValue !== undefined,
+      };
+    },
+    { renderable: true, isLoading: false },
+    devices
+  );
+}
+
+function getResolvedExternalDataValue(
+  externalData: ExternalData,
+  configId: string,
+  fieldName: string,
+  value: ExternalReferenceNonEmpty
+) {
+  const externalReferenceLocationKey = value.id.startsWith("$.")
+    ? value.id
+    : getExternalReferenceLocationKey(configId, fieldName);
+
+  const externalValue = externalData[externalReferenceLocationKey];
+
+  if (externalValue === undefined || "error" in externalValue) {
+    return;
+  }
+
+  return externalValue;
+}

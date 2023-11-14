@@ -49,7 +49,9 @@ const rootSectionsComponentDefinition: InternalRenderableComponentDefinition<"$R
               value: "0px",
               ref: "0",
             },
-            autoConstant: 24,
+            params: {
+              autoConstant: 24,
+            },
           },
 
           {
@@ -61,7 +63,9 @@ const rootSectionsComponentDefinition: InternalRenderableComponentDefinition<"$R
               value: "32px",
               ref: "32",
             },
-            autoConstant: 24,
+            params: {
+              autoConstant: 24,
+            },
           },
         ],
       },
