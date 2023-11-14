@@ -51,9 +51,9 @@ const createComponentDefinition = (
 
 describe("insert", () => {
   it.each`
-    name                      | index   | schema                                                                   | expectedResult
-    ${"path.0.chldren"}       | ${0}    | ${{ componentTypes: ["$item"], type: "component-collection", prop: "" }} | ${"path.0.chldren.0"}
-    ${"data.0.stack.0.items"} | ${1337} | ${{ componentTypes: ["$item"], type: "component", prop: "" }}            | ${"data.0.stack.0.items.1337"}
+    name                      | index   | schema                                                            | expectedResult
+    ${"path.0.chldren"}       | ${0}    | ${{ accepts: ["$item"], type: "component-collection", prop: "" }} | ${"path.0.chldren.0"}
+    ${"data.0.stack.0.items"} | ${1337} | ${{ accepts: ["$item"], type: "component", prop: "" }}            | ${"data.0.stack.0.items.1337"}
   `(
     "Should return path ($expectedResult) to inserted item",
     ({ name, index, expectedResult, schema }) => {
@@ -128,7 +128,7 @@ describe("insert", () => {
       schema: {
         prop: "",
         type: "component-collection",
-        componentTypes: ["$item"],
+        accepts: ["$item"],
       },
       templateId: "",
     });
@@ -142,8 +142,8 @@ describe("insert", () => {
 
   it.each`
     definition                                        | schema
-    ${createComponentDefinition({ tags: ["TAG_1"] })} | ${{ componentTypes: ["TAG_2"], type: "component", prop: "" }}
-    ${createComponentDefinition({ id: "ID_1" })}      | ${{ componentTypes: ["ID_2"], type: "component-collection", prop: "" }}
+    ${createComponentDefinition({ tags: ["TAG_1"] })} | ${{ accepts: ["TAG_2"], type: "component", prop: "" }}
+    ${createComponentDefinition({ id: "ID_1" })}      | ${{ accepts: ["ID_2"], type: "component-collection", prop: "" }}
     ${createComponentDefinition({ tags: ["TAG_3"] })} | ${{ componentType: "TAG_3", type: "component-fixed", prop: "" }}
   `(
     "Should return null when items does not match the schema",

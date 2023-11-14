@@ -34,12 +34,12 @@ const coreComponents: InternalRenderableComponentDefinition[] = [
       {
         prop: "Card1",
         type: "component",
-        componentTypes: ["card"],
+        accepts: ["card"],
       },
       {
         prop: "Card2",
         type: "component",
-        componentTypes: ["card"],
+        accepts: ["card"],
       },
     ],
   },

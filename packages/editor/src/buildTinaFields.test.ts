@@ -13,7 +13,7 @@ const testDefinitions: InternalComponentDefinitions = {
         {
           prop: "data",
           type: "component-collection",
-          componentTypes: ["$TestComponent1", "$TestComponent2"],
+          accepts: ["$TestComponent1", "$TestComponent2"],
         },
       ],
       tags: [],
@@ -109,7 +109,7 @@ test.skip('it resolves portal field of type "component"', () => {
             "id": "$TestRoot",
             "schema": Array [
               Object {
-                "componentTypes": Array [
+                "accepts": Array [
                   "$TestComponent1",
                   "$TestComponent2",
                 ],
@@ -271,7 +271,7 @@ test.skip('it resolves portal field of type "field"', () => {
             "id": "$TestRoot",
             "schema": Array [
               Object {
-                "componentTypes": Array [
+                "accepts": Array [
                   "$TestComponent1",
                   "$TestComponent2",
                 ],
@@ -416,7 +416,7 @@ test.skip('it resolves portal field of type "multi-field"', () => {
             "id": "$TestRoot",
             "schema": Array [
               Object {
-                "componentTypes": Array [
+                "accepts": Array [
                   "$TestComponent1",
                   "$TestComponent2",
                 ],

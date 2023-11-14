@@ -248,9 +248,7 @@ function getAllowedComponentTypes(
         s.type === "component-collection"
     );
 
-  const allowedComponentTypes = collectionSchemaProps.flatMap(
-    (s) => s.componentTypes
-  );
+  const allowedComponentTypes = collectionSchemaProps.flatMap((s) => s.accepts);
   return Array.from(new Set(allowedComponentTypes));
 }
 

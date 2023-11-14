@@ -74,12 +74,12 @@ test("invokes callback for each valid schema prop from config", () => {
             {
               prop: "Card",
               type: "component",
-              componentTypes: ["card"],
+              accepts: ["card"],
             },
             {
               prop: "LocalisedCards",
               type: "component-collection-localised",
-              componentTypes: ["card"],
+              accepts: ["card"],
             },
           ],
         },
@@ -149,7 +149,7 @@ test("Should not traverse further when cannot find component definition", () => 
             {
               prop: "LocalisedCards",
               type: "component-collection-localised",
-              componentTypes: ["card"],
+              accepts: ["card"],
             },
           ],
         },

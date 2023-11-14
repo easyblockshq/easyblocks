@@ -204,7 +204,7 @@ describe("updateSelection", () => {
         editor,
         testEditorContext,
         "action",
-        { prop: "action", type: "component", componentTypes: ["action"] },
+        { prop: "action", type: "component", accepts: ["action"] },
         [
           {
             _template: "$SomeAction",
@@ -311,7 +311,7 @@ describe("updateSelection", () => {
         editor,
         testEditorContext,
         "action",
-        { prop: "action", type: "component", componentTypes: ["action"] },
+        { prop: "action", type: "component", accepts: ["action"] },
         [
           {
             _template: "$SomeOtherAction",
@@ -415,7 +415,7 @@ describe("updateSelection", () => {
         editor,
         testEditorContext,
         "action",
-        { prop: "action", type: "component", componentTypes: ["action"] },
+        { prop: "action", type: "component", accepts: ["action"] },
         [
           {
             _template: "$SomeOtherAction",
@@ -489,7 +489,7 @@ describe("updateSelection", () => {
         editor,
         testEditorContext,
         "action",
-        { prop: "$action", type: "component", componentTypes: ["action"] },
+        { prop: "$action", type: "component", accepts: ["action"] },
         [
           {
             _template: "$SomeAction",
@@ -549,7 +549,7 @@ describe("updateSelection", () => {
         editor,
         testEditorContext,
         "action",
-        { prop: "action", type: "component", componentTypes: ["action"] },
+        { prop: "action", type: "component", accepts: ["action"] },
         []
       );
 
@@ -646,7 +646,7 @@ describe("updateSelection", () => {
         editor,
         testEditorContext,
         "action",
-        { prop: "action", type: "component", componentTypes: ["action"] },
+        { prop: "action", type: "component", accepts: ["action"] },
         []
       );
 
@@ -819,7 +819,7 @@ describe("updateSelection", () => {
         {
           prop: "textModifier",
           type: "component",
-          componentTypes: ["textModifier"],
+          accepts: ["textModifier"],
         },
         [{ _template: "$TestTextModifier" }]
       );
@@ -906,7 +906,7 @@ describe("updateSelection", () => {
         {
           prop: "textModifier",
           type: "component",
-          componentTypes: ["textModifier"],
+          accepts: ["textModifier"],
         },
         [
           {
@@ -1008,7 +1008,7 @@ describe("updateSelection", () => {
         {
           prop: "textModifier",
           type: "component",
-          componentTypes: ["textModifier"],
+          accepts: ["textModifier"],
         },
         []
       );
@@ -1104,7 +1104,7 @@ describe("updateSelection", () => {
         {
           prop: "textModifier",
           type: "component",
-          componentTypes: ["textModifier"],
+          accepts: ["textModifier"],
         },
         [
           {
@@ -1161,7 +1161,7 @@ describe("updateSelection", () => {
         {
           prop: "textModifier",
           type: "component",
-          componentTypes: ["textModifier"],
+          accepts: ["textModifier"],
         },
         []
       );

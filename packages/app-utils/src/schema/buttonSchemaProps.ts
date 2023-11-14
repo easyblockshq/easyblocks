@@ -4,7 +4,7 @@ export const buttonActionSchemaProp: ComponentSchemaProp = {
   prop: "action",
   label: "Action",
   type: "component", // for now actions are components
-  componentTypes: ["action"],
+  accepts: ["action"],
   visible: true,
   group: "Action",
   defaultValue: [],
@@ -28,7 +28,7 @@ export const buttonOptionalIconSchemaProp: ComponentSchemaProp = {
   prop: "symbol",
   label: "Symbol",
   type: "component",
-  componentTypes: ["symbol"],
+  accepts: ["symbol"],
   visible: true,
   group: "Properties",
 };

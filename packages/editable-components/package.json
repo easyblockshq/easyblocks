@@ -44,6 +44,10 @@
     "@types/react-dom": "^18.2.7",
     "@types/vimeo__player": "^2.18.0"
   },
+  "peerDependencies": {
+    "react": ">= 16.8",
+    "react-dom": ">= 16.8"
+  },
   "files": [
     "dist/",
     "package.json",

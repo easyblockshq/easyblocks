@@ -26,7 +26,7 @@ describe("destinationResolver", () => {
             {
               prop: "data",
               type: "component-collection",
-              componentTypes: ["section"],
+              accepts: ["section"],
             },
           ],
           pasteSlots: ["Component"],
@@ -52,7 +52,7 @@ describe("destinationResolver", () => {
             {
               prop: "Cards",
               type: "component-collection",
-              componentTypes: ["card", "ASDASd"],
+              accepts: ["card", "ASDASd"],
             },
           ],
           pasteSlots: ["Cards"],

@@ -145,7 +145,7 @@ test("change of schema prop value of nested component triggers only recompilatio
       {
         prop: "Component",
         type: "component",
-        componentTypes: [testComponentDefinition1.id],
+        accepts: [testComponentDefinition1.id],
       },
     ],
     tags: [],
@@ -157,7 +157,7 @@ test("change of schema prop value of nested component triggers only recompilatio
       {
         prop: "Component",
         type: "component",
-        componentTypes: [testComponentDefinition2.id],
+        accepts: [testComponentDefinition2.id],
       },
     ],
     tags: [],
@@ -261,7 +261,7 @@ test("change of _itemProps triggers recompilation of the component that owns the
       {
         prop: "Components",
         type: "component-collection",
-        componentTypes: [testComponentDefinition1.id],
+        accepts: [testComponentDefinition1.id],
         itemFields: [
           {
             prop: "itemProp1",
@@ -377,7 +377,7 @@ test("change of context props triggers recompilation of component consuming them
       {
         prop: "Component",
         type: "component",
-        componentTypes: [testComponentDefinition1.id],
+        accepts: [testComponentDefinition1.id],
       },
       {
         prop: "prop1",
@@ -456,7 +456,7 @@ test("action is recompiled even if the owner component didn't change", () => {
       {
         prop: "prop1",
         type: "component",
-        componentTypes: ["action"],
+        accepts: ["action"],
       },
     ],
     tags: [],

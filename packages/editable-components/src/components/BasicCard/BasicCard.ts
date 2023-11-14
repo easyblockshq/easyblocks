@@ -145,12 +145,7 @@ export const basicCardDefinition: InternalRenderableComponentDefinition<"$BasicC
         prop: "Background",
         label: "Background",
         type: "component",
-        componentTypes: [
-          "$backgroundColor",
-          "$image",
-          "$video",
-          "$vimeoPlayer",
-        ],
+        accepts: ["$backgroundColor", "$image", "$video", "$vimeoPlayer"],
         visible: true,
         group: "Background",
       },

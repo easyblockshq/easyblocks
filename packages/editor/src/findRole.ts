@@ -7,7 +7,7 @@ export function findRoleFromSchemaProp(
 ): undefined | string {
   return schemaProp.type === "component-fixed"
     ? undefined
-    : (schemaProp as ComponentSchemaProp).componentTypes[0];
+    : (schemaProp as ComponentSchemaProp).accepts[0];
 }
 
 export function findRolesInTags(tags: string[]): AnyRole[] {

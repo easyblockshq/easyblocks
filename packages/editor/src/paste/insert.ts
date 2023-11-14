@@ -17,7 +17,7 @@ import { normalizeToStringArray } from "../normalizeToStringArray";
 const getTypes = (schema?: SchemaProp) => {
   if (schema?.type === "component-collection" || schema?.type === "component") {
     return (schema as ComponentCollectionSchemaProp | ComponentSchemaProp)
-      .componentTypes;
+      .accepts;
   }
   return [];
 };

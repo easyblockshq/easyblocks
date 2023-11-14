@@ -60,7 +60,7 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         label: "Play Button",
         type: "component",
         required: true,
-        componentTypes: ["button"],
+        accepts: ["button"],
         group: "Playback control",
         // visible: (values) => {
         //   return values.enablePlaybackControls;
@@ -71,7 +71,7 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         label: "Pause Button",
         type: "component",
         required: true,
-        componentTypes: ["button"],
+        accepts: ["button"],
         group: "Playback control",
         // visible: (values) => {
         //   return values.enablePlaybackControls;
@@ -99,7 +99,7 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         label: "Mute Button",
         type: "component",
         required: true,
-        componentTypes: ["button"],
+        accepts: ["button"],
         group: "Sound control",
         // visible: (values) => {
         //   return values.enableSoundControls;
@@ -110,7 +110,7 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
         label: "Unmute Button",
         type: "component",
         required: true,
-        componentTypes: ["button"],
+        accepts: ["button"],
         group: "Sound control",
         // visible: (values) => {
         //   return values.enableSoundControls;

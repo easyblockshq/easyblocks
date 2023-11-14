@@ -13,12 +13,12 @@ const compilationContext: CompilationContextType = {
           {
             type: "component",
             prop: "Component",
-            componentTypes: ["$TestComponent2"],
+            accepts: ["$TestComponent2"],
           },
           {
             type: "component-collection",
             prop: "Components",
-            componentTypes: ["$TestComponent2"],
+            accepts: ["$TestComponent2"],
           },
         ],
         tags: [],

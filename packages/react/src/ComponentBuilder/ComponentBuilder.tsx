@@ -266,7 +266,7 @@ function getCompiledSubcomponents(
     const componentTypes =
       schemaProp.type === "component-fixed"
         ? [schemaProp.componentType]
-        : schemaProp.componentTypes;
+        : schemaProp.accepts;
     const type = getComponentMainType(componentTypes);
     elements = [
       <Placeholder

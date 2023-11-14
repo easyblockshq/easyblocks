@@ -68,12 +68,12 @@ describe("configMap", () => {
             {
               prop: "Card",
               type: "component",
-              componentTypes: ["card"],
+              accepts: ["card"],
             },
             {
               prop: "LocalisedCards",
               type: "component-collection-localised",
-              componentTypes: ["card"],
+              accepts: ["card"],
             },
           ],
         },

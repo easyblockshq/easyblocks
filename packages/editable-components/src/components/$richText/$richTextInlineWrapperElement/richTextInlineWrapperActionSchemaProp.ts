@@ -3,7 +3,7 @@ import { ComponentSchemaProp } from "@easyblocks/core";
 
 const richTextInlineWrapperActionSchemaProp: ComponentSchemaProp = {
   // ...buttonActionSchemaProp,
-  // componentTypes: ["action"],
+  // accepts: ["action"],
   // label: "Link",
   //
 
@@ -11,7 +11,7 @@ const richTextInlineWrapperActionSchemaProp: ComponentSchemaProp = {
   label: "Action",
   type: "component", // for now actions are components
   noInline: true,
-  componentTypes: ["action"],
+  accepts: ["action"],
   visible: true,
   group: "Action",
   defaultValue: [],

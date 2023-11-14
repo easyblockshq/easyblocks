@@ -34,7 +34,7 @@ const buttonsComponentDefinition: InternalRenderableComponentDefinition<"$button
         prop: "Buttons",
         label: "Buttons",
         type: "component-collection",
-        componentTypes: ["button"],
+        accepts: ["button"],
       },
     ],
   };

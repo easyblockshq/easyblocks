@@ -38,7 +38,7 @@ const rootSectionsComponentDefinition: InternalRenderableComponentDefinition<"$R
         label: "data",
         type: "component-collection",
         picker: "large",
-        componentTypes: ["section"],
+        accepts: ["section"],
         itemFields: [
           {
             prop: "topMargin", // property only for first value!

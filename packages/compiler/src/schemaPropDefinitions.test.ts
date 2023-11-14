@@ -352,7 +352,7 @@ const coreComponents: InternalRenderableComponentDefinition[] = [
       {
         prop: "Card1",
         type: "component",
-        componentTypes: ["card"],
+        accepts: ["card"],
       },
       {
         prop: "card1Width", // property shown in Card!
@@ -361,7 +361,7 @@ const coreComponents: InternalRenderableComponentDefinition[] = [
       {
         prop: "Card2",
         type: "component",
-        componentTypes: ["card"],
+        accepts: ["card"],
       },
       {
         prop: "Card3Fixed",
@@ -371,17 +371,17 @@ const coreComponents: InternalRenderableComponentDefinition[] = [
       {
         prop: "Cards",
         type: "component-collection",
-        componentTypes: ["card"],
+        accepts: ["card"],
       },
       {
         prop: "CardsLocalised",
         type: "component-collection-localised",
-        componentTypes: ["card"],
+        accepts: ["card"],
       },
       {
         prop: "testAction",
         type: "component",
-        componentTypes: ["action"],
+        accepts: ["action"],
       },
       {
         prop: "x",
@@ -396,7 +396,7 @@ const coreComponents: InternalRenderableComponentDefinition[] = [
       {
         prop: "CardsWithItemFields",
         type: "component-collection",
-        componentTypes: ["card"],
+        accepts: ["card"],
         itemFields: [
           {
             prop: "itemProp1",
@@ -522,7 +522,7 @@ const coreComponents: InternalRenderableComponentDefinition[] = [
       {
         prop: "action",
         type: "component",
-        componentTypes: ["action"],
+        accepts: ["action"],
         visible: true,
       },
     ],
@@ -2608,7 +2608,7 @@ describe("[component field] no parent context", () => {
     {
       prop: "blabla",
       type: "component",
-      componentTypes: ["$EmptyComponent", "$TestCard"],
+      accepts: ["$EmptyComponent", "$TestCard"],
     },
     editorContext
   );
@@ -2726,7 +2726,7 @@ describe("component field", () => {
       {
         prop: "Card1",
         type: "component",
-        componentTypes: ["$EmptyComponent", "$TestCard", "MyButton"],
+        accepts: ["$EmptyComponent", "$TestCard", "MyButton"],
       },
       editorContext
     );

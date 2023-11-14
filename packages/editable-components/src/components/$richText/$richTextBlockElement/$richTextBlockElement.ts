@@ -48,7 +48,7 @@ const richTextBlockElementEditableComponent: InternalRenderableComponentDefiniti
       {
         prop: "elements",
         type: "component-collection",
-        componentTypes: [richTextLineElementEditableComponent.id],
+        accepts: [richTextLineElementEditableComponent.id],
       },
     ],
     styles: richTextBlockElementStyles,

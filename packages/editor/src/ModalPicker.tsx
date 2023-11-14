@@ -56,7 +56,7 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
     }
   }
 
-  const componentTypes = config.componentTypes ?? schemaProp.componentTypes;
+  const componentTypes = config.componentTypes ?? schemaProp.accepts;
   const components = unrollAcceptsFieldIntoComponents(
     componentTypes,
     editorContext

@@ -174,7 +174,7 @@ const richTextEditableComponent: InternalRenderableComponentDefinition<"$richTex
       {
         prop: "elements",
         type: "component-collection-localised",
-        componentTypes: [richTextBlockElementEditableComponent.id],
+        accepts: [richTextBlockElementEditableComponent.id],
         visible: false,
       },
       {

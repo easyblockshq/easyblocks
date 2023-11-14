@@ -104,7 +104,7 @@ function IdentityField({ input, field }: IdentityFieldProps) {
         parentComponentDefinition.schema.find<ComponentSchemaProp>(
           (s): s is ComponentSchemaProp =>
             s.type === "component" &&
-            (s as ComponentSchemaProp).componentTypes.includes("action")
+            (s as ComponentSchemaProp).accepts.includes("action")
         )
       );
 

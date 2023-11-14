@@ -32,17 +32,17 @@ const coreComponents: InternalRenderableComponentDefinition[] = [
       {
         prop: "Card1",
         type: "component",
-        componentTypes: ["card"],
+        accepts: ["card"],
       },
       {
         prop: "Card2",
         type: "component",
-        componentTypes: ["card"],
+        accepts: ["card"],
       },
       {
         prop: "localisedCards",
         type: "component-collection-localised",
-        componentTypes: ["card"],
+        accepts: ["card"],
       },
     ],
   },
@@ -67,7 +67,7 @@ const coreComponents: InternalRenderableComponentDefinition[] = [
       {
         prop: "localisedCards",
         type: "component-collection-localised",
-        componentTypes: ["card"],
+        accepts: ["card"],
       },
     ],
   },
@@ -229,7 +229,7 @@ describe("merge", () => {
           {
             prop: "elements",
             type: "component-collection-localised",
-            componentTypes: ["localizedElement"],
+            accepts: ["localizedElement"],
           },
         ],
       },
@@ -241,7 +241,7 @@ describe("merge", () => {
           {
             prop: "elements",
             type: "component-collection",
-            componentTypes: ["element"],
+            accepts: ["element"],
           },
         ],
       },
@@ -253,7 +253,7 @@ describe("merge", () => {
           {
             prop: "action",
             type: "component",
-            componentTypes: ["actionLink"],
+            accepts: ["actionLink"],
             visible: true,
           },
         ],

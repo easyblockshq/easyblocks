@@ -29,7 +29,7 @@ export const optionalTextModifierSchemaProp = textModifierSchemaProp({
 const requiredActionTextModifierSchemaProp: ComponentSchemaProp = {
   ...optionalTextModifierSchemaProp,
   prop: "actionTextModifier",
-  componentTypes: ["actionTextModifier"],
+  accepts: ["actionTextModifier"],
   required: true,
   label: "Link styles",
   group: "Action",
@@ -44,7 +44,7 @@ const richTextInlineWrapperElementEditableComponent: InternalRenderableComponent
       {
         prop: "elements",
         type: "component-collection",
-        componentTypes: ["$richTextPart"],
+        accepts: ["$richTextPart"],
       },
       // optionalTextModifierSchemaProp,
       richTextInlineWrapperActionSchemaProp,

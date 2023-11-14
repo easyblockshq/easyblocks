@@ -78,7 +78,7 @@ const editorContext: EditorContextType = {
           {
             prop: "Card",
             type: "component",
-            componentTypes: ["card"],
+            accepts: ["card"],
           },
           {
             prop: "textProp",

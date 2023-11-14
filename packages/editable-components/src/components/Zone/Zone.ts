@@ -7,7 +7,7 @@ const zoneComponentDefinition: InternalRenderableComponentDefinition<"$Zone"> =
       {
         prop: "blocks",
         type: "component-collection",
-        componentTypes: ["section"],
+        accepts: ["section"],
       },
     ],
     styles: () => ({}),

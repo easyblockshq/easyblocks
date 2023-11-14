@@ -229,7 +229,7 @@ export type ComponentSchemaProp = SchemaPropShared<
   "component",
   [] | [ConfigComponent]
 > & {
-  componentTypes: string[];
+  accepts: string[];
   picker?: ComponentPickerType;
   required?: boolean;
   noInline?: boolean;
@@ -240,7 +240,7 @@ export type ComponentCollectionSchemaProp = SchemaPropShared<
   "component-collection",
   Array<ConfigComponent>
 > & {
-  componentTypes: string[];
+  accepts: string[];
   picker?: ComponentPickerType;
   hideFields?: string[];
   itemFields?: SchemaProp[];

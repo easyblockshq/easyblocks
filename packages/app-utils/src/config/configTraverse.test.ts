@@ -76,12 +76,12 @@ test("invokes callback for each valid schema prop from config", () => {
             {
               prop: "Card",
               type: "component",
-              componentTypes: ["card"],
+              accepts: ["card"],
             },
             {
               prop: "LocalisedCards",
               type: "component-collection-localised",
-              componentTypes: ["card"],
+              accepts: ["card"],
             },
           ],
         },
@@ -149,7 +149,7 @@ test("invokes callback for each valid schema prop from config", () => {
 
   expect(callback).toHaveBeenNthCalledWith(4, {
     path: "Card",
-    schemaProp: { componentTypes: ["card"], prop: "Card", type: "component" },
+    schemaProp: { accepts: ["card"], prop: "Card", type: "component" },
     value: [whiteCard],
   });
 
@@ -177,7 +177,7 @@ test("invokes callback for each valid schema prop from config", () => {
     schemaProp: {
       prop: "LocalisedCards",
       type: "component-collection-localised",
-      componentTypes: ["card"],
+      accepts: ["card"],
     },
     value: {
       en: [redCard, blueCard],

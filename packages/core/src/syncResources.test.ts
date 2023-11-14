@@ -190,12 +190,12 @@ describe("data synchronizers", () => {
           {
             prop: "Card",
             type: "component",
-            componentTypes: ["card"],
+            accepts: ["card"],
           },
           {
             prop: "Cards",
             type: "component-collection",
-            componentTypes: ["card"],
+            accepts: ["card"],
           },
         ],
       },

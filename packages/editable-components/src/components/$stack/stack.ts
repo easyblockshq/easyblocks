@@ -74,7 +74,7 @@ const stackComponentDefinition: InternalRenderableComponentDefinition<"$stack"> 
         prop: "Items",
         label: "Items",
         type: "component-collection",
-        componentTypes: ["item"],
+        accepts: ["item"],
         itemFields: [
           {
             prop: "width",

@@ -17,7 +17,7 @@ export const componentContainerDefinition: InternalRenderableComponentDefinition
       {
         prop: "Component",
         type: "component",
-        componentTypes: ["section", "card", "button", "symbol", "item"],
+        accepts: ["section", "card", "button", "symbol", "item"],
       },
     ],
   };

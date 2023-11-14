@@ -169,7 +169,7 @@ describe("component schema", () => {
             {
               prop: "testProp",
               type: "component",
-              componentTypes: [""],
+              accepts: [""],
             },
             testCompilationContext
           )
@@ -199,7 +199,7 @@ describe("component-collection schema", () => {
           {
             prop: "testProp",
             type: "component-collection",
-            componentTypes: [""],
+            accepts: [""],
           },
           testCompilationContext
         ).getHash(value, "xl", [])

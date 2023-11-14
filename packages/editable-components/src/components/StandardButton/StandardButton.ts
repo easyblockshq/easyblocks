@@ -17,7 +17,7 @@ export const StandardButtonNoCodeComponent: InternalRenderableComponentDefinitio
         label: "Action",
         type: "component", // for now actions are components
         noInline: true,
-        componentTypes: ["action"],
+        accepts: ["action"],
         visible: (values) => {
           return values.noAction !== true;
         },

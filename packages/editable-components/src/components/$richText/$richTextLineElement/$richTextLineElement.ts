@@ -21,7 +21,7 @@ const richTextLineElementEditableComponent: InternalRenderableComponentDefinitio
       {
         prop: "elements",
         type: "component-collection",
-        componentTypes: [
+        accepts: [
           richTextPartEditableComponent.id,
           richTextInlineWrapperElementEditableComponent.id,
         ],

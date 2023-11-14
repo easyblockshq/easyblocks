@@ -45,7 +45,7 @@ const twoItemsComponentDefinition: InternalRenderableComponentDefinition<"$twoIt
         prop: "Items",
         label: "Items",
         type: "component-collection",
-        componentTypes: ["item"],
+        accepts: ["item"],
         itemFields: [
           {
             prop: "columnWidth",

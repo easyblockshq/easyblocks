@@ -100,13 +100,13 @@ const testCompilationContext: CompilationContextType = {
           {
             prop: "componentChild",
             type: "component",
-            componentTypes: ["testComponent"],
+            accepts: ["testComponent"],
           },
           {
             prop: "componentRequiredChild",
             type: "component",
             required: true,
-            componentTypes: ["testComponent"],
+            accepts: ["testComponent"],
           },
         ],
         tags: [],
@@ -1049,7 +1049,7 @@ describe("pasteAction", () => {
         {
           prop: "data",
           type: "component-collection",
-          componentTypes: ["section"],
+          accepts: ["section"],
         },
       ],
       pasteSlots: ["Component"],
@@ -1073,7 +1073,7 @@ describe("pasteAction", () => {
         {
           prop: "Cards",
           type: "component-collection",
-          componentTypes: ["card"],
+          accepts: ["card"],
         },
       ],
       pasteSlots: ["Cards"],
@@ -1095,17 +1095,17 @@ describe("pasteAction", () => {
         {
           prop: "Slot1",
           type: "component",
-          componentTypes: ["customText"],
+          accepts: ["customText"],
         },
         {
           prop: "Slot2",
           type: "component",
-          componentTypes: ["customImage"],
+          accepts: ["customImage"],
         },
         {
           prop: "Slot3",
           type: "component-collection",
-          componentTypes: ["customCard"],
+          accepts: ["customCard"],
         },
       ],
       pasteSlots: ["Slot1", "Slot2", "Slot3"],
@@ -1132,7 +1132,7 @@ describe("pasteAction", () => {
         {
           prop: "VoidSlot",
           type: "component-collection",
-          componentTypes: [],
+          accepts: [],
         },
       ],
       pasteSlots: ["VoidSlot"],

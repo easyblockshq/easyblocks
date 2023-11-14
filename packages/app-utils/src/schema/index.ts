@@ -69,23 +69,21 @@ export function isSchemaPropComponentOrComponentCollection(
 export function isSchemaPropAction(schemaProp: SchemaProp) {
   return (
     schemaProp.type === "component" &&
-    (schemaProp as ComponentSchemaProp).componentTypes?.includes("action")
+    (schemaProp as ComponentSchemaProp).accepts?.includes("action")
   );
 }
 
 export function isSchemaPropActionTextModifier(schemaProp: SchemaProp) {
   return (
     schemaProp.type === "component" &&
-    (schemaProp as ComponentSchemaProp).componentTypes.includes(
-      "actionTextModifier"
-    )
+    (schemaProp as ComponentSchemaProp).accepts.includes("actionTextModifier")
   );
 }
 
 export function isSchemaPropTextModifier(schemaProp: SchemaProp) {
   return (
     schemaProp.type === "component" &&
-    (schemaProp as ComponentSchemaProp).componentTypes.includes("textModifier")
+    (schemaProp as ComponentSchemaProp).accepts.includes("textModifier")
   );
 }
 
@@ -130,16 +128,16 @@ export function isSchemaPropTokenized(schemaProp: SchemaProp) {
 
 type TextModifierSchemaPropOptions = Omit<
   ComponentSchemaProp,
-  "type" | "componentTypes" | "hidden"
+  "type" | "accepts" | "hidden"
 > &
-  Partial<Pick<ComponentSchemaProp, "componentTypes">>;
+  Partial<Pick<ComponentSchemaProp, "accepts">>;
 
 export function textModifierSchemaProp(
   options: TextModifierSchemaPropOptions
 ): ComponentSchemaProp {
   return {
     type: "component",
-    componentTypes: ["textModifier"],
+    accepts: ["textModifier"],
     // Schema props of type "component" are hidden by default
     visible: true,
     ...options,

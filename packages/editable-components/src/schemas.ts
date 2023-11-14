@@ -266,7 +266,7 @@ export const sectionWrapperFieldsProvider = (options: {
       label: "Outer Background",
       type: "component",
       group: "Section background",
-      componentTypes: ["$backgroundColor", "$image", "$video"],
+      accepts: ["$backgroundColor", "$image", "$video"],
       visible: true,
     },
     {
@@ -468,7 +468,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         {
           prop: "Cards",
           type: "component-collection",
-          componentTypes: ["card"],
+          accepts: ["card"],
           picker: "large-3",
           itemFields: [
             {
@@ -721,7 +721,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         {
           prop: "LeftArrow",
           type: "component",
-          componentTypes: ["button"],
+          accepts: ["button"],
           required: true,
         },
         {
@@ -742,7 +742,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         {
           prop: "RightArrow",
           type: "component",
-          componentTypes: ["button"],
+          accepts: ["button"],
           required: true,
         },
         {
@@ -877,13 +877,13 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
           prop: "Card1",
           type: "component",
           picker: "large-3",
-          componentTypes: ["card"],
+          accepts: ["card"],
         },
         {
           prop: "Card2",
           type: "component",
           picker: "large-3",
-          componentTypes: ["card"],
+          accepts: ["card"],
         },
         {
           prop: "card1Width",
@@ -1244,7 +1244,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         //   prop: "Background",
         //   label: "Background",
         //   type: "component",
-        //   componentTypes: ["$backgroundColor", "$image", "$video"],
+        //   accepts: ["$backgroundColor", "$image", "$video"],
         //   visible: true,
         //   group: "General",
         // },

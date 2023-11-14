@@ -702,6 +702,12 @@ importers:
       postcss-value-parser:
         specifier: ^3.3.0
         version: 3.3.1
+      react:
+        specifier: '>= 16.8'
+        version: 18.2.0
+      react-dom:
+        specifier: '>= 16.8'
+        version: 18.2.0(react@18.2.0)
       react-textarea-autosize:
         specifier: '>=7.1'
         version: 8.4.1(@types/react@18.2.20)(react@18.2.0)
@@ -963,6 +969,9 @@ importers:
       '@easyblocks/core':
         specifier: workspace:*
         version: link:../core
+      '@easyblocks/design-system':
+        specifier: workspace:*
+        version: link:../design-system
       '@easyblocks/editable-components':
         specifier: workspace:*
         version: link:../editable-components
@@ -991,9 +1000,6 @@ importers:
       '@easyblocks/build-tools':
         specifier: ^0.1.0
         version: link:../build-tools
-      '@easyblocks/design-system':
-        specifier: workspace:*
-        version: link:../design-system
       '@easyblocks/utils':
         specifier: workspace:*
         version: link:../utils

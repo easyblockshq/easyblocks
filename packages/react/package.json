@@ -31,6 +31,7 @@
     "@dnd-kit/core": "^6.0.8",
     "@dnd-kit/sortable": "^7.0.2",
     "@easyblocks/core": "workspace:*",
+    "@easyblocks/design-system": "workspace:*",
     "@easyblocks/editable-components": "workspace:*",
     "@easyblocks/editor": "workspace:*",
     "@stitches/core": "^1.2.5",
@@ -40,7 +41,6 @@
   "devDependencies": {
     "@easyblocks/app-utils": "workspace:*",
     "@easyblocks/build-tools": "^0.1.0",
-    "@easyblocks/design-system": "workspace:*",
     "@easyblocks/utils": "workspace:*",
     "@jest/types": "^26.6.2",
     "@testing-library/jest-dom": "^5.16.1",
