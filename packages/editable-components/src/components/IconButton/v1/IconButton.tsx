@@ -1,11 +1,16 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
+import React, { MouseEventHandler, ReactElement } from "react";
 
-function IconButton(props: any) {
-  const {
-    ButtonRoot,
-    symbol: Symbol,
-    IconWrapper,
-  } = props.__fromEditor.components;
+function IconButton(props: {
+  ButtonRoot: ReactElement;
+  symbol: ReactElement;
+  IconWrapper: ReactElement;
+  forwardedRef: any;
+  as: string;
+  onClick: MouseEventHandler;
+  href: string;
+  target: string;
+}) {
+  const { ButtonRoot, symbol: Symbol, IconWrapper } = props;
 
   const buttonProps: Record<string, any> = {
     ref: props.forwardedRef,
@@ -23,11 +28,11 @@ function IconButton(props: any) {
   }
 
   return (
-    <ButtonRoot {...buttonProps}>
-      <IconWrapper>
-        <Symbol />
-      </IconWrapper>
-    </ButtonRoot>
+    <ButtonRoot.type {...ButtonRoot.props} {...buttonProps}>
+      <IconWrapper.type {...IconWrapper.props}>
+        <Symbol.type {...Symbol.props} />
+      </IconWrapper.type>
+    </ButtonRoot.type>
   );
 }
 

@@ -1,24 +1,19 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
-import type { ComponentType, ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
+import React from "react";
 
 function Token(props: {
-  __fromEditor: {
-    components: {
-      Container: ComponentType<{ children: ReactNode }>;
-      InnerContainer: ComponentType<{ children: ReactNode }>;
-      Component: ComponentType;
-    };
-  };
+  Container: ReactElement<{ children: ReactNode }>;
+  InnerContainer: ReactElement<{ children: ReactNode }>;
+  Component: ReactElement;
 }) {
-  const { Container, InnerContainer, Component } =
-    props.__fromEditor.components;
+  const { Container, InnerContainer, Component } = props;
 
   return (
-    <Container>
-      <InnerContainer>
-        <Component />
-      </InnerContainer>
-    </Container>
+    <Container.type {...Container.props}>
+      <InnerContainer.type {...InnerContainer.props}>
+        <Component.type {...Component.props} />
+      </InnerContainer.type>
+    </Container.type>
   );
 }
 

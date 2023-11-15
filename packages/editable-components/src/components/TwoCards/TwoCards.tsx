@@ -1,19 +1,18 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
+import React, { ReactElement } from "react";
 
-function TwoCards(props: any) {
-  const { Card1, Card2, Card1Container, Card2Container, Root } =
-    props.__fromEditor.components;
+function TwoCards(props: Record<string, ReactElement>) {
+  const { Card1, Card2, Card1Container, Card2Container, Root } = props;
 
   return (
-    <Root>
-      <Card1Container>
-        <Card1 />
-      </Card1Container>
+    <Root.type {...Root.props}>
+      <Card1Container.type {...Card1Container.props}>
+        <Card1.type {...Card1.props} />
+      </Card1Container.type>
 
-      <Card2Container>
-        <Card2 />
-      </Card2Container>
-    </Root>
+      <Card2Container.type {...Card2Container.props}>
+        <Card2.type {...Card2.props} />
+      </Card2Container.type>
+    </Root.type>
   );
 }
 

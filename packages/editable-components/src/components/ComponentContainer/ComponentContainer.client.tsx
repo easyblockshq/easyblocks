@@ -1,12 +1,15 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
+import React, { ReactElement } from "react";
 
-function ComponentContainer(props: any) {
-  const { Container, Component } = props.__fromEditor.components;
+function ComponentContainer(props: {
+  Container: ReactElement;
+  Component: ReactElement;
+}) {
+  const { Container, Component } = props;
 
   return (
-    <Container id={"__shopstory-container"}>
-      <Component />
-    </Container>
+    <Container.type {...Container.props} id={"__shopstory-container"}>
+      <Component.type {...Component.props} />
+    </Container.type>
   );
 }
 

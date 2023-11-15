@@ -1,39 +1,32 @@
 /** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
-import { CompiledShopstoryComponentProps } from "../../../types";
+import { ReactElement } from "react";
+import { CompiledNoCodeComponentProps } from "../../../types";
 import {
   RichTextInlineWrapperElementCompiledComponentConfig,
   RichTextInlineWrapperElementEditableComponentConfig,
 } from "./$richTextInlineWrapperElement";
 
-type RichTextActionElementProps = CompiledShopstoryComponentProps<
+type RichTextActionElementProps = CompiledNoCodeComponentProps<
   RichTextInlineWrapperElementEditableComponentConfig["_template"],
   Record<string, never>,
   Record<string, never>,
   RichTextInlineWrapperElementCompiledComponentConfig["styled"]
 > & {
-  __fromEditor: {
-    components: {
-      elements: Array<React.ComponentType>;
-      action?: React.ReactElement;
-    };
-  };
+  elements: Array<ReactElement>;
+  action?: React.ReactElement;
 };
 
 export default function RichTextActionElement(
   props: RichTextActionElementProps
 ) {
-  const {
-    elements: Elements,
-    Link,
-    action: Action,
-  } = props.__fromEditor.components;
+  const { elements: Elements, Link, action: Action } = props;
 
   const triggerElement = (
-    <Link>
+    <Link.type {...Link.props}>
       {Elements.map((Element, index) => (
-        <Element key={index} />
+        <Element.type {...Element.props} key={index} />
       ))}
-    </Link>
+    </Link.type>
   );
 
   if (Action) {

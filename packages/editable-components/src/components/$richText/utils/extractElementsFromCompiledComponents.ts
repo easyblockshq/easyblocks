@@ -5,7 +5,7 @@ import { RichTextLineElementCompiledComponentConfig } from "../$richTextLineElem
 import { traverseCompiledRichTextComponentConfig } from "./traverseCompiledRichTextComponentConfig";
 
 function extractElementsFromCompiledComponents(
-  compiledRichText: RichTextProps["__fromEditor"]
+  compiledRichText: RichTextProps
 ): Array<
   | RichTextBlockElementCompiledComponentConfig
   | RichTextLineElementCompiledComponentConfig

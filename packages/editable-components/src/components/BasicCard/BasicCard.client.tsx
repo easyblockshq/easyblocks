@@ -1,6 +1,6 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
+import React, { ReactElement } from "react";
 
-function BasicCard(props: any) {
+function BasicCard(props: Record<string, ReactElement>) {
   const {
     ContentContainer,
     Background,
@@ -8,20 +8,20 @@ function BasicCard(props: any) {
     Stack,
     StackContainer,
     StackInnerContainer,
-  } = props.__fromEditor.components;
+  } = props;
 
   return (
-    <ContentContainer>
-      <BackgroundContainer>
-        <Background />
-      </BackgroundContainer>
+    <ContentContainer.type {...ContentContainer.props}>
+      <BackgroundContainer.type {...BackgroundContainer.props}>
+        <Background.type {...Background.props} />
+      </BackgroundContainer.type>
 
-      <StackContainer>
-        <StackInnerContainer>
-          <Stack />
-        </StackInnerContainer>
-      </StackContainer>
-    </ContentContainer>
+      <StackContainer.type {...StackContainer.props}>
+        <StackInnerContainer.type {...StackInnerContainer.props}>
+          <Stack.type {...Stack.props} />
+        </StackInnerContainer.type>
+      </StackContainer.type>
+    </ContentContainer.type>
   );
 }
 

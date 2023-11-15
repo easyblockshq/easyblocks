@@ -1,6 +1,8 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
+import React, { ReactElement } from "react";
 
-function SectionWrapper(props: any) {
+function SectionWrapper(
+  props: { headerMode: string } & Record<string, ReactElement>
+) {
   // Underscores are for the namespace purpose - we don't want to clutter it with common names
   const {
     Container__,
@@ -13,35 +15,34 @@ function SectionWrapper(props: any) {
     SubheaderStackContainer__,
     ContentContainer__,
     Component,
-  } = props.__fromEditor.components;
-
-  const headerMode = props.__fromEditor.props.headerMode;
+    headerMode,
+  } = props;
 
   return (
-    <Root__ id={props.__fromEditor._id}>
+    <Root__.type {...Root__.props} id={props._id}>
       {Background__ && (
-        <BackgroundContainer__>
-          <Background__ />
-        </BackgroundContainer__>
+        <BackgroundContainer__.type {...BackgroundContainer__.props}>
+          <Background__.type {...Background__.props} />
+        </BackgroundContainer__.type>
       )}
-      <Container__>
+      <Container__.type {...Container__.props}>
         {headerMode !== "none" && (
-          <HeaderStackContainer__>
-            <HeaderStack />
-          </HeaderStackContainer__>
+          <HeaderStackContainer__.type {...HeaderStackContainer__.props}>
+            <HeaderStack.type {...HeaderStack.props} />
+          </HeaderStackContainer__.type>
         )}
 
         {headerMode === "2-stacks" && (
-          <SubheaderStackContainer__>
-            <HeaderSecondaryStack />
-          </SubheaderStackContainer__>
+          <SubheaderStackContainer__.type {...SubheaderStackContainer__.props}>
+            <HeaderSecondaryStack.type {...HeaderSecondaryStack.props} />
+          </SubheaderStackContainer__.type>
         )}
 
-        <ContentContainer__>
-          <Component />
-        </ContentContainer__>
-      </Container__>
-    </Root__>
+        <ContentContainer__.type {...ContentContainer__.props}>
+          <Component.type {...Component.props} />
+        </ContentContainer__.type>
+      </Container__.type>
+    </Root__.type>
   );
 }
 

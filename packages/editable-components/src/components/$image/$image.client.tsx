@@ -1,15 +1,19 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
-
+import React from "react";
 import { responsiveValueToSelectivelyDisplayedComponents } from "@easyblocks/app-utils";
 import { getAspectRatioClassName, ImageProps } from "./image.helpers";
 import { ImageRenderer } from "./ImageRenderer";
 
-export default function $image(props: ImageProps) {
-  const { __fromEditor } = props;
-  const { resop, devices, Image, stitches } = __fromEditor.runtime;
-  const { image, aspectRatio, gridBaseLineHeight } = __fromEditor.props;
-
-  const { Wrapper, AspectRatioMaker, ImageWrapper } = __fromEditor.components;
+export default function ImageClient(props: ImageProps) {
+  const {
+    image,
+    aspectRatio,
+    gridBaseLineHeight,
+    Wrapper,
+    AspectRatioMaker,
+    ImageWrapper,
+    runtime,
+  } = props;
+  const { resop, devices, Image, stitches } = runtime;
 
   const aspectRatioClassName = getAspectRatioClassName(
     image,
@@ -21,10 +25,13 @@ export default function $image(props: ImageProps) {
   );
 
   return (
-    <Wrapper>
-      <AspectRatioMaker className={aspectRatioClassName} />
+    <Wrapper.type {...Wrapper.props}>
+      <AspectRatioMaker.type
+        {...AspectRatioMaker.props}
+        className={aspectRatioClassName}
+      />
 
-      <ImageWrapper>
+      <ImageWrapper.type {...ImageWrapper.props}>
         {responsiveValueToSelectivelyDisplayedComponents(
           image,
           (image) => {
@@ -33,7 +40,7 @@ export default function $image(props: ImageProps) {
           devices,
           stitches
         )}
-      </ImageWrapper>
-    </Wrapper>
+      </ImageWrapper.type>
+    </Wrapper.type>
   );
 }

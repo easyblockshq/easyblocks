@@ -1,6 +1,6 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
+import React, { ReactElement } from "react";
 
-function BannerCard(props: any) {
+function BannerCard(props: Record<string, ReactElement>) {
   const {
     Container,
     SidePhotoContainer,
@@ -12,28 +12,28 @@ function BannerCard(props: any) {
     StackInnerContainer,
     SideImage,
     // Link,
-  } = props.__fromEditor.components;
+  } = props;
 
   return (
-    <Container>
+    <Container.type {...Container.props}>
       {/*<Link />*/}
 
-      <SidePhotoContainer>
-        <SideImage />
-      </SidePhotoContainer>
+      <SidePhotoContainer.type {...SidePhotoContainer.props}>
+        <SideImage.type {...SideImage.props} />
+      </SidePhotoContainer.type>
 
-      <ContentContainer>
-        <BackgroundContainer>
-          <Background />
-        </BackgroundContainer>
+      <ContentContainer.type {...ContentContainer.props}>
+        <BackgroundContainer.type {...BackgroundContainer.props}>
+          <Background.type {...Background.props} />
+        </BackgroundContainer.type>
 
-        <StackContainer>
-          <StackInnerContainer>
-            <Stack />
-          </StackInnerContainer>
-        </StackContainer>
-      </ContentContainer>
-    </Container>
+        <StackContainer.type {...StackContainer.props}>
+          <StackInnerContainer.type {...StackInnerContainer.props}>
+            <Stack.type {...Stack.props} />
+          </StackInnerContainer.type>
+        </StackContainer.type>
+      </ContentContainer.type>
+    </Container.type>
   );
 }
 

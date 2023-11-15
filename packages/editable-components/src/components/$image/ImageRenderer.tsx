@@ -1,10 +1,6 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
-
-// eslint-disable-next-line no-var, @typescript-eslint/no-unused-vars
-declare const createElement: typeof import("react").createElement;
-
 import type { ImageSrc } from "@easyblocks/core";
 import type { ComponentType } from "react";
+import React from "react";
 import { Placeholder } from "./Placeholder";
 
 type ImageRendererProps = {

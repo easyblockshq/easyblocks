@@ -1,8 +1,11 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
-import React from "react";
+import React, { ReactElement } from "react";
 
-function Playground(props: any) {
-  const { Root, Span, ActionElement } = props.__fromEditor.components;
+function Playground(props: {
+  Root: ReactElement;
+  Span: ReactElement;
+  ActionElement: ReactElement;
+}) {
+  const { Root, Span, ActionElement } = props;
   const testRef = React.useRef<HTMLSpanElement>();
 
   React.useEffect(() => {
@@ -12,16 +15,21 @@ function Playground(props: any) {
   }, []);
 
   return (
-    <Root>
-      <Span data-span-attribute={"span-attribute-value"} ref={testRef}>
+    <Root.type {...Root.props}>
+      <Span.type
+        {...Span.props}
+        data-span-attribute={"span-attribute-value"}
+        ref={testRef}
+      >
         I'm span
-      </Span>
-      <ActionElement
+      </Span.type>
+      <ActionElement.type
+        {...ActionElement.props}
         data-action-element-attribute={"action-element-attribute-value"}
       >
         I have action
-      </ActionElement>
-    </Root>
+      </ActionElement.type>
+    </Root.type>
   );
 }
 

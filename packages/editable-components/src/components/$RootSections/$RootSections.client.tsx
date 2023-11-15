@@ -1,22 +1,23 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
+import React, { Fragment, ReactElement } from "react";
 
-function RootSections(props: any) {
-  const React = props.__fromEditor.React;
-  const data = props.__fromEditor.components.data;
-  const itemWrappers = props.__fromEditor.components.ItemWrappers;
+function RootSections(props: {
+  data: Array<ReactElement>;
+  ItemWrappers: Array<ReactElement>;
+}) {
+  const { data, ItemWrappers: itemWrappers } = props;
 
   return (
-    <React.Fragment>
-      {data.map((Item: any, index: number) => {
+    <Fragment>
+      {data.map((Item, index) => {
         const ItemWrapper = itemWrappers[index];
 
         return (
-          <ItemWrapper key={index}>
-            <Item />
-          </ItemWrapper>
+          <ItemWrapper.type {...ItemWrapper.props} key={index}>
+            <Item.type {...Item.props} />
+          </ItemWrapper.type>
         );
       })}
-    </React.Fragment>
+    </Fragment>
   );
 }
 

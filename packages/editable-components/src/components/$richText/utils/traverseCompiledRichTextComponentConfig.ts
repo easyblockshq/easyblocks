@@ -5,7 +5,7 @@ import { RichTextLineElementCompiledComponentConfig } from "../$richTextLineElem
 import { RichTextPartCompiledComponentConfig } from "../$richTextPart/$richTextPart";
 
 function traverseCompiledRichTextComponentConfig(
-  config: RichTextProps["__fromEditor"],
+  config: RichTextProps,
   callback: (
     compiledConfig:
       | RichTextBlockElementCompiledComponentConfig
@@ -14,7 +14,7 @@ function traverseCompiledRichTextComponentConfig(
       | RichTextInlineWrapperElementCompiledComponentConfig
   ) => void
 ): void {
-  config.components.elements.forEach((reactElement) => {
+  config.elements.forEach((reactElement) => {
     callback(reactElement.props.compiled);
     reactElement.props.compiled.components.elements.forEach(
       (compiledLineElement) => {

@@ -1,15 +1,25 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
 import Player from "@vimeo/player";
-import { CompiledShopstoryComponentProps } from "../../types";
 import React from "react";
 
 declare const Vimeo: { Player: typeof Player };
 
-type VimeoPlayerProps = CompiledShopstoryComponentProps;
+type VimeoPlayerProps = Record<string, any>;
 
 const VIMEO_URL = "https://vimeo.com/";
 
-export function VimeoPlayerInternal({ __fromEditor }: VimeoPlayerProps) {
+export function VimeoPlayerInternal({
+  areControlsDisabled,
+  isAutoPlay,
+  isLoop,
+  isMuted,
+  videoId,
+  AspectRatioMaker,
+  ErrorContainer,
+  ContentWrapper,
+  Placeholder,
+  PlayerContainer,
+  Wrapper,
+}: VimeoPlayerProps) {
   const { Fragment, useEffect, useState, useRef } = React;
   const [canPlayerBeLoaded, setCanPlayerBeLoaded] = useState(false);
   const playerLoadingStatusRef = useRef<"not_loaded" | "loaded" | "error">(
@@ -18,18 +28,6 @@ export function VimeoPlayerInternal({ __fromEditor }: VimeoPlayerProps) {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const embeddedPlayerContainerRef = useRef<HTMLDivElement | null>(null);
   const playerInstanceRef = useRef<Player | null>(null);
-
-  const { areControlsDisabled, isAutoPlay, isLoop, isMuted, videoId } =
-    __fromEditor.props;
-
-  const {
-    AspectRatioMaker,
-    ErrorContainer,
-    ContentWrapper,
-    Placeholder,
-    PlayerContainer,
-    Wrapper,
-  } = __fromEditor.components;
 
   async function initVimeoPlayer() {
     await loadVimeoPlayer();
@@ -189,20 +187,27 @@ export function VimeoPlayerInternal({ __fromEditor }: VimeoPlayerProps) {
   }, [isLoop]);
 
   return (
-    <Wrapper>
-      <AspectRatioMaker />
+    <Wrapper.type {...Wrapper.props}>
+      <AspectRatioMaker.type {...AspectRatioMaker.props} />
 
-      <ContentWrapper>
+      <ContentWrapper.type {...ContentWrapper.props}>
         {videoId ? (
           <Fragment>
-            <PlayerContainer ref={embeddedPlayerContainerRef} />
-            {errorMessage && <ErrorContainer>{errorMessage}</ErrorContainer>}
+            <PlayerContainer.type
+              {...PlayerContainer.props}
+              ref={embeddedPlayerContainerRef}
+            />
+            {errorMessage && (
+              <ErrorContainer.type {...ErrorContainer.props}>
+                {errorMessage}
+              </ErrorContainer.type>
+            )}
           </Fragment>
         ) : (
-          <Placeholder />
+          <Placeholder.type {...Placeholder.props} />
         )}
-      </ContentWrapper>
-    </Wrapper>
+      </ContentWrapper.type>
+    </Wrapper.type>
   );
 }
 

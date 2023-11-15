@@ -1,8 +1,8 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
+import React, { ReactElement } from "react";
 
 function RootGrid(props: any) {
-  const Data = props.__fromEditor.components.data;
-  return <Data />;
+  const Data = props.data as ReactElement;
+  return <Data.type {...Data.props} />;
 }
 
 export default RootGrid;

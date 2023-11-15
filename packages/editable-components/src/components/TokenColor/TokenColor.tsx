@@ -1,23 +1,19 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
-import type { ComponentType, ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
+import React from "react";
 
 function TokenColor(props: {
-  __fromEditor: {
-    components: {
-      Container: ComponentType<{ children: ReactNode }>;
-      InnerContainer: ComponentType<{ children: ReactNode }>;
-      ColorBox: ComponentType;
-    };
-  };
+  Container: ReactElement<{ children: ReactNode }>;
+  InnerContainer: ReactElement<{ children: ReactNode }>;
+  ColorBox: ReactElement;
 }) {
-  const { Container, InnerContainer, ColorBox } = props.__fromEditor.components;
+  const { Container, InnerContainer, ColorBox } = props;
 
   return (
-    <Container>
-      <InnerContainer>
-        <ColorBox />
-      </InnerContainer>
-    </Container>
+    <Container.type {...Container.props}>
+      <InnerContainer.type {...InnerContainer.props}>
+        <ColorBox.type {...ColorBox.props} />
+      </InnerContainer.type>
+    </Container.type>
   );
 }
 

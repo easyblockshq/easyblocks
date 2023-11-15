@@ -1,22 +1,30 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
+import React, { ReactElement } from "react";
 
-function TwoItems(props: any) {
-  const { Container, Items, itemWrappers } = props.__fromEditor.components;
+function TwoItems(props: {
+  Container: ReactElement;
+  Items: Array<ReactElement>;
+  itemWrappers: Array<{
+    OuterWrapper: ReactElement;
+    InnerWrapper: ReactElement;
+  }>;
+}) {
+  const { Container, Items, itemWrappers } = props;
 
   return (
-    <Container>
-      {Items.map((Item: any, index: number) => {
+    <Container.type {...Container.props}>
+      {Items.map((Item, index) => {
         const OuterWrapper = itemWrappers[index].OuterWrapper;
         const InnerWrapper = itemWrappers[index].InnerWrapper;
+
         return (
-          <OuterWrapper>
-            <InnerWrapper>
-              <Item />
-            </InnerWrapper>
-          </OuterWrapper>
+          <OuterWrapper.type {...OuterWrapper.props}>
+            <InnerWrapper.type {...InnerWrapper.props}>
+              <Item.type {...Item.props} />
+            </InnerWrapper.type>
+          </OuterWrapper.type>
         );
       })}
-    </Container>
+    </Container.type>
   );
 }
 

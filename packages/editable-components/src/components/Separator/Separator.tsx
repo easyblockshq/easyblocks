@@ -1,20 +1,16 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
-import type { ComponentType, ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
+import React from "react";
 
 function Separator(props: {
-  __fromEditor: {
-    components: {
-      Container: ComponentType<{ children: ReactNode }>;
-      Separator: ComponentType;
-    };
-  };
+  Container: ReactElement<{ children: ReactNode }>;
+  Separator: ReactElement;
 }) {
-  const { Container, Separator } = props.__fromEditor.components;
+  const { Container, Separator } = props;
 
   return (
-    <Container>
-      <Separator />
-    </Container>
+    <Container.type {...Container.props}>
+      <Separator.type {...Separator.props} />
+    </Container.type>
   );
 }
 

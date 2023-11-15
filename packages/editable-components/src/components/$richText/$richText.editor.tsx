@@ -40,7 +40,7 @@ import type {
   RenderPlaceholderProps,
 } from "slate-react";
 import { Editable, ReactEditor, Slate, withReact } from "slate-react";
-import { CompiledShopstoryComponentProps } from "../../types";
+import { CompiledNoCodeComponentProps } from "../../types";
 import type { RichTextComponentConfig } from "./$richText";
 import {
   RICH_TEXT_CONFIG_SYNC_THROTTLE_TIMEOUT,
@@ -61,6 +61,7 @@ import { getFocusedRichTextPartsConfigPaths } from "./utils/getFocusedRichTextPa
 import { getRichTextComponentConfigFragment } from "./utils/getRichTextComponentConfigFragment";
 import { isElementInlineWrapperElement } from "./utils/isElementInlineWrapperElement";
 import { NORMALIZED_IDS_TO_IDS, withShopstory } from "./withShopstory";
+import { RichTextPartComponentConfig } from "./$richTextPart/$richTextPart";
 
 function mapAlignmentToFlexAlignment(align: Alignment) {
   if (align === "center") {
@@ -75,20 +76,14 @@ function mapAlignmentToFlexAlignment(align: Alignment) {
 }
 
 interface RichTextProps {
-  __fromEditor: {
-    path: string;
-    components: {
-      elements: Array<
-        React.ReactElement<{
-          compiled: RichTextBlockElementCompiledComponentConfig;
-        }>
-      >;
-    };
-    props: {
-      align: ResponsiveValue<Alignment>;
-    };
-    runtime: CompiledShopstoryComponentProps["__fromEditor"]["runtime"];
-  };
+  path: string;
+  elements: Array<
+    React.ReactElement<{
+      compiled: RichTextBlockElementCompiledComponentConfig;
+    }>
+  >;
+  align: ResponsiveValue<Alignment>;
+  runtime: CompiledNoCodeComponentProps["runtime"];
 }
 
 function RichText(props: RichTextProps) {
@@ -103,8 +98,11 @@ function RichText(props: RichTextProps) {
     setFocussedField,
   } = editorContext;
 
-  const { path } = props.__fromEditor;
-  const { Box, resop, stitches } = props.__fromEditor.runtime;
+  const {
+    path,
+    align,
+    runtime: { Box, resop, stitches, devices },
+  } = props;
 
   let richTextConfig: RichTextComponentConfig = dotNotationGet(
     form.values,
@@ -315,7 +313,7 @@ function RichText(props: RichTextProps) {
   }, [richTextConfig, path]);
 
   const decorate = createTextSelectionDecorator(editor, { isDecorationActive });
-  const Elements = extractElementsFromCompiledComponents(props.__fromEditor);
+  const Elements = extractElementsFromCompiledComponents(props);
 
   function renderElement({
     attributes,
@@ -370,11 +368,7 @@ function RichText(props: RichTextProps) {
     }
 
     const ElementComponent = (
-      <Box
-        __compiled={compiledStyles}
-        devices={props.__fromEditor.runtime.devices}
-        stitches={props.__fromEditor.runtime.stitches}
-      />
+      <Box __compiled={compiledStyles} devices={devices} stitches={stitches} />
     );
 
     return cloneElement(
@@ -391,7 +385,7 @@ function RichText(props: RichTextProps) {
     );
   }
 
-  const TextParts = extractTextPartsFromCompiledComponents(props.__fromEditor);
+  const TextParts = extractTextPartsFromCompiledComponents(props);
 
   function renderLeaf({ attributes, children, leaf }: RenderLeafProps) {
     let TextPart = TextParts.find((TextPart) => {
@@ -416,8 +410,8 @@ function RichText(props: RichTextProps) {
     const TextPartComponent = (
       <Box
         __compiled={TextPart.styled.Text}
-        devices={props.__fromEditor.runtime.devices}
-        stitches={props.__fromEditor.runtime.stitches}
+        devices={props.runtime.devices}
+        stitches={props.runtime.stitches}
       />
     );
 
@@ -573,7 +567,7 @@ function RichText(props: RichTextProps) {
                   {
                     ...fallbackFirstTextPart,
                     value: "",
-                  },
+                  } as RichTextPartComponentConfig,
                 ],
               },
             ],
@@ -691,10 +685,10 @@ function RichText(props: RichTextProps) {
   }
 
   const contentEditableClassName = useMemo(() => {
-    const responsiveAlignmentStyles = mapResponsiveAlignmentToStyles(
-      props.__fromEditor.props.align,
-      { devices: editorContext.devices, resop }
-    );
+    const responsiveAlignmentStyles = mapResponsiveAlignmentToStyles(align, {
+      devices: editorContext.devices,
+      resop,
+    });
 
     const isFallbackValueShown =
       localizedRichTextElements === undefined &&
@@ -730,7 +724,7 @@ function RichText(props: RichTextProps) {
     return getStyles().className;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    props.__fromEditor.props.align,
+    align,
     isDecorationActive,
     localizedRichTextElements,
     fallbackRichTextElements,
