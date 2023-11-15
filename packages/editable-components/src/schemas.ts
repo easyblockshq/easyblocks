@@ -267,14 +267,14 @@ export const sectionWrapperFieldsProvider = (options: {
       prop: "HeaderStack",
       label: "Stack",
       type: "component",
-      componentTypes: ["$stack"],
+      accepts: ["$stack"],
       required: true,
     },
     {
       prop: "HeaderSecondaryStack",
       label: "Stack",
       type: "component",
-      componentTypes: ["$stack"],
+      accepts: ["$stack"],
       required: true,
     },
 
@@ -382,7 +382,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         {
           prop: "Component",
           type: "component",
-          componentTypes: ["$BannerCard2"],
+          accepts: ["$BannerCard2"],
           required: true,
         },
       ],
@@ -400,7 +400,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         {
           prop: "Component",
           type: "component",
-          componentTypes: ["$GridCard"],
+          accepts: ["$GridCard"],
           required: true,
         },
         ...sectionWrapperFields.filter((x) => x.group !== "General"),
@@ -419,7 +419,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
         {
           prop: "Component",
           type: "component",
-          componentTypes: ["$TwoCardsCard"],
+          accepts: ["$TwoCardsCard"],
           required: true,
         },
       ],
@@ -1326,14 +1326,14 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
           prop: "Card1",
           label: "Card1",
           type: "component",
-          componentTypes: ["$BasicCard"],
+          accepts: ["$BasicCard"],
           required: true,
         },
         {
           prop: "Card2",
           label: "Card2",
           type: "component",
-          componentTypes: ["$BasicCardBackground"],
+          accepts: ["$BasicCardBackground"],
           required: true,
         },
         {

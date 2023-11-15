@@ -19,7 +19,7 @@ const rootGridComponentDefinition: InternalRenderableComponentDefinition<"$RootG
         prop: "data",
         label: "data",
         type: "component",
-        componentTypes: ["$Grid"],
+        accepts: ["$Grid"],
         required: true,
       },
     ],

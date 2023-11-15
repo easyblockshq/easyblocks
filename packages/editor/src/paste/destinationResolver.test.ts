@@ -39,7 +39,7 @@ describe("destinationResolver", () => {
             {
               prop: "Component",
               type: "component",
-              componentTypes: ["$GridCard"],
+              accepts: ["$GridCard"],
               required: true,
             },
           ],

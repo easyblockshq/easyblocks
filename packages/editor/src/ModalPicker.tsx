@@ -88,7 +88,7 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
   const picker = schemaProp.picker ?? "compact";
 
   // const defaultPickerMode =
-  //   componentTypes.includes("section") || componentTypes.includes("card")
+  //   accepts.includes("section") || componentTypes.includes("card")
   //     ? "big"
   //     : "small";
   //

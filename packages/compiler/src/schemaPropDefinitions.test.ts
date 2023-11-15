@@ -366,7 +366,7 @@ const coreComponents: InternalRenderableComponentDefinition[] = [
       {
         prop: "Card3Fixed",
         type: "component",
-        componentTypes: ["$EmptyComponent"],
+        accepts: ["$EmptyComponent"],
         required: true,
       },
       {
@@ -495,7 +495,7 @@ const coreComponents: InternalRenderableComponentDefinition[] = [
       {
         prop: "Card",
         type: "component",
-        componentTypes: ["$EmptyComponent2"],
+        accepts: ["$EmptyComponent2"],
         required: true,
       },
     ],
@@ -2667,7 +2667,7 @@ describe("[component field required] no parent context", () => {
     {
       prop: "blabla",
       type: "component",
-      componentTypes: ["$TestCard"],
+      accepts: ["$TestCard"],
       required: true,
     },
     editorContext

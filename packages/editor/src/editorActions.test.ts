@@ -89,7 +89,7 @@ const testCompilationContext: CompilationContextType = {
           {
             prop: "fixedChild",
             type: "component",
-            componentTypes: ["testComponent"],
+            accepts: ["testComponent"],
             required: true,
           },
         ],
@@ -1062,7 +1062,7 @@ describe("pasteAction", () => {
         {
           prop: "Component",
           type: "component",
-          componentTypes: ["$GridCard"],
+          accepts: ["$GridCard"],
           required: true,
         },
       ],

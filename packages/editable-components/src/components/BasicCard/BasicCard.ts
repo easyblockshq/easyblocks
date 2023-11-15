@@ -283,7 +283,7 @@ export const basicCardDefinition: InternalRenderableComponentDefinition<"$BasicC
         prop: "Stack",
         label: "Stack",
         type: "component",
-        componentTypes: ["$stack"],
+        accepts: ["$stack"],
         required: true,
       },
     ],
