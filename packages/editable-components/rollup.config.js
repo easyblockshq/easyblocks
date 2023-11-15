@@ -21,10 +21,10 @@ const baseConfig = {
   input: "src/index.ts",
   external: [
     ...Object.keys(packageJson.dependencies),
+    ...Object.keys(packageJson.peerDependencies),
     /crypto-js/,
     /@babel\/runtime/,
     /lodash/,
-    "react",
   ],
   onwarn: (warning, warn) => {
     // We're using eval on purpose, so let's ignore this warning.
