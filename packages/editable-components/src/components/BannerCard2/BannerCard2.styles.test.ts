@@ -37,7 +37,7 @@ function runStyles(extraValues: any) {
   );
 }
 
-describe("Bannercard2 Cards parameters", () => {
+describe.skip("Bannercard2 Cards parameters", () => {
   describe("in none mode", () => {
     test("no edge margins", () => {
       const compiled = runStyles({

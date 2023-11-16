@@ -47,19 +47,12 @@ const compilationContext: CompilationContextType = {
   devices,
 };
 
-function numberOfItemsToken(numberOfItems: number) {
-  return {
-    ref: numberOfItems.toString(),
-    value: numberOfItems.toString(),
-  };
-}
-
-const NUMBER_OF_ITEMS_1 = numberOfItemsToken(1);
-const NUMBER_OF_ITEMS_2 = numberOfItemsToken(2);
-const NUMBER_OF_ITEMS_3 = numberOfItemsToken(3);
-const NUMBER_OF_ITEMS_4 = numberOfItemsToken(4);
-const NUMBER_OF_ITEMS_5 = numberOfItemsToken(5);
-const NUMBER_OF_ITEMS_6 = numberOfItemsToken(6);
+const NUMBER_OF_ITEMS_1 = "1";
+const NUMBER_OF_ITEMS_2 = "2";
+const NUMBER_OF_ITEMS_3 = "3";
+const NUMBER_OF_ITEMS_4 = "4";
+const NUMBER_OF_ITEMS_5 = "5";
+const NUMBER_OF_ITEMS_6 = "6";
 
 describe("grid auto", () => {
   const example: Record<string, any> = {
