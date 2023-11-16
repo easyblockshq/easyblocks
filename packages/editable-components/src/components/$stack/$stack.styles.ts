@@ -1,34 +1,32 @@
 import { spacingToPx } from "@easyblocks/app-utils";
+import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
 import { box } from "../../box";
-import { CompiledComponentStylesToolkit } from "../../types";
-import { StackCompiledValues } from "./Stack.types";
+import { StackCompiledValues, StackParams } from "./Stack.types";
 
-export default function (
-  compiled: StackCompiledValues,
-  { device, $width, compilationContext }: CompiledComponentStylesToolkit
-) {
-  if ($width === -1) {
-    throw new Error("$stack without width!!!");
-  }
-
+export default function ({
+  values,
+  params,
+  isEditing,
+  device,
+}: NoCodeComponentStylesFunctionInput<StackCompiledValues, StackParams>) {
   // Legacy -> if we get passedAlign from external, we use it "by force"
-  if (compiled.passedAlign) {
-    compiled.Items = compiled.Items.map((item: any) => ({
+  if (params.passedAlign) {
+    values.Items = values.Items.map((item) => ({
       ...item,
-      align: compiled.passedAlign,
+      align: params.passedAlign!,
     }));
   }
 
   // here we must apply default for placeholder!
   const items =
-    compiled.Items.length > 0
-      ? compiled.Items
+    values.Items.length > 0
+      ? values.Items
       : [
           {
             marginBottom: 0,
             escapeMargin: false,
             width: "512px",
-            align: compiled.passedAlign ?? "left",
+            align: params.passedAlign ?? "left",
           },
         ];
 
@@ -46,25 +44,22 @@ export default function (
     }
 
     const isChildRichText =
-      "_template" in item &&
-      item._template === "$richText" &&
-      !compilationContext.isEditing;
+      "_template" in item && item._template === "$richText" && !isEditing;
 
     return {
       StackItemOuter: box({
         display: "flex",
         justifyContent: flexAlign,
-        paddingLeft: !item.escapeMargin ? compiled.paddingLeft : 0,
-        paddingRight: !item.escapeMargin ? compiled.paddingRight : 0,
+        paddingLeft: !item.escapeMargin ? params.paddingLeft : 0,
+        paddingRight: !item.escapeMargin ? params.paddingRight : 0,
         paddingTop:
-          (index === 0 || compiled.Items.length === 0) && !item.escapeMargin
-            ? compiled.paddingTop
+          (index === 0 || values.Items.length === 0) && !item.escapeMargin
+            ? params.paddingTop
             : 0,
         paddingBottom:
-          (index === compiled.Items.length - 1 ||
-            compiled.Items.length === 0) &&
+          (index === values.Items.length - 1 || values.Items.length === 0) &&
           !item.escapeMargin
-            ? compiled.paddingBottom
+            ? params.paddingBottom
             : 0,
       }),
 
@@ -87,14 +82,14 @@ export default function (
     }),
     itemWrappers,
     Items: {
-      itemProps: compiled.Items.map((item) => {
+      itemProps: values.Items.map((item) => {
         return {
           passedAlign: item.align,
           $width: Math.min(
             item.width === "max" ? Number.MAX_VALUE : parseInt(item.width),
-            $width -
-              spacingToPx(compiled.paddingLeft ?? "0px", device.w) -
-              spacingToPx(compiled.paddingRight ?? "0px", device.w)
+            params.$width -
+              spacingToPx(params.paddingLeft ?? "0px", device.w) -
+              spacingToPx(params.paddingRight ?? "0px", device.w)
           ),
           $widthAuto: false,
         };

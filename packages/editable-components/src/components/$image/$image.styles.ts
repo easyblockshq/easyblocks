@@ -1,6 +1,10 @@
+import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
 import { box } from "../../box";
 
-export default function styles(configProps: Record<string, unknown>) {
+export default function styles({
+  values,
+  params,
+}: NoCodeComponentStylesFunctionInput) {
   return {
     Wrapper: box({
       position: "relative",
@@ -22,7 +26,7 @@ export default function styles(configProps: Record<string, unknown>) {
       position: "relative",
     }),
     __props: {
-      aspectRatio: configProps.passedAspectRatio ?? configProps.aspectRatio,
+      aspectRatio: params.passedAspectRatio ?? values.aspectRatio,
     },
   };
 }

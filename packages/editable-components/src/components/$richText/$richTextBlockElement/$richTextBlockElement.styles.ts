@@ -1,16 +1,12 @@
 import { Alignment } from "@easyblocks/app-utils";
+import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
 import { RichTextAccessibilityRole } from "../$richText";
 import { RichTextPartCompiledComponentConfig } from "../$richTextPart/$richTextPart";
 import { box } from "../../../box";
 import { RichTextBlockElementType } from "./$richTextBlockElement";
 
-type RichTextBlockElementsStateAndProps = {
-  accessibilityRole: RichTextAccessibilityRole;
-  align: Alignment;
+export type RichTextBlockElementValues = {
   elements: Array<{ elements: Array<RichTextPartCompiledComponentConfig> }>;
-  mainColor: string;
-  mainFont: Record<string, any>;
-  mainFontSize: string | number;
   type: RichTextBlockElementType;
 };
 
@@ -33,15 +29,21 @@ const NUMBERED_LIST_MAX_COUNTER_SPACING = "0.5ch";
 const NUMBERED_LIST_DOT_CHARACTER_SAFE_WIDTH = "0.5ch";
 const BULLET_CHARACTER = "\u2022";
 
+export type RichTextBlockElementParams = {
+  accessibilityRole: RichTextAccessibilityRole;
+  align: Alignment;
+  mainColor: string;
+  mainFont: Record<string, any>;
+  mainFontSize: string | number;
+};
+
 export default function styles({
-  accessibilityRole,
-  align,
-  elements,
-  mainColor,
-  mainFont,
-  mainFontSize,
-  type,
-}: RichTextBlockElementsStateAndProps) {
+  values: { elements, type },
+  params: { accessibilityRole, align, mainColor, mainFont, mainFontSize },
+}: NoCodeComponentStylesFunctionInput<
+  RichTextBlockElementValues,
+  RichTextBlockElementParams
+>) {
   const maxDigitsCount = elements.length.toString().length;
 
   const paddingInline = `clamp(${px(

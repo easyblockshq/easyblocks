@@ -26,6 +26,7 @@ import {
   isSchemaPropTokenized,
   parsePath,
   resop2,
+  responsiveValueAt,
   responsiveValueFill,
   responsiveValueNormalize,
   scalarizeConfig,
@@ -43,9 +44,10 @@ import {
   ComponentSchemaProp,
   ConfigComponent,
   EditingField,
-  EditingFunctionResult,
+  NoCodeComponentEditingFunctionResult,
   EditingInfo,
   FieldPortal,
+  NoCodeComponentStylesFunctionInput,
   RefMap,
   SchemaProp,
   SerializedComponentDefinitions,
@@ -144,7 +146,10 @@ export function compileComponent(
 
   let hasComponentConfigChanged = true;
 
-  let ownPropsAfterAuto: any;
+  let ownPropsAfterAuto: {
+    values: { _id: string; _template: string } & Record<string, any>;
+    params: Record<string, any>;
+  };
   let compiled:
     | CompiledCustomComponentConfig
     | CompiledShopstoryComponentConfig = {
@@ -168,7 +173,10 @@ export function compileComponent(
       ownPropsAfterAuto = cachedResult.valuesAfterAuto;
       compiledValues = cachedResult.compiledValues;
       compiled = cachedResult.compiledConfig;
-      configAfterAuto = deepClone(cachedResult.valuesAfterAuto);
+      configAfterAuto = deepClone({
+        ...cachedResult.valuesAfterAuto.values,
+        ...cachedResult.valuesAfterAuto.params,
+      });
       subcomponentsContextProps = cachedResult.contextProps;
       editingContextProps = cachedResult.editingContextProps;
     }
@@ -199,15 +207,16 @@ export function compileComponent(
     // linearize space
     componentDefinition.schema.forEach((schemaProp) => {
       if (isSchemaPropTokenized(schemaProp)) {
-        ownPropsAfterAuto[schemaProp.prop] = applyAutoUsingResponsiveTokens(
-          ownPropsAfterAuto[schemaProp.prop],
-          compilationContext
-        );
+        ownPropsAfterAuto.values[schemaProp.prop] =
+          applyAutoUsingResponsiveTokens(
+            ownPropsAfterAuto.values[schemaProp.prop],
+            compilationContext
+          );
       }
 
       if (schemaProp.type === "space") {
-        ownPropsAfterAuto[schemaProp.prop] = linearizeSpace(
-          ownPropsAfterAuto[schemaProp.prop],
+        ownPropsAfterAuto.values[schemaProp.prop] = linearizeSpace(
+          ownPropsAfterAuto.values[schemaProp.prop],
           compilationContext,
           $width,
           (schemaProp as SpaceSchemaProp).params?.autoConstant ??
@@ -216,7 +225,7 @@ export function compileComponent(
       }
     });
 
-    itemFieldsForEach(ownPropsAfterAuto, compilationContext, (arg) => {
+    itemFieldsForEach(ownPropsAfterAuto.values, compilationContext, (arg) => {
       let value = arg.itemPropValue;
       if (isSchemaPropTokenized(arg.itemSchemaProp)) {
         value = applyAutoUsingResponsiveTokens(value, compilationContext);
@@ -232,7 +241,7 @@ export function compileComponent(
         );
       }
 
-      dotNotationSet(ownPropsAfterAuto, arg.itemPropPath, value);
+      dotNotationSet(ownPropsAfterAuto.values, arg.itemPropPath, value);
     });
 
     const autoFunction = (
@@ -240,26 +249,39 @@ export function compileComponent(
     ).auto;
 
     if (autoFunction) {
-      ownPropsAfterAuto = autoFunction(
-        ownPropsAfterAuto,
-        compilationContext,
-        $width
-      );
+      const ownValuesAfterAuto = autoFunction({
+        values: ownPropsAfterAuto.values,
+        params: {
+          ...ownPropsAfterAuto.params,
+          $width,
+        },
+        devices: compilationContext.devices,
+      });
+
+      ownPropsAfterAuto.values = ownValuesAfterAuto;
     }
 
     // Fill all responsive values. We can assume that values after auto for each breakpoint MUST be defined!!!
     // IMPORTANT: For now we make it realtive to device widths, so Webflow way
-    for (const prop in ownPropsAfterAuto) {
-      ownPropsAfterAuto[prop] = responsiveValueFill(
-        ownPropsAfterAuto[prop],
+    for (const prop in ownPropsAfterAuto.values) {
+      ownPropsAfterAuto.values[prop] = responsiveValueFill(
+        ownPropsAfterAuto.values[prop],
         compilationContext.devices,
         getDevicesWidths(compilationContext.devices)
       );
     }
 
-    itemFieldsForEach(ownPropsAfterAuto, compilationContext, (arg) => {
+    for (const prop in ownPropsAfterAuto.params) {
+      ownPropsAfterAuto.params[prop] = responsiveValueFill(
+        ownPropsAfterAuto.params[prop],
+        compilationContext.devices,
+        getDevicesWidths(compilationContext.devices)
+      );
+    }
+
+    itemFieldsForEach(ownPropsAfterAuto.values, compilationContext, (arg) => {
       dotNotationSet(
-        ownPropsAfterAuto,
+        ownPropsAfterAuto.values,
         arg.itemPropPath,
         responsiveValueFill(
           arg.itemPropValue,
@@ -271,17 +293,20 @@ export function compileComponent(
 
     // First we compile all the props and store them in compiledValues
     const _compiledValues = compileComponentValues(
-      ownPropsAfterAuto,
+      ownPropsAfterAuto.values,
       componentDefinition,
       compilationContext,
       cache
     );
 
-    compiledValues = { ...deepClone(ownPropsAfterAuto), ..._compiledValues };
+    compiledValues = {
+      ...deepClone(ownPropsAfterAuto.values),
+      ..._compiledValues,
+    };
 
     // Compile item props
     itemFieldsForEach(
-      ownPropsAfterAuto,
+      ownPropsAfterAuto.values,
       compilationContext,
       ({ itemPropValue, itemIndex, itemSchemaProp, collectionSchemaProp }) => {
         const compiledValue: any = compileFromSchema(
@@ -299,18 +324,6 @@ export function compileComponent(
         ] = compiledValue;
       }
     );
-
-    // Let's compile tracing
-    // if (
-    //   componentDefinition.schema.some(({ prop }) => isTracingSchemaProp(prop))
-    // ) {
-    //   compiled.tracing = {
-    //     traceId,
-    //     traceClicks,
-    //     traceImpressions,
-    //     type: tracingType(componentDefinition.tags, contextProps.tracingType),
-    //   };
-    // }
 
     componentDefinition.schema.forEach((schemaProp: SchemaProp) => {
       if (
@@ -434,6 +447,7 @@ export function compileComponent(
 
         const editingInfoResult = renderableComponentDefinition.editing({
           values: scalarizedConfig,
+          params: ownPropsAfterAuto.params,
           editingInfo: editingInfoInput,
           ...(componentDefinition.id === "$richText" ||
           componentDefinition.id === "$richTextPart"
@@ -478,23 +492,36 @@ export function compileComponent(
     }
 
     const { __props, ...stylesOutput } = resop2(
-      compiledValues,
-      (x, breakpointIndex) => {
+      { values: compiledValues, params: ownPropsAfterAuto.params },
+      ({ values, params }, breakpointIndex) => {
         if (!renderableComponentDefinition.styles) {
           return {};
         }
 
-        const device = compilationContext.devices.find(
-          (device) => device.id === breakpointIndex
-        )!;
+        const device = assertDefined(
+          compilationContext.devices.find(
+            (device) => device.id === breakpointIndex
+          ),
+          `Missing device "${breakpointIndex}"`
+        );
 
-        return renderableComponentDefinition.styles(x, {
-          breakpointIndex,
+        const stylesInput: NoCodeComponentStylesFunctionInput = {
+          values,
+          params: {
+            ...params,
+            $width: assertDefined(responsiveValueAt($width, breakpointIndex)),
+            $widthAuto: assertDefined(
+              responsiveValueAt($widthAuto, breakpointIndex)
+            ),
+          },
+          isEditing: !!compilationContext.isEditing,
           device,
-          compilationContext,
-          $width: $width[breakpointIndex],
-          $widthAuto: $widthAuto[breakpointIndex],
-        });
+          ...(componentDefinition!.id === "richTextInlineWrapperElement"
+            ? { __COMPILATION_CONTEXT__: compilationContext }
+            : {}),
+        };
+
+        return renderableComponentDefinition.styles(stylesInput);
       },
       compilationContext.devices,
       renderableComponentDefinition
@@ -547,7 +574,10 @@ export function compileComponent(
     };
 
     // We are going to mutate this object so let's disconnect it from its source object
-    configAfterAuto = deepClone(ownPropsAfterAuto);
+    configAfterAuto = deepClone({
+      ...ownPropsAfterAuto.values,
+      ...ownPropsAfterAuto.params,
+    });
   }
 
   if (compilationContext.isEditing) {
@@ -571,7 +601,7 @@ export function compileComponent(
      * Let's run custom editing function
      */
     if (renderableComponentDefinition.editing) {
-      const scalarizedConfig = scalarizeConfig(
+      const scalarizedValues = scalarizeConfig(
         compiledValues,
         editorContext.breakpointIndex,
         editorContext.devices,
@@ -594,7 +624,8 @@ export function compileComponent(
       );
 
       const editingInfoResult = renderableComponentDefinition.editing({
-        values: scalarizedConfig,
+        values: scalarizedValues,
+        params: ownPropsAfterAuto!.params,
         editingInfo: editingInfoInput,
         ...(componentDefinition.id === "$richText" ||
         componentDefinition.id === "$richTextPart"
@@ -650,9 +681,9 @@ export function compileComponent(
     cache
   );
 
-  cache.set(ownProps._id, {
+  cache.set(ownProps.values._id, {
     values: ownProps,
-    valuesAfterAuto: ownPropsAfterAuto,
+    valuesAfterAuto: ownPropsAfterAuto!,
     compiledValues,
     compiledConfig: compiled,
     contextProps: subcomponentsContextProps,
@@ -757,8 +788,10 @@ function createOwnComponentProps({
 
         if (isSchemaPropComponentCollectionLocalised(schemaProp)) {
           configValue =
-            (resolveLocalisedValue(config[schemaProp.prop], compilationContext)
-              ?.value as [ConfigComponent]) ?? [];
+            resolveLocalisedValue(
+              config[schemaProp.prop] as Record<string, Array<ConfigComponent>>,
+              compilationContext
+            )?.value ?? [];
         }
 
         const configValuesWithFlattenedItemProps = configValue.map((config) => {
@@ -790,14 +823,11 @@ function createOwnComponentProps({
     })
   );
 
-  const ownValues = {
+  const ownValues: { _id: string; _template: string; [key: string]: any } = {
     // Copy id and template which uniquely identify component.
-    _id: config._id!,
+    _id: config._id,
     _template: config._template,
     ...values,
-    // Copy all values set by parent component. We MUST spread them after schema prop based values because
-    // parent may want to override them.
-    ...contextProps,
   };
 
   if (ref) {
@@ -814,7 +844,10 @@ function createOwnComponentProps({
     Object.assign(ownValues, refs);
   }
 
-  return ownValues;
+  return {
+    values: ownValues,
+    params: contextProps,
+  };
 }
 
 function flattenItemProps(
@@ -1644,7 +1677,7 @@ function toRelativeFieldPath(path: string, configPrefix: string | undefined) {
 }
 
 function convertEditingInfoToInternalEditingInfo(
-  editingInfo: EditingFunctionResult,
+  editingInfo: NoCodeComponentEditingFunctionResult,
   internalEditingInfo: InternalEditingInfo,
   componentDefinition: InternalRenderableComponentDefinition,
   editorContext: EditorContextType,

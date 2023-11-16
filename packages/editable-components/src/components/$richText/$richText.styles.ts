@@ -1,8 +1,12 @@
 import { Alignment } from "@easyblocks/app-utils";
+import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
 import { box } from "../../box";
 
-export function richTextStyles(values: Record<string, any>) {
-  const align = values.passedAlign ?? values.align;
+export function richTextStyles({
+  values,
+  params,
+}: NoCodeComponentStylesFunctionInput) {
+  const align = params.passedAlign ?? values.align;
 
   return {
     Root: box({

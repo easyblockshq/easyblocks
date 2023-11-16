@@ -370,12 +370,18 @@ function hasDefinedBreakpoints(
 }
 
 export function resop2<
-  Input extends Record<string, ResponsiveValue<unknown>>,
+  Input extends {
+    values: Record<string, ResponsiveValue<unknown>>;
+    params: Record<string, ResponsiveValue<unknown>>;
+  },
   ScalarResult extends Record<string, unknown>
 >(
-  config: Input,
+  input: Input,
   callback: (
-    scalarInput: Scalar<Input>,
+    scalarInput: {
+      values: Scalar<Input["values"]>;
+      params: Scalar<Input["params"]>;
+    },
     breakpointIndex: string
   ) => ScalarResult,
   devices: Devices,
@@ -384,22 +390,26 @@ export function resop2<
   const schema = componentDefinition?.schema ?? [];
 
   // Decompose config into scalar configs
-  const scalarConfigs: Record<string, Scalar<Input>> = {};
+  const scalarInputs: Record<
+    string,
+    {
+      values: Scalar<Input["values"]>;
+      params: Scalar<Input["params"]>;
+    }
+  > = {};
 
   devices.forEach((device) => {
-    scalarConfigs[device.id] = scalarizeConfig(
-      config,
-      device.id,
-      devices,
-      schema
-    );
+    scalarInputs[device.id] = {
+      params: scalarizeConfig(input.params, device.id, devices, []),
+      values: scalarizeConfig(input.values, device.id, devices, schema),
+    };
   });
 
   const scalarOutputs: Record<string, any> = {};
 
   // run callback for scalar configs
   devices.forEach((device) => {
-    scalarOutputs[device.id] = callback(scalarConfigs[device.id], device.id);
+    scalarOutputs[device.id] = callback(scalarInputs[device.id], device.id);
   });
 
   /**
@@ -501,7 +511,7 @@ export function resop2<
 
     // If non-zero length, then there are extra requirements
     if (length > 0) {
-      const itemsLength = (config as any)[componentName].length;
+      const itemsLength = (input.values as any)[componentName].length;
 
       if (itemsLength === 0 ? length > 1 : itemsLength !== length) {
         throw new Error(

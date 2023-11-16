@@ -22,15 +22,15 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
     thumbnail:
       "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_image.png",
     styles: imageStyles,
-    editing: ({ values, editingInfo }) => {
+    editing: ({ params, editingInfo }) => {
       let fields = [...editingInfo.fields];
 
       // If aspect ratio passed from external, we don't need it.
-      if (values.noAspectRatio) {
+      if (params.noAspectRatio) {
         fields = fields.filter((field) => field.path !== "aspectRatio");
       }
 
-      if (values.noAction) {
+      if (params.noAction) {
         fields = fields.filter((field) => field.path !== "action");
       }
 

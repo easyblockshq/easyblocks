@@ -1,17 +1,17 @@
-import {
-  Alignment,
-  CompiledComponentCollectionValues,
-} from "@easyblocks/app-utils";
+import { Alignment } from "@easyblocks/app-utils";
+import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
 import { mapAlignmentToFlexAlignment } from "../$richText.styles";
 import { RichTextBlockElementType } from "../$richTextBlockElement/$richTextBlockElement";
 import { box } from "../../../box";
 
-type RichTextLineCompiledComponentValues = CompiledComponentCollectionValues & {
+export type RichTextLineCompiledComponentValues = {
   align: Alignment;
   blockType: RichTextBlockElementType;
 };
 
-export default function styles(values: RichTextLineCompiledComponentValues) {
+export default function styles({
+  values,
+}: NoCodeComponentStylesFunctionInput<RichTextLineCompiledComponentValues>) {
   return {
     TextLine: box(
       {

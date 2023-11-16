@@ -1,22 +1,28 @@
-import { CompiledTextModifier, ConfigComponent } from "@easyblocks/core";
+import {
+  CompiledTextModifier,
+  ConfigComponent,
+  NoCodeComponentStylesFunctionInput,
+} from "@easyblocks/core";
 import { box } from "../../../box";
 import { getTextModifierStyles } from "../../../getTextModifierStyles";
-import { CompiledComponentStylesToolkit } from "../../../types";
 
-type RichTextActionElementStateAndProps = {
+export type RichTextActionElementValues = {
   elements: Array<unknown>;
   action: [ConfigComponent] | [];
   // textModifier: [CompiledTextModifier] | [];
   actionTextModifier: [CompiledTextModifier] | [];
 };
 
-export default function styles(
-  { action, elements, actionTextModifier }: RichTextActionElementStateAndProps,
-  t: CompiledComponentStylesToolkit
-) {
+export default function styles({
+  values: { elements, actionTextModifier },
+  isEditing,
+  __COMPILATION_CONTEXT__,
+}: NoCodeComponentStylesFunctionInput<RichTextActionElementValues> & {
+  __COMPILATION_CONTEXT__: any;
+}) {
   const { modifierStyles, childStyles } = getTextModifierStyles(
     actionTextModifier,
-    t.compilationContext
+    __COMPILATION_CONTEXT__
   );
 
   const contextProps =
@@ -36,7 +42,7 @@ export default function styles(
         pointerEvents: "auto",
         ...modifierStyles,
       },
-      t.compilationContext.isEditing ? "span" : "a"
+      isEditing ? "span" : "a"
     ),
     ...contextProps,
   };

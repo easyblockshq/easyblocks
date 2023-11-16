@@ -7,12 +7,15 @@ import {
   CompiledComponentConfigBase,
   ComponentSchemaProp,
   ConfigComponent,
+  NoCodeComponentStylesFunction,
 } from "@easyblocks/core";
 import {
   RichTextPartCompiledComponentConfig,
   RichTextPartComponentConfig,
 } from "../$richTextPart/$richTextPart";
-import richTextInlineWrapperElementStyles from "./$richTextInlineWrapperElement.styles";
+import richTextInlineWrapperElementStyles, {
+  RichTextActionElementValues,
+} from "./$richTextInlineWrapperElement.styles";
 import { richTextInlineWrapperActionSchemaProp } from "./richTextInlineWrapperActionSchemaProp";
 
 export const optionalTextModifierSchemaProp = textModifierSchemaProp({
@@ -36,21 +39,24 @@ const requiredActionTextModifierSchemaProp: ComponentSchemaProp = {
     action.length === 1,
 };
 
-const richTextInlineWrapperElementEditableComponent: InternalRenderableComponentDefinition<"$richTextInlineWrapperElement"> =
-  {
-    id: "$richTextInlineWrapperElement",
-    schema: [
-      {
-        prop: "elements",
-        type: "component-collection",
-        accepts: ["$richTextPart"],
-      },
-      // optionalTextModifierSchemaProp,
-      richTextInlineWrapperActionSchemaProp,
-      requiredActionTextModifierSchemaProp,
-    ],
-    styles: richTextInlineWrapperElementStyles,
-  };
+const richTextInlineWrapperElementEditableComponent: InternalRenderableComponentDefinition<
+  "$richTextInlineWrapperElement",
+  RichTextActionElementValues
+> = {
+  id: "$richTextInlineWrapperElement",
+  schema: [
+    {
+      prop: "elements",
+      type: "component-collection",
+      accepts: ["$richTextPart"],
+    },
+    // optionalTextModifierSchemaProp,
+    richTextInlineWrapperActionSchemaProp,
+    requiredActionTextModifierSchemaProp,
+  ],
+  styles:
+    richTextInlineWrapperElementStyles as NoCodeComponentStylesFunction<RichTextActionElementValues>,
+};
 
 type RichTextInlineWrapperElementEditableComponentConfig =
   EditableComponentToComponentConfig<

@@ -1,44 +1,45 @@
 import { spacingToPx } from "@easyblocks/app-utils";
+import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
 import { box } from "../../box";
+import { EdgeCompiledValues } from "../../common.types";
 import { getEdgeValues } from "../../getEdgeValues";
-import { CompiledComponentStylesToolkit } from "../../types";
 import { TwoCardsCompiledValues } from "./TwoCards.types";
 import { TWO_CARDS_COL_NUM } from "./twoCardsConstants";
 
-function styles(
-  config: TwoCardsCompiledValues,
-  { $width, device }: CompiledComponentStylesToolkit
-) {
-  if ($width === -1) {
-    throw new Error("$TwoCards without width!!!");
-  }
-
-  const edgeInfo = getEdgeValues(config);
+function styles({
+  values,
+  params,
+  device,
+}: NoCodeComponentStylesFunctionInput<
+  TwoCardsCompiledValues,
+  EdgeCompiledValues
+>) {
+  const edgeInfo = getEdgeValues(params);
 
   const edgeLeftMargin = edgeInfo.edgeLeftMargin ?? "0px";
   const edgeRightMargin = edgeInfo.edgeRightMargin ?? "0px";
 
-  const card1Width = parseInt(config.card1Width);
-  const card2Width = parseInt(config.card2Width);
+  const card1Width = parseInt(values.card1Width);
+  const card2Width = parseInt(values.card2Width);
 
   let alignItems = "";
 
-  if (config.verticalLayout === "center") {
+  if (values.verticalLayout === "center") {
     alignItems = "center";
   } else if (
-    config.verticalLayout === "align-top" ||
-    config.verticalLayout === "irregular"
+    values.verticalLayout === "align-top" ||
+    values.verticalLayout === "irregular"
   ) {
     alignItems = "start";
-  } else if (config.verticalLayout === "align-bottom") {
+  } else if (values.verticalLayout === "align-bottom") {
     alignItems = "end";
-  } else if (config.verticalLayout === "fit") {
+  } else if (values.verticalLayout === "fit") {
     alignItems = "stretch";
   } else {
     throw new Error("[TwoCards] unknown verticalLayout value");
   }
 
-  const verticalOffset = parseInt(config.verticalOffset);
+  const verticalOffset = parseInt(values.verticalOffset);
 
   const containerWidthCalc = `calc(100% - ${edgeLeftMargin} - ${edgeRightMargin})`;
 
@@ -50,8 +51,8 @@ function styles(
   let card2Props: any;
 
   const horizontalGap: string =
-    card1Width + card2Width === TWO_CARDS_COL_NUM && config.collapse === false
-      ? config.gap
+    card1Width + card2Width === TWO_CARDS_COL_NUM && values.collapse === false
+      ? values.gap
       : "0px";
 
   const horizontalGapNumber = spacingToPx(horizontalGap, device.w);
@@ -59,7 +60,8 @@ function styles(
   const edgeLeftMarginNumber = spacingToPx(edgeLeftMargin, device.w);
   const edgeRightMarginNumber = spacingToPx(edgeRightMargin, device.w);
 
-  const $widthContainer = $width - edgeLeftMarginNumber - edgeRightMarginNumber;
+  const $widthContainer =
+    params.$width - edgeLeftMarginNumber - edgeRightMarginNumber;
   let $widthContainer1 =
     (card1Width / TWO_CARDS_COL_NUM) * ($widthContainer - horizontalGapNumber);
   let $widthContainer2 =
@@ -72,13 +74,13 @@ function styles(
     card2Width / TWO_CARDS_COL_NUM
   } * ${containerWidthCalc})`;
 
-  if (!config.collapse) {
+  if (!values.collapse) {
     card1ContainerStyles = {
       marginLeft: edgeLeftMargin,
       marginRight: 0,
       position: "relative",
       marginTop:
-        config.verticalLayout === "irregular" && verticalOffset > 0
+        values.verticalLayout === "irregular" && verticalOffset > 0
           ? `calc(${containerWidthCalc} / ${TWO_CARDS_COL_NUM} * ${verticalOffset})`
           : 0,
       width: container1WidthCalc,
@@ -88,7 +90,7 @@ function styles(
       marginLeft: 0,
       marginRight: edgeRightMargin,
       marginTop:
-        config.verticalLayout === "irregular" && verticalOffset < 0
+        values.verticalLayout === "irregular" && verticalOffset < 0
           ? `calc(${containerWidthCalc} / ${TWO_CARDS_COL_NUM} * ${-verticalOffset})`
           : 0,
       width: container2WidthCalc,
@@ -108,7 +110,7 @@ function styles(
       edgeRightMargin: null,
     };
 
-    if (config.card1EscapeMargin) {
+    if (values.card1EscapeMargin) {
       card1ContainerStyles.marginLeft = "0px";
       card1ContainerStyles.width = `calc(${container1WidthCalc} + ${edgeLeftMargin})`;
       card1Props.edgeLeft = true;
@@ -117,7 +119,7 @@ function styles(
       $widthContainer1 = $widthContainer1 + edgeLeftMarginNumber;
     }
 
-    if (config.card2EscapeMargin) {
+    if (values.card2EscapeMargin) {
       card2ContainerStyles.marginRight = "0px";
       card2ContainerStyles.width = `calc(${container2WidthCalc} + ${edgeRightMargin})`;
       card2Props.edgeRight = true;
@@ -154,7 +156,7 @@ function styles(
       edgeRightMargin: "0px",
     };
 
-    if (config.card1EscapeMargin) {
+    if (values.card1EscapeMargin) {
       card1ContainerStyles.marginLeft = "0px";
       card1ContainerStyles.marginRight = "0px";
 
@@ -167,7 +169,7 @@ function styles(
         card1Props.edgeRight = true;
         card1Props.edgeRightMargin = edgeInfo.edgeRightMargin;
 
-        $widthContainer1 = $width;
+        $widthContainer1 = params.$width;
       } else {
         card1ContainerStyles.width = `calc(${container1WidthCalc} + ${edgeLeftMargin})`;
         card1Props.edgeLeft = true;
@@ -177,7 +179,7 @@ function styles(
       }
     }
 
-    if (config.card2EscapeMargin) {
+    if (values.card2EscapeMargin) {
       card2ContainerStyles.marginLeft = "0px";
       card2ContainerStyles.marginRight = "0px";
 
@@ -190,7 +192,7 @@ function styles(
         card2Props.edgeRight = true;
         card2Props.edgeRightMargin = edgeInfo.edgeRightMargin;
 
-        $widthContainer2 = $width;
+        $widthContainer2 = params.$width;
       } else {
         card2ContainerStyles.width = `calc(${container2WidthCalc} + ${edgeRightMargin})`;
         card2Props.edgeRight = true;
@@ -201,14 +203,14 @@ function styles(
     }
   }
 
-  const invert = config.collapse && config.invertCollapsed;
+  const invert = values.collapse && values.invertCollapsed;
 
   return {
     Root: box({
       display: "flex",
-      flexDirection: config.collapse ? "column" : "row",
+      flexDirection: values.collapse ? "column" : "row",
       justifyContent: "space-between",
-      gap: config.collapse ? config.verticalGap : horizontalGap,
+      gap: values.collapse ? values.verticalGap : horizontalGap,
       alignItems,
     }),
 

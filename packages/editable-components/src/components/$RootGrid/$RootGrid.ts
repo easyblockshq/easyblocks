@@ -1,10 +1,8 @@
 import { InternalRenderableComponentDefinition } from "@easyblocks/app-utils";
-import { rootGridStyles } from "./$RootGrid.styles";
 
 const rootGridComponentDefinition: InternalRenderableComponentDefinition<"$RootGrid"> =
   {
     id: "$RootGrid",
-    styles: rootGridStyles,
     editing: () => {
       return {
         components: {

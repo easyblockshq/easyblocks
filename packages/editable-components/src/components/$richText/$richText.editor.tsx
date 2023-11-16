@@ -805,16 +805,13 @@ function isConfigEqual(newConfig: any, oldConfig: any) {
 
 function mapResponsiveAlignmentToStyles(
   align: ResponsiveValue<Alignment>,
-  {
-    devices,
-    resop,
-  }: { devices: Devices; resop: typeof import("@easyblocks/app-utils").resop2 }
+  { devices, resop }: { devices: Devices; resop: any }
 ) {
   const responsiveStyles = resop(
     {
       align: responsiveValueFill(align, devices, getDevicesWidths(devices)),
     },
-    (values) => {
+    (values: any) => {
       return {
         justifyContent: mapAlignmentToFlexAlignment(values.align),
         textAlign: values.align,

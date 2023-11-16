@@ -31,5 +31,5 @@ export function compileComponentValues(
     }
   });
 
-  return { ...values };
+  return values;
 }

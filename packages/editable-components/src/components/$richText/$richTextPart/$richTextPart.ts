@@ -5,7 +5,7 @@ import {
 } from "@easyblocks/app-utils";
 import { AnyEditingField, CompiledComponentConfigBase } from "@easyblocks/core";
 import { RichTextEditingFunction } from "../$richText.types";
-import richTextPartStyles from "./$richTextPart.styles";
+import richTextPartStyles, { RichTextPartValues } from "./$richTextPart.styles";
 
 const editing: RichTextEditingFunction = ({
   editingInfo,
@@ -116,33 +116,35 @@ const editing: RichTextEditingFunction = ({
   };
 };
 
-const richTextPartEditableComponent: InternalRenderableComponentDefinition<"$richTextPart"> =
-  {
-    id: "$richTextPart",
-    label: "Text",
-    schema: [
-      {
-        prop: "value",
-        type: "string",
-        visible: false,
-        group: "Text",
-      },
-      {
-        prop: "font",
-        label: "Style",
-        type: "font",
-        group: "Text",
-      },
-      {
-        prop: "color",
-        label: "Color",
-        type: "color",
-        group: "Text",
-      },
-    ],
-    editing,
-    styles: richTextPartStyles,
-  };
+const richTextPartEditableComponent: InternalRenderableComponentDefinition<
+  "$richTextPart",
+  RichTextPartValues
+> = {
+  id: "$richTextPart",
+  label: "Text",
+  schema: [
+    {
+      prop: "value",
+      type: "string",
+      visible: false,
+      group: "Text",
+    },
+    {
+      prop: "font",
+      label: "Style",
+      type: "font",
+      group: "Text",
+    },
+    {
+      prop: "color",
+      label: "Color",
+      type: "color",
+      group: "Text",
+    },
+  ],
+  editing,
+  styles: richTextPartStyles,
+};
 
 type RichTextPartComponentConfig = EditableComponentToComponentConfig<
   typeof richTextPartEditableComponent

@@ -29,6 +29,7 @@ type RichTextAccessibilityRole =
 
 const editing: RichTextEditingFunction = ({
   values,
+  params,
   editingInfo,
   __SECRET_INTERNALS__,
 }) => {
@@ -60,7 +61,7 @@ const editing: RichTextEditingFunction = ({
   const fieldsBeforeAccessibilityRole = editingInfo.fields
     .slice(0, accessibilityRoleFieldIndex)
     .filter((field) => {
-      if (field.path === "align" && values.passedAlign !== undefined) {
+      if (field.path === "align" && params.passedAlign !== undefined) {
         return false;
       }
 

@@ -1,3 +1,4 @@
+import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
 import { box } from "../../../box";
 
 const DEFAULT_FONT_VALUES = {
@@ -5,19 +6,20 @@ const DEFAULT_FONT_VALUES = {
   fontStyle: "initial",
 };
 
-interface RichTextPartStateAndProps {
+export interface RichTextPartValues {
   color: string;
   font: Record<string, any>;
   value: string;
   // textModifier: [CompiledTextModifier] | [];
-  __modifierStyles?: Record<string, any>;
 }
 
 export default function styles({
-  color,
-  font,
-  __modifierStyles,
-}: RichTextPartStateAndProps) {
+  values: { color, font },
+  params: { __modifierStyles },
+}: NoCodeComponentStylesFunctionInput<
+  RichTextPartValues,
+  { __modifierStyles?: Record<string, any> }
+>) {
   const fontWithDefaults = {
     ...DEFAULT_FONT_VALUES,
     ...font,

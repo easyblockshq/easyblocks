@@ -1,10 +1,10 @@
 import {
-  CompilationContextType,
+  getDevicesWidths,
   responsiveValueGetDefinedValue,
 } from "@easyblocks/app-utils";
-import { TrulyResponsiveValue } from "@easyblocks/core";
+import { NoCodeComponentAutoFunctionInput } from "@easyblocks/core";
 import { DecomposedValues } from "../../decomposeValues";
-import { responsiveAuto, ResponsiveAutoCallback } from "../../responsiveAuto";
+import { ResponsiveAutoCallback, responsiveAuto } from "../../responsiveAuto";
 import { TWO_CARDS_COL_NUM } from "./twoCardsConstants";
 
 function calculateWidthsFromNonRoundedGap(
@@ -291,16 +291,11 @@ function autoWidths({
   };
 }
 
-const autoVerticalOffset: ResponsiveAutoCallback = (
-  {
-    values,
-    higherDefinedValues,
-    lowerDefinedValues,
-    closestDefinedValues,
-    width,
-  },
-  { config }
-) => {
+const autoVerticalOffset: ResponsiveAutoCallback = ({
+  values,
+  closestDefinedValues,
+  width,
+}) => {
   let verticalOffset = values.verticalOffset;
 
   if (verticalOffset === undefined) {
@@ -333,14 +328,8 @@ const autoVerticalOffset: ResponsiveAutoCallback = (
 };
 
 const autoVerticalGap: ResponsiveAutoCallback = (
-  {
-    values,
-    higherDefinedValues,
-    lowerDefinedValues,
-    closestDefinedValues,
-    width,
-  },
-  { config, compilationContext, widths }
+  { values, higherDefinedValues, lowerDefinedValues, closestDefinedValues },
+  { config, devices, widths }
 ) => {
   let verticalGap = values.verticalGap;
 
@@ -373,7 +362,7 @@ const autoVerticalGap: ResponsiveAutoCallback = (
         verticalGap = responsiveValueGetDefinedValue(
           config.gap,
           closestDefinedVerticalGapDevice.id,
-          compilationContext.devices,
+          devices,
           widths
         );
       }
@@ -385,25 +374,22 @@ const autoVerticalGap: ResponsiveAutoCallback = (
   };
 };
 
-export function twoCardsAuto(
-  inputValues: Record<string, any>,
-  compilationContext: CompilationContextType,
-  widths: TrulyResponsiveValue<number>
-): Record<string, any> {
+export function twoCardsAuto({
+  values: inputValues,
+  params,
+  devices,
+}: NoCodeComponentAutoFunctionInput): Record<string, any> {
+  const widths = getDevicesWidths(devices);
+
   let values = responsiveAuto(
-    inputValues,
-    compilationContext,
+    { ...inputValues, ...params },
+    devices,
     widths,
     autoCollapse
   );
-  values = responsiveAuto(values, compilationContext, widths, autoWidths);
-  values = responsiveAuto(
-    values,
-    compilationContext,
-    widths,
-    autoVerticalOffset
-  );
-  values = responsiveAuto(values, compilationContext, widths, autoVerticalGap);
+  values = responsiveAuto(values, devices, widths, autoWidths);
+  values = responsiveAuto(values, devices, widths, autoVerticalOffset);
+  values = responsiveAuto(values, devices, widths, autoVerticalGap);
 
   return values;
 }

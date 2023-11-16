@@ -1,7 +1,8 @@
+import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
 import { box } from "../../box";
 import { cleanupIconSVG } from "../../cleanupIconSVG";
 
-function styles(values: any) {
+function styles({ values }: NoCodeComponentStylesFunctionInput) {
   const hasBackground: boolean = values.hasBackground;
   const hasBorder: boolean = values.hasBorder;
   const hasShadow: boolean = values.boxShadow !== "none";

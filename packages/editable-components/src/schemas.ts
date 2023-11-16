@@ -3,7 +3,7 @@ import {
   ChildComponentEditingInfo,
   EditingComponentFields,
   EditingField,
-  EditingFunctionResult,
+  NoCodeComponentEditingFunctionResult,
   SchemaProp,
 } from "@easyblocks/core";
 import { range } from "@easyblocks/utils";
@@ -325,7 +325,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
       label: "Separator",
       thumbnail:
         "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_separator.png",
-      styles: $separatorStyles,
+      styles: $separatorStyles as any,
       schema: [
         {
           prop: "color",
@@ -374,7 +374,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
       id: "$BannerSection2",
       type: "section",
       label: "Hero Banner",
-      styles: $sectionWrapperStyles,
+      styles: $sectionWrapperStyles as any,
       editing: sectionWrapperEditing,
       pasteSlots: ["Component"],
       schema: [
@@ -393,7 +393,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
       type: "section",
       label: "Collection",
       icon: "grid_3x3",
-      styles: $sectionWrapperStyles,
+      styles: $sectionWrapperStyles as any,
       editing: sectionWrapperEditing,
       schema: [
         ...sectionWrapperFields.filter((x) => x.group === "General"),
@@ -412,7 +412,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
       id: "$TwoCards",
       type: "section",
       label: "Two Cards",
-      styles: $sectionWrapperStyles,
+      styles: $sectionWrapperStyles as any,
       editing: sectionWrapperEditing,
       schema: [
         ...sectionWrapperFieldsWithoutEscapeMargin,
@@ -429,8 +429,8 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
       id: "$GridCard",
       pasteSlots: ["Cards"],
       type: "card",
-      styles: grid2Styles,
-      auto: gridAuto,
+      styles: grid2Styles as any,
+      auto: gridAuto as any,
       hideTemplates: true,
       editing: ({ values, editingInfo }) => {
         const fields = Object.fromEntries(
@@ -841,8 +841,8 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
     {
       id: "$TwoCardsCard",
       type: "card",
-      auto: twoCardsAuto,
-      styles: twoCardsStyles,
+      auto: twoCardsAuto as any,
+      styles: twoCardsStyles as any,
       change: twoCardsChange,
       hideTemplates: true,
       allowSave: true,
@@ -1055,7 +1055,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
     {
       id: "$Placeholder",
       type: "card",
-      styles: placeholderStyles,
+      styles: placeholderStyles as any,
       hideTemplates: true,
       schema: [],
     },
@@ -1069,17 +1069,15 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
       label: "Basic Card",
       type: "card",
       pasteSlots: ["Card1", "Card2"],
-      styles: bannerCard2Styles,
+      styles: bannerCard2Styles as any,
       auto: bannerCard2Auto,
       editing: ({ values, editingInfo }) => {
         const isNoneMode = values.mode === "none";
-        const isBackgroundMode = values.mode === "background";
         const isBackgroundWithSeparateStackMode =
           values.mode === "background-separate-stack";
 
-        let newFields: Required<EditingFunctionResult>["fields"] = [
-          ...editingInfo.fields,
-        ];
+        let newFields: Required<NoCodeComponentEditingFunctionResult>["fields"] =
+          [...editingInfo.fields];
 
         const modeIndexPlus1 =
           editingInfo.fields.findIndex(
@@ -1447,7 +1445,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
       ],
     },
 
-    vimeoPlayerEditableComponent,
+    vimeoPlayerEditableComponent as any,
     basicCardDefinition,
     basicBackgroundCardDefinition,
     cardPlaceholderDefinition,

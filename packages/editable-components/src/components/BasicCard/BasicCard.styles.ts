@@ -1,13 +1,17 @@
-import { basicCardController } from "./BasicCard.controller";
-import { box } from "../../box";
-import { CompiledComponentStylesToolkit } from "../../types";
-import { BasicCardCompiledValues } from "./BasicCard.types";
+import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
 import { getBorderCSSProps } from "../../borderHelpers";
+import { box } from "../../box";
+import { EdgeCompiledValues } from "../../common.types";
+import { basicCardController } from "./BasicCard.controller";
+import { BasicCardCompiledValues } from "./BasicCard.types";
 
-function styles(
-  config: BasicCardCompiledValues,
-  { $width }: CompiledComponentStylesToolkit
-) {
+function styles({
+  values,
+  params,
+}: NoCodeComponentStylesFunctionInput<
+  BasicCardCompiledValues,
+  EdgeCompiledValues & Record<string, any>
+>) {
   const {
     padding,
     posH,
@@ -17,11 +21,7 @@ function styles(
     hideContent,
     hideBackground,
     enableContent,
-  } = basicCardController(config);
-
-  if ($width === -1) {
-    throw new Error("$BasicCard without width!!!");
-  }
+  } = basicCardController({ values, params });
 
   const flexPosH =
     posH === "left" ? "flex-start" : posH === "center" ? "center" : "flex-end";
@@ -31,10 +31,10 @@ function styles(
   return {
     ContentContainer: box({
       position: "relative",
-      borderRadius: noBorders ? 0 : config.cornerRadius + "px",
-      overflow: noBorders || config.cornerRadius === "0" ? "visible" : "auto",
+      borderRadius: noBorders ? 0 : values.cornerRadius + "px",
+      overflow: noBorders || values.cornerRadius === "0" ? "visible" : "auto",
       display: "grid",
-      ...(noBorders ? [] : getBorderCSSProps(config)),
+      ...(noBorders ? [] : getBorderCSSProps(values)),
     }),
 
     BackgroundContainer: box({
@@ -46,7 +46,7 @@ function styles(
 
     Background: {
       passedAspectRatio: backgroundAspectRatio, // we set name "passedAspectRatio" to avoid conflict with "aspectRatio" internal prop. For now overriding is risky.
-      gridBaseLineHeight: config.gridBaseLineHeight,
+      gridBaseLineHeight: params.gridBaseLineHeight,
       noAction: true,
       noAspectRatio: true,
       noTrace: true,
@@ -57,7 +57,7 @@ function styles(
       paddingRight: padding.right,
       paddingBottom: padding.bottom,
       paddingTop: padding.top,
-      $width,
+      $width: params.$width,
       $widthAuto: true,
     },
 

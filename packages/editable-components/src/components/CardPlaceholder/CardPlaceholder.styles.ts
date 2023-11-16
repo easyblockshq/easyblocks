@@ -1,9 +1,12 @@
+import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
 import { box } from "../../box";
 import { getPaddingBottomAndHeightFromAspectRatio } from "../../parseAspectRatio";
 
-export function cardPlaceholderStyles(config: any) {
+export function cardPlaceholderStyles({
+  values,
+}: NoCodeComponentStylesFunctionInput) {
   const paddingBottom = getPaddingBottomAndHeightFromAspectRatio(
-    config.aspectRatio,
+    values.aspectRatio,
     undefined,
     "1"
   );
@@ -22,7 +25,7 @@ export function cardPlaceholderStyles(config: any) {
       bottom: 0,
       left: 0,
       right: 0,
-      backgroundColor: config.backgroundColor,
+      backgroundColor: values.backgroundColor,
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
@@ -31,7 +34,7 @@ export function cardPlaceholderStyles(config: any) {
 
     TextContainer: box({
       marginTop: "12px",
-      ...config.font,
+      ...values.font,
     }),
   };
 }

@@ -1,11 +1,15 @@
+import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
 import { box } from "../../box";
 
-export default function (configProps: any, t: any) {
-  const $width = t.$width;
+export default function ({
+  values,
+  params,
+}: NoCodeComponentStylesFunctionInput) {
+  const $width = params.$width;
 
   const items =
-    configProps.Items.length > 0
-      ? configProps.Items
+    values.Items.length > 0
+      ? values.Items
       : [{ columnWidth: "fill", itemWidth: "fill", itemAlign: "flex-start" }];
 
   const $itemWidth = $width / items.length; // TODO: very lame interpolation, no time :(
@@ -28,8 +32,8 @@ export default function (configProps: any, t: any) {
     Container: box({
       display: "flex",
       flexDirection: "row",
-      alignItems: configProps.verticalAlign,
-      gap: configProps.gap,
+      alignItems: values.verticalAlign,
+      gap: values.gap,
     }),
     itemWrappers,
     Items: {

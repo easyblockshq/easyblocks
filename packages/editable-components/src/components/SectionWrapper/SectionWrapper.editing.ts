@@ -1,6 +1,8 @@
-import type { EditingFunction } from "@easyblocks/core";
+import type { NoCodeComponentEditingFunction } from "@easyblocks/core";
 
-export const sectionWrapperEditing: EditingFunction = ({ editingInfo }) => {
+export const sectionWrapperEditing: NoCodeComponentEditingFunction = ({
+  editingInfo,
+}) => {
   const fields = Object.fromEntries(editingInfo.fields.map((f) => [f.path, f]));
   return {
     fields: [

@@ -87,8 +87,8 @@ describe("TwoCards auto", () => {
       b4: "10",
     };
     test("is set to 'true' for lower resolutions when main breakpoint is 'false'", () => {
-      const result = twoCardsAuto(
-        {
+      const result = twoCardsAuto({
+        values: {
           collapse: {
             $res: true,
             b4: false,
@@ -98,9 +98,9 @@ describe("TwoCards auto", () => {
           verticalOffset,
           verticalGap,
         },
-        runtimeContext,
-        widths
-      );
+        params: {},
+        devices: devices,
+      });
 
       expect(result.collapse).toEqual({
         $res: true,
@@ -113,8 +113,8 @@ describe("TwoCards auto", () => {
     });
 
     test("is set to 'true' for lower resolutions when any higher breakpoint is 'false', even if even higher are 'false'", () => {
-      const result = twoCardsAuto(
-        {
+      const result = twoCardsAuto({
+        values: {
           collapse: {
             $res: true,
             b2: false,
@@ -125,9 +125,9 @@ describe("TwoCards auto", () => {
           verticalOffset,
           verticalGap,
         },
-        runtimeContext,
-        widths
-      );
+        params: {},
+        devices,
+      });
 
       expect(result.collapse).toEqual({
         $res: true,
@@ -140,8 +140,8 @@ describe("TwoCards auto", () => {
     });
 
     test("is not changed when on higher breakpoints it's already `true`", () => {
-      const result = twoCardsAuto(
-        {
+      const result = twoCardsAuto({
+        values: {
           collapse: {
             $res: true,
             b4: true,
@@ -151,9 +151,9 @@ describe("TwoCards auto", () => {
           verticalOffset,
           verticalGap,
         },
-        runtimeContext,
-        widths
-      );
+        params: {},
+        devices,
+      });
 
       expect(result.collapse).toEqual({
         $res: true,
@@ -189,17 +189,17 @@ describe("TwoCards auto", () => {
       };
 
       test("full widths are preserved", () => {
-        const result = twoCardsAuto(
-          {
+        const result = twoCardsAuto({
+          values: {
             collapse,
             card1Width: widthForMain(TWO_CARDS_COL_NUM),
             card2Width: widthForMain(TWO_CARDS_COL_NUM),
             verticalOffset,
             verticalGap,
           },
-          runtimeContext,
-          widths
-        );
+          params: {},
+          devices,
+        });
 
         const colNum = TWO_CARDS_COL_NUM.toString();
         const expectedWidth = {
@@ -216,17 +216,17 @@ describe("TwoCards auto", () => {
       });
 
       test("widths are properly scaled down when 1 breakpoint is set", () => {
-        const result = twoCardsAuto(
-          {
+        const result = twoCardsAuto({
+          values: {
             collapse,
             card1Width: widthForMain(10),
             card2Width: widthForMain(16),
             verticalOffset,
             verticalGap,
           },
-          runtimeContext,
-          widths
-        );
+          params: {},
+          devices,
+        });
 
         expect(result.card1Width.b5).toEqual("10");
         expect(result.card1Width.b4).toEqual("10");
@@ -247,17 +247,17 @@ describe("TwoCards auto", () => {
       });
 
       test("widths are properly scaled down when 2 breakpoints are set and lower bigger or equal than higher", () => {
-        const result = twoCardsAuto(
-          {
+        const result = twoCardsAuto({
+          values: {
             collapse,
             card1Width: widthForB2andB4(10, 10),
             card2Width: widthForB2andB4(17, 16),
             verticalOffset,
             verticalGap,
           },
-          runtimeContext,
-          widths
-        );
+          params: {},
+          devices,
+        });
 
         const card1 = getBreakpointValues(result.card1Width);
         expect(card1.b1).toEqual(TWO_CARDS_COL_NUM);
@@ -275,17 +275,17 @@ describe("TwoCards auto", () => {
       });
 
       test("widths are properly scaled down when 2 breakpoints are set and higher breakpoint larger than lower (super rare)", () => {
-        const result = twoCardsAuto(
-          {
+        const result = twoCardsAuto({
+          values: {
             collapse,
             card1Width: widthForB2andB4(10, 14),
             card2Width: widthForB2andB4(5, 10),
             verticalOffset,
             verticalGap,
           },
-          runtimeContext,
-          widths
-        );
+          params: {},
+          devices,
+        });
 
         const card1 = getBreakpointValues(result.card1Width);
         expect(card1.b1).toEqual(TWO_CARDS_COL_NUM);
@@ -315,17 +315,17 @@ describe("TwoCards auto", () => {
       describe("widths with 0 gap", () => {
         describe("for 1 defined breakpoint", () => {
           test("equal widths", () => {
-            const result = twoCardsAuto(
-              {
+            const result = twoCardsAuto({
+              values: {
                 collapse,
                 card1Width: widthForMain(12),
                 card2Width: widthForMain(12),
                 verticalOffset,
                 verticalGap,
               },
-              runtimeContext,
-              widths
-            );
+              params: {},
+              devices,
+            });
 
             const expectedWidth = {
               $res: true,
@@ -340,17 +340,17 @@ describe("TwoCards auto", () => {
           });
 
           test("unequal widths", () => {
-            const result = twoCardsAuto(
-              {
+            const result = twoCardsAuto({
+              values: {
                 collapse,
                 card1Width: widthForMain(10),
                 card2Width: widthForMain(14),
                 verticalOffset,
                 verticalGap,
               },
-              runtimeContext,
-              widths
-            );
+              params: {},
+              devices,
+            });
 
             expect(result.card1Width).toEqual({
               $res: true,
@@ -373,17 +373,17 @@ describe("TwoCards auto", () => {
 
         describe("for 2 defined breakpoints", () => {
           test("works", () => {
-            const result = twoCardsAuto(
-              {
+            const result = twoCardsAuto({
+              values: {
                 collapse,
                 card1Width: widthForB2andB4(10, 12),
                 card2Width: widthForB2andB4(14, 10),
                 verticalOffset,
                 verticalGap,
               },
-              runtimeContext,
-              widths
-            );
+              params: {},
+              devices,
+            });
             const card1 = getBreakpointValues(result.card1Width);
             expect(card1.b1).toBeGreaterThanOrEqual(10);
             expect(card1.b2).toBeGreaterThanOrEqual(10);
@@ -406,17 +406,17 @@ describe("TwoCards auto", () => {
       describe("widths with non-0 gap", () => {
         describe("for 1 defined breakpoint", () => {
           test("6 and 8", () => {
-            const result = twoCardsAuto(
-              {
+            const result = twoCardsAuto({
+              values: {
                 collapse,
                 card1Width: widthForMain(6),
                 card2Width: widthForMain(8),
                 verticalOffset,
                 verticalGap,
               },
-              runtimeContext,
-              widths
-            );
+              params: {},
+              devices,
+            });
 
             const card1 = getBreakpointValues(result.card1Width);
             expect(card1.b1).toBeGreaterThanOrEqual(10);
@@ -434,17 +434,17 @@ describe("TwoCards auto", () => {
           });
 
           test("10 and 10", () => {
-            const result = twoCardsAuto(
-              {
+            const result = twoCardsAuto({
+              values: {
                 collapse,
                 card1Width: widthForMain(10),
                 card2Width: widthForMain(10),
                 verticalOffset,
                 verticalGap,
               },
-              runtimeContext,
-              widths
-            );
+              params: {},
+              devices,
+            });
 
             const card1 = getBreakpointValues(result.card1Width);
             expect(card1.b1).toBeGreaterThanOrEqual(11);
@@ -470,17 +470,17 @@ describe("TwoCards auto", () => {
           ])(
             "equal widths (%p / %p) are never unequal by auto",
             (width1, width2) => {
-              const result = twoCardsAuto(
-                {
+              const result = twoCardsAuto({
+                values: {
                   collapse,
                   card1Width: widthForMain(width1),
                   card2Width: widthForMain(width2),
                   verticalOffset,
                   verticalGap,
                 },
-                runtimeContext,
-                widths
-              );
+                params: {},
+                devices,
+              });
 
               const card1 = getBreakpointValues(result.card1Width);
               const card2 = getBreakpointValues(result.card2Width);
@@ -497,17 +497,17 @@ describe("TwoCards auto", () => {
 
         describe("for 2 defined breakpoints", () => {
           test("lower width > higher width", () => {
-            const result = twoCardsAuto(
-              {
+            const result = twoCardsAuto({
+              values: {
                 collapse,
                 card1Width: widthForB2andB4(8, 7),
                 card2Width: widthForB2andB4(12, 2),
                 verticalOffset,
                 verticalGap,
               },
-              runtimeContext,
-              widths
-            );
+              params: {},
+              devices,
+            });
 
             const card1 = getBreakpointValues(result.card1Width);
             expect(card1.b1).toBeGreaterThanOrEqual(8);
@@ -525,17 +525,17 @@ describe("TwoCards auto", () => {
           });
 
           test("higher width > lower width", () => {
-            const result = twoCardsAuto(
-              {
+            const result = twoCardsAuto({
+              values: {
                 collapse,
                 card1Width: widthForB2andB4(7, 8),
                 card2Width: widthForB2andB4(2, 12),
                 verticalOffset,
                 verticalGap,
               },
-              runtimeContext,
-              widths
-            );
+              params: {},
+              devices,
+            });
 
             const card1 = getBreakpointValues(result.card1Width);
             expect(card1.b1).toBeGreaterThanOrEqual(7);
@@ -553,17 +553,17 @@ describe("TwoCards auto", () => {
           });
 
           test("zero gap", () => {
-            const result = twoCardsAuto(
-              {
+            const result = twoCardsAuto({
+              values: {
                 collapse,
                 card1Width: widthForB2andB4(16, 13),
                 card2Width: widthForB2andB4(8, 11),
                 verticalOffset,
                 verticalGap,
               },
-              runtimeContext,
-              widths
-            );
+              params: {},
+              devices,
+            });
 
             const card1 = getBreakpointValues(result.card1Width);
             expect(card1.b1).toBeGreaterThanOrEqual(16);
@@ -608,17 +608,17 @@ describe("TwoCards auto", () => {
           ])(
             "equal widths (%p / %p) are never unequal by auto",
             ([lowerWidth1, lowerWidth2], [higherWidth1, higherWidth2]) => {
-              const result = twoCardsAuto(
-                {
+              const result = twoCardsAuto({
+                values: {
                   collapse,
                   card1Width: widthForB2andB4(lowerWidth1, higherWidth1),
                   card2Width: widthForB2andB4(lowerWidth2, higherWidth2),
                   verticalOffset,
                   verticalGap,
                 },
-                runtimeContext,
-                widths
-              );
+                params: {},
+                devices,
+              });
 
               const card1 = getBreakpointValues(result.card1Width);
               const card2 = getBreakpointValues(result.card2Width);
@@ -644,17 +644,17 @@ describe("TwoCards auto", () => {
 
     describe("for 1 breakpoint defined", () => {
       test("12, 12", () => {
-        const result = twoCardsAuto(
-          {
+        const result = twoCardsAuto({
+          values: {
             collapse,
             card1Width: widthForMain(12),
             card2Width: widthForMain(12),
             verticalOffset,
             verticalGap,
           },
-          runtimeContext,
-          widths
-        );
+          params: {},
+          devices,
+        });
 
         const card1 = getBreakpointValues(result.card1Width);
         expect(card1.b1).toEqual(TWO_CARDS_COL_NUM);
@@ -672,17 +672,17 @@ describe("TwoCards auto", () => {
       });
 
       test("10, 7", () => {
-        const result = twoCardsAuto(
-          {
+        const result = twoCardsAuto({
+          values: {
             collapse,
             card1Width: widthForMain(10),
             card2Width: widthForMain(7),
             verticalOffset,
             verticalGap,
           },
-          runtimeContext,
-          widths
-        );
+          params: {},
+          devices,
+        });
 
         const card1 = getBreakpointValues(result.card1Width);
         expect(card1.b1).toEqual(TWO_CARDS_COL_NUM);
@@ -708,17 +708,17 @@ describe("TwoCards auto", () => {
       ])(
         "equal widths (%p / %p) are never unequal by auto",
         (width1, width2) => {
-          const result = twoCardsAuto(
-            {
+          const result = twoCardsAuto({
+            values: {
               collapse,
               card1Width: widthForMain(width1),
               card2Width: widthForMain(width2),
               verticalOffset,
               verticalGap,
             },
-            runtimeContext,
-            widths
-          );
+            params: {},
+            devices,
+          });
 
           const card1 = getBreakpointValues(result.card1Width);
           const card2 = getBreakpointValues(result.card2Width);

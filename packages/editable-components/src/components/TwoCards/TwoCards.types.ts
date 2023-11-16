@@ -1,7 +1,6 @@
 import { Spacing } from "@easyblocks/core";
-import { EdgeCompiledValues } from "../../common.types";
 
-export type TwoCardsCompiledValues = EdgeCompiledValues & {
+export type TwoCardsCompiledValues = {
   Card1: any[];
   Card2: any[];
   card1Width: string;

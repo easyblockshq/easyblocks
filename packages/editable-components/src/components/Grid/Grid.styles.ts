@@ -1,33 +1,30 @@
 import { spacingToPx } from "@easyblocks/app-utils";
+import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
 import { box } from "../../box";
 import { parseAspectRatio } from "../../parseAspectRatio";
-import { CompiledComponentStylesToolkit } from "../../types";
 import { gridController } from "./Grid.controller";
-import { GridCompiledValues } from "./Grid.types";
+import { GridCompiledValues, GridParams } from "./Grid.types";
 import {
   buildItemPositions,
   buildRows,
   findFirstItemInRows,
 } from "./gridHelpers";
 
-function styles(
-  config: GridCompiledValues,
-  { $width, device }: CompiledComponentStylesToolkit
-) {
-  if ($width === -1) {
-    throw new Error("$GridCard without width!!!");
-  }
-
+function styles({
+  values,
+  params,
+  device,
+}: NoCodeComponentStylesFunctionInput<GridCompiledValues, GridParams>) {
   const {
     cssAbsoluteLeftPosition,
     cssAbsoluteRightPosition,
     itemsVisible,
     $widthItem,
-  } = gridController(config, $width, device);
+  } = gridController(values, params, device);
 
-  const numberOfItems = parseInt(config.numberOfItems);
+  const numberOfItems = parseInt(values.numberOfItems);
 
-  const isSlider = config.variant === "slider";
+  const isSlider = values.variant === "slider";
 
   const {
     shouldSliderItemsBeVisibleOnMargin,
@@ -35,14 +32,14 @@ function styles(
     rightArrowPlacement,
     leftArrowPlacement,
     leftArrowOffset,
-  } = config;
+  } = values;
 
-  let columnGap = config.columnGap;
-  let rowGap = config.rowGap;
+  let columnGap = values.columnGap;
+  let rowGap = values.rowGap;
 
-  if (config.borderEnabled) {
-    columnGap = `max(${columnGap}, ${config.borderInner}px)`;
-    rowGap = `max(${rowGap}, ${config.borderInner}px)`;
+  if (values.borderEnabled) {
+    columnGap = `max(${columnGap}, ${values.borderInner}px)`;
+    rowGap = `max(${rowGap}, ${values.borderInner}px)`;
   }
 
   const showSliderControls = isSlider && device.id !== "xs";
@@ -84,26 +81,26 @@ function styles(
   let spacerRightWidth = "0px";
 
   let paddingLeft =
-    config.borderEnabled &&
-    (config.borderLeft !== "0" ||
-      config.borderTop !== "0" ||
-      config.borderBottom !== "0")
-      ? config.paddingLeft
+    values.borderEnabled &&
+    (values.borderLeft !== "0" ||
+      values.borderTop !== "0" ||
+      values.borderBottom !== "0")
+      ? values.paddingLeft
       : "0px";
   let paddingRight =
-    config.borderEnabled &&
-    (config.borderRight !== "0" ||
-      config.borderTop !== "0" ||
-      config.borderBottom !== "0")
-      ? config.paddingRight
+    values.borderEnabled &&
+    (values.borderRight !== "0" ||
+      values.borderTop !== "0" ||
+      values.borderBottom !== "0")
+      ? values.paddingRight
       : "0px";
   const paddingTop =
-    config.borderEnabled && config.borderTop !== "0"
-      ? config.paddingTop
+    values.borderEnabled && values.borderTop !== "0"
+      ? values.paddingTop
       : "0px";
   const paddingBottom =
-    config.borderEnabled && config.borderBottom !== "0"
-      ? config.paddingBottom
+    values.borderEnabled && values.borderBottom !== "0"
+      ? values.paddingBottom
       : "0px";
 
   if (isSlider) {
@@ -190,17 +187,17 @@ function styles(
 
     width: "100%",
 
-    borderTop: config.borderEnabled
-      ? `${config.borderTop}px solid ${config.borderColor}`
+    borderTop: values.borderEnabled
+      ? `${values.borderTop}px solid ${values.borderColor}`
       : "none",
-    borderBottom: config.borderEnabled
-      ? `${config.borderBottom}px solid ${config.borderColor}`
+    borderBottom: values.borderEnabled
+      ? `${values.borderBottom}px solid ${values.borderColor}`
       : "none",
-    borderLeft: config.borderEnabled
-      ? `${config.borderLeft}px solid ${config.borderColor}`
+    borderLeft: values.borderEnabled
+      ? `${values.borderLeft}px solid ${values.borderColor}`
       : "none",
-    borderRight: config.borderEnabled
-      ? `${config.borderRight}px solid ${config.borderColor}`
+    borderRight: values.borderEnabled
+      ? `${values.borderRight}px solid ${values.borderColor}`
       : "none",
 
     paddingTop,
@@ -289,14 +286,14 @@ function styles(
   );
 
   const GRID_BASELINE_ASPECT_RATIO = parseAspectRatio(
-    config.gridMainObjectAspectRatio
+    values.gridMainObjectAspectRatio
   );
   const gridBaseLineHeight = `calc(${sizeWithVw} * ${GRID_BASELINE_ASPECT_RATIO})`;
 
   // We set default item container for placeholder
   const cardStyles =
-    config.Cards.length > 0
-      ? config.Cards
+    values.Cards.length > 0
+      ? values.Cards
       : [
           {
             itemSize: "1x1",
@@ -310,9 +307,9 @@ function styles(
     isSlider ? cardStyles.length : numberOfItems
   );
 
-  const colGapPx = spacingToPx(config.columnGap, $width);
-  const rowGapPx = spacingToPx(config.rowGap, $width);
-  const borderWidthPx = parseInt(config.borderInner);
+  const colGapPx = spacingToPx(values.columnGap, params.$width);
+  const rowGapPx = spacingToPx(values.rowGap, params.$width);
+  const borderWidthPx = parseInt(values.borderInner);
 
   const colDiff = (colGapPx - borderWidthPx) / 2;
   const rowDiff = (rowGapPx - borderWidthPx) / 2;
@@ -325,37 +322,37 @@ function styles(
       $widthAuto: false,
       $width: $widthItem,
       edgeLeft: calculateEdge(
-        config.borderEnabled,
-        $width,
+        values.borderEnabled,
+        params.$width,
         paddingLeft,
-        config.borderLeft,
+        values.borderLeft,
         itemPositions[index].isFirstColumn,
-        config.escapeMargin,
+        params.escapeMargin,
         colDiff
       ),
       edgeRight: calculateEdge(
-        config.borderEnabled,
-        $width,
+        values.borderEnabled,
+        params.$width,
         paddingRight,
-        config.borderRight,
+        values.borderRight,
         itemPositions[index].isLastColumn,
-        config.escapeMargin,
+        params.escapeMargin,
         colDiff
       ),
       edgeTop: calculateEdge(
-        config.borderEnabled,
-        $width,
+        values.borderEnabled,
+        params.$width,
         paddingTop,
-        config.borderTop,
+        values.borderTop,
         itemPositions[index].isFirstRow,
         false,
         rowDiff
       ),
       edgeBottom: calculateEdge(
-        config.borderEnabled,
-        $width,
+        values.borderEnabled,
+        params.$width,
         paddingBottom,
-        config.borderBottom,
+        values.borderBottom,
         itemPositions[index].isLastRow,
         false,
         rowDiff
@@ -417,7 +414,7 @@ function styles(
 
   const itemInnerContainers = cardStyles.map((card) => {
     const verticalAlign =
-      card.verticalAlign === "auto" ? config.verticalAlign : card.verticalAlign;
+      card.verticalAlign === "auto" ? values.verticalAlign : card.verticalAlign;
 
     return box({
       display: "grid",
@@ -427,7 +424,7 @@ function styles(
   });
 
   const verticalLines = cardStyles.map((_, index) => {
-    if (!config.borderEnabled) {
+    if (!values.borderEnabled) {
       return box({
         display: "none",
       });
@@ -463,16 +460,16 @@ function styles(
     return box({
       position: "absolute",
       top,
-      right: getLineEndPosition(config.borderInner + "px", columnGap),
-      width: `${config.borderInner}px`,
+      right: getLineEndPosition(values.borderInner + "px", columnGap),
+      width: `${values.borderInner}px`,
       height,
-      background: config.borderColor,
+      background: values.borderColor,
       zIndex: 50,
     });
   });
 
   const horizontalLines = cardStyles.map((_, index) => {
-    if (!config.borderEnabled) {
+    if (!values.borderEnabled) {
       return box({
         display: "none",
       });
@@ -512,11 +509,11 @@ function styles(
 
     return box({
       position: "absolute",
-      bottom: getLineEndPosition(config.borderInner + "px", rowGap), // this min() is required to have at least 1px. This is super important for zero gaps.
+      bottom: getLineEndPosition(values.borderInner + "px", rowGap), // this min() is required to have at least 1px. This is super important for zero gaps.
       width,
       left,
-      height: `${config.borderInner}px`,
-      background: config.borderColor,
+      height: `${values.borderInner}px`,
+      background: values.borderColor,
       zIndex: 50,
     });
   });

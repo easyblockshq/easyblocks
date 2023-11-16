@@ -10,7 +10,6 @@ const zoneComponentDefinition: InternalRenderableComponentDefinition<"$Zone"> =
         accepts: ["section"],
       },
     ],
-    styles: () => ({}),
   };
 
 export { zoneComponentDefinition };

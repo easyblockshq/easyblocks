@@ -1,7 +1,8 @@
-import { getPaddingBottomAndHeightFromAspectRatio } from "../../parseAspectRatio";
+import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
 import { box } from "../../box";
+import { getPaddingBottomAndHeightFromAspectRatio } from "../../parseAspectRatio";
 
-interface VimeoPlayerStateAndProps {
+export interface VimeoPlayerValues {
   aspectRatio: string;
   areControlsDisabled: boolean;
   isAutoPlay: boolean;
@@ -10,7 +11,9 @@ interface VimeoPlayerStateAndProps {
   videoId: string;
 }
 
-export default function styles(values: VimeoPlayerStateAndProps) {
+export default function styles({
+  values,
+}: NoCodeComponentStylesFunctionInput<VimeoPlayerValues>) {
   const { height, paddingBottom } = getPaddingBottomAndHeightFromAspectRatio(
     values.aspectRatio
   );

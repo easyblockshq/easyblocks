@@ -12,7 +12,16 @@ import {
 import { range } from "@easyblocks/utils";
 import $textStyles from "./$text.styles";
 
-const textEditableComponent: InternalRenderableComponentDefinition<"$text"> = {
+const textEditableComponent: InternalRenderableComponentDefinition<
+  "$text",
+  {
+    color: string;
+    value: string;
+    accessibilityRole: string;
+    font: Record<string, any>;
+  },
+  { passedAlign: string }
+> = {
   id: "$text",
   label: "Simple Text",
   styles: $textStyles,

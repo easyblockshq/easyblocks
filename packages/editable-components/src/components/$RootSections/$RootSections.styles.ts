@@ -1,19 +1,20 @@
+import { NoCodeComponentStylesFunction } from "@easyblocks/core";
 import { box } from "../../box";
-import { CompiledComponentStylesToolkit } from "../../types";
 
-export const rootSectionStyles = (
-  config: any,
-  t: CompiledComponentStylesToolkit
-) => {
+export const rootSectionStyles: NoCodeComponentStylesFunction = ({
+  values,
+  params,
+  isEditing,
+}) => {
   // We must have at least 1 item wrapper for placeholder.
   const dataProps =
-    config.data.length === 0
+    values.data.length === 0
       ? [{ topMargin: 0, bottomMargin: 0 }]
-      : config.data;
+      : values.data;
 
   const ItemWrappers = dataProps.map((x: any, index: number) => {
     const itemWrapperStyles: Record<string, unknown> = {
-      display: !t.compilationContext.isEditing && x.hide ? "none" : "block",
+      display: !isEditing && x.hide ? "none" : "block",
       paddingTop: index === 0 ? x.topMargin : 0,
       paddingBottom: x.bottomMargin,
     };
@@ -21,9 +22,9 @@ export const rootSectionStyles = (
     return box(itemWrapperStyles);
   });
 
-  const dataItemProps = config.data.map(() => {
+  const dataItemProps = values.data.map(() => {
     return {
-      $width: t.$width,
+      $width: params.$width,
       $widthAuto: false,
     };
   });

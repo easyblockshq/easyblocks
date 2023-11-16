@@ -1,29 +1,28 @@
+import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
 import { box } from "../../box";
-import { CompiledComponentStylesToolkit } from "../../types";
 import { BannerCardCompiledValues } from "./BannerCard.types";
 
-function styles(
-  config: BannerCardCompiledValues,
-  { compilationContext, $width }: CompiledComponentStylesToolkit
-) {
+function styles({
+  values,
+  params,
+  isEditing,
+}: NoCodeComponentStylesFunctionInput<BannerCardCompiledValues>) {
   // For now only mobile possible
 
-  const { cornerRadius } = config;
+  const { cornerRadius } = values;
 
-  const isEditing = compilationContext.isEditing;
-
-  const posH = config.positionHorizontal;
-  const posV = config.verticalAlign;
+  const posH = values.positionHorizontal;
+  const posV = values.verticalAlign;
 
   const offH =
-    config.Background.length === 0 &&
-    config.SideImage.length > 0 &&
-    (config.sideImagePosition === "top" ||
-      config.sideImagePosition === "bottom")
-      ? config.offsetHorizontalForVerticalImagePosition
-      : config.offsetHorizontal;
+    values.Background.length === 0 &&
+    values.SideImage.length > 0 &&
+    (values.sideImagePosition === "top" ||
+      values.sideImagePosition === "bottom")
+      ? values.offsetHorizontalForVerticalImagePosition
+      : values.offsetHorizontal;
 
-  const offV = config.offsetVertical;
+  const offV = values.offsetVertical;
 
   const flexPosH =
     posH === "left" ? "flex-start" : posH === "center" ? "center" : "flex-end";
@@ -41,19 +40,19 @@ function styles(
     bottom: offV,
   };
 
-  const mainImageOn = config.SideImage.length > 0;
+  const mainImageOn = values.SideImage.length > 0;
   const isSideMode =
     mainImageOn &&
-    (config.sideImagePosition === "left" ||
-      config.sideImagePosition === "right");
+    (values.sideImagePosition === "left" ||
+      values.sideImagePosition === "right");
   const isBackgroundMode =
-    mainImageOn && config.sideImagePosition === "background";
+    mainImageOn && values.sideImagePosition === "background";
 
   let rootStyles: Record<string, any> = {};
   let sidePhotoStyles: Record<string, any> = {};
   let contentStyles: Record<string, any> = {};
 
-  let $stackWidth = $width; // approximation
+  let $stackWidth = params.$width; // approximation
 
   if (!mainImageOn) {
     rootStyles = {
@@ -63,8 +62,8 @@ function styles(
       display: "none",
     };
 
-    if (config.size !== "fit-content" && config.size !== "natural") {
-      backgroundAspectRatio = config.size;
+    if (values.size !== "fit-content" && values.size !== "natural") {
+      backgroundAspectRatio = values.size;
     }
     // backgroundAspectRatio = config.size === "fit-content" ? "none" : parseAspectRatio(config.size);
   } else if (!isBackgroundMode) {
@@ -96,12 +95,12 @@ function styles(
 
       rootStyles.flexDirection = "row";
 
-      if (config.sideImagePosition === "right") {
+      if (values.sideImagePosition === "right") {
         // sidePhotoOrder = 1;
         sidePhotoStyles.order = 1;
       }
 
-      $stackWidth = $width / 2;
+      $stackWidth = params.$width / 2;
 
       // content don't "make height" in side-by-side
       // placeholderPaddingBottom = "auto"
@@ -120,7 +119,7 @@ function styles(
         flex: "1 1 auto",
       };
 
-      if (config.sideImagePosition === "bottom") {
+      if (values.sideImagePosition === "bottom") {
         sidePhotoStyles.order = 1;
       }
     }
@@ -136,7 +135,7 @@ function styles(
       gridRow: "1 / span 1",
     };
 
-    const [vPos, hPos] = config.contentPositionInBackgroundMode.split("-");
+    const [vPos, hPos] = values.contentPositionInBackgroundMode.split("-");
 
     const map: Record<string, any> = {
       left: "start",
@@ -150,10 +149,10 @@ function styles(
       gridColumn: "1 / span 1",
       gridRow: "1 / span 1",
       position: "relative",
-      paddingLeft: config.contentHorizontalMarginInBackgroundMode,
-      paddingRight: config.contentHorizontalMarginInBackgroundMode,
-      paddingTop: config.contentVerticalMarginInBackgroundMode,
-      paddingBottom: config.contentVerticalMarginInBackgroundMode,
+      paddingLeft: values.contentHorizontalMarginInBackgroundMode,
+      paddingRight: values.contentHorizontalMarginInBackgroundMode,
+      paddingTop: values.contentVerticalMarginInBackgroundMode,
+      paddingBottom: values.contentVerticalMarginInBackgroundMode,
       alignSelf: map[vPos],
       justifySelf: map[hPos],
     };
@@ -165,16 +164,16 @@ function styles(
   // const snappedToEdge = !!config.edgeLeft;
   // const edgeMargin = config.edgeLeft?.margin ?? 0;
 
-  const edgeLeft = config.edgeLeft;
-  const edgeLeftMargin = config.edgeLeftMargin ?? "0px";
+  const edgeLeft = params.edgeLeft;
+  const edgeLeftMargin = params.edgeLeftMargin ?? "0px";
 
-  const edgeRight = config.edgeRight;
-  const edgeRightMargin = config.edgeRightMargin ?? "0px";
+  const edgeRight = params.edgeRight;
+  const edgeRightMargin = params.edgeRightMargin ?? "0px";
 
   // If no main image
   if (!mainImageOn) {
     // ... and no background, then offsets don't make sense
-    if (config.Background.length === 0) {
+    if (values.Background.length === 0) {
       offset.left = "0px";
       offset.right = "0px";
       offset.top = "0px";
@@ -191,8 +190,8 @@ function styles(
   } else {
     // If main image is top
     if (
-      config.sideImagePosition === "top" ||
-      config.sideImagePosition === "bottom"
+      values.sideImagePosition === "top" ||
+      values.sideImagePosition === "bottom"
     ) {
       // ... and no background, only top offset makes sense
       // if (config.Background.length === 0) {
@@ -250,16 +249,16 @@ function styles(
         offset.right = `max(${offset.right},${edgeRightMargin})`;
       }
     } else if (
-      config.sideImagePosition === "left" ||
-      config.sideImagePosition === "right"
+      values.sideImagePosition === "left" ||
+      values.sideImagePosition === "right"
     ) {
-      if (config.Background.length === 0) {
+      if (values.Background.length === 0) {
         offset.top = "0px";
         offset.bottom = "0px";
       }
 
       if (
-        config.Background.length === 0 ||
+        values.Background.length === 0 ||
         edgeLeft ||
         edgeRight /* escape even with background leads to the same stuff */
       ) {
@@ -274,9 +273,9 @@ function styles(
          * 6. ESCAPE / position left -> offset right = offH, offset left = max(offH, margin)
          */
 
-        const imagePos = config.sideImagePosition;
+        const imagePos = values.sideImagePosition;
         const contentPos =
-          config.sideImagePosition === "right" ? "left" : "right";
+          values.sideImagePosition === "right" ? "left" : "right";
 
         let isContentSnappedOnItsSide = false;
         let edgeMargin;
@@ -293,7 +292,7 @@ function styles(
 
         // snappedToEdge.includes(contentPos);
 
-        const hasBackground = config.Background.length > 0;
+        const hasBackground = values.Background.length > 0;
 
         // If has content has background and is *not* snapped on its side, we don't do anything
         // eslint-disable-next-line no-empty
@@ -320,8 +319,8 @@ function styles(
           }
         }
       }
-    } else if (config.sideImagePosition === "background") {
-      if (config.Background.length === 0) {
+    } else if (values.sideImagePosition === "background") {
+      if (values.Background.length === 0) {
         offset.top = "0px";
         offset.bottom = "0px";
         offset.left = "0px";
@@ -350,7 +349,7 @@ function styles(
    *
    */
 
-  const shouldActivateCardLink = !isEditing && config.action.length > 0;
+  const shouldActivateCardLink = !isEditing && values.action.length > 0;
 
   return {
     Container: box({
@@ -388,8 +387,8 @@ function styles(
       // fitH: true,
 
       // noInline: true,
-      passedAspectRatio: config.sideImageSize,
-      gridBaseLineHeight: config.gridBaseLineHeight, // TODO: remove this prop drill :(
+      passedAspectRatio: values.sideImageSize,
+      gridBaseLineHeight: values.gridBaseLineHeight, // TODO: remove this prop drill :(
       noAction: true,
       noAspectRatio: true,
     },
@@ -409,7 +408,7 @@ function styles(
     Background: {
       // noInline: true,
       passedAspectRatio: backgroundAspectRatio,
-      gridBaseLineHeight: config.gridBaseLineHeight, // TODO: remove this prop drill :(
+      gridBaseLineHeight: values.gridBaseLineHeight, // TODO: remove this prop drill :(
       noAction: true,
     },
 
@@ -419,7 +418,7 @@ function styles(
       paddingRight: offset.right,
       paddingBottom: offset.bottom,
       paddingTop: offset.top,
-      passedAlign: config.stackAlign,
+      passedAlign: values.stackAlign,
       $width: $stackWidth,
       $widthAuto: true,
     },

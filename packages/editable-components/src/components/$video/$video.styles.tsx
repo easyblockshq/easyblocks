@@ -1,8 +1,10 @@
+import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
 import $imageStyles from "../$image/$image.styles";
 import { box } from "../../box";
 
-export default function styles(values: any) {
-  const imageBoxes = $imageStyles(values);
+export default function styles(input: NoCodeComponentStylesFunctionInput) {
+  const imageBoxes = $imageStyles(input);
+  const { values } = input;
 
   let positions: [string, string];
   if (values.controlsPosition === "top-left") {

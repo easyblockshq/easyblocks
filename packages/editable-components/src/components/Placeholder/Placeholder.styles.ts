@@ -1,10 +1,13 @@
+import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
 import { box } from "../../box";
 
-function styles(config: { gridBaseLineHeight: string }) {
+function styles({
+  values,
+}: NoCodeComponentStylesFunctionInput<{ gridBaseLineHeight: string }>) {
   const color = "#eaeaea";
 
   const Image = box({
-    height: config.gridBaseLineHeight,
+    height: values.gridBaseLineHeight,
     background: color,
   });
 
