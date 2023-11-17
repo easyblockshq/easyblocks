@@ -429,22 +429,17 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
 
   const componentProps = {
     ...restPassedProps,
-    __fromEditor: {
-      _id: shopstoryCompiledConfig._id,
-      props: mapExternalProps(
-        shopstoryCompiledConfig.props,
-        shopstoryCompiledConfig._id,
-        componentDefinition,
-        externalData
-      ),
-      components: styled,
-      // actions,
-      React,
-      __editing: shopstoryCompiledConfig.__editing,
-      isEditing,
-      path,
-      runtime,
-    },
+    ...mapExternalProps(
+      shopstoryCompiledConfig.props,
+      shopstoryCompiledConfig._id,
+      componentDefinition,
+      externalData
+    ),
+    ...styled,
+    path,
+    isEditing,
+    runtime,
+    _id: shopstoryCompiledConfig._id,
   };
 
   return <Component {...componentProps} />;

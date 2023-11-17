@@ -1,23 +1,20 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
 "use client";
 import { dotNotationGet } from "@easyblocks/utils";
-import type { CompiledShopstoryComponentProps } from "../../types";
+import React from "react";
+import type { CompiledNoCodeComponentProps } from "../../types";
 import { InlineTextarea } from "./InlineTextarea";
 
-type TextProps = CompiledShopstoryComponentProps<
+type TextProps = CompiledNoCodeComponentProps<
   "$text",
   {
     value: string | undefined;
   },
+  Record<string, never>,
   ReturnType<typeof import("./$text.styles")["default"]>
 >;
 
 function TextEditor(props: TextProps) {
-  const {
-    components: { Text },
-    path,
-    props: { value },
-  } = props.__fromEditor;
+  const { Text, path, value, runtime } = props;
 
   const { form } = window.parent.editorWindowAPI.editorContext;
   const valuePath = `${path}.value`;
@@ -25,17 +22,17 @@ function TextEditor(props: TextProps) {
   const isLocalTextReference = configValue.id?.startsWith("local.");
 
   return (
-    <Text as={"div"}>
+    <Text.type {...Text.props} as={"div"}>
       {isLocalTextReference ? (
         <InlineTextarea
           path={path}
           placeholder={"Here goes text content"}
-          stitches={props.__fromEditor.runtime.stitches}
+          stitches={runtime.stitches}
         />
       ) : (
         value ?? <span>&nbsp;</span>
       )}
-    </Text>
+    </Text.type>
   );
 }
 

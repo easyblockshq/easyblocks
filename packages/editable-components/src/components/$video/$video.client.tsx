@@ -1,16 +1,20 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
 import { responsiveValueToSelectivelyDisplayedComponents } from "@easyblocks/app-utils";
 import { useForceRerender } from "@easyblocks/utils";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getAspectRatioClassName } from "../$image/image.helpers";
 import type { VideoProps } from "./$video.editor";
 import { VideoRenderer } from "./VideoRenderer";
 
-const $video = (props: VideoProps) => {
-  const { __fromEditor } = props;
-  const { devices, stitches, resop } = __fromEditor.runtime;
-  const { Wrapper, AspectRatioMaker, ImageWrapper } = __fromEditor.components;
-  const { image: video, aspectRatio, gridBaseLineHeight } = __fromEditor.props;
+function VideoClient(props: VideoProps) {
+  const {
+    image: video,
+    aspectRatio,
+    gridBaseLineHeight,
+    Wrapper,
+    AspectRatioMaker,
+    ImageWrapper,
+    runtime: { devices, stitches, resop },
+  } = props;
 
   const [isMounted, setMounted] = useState(false);
   const { forceRerender } = useForceRerender();
@@ -41,10 +45,13 @@ const $video = (props: VideoProps) => {
   );
 
   return (
-    <Wrapper>
-      <AspectRatioMaker className={aspectRatioClassName} />
+    <Wrapper.type {...Wrapper.props}>
+      <AspectRatioMaker.type
+        {...AspectRatioMaker.props}
+        className={aspectRatioClassName}
+      />
 
-      <ImageWrapper>
+      <ImageWrapper.type {...ImageWrapper.props}>
         {responsiveValueToSelectivelyDisplayedComponents(
           video,
           (video) => {
@@ -54,9 +61,9 @@ const $video = (props: VideoProps) => {
           stitches,
           isMounted
         )}
-      </ImageWrapper>
-    </Wrapper>
+      </ImageWrapper.type>
+    </Wrapper.type>
   );
-};
+}
 
-export default $video;
+export default VideoClient;

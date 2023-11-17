@@ -1,4 +1,4 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
+import React from "react";
 import { responsiveValueToSelectivelyDisplayedComponents } from "@easyblocks/app-utils";
 import { ResponsiveValue, VideoSrc } from "@easyblocks/core";
 import { useForceRerender } from "@easyblocks/utils";
@@ -7,10 +7,10 @@ import {
   getAspectRatioClassName,
   getWrapperClassName,
 } from "../$image/image.helpers";
-import { CompiledShopstoryComponentProps } from "../../types";
+import { CompiledNoCodeComponentProps } from "../../types";
 import { VideoRenderer } from "./VideoRenderer";
 
-export type VideoProps = CompiledShopstoryComponentProps<
+export type VideoProps = CompiledNoCodeComponentProps<
   "$video",
   {
     image: ResponsiveValue<VideoSrc | undefined>;
@@ -20,15 +20,20 @@ export type VideoProps = CompiledShopstoryComponentProps<
     enableSoundControls: boolean;
     autoplay: boolean;
   },
+  Record<string, any>,
   ReturnType<typeof import("./$video.styles")["default"]>
 >;
 
 function VideoEditor(props: VideoProps) {
-  const { __fromEditor } = props;
-
-  const { Wrapper, AspectRatioMaker, ImageWrapper } = __fromEditor.components;
-  const { image, aspectRatio, gridBaseLineHeight } = __fromEditor.props;
-  const { devices, stitches, resop } = __fromEditor.runtime;
+  const {
+    image,
+    aspectRatio,
+    gridBaseLineHeight,
+    Wrapper,
+    AspectRatioMaker,
+    ImageWrapper,
+    runtime: { devices, stitches, resop },
+  } = props;
 
   const [isMounted, setMounted] = useState(false);
   const { forceRerender } = useForceRerender();
@@ -61,10 +66,16 @@ function VideoEditor(props: VideoProps) {
   const imageWrapperClassName = getWrapperClassName(devices, stitches);
 
   return (
-    <Wrapper>
-      <AspectRatioMaker className={aspectRatioClassName} />
+    <Wrapper.type {...Wrapper.props}>
+      <AspectRatioMaker.type
+        {...AspectRatioMaker.props}
+        className={aspectRatioClassName}
+      />
 
-      <ImageWrapper className={imageWrapperClassName}>
+      <ImageWrapper.type
+        {...ImageWrapper.props}
+        className={imageWrapperClassName}
+      >
         {responsiveValueToSelectivelyDisplayedComponents(
           image,
           (video) => {
@@ -74,8 +85,8 @@ function VideoEditor(props: VideoProps) {
           stitches,
           isMounted
         )}
-      </ImageWrapper>
-    </Wrapper>
+      </ImageWrapper.type>
+    </Wrapper.type>
   );
 }
 

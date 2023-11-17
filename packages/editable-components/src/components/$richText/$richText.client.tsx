@@ -1,24 +1,19 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
-import { ComponentType, ReactNode } from "react";
+import React, { ReactElement, ReactNode } from "react";
 
 interface RichTextProps {
-  __fromEditor: {
-    components: {
-      elements: Array<ComponentType>;
-      Root: ComponentType<{ children: ReactNode }>;
-    };
-  };
+  elements: Array<ReactElement>;
+  Root: ReactElement<{ children: ReactNode }>;
 }
 
 function RichText(props: RichTextProps) {
-  const { elements: Elements, Root } = props.__fromEditor.components;
+  const { elements: Elements, Root } = props;
 
   return (
-    <Root>
+    <Root.type {...Root.props}>
       {Elements.map((Element, index) => {
-        return <Element key={index} />;
+        return <Element.type {...Element.props} key={index} />;
       })}
-    </Root>
+    </Root.type>
   );
 }
 

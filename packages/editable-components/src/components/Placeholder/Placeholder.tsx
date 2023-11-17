@@ -1,22 +1,17 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
-import { ComponentType } from "react";
+import React, { ReactElement } from "react";
 
 function Placeholder(props: {
-  __fromEditor: {
-    components: {
-      Image: ComponentType;
-      Title: ComponentType;
-      Desc: ComponentType;
-    };
-  };
+  Image: ReactElement;
+  Title: ReactElement;
+  Desc: ReactElement;
 }) {
-  const { Image, Title, Desc } = props.__fromEditor.components;
+  const { Image, Title, Desc } = props;
 
   return (
     <div>
-      <Image />
-      <Title />
-      <Desc />
+      <Image.type {...Image.props} />
+      <Title.type {...Title.props} />
+      <Desc.type {...Desc.props} />
     </div>
   );
 }

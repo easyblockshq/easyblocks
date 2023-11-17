@@ -1,24 +1,16 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
 import { cleanString } from "@easyblocks/utils";
-import React from "react";
+import React, { ReactElement } from "react";
 
 type TextProps = {
-  __fromEditor: {
-    components: any;
-    props: {
-      value?: string;
-    };
-  };
+  value?: string;
+  Text: ReactElement;
 };
 
-const $text = (props: TextProps) => {
-  const { Text } = props.__fromEditor.components;
+function TextClient(props: TextProps) {
+  const { value, Text } = props;
 
   // We need to transform new lines into <br />
-
-  const lines = cleanString(props.__fromEditor.props.value || "").split(
-    /(?:\r\n|\r|\n)/g
-  );
+  const lines = cleanString(value || "").split(/(?:\r\n|\r|\n)/g);
 
   const elements: React.ReactElement[] = [];
 
@@ -29,7 +21,7 @@ const $text = (props: TextProps) => {
     }
   });
 
-  return <Text>{elements}</Text>;
-};
+  return <Text.type {...Text.props}>{elements}</Text.type>;
+}
 
-export default $text;
+export default TextClient;

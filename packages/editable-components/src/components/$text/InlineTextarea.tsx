@@ -2,12 +2,12 @@ import { useTextValue } from "@easyblocks/app-utils";
 import { dotNotationGet } from "@easyblocks/utils";
 import React, { useRef } from "react";
 import TextareaAutosize from "react-textarea-autosize";
-import { CompiledShopstoryComponentProps } from "../../types";
+import { CompiledNoCodeComponentProps } from "../../types";
 
 export interface InlineTextProps {
   path: string;
   placeholder?: string;
-  stitches: CompiledShopstoryComponentProps["__fromEditor"]["runtime"]["stitches"];
+  stitches: CompiledNoCodeComponentProps["runtime"]["stitches"];
 }
 
 export function InlineTextarea({

@@ -1,13 +1,12 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
-import { Fragment } from "react";
+import React, { Fragment, ReactElement } from "react";
 
-const Zone = (props: any) => {
-  const blocks = props.__fromEditor.components.blocks;
+const Zone = (props: { blocks: Array<ReactElement> }) => {
+  const blocks = props.blocks;
 
   return (
     <Fragment>
-      {blocks.map((Block: any, index: number) => (
-        <Block key={index} />
+      {blocks.map((Block, index) => (
+        <Block.type {...Block.props} key={index} />
       ))}
     </Fragment>
   );

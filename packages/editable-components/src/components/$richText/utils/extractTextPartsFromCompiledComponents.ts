@@ -3,7 +3,7 @@ import { RichTextPartCompiledComponentConfig } from "../$richTextPart/$richTextP
 import { traverseCompiledRichTextComponentConfig } from "./traverseCompiledRichTextComponentConfig";
 
 function extractTextPartsFromCompiledComponents(
-  compiledRichText: RichTextProps["__fromEditor"]
+  compiledRichText: RichTextProps
 ): Array<RichTextPartCompiledComponentConfig> {
   const extractedTextPartComponents: Array<RichTextPartCompiledComponentConfig> =
     [];

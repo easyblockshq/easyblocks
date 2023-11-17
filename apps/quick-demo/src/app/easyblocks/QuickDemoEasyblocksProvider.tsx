@@ -1,12 +1,11 @@
 "use client";
+import { ProductCard } from "@/components/ProductCard/ProductCard";
 import { builtinEditableComponents } from "@easyblocks/editable-components";
 import { EasyblocksProvider } from "@easyblocks/react";
-import { ProductCard } from "@/components/ProductCard/ProductCard";
-import React, { ReactElement } from "react";
+import React from "react";
 
 const $Link = (props: any) => {
-  const TriggerElement = props.trigger;
-  const { url, shouldOpenInNewWindow } = props.__fromEditor.props;
+  const { url, shouldOpenInNewWindow, trigger: TriggerElement } = props;
 
   return (
     <TriggerElement.type
@@ -19,8 +18,7 @@ const $Link = (props: any) => {
 };
 
 const $AlertAction = (props: any) => {
-  const TriggerElement = props.trigger;
-  const { text } = props.__fromEditor.props;
+  const { text, trigger: TriggerElement } = props;
 
   return (
     <TriggerElement.type

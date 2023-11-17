@@ -1,14 +1,17 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
+import React, { ReactElement } from "react";
 
-function Buttons(props: any) {
-  const { ButtonsContainer, Buttons } = props.__fromEditor.components;
+function Buttons(props: {
+  ButtonsContainer: ReactElement;
+  Buttons: Array<ReactElement>;
+}) {
+  const { ButtonsContainer, Buttons } = props;
 
   return (
-    <ButtonsContainer>
-      {Buttons.map((Button: any, index: number) => (
-        <Button key={index} />
+    <ButtonsContainer.type {...ButtonsContainer.props}>
+      {Buttons.map((Button, index) => (
+        <Button.type {...Button.props} key={index} />
       ))}
-    </ButtonsContainer>
+    </ButtonsContainer.type>
   );
 }
 

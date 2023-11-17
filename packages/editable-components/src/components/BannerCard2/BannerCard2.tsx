@@ -1,6 +1,6 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
+import React, { ReactElement } from "react";
 
-function BannerCard2(props: any) {
+function BannerCard2(props: Record<string, ReactElement>) {
   const {
     Container,
     SidePhotoContainer,
@@ -8,20 +8,20 @@ function BannerCard2(props: any) {
     // Link,
     Card1,
     Card2,
-  } = props.__fromEditor.components;
+  } = props;
 
   return (
-    <Container>
+    <Container.type {...Container.props}>
       {/*<Link />*/}
 
-      <SidePhotoContainer>
-        <Card2 />
-      </SidePhotoContainer>
+      <SidePhotoContainer.type {...SidePhotoContainer.props}>
+        <Card2.type {...Card2.props} />
+      </SidePhotoContainer.type>
 
-      <ContentContainer>
-        <Card1 />
-      </ContentContainer>
-    </Container>
+      <ContentContainer.type {...ContentContainer.props}>
+        <Card1.type {...Card1.props} />
+      </ContentContainer.type>
+    </Container.type>
   );
 }
 

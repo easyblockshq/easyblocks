@@ -1,33 +1,18 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
-import type {
-  ForwardRefRenderFunction,
-  ReactElement,
-  ReactNode,
-  Ref,
-} from "react";
+import type { ReactElement, ReactNode, Ref } from "react";
+import React from "react";
 
 function StandardButton(
   props: {
-    __fromEditor: {
-      components: {
-        ButtonRoot: ForwardRefRenderFunction<
-          HTMLButtonElement,
-          { children: ReactNode }
-        >;
-        IconWrapper: any;
-        Action: ReactElement;
-      };
-      props: {
-        label: string | undefined;
-        icon: string;
-        variant: "label" | "icon" | "label-icon";
-      };
-    };
+    ButtonRoot: ReactElement<{ children: ReactNode }>;
+    IconWrapper: ReactElement;
+    Action: ReactElement;
+    label: string | undefined;
+    icon: string;
+    variant: "label" | "icon" | "label-icon";
     forwardedRef: Ref<HTMLButtonElement>;
   } & Record<string, any>
 ) {
-  const { ButtonRoot, IconWrapper, Action } = props.__fromEditor.components;
-  const variant = props.__fromEditor.props.variant;
+  const { ButtonRoot, IconWrapper, Action, variant, icon, label = "" } = props;
 
   // Every Shopstory button is just a component that must have props and ref passed.
   const buttonProps: Record<string, any> = {
@@ -48,21 +33,23 @@ function StandardButton(
   }
 
   const triggerElement = (
-    <ButtonRoot {...buttonProps}>
-      {variant !== "icon" && <div>{props.__fromEditor.props.label ?? ""}</div>}
+    <ButtonRoot.type {...ButtonRoot.props} {...buttonProps}>
+      {variant !== "icon" && <div>{label}</div>}
       {variant !== "label" && (
-        <IconWrapper
+        <IconWrapper.type
+          {...IconWrapper.props}
           dangerouslySetInnerHTML={{
-            __html: props.__fromEditor.props.icon,
+            __html: icon,
           }}
         />
       )}
-    </ButtonRoot>
+    </ButtonRoot.type>
   );
 
   if (Action) {
     return <Action.type {...Action.props} trigger={triggerElement} />;
   }
+
   return triggerElement;
 }
 

@@ -1,21 +1,18 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
-import { CompiledShopstoryComponentProps } from "../../types";
+import React from "react";
+import { CompiledNoCodeComponentProps } from "../../types";
 import { VimeoPlayerInternal } from "./VimeoPlayerInternal";
 
-type VimeoPlayerProps = CompiledShopstoryComponentProps;
-
-function VimeoPlayer(props: VimeoPlayerProps) {
-  const { AspectRatioMaker, ContentWrapper, Wrapper } =
-    props.__fromEditor.components;
+function VimeoPlayer(props: CompiledNoCodeComponentProps) {
+  const { AspectRatioMaker, ContentWrapper, Wrapper } = props;
 
   return (
-    <Wrapper>
-      <AspectRatioMaker />
+    <Wrapper.type {...Wrapper.props}>
+      <AspectRatioMaker.type {...AspectRatioMaker.props} />
 
-      <ContentWrapper>
+      <ContentWrapper.type {...ContentWrapper.props}>
         <VimeoPlayerInternal {...props} />
-      </ContentWrapper>
-    </Wrapper>
+      </ContentWrapper.type>
+    </Wrapper.type>
   );
 }
 

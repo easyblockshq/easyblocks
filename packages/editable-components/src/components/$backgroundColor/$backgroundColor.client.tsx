@@ -1,14 +1,17 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
+import React, { ReactElement } from "react";
 
-function BackgroundColor(props: any) {
-  const { Wrapper, AspectRatioMaker, Background } =
-    props.__fromEditor.components;
+function BackgroundColor(props: {
+  Wrapper: ReactElement;
+  AspectRatioMaker: ReactElement;
+  Background: ReactElement;
+}) {
+  const { Wrapper, AspectRatioMaker, Background } = props;
 
   return (
-    <Wrapper>
-      <AspectRatioMaker />
-      <Background />
-    </Wrapper>
+    <Wrapper.type {...Wrapper.props}>
+      <AspectRatioMaker.type {...AspectRatioMaker.props} />
+      <Background.type {...Background.props} />
+    </Wrapper.type>
   );
 }
 

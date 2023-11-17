@@ -1,6 +1,5 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
 import { VideoSrc } from "@easyblocks/core";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { VideoProps } from "./$video.editor";
 import { VideoPlaceholder } from "./VideoPlaceholder";
 
@@ -9,23 +8,21 @@ type VideoRendererProps = VideoProps & {
 };
 
 function VideoRenderer(props: VideoRendererProps) {
-  const { __fromEditor, video } = props;
-  const isEditing = !!__fromEditor.__editing;
-
   const {
+    video,
+    enablePlaybackControls,
+    enableSoundControls,
+    isEditing,
     ControlsContainer,
     PlayButton,
     PauseButton,
     MuteButton,
     UnmuteButton,
     Video,
-  } = __fromEditor.components;
-
-  const { enablePlaybackControls, enableSoundControls } = __fromEditor.props;
-  const autoplay = enablePlaybackControls ? __fromEditor.props.autoplay : true;
+  } = props;
+  const autoplay = enablePlaybackControls ? props.autoplay : true;
 
   const videoRef = useRef<HTMLVideoElement>(null);
-
   const [muted, setMuted] = useState(true);
   const [playing, setPlaying] = useState(autoplay);
 
@@ -52,7 +49,8 @@ function VideoRenderer(props: VideoRendererProps) {
     <div style={{ position: "relative", width: "100%", height: "100%" }}>
       {!videoUrl && <VideoPlaceholder />}
       {videoUrl && (
-        <Video
+        <Video.type
+          {...Video.props}
           autoPlay={autoplay}
           muted={true}
           loop={true}
@@ -61,39 +59,43 @@ function VideoRenderer(props: VideoRendererProps) {
         >
           <source src={videoUrl} />
           {video?.alt}
-        </Video>
+        </Video.type>
       )}
 
-      <ControlsContainer>
+      <ControlsContainer.type {...ControlsContainer.props}>
         {enableSoundControls && (isEditing || !muted) && (
-          <UnmuteButton
+          <UnmuteButton.type
+            {...UnmuteButton.props}
             onClick={() => {
               setMuted(true);
             }}
           />
         )}
         {enableSoundControls && (isEditing || muted) && (
-          <MuteButton
+          <MuteButton.type
+            {...MuteButton.props}
             onClick={() => {
               setMuted(false);
             }}
           />
         )}
         {enablePlaybackControls && (isEditing || !playing) && (
-          <PlayButton
+          <PlayButton.type
+            {...PlayButton.props}
             onClick={() => {
               setPlaying(true);
             }}
           />
         )}
         {enablePlaybackControls && (isEditing || playing) && (
-          <PauseButton
+          <PauseButton.type
+            {...PauseButton.props}
             onClick={() => {
               setPlaying(false);
             }}
           />
         )}
-      </ControlsContainer>
+      </ControlsContainer.type>
     </div>
   );
 }

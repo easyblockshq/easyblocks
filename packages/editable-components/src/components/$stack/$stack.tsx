@@ -1,22 +1,30 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
+import React, { ReactElement } from "react";
 
-function Stack(props: any) {
-  const { StackContainer, Items, itemWrappers } = props.__fromEditor.components;
+function Stack(props: {
+  StackContainer: ReactElement;
+  Items: Array<ReactElement>;
+  itemWrappers: Array<{
+    StackItemOuter: ReactElement;
+    StackItemInner: ReactElement;
+  }>;
+}) {
+  const { StackContainer, Items, itemWrappers } = props;
 
   return (
-    <StackContainer>
-      {Items.map((Item: any, index: number) => {
+    <StackContainer.type {...StackContainer.props}>
+      {Items.map((Item, index) => {
         const StackItemOuter = itemWrappers[index].StackItemOuter;
         const StackItemInner = itemWrappers[index].StackItemInner;
+
         return (
-          <StackItemOuter key={index}>
-            <StackItemInner>
-              <Item />
-            </StackItemInner>
-          </StackItemOuter>
+          <StackItemOuter.type {...StackItemOuter.props} key={index}>
+            <StackItemInner.type {...StackItemInner.props}>
+              <Item.type {...Item.props} />
+            </StackItemInner.type>
+          </StackItemOuter.type>
         );
       })}
-    </StackContainer>
+    </StackContainer.type>
   );
 }
 

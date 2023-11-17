@@ -1,12 +1,16 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
+import React, { HTMLProps, ReactElement } from "react";
 
-function Icon(props: any) {
-  const { IconWrapper } = props.__fromEditor.components;
+function Icon(props: {
+  IconWrapper: ReactElement<HTMLProps<HTMLDivElement>>;
+  icon: string;
+}) {
+  const { IconWrapper, icon } = props;
 
   return (
-    <IconWrapper
+    <IconWrapper.type
+      {...IconWrapper.props}
       dangerouslySetInnerHTML={{
-        __html: props.__fromEditor.props.icon,
+        __html: icon,
       }}
     />
   );

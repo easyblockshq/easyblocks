@@ -7,24 +7,25 @@ import {
 } from "@easyblocks/app-utils";
 import { Devices, ImageSrc, ResponsiveValue, VideoSrc } from "@easyblocks/core";
 import { getPaddingBottomAndHeightFromAspectRatio } from "../../parseAspectRatio";
-import { CompiledShopstoryComponentProps } from "../../types";
+import { CompiledNoCodeComponentProps } from "../../types";
 
 type Resop = typeof import("@easyblocks/app-utils").resop2;
 
-export type ImageProps = CompiledShopstoryComponentProps<
+export type ImageProps = CompiledNoCodeComponentProps<
   "$image",
   {
     image: ResponsiveValue<ImageSrc | undefined>;
     aspectRatio: ResponsiveValue<string>;
     gridBaseLineHeight: ResponsiveValue<string>;
   },
+  Record<string, never>,
   ReturnType<typeof import("./$image.styles")["default"]>
 >;
 
 export function getAspectRatioClassName(
   responsiveImage: ResponsiveValue<ImageSrc | VideoSrc | undefined>,
-  aspectRatio: ImageProps["__fromEditor"]["props"]["aspectRatio"],
-  gridBaseLineHeight: ImageProps["__fromEditor"]["props"]["gridBaseLineHeight"],
+  aspectRatio: ImageProps["aspectRatio"],
+  gridBaseLineHeight: ImageProps["gridBaseLineHeight"],
   devices: Devices,
   stitches: any,
   resop: Resop

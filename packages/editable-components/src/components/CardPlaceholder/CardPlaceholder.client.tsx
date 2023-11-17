@@ -1,14 +1,19 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
+import React, { ReactElement } from "react";
 
-function CardPlaceholder(props: any) {
-  const { Root, ImageContainer, TextContainer, AspectRatioMaker } =
-    props.__fromEditor.components;
-  const value = props.__fromEditor.props.value ?? "";
-
+function CardPlaceholder(
+  props: { value: string | undefined } & Record<string, ReactElement>
+) {
+  const {
+    Root,
+    ImageContainer,
+    TextContainer,
+    AspectRatioMaker,
+    value = "",
+  } = props;
   return (
-    <Root>
-      <AspectRatioMaker>
-        <ImageContainer>
+    <Root.type {...Root.props}>
+      <AspectRatioMaker.type {...AspectRatioMaker.props}>
+        <ImageContainer.type {...ImageContainer.props}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             style={{ width: "40%", height: "50%" }}
@@ -22,10 +27,10 @@ function CardPlaceholder(props: any) {
               fill="currentColor"
             />
           </svg>
-        </ImageContainer>
-      </AspectRatioMaker>
-      <TextContainer>{value}</TextContainer>
-    </Root>
+        </ImageContainer.type>
+      </AspectRatioMaker.type>
+      <TextContainer.type {...TextContainer.props}>{value}</TextContainer.type>
+    </Root.type>
   );
 }
 

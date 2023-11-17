@@ -1,4 +1,4 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
+import React from "react";
 
 export default function Grid(props: any) {
   const {
@@ -18,16 +18,15 @@ export default function Grid(props: any) {
     horizontalLines,
     verticalLines,
     itemInnerContainers,
-  } = props.__fromEditor.components;
-  const React = props.__fromEditor.React;
-  const isEditing = !!props.__fromEditor.__editing;
+    isEditing,
+  } = props;
 
   const spacerRef = React.useRef(null);
-  const containerRef = React.useRef(null);
-  const innerContainerRef = React.useRef(null);
+  const containerRef = React.useRef<HTMLElement | null>(null);
+  const innerContainerRef = React.useRef<HTMLElement | null>(null);
 
-  const leftArrowWrapperRef = React.useRef(null);
-  const rightArrowWrapperRef = React.useRef(null);
+  const leftArrowWrapperRef = React.useRef<HTMLElement | null>(null);
+  const rightArrowWrapperRef = React.useRef<HTMLElement | null>(null);
 
   // TODO: move this method to lazy-loaded payload!!!
   function getNextPos(
@@ -76,16 +75,18 @@ export default function Grid(props: any) {
   }
 
   const clickHandler = (directionRight: boolean) => {
-    const itemNodes = innerContainerRef.current.querySelectorAll("[data-item]");
+    const itemNodes = Array.from(
+      innerContainerRef.current!.querySelectorAll<HTMLElement>("[data-item]")
+    );
 
     const newPos = getNextPos(
-      containerRef.current,
-      spacerRef.current,
+      containerRef.current!,
+      spacerRef.current!,
       itemNodes,
       directionRight ? -1 : 1
     );
 
-    containerRef.current.scrollTo({ left: newPos, behavior: "smooth" });
+    containerRef.current!.scrollTo({ left: newPos, behavior: "smooth" });
   };
 
   React.useEffect(() => {
@@ -103,20 +104,21 @@ export default function Grid(props: any) {
       const isAtEnd =
         Math.abs(containerRef.current.scrollLeft - maxScrollLeftValue) < 3;
 
-      leftArrowWrapperRef.current.style.opacity = 1;
-      rightArrowWrapperRef.current.style.opacity = 1;
+      leftArrowWrapperRef.current!.style.opacity = "1";
+      rightArrowWrapperRef.current!.style.opacity = "1";
 
       const inactiveOpacity = isEditing ? 1 : 0;
 
       if (isAtBeginning) {
-        leftArrowWrapperRef.current.style.opacity = inactiveOpacity;
+        leftArrowWrapperRef.current!.style.opacity = inactiveOpacity.toString();
       }
       if (isAtEnd) {
-        rightArrowWrapperRef.current.style.opacity = inactiveOpacity;
+        rightArrowWrapperRef.current!.style.opacity =
+          inactiveOpacity.toString();
       }
     }
 
-    containerRef.current.addEventListener("scroll", updateArrowsVisibility);
+    containerRef.current!.addEventListener("scroll", updateArrowsVisibility);
 
     updateArrowsVisibility();
 
@@ -131,10 +133,14 @@ export default function Grid(props: any) {
   }, []);
 
   return (
-    <Root>
-      <Container ref={containerRef} data-shopstory-scrollable-root>
-        <InnerContainer ref={innerContainerRef}>
-          <SpacerLeft ref={spacerRef} />
+    <Root.type {...Root.props}>
+      <Container.type
+        {...Container.props}
+        ref={containerRef}
+        data-shopstory-scrollable-root
+      >
+        <InnerContainer.type {...InnerContainer.props} ref={innerContainerRef}>
+          <SpacerLeft.type {...SpacerLeft.props} ref={spacerRef} />
           {Cards.map((Card: any, index: number) => {
             const ItemContainer = itemContainers[index];
             const ItemInnerContainer = itemInnerContainers[index];
@@ -142,38 +148,50 @@ export default function Grid(props: any) {
             const VerticalLine = verticalLines[index];
 
             return (
-              <ItemContainer data-item key={index}>
-                <HorizontalLine />
-                <VerticalLine />
-                <ItemInnerContainer>
-                  <Card />
-                </ItemInnerContainer>
-              </ItemContainer>
+              <ItemContainer.type
+                {...ItemContainer.props}
+                data-item
+                key={index}
+              >
+                <HorizontalLine.type {...HorizontalLine.props} />
+                <VerticalLine.type {...VerticalLine.props} />
+                <ItemInnerContainer.type {...ItemInnerContainer.props}>
+                  <Card.type {...Card.props} />
+                </ItemInnerContainer.type>
+              </ItemContainer.type>
             );
           })}
-          <SpacerRight ref={spacerRef} />
-        </InnerContainer>
-      </Container>
+          <SpacerRight.type {...SpacerRight.props} ref={spacerRef} />
+        </InnerContainer.type>
+      </Container.type>
 
-      <LeftArrowWrapper ref={leftArrowWrapperRef}>
-        <LeftArrowInnerWrapper>
-          <LeftArrow
+      <LeftArrowWrapper.type
+        {...LeftArrowWrapper.props}
+        ref={leftArrowWrapperRef}
+      >
+        <LeftArrowInnerWrapper.type {...LeftArrowInnerWrapper.props}>
+          <LeftArrow.type
+            {...LeftArrow.props}
             onClick={() => {
               clickHandler(false);
             }}
           />
-        </LeftArrowInnerWrapper>
-      </LeftArrowWrapper>
+        </LeftArrowInnerWrapper.type>
+      </LeftArrowWrapper.type>
 
-      <RightArrowWrapper ref={rightArrowWrapperRef}>
-        <RightArrowInnerWrapper>
-          <RightArrow
+      <RightArrowWrapper.type
+        {...RightArrowWrapper.props}
+        ref={rightArrowWrapperRef}
+      >
+        <RightArrowInnerWrapper.type {...RightArrowInnerWrapper.props}>
+          <RightArrow.type
+            {...RightArrow.props}
             onClick={() => {
               clickHandler(true);
             }}
           />
-        </RightArrowInnerWrapper>
-      </RightArrowWrapper>
-    </Root>
+        </RightArrowInnerWrapper.type>
+      </RightArrowWrapper.type>
+    </Root.type>
   );
 }

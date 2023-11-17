@@ -1,42 +1,35 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
+import React from "react";
 import { RichTextBlockElementType } from "../$richTextBlockElement/$richTextBlockElement";
-import { CompiledShopstoryComponentProps } from "../../../types";
+import { CompiledNoCodeComponentProps } from "../../../types";
 import {
   RichTextLineElementCompiledComponentConfig,
   RichTextLineElementComponentConfig,
 } from "./$richTextLineElement";
 
-type RichTextLineElementProps = CompiledShopstoryComponentProps<
+type RichTextLineElementProps = CompiledNoCodeComponentProps<
   RichTextLineElementComponentConfig["_template"],
   Record<string, never>,
   { blockType: RichTextBlockElementType },
   RichTextLineElementCompiledComponentConfig["styled"]
 > & {
-  __fromEditor: {
-    components: {
-      elements: Array<React.ComponentType>;
-    };
-  };
+  elements: Array<React.ReactElement>;
 };
 
 export default function RichTextLineElement(props: RichTextLineElementProps) {
-  const {
-    elements: Elements,
-    ListItem,
-    TextLine,
-  } = props.__fromEditor.components;
-  const { blockType } = props.__fromEditor.props;
-  const elements = Elements.map((Element, index) => <Element key={index} />);
+  const { blockType, elements: Elements, ListItem, TextLine } = props;
+  const elements = Elements.map((Element, index) => (
+    <Element.type {...Element.props} key={index} />
+  ));
 
   if (blockType === "paragraph") {
-    return <TextLine>{elements}</TextLine>;
+    return <TextLine.type {...TextLine.props}>{elements}</TextLine.type>;
   }
 
   if (blockType === "bulleted-list" || blockType === "numbered-list") {
     return (
-      <ListItem>
+      <ListItem.type {...ListItem.props}>
         <div>{elements}</div>
-      </ListItem>
+      </ListItem.type>
     );
   }
 
