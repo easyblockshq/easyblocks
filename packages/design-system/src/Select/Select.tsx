@@ -1,7 +1,7 @@
 import {
   CheckIcon,
   ChevronDownIcon,
-  ChevronUpIcon,
+  // ChevronUpIcon,
 } from "@radix-ui/react-icons";
 import * as RadixSelect from "@radix-ui/react-select";
 import React, { forwardRef, ReactNode } from "react";
@@ -69,7 +69,7 @@ function Select(props: {
             box-shadow: 0px 2px 14px 0px rgba(0, 0, 0, 0.15);
           `}
         >
-          <RadixSelect.ScrollUpButton
+          {/* <RadixSelect.ScrollUpButton
             css={`
               display: flex;
               justify-content: center;
@@ -77,9 +77,9 @@ function Select(props: {
             `}
           >
             <ChevronUpIcon />
-          </RadixSelect.ScrollUpButton>
+          </RadixSelect.ScrollUpButton> */}
           <RadixSelect.Viewport>{props.children}</RadixSelect.Viewport>
-          <RadixSelect.ScrollDownButton
+          {/* <RadixSelect.ScrollDownButton
             css={`
               display: flex;
               justify-content: center;
@@ -87,7 +87,7 @@ function Select(props: {
             `}
           >
             <ChevronDownIcon />
-          </RadixSelect.ScrollDownButton>
+          </RadixSelect.ScrollDownButton> */}
         </RadixSelect.Content>
       </RadixSelect.Portal>
     </RadixSelect.Root>
