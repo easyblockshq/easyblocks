@@ -1,9 +1,10 @@
 import { mockVideoWidget } from "@/app/easyblocks/externalData/mockMedia/mockVideoWidget";
-import { Config } from "@easyblocks/core";
+import { Config, box } from "@easyblocks/core";
 import { builtinEditableComponentsDefinitions } from "@easyblocks/editable-components";
 import { mockImageWidget } from "./externalData/mockMedia/mockImageWidget";
 import { pexelsImageWidget } from "./resources/pexels/pexelsImageWidget";
 import { productWidget } from "./resources/product/productWidget";
+import { heroBannerNoCodeDefinition } from "@/app/easyblocks/noCodeComponents/HeroBanner/HeroBanner.definition";
 
 if (!process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN) {
   throw new Error("Missing NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN");
@@ -35,6 +36,7 @@ export const easyblocksConfig: Config = {
     },
   },
   components: [
+    heroBannerNoCodeDefinition,
     ...builtinEditableComponentsDefinitions,
     {
       id: "$Link",

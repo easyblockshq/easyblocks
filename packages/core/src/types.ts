@@ -511,6 +511,7 @@ export type Config = {
   aspectRatios?: RuntimeConfigThemeValue<string>[];
   boxShadows?: RuntimeConfigThemeValue<string>[];
   containerWidths?: RuntimeConfigThemeValue<number>[];
+
   buttons?: ButtonCustomComponent[];
   components?: Array<NoCodeComponentDefinition>;
   devices?: ConfigDevices;

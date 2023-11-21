@@ -1,8 +1,9 @@
 "use client";
+import React from "react";
 import { ProductCard } from "@/components/ProductCard/ProductCard";
 import { builtinEditableComponents } from "@easyblocks/editable-components";
 import { EasyblocksProvider } from "@easyblocks/react";
-import React from "react";
+import { HeroBanner } from "@/app/easyblocks/noCodeComponents/HeroBanner/HeroBanner";
 
 const $Link = (props: any) => {
   const { url, shouldOpenInNewWindow, trigger: TriggerElement } = props;
@@ -41,6 +42,7 @@ export const QuickDemoEasyblocksProvider: React.FC<{
         ProductCard,
         $Link,
         $AlertAction,
+        HeroBanner,
       }}
     >
       {children}
