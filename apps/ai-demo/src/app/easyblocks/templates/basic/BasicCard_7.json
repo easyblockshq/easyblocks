@@ -1,0 +1,335 @@
+{
+  "_id": "7169f03f-5796-42fa-aaf7-48657418efc0",
+  "_template": "$BannerCard2",
+  "traceId": "$BannerCard2-b8fea54a",
+  "_itemProps": {
+    "$GridCard": {
+      "Cards": {
+        "itemSize": { "$res": true, "xl": "1x1" },
+        "verticalAlign": { "$res": true, "xl": "auto" }
+      }
+    }
+  },
+  "cornerRadius": { "$res": true, "xl": "0" },
+  "borderWidth": { "$res": true, "xl": "0" },
+  "borderColor": { "$res": true, "xl": { "value": "black", "ref": "grey_05" } },
+  "borderTop": { "$res": true, "xl": "1" },
+  "borderBottom": { "$res": true, "xl": "1" },
+  "borderLeft": { "$res": true, "xl": "1" },
+  "borderRight": { "$res": true, "xl": "1" },
+  "boxShadow": { "$res": true, "xl": { "value": "none", "ref": "none" } },
+  "Card1": [
+    {
+      "_id": "9c6bf630-fa56-4fb3-a9d9-774a32dca155",
+      "_template": "$BasicCard",
+      "traceId": "$BasicCard-bd3ab010",
+      "size": { "$res": true, "xl": { "value": "fit-content" } },
+      "Background": [],
+      "borderWidth": { "$res": true, "xl": "0" },
+      "borderColor": {
+        "$res": true,
+        "xl": { "value": "black", "ref": "grey_05" }
+      },
+      "borderTop": { "$res": true, "xl": "1" },
+      "borderBottom": { "$res": true, "xl": "1" },
+      "borderLeft": { "$res": true, "xl": "1" },
+      "borderRight": { "$res": true, "xl": "1" },
+      "boxShadow": { "$res": true, "xl": { "value": "none", "ref": "none" } },
+      "cornerRadius": { "$res": true, "xl": "0" },
+      "enableContent": true,
+      "position": { "$res": true, "xl": "bottom-left" },
+      "paddingLeft": { "$res": true, "xl": { "value": "24px", "ref": "24" } },
+      "paddingRight": { "$res": true, "xl": { "value": "24px", "ref": "24" } },
+      "paddingTop": { "$res": true, "xl": { "value": "16px", "ref": "16" } },
+      "paddingBottom": { "$res": true, "xl": { "value": "16px", "ref": "16" } },
+      "paddingLeftExternal": {
+        "$res": true,
+        "xl": { "value": "0px", "ref": "0" }
+      },
+      "paddingRightExternal": {
+        "$res": true,
+        "xl": { "value": "0px", "ref": "0" }
+      },
+      "paddingTopExternal": {
+        "$res": true,
+        "xl": { "value": "0px", "ref": "0" }
+      },
+      "paddingBottomExternal": {
+        "$res": true,
+        "xl": { "value": "0px", "ref": "0" }
+      },
+      "edgeMarginProtection": { "$res": true, "xl": true },
+      "Stack": [
+        {
+          "_id": "c3a5c780-fe63-4f70-ba57-9f87aa802f9e",
+          "_template": "$stack",
+          "traceId": "$stack-99752a57",
+          "Items": [
+            {
+              "_id": "bdcb7054-1622-4155-b74a-a77fc5d03eac",
+              "_template": "$image",
+              "traceId": "$image-300fb330",
+              "_itemProps": {
+                "$stack": {
+                  "Items": {
+                    "width": { "$res": true, "xl": "96px" },
+                    "marginBottom": {
+                      "$res": true,
+                      "xl": { "value": "16px", "ref": "16" }
+                    },
+                    "align": { "$res": true, "xl": "center" }
+                  }
+                }
+              },
+              "image": {
+                "$res": true,
+                "xl": { "id": null, "widgetId": "mockImage" }
+              },
+              "aspectRatio": {
+                "$res": true,
+                "xl": { "ref": "square", "value": "1:1" }
+              },
+              "action": []
+            },
+            {
+              "_id": "21c120c0-e72e-4c6a-a929-934d6f9a68f9",
+              "_template": "$richText",
+              "traceId": "$richText-47a5fead",
+              "_itemProps": {
+                "$stack": {
+                  "Items": {
+                    "width": { "$res": true, "xl": "512px" },
+                    "marginBottom": {
+                      "$res": true,
+                      "xl": { "value": "12px", "ref": "12" }
+                    },
+                    "align": { "$res": true, "xl": "center" }
+                  }
+                }
+              },
+              "elements": {
+                "en-US": [
+                  {
+                    "_id": "65c54339-5347-491e-a78e-9be80f2fc5ab",
+                    "_template": "$richTextBlockElement",
+                    "traceId": "$richTextBlockElement-46575fbb",
+                    "type": "paragraph",
+                    "elements": [
+                      {
+                        "_id": "0f0de069-de7d-4280-afac-c1e23a6a3265",
+                        "_template": "$richTextLineElement",
+                        "traceId": "$richTextLineElement-b423aa0d",
+                        "elements": [
+                          {
+                            "_id": "a46a841a-0abe-40a6-8054-e62c6e8caf95",
+                            "_template": "$richTextPart",
+                            "traceId": "$richTextPart-0a379f4f",
+                            "value": "Heading goes here",
+                            "font": {
+                              "$res": true,
+                              "xl": {
+                                "ref": "heading4",
+                                "value": {
+                                  "$res": true,
+                                  "2xl": {
+                                    "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
+                                    "fontSize": 24,
+                                    "fontWeight": 500,
+                                    "lineHeight": 1.2
+                                  }
+                                }
+                              }
+                            },
+                            "color": {
+                              "$res": true,
+                              "xl": { "ref": "grey_05", "value": "black" }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              "accessibilityRole": "div",
+              "isListStyleAuto": true,
+              "mainFont": {
+                "$res": true,
+                "xl": {
+                  "value": {
+                    "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
+                    "fontSize": 20,
+                    "fontWeight": 400,
+                    "lineHeight": 1.2,
+                    "@xs": { "fontSize": 18 }
+                  },
+                  "ref": "$body"
+                }
+              },
+              "mainColor": {
+                "$res": true,
+                "xl": { "value": "black", "ref": "grey_05" }
+              }
+            },
+            {
+              "_id": "3c2f2955-e958-499a-b819-68cb9190ef14",
+              "_template": "$richText",
+              "traceId": "$richText-4a991c07",
+              "_itemProps": {
+                "$stack": {
+                  "Items": {
+                    "width": { "$res": true, "xl": "512px" },
+                    "marginBottom": {
+                      "$res": true,
+                      "xl": { "value": "24px", "ref": "24" }
+                    },
+                    "align": { "$res": true, "xl": "center" }
+                  }
+                }
+              },
+              "elements": {
+                "en-US": [
+                  {
+                    "_id": "14e95bfb-4a1a-48e0-8ce4-e483b9f04980",
+                    "_template": "$richTextBlockElement",
+                    "traceId": "$richTextBlockElement-bfae341b",
+                    "type": "paragraph",
+                    "elements": [
+                      {
+                        "_id": "d7d9d2be-48b1-48b3-a9a1-adf674e8ea82",
+                        "_template": "$richTextLineElement",
+                        "traceId": "$richTextLineElement-09d43557",
+                        "elements": [
+                          {
+                            "_id": "1e392742-cc9c-4640-887d-a4387ccf02be",
+                            "_template": "$richTextPart",
+                            "traceId": "$richTextPart-4a5d90f0",
+                            "value": "Lorem ipsum dolor sit amet, consectetur.",
+                            "font": {
+                              "$res": true,
+                              "xl": {
+                                "ref": "body2",
+                                "value": {
+                                  "$res": true,
+                                  "2xl": {
+                                    "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
+                                    "fontSize": 16,
+                                    "fontWeight": 400,
+                                    "lineHeight": 1.2
+                                  }
+                                }
+                              }
+                            },
+                            "color": {
+                              "$res": true,
+                              "xl": { "ref": "grey_05", "value": "black" }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              "accessibilityRole": "div",
+              "isListStyleAuto": true,
+              "mainFont": {
+                "$res": true,
+                "xl": {
+                  "value": { "fontSize": 32, "fontFamily": "sans-serif" },
+                  "ref": "$heading"
+                }
+              },
+              "mainColor": {
+                "$res": true,
+                "xl": { "value": "black", "ref": "grey_05" }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "Card2": [
+    {
+      "_id": "a36fd859-b1e9-4e78-8443-fc1d0d3d9c8b",
+      "_template": "$BasicCardBackground",
+      "traceId": "$BasicCardBackground-74e7ae7a",
+      "size": { "$res": true, "xl": { "value": "4:5", "ref": "$portrait" } },
+      "Background": [
+        {
+          "_id": "f9eae828-572b-455d-ac59-df5d29119db7",
+          "_template": "$backgroundColor",
+          "traceId": "$backgroundColor-b0a0d27b",
+          "color": {
+            "$res": true,
+            "xl": { "value": "#F2F2F2", "ref": "$backgroundLight" }
+          }
+        }
+      ],
+      "borderWidth": { "$res": true, "xl": "0" },
+      "borderColor": {
+        "$res": true,
+        "xl": { "value": "black", "ref": "grey_05" }
+      },
+      "borderTop": { "$res": true, "xl": "1" },
+      "borderBottom": { "$res": true, "xl": "1" },
+      "borderLeft": { "$res": true, "xl": "1" },
+      "borderRight": { "$res": true, "xl": "1" },
+      "boxShadow": { "$res": true, "xl": { "value": "none", "ref": "none" } },
+      "cornerRadius": { "$res": true, "xl": "0" },
+      "enableContent": false,
+      "position": { "$res": true, "xl": "top-left" },
+      "paddingLeft": { "$res": true, "xl": { "value": "24px", "ref": "24" } },
+      "paddingRight": { "$res": true, "xl": { "value": "24px", "ref": "24" } },
+      "paddingTop": { "$res": true, "xl": { "value": "24px", "ref": "24" } },
+      "paddingBottom": { "$res": true, "xl": { "value": "24px", "ref": "24" } },
+      "paddingLeftExternal": {
+        "$res": true,
+        "xl": { "value": "0px", "ref": "0" }
+      },
+      "paddingRightExternal": {
+        "$res": true,
+        "xl": { "value": "0px", "ref": "0" }
+      },
+      "paddingTopExternal": {
+        "$res": true,
+        "xl": { "value": "0px", "ref": "0" }
+      },
+      "paddingBottomExternal": {
+        "$res": true,
+        "xl": { "value": "0px", "ref": "0" }
+      },
+      "edgeMarginProtection": { "$res": true, "xl": true },
+      "Stack": [
+        {
+          "_id": "e0aa58f9-c6f0-4987-8a46-dbfb3d8f31e6",
+          "_template": "$stack",
+          "traceId": "$stack-c2251f8b",
+          "Items": []
+        }
+      ]
+    }
+  ],
+  "mode": { "$res": true, "xl": "none" },
+  "sideModeWidth": { "$res": true, "xl": "50%" },
+  "backgroundModePosition": { "$res": true, "xl": "bottom-center" },
+  "backgroundModePaddingLeft": {
+    "$res": true,
+    "xl": { "value": "24px", "ref": "24" }
+  },
+  "backgroundModePaddingRight": {
+    "$res": true,
+    "xl": { "value": "24px", "ref": "24" }
+  },
+  "backgroundModePaddingTop": {
+    "$res": true,
+    "xl": { "value": "24px", "ref": "24" }
+  },
+  "backgroundModePaddingBottom": {
+    "$res": true,
+    "xl": { "value": "24px", "ref": "24" }
+  },
+  "backgroundModeEdgeMarginProtection": { "$res": true, "xl": true },
+  "action": []
+}

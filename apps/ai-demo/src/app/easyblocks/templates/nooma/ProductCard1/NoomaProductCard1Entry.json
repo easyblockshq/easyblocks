@@ -1,0 +1,19 @@
+{
+  "_id": "9f07c15c-e978-4d3d-b8c7-604bbab5ddcc",
+  "_template": "ProductCard",
+  "traceId": "ProductCard-d17cc3c6",
+  "_itemProps": {
+    "$GridCard": {
+      "Cards": {
+        "itemSize": { "$res": true, "xl": "1x1" },
+        "verticalAlign": { "$res": true, "xl": "auto" }
+      }
+    }
+  },
+  "product": {
+    "id": "gid://shopify/Product/7620416209108",
+    "widgetId": "product"
+  },
+  "relatedProductsMode": "enabled",
+  "withBackdrop": false
+}
