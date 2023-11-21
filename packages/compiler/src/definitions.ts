@@ -650,7 +650,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
   },
 
   component: (
-    _,
+    schemaProp,
     compilationContext: CompilationContextType
   ): ComponentSchemaPropDefinition => {
     // Here:
@@ -658,6 +658,15 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
     // 2. if fixed => ss-block field with "fixed" flag (no component picker).
     const normalize = (x: any) => {
       if (!Array.isArray(x) || x.length === 0) {
+        if (schemaProp.required) {
+          return [
+            normalizeComponent(
+              { _template: schemaProp.accepts[0] },
+              compilationContext
+            ),
+          ];
+        }
+
         return [];
       }
       return [normalizeComponent(x[0], compilationContext)];
