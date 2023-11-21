@@ -1,6 +1,5 @@
 import React, { CSSProperties, FC } from "react";
 import { ComponentDefinitionShared } from "@easyblocks/core";
-import { normalizeToStringArray } from "@easyblocks/editor/dist/normalizeToStringArray";
 
 type MissingComponentType = "BUTTON" | "CARD" | "SECTION";
 

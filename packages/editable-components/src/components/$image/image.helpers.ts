@@ -8,6 +8,7 @@ import {
 import { Devices, ImageSrc, ResponsiveValue, VideoSrc } from "@easyblocks/core";
 import { getPaddingBottomAndHeightFromAspectRatio } from "../../parseAspectRatio";
 import { CompiledNoCodeComponentProps } from "../../types";
+import { ReactElement } from "react";
 
 export type ImageProps = CompiledNoCodeComponentProps<
   "$image",
@@ -16,9 +17,12 @@ export type ImageProps = CompiledNoCodeComponentProps<
     aspectRatio: ResponsiveValue<string>;
     gridBaseLineHeight: ResponsiveValue<string>;
   },
-  Record<string, never>,
-  ReturnType<typeof import("./$image.styles")["default"]>
->;
+  Record<string, never>
+> & {
+  Wrapper: ReactElement;
+  AspectRatioMaker: ReactElement;
+  ImageWrapper: ReactElement;
+};
 
 export function getAspectRatioClassName(
   responsiveImage: ResponsiveValue<ImageSrc | VideoSrc | undefined>,

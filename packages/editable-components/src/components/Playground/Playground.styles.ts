@@ -1,25 +1,26 @@
-import { box } from "../../box";
+import type { NoCodeComponentStylesFunctionResult } from "@easyblocks/core";
 /**
  * Playground purpose is to have as many use cases as possible for tests
  */
 
-function styles() {
+function styles(): NoCodeComponentStylesFunctionResult {
   return {
-    Root: box({
-      position: "relative",
-      top: 100,
-    }),
-    Span: box(
-      {
+    styled: {
+      Root: {
+        position: "relative",
+        top: 100,
+      },
+      Span: {
+        __as: "span",
         position: "relative",
         right: 50,
       },
-      "span"
-    ),
-    ActionElement: box({
-      __action: "action",
-      left: 100,
-    }),
+
+      ActionElement: {
+        __action: "action",
+        left: 100,
+      },
+    },
   };
 }
 

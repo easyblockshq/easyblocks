@@ -72,9 +72,8 @@ type RichTextInlineWrapperElementCompiledComponentConfig =
   CompiledComponentConfigBase<
     RichTextInlineWrapperElementEditableComponentConfig["_template"]
   > & {
-    styled: Omit<
-      ReturnType<typeof richTextInlineWrapperElementStyles>,
-      "__props"
+    styled: NonNullable<
+      ReturnType<typeof richTextInlineWrapperElementStyles>["styled"]
     >;
   } & {
     components: {

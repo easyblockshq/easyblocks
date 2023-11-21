@@ -73,7 +73,7 @@ type RichTextBlockElementCompiledComponentConfig = CompiledComponentConfigBase<
   RichTextBlockElementComponentConfig["_template"],
   { type: RichTextBlockElementType }
 > & {
-  styled: Omit<ReturnType<typeof richTextBlockElementStyles>, "__props">;
+  styled: NonNullable<ReturnType<typeof richTextBlockElementStyles>["styled"]>;
 } & {
   components: {
     elements: Array<RichTextLineElementCompiledComponentConfig>;

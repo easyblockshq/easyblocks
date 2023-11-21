@@ -1,14 +1,16 @@
 import { spacingToPx } from "@easyblocks/app-utils";
-import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
-import { box } from "../../box";
-import { SectionWrapperCompiledValues } from "./SectionWrapper.types";
+import type {
+  NoCodeComponentStylesFunctionInput,
+  NoCodeComponentStylesFunctionResult,
+} from "@easyblocks/core";
+import type { SectionWrapperCompiledValues } from "./SectionWrapper.types";
 
 export function $sectionWrapperStyles({
   values,
   params,
   isEditing,
   device,
-}: NoCodeComponentStylesFunctionInput<SectionWrapperCompiledValues>) {
+}: NoCodeComponentStylesFunctionInput<SectionWrapperCompiledValues>): NoCodeComponentStylesFunctionResult {
   const $width = params.$width;
 
   const styles: { [key: string]: { [key: string]: any } } = {
@@ -216,47 +218,47 @@ export function $sectionWrapperStyles({
     !values.Background__ || values.Background__.length === 0;
 
   return {
-    Root__: box(
-      {
+    styled: {
+      Root__: {
+        __as: "section",
         position: "relative",
         paddingTop: hasNoBackground ? "0px" : values.padding,
         paddingBottom: hasNoBackground ? "0px" : values.padding,
         display: !isEditing && values.hide ? "none" : "block",
         opacity: isEditing && values.hide ? 0.33 : 1,
       },
-      "section"
-    ),
-    BackgroundContainer__: box({
-      position: "absolute",
-      top: 0,
-      left: 0,
-      overflow: "hidden",
-      width: "100%",
-      height: "100%",
-      display: "grid",
-    }),
-    Container__: box({
-      position: "relative",
-      paddingLeft: 0,
-      paddingRight: 0,
-      display: "grid",
-      gridTemplateRows: "auto auto auto",
-      ...styles.grid,
-    }),
-    Background__: {
-      noAction: true,
+      BackgroundContainer__: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        overflow: "hidden",
+        width: "100%",
+        height: "100%",
+        display: "grid",
+      },
+      Container__: {
+        position: "relative",
+        paddingLeft: 0,
+        paddingRight: 0,
+        display: "grid",
+        gridTemplateRows: "auto auto auto",
+        ...styles.grid,
+      },
+      HeaderStackContainer__: styles.header,
+      SubheaderStackContainer__: styles.headerSecondary,
+      ContentContainer__: {
+        ...styles.content,
+        position: "relative",
+      },
     },
-    HeaderStackContainer__: box(styles.header),
-    SubheaderStackContainer__: box(styles.headerSecondary),
-    ContentContainer__: box({
-      ...styles.content,
-      position: "relative",
-    }),
-    HeaderStack: styles.HeaderStack,
-    HeaderSecondaryStack: styles.HeaderSecondaryStack,
-    Component: {
-      ...Component,
-      tracingType: "section",
+
+    components: {
+      Background__: {
+        noAction: true,
+      },
+      HeaderStack: styles.HeaderStack,
+      HeaderSecondaryStack: styles.HeaderSecondaryStack,
+      Component,
     },
   };
 }

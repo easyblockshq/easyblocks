@@ -162,7 +162,7 @@ type RichTextPartCompiledComponentConfig = CompiledComponentConfigBase<
     font: Record<string, any>;
   }
 > & {
-  styled: Omit<ReturnType<typeof richTextPartStyles>, "__props">;
+  styled: NonNullable<ReturnType<typeof richTextPartStyles>["styled"]>;
   components: {
     Text: Record<string, any>;
   };

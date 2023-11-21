@@ -325,7 +325,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
       label: "Separator",
       thumbnail:
         "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_separator.png",
-      styles: $separatorStyles as any,
+      styles: $separatorStyles,
       schema: [
         {
           prop: "color",
@@ -374,7 +374,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
       id: "$BannerSection2",
       type: "section",
       label: "Hero Banner",
-      styles: $sectionWrapperStyles as any,
+      styles: $sectionWrapperStyles,
       editing: sectionWrapperEditing,
       pasteSlots: ["Component"],
       schema: [
@@ -393,7 +393,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
       type: "section",
       label: "Collection",
       icon: "grid_3x3",
-      styles: $sectionWrapperStyles as any,
+      styles: $sectionWrapperStyles,
       editing: sectionWrapperEditing,
       schema: [
         ...sectionWrapperFields.filter((x) => x.group === "General"),
@@ -412,7 +412,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
       id: "$TwoCards",
       type: "section",
       label: "Two Cards",
-      styles: $sectionWrapperStyles as any,
+      styles: $sectionWrapperStyles,
       editing: sectionWrapperEditing,
       schema: [
         ...sectionWrapperFieldsWithoutEscapeMargin,
@@ -429,8 +429,8 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
       id: "$GridCard",
       pasteSlots: ["Cards"],
       type: "card",
-      styles: grid2Styles as any,
-      auto: gridAuto as any,
+      styles: grid2Styles,
+      auto: gridAuto,
       hideTemplates: true,
       editing: ({ values, editingInfo }) => {
         const fields = Object.fromEntries(
@@ -841,8 +841,8 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
     {
       id: "$TwoCardsCard",
       type: "card",
-      auto: twoCardsAuto as any,
-      styles: twoCardsStyles as any,
+      auto: twoCardsAuto,
+      styles: twoCardsStyles,
       change: twoCardsChange,
       hideTemplates: true,
       allowSave: true,
@@ -1055,7 +1055,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
     {
       id: "$Placeholder",
       type: "card",
-      styles: placeholderStyles as any,
+      styles: placeholderStyles,
       hideTemplates: true,
       schema: [],
     },
@@ -1069,7 +1069,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
       label: "Basic Card",
       type: "card",
       pasteSlots: ["Card1", "Card2"],
-      styles: bannerCard2Styles as any,
+      styles: bannerCard2Styles,
       auto: bannerCard2Auto,
       editing: ({ values, editingInfo }) => {
         const isNoneMode = values.mode === "none";

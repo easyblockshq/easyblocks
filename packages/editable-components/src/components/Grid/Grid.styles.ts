@@ -1,9 +1,11 @@
 import { spacingToPx } from "@easyblocks/app-utils";
-import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
-import { box } from "../../box";
+import type {
+  NoCodeComponentStylesFunctionInput,
+  NoCodeComponentStylesFunctionResult,
+} from "@easyblocks/core";
 import { parseAspectRatio } from "../../parseAspectRatio";
 import { gridController } from "./Grid.controller";
-import { GridCompiledValues, GridParams } from "./Grid.types";
+import type { GridCompiledValues, GridParams } from "./Grid.types";
 import {
   buildItemPositions,
   buildRows,
@@ -14,7 +16,10 @@ function styles({
   values,
   params,
   device,
-}: NoCodeComponentStylesFunctionInput<GridCompiledValues, GridParams>) {
+}: NoCodeComponentStylesFunctionInput<
+  GridCompiledValues,
+  GridParams
+>): NoCodeComponentStylesFunctionResult {
   const {
     cssAbsoluteLeftPosition,
     cssAbsoluteRightPosition,
@@ -169,13 +174,13 @@ function styles({
 
   const gridTemplateColumns = `repeat(${itemsVisible}, minmax(0, 1fr))`;
 
-  const Root = box({
+  const Root = {
     position: "relative",
     paddingLeft: containerMarginLeft,
     paddingRight: containerMarginRight,
-  });
+  };
 
-  const Container = box({
+  const Container = {
     position: "relative",
     display: containerDisplay,
 
@@ -204,9 +209,9 @@ function styles({
     paddingBottom,
     paddingLeft,
     paddingRight,
-  });
+  };
 
-  const InnerContainer = box({
+  const InnerContainer = {
     display: innerContainerDisplay,
 
     flexDirection: "row",
@@ -219,23 +224,22 @@ function styles({
     alignItems: "stretch",
 
     width: "100%",
-  });
+  };
 
-  const createSpacer = (basis: string) =>
-    box({
-      display: spacerDisplay,
-      height: "1px",
-      position: "relative",
-      flexGrow: 0,
-      flexShrink: 0,
-      flexBasis: basis,
-      zIndex: 0,
-    });
+  const createSpacer = (basis: string) => ({
+    display: spacerDisplay,
+    height: "1px",
+    position: "relative",
+    flexGrow: 0,
+    flexShrink: 0,
+    flexBasis: basis,
+    zIndex: 0,
+  });
 
   const SpacerLeft = createSpacer(spacerLeftWidth);
   const SpacerRight = createSpacer(spacerRightWidth);
 
-  const LeftArrowWrapper = box({
+  const LeftArrowWrapper = {
     display: leftArrowWrapperDisplay,
     position: "absolute",
     top: 0,
@@ -248,15 +252,15 @@ function styles({
     zIndex: 100,
     transition: "opacity .15s",
     opacity: 0,
-  });
+  };
 
-  const LeftArrowInnerWrapper = box({
+  const LeftArrowInnerWrapper = {
     position: "relative",
     left: leftArrowInnerWrapperLeft,
     pointerEvents: "initial",
-  });
+  };
 
-  const RightArrowWrapper = box({
+  const RightArrowWrapper = {
     display: rightArrowWrapperDisplay,
     position: "absolute",
     top: 0,
@@ -269,13 +273,13 @@ function styles({
     zIndex: 100,
     transition: "opacity .15s",
     opacity: 0,
-  });
+  };
 
-  const RightArrowInnerWrapper = box({
+  const RightArrowInnerWrapper = {
     position: "relative",
     left: rightArrowInnerWrapperLeft,
     pointerEvents: "initial",
-  });
+  };
 
   const itemProps: any[] = [];
 
@@ -364,7 +368,7 @@ function styles({
         ...baseProps,
       });
 
-      return box({
+      return {
         display: "grid",
         position: "relative",
         marginRight:
@@ -372,7 +376,7 @@ function styles({
         flexGrow: 0,
         flexShrink: 0,
         width: itemContainerWidth,
-      });
+      };
     }
 
     if (card.itemSize === "1x1") {
@@ -380,10 +384,10 @@ function styles({
         ...baseProps,
       });
 
-      return box({
+      return {
         position: "relative",
         display: "grid",
-      });
+      };
     } else if (card.itemSize === "2x1" || card.itemSize === "2x2") {
       itemProps.push({
         ...baseProps,
@@ -391,22 +395,22 @@ function styles({
       });
 
       if (numberOfItems === 1) {
-        return box({
+        return {
           position: "relative",
           display: "grid",
-        });
+        };
       }
 
       let { row, col } = findFirstItemInRows(rows, index)!;
       row++;
       col++;
 
-      return box({
+      return {
         position: "relative",
         display: "grid",
         gridRow: card.itemSize === "2x1" ? row : `${row} / span 2`,
         gridColumn: `${col} / span 2`,
-      });
+      };
     } else {
       throw new Error("other modes than 1x1 and 2x1 are not yet supported");
     }
@@ -416,25 +420,25 @@ function styles({
     const verticalAlign =
       card.verticalAlign === "auto" ? values.verticalAlign : card.verticalAlign;
 
-    return box({
+    return {
       display: "grid",
       position: "relative",
       alignItems: verticalAlignToFlexAlign(verticalAlign),
-    });
+    };
   });
 
   const verticalLines = cardStyles.map((_, index) => {
     if (!values.borderEnabled) {
-      return box({
+      return {
         display: "none",
-      });
+      };
     }
 
     if (itemPositions[index].isLastColumn) {
-      return box({
+      return {
         position: "absolute",
         display: "none",
-      });
+      };
     }
 
     const halfRowGap = `calc(${rowGap} / 2)`;
@@ -457,7 +461,7 @@ function styles({
       height = `calc(100% + ${rowGap})`;
     }
 
-    return box({
+    return {
       position: "absolute",
       top,
       right: getLineEndPosition(values.borderInner + "px", columnGap),
@@ -465,23 +469,23 @@ function styles({
       height,
       background: values.borderColor,
       zIndex: 50,
-    });
+    };
   });
 
   const horizontalLines = cardStyles.map((_, index) => {
     if (!values.borderEnabled) {
-      return box({
+      return {
         display: "none",
-      });
+      };
     }
 
     if (
       itemPositions[index].isLastRow /* || !itemPositions[index].isFirstColumn*/
     ) {
-      return box({
+      return {
         position: "absolute",
         display: "none",
-      });
+      };
     }
 
     let width;
@@ -507,7 +511,7 @@ function styles({
       left = halfColGapNegative;
     }
 
-    return box({
+    return {
       position: "absolute",
       bottom: getLineEndPosition(values.borderInner + "px", rowGap), // this min() is required to have at least 1px. This is super important for zero gaps.
       width,
@@ -515,32 +519,37 @@ function styles({
       height: `${values.borderInner}px`,
       background: values.borderColor,
       zIndex: 50,
-    });
+    };
   });
 
   return {
-    Root,
-    Container,
-    InnerContainer,
-    SpacerLeft,
-    SpacerRight,
-    itemContainers,
-    itemInnerContainers,
-    Cards: {
-      itemProps,
+    styled: {
+      Root,
+      Container,
+      InnerContainer,
+      SpacerLeft,
+      SpacerRight,
+      itemContainers,
+      itemInnerContainers,
+      LeftArrowWrapper,
+      LeftArrowInnerWrapper,
+      RightArrowWrapper,
+      RightArrowInnerWrapper,
+      horizontalLines,
+      verticalLines,
     },
-    LeftArrowWrapper,
-    LeftArrowInnerWrapper,
-    LeftArrow: {
-      noAction: true,
+    components: {
+      Cards: {
+        itemProps,
+      },
+      LeftArrow: {
+        noAction: true,
+      },
+
+      RightArrow: {
+        noAction: true,
+      },
     },
-    RightArrowWrapper,
-    RightArrowInnerWrapper,
-    RightArrow: {
-      noAction: true,
-    },
-    horizontalLines,
-    verticalLines,
   };
 }
 

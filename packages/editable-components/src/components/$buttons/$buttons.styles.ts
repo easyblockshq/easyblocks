@@ -1,10 +1,12 @@
-import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
-import { box } from "../../box";
+import type {
+  NoCodeComponentStylesFunctionInput,
+  NoCodeComponentStylesFunctionResult,
+} from "@easyblocks/core";
 
 export function buttonsStyles({
   values,
   params,
-}: NoCodeComponentStylesFunctionInput) {
+}: NoCodeComponentStylesFunctionInput): NoCodeComponentStylesFunctionResult {
   const align = params.passedAlign || "left";
   let flexAlign = "flex-start";
   if (align === "center") {
@@ -14,14 +16,16 @@ export function buttonsStyles({
   }
 
   return {
-    ButtonsContainer: box({
-      display: "flex",
-      flexWrap: "wrap",
-      flexDirection: values.verticalLayout ? "column" : "row",
-      justifyContent: values.verticalLayout ? "normal" : flexAlign,
-      alignItems: values.verticalLayout ? flexAlign : "center",
-      gap: values.gap,
-      pointerEvents: "auto", // force clickability
-    }),
+    styled: {
+      ButtonsContainer: {
+        display: "flex",
+        flexWrap: "wrap",
+        flexDirection: values.verticalLayout ? "column" : "row",
+        justifyContent: values.verticalLayout ? "normal" : flexAlign,
+        alignItems: values.verticalLayout ? flexAlign : "center",
+        gap: values.gap,
+        pointerEvents: "auto", // force clickability
+      },
+    },
   };
 }

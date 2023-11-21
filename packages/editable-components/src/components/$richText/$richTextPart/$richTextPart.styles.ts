@@ -1,5 +1,7 @@
-import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
-import { box } from "../../../box";
+import type {
+  NoCodeComponentStylesFunctionInput,
+  NoCodeComponentStylesFunctionResult,
+} from "@easyblocks/core";
 
 const DEFAULT_FONT_VALUES = {
   fontWeight: "initial",
@@ -19,15 +21,16 @@ export default function styles({
 }: NoCodeComponentStylesFunctionInput<
   RichTextPartValues,
   { __modifierStyles?: Record<string, any> }
->) {
+>): NoCodeComponentStylesFunctionResult {
   const fontWithDefaults = {
     ...DEFAULT_FONT_VALUES,
     ...font,
   };
 
   return {
-    Text: box(
-      {
+    styled: {
+      Text: {
+        __as: "span",
         color,
         ...fontWithDefaults,
         ...__modifierStyles,
@@ -38,7 +41,6 @@ export default function styles({
           ...__modifierStyles,
         },
       },
-      "span"
-    ),
+    },
   };
 }

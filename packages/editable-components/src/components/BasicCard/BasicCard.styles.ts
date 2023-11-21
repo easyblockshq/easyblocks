@@ -1,9 +1,11 @@
-import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
+import type {
+  NoCodeComponentStylesFunctionInput,
+  NoCodeComponentStylesFunctionResult,
+} from "@easyblocks/core";
 import { getBorderCSSProps } from "../../borderHelpers";
-import { box } from "../../box";
-import { EdgeCompiledValues } from "../../common.types";
+import type { EdgeCompiledValues } from "../../common.types";
 import { basicCardController } from "./BasicCard.controller";
-import { BasicCardCompiledValues } from "./BasicCard.types";
+import type { BasicCardCompiledValues } from "./BasicCard.types";
 
 function styles({
   values,
@@ -11,7 +13,7 @@ function styles({
 }: NoCodeComponentStylesFunctionInput<
   BasicCardCompiledValues,
   EdgeCompiledValues & Record<string, any>
->) {
+>): NoCodeComponentStylesFunctionResult {
   const {
     padding,
     posH,
@@ -29,52 +31,56 @@ function styles({
     posV === "top" ? "flex-start" : posV === "center" ? "center" : "flex-end";
 
   return {
-    ContentContainer: box({
-      position: "relative",
-      borderRadius: noBorders ? 0 : values.cornerRadius + "px",
-      overflow: noBorders || values.cornerRadius === "0" ? "visible" : "auto",
-      display: "grid",
-      ...(noBorders ? [] : getBorderCSSProps(values)),
-    }),
+    styled: {
+      ContentContainer: {
+        position: "relative",
+        borderRadius: noBorders ? 0 : values.cornerRadius + "px",
+        overflow: noBorders || values.cornerRadius === "0" ? "visible" : "auto",
+        display: "grid",
+        ...(noBorders ? [] : getBorderCSSProps(values)),
+      },
 
-    BackgroundContainer: box({
-      position: "relative",
-      gridColumn: "1 / span 1",
-      gridRow: "1 / span 1",
-      display: hideBackground ? "none" : "grid",
-    }),
+      BackgroundContainer: {
+        position: "relative",
+        gridColumn: "1 / span 1",
+        gridRow: "1 / span 1",
+        display: hideBackground ? "none" : "grid",
+      },
 
-    Background: {
-      passedAspectRatio: backgroundAspectRatio, // we set name "passedAspectRatio" to avoid conflict with "aspectRatio" internal prop. For now overriding is risky.
-      gridBaseLineHeight: params.gridBaseLineHeight,
-      noAction: true,
-      noAspectRatio: true,
-      noTrace: true,
+      StackContainer: {
+        gridColumn: "1 / span 1",
+        gridRow: "1 / span 1",
+
+        display: hideContent || !enableContent ? "none" : "flex",
+        justifyContent: flexPosH,
+        alignItems: flexPosV,
+      },
+
+      StackInnerContainer: {
+        position: "relative",
+        width: "auto",
+        maxWidth: "100%",
+      },
     },
 
-    Stack: {
-      paddingLeft: padding.left,
-      paddingRight: padding.right,
-      paddingBottom: padding.bottom,
-      paddingTop: padding.top,
-      $width: params.$width,
-      $widthAuto: true,
+    components: {
+      Background: {
+        passedAspectRatio: backgroundAspectRatio, // we set name "passedAspectRatio" to avoid conflict with "aspectRatio" internal prop. For now overriding is risky.
+        gridBaseLineHeight: params.gridBaseLineHeight,
+        noAction: true,
+        noAspectRatio: true,
+        noTrace: true,
+      },
+
+      Stack: {
+        paddingLeft: padding.left,
+        paddingRight: padding.right,
+        paddingBottom: padding.bottom,
+        paddingTop: padding.top,
+        $width: params.$width,
+        $widthAuto: true,
+      },
     },
-
-    StackContainer: box({
-      gridColumn: "1 / span 1",
-      gridRow: "1 / span 1",
-
-      display: hideContent || !enableContent ? "none" : "flex",
-      justifyContent: flexPosH,
-      alignItems: flexPosV,
-    }),
-
-    StackInnerContainer: box({
-      position: "relative",
-      width: "auto",
-      maxWidth: "100%",
-    }),
   };
 }
 

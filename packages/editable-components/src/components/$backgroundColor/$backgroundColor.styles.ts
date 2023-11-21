@@ -1,11 +1,13 @@
-import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
-import { box } from "../../box";
+import type {
+  NoCodeComponentStylesFunctionInput,
+  NoCodeComponentStylesFunctionResult,
+} from "@easyblocks/core";
 import { getPaddingBottomAndHeightFromAspectRatio } from "../../parseAspectRatio";
 
 export function backgroundColorStyles({
   values,
   params,
-}: NoCodeComponentStylesFunctionInput) {
+}: NoCodeComponentStylesFunctionInput): NoCodeComponentStylesFunctionResult {
   const { height, paddingBottom } = getPaddingBottomAndHeightFromAspectRatio(
     params.passedAspectRatio,
     10,
@@ -13,21 +15,23 @@ export function backgroundColorStyles({
   );
 
   return {
-    Wrapper: box({
-      position: "relative",
-    }),
-    AspectRatioMaker: box({
-      position: "relative",
-      paddingBottom,
-      height,
-    }),
-    Background: box({
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      backgroundColor: values.color,
-    }),
+    styled: {
+      Wrapper: {
+        position: "relative",
+      },
+      AspectRatioMaker: {
+        position: "relative",
+        paddingBottom,
+        height,
+      },
+      Background: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        backgroundColor: values.color,
+      },
+    },
   };
 }

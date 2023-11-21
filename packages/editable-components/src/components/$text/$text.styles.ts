@@ -1,5 +1,7 @@
-import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
-import { box } from "../../box";
+import type {
+  NoCodeComponentStylesFunctionInput,
+  NoCodeComponentStylesFunctionResult,
+} from "@easyblocks/core";
 
 export default function ({
   values,
@@ -12,7 +14,7 @@ export default function ({
     font: Record<string, any>;
   },
   { passedAlign: string }
->) {
+>): NoCodeComponentStylesFunctionResult {
   const align = params.passedAlign || "left";
 
   const fontWithDefaults = {
@@ -22,9 +24,10 @@ export default function ({
   };
 
   return {
-    Text: box(
-      {
+    styled: {
+      Text: {
         ...fontWithDefaults,
+        __as: values.accessibilityRole,
         color: values.color,
         textAlign: align,
         "& textarea::placeholder": {
@@ -38,7 +41,6 @@ export default function ({
         },
         border: values.value === "" ? "1px dotted grey" : "none",
       },
-      values.accessibilityRole
-    ),
+    },
   };
 }

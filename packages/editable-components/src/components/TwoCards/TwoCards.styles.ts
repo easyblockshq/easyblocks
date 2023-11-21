@@ -1,9 +1,11 @@
 import { spacingToPx } from "@easyblocks/app-utils";
-import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
-import { box } from "../../box";
-import { EdgeCompiledValues } from "../../common.types";
+import type {
+  NoCodeComponentStylesFunctionInput,
+  NoCodeComponentStylesFunctionResult,
+} from "@easyblocks/core";
+import { type EdgeCompiledValues } from "../../common.types";
 import { getEdgeValues } from "../../getEdgeValues";
-import { TwoCardsCompiledValues } from "./TwoCards.types";
+import type { TwoCardsCompiledValues } from "./TwoCards.types";
 import { TWO_CARDS_COL_NUM } from "./twoCardsConstants";
 
 function styles({
@@ -13,7 +15,7 @@ function styles({
 }: NoCodeComponentStylesFunctionInput<
   TwoCardsCompiledValues,
   EdgeCompiledValues
->) {
+>): NoCodeComponentStylesFunctionResult {
   const edgeInfo = getEdgeValues(params);
 
   const edgeLeftMargin = edgeInfo.edgeLeftMargin ?? "0px";
@@ -206,36 +208,39 @@ function styles({
   const invert = values.collapse && values.invertCollapsed;
 
   return {
-    Root: box({
-      display: "flex",
-      flexDirection: values.collapse ? "column" : "row",
-      justifyContent: "space-between",
-      gap: values.collapse ? values.verticalGap : horizontalGap,
-      alignItems,
-    }),
+    styled: {
+      Root: {
+        display: "flex",
+        flexDirection: values.collapse ? "column" : "row",
+        justifyContent: "space-between",
+        gap: values.collapse ? values.verticalGap : horizontalGap,
+        alignItems,
+      },
+      Card1Container: {
+        display: "grid",
+        order: invert ? 2 : 0,
+        ...card1ContainerStyles,
+      },
 
-    Card1: {
-      ...card1Props,
-      $width: $widthContainer1,
-      $widthAuto: false,
+      Card2Container: {
+        display: "grid",
+        ...card2ContainerStyles,
+      },
     },
 
-    Card2: {
-      ...card2Props,
-      $width: $widthContainer2,
-      $widthAuto: false,
+    components: {
+      Card1: {
+        ...card1Props,
+        $width: $widthContainer1,
+        $widthAuto: false,
+      },
+
+      Card2: {
+        ...card2Props,
+        $width: $widthContainer2,
+        $widthAuto: false,
+      },
     },
-
-    Card1Container: box({
-      display: "grid",
-      order: invert ? 2 : 0,
-      ...card1ContainerStyles,
-    }),
-
-    Card2Container: box({
-      display: "grid",
-      ...card2ContainerStyles,
-    }),
   };
 }
 

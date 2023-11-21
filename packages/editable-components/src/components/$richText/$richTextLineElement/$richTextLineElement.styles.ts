@@ -1,8 +1,10 @@
-import { Alignment } from "@easyblocks/app-utils";
-import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
+import type { Alignment } from "@easyblocks/app-utils";
+import type {
+  NoCodeComponentStylesFunctionInput,
+  NoCodeComponentStylesFunctionResult,
+} from "@easyblocks/core";
 import { mapAlignmentToFlexAlignment } from "../$richText.styles";
-import { RichTextBlockElementType } from "../$richTextBlockElement/$richTextBlockElement";
-import { box } from "../../../box";
+import type { RichTextBlockElementType } from "../$richTextBlockElement/$richTextBlockElement";
 
 export type RichTextLineCompiledComponentValues = {
   align: Alignment;
@@ -11,17 +13,15 @@ export type RichTextLineCompiledComponentValues = {
 
 export default function styles({
   values,
-}: NoCodeComponentStylesFunctionInput<RichTextLineCompiledComponentValues>) {
+}: NoCodeComponentStylesFunctionInput<RichTextLineCompiledComponentValues>): NoCodeComponentStylesFunctionResult {
   return {
-    TextLine: box(
-      {
+    styled: {
+      TextLine: {
         lineHeight: "initial",
         wordBreak: "break-word",
       },
-      "div"
-    ),
-    ListItem: box(
-      {
+      ListItem: {
+        __as: "li",
         display: "flex",
         justifyContent: mapAlignmentToFlexAlignment(values.align),
         alignItems: "baseline",
@@ -35,9 +35,9 @@ export default function styles({
           minWidth: 0,
         },
       },
-      "li"
-    ),
-    __props: {
+    },
+
+    props: {
       blockType: values.blockType,
     },
   };

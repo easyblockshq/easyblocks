@@ -1,19 +1,9 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
-import { ReactElement } from "react";
-import { CompiledNoCodeComponentProps } from "../../../types";
-import {
-  RichTextInlineWrapperElementCompiledComponentConfig,
-  RichTextInlineWrapperElementEditableComponentConfig,
-} from "./$richTextInlineWrapperElement";
+import React, { ReactElement } from "react";
 
-type RichTextActionElementProps = CompiledNoCodeComponentProps<
-  RichTextInlineWrapperElementEditableComponentConfig["_template"],
-  Record<string, never>,
-  Record<string, never>,
-  RichTextInlineWrapperElementCompiledComponentConfig["styled"]
-> & {
+type RichTextActionElementProps = {
   elements: Array<ReactElement>;
-  action?: React.ReactElement;
+  action?: ReactElement;
+  Link: ReactElement;
 };
 
 export default function RichTextActionElement(

@@ -1,17 +1,21 @@
+import type {
+  NoCodeComponentStylesFunctionInput,
+  NoCodeComponentStylesFunctionResult,
+} from "@easyblocks/core";
 import { cleanupIconSVG } from "../../cleanupIconSVG";
-import { box } from "../../box";
-import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
 
 export function iconStyles({
   values,
   params,
-}: NoCodeComponentStylesFunctionInput) {
+}: NoCodeComponentStylesFunctionInput): NoCodeComponentStylesFunctionResult {
   return {
-    IconWrapper: box({
-      display: "grid",
-      color: params.passed_allowColor ? values.color : "currentColor",
-    }),
-    __props: {
+    styled: {
+      IconWrapper: {
+        display: "grid",
+        color: params.passed_allowColor ? values.color : "currentColor",
+      },
+    },
+    props: {
       icon: cleanupIconSVG(values.icon),
     },
   };

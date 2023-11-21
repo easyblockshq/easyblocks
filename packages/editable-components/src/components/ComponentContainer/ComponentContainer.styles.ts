@@ -1,18 +1,24 @@
-import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
-import { box } from "../../box";
+import type {
+  NoCodeComponentStylesFunctionInput,
+  NoCodeComponentStylesFunctionResult,
+} from "@easyblocks/core";
 
 export function componentContainerStyles({
   values,
-}: NoCodeComponentStylesFunctionInput) {
+}: NoCodeComponentStylesFunctionInput): NoCodeComponentStylesFunctionResult {
   return {
-    Container: box({
-      position: "relative",
-      display: values.widthAuto ? "inline-flex" : "block",
-      maxWidth: values.width === -1 ? "auto" : `${values.width}px`,
-    }),
-    Component: {
-      $width: values.width,
-      $widthAuto: values.widthAuto,
+    styled: {
+      Container: {
+        position: "relative",
+        display: values.widthAuto ? "inline-flex" : "block",
+        maxWidth: values.width === -1 ? "auto" : `${values.width}px`,
+      },
+    },
+    components: {
+      Component: {
+        $width: values.width,
+        $widthAuto: values.widthAuto,
+      },
     },
   };
 }

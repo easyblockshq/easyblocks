@@ -1,9 +1,9 @@
-import {
+import type {
   CompiledTextModifier,
   ConfigComponent,
   NoCodeComponentStylesFunctionInput,
+  NoCodeComponentStylesFunctionResult,
 } from "@easyblocks/core";
-import { box } from "../../../box";
 import { getTextModifierStyles } from "../../../getTextModifierStyles";
 
 export type RichTextActionElementValues = {
@@ -19,7 +19,7 @@ export default function styles({
   __COMPILATION_CONTEXT__,
 }: NoCodeComponentStylesFunctionInput<RichTextActionElementValues> & {
   __COMPILATION_CONTEXT__: any;
-}) {
+}): NoCodeComponentStylesFunctionResult {
   const { modifierStyles, childStyles } = getTextModifierStyles(
     actionTextModifier,
     __COMPILATION_CONTEXT__
@@ -37,13 +37,13 @@ export default function styles({
       : {};
 
   return {
-    Link: box(
-      {
+    styled: {
+      Link: {
+        __as: isEditing ? "span" : "a",
         pointerEvents: "auto",
         ...modifierStyles,
       },
-      isEditing ? "span" : "a"
-    ),
-    ...contextProps,
+    },
+    props: contextProps,
   };
 }

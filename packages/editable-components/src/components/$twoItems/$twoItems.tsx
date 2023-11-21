@@ -3,18 +3,16 @@ import React, { ReactElement } from "react";
 function TwoItems(props: {
   Container: ReactElement;
   Items: Array<ReactElement>;
-  itemWrappers: Array<{
-    OuterWrapper: ReactElement;
-    InnerWrapper: ReactElement;
-  }>;
+  outerWrappers: Array<ReactElement>;
+  innerWrappers: Array<ReactElement>;
 }) {
-  const { Container, Items, itemWrappers } = props;
+  const { Container, Items, outerWrappers, innerWrappers } = props;
 
   return (
     <Container.type {...Container.props}>
       {Items.map((Item, index) => {
-        const OuterWrapper = itemWrappers[index].OuterWrapper;
-        const InnerWrapper = itemWrappers[index].InnerWrapper;
+        const OuterWrapper = outerWrappers[index];
+        const InnerWrapper = innerWrappers[index];
 
         return (
           <OuterWrapper.type {...OuterWrapper.props}>

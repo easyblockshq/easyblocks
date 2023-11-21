@@ -1,5 +1,4 @@
-import { NoCodeComponentStylesFunction } from "@easyblocks/core";
-import { box } from "../../box";
+import type { NoCodeComponentStylesFunction } from "@easyblocks/core";
 
 export const rootSectionStyles: NoCodeComponentStylesFunction = ({
   values,
@@ -13,13 +12,13 @@ export const rootSectionStyles: NoCodeComponentStylesFunction = ({
       : values.data;
 
   const ItemWrappers = dataProps.map((x: any, index: number) => {
-    const itemWrapperStyles: Record<string, unknown> = {
+    const itemWrapperStyles = {
       display: !isEditing && x.hide ? "none" : "block",
       paddingTop: index === 0 ? x.topMargin : 0,
       paddingBottom: x.bottomMargin,
     };
 
-    return box(itemWrapperStyles);
+    return itemWrapperStyles;
   });
 
   const dataItemProps = values.data.map(() => {
@@ -30,9 +29,13 @@ export const rootSectionStyles: NoCodeComponentStylesFunction = ({
   });
 
   return {
-    ItemWrappers,
-    data: {
-      itemProps: dataItemProps,
+    styled: {
+      ItemWrappers,
+    },
+    components: {
+      data: {
+        itemProps: dataItemProps,
+      },
     },
   };
 };

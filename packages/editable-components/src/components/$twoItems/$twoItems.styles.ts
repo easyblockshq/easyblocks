@@ -1,10 +1,12 @@
-import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
-import { box } from "../../box";
+import type {
+  NoCodeComponentStylesFunctionInput,
+  NoCodeComponentStylesFunctionResult,
+} from "@easyblocks/core";
 
 export default function ({
   values,
   params,
-}: NoCodeComponentStylesFunctionInput) {
+}: NoCodeComponentStylesFunctionInput): NoCodeComponentStylesFunctionResult {
   const $width = params.$width;
 
   const items =
@@ -14,39 +16,46 @@ export default function ({
 
   const $itemWidth = $width / items.length; // TODO: very lame interpolation, no time :(
 
-  const itemWrappers = items.map((x: any) => {
-    return {
-      OuterWrapper: box({
-        display: "flex",
-        flex: x.columnWidth === "fill" ? "1 1 0" : `0 0 ${x.columnWidth}px`,
-        justifyContent: x.itemWidth === "fill" ? "stretch" : x.itemAlign,
-      }),
-      InnerWrapper: box({
-        display: "grid",
-        flexBasis: x.itemWidth === "fill" ? "100%" : `${x.itemWidth}px`,
-      }),
-    };
+  const outerWrappers: Array<Record<string, unknown>> = [];
+  const innerWrappers: Array<Record<string, unknown>> = [];
+
+  items.forEach((x: any) => {
+    outerWrappers.push({
+      display: "flex",
+      flex: x.columnWidth === "fill" ? "1 1 0" : `0 0 ${x.columnWidth}px`,
+      justifyContent: x.itemWidth === "fill" ? "stretch" : x.itemAlign,
+    });
+
+    innerWrappers.push({
+      display: "grid",
+      flexBasis: x.itemWidth === "fill" ? "100%" : `${x.itemWidth}px`,
+    });
   });
 
   return {
-    Container: box({
-      display: "flex",
-      flexDirection: "row",
-      alignItems: values.verticalAlign,
-      gap: values.gap,
-    }),
-    itemWrappers,
-    Items: {
-      itemProps: items.map((x: any) => ({
-        align:
-          x.itemAlign === "flex-start"
-            ? "left"
-            : x.itemAlign === "center"
-            ? "center"
-            : "right",
-        $width: $itemWidth,
-        $widthAuto: false,
-      })),
+    styled: {
+      Container: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: values.verticalAlign,
+        gap: values.gap,
+      },
+      outerWrappers,
+      innerWrappers,
+    },
+    components: {
+      Items: {
+        itemProps: items.map((x: any) => ({
+          align:
+            x.itemAlign === "flex-start"
+              ? "left"
+              : x.itemAlign === "center"
+              ? "center"
+              : "right",
+          $width: $itemWidth,
+          $widthAuto: false,
+        })),
+      },
     },
   };
 }

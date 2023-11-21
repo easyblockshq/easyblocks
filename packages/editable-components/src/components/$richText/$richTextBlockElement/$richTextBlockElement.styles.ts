@@ -1,9 +1,11 @@
-import { Alignment } from "@easyblocks/app-utils";
-import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
-import { RichTextAccessibilityRole } from "../$richText";
-import { RichTextPartCompiledComponentConfig } from "../$richTextPart/$richTextPart";
-import { box } from "../../../box";
-import { RichTextBlockElementType } from "./$richTextBlockElement";
+import type { Alignment } from "@easyblocks/app-utils";
+import type {
+  NoCodeComponentStylesFunctionInput,
+  NoCodeComponentStylesFunctionResult,
+} from "@easyblocks/core";
+import type { RichTextAccessibilityRole } from "../$richText";
+import type { RichTextPartCompiledComponentConfig } from "../$richTextPart/$richTextPart";
+import type { RichTextBlockElementType } from "./$richTextBlockElement";
 
 export type RichTextBlockElementValues = {
   elements: Array<{ elements: Array<RichTextPartCompiledComponentConfig> }>;
@@ -43,7 +45,7 @@ export default function styles({
 }: NoCodeComponentStylesFunctionInput<
   RichTextBlockElementValues,
   RichTextBlockElementParams
->) {
+>): NoCodeComponentStylesFunctionResult {
   const maxDigitsCount = elements.length.toString().length;
 
   const paddingInline = `clamp(${px(
@@ -93,14 +95,18 @@ export default function styles({
   };
 
   return {
-    Paragraph: box({}, accessibilityRole),
-    BulletedList: box(listStyles, "ul"),
-    NumberedList: box(listStyles, "ol"),
-    elements: {
-      itemProps: elements.map(() => ({
-        blockType: type,
-        align,
-      })),
+    styled: {
+      Paragraph: { __as: accessibilityRole },
+      BulletedList: { __as: "ul", ...listStyles },
+      NumberedList: { __as: "ol", ...listStyles },
+    },
+    components: {
+      elements: {
+        itemProps: elements.map(() => ({
+          blockType: type,
+          align,
+        })),
+      },
     },
   };
 }

@@ -1,7 +1,9 @@
 import { spacingToPx } from "@easyblocks/app-utils";
-import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
+import {
+  NoCodeComponentStylesFunctionInput,
+  NoCodeComponentStylesFunctionResult,
+} from "@easyblocks/core";
 import { getBorderCSSProps, getBorderInfo } from "../../borderHelpers";
-import { box } from "../../box";
 import { EdgeCompiledValues } from "../../common.types";
 import { getEdgeValues } from "../../getEdgeValues";
 import { bannerCard2SeparateStackModeController } from "./BannerCard2.controller";
@@ -15,7 +17,7 @@ function styles({
 }: NoCodeComponentStylesFunctionInput<
   BannerCard2CompiledValues,
   EdgeCompiledValues
->) {
+>): NoCodeComponentStylesFunctionResult {
   // For now only mobile possible
   const { cornerRadius } = values;
 
@@ -286,29 +288,33 @@ function styles({
   }
 
   return {
-    Container: box({
-      position: "relative",
-      width: "100%",
-      borderRadius: cornerRadius + "px",
-      ...getBorderCSSProps(values),
-      overflow: cornerRadius !== "0" ? "hidden" : "visible",
-      pointerEvents: shouldActivateCardLink ? "none" : "auto",
-      ...rootStyles,
-    }),
+    styled: {
+      Container: {
+        position: "relative",
+        width: "100%",
+        borderRadius: cornerRadius + "px",
+        ...getBorderCSSProps(values),
+        overflow: cornerRadius !== "0" ? "hidden" : "visible",
+        pointerEvents: shouldActivateCardLink ? "none" : "auto",
+        ...rootStyles,
+      },
 
-    SidePhotoContainer: box({
-      position: "relative",
-      display: "grid",
-      ...backgroundStyles,
-    }),
+      SidePhotoContainer: {
+        position: "relative",
+        display: "grid",
+        ...backgroundStyles,
+      },
 
-    ContentContainer: box({
-      display: "grid",
-      ...contentStyles,
-    }),
+      ContentContainer: {
+        display: "grid",
+        ...contentStyles,
+      },
+    },
 
-    Card1,
-    Card2,
+    components: {
+      Card1,
+      Card2,
+    },
   };
 }
 export default styles;

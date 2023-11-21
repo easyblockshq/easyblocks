@@ -1,8 +1,12 @@
-import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
+import type {
+  NoCodeComponentStylesFunctionInput,
+  NoCodeComponentStylesFunctionResult,
+} from "@easyblocks/core";
 import $imageStyles from "../$image/$image.styles";
-import { box } from "../../box";
 
-export default function styles(input: NoCodeComponentStylesFunctionInput) {
+export default function styles(
+  input: NoCodeComponentStylesFunctionInput
+): NoCodeComponentStylesFunctionResult {
   const imageBoxes = $imageStyles(input);
   const { values } = input;
 
@@ -19,7 +23,7 @@ export default function styles(input: NoCodeComponentStylesFunctionInput) {
     throw new Error("unreachable");
   }
 
-  const ControlsContainer = box({
+  const ControlsContainer = {
     display:
       values.enablePlaybackControls || values.enableSoundControls
         ? "flex"
@@ -31,40 +35,43 @@ export default function styles(input: NoCodeComponentStylesFunctionInput) {
     flexDirection: "row",
     gap: values.gap,
     pointerEvents: "auto", // let's enable clickability
-  });
+  };
 
   const ImageWrapper = {
-    ...imageBoxes.ImageWrapper,
+    ...(imageBoxes.styled!.ImageWrapper as Record<string, unknown>),
   };
 
   delete ImageWrapper.__action; // Video doesn't have action!!!
 
   return {
     ...imageBoxes,
-    ImageWrapper,
-    ControlsContainer,
-    Video: box(
-      {
+    styled: {
+      ...imageBoxes.styled,
+      ImageWrapper,
+      ControlsContainer,
+      Video: {
+        __as: "video",
         objectFit: "cover",
         objectPosition: "center center",
         width: "100%",
         height: "100%",
         position: "relative",
       },
-      "video"
-    ),
-    PlayButton: {
-      noAction: true,
     },
-    PauseButton: {
-      noAction: true,
+    components: {
+      ...imageBoxes.components,
+      PlayButton: {
+        noAction: true,
+      },
+      PauseButton: {
+        noAction: true,
+      },
+      MuteButton: {
+        noAction: true,
+      },
+      UnmuteButton: {
+        noAction: true,
+      },
     },
-    MuteButton: {
-      noAction: true,
-    },
-    UnmuteButton: {
-      noAction: true,
-    },
-    __props: imageBoxes.__props,
   };
 }

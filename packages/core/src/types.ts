@@ -2,7 +2,7 @@ import { ComponentType, ReactElement } from "react";
 import { PartialDeep } from "type-fest";
 import { Locale } from "./locales";
 
-type ScalarOrCollection<T> = T | Array<T>;
+export type ScalarOrCollection<T> = T | Array<T>;
 
 export type RefMap = { [key: string]: ConfigComponent };
 
@@ -498,10 +498,27 @@ export type NoCodeComponentStylesFunctionInput<
   isEditing: boolean;
 };
 
+export type NoCodeComponentStylesFunctionResult = {
+  props?: Record<string, unknown>;
+  components?: Record<
+    string,
+    {
+      /**
+       * `itemProps` can only be set if component prop is a collection.
+       */
+      itemProps?: Array<Record<string, unknown>>;
+      [key: string]: unknown;
+    }
+  >;
+  styled?: Record<string, ScalarOrCollection<Record<string, unknown>>>;
+};
+
 export type NoCodeComponentStylesFunction<
   Values extends Record<string, any> = Record<string, any>,
   Params extends Record<string, any> = Record<string, any>
-> = (input: NoCodeComponentStylesFunctionInput<Values, Params>) => any;
+> = (
+  input: NoCodeComponentStylesFunctionInput<Values, Params>
+) => NoCodeComponentStylesFunctionResult;
 
 export type NoCodeComponentEditingFunctionInput<
   Values extends Record<string, any> = Record<string, any>,
@@ -535,14 +552,17 @@ export type NoCodeComponentAutoFunction<
   input: NoCodeComponentAutoFunctionInput<Values, { $width: number } & Params>
 ) => any;
 
-export type NoCodeComponentDefinition = {
+export type NoCodeComponentDefinition<
+  Values extends Record<string, any> = Record<string, any>,
+  Params extends Record<string, any> = Record<string, any>
+> = {
   id: string;
   schema: Array<SchemaProp>;
   type?: string | string[];
   label?: string;
-  styles?: NoCodeComponentStylesFunction;
-  editing?: NoCodeComponentEditingFunction;
-  auto?: NoCodeComponentAutoFunction;
+  styles?: NoCodeComponentStylesFunction<Values, Params>;
+  editing?: NoCodeComponentEditingFunction<Values, Params>;
+  auto?: NoCodeComponentAutoFunction<Values, Params>;
   pasteSlots?: Array<string>;
 };
 

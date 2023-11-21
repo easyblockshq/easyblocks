@@ -1,18 +1,15 @@
-/** @jsx globalThis.__SHOPSTORY_REACT_SCOPE__.createElement */
-import { ReactNode } from "react";
-import { CompiledNoCodeComponentProps } from "../../../types";
-import {
-  RichTextBlockElementCompiledComponentConfig,
-  RichTextBlockElementComponentConfig,
-} from "./$richTextBlockElement";
+import React, { ReactElement } from "react";
+import type { CompiledNoCodeComponentProps } from "../../../types";
+import type { RichTextBlockElementComponentConfig } from "./$richTextBlockElement";
 
 type RichTextBlockElementProps = CompiledNoCodeComponentProps<
   RichTextBlockElementComponentConfig["_template"],
   Pick<RichTextBlockElementComponentConfig, "type">
 > & {
-  [key in keyof RichTextBlockElementCompiledComponentConfig["styled"]]: key extends "elements"
-    ? Array<React.ComponentType>
-    : React.ComponentType<{ children: ReactNode }>;
+  elements: Array<ReactElement>;
+  Paragraph: ReactElement;
+  BulletedList: ReactElement;
+  NumberedList: ReactElement;
 };
 
 export default function RichTextBlockElement(props: RichTextBlockElementProps) {
@@ -24,18 +21,24 @@ export default function RichTextBlockElement(props: RichTextBlockElementProps) {
     Paragraph,
   } = props;
 
-  const elements = Elements.map((Element, index) => <Element key={index} />);
+  const elements = Elements.map((Element, index) => (
+    <Element.type {...Element.props} key={index} />
+  ));
 
   if (type === "paragraph") {
-    return <Paragraph>{elements}</Paragraph>;
+    return <Paragraph.type {...Paragraph.props}>{elements}</Paragraph.type>;
   }
 
   if (type === "bulleted-list") {
-    return <BulletedList>{elements}</BulletedList>;
+    return (
+      <BulletedList.type {...BulletedList.props}>{elements}</BulletedList.type>
+    );
   }
 
   if (type === "numbered-list") {
-    return <NumberedList>{elements}</NumberedList>;
+    return (
+      <NumberedList.type {...NumberedList.props}>{elements}</NumberedList.type>
+    );
   }
 
   if (process.env.NODE_ENV === "development") {

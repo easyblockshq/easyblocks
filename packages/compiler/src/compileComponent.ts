@@ -54,6 +54,7 @@ import {
   SerializedRenderableComponentDefinition,
   SpaceSchemaProp,
   TrulyResponsiveValue,
+  ScalarOrCollection,
 } from "@easyblocks/core";
 import {
   RichTextComponentConfig,
@@ -491,7 +492,7 @@ export function compileComponent(
       editingContextProps = editingInfo.components;
     }
 
-    const { __props, ...stylesOutput } = resop2(
+    const { props, components, styled } = resop2(
       { values: compiledValues, params: ownPropsAfterAuto.params },
       ({ values, params }, breakpointIndex) => {
         if (!renderableComponentDefinition.styles) {
@@ -527,13 +528,21 @@ export function compileComponent(
       renderableComponentDefinition
     );
 
-    validateStylesProps(__props, componentDefinition);
+    validateStylesProps(props, componentDefinition);
 
-    subcomponentsContextProps = extractContextPropsFromStyles(stylesOutput);
+    subcomponentsContextProps = components;
 
     // Move all the boxes to _compiled
-    for (const key in stylesOutput) {
-      const value = stylesOutput[key];
+    for (const key in styled) {
+      let styles: ScalarOrCollection<Record<string, any>> = styled[key];
+
+      if (Array.isArray(styles)) {
+        styles = styles.map((v) => {
+          return { ...v, __isBox: true };
+        });
+      } else {
+        styles = { ...styles, __isBox: true };
+      }
 
       const schemaProp = componentDefinition.schema.find((x) => x.prop === key);
 
@@ -544,7 +553,7 @@ export function compileComponent(
 
       // If box
 
-      compiled.styled[key] = compileBoxes(value, compilationContext);
+      compiled.styled[key] = compileBoxes(styles, compilationContext);
     }
 
     componentDefinition.schema.forEach((schemaProp: SchemaProp) => {
@@ -569,7 +578,7 @@ export function compileComponent(
 
     // we also add __props to props
     compiled.props = {
-      ...__props,
+      ...props,
       ...compiled.props,
     };
 
@@ -707,10 +716,10 @@ export function compileComponent(
 }
 
 function validateStylesProps(
-  __props: Record<string, unknown>,
+  props: Record<string, unknown>,
   componentDefinition: InternalComponentDefinition
 ) {
-  for (const key of Object.keys(__props)) {
+  for (const key of Object.keys(props)) {
     const schemaProp = componentDefinition.schema.find((s) => s.prop === key);
 
     if (!schemaProp || !("buildOnly" in schemaProp)) {
@@ -719,7 +728,7 @@ function validateStylesProps(
 
     if (!schemaProp.buildOnly) {
       throw new Error(
-        `You've returned property "${key}" in "__props" object that conflicts with the same prop in schema of component "${componentDefinition.id}". You can either change the property name or set the schema property as build-only (\`buildOnly: true\`).`
+        `You've returned property "${key}" in "props" object that conflicts with the same prop in schema of component "${componentDefinition.id}". You can either change the property name or set the schema property as build-only (\`buildOnly: true\`).`
       );
     }
   }

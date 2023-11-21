@@ -1,12 +1,14 @@
-import { NoCodeComponentStylesFunctionInput } from "@easyblocks/core";
-import { box } from "../../box";
-import { BannerCardCompiledValues } from "./BannerCard.types";
+import type {
+  NoCodeComponentStylesFunctionInput,
+  NoCodeComponentStylesFunctionResult,
+} from "@easyblocks/core";
+import type { BannerCardCompiledValues } from "./BannerCard.types";
 
 function styles({
   values,
   params,
   isEditing,
-}: NoCodeComponentStylesFunctionInput<BannerCardCompiledValues>) {
+}: NoCodeComponentStylesFunctionInput<BannerCardCompiledValues>): NoCodeComponentStylesFunctionResult {
   // For now only mobile possible
 
   const { cornerRadius } = values;
@@ -352,106 +354,111 @@ function styles({
   const shouldActivateCardLink = !isEditing && values.action.length > 0;
 
   return {
-    Container: box({
-      position: "relative",
-      width: "100%",
-      borderRadius: cornerRadius + "px",
-      overflow: "hidden",
-      pointerEvents: shouldActivateCardLink ? "none" : "auto",
-      ...rootStyles,
-    }),
+    styled: {
+      Container: {
+        position: "relative",
+        width: "100%",
+        borderRadius: cornerRadius + "px",
+        overflow: "hidden",
+        pointerEvents: shouldActivateCardLink ? "none" : "auto",
+        ...rootStyles,
+      },
 
-    // Link: box({
-    //   position: "absolute",
-    //   top: 0,
-    //   left: 0,
-    //   width: "100%",
-    //   height: "100%",
-    //   opacity: 0,
-    //   cursor: "pointer",
-    //
-    //   display: shouldActivateCardLink ? "block" : "none",
-    //   pointerEvents: shouldActivateCardLink ? "auto" : "none",
-    //   __action: "action",
-    // }),
+      // Link: {
+      //   position: "absolute",
+      //   top: 0,
+      //   left: 0,
+      //   width: "100%",
+      //   height: "100%",
+      //   opacity: 0,
+      //   cursor: "pointer",
+      //
+      //   display: shouldActivateCardLink ? "block" : "none",
+      //   pointerEvents: shouldActivateCardLink ? "auto" : "none",
+      //   __action: "action",
+      // },
 
-    SidePhotoContainer: box({
-      // display: mainImageOn ? "block" : "none",
-      // flex: sidePhotoFlex,
-      // order: sidePhotoOrder,
-      ...sidePhotoStyles,
-      position: "relative",
-      display: "grid",
-    }),
-    SideImage: {
-      // fitH: true,
+      SidePhotoContainer: {
+        // display: mainImageOn ? "block" : "none",
+        // flex: sidePhotoFlex,
+        // order: sidePhotoOrder,
+        ...sidePhotoStyles,
+        position: "relative",
+        display: "grid",
+      },
 
-      // noInline: true,
-      passedAspectRatio: values.sideImageSize,
-      gridBaseLineHeight: values.gridBaseLineHeight, // TODO: remove this prop drill :(
-      noAction: true,
-      noAspectRatio: true,
+      ContentContainer: {
+        display: "grid",
+        ...contentStyles,
+      },
+
+      BackgroundContainer: {
+        position: "relative",
+        gridColumn: "1 / span 1",
+        gridRow: "1 / span 1",
+        display: "grid",
+      },
+
+      StackContainer: {
+        gridColumn: "1 / span 1",
+        gridRow: stackContainerGridRow,
+
+        display: "flex",
+        justifyContent: flexPosH,
+        alignItems: flexPosV,
+      },
+
+      StackInnerContainer: {
+        position: "relative",
+        width: "auto",
+        maxWidth: "100%",
+      },
+
+      TextOuterContainer: {
+        display: "flex",
+        justifyContent: flexPosH,
+        alignItems: flexPosV,
+        height: "100%",
+      },
+
+      TextContainer: {
+        position: "relative",
+        maxWidth: "auto",
+        // width: stackWidth
+      },
+
+      BackgroundOuterContainer: {},
     },
 
-    ContentContainer: box({
-      display: "grid",
-      ...contentStyles,
-    }),
+    components: {
+      Background: {
+        // noInline: true,
+        passedAspectRatio: backgroundAspectRatio,
+        gridBaseLineHeight: values.gridBaseLineHeight, // TODO: remove this prop drill :(
+        noAction: true,
+      },
 
-    BackgroundContainer: box({
-      position: "relative",
-      gridColumn: "1 / span 1",
-      gridRow: "1 / span 1",
-      display: "grid",
-    }),
+      SideImage: {
+        // fitH: true,
 
-    Background: {
-      // noInline: true,
-      passedAspectRatio: backgroundAspectRatio,
-      gridBaseLineHeight: values.gridBaseLineHeight, // TODO: remove this prop drill :(
-      noAction: true,
+        // noInline: true,
+        passedAspectRatio: values.sideImageSize,
+        gridBaseLineHeight: values.gridBaseLineHeight, // TODO: remove this prop drill :(
+        noAction: true,
+        noAspectRatio: true,
+      },
+
+      Stack: {
+        // noInline: true,
+        paddingLeft: offset.left,
+        paddingRight: offset.right,
+        paddingBottom: offset.bottom,
+        paddingTop: offset.top,
+        passedAlign: values.stackAlign,
+        $width: $stackWidth,
+        $widthAuto: true,
+      },
     },
-
-    Stack: {
-      // noInline: true,
-      paddingLeft: offset.left,
-      paddingRight: offset.right,
-      paddingBottom: offset.bottom,
-      paddingTop: offset.top,
-      passedAlign: values.stackAlign,
-      $width: $stackWidth,
-      $widthAuto: true,
-    },
-
-    StackContainer: box({
-      gridColumn: "1 / span 1",
-      gridRow: stackContainerGridRow,
-
-      display: "flex",
-      justifyContent: flexPosH,
-      alignItems: flexPosV,
-    }),
-
-    StackInnerContainer: box({
-      position: "relative",
-      width: "auto",
-      maxWidth: "100%",
-    }),
-
-    TextOuterContainer: box({
-      display: "flex",
-      justifyContent: flexPosH,
-      alignItems: flexPosV,
-      height: "100%",
-    }),
-
-    TextContainer: box({
-      position: "relative",
-      maxWidth: "auto",
-      // width: stackWidth
-    }),
-
-    BackgroundOuterContainer: box({}),
   };
 }
 

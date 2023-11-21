@@ -7,7 +7,6 @@ const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const {
   internalDependenciesValidator,
 } = require("./internalDependenciesValidator");
-const { rawPlugin, reactGlobals } = require("./rollup");
 const { nodeExternals } = require("./webpack");
 
 const NODE_ENV =
@@ -49,7 +48,7 @@ const envs = {
   NODE_ENV,
   ...parsed,
   EASYBLOCKS_API_URL: process.env.EASYBLOCKS_API_URL ?? "http://localhost:3100",
-  VERCEL: process.env.VERCEL ?? 0,
+  VERCEL: process.env.VERCEL ?? "0",
 };
 
 function getFullySpecifiedEnvs() {
@@ -91,7 +90,5 @@ module.exports = {
   getFullySpecifiedEnvs,
   withBundleAnalyze,
   internalDependenciesValidator,
-  rawPlugin,
   nodeExternals,
-  reactGlobals,
 };

@@ -2,8 +2,6 @@
 
 import { CompilationMetadata } from "@easyblocks/core";
 import React, { createContext, ReactNode, useContext } from "react";
-import ReactDOM from "react-dom";
-import createElement from "./createElement";
 import { useEasyblocksProviderContext } from "./EasyblocksProvider";
 
 const EasyblocksMetadataContext = createContext<
@@ -25,14 +23,6 @@ const EasyblocksMetadataProvider: React.FC<EasyblocksMetadataProviderProps> = ({
   children,
 }) => {
   const easyblocksProviderContext = useEasyblocksProviderContext();
-
-  // Let's load required external references
-  globalThis.__SHOPSTORY_REACT_SCOPE__ =
-    globalThis.__SHOPSTORY_REACT_SCOPE__ ?? {
-      React,
-      ReactDOM,
-      createElement,
-    };
 
   return (
     <EasyblocksMetadataContext.Provider

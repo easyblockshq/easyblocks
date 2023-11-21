@@ -46,7 +46,7 @@ type RichTextLineElementComponentConfig = EditableComponentToComponentConfig<
 type RichTextLineElementCompiledComponentConfig = CompiledComponentConfigBase<
   RichTextLineElementComponentConfig["_template"]
 > & {
-  styled: Omit<ReturnType<typeof richTextLineElementStyles>, "__props">;
+  styled: NonNullable<ReturnType<typeof richTextLineElementStyles>["styled"]>;
 } & {
   components: {
     elements: Array<

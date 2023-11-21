@@ -1,6 +1,6 @@
 "use client";
 import { dotNotationGet } from "@easyblocks/utils";
-import React from "react";
+import React, { ReactElement } from "react";
 import type { CompiledNoCodeComponentProps } from "../../types";
 import { InlineTextarea } from "./InlineTextarea";
 
@@ -9,9 +9,8 @@ type TextProps = CompiledNoCodeComponentProps<
   {
     value: string | undefined;
   },
-  Record<string, never>,
-  ReturnType<typeof import("./$text.styles")["default"]>
->;
+  Record<string, never>
+> & { Text: ReactElement };
 
 function TextEditor(props: TextProps) {
   const { Text, path, value, runtime } = props;
