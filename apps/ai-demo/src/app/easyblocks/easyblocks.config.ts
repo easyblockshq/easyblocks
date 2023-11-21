@@ -1,11 +1,9 @@
 import { mockVideoWidget } from "@/app/easyblocks/externalData/mockMedia/mockVideoWidget";
-import { templates } from "@/app/easyblocks/templates/templates";
 import { Config } from "@easyblocks/core";
 import { builtinEditableComponentsDefinitions } from "@easyblocks/editable-components";
 import { mockImageWidget } from "./externalData/mockMedia/mockImageWidget";
 import { pexelsImageWidget } from "./resources/pexels/pexelsImageWidget";
 import { productWidget } from "./resources/product/productWidget";
-import starterTemplate from "./templates/starterTemplate.json";
 
 if (!process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN) {
   throw new Error("Missing NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN");

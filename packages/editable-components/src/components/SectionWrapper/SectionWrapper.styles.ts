@@ -171,6 +171,8 @@ export function $sectionWrapperStyles(
 
   let Component: Record<string, any>;
 
+  console.log("compiled", compiled);
+
   // GridCard handles margins on its own because of advanced margins
   if (compiled.Component[0]._template === "$GridCard") {
     Component = {
