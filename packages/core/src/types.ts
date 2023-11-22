@@ -579,7 +579,7 @@ export type Config = {
   boxShadows?: RuntimeConfigThemeValue<string>[];
   containerWidths?: RuntimeConfigThemeValue<number>[];
   buttons?: ButtonCustomComponent[];
-  components?: Array<NoCodeComponentDefinition>;
+  components?: Array<NoCodeComponentDefinition<any, any>>;
   devices?: ConfigDevices;
   textModifiers?: Array<CustomTextModifier>;
   __masterEnvironment?: boolean;
