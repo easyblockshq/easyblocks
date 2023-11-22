@@ -1076,7 +1076,7 @@ export type EditingInfo = {
 export type NoCodeComponentEditingFunctionResult = {
   fields?: Array<AnyEditingField>;
   components?: {
-    [field: string]: PartialDeep<ScalarOrCollection<ChildComponentEditingInfo>>;
+    [field: string]: ScalarOrCollection<PartialDeep<ChildComponentEditingInfo>>;
   };
 };
 

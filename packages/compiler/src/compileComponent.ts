@@ -1741,7 +1741,7 @@ function convertEditingInfoToInternalEditingInfo(
               sourceInternalEditingInfoComponent as EditingInfoComponentCollection
             ).items[index].fields;
 
-            const internalFields = editingInfoItem!.fields?.map((field) => {
+            const internalFields = editingInfoItem.fields?.map((field) => {
               const internalEditingInfoField =
                 convertEditingFieldToInternalEditingField(
                   field,
