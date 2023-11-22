@@ -1,8 +1,15 @@
 import React from "react";
 
 export function HeroBanner(props: any) {
-  const { Container, Root, Stack, StackContainer, CoverContainer, Cover } =
-    props;
+  const {
+    Container,
+    Root,
+    Stack,
+    StackContainer,
+    CoverContainer,
+    Cover,
+    CoverAspectRatioMaker,
+  } = props;
 
   return (
     <Root.type {...Root.props}>
@@ -11,7 +18,9 @@ export function HeroBanner(props: any) {
           <Stack.type {...Stack.props} />
         </StackContainer.type>
         <CoverContainer.type {...CoverContainer.props}>
-          <Cover.type {...Cover.props} />
+          <Cover.type {...Cover.props}>
+            <CoverAspectRatioMaker.type {...CoverAspectRatioMaker.props} />
+          </Cover.type>
         </CoverContainer.type>
       </Container.type>
     </Root.type>

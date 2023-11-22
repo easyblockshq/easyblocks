@@ -55,7 +55,19 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
       type: "select",
       responsive: true,
       params: {
-        options: ["left", "right", "top", "bottom", "background"],
+        options: [
+          "left-stretch",
+          "left-start",
+          "left-center",
+          "left-end",
+          "right-stretch",
+          "right-start",
+          "right-center",
+          "right-end",
+          "top",
+          "bottom",
+          "background",
+        ],
       },
     },
     {
@@ -124,6 +136,8 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
       ? `max(${margin}, ${paddingLeft})`
       : paddingLeft;
 
+    const [coverMainPosition, coverAlign] = coverPosition.split("-");
+
     let stackPaddings: {
       left: string;
       right: string;
@@ -149,7 +163,7 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
     const coverFr = parseInt(coverWidth.replace("%", ""));
     const stackFr = 100 - coverFr;
 
-    if (coverPosition === "left") {
+    if (coverMainPosition === "left") {
       stackPaddings = {
         left: paddingInternal,
         right: "0",
@@ -175,7 +189,7 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
       } else {
         coverGridCol = "2 / span 1";
       }
-    } else if (coverPosition === "right") {
+    } else if (coverMainPosition === "right") {
       stackPaddings = {
         left: "0",
         right: paddingInternal,
@@ -196,12 +210,12 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
       stackGridRow = "1";
       coverGridRow = "1";
 
-      if (snapCoverToLeft) {
+      if (snapCoverToRight) {
         coverGridCol = "3 / span 2";
       } else {
         coverGridCol = "3 / span 1";
       }
-    } else if (coverPosition === "top") {
+    } else if (coverMainPosition === "top") {
       stackPaddings = {
         left: "0",
         right: "0",
@@ -231,7 +245,7 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
       } else {
         coverGridCol = "2 / span 1";
       }
-    } else if (coverPosition === "bottom") {
+    } else if (coverMainPosition === "bottom") {
       stackPaddings = {
         left: "0",
         right: "0",
@@ -295,9 +309,12 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
         paddingBottom: coverPaddings.bottom,
         gridRow: coverGridRow,
         gridColumn: coverGridCol,
+        alignSelf: coverAlign,
       }),
       Cover: box({
         background: "black",
+      }),
+      CoverAspectRatioMaker: box({
         aspectRatio: "16 / 9",
       }),
 
