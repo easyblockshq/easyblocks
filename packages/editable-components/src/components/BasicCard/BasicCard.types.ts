@@ -5,8 +5,7 @@ import {
 } from "../../common.types";
 import { BorderCompiledValues } from "../../borderHelpers";
 
-export type BasicCardCompiledValues = EdgeCompiledValues &
-  GridContextCompiledValues &
+export type BasicCardCompiledValues = GridContextCompiledValues &
   BorderCompiledValues & {
     size: string;
     cornerRadius: string;
@@ -23,14 +22,15 @@ export type BasicCardCompiledValues = EdgeCompiledValues &
     paddingTopExternal: Spacing;
     edgeMarginProtection: boolean;
     Stack: any[];
-
-    useExternalPaddingLeft?: boolean;
-    useExternalPaddingRight?: boolean;
-    useExternalPaddingTop?: boolean;
-    useExternalPaddingBottom?: boolean;
-
-    passedSize?: string;
-    passedNoBorders?: boolean;
-    hideContent?: boolean;
-    hideBackground?: boolean;
   };
+
+export type BasicCardParams = EdgeCompiledValues & {
+  passedSize?: string;
+  passedNoBorders?: boolean;
+  hideContent?: boolean;
+  hideBackground?: boolean;
+  useExternalPaddingLeft?: boolean;
+  useExternalPaddingRight?: boolean;
+  useExternalPaddingTop?: boolean;
+  useExternalPaddingBottom?: boolean;
+};

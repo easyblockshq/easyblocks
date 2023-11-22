@@ -1,15 +1,21 @@
 import {
-  AutoFunction,
   getDevicesWidths,
   responsiveValueFill,
   responsiveValueForceGet,
+  responsiveValueGet,
   responsiveValueGetDefinedValue,
   scalarizeConfig,
   spacingToPx,
 } from "@easyblocks/app-utils";
-import { DeviceRange, Devices, TrulyResponsiveValue } from "@easyblocks/core";
+import {
+  DeviceRange,
+  Devices,
+  NoCodeComponentAutoFunction,
+  TrulyResponsiveValue,
+} from "@easyblocks/core";
 import { responsiveAuto } from "../../responsiveAuto";
 import { gridContainerController } from "./Grid.controller";
+import { GridCompiledValues, GridParams } from "./Grid.types";
 
 function calculateContainerWidth(
   config: Record<string, any>,
@@ -31,7 +37,7 @@ function calculateContainerWidth(
       devices,
       widths
     ) ?? 0;
-  const width = widths[device.id]! as number;
+  const width = responsiveValueForceGet(widths, device.id);
 
   if (snappedToEdge) {
     return width;
@@ -42,66 +48,54 @@ function calculateContainerWidth(
 
 const MAGIC_NUMBER = 1;
 
-export const gridAuto: AutoFunction = (
-  config,
-  compilationContext,
-  inputWidths
-) => {
-  const devices = compilationContext.devices;
-
+export const gridAuto: NoCodeComponentAutoFunction<
+  GridCompiledValues,
+  GridParams
+> = ({ values, params, devices }) => {
   // Auto should be done relative to real container widths but Grid also have container margins inside.
   const widths: TrulyResponsiveValue<number> = { $res: true };
+  const devicesWidths = getDevicesWidths(devices);
 
   devices.forEach((device) => {
     const scalarizedContainerProps = scalarizeConfig(
       {
         edgeLeftMargin: responsiveValueFill(
-          config.edgeLeftMargin,
+          params.edgeLeftMargin,
           devices,
-          getDevicesWidths(devices)
+          devicesWidths
         ),
         edgeRightMargin: responsiveValueFill(
-          config.edgeRightMargin,
+          params.edgeRightMargin,
           devices,
-          getDevicesWidths(devices)
+          devicesWidths
         ),
         escapeMargin: responsiveValueFill(
-          config.escapeMargin,
+          params.escapeMargin,
           devices,
-          getDevicesWidths(devices)
+          devicesWidths
         ),
-        maxWidth: responsiveValueFill(
-          config.maxWidth,
-          devices,
-          getDevicesWidths(devices)
-        ),
+        maxWidth: responsiveValueFill(params.maxWidth, devices, devicesWidths),
       },
       device.id,
       devices,
       []
     );
     const { realWidth } = gridContainerController(
-      scalarizedContainerProps,
-      responsiveValueForceGet(inputWidths, device.id),
+      {
+        ...scalarizedContainerProps,
+        $width: responsiveValueForceGet(params.$width, device.id),
+      },
       device
     );
+
     widths[device.id] = realWidth;
   });
 
-  let values = responsiveAuto(
-    config,
-    compilationContext,
+  let valuesAfterAuto = responsiveAuto(
+    { ...values, ...params },
+    devices,
     widths,
-    (
-      {
-        values,
-        higherDefinedValues,
-        lowerDefinedValues,
-        closestDefinedValues,
-        width,
-      },
-      { config, compilationContext, widths, device }
-    ) => {
+    ({ values, closestDefinedValues }, { device }) => {
       let shouldSliderItemsBeVisibleOnMargin =
         values.shouldSliderItemsBeVisibleOnMargin;
       if (shouldSliderItemsBeVisibleOnMargin === undefined) {
@@ -123,15 +117,16 @@ export const gridAuto: AutoFunction = (
 
   let maxNumberOfItems = 0;
   devices.forEach((device) => {
-    const numberOfItems = config.numberOfItems[device.id];
+    const numberOfItems = responsiveValueGet(values.numberOfItems, device.id);
+
     if (numberOfItems !== undefined) {
       maxNumberOfItems = Math.max(maxNumberOfItems, parseInt(numberOfItems));
     }
   });
 
-  values = responsiveAuto(
-    values,
-    compilationContext,
+  valuesAfterAuto = responsiveAuto(
+    valuesAfterAuto,
+    devices,
     widths,
     (
       {
@@ -141,7 +136,7 @@ export const gridAuto: AutoFunction = (
         closestDefinedValues,
         width,
       },
-      { config, compilationContext, widths, device }
+      { config, widths, device }
     ) => {
       if (values.numberOfItems !== undefined) {
         if (device.id === "xs" && values.fractionalItemWidth === undefined) {
@@ -300,14 +295,5 @@ export const gridAuto: AutoFunction = (
     }
   );
 
-  // for (const prop in values) {
-  //   if (isTrulyResponsiveValue(values[prop])) {
-  //     values[prop] = responsiveValueNormalize(
-  //       values[prop],
-  //       compilationContext.devices
-  //     );
-  //   }
-  // }
-
-  return values;
+  return valuesAfterAuto;
 };

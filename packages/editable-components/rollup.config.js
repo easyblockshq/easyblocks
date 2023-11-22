@@ -8,7 +8,6 @@ import {
   getFullySpecifiedEnvs,
   isDevelopment,
   isProduction,
-  reactGlobals,
 } from "@easyblocks/build-tools";
 import visualizer from "rollup-plugin-visualizer";
 import packageJson from "./package.json";
@@ -76,21 +75,6 @@ function getPlugins(format) {
     json(),
 
     {
-      name: "remove-jsx-pragma-comment",
-      transform(code, id) {
-        if (id.includes("components")) {
-          return {
-            code: code.replace(
-              /\/\*\* @jsx globalThis\.__SHOPSTORY_REACT_SCOPE__\.createElement \*\/\n/g,
-              ""
-            ),
-            map: null,
-          };
-        }
-      },
-    },
-
-    {
       ...preserveDirectivesPlugin,
       // @ts-expect-error preserveDirectivesPlugin is incompatible by default with our version or rollup
       renderChunk: preserveDirectivesPlugin.renderChunk.handler,
@@ -117,7 +101,6 @@ const configEs = {
   output: {
     format: "es",
     dir: "./dist/es",
-    globals: reactGlobals(),
     exports: "auto",
     preserveModules: true,
     preserveModulesRoot: "src",
@@ -133,7 +116,6 @@ const configCjs = {
   output: {
     format: "cjs",
     dir: "./dist/cjs",
-    globals: reactGlobals(),
     exports: "auto",
     preserveModules: true,
     preserveModulesRoot: "src",

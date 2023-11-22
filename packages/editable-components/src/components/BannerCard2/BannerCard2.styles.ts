@@ -1,39 +1,39 @@
 import { spacingToPx } from "@easyblocks/app-utils";
-import { box } from "../../box";
+import {
+  NoCodeComponentStylesFunctionInput,
+  NoCodeComponentStylesFunctionResult,
+} from "@easyblocks/core";
+import { getBorderCSSProps, getBorderInfo } from "../../borderHelpers";
+import { EdgeCompiledValues } from "../../common.types";
 import { getEdgeValues } from "../../getEdgeValues";
-import { CompiledComponentStylesToolkit } from "../../types";
 import { bannerCard2SeparateStackModeController } from "./BannerCard2.controller";
 import { BannerCard2CompiledValues } from "./BannerCard2.types";
-import { getBorderCSSProps, getBorderInfo } from "../../borderHelpers";
 
-function styles(
-  config: BannerCard2CompiledValues,
-  toolkit: CompiledComponentStylesToolkit
-) {
-  const { compilationContext, $width } = toolkit;
-
-  if ($width === -1) {
-    throw new Error("$BannerCard2 without width!!!");
-  }
-
+function styles({
+  values,
+  params,
+  isEditing,
+  device,
+}: NoCodeComponentStylesFunctionInput<
+  BannerCard2CompiledValues,
+  EdgeCompiledValues
+>): NoCodeComponentStylesFunctionResult {
   // For now only mobile possible
-  const { cornerRadius } = config;
+  const { cornerRadius } = values;
 
-  const isEditing = compilationContext.isEditing;
-
-  const isNoneMode = config.mode === "none";
-  const isBackgroundMode = config.mode === "background";
-  const isSideMode = config.mode === "left" || config.mode === "right";
-  const isTopBottomMode = config.mode === "top" || config.mode === "bottom";
+  const isNoneMode = values.mode === "none";
+  const isBackgroundMode = values.mode === "background";
+  const isSideMode = values.mode === "left" || values.mode === "right";
+  const isTopBottomMode = values.mode === "top" || values.mode === "bottom";
   const isBackgroundWithSeparateStackMode =
-    config.mode === "background-separate-stack";
+    values.mode === "background-separate-stack";
 
   let rootStyles: any = {};
   let backgroundStyles: any = {};
   let contentStyles: any = {};
 
-  let $widthCard1 = $width;
-  let $widthCard2 = $width;
+  let $widthCard1 = params.$width;
+  let $widthCard2 = params.$width;
   let $widthAutoCard1 = false;
 
   if (isNoneMode) {
@@ -63,7 +63,7 @@ function styles(
       flexDirection: "row",
     };
 
-    const sideImageWidth = parseInt(config.sideModeWidth) / 100;
+    const sideImageWidth = parseInt(values.sideModeWidth) / 100;
     const contentWidth = 1 - sideImageWidth;
 
     backgroundStyles = {
@@ -76,7 +76,7 @@ function styles(
 
     rootStyles.flexDirection = "row";
 
-    if (config.mode === "right") {
+    if (values.mode === "right") {
       // backgroundOrder = 1;
       backgroundStyles.order = 1;
     }
@@ -101,7 +101,7 @@ function styles(
       flex: "1 1 auto",
     };
 
-    if (config.mode === "bottom") {
+    if (values.mode === "bottom") {
       backgroundStyles.order = 1;
     }
   } else if (isBackgroundWithSeparateStackMode) {
@@ -131,12 +131,12 @@ function styles(
       paddingRight,
       verticalPosition,
       horizontalPosition,
-    } = bannerCard2SeparateStackModeController(config);
+    } = bannerCard2SeparateStackModeController({ ...values, ...params });
 
     $widthCard1 =
       $widthCard1 -
-      spacingToPx(paddingLeft, toolkit.device.w) -
-      spacingToPx(paddingRight, toolkit.device.w);
+      spacingToPx(paddingLeft, device.w) -
+      spacingToPx(paddingRight, device.w);
     $widthAutoCard1 = true;
 
     contentStyles = {
@@ -167,16 +167,16 @@ function styles(
   // const shouldActivateCardLink = !isEditing && config.action.length > 0;
   const shouldActivateCardLink = false; // for now card links are disabled
 
-  const borderInfo = getBorderInfo(config);
+  const borderInfo = getBorderInfo(values);
 
   /**
    * Edge margins
    */
 
-  const edgeInfo = getEdgeValues(config);
+  const edgeInfo = getEdgeValues(params);
 
   const Card1: any = {
-    gridBaseLineHeight: config.gridBaseLineHeight,
+    gridBaseLineHeight: values.gridBaseLineHeight,
     $width: $widthCard1,
     $widthAuto: $widthAutoCard1,
     passedSize: "none",
@@ -198,7 +198,7 @@ function styles(
   };
 
   const Card2: any = {
-    gridBaseLineHeight: config.gridBaseLineHeight,
+    gridBaseLineHeight: values.gridBaseLineHeight,
     $width: $widthCard2,
     $widthAuto: false,
     // passedSize: "__undefined__",
@@ -219,7 +219,7 @@ function styles(
     hideContent: false,
   };
 
-  if (config.mode === "none") {
+  if (values.mode === "none") {
     Card1.edgeLeft = borderInfo.left || edgeInfo.edgeLeft;
     Card1.edgeLeftMargin = edgeInfo.edgeLeftMargin;
     Card1.edgeRight = borderInfo.right || edgeInfo.edgeRight;
@@ -228,7 +228,7 @@ function styles(
     Card1.edgeBottom = borderInfo.bottom || edgeInfo.edgeBottom;
 
     Card1.passedSize = "__undefined__";
-  } else if (config.mode === "background") {
+  } else if (values.mode === "background") {
     Card1.edgeLeft = true;
     Card1.edgeLeftMargin = edgeInfo.edgeLeftMargin;
     Card1.edgeRight = true;
@@ -237,16 +237,16 @@ function styles(
     Card1.edgeBottom = true;
     Card1.hideBackground = true;
     Card2.hideContent = true;
-  } else if (config.mode === "background-separate-stack") {
+  } else if (values.mode === "background-separate-stack") {
     Card2.edgeLeft = edgeInfo.edgeLeft;
     Card2.edgeLeftMargin = edgeInfo.edgeLeftMargin;
     Card2.edgeRight = edgeInfo.edgeRight;
     Card2.edgeRightMargin = edgeInfo.edgeRightMargin;
 
     Card1.passedNoBorders = false;
-  } else if (config.mode === "left" || config.mode === "right") {
-    const CardLeft = config.mode === "left" ? Card2 : Card1;
-    const CardRight = config.mode === "left" ? Card1 : Card2;
+  } else if (values.mode === "left" || values.mode === "right") {
+    const CardLeft = values.mode === "left" ? Card2 : Card1;
+    const CardRight = values.mode === "left" ? Card1 : Card2;
 
     CardRight.edgeRight = borderInfo.right || edgeInfo.edgeRight;
     CardRight.edgeRightMargin = edgeInfo.edgeRightMargin;
@@ -267,7 +267,7 @@ function styles(
     CardLeft.useExternalPaddingBottom = !borderInfo.bottom;
 
     Card2.passedNoBorders = false;
-  } else if (config.mode === "top" || config.mode === "bottom") {
+  } else if (values.mode === "top" || values.mode === "bottom") {
     Card1.edgeLeft = true;
     Card1.edgeLeftMargin = edgeInfo.edgeLeftMargin;
 
@@ -288,43 +288,33 @@ function styles(
   }
 
   return {
-    Container: box({
-      position: "relative",
-      width: "100%",
-      borderRadius: cornerRadius + "px",
-      ...getBorderCSSProps(config),
-      overflow: cornerRadius !== "0" ? "hidden" : "visible",
-      pointerEvents: shouldActivateCardLink ? "none" : "auto",
-      ...rootStyles,
-    }),
-    //
-    // Link: box({
-    //   position: "absolute",
-    //   top: 0,
-    //   left: 0,
-    //   width: "100%",
-    //   height: "100%",
-    //   opacity: 0,
-    //   cursor: "pointer",
-    //
-    //   display: shouldActivateCardLink ? "block" : "none",
-    //   pointerEvents: "auto",
-    //   // __action: "action",
-    // }),
+    styled: {
+      Container: {
+        position: "relative",
+        width: "100%",
+        borderRadius: cornerRadius + "px",
+        ...getBorderCSSProps(values),
+        overflow: cornerRadius !== "0" ? "hidden" : "visible",
+        pointerEvents: shouldActivateCardLink ? "none" : "auto",
+        ...rootStyles,
+      },
 
-    SidePhotoContainer: box({
-      position: "relative",
-      display: "grid",
-      ...backgroundStyles,
-    }),
+      SidePhotoContainer: {
+        position: "relative",
+        display: "grid",
+        ...backgroundStyles,
+      },
 
-    ContentContainer: box({
-      display: "grid",
-      ...contentStyles,
-    }),
+      ContentContainer: {
+        display: "grid",
+        ...contentStyles,
+      },
+    },
 
-    Card1,
-    Card2,
+    components: {
+      Card1,
+      Card2,
+    },
   };
 }
 export default styles;

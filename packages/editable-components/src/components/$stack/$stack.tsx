@@ -3,18 +3,16 @@ import React, { ReactElement } from "react";
 function Stack(props: {
   StackContainer: ReactElement;
   Items: Array<ReactElement>;
-  itemWrappers: Array<{
-    StackItemOuter: ReactElement;
-    StackItemInner: ReactElement;
-  }>;
+  outerItemWrappers: Array<ReactElement>;
+  innerItemWrappers: Array<ReactElement>;
 }) {
-  const { StackContainer, Items, itemWrappers } = props;
+  const { StackContainer, Items, outerItemWrappers, innerItemWrappers } = props;
 
   return (
     <StackContainer.type {...StackContainer.props}>
       {Items.map((Item, index) => {
-        const StackItemOuter = itemWrappers[index].StackItemOuter;
-        const StackItemInner = itemWrappers[index].StackItemInner;
+        const StackItemOuter = outerItemWrappers[index];
+        const StackItemInner = innerItemWrappers[index];
 
         return (
           <StackItemOuter.type {...StackItemOuter.props} key={index}>

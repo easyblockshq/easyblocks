@@ -755,16 +755,11 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         configPrefix,
         cache
       ) => {
-        // pass index here!!!
         return arr.map((componentConfig, index) =>
           compileComponent(
             componentConfig as ConfigComponent,
             compilationContext,
-            {
-              ...((contextProps.itemProps || [])[index] || {}),
-              index,
-              length: arr.length,
-            },
+            (contextProps.itemProps || [])[index] || {},
             serializedDefinitions,
             refMap,
             cache,

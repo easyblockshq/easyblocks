@@ -1,15 +1,12 @@
-import {
-  CompilationContextType,
-  responsiveValueSet,
-} from "@easyblocks/app-utils";
-import { DeviceRange, TrulyResponsiveValue } from "@easyblocks/core";
+import { responsiveValueSet } from "@easyblocks/app-utils";
+import { DeviceRange, Devices, TrulyResponsiveValue } from "@easyblocks/core";
 import { DecomposedValues, decomposeValues } from "./decomposeValues";
 
 export type ResponsiveAutoCallback = (
   decomposedValues: DecomposedValues,
   extra: {
     config: Record<string, any>;
-    compilationContext: CompilationContextType;
+    devices: Devices;
     device: DeviceRange;
     widths: TrulyResponsiveValue<number>;
   }
@@ -17,24 +14,24 @@ export type ResponsiveAutoCallback = (
 
 export function responsiveAuto(
   inputValues: Record<string, any>,
-  compilationContext: CompilationContextType,
+  devices: Devices,
   widths: TrulyResponsiveValue<number>,
   callback: ResponsiveAutoCallback
 ) {
   const values = { ...inputValues };
 
-  compilationContext.devices.forEach((device) => {
+  devices.forEach((device) => {
     const decomposedValues = decomposeValues(
       inputValues,
       widths,
-      compilationContext.devices,
+      devices,
       device.id
     );
 
     const result = callback(decomposedValues, {
       config: inputValues,
       device,
-      compilationContext,
+      devices,
       widths,
     });
 
@@ -49,7 +46,7 @@ export function responsiveAuto(
           values[prop],
           device.id,
           result[prop],
-          compilationContext.devices
+          devices
         );
       }
     }

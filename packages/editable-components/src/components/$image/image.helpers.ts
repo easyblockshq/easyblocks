@@ -8,8 +8,7 @@ import {
 import { Devices, ImageSrc, ResponsiveValue, VideoSrc } from "@easyblocks/core";
 import { getPaddingBottomAndHeightFromAspectRatio } from "../../parseAspectRatio";
 import { CompiledNoCodeComponentProps } from "../../types";
-
-type Resop = typeof import("@easyblocks/app-utils").resop2;
+import { ReactElement } from "react";
 
 export type ImageProps = CompiledNoCodeComponentProps<
   "$image",
@@ -18,9 +17,12 @@ export type ImageProps = CompiledNoCodeComponentProps<
     aspectRatio: ResponsiveValue<string>;
     gridBaseLineHeight: ResponsiveValue<string>;
   },
-  Record<string, never>,
-  ReturnType<typeof import("./$image.styles")["default"]>
->;
+  Record<string, never>
+> & {
+  Wrapper: ReactElement;
+  AspectRatioMaker: ReactElement;
+  ImageWrapper: ReactElement;
+};
 
 export function getAspectRatioClassName(
   responsiveImage: ResponsiveValue<ImageSrc | VideoSrc | undefined>,
@@ -28,7 +30,7 @@ export function getAspectRatioClassName(
   gridBaseLineHeight: ImageProps["gridBaseLineHeight"],
   devices: Devices,
   stitches: any,
-  resop: Resop
+  resop: any
 ) {
   const naturalAspectRatio = responsiveValueMap(responsiveImage, (image) => {
     return image?.aspectRatio ?? null; // null is important because it means it's defined
@@ -51,7 +53,7 @@ export function getAspectRatioClassName(
 
   const aspectRatioStyles = resop(
     input,
-    ({ naturalAspectRatio, aspectRatio, gridBaseLineHeight }) => {
+    ({ naturalAspectRatio, aspectRatio, gridBaseLineHeight }: any) => {
       return getPaddingBottomAndHeightFromAspectRatio(
         aspectRatio,
         naturalAspectRatio ?? undefined,

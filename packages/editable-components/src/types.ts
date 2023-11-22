@@ -1,17 +1,3 @@
-import { CompilationContextType } from "@easyblocks/app-utils";
-import { DeviceRange } from "@easyblocks/core";
-
-export interface CompiledComponentStylesToolkit {
-  /**
-   * This breakpoint index is different from currently selected breakpoint index in editor.
-   * It's current breakpoint index for which the compilation is happening.
-   */
-  compilationContext: CompilationContextType;
-  $width: number;
-  $widthAuto: boolean;
-  device: DeviceRange;
-}
-
 export type Stylesheet = {
   [key: string]: any;
 };

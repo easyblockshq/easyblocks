@@ -8,7 +8,10 @@ import {
   RichTextLineElementComponentConfig,
   richTextLineElementEditableComponent,
 } from "../$richTextLineElement/$richTextLineElement";
-import richTextBlockElementStyles from "./$richTextBlockElement.styles";
+import richTextBlockElementStyles, {
+  RichTextBlockElementParams,
+  RichTextBlockElementValues,
+} from "./$richTextBlockElement.styles";
 
 type RichTextBlockElementType = "bulleted-list" | "numbered-list" | "paragraph";
 
@@ -33,28 +36,31 @@ const RICH_TEXT_BLOCK_ELEMENT_TYPE_OPTIONS: Array<Option> = [
   },
 ];
 
-const richTextBlockElementEditableComponent: InternalRenderableComponentDefinition<"$richTextBlockElement"> =
-  {
-    id: "$richTextBlockElement",
-    schema: [
-      {
-        prop: "type",
-        type: "select",
-        params: {
-          options: RICH_TEXT_BLOCK_ELEMENT_TYPE_OPTIONS,
-        },
-        defaultValue: RICH_TEXT_BLOCK_ELEMENT_TYPES[2],
-        label: "Type",
-        group: "Text",
+const richTextBlockElementEditableComponent: InternalRenderableComponentDefinition<
+  "$richTextBlockElement",
+  RichTextBlockElementValues,
+  RichTextBlockElementParams
+> = {
+  id: "$richTextBlockElement",
+  schema: [
+    {
+      prop: "type",
+      type: "select",
+      params: {
+        options: RICH_TEXT_BLOCK_ELEMENT_TYPE_OPTIONS,
       },
-      {
-        prop: "elements",
-        type: "component-collection",
-        accepts: [richTextLineElementEditableComponent.id],
-      },
-    ],
-    styles: richTextBlockElementStyles,
-  };
+      defaultValue: RICH_TEXT_BLOCK_ELEMENT_TYPES[2],
+      label: "Type",
+      group: "Text",
+    },
+    {
+      prop: "elements",
+      type: "component-collection",
+      accepts: [richTextLineElementEditableComponent.id],
+    },
+  ],
+  styles: richTextBlockElementStyles,
+};
 
 type RichTextBlockElementComponentConfig = EditableComponentToComponentConfig<
   typeof richTextBlockElementEditableComponent
@@ -67,7 +73,7 @@ type RichTextBlockElementCompiledComponentConfig = CompiledComponentConfigBase<
   RichTextBlockElementComponentConfig["_template"],
   { type: RichTextBlockElementType }
 > & {
-  styled: Omit<ReturnType<typeof richTextBlockElementStyles>, "__props">;
+  styled: NonNullable<ReturnType<typeof richTextBlockElementStyles>["styled"]>;
 } & {
   components: {
     elements: Array<RichTextLineElementCompiledComponentConfig>;

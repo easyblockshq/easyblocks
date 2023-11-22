@@ -1,7 +1,13 @@
-import { box } from "../../box";
+import type {
+  NoCodeComponentStylesFunctionInput,
+  NoCodeComponentStylesFunctionResult,
+} from "@easyblocks/core";
 
-export function buttonsStyles(configProps: any) {
-  const align = configProps.passedAlign || "left";
+export function buttonsStyles({
+  values,
+  params,
+}: NoCodeComponentStylesFunctionInput): NoCodeComponentStylesFunctionResult {
+  const align = params.passedAlign || "left";
   let flexAlign = "flex-start";
   if (align === "center") {
     flexAlign = "center";
@@ -9,21 +15,17 @@ export function buttonsStyles(configProps: any) {
     flexAlign = "flex-end";
   }
 
-  const gap = configProps.gap;
-
   return {
-    ButtonsContainer: box({
-      display: "flex",
-      flexWrap: "wrap",
-      flexDirection: configProps.verticalLayout ? "column" : "row",
-      justifyContent: configProps.verticalLayout ? "normal" : flexAlign,
-      alignItems: configProps.verticalLayout ? flexAlign : "center",
-      // ">*:not(:last-child)": {
-      //   marginRight: configProps.verticalLayout ? 0 : configProps.gap,
-      //   marginBottom: configProps.verticalLayout ? configProps.gap : 0,
-      // },
-      gap,
-      pointerEvents: "auto", // force clickability
-    }),
+    styled: {
+      ButtonsContainer: {
+        display: "flex",
+        flexWrap: "wrap",
+        flexDirection: values.verticalLayout ? "column" : "row",
+        justifyContent: values.verticalLayout ? "normal" : flexAlign,
+        alignItems: values.verticalLayout ? flexAlign : "center",
+        gap: values.gap,
+        pointerEvents: "auto", // force clickability
+      },
+    },
   };
 }

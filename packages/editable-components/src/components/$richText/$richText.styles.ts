@@ -1,26 +1,34 @@
-import { Alignment } from "@easyblocks/app-utils";
-import { box } from "../../box";
+import type { Alignment } from "@easyblocks/app-utils";
+import type {
+  NoCodeComponentStylesFunctionInput,
+  NoCodeComponentStylesFunctionResult,
+} from "@easyblocks/core";
 
-export function richTextStyles(values: Record<string, any>) {
-  const align = values.passedAlign ?? values.align;
+export function richTextStyles({
+  values,
+  params,
+}: NoCodeComponentStylesFunctionInput): NoCodeComponentStylesFunctionResult {
+  const align = params.passedAlign ?? values.align;
 
   return {
-    Root: box({
-      display: "flex",
-      justifyContent: mapAlignmentToFlexAlignment(align),
-      textAlign: align,
-    }),
-    elements: {
-      // We store values within $richText to allow for changing them from sidebar, but we use them inside of $richTextBlockElement.
-      itemProps: values.elements.map(() => ({
-        accessibilityRole: values.accessibilityRole,
-        mainColor: values.mainColor,
-        mainFont: values.mainFont,
-        mainFontSize: values.mainFontSize,
-        align,
-      })),
+    styled: {
+      Root: {
+        display: "flex",
+        justifyContent: mapAlignmentToFlexAlignment(align),
+        textAlign: align,
+      },
+      elements: {
+        // We store values within $richText to allow for changing them from sidebar, but we use them inside of $richTextBlockElement.
+        itemProps: values.elements.map(() => ({
+          accessibilityRole: values.accessibilityRole,
+          mainColor: values.mainColor,
+          mainFont: values.mainFont,
+          mainFontSize: values.mainFontSize,
+          align,
+        })),
+      },
     },
-    __props: {
+    props: {
       align,
     },
   };

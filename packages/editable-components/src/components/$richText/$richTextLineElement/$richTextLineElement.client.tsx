@@ -1,18 +1,11 @@
-import React from "react";
-import { RichTextBlockElementType } from "../$richTextBlockElement/$richTextBlockElement";
-import { CompiledNoCodeComponentProps } from "../../../types";
-import {
-  RichTextLineElementCompiledComponentConfig,
-  RichTextLineElementComponentConfig,
-} from "./$richTextLineElement";
+import React, { ReactElement } from "react";
+import type { RichTextBlockElementType } from "../$richTextBlockElement/$richTextBlockElement";
 
-type RichTextLineElementProps = CompiledNoCodeComponentProps<
-  RichTextLineElementComponentConfig["_template"],
-  Record<string, never>,
-  { blockType: RichTextBlockElementType },
-  RichTextLineElementCompiledComponentConfig["styled"]
-> & {
+type RichTextLineElementProps = {
+  blockType: RichTextBlockElementType;
   elements: Array<React.ReactElement>;
+  ListItem: ReactElement;
+  TextLine: ReactElement;
 };
 
 export default function RichTextLineElement(props: RichTextLineElementProps) {

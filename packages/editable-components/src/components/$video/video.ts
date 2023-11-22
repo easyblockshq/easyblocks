@@ -23,11 +23,11 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
     thumbnail: VIDEO_THUMBNAIL_URL,
     type: "item",
     styles: videoStyles,
-    editing: ({ values, editingInfo }) => {
+    editing: ({ params, editingInfo }) => {
       let fields = [...editingInfo.fields];
 
       // If aspect ratio passed from external, we don't need it.
-      if (values.noAspectRatio) {
+      if (params.noAspectRatio) {
         fields = fields.filter((field) => field.path !== "aspectRatio");
       }
 

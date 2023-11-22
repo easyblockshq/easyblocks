@@ -22,7 +22,9 @@ const basicValues = {
   RightArrow: [{ _template: "Button" }],
   rightArrowPlacement: "center",
   rightArrowOffset: 0,
+};
 
+const basicParams = {
   edgeLeft: true,
   edgeLeftMargin: "100px",
   edgeRight: true,
@@ -30,24 +32,23 @@ const basicValues = {
   escapeMargin: false,
 };
 
-function runStyles(extraValues: any) {
+function runStyles(
+  extraValues: Record<string, any>,
+  extraParams: Record<string, any>
+) {
   const device = testCompilationContext.devices.find(
     (device) => device.id === "b4"
   )!;
 
-  return styles(
-    { ...basicValues, ...extraValues },
-    {
-      $width: 1920,
-      $widthAuto: false,
-      compilationContext: testCompilationContext,
-      device,
-    }
-  );
+  return styles({
+    values: { ...basicValues, ...extraValues },
+    params: { ...basicParams, ...extraParams, $width: 1920, $widthAuto: false },
+    device,
+  });
 }
 describe.each(["grid", "slider"])("Grid items parameters (%s)", (mode) => {
   test("margins not escaped", () => {
-    const compiled = runStyles({ mode });
+    const compiled = runStyles({ mode }, {});
     const expectedCardWidth1x1 = (1920 - 200 - 100 - 10 * 3) / 4;
     const expectedCardWidth2x1 = expectedCardWidth1x1 * 2 + 10;
 
@@ -62,7 +63,7 @@ describe.each(["grid", "slider"])("Grid items parameters (%s)", (mode) => {
   });
 
   test("margins escaped", () => {
-    const compiled = runStyles({ mode, escapeMargin: true });
+    const compiled = runStyles({ mode }, { escapeMargin: true });
     const expectedCardWidth1x1 = (1920 - 10 * 3) / 4;
     const expectedCardWidth2x1 = expectedCardWidth1x1 * 2 + 10;
 

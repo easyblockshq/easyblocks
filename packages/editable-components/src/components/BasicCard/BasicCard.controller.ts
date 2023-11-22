@@ -1,5 +1,5 @@
-import { BasicCardCompiledValues } from "./BasicCard.types";
 import { getEdgeValues } from "../../getEdgeValues";
+import { BasicCardCompiledValues, BasicCardParams } from "./BasicCard.types";
 
 type PaddingType = "internal" | "external" | null;
 
@@ -185,26 +185,32 @@ export function calculatePaddings(input: {
   };
 }
 
-export function basicCardController(config: BasicCardCompiledValues) {
-  const position = config.position.split("-");
+export function basicCardController({
+  values,
+  params,
+}: {
+  values: BasicCardCompiledValues;
+  params: BasicCardParams;
+}) {
+  const position = values.position.split("-");
   const posH = position[1];
   const posV = position[0];
 
   const isCenteredHorizontally = posH === "center";
   const isCenteredVertically = posV === "center";
 
-  const noBorders = config.passedNoBorders ?? false;
+  const noBorders = params.passedNoBorders ?? false;
 
-  const hideContent = config.hideContent ?? false;
-  const hideBackground = config.hideBackground ?? false;
+  const hideContent = params.hideContent ?? false;
+  const hideBackground = params.hideBackground ?? false;
 
-  const edgeInfo = getEdgeValues(config);
+  const edgeInfo = getEdgeValues(params);
 
   const shouldUseOnlyInternalPaddings = hideBackground
     ? false
     : hideContent
     ? true
-    : config.Background.length > 0;
+    : values.Background.length > 0;
 
   let paddingSpec: {
     top: PaddingType;
@@ -225,23 +231,23 @@ export function basicCardController(config: BasicCardCompiledValues) {
     };
   } else {
     paddingSpec = {
-      top: config.edgeTop
-        ? config.useExternalPaddingTop
+      top: params.edgeTop
+        ? params.useExternalPaddingTop
           ? "external"
           : "internal"
         : null,
-      bottom: config.edgeBottom
-        ? config.useExternalPaddingBottom
+      bottom: params.edgeBottom
+        ? params.useExternalPaddingBottom
           ? "external"
           : "internal"
         : null,
-      left: config.edgeLeft
-        ? config.useExternalPaddingLeft
+      left: params.edgeLeft
+        ? params.useExternalPaddingLeft
           ? "external"
           : "internal"
         : null,
-      right: config.edgeRight
-        ? config.useExternalPaddingRight
+      right: params.edgeRight
+        ? params.useExternalPaddingRight
           ? "external"
           : "internal"
         : null,
@@ -252,13 +258,13 @@ export function basicCardController(config: BasicCardCompiledValues) {
     startPaddingType: paddingSpec.left,
     endPaddingType: paddingSpec.right,
     values: {
-      startPadding: config.paddingLeft,
-      startPaddingExternal: config.paddingLeftExternal,
-      endPadding: config.paddingRight,
-      endPaddingExternal: config.paddingRightExternal,
+      startPadding: values.paddingLeft,
+      startPaddingExternal: values.paddingLeftExternal,
+      endPadding: values.paddingRight,
+      endPaddingExternal: values.paddingRightExternal,
     },
     edge: {
-      snap: !!config.edgeMarginProtection,
+      snap: !!values.edgeMarginProtection,
       /**
        * calculatePaddings understand start and startMargin as EDGE-ONLY. Doesn't recognize edgeLeft=true with edgeLeftMargin=null. It's legacy, that's why below we make a little transformation.
        */
@@ -274,10 +280,10 @@ export function basicCardController(config: BasicCardCompiledValues) {
     startPaddingType: paddingSpec.top,
     endPaddingType: paddingSpec.bottom,
     values: {
-      startPadding: config.paddingTop,
-      startPaddingExternal: config.paddingTopExternal,
-      endPadding: config.paddingBottom,
-      endPaddingExternal: config.paddingBottomExternal,
+      startPadding: values.paddingTop,
+      startPaddingExternal: values.paddingTopExternal,
+      endPadding: values.paddingBottom,
+      endPaddingExternal: values.paddingBottomExternal,
     },
     isCentered: isCenteredVertically,
   });
@@ -295,8 +301,8 @@ export function basicCardController(config: BasicCardCompiledValues) {
   };
 
   const shouldUsePassedSize =
-    config.passedSize !== undefined && config.passedSize !== "__undefined__";
-  const size = shouldUsePassedSize ? config.passedSize : config.size;
+    params.passedSize !== undefined && params.passedSize !== "__undefined__";
+  const size = shouldUsePassedSize ? params.passedSize : values.size;
 
   const backgroundAspectRatio =
     size === "fit-background"
@@ -312,7 +318,7 @@ export function basicCardController(config: BasicCardCompiledValues) {
     posV,
     hideContent,
     hideBackground,
-    enableContent: config.enableContent,
+    enableContent: values.enableContent,
     noBorders,
     ignoreSize: shouldUsePassedSize,
     backgroundAspectRatio,

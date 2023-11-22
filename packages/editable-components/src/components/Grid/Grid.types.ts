@@ -1,7 +1,7 @@
 import { Spacing } from "@easyblocks/core";
 import { EdgeCompiledValues } from "../../common.types";
 
-export type GridCompiledValues = EdgeCompiledValues & {
+export type GridCompiledValues = {
   Cards: any[];
   variant: string;
   numberOfItems: string;
@@ -31,7 +31,11 @@ export type GridCompiledValues = EdgeCompiledValues & {
   paddingRight: string;
   paddingTop: string;
   paddingBottom: string;
+};
 
+export type GridParams = EdgeCompiledValues & {
+  $width: number;
+  $widthAuto: boolean;
   maxWidth: null | number;
   escapeMargin: boolean;
 };

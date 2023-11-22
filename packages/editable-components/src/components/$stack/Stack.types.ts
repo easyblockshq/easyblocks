@@ -7,6 +7,9 @@ export type StackCompiledValues = {
     marginBottom: Spacing;
     align: string;
   }>;
+};
+
+export type StackParams = {
   paddingLeft?: Spacing;
   paddingRight?: Spacing;
   paddingTop?: Spacing;

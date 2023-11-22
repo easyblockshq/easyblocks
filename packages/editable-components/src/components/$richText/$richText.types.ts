@@ -1,8 +1,8 @@
 import { EditorContextType } from "@easyblocks/app-utils";
 import {
   ConfigComponent,
-  EditingFunctionInput,
-  EditingFunctionResult,
+  NoCodeComponentEditingFunctionResult,
+  NoCodeComponentEditingFunctionInput,
 } from "@easyblocks/core";
 import { BaseEditor } from "slate";
 import { ReactEditor } from "slate-react";
@@ -72,10 +72,10 @@ declare module "slate" {
 }
 
 export type RichTextEditingFunction = (
-  input: EditingFunctionInput & {
+  input: NoCodeComponentEditingFunctionInput & {
     __SECRET_INTERNALS__?: {
       pathPrefix: string;
       editorContext: EditorContextType;
     };
   }
-) => EditingFunctionResult;
+) => NoCodeComponentEditingFunctionResult;

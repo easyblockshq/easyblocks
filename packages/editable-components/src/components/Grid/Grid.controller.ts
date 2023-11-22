@@ -1,16 +1,15 @@
 import { spacingToPx } from "@easyblocks/app-utils";
 import { DeviceRange } from "@easyblocks/core";
-import { GridCompiledValues } from "./Grid.types";
+import { GridCompiledValues, GridParams } from "./Grid.types";
 
 export function gridContainerController(
-  config: GridCompiledValues,
-  containerWidth: number,
+  params: GridParams,
   device: DeviceRange
 ) {
-  const escapeMargin = config.escapeMargin ?? true;
+  const escapeMargin = params.escapeMargin ?? true;
 
-  let marginLeftCss = config.edgeLeftMargin ?? "0px";
-  let marginRightCss = config.edgeRightMargin ?? "0px";
+  let marginLeftCss = params.edgeLeftMargin ?? "0px";
+  let marginRightCss = params.edgeRightMargin ?? "0px";
 
   if (escapeMargin) {
     marginLeftCss = "0px";
@@ -24,12 +23,12 @@ export function gridContainerController(
   let realWidth: number;
 
   const widthMinusMargins =
-    containerWidth - marginLeftNumber - marginRightNumber;
+    params.$width - marginLeftNumber - marginRightNumber;
 
-  if (typeof config.maxWidth === "number") {
+  if (typeof params.maxWidth === "number") {
     hasMaxWidth = true;
     realWidth =
-      config.maxWidth < widthMinusMargins ? config.maxWidth : widthMinusMargins;
+      params.maxWidth < widthMinusMargins ? params.maxWidth : widthMinusMargins;
   } else {
     hasMaxWidth = false;
     realWidth = widthMinusMargins;
@@ -44,25 +43,25 @@ export function gridContainerController(
 }
 
 export function gridController(
-  config: GridCompiledValues,
-  $width: number,
+  values: GridCompiledValues,
+  params: GridParams,
   device: DeviceRange
 ) {
   const { marginRight, marginLeft, hasMaxWidth, realWidth } =
-    gridContainerController(config, $width, device);
+    gridContainerController(params, device);
 
-  const gap: number = spacingToPx(config.columnGap, device.w);
-  const isSlider = config.variant === "slider";
-  const numberOfItems = parseInt(config.numberOfItems);
+  const gap: number = spacingToPx(values.columnGap, device.w);
+  const isSlider = values.variant === "slider";
+  const numberOfItems = parseInt(values.numberOfItems);
 
   const itemsVisible =
     isSlider && device.id === "xs"
-      ? numberOfItems + (parseFloat(config.fractionalItemWidth) - 1)
+      ? numberOfItems + (parseFloat(values.fractionalItemWidth) - 1)
       : numberOfItems;
 
   const calculateCSSAbsoluteMargin = (margin: string) => {
     return hasMaxWidth
-      ? `max(calc(calc(100% - ${config.maxWidth}px) / 2), ${margin})`
+      ? `max(calc(calc(100% - ${params.maxWidth}px) / 2), ${margin})`
       : margin;
   };
 

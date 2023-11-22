@@ -8,7 +8,6 @@ import {
   ConfigComponent,
   ContextParams,
   Devices,
-  EditingFunction,
   EditingInfoBase,
   EventSink,
   ExternalData,
@@ -16,13 +15,16 @@ import {
   ExternalSchemaProp,
   FieldPortal,
   Locale,
+  NoCodeComponentAutoFunction,
+  NoCodeComponentEditingFunction,
+  NoCodeComponentStylesFunction,
   RefMap,
   Resource,
   ResponsiveValue,
   SchemaProp,
+  Template,
   Theme,
   TrulyResponsiveValue,
-  Template,
 } from "@easyblocks/core";
 import type { PartialDeep } from "type-fest";
 import { InternalAnyTinaField } from "../schema";
@@ -37,13 +39,15 @@ export type UnwrapResponsiveValue<T> = T extends ResponsiveValue<infer Value>
   : never;
 
 export type InternalRenderableComponentDefinition<
-  Identifier extends string = string
+  Identifier extends string = string,
+  Values extends Record<string, any> = Record<string, any>,
+  Params extends Record<string, any> = Record<string, any>
 > = ComponentDefinitionShared<Identifier> & {
   pasteSlots?: string[];
   componentCode?: string | { client: string; editor?: string }; // optional because it might be also an action or built-in component
-  styles?: any;
-  editing?: EditingFunction;
-  auto?: AutoFunction;
+  styles?: NoCodeComponentStylesFunction<Values, Params>;
+  editing?: NoCodeComponentEditingFunction<Values, Params>;
+  auto?: NoCodeComponentAutoFunction<Values, Params>;
 };
 export type InternalActionComponentDefinition = ComponentDefinitionShared;
 
@@ -56,7 +60,7 @@ export type InternalComponentDefinition =
   | InternalTextModifierDefinition;
 
 export type InternalComponentDefinitions = {
-  components: InternalRenderableComponentDefinition[];
+  components: InternalRenderableComponentDefinition<string, any, any>[];
   actions: InternalActionComponentDefinition[];
   links: InternalLinkDefinition[];
   textModifiers: InternalTextModifierDefinition[];

@@ -1,19 +1,34 @@
-import { box } from "../../box";
+import type {
+  NoCodeComponentStylesFunctionInput,
+  NoCodeComponentStylesFunctionResult,
+} from "@easyblocks/core";
 
-export default function (configProps: any) {
-  const align = configProps.passedAlign || "left";
+export default function ({
+  values,
+  params,
+}: NoCodeComponentStylesFunctionInput<
+  {
+    color: string;
+    value: string;
+    accessibilityRole: string;
+    font: Record<string, any>;
+  },
+  { passedAlign: string }
+>): NoCodeComponentStylesFunctionResult {
+  const align = params.passedAlign || "left";
 
   const fontWithDefaults = {
     fontWeight: "initial",
     fontStyle: "initial",
-    ...configProps.font,
+    ...values.font,
   };
 
   return {
-    Text: box(
-      {
+    styled: {
+      Text: {
         ...fontWithDefaults,
-        color: configProps.color,
+        __as: values.accessibilityRole,
+        color: values.color,
         textAlign: align,
         "& textarea::placeholder": {
           color: "currentColor",
@@ -22,11 +37,10 @@ export default function (configProps: any) {
         "& textarea": {
           // This is important when textarea is globally set in project, here we'll override any global styles.
           ...fontWithDefaults,
-          color: configProps.color,
+          color: values.color,
         },
-        border: configProps.value === "" ? "1px dotted grey" : "none",
+        border: values.value === "" ? "1px dotted grey" : "none",
       },
-      configProps.accessibilityRole
-    ),
+    },
   };
 }

@@ -1,17 +1,17 @@
 import { spacingToPx } from "@easyblocks/app-utils";
-import { box } from "../../box";
-import { CompiledComponentStylesToolkit } from "../../types";
-import { SectionWrapperCompiledValues } from "./SectionWrapper.types";
+import type {
+  NoCodeComponentStylesFunctionInput,
+  NoCodeComponentStylesFunctionResult,
+} from "@easyblocks/core";
+import type { SectionWrapperCompiledValues } from "./SectionWrapper.types";
 
-export function $sectionWrapperStyles(
-  compiled: SectionWrapperCompiledValues,
-  t: CompiledComponentStylesToolkit
-) {
-  const $width = t.$width;
-
-  if ($width === -1) {
-    throw new Error("$sectionWrapper without width!!!");
-  }
+export function $sectionWrapperStyles({
+  values,
+  params,
+  isEditing,
+  device,
+}: NoCodeComponentStylesFunctionInput<SectionWrapperCompiledValues>): NoCodeComponentStylesFunctionResult {
+  const $width = params.$width;
 
   const styles: { [key: string]: { [key: string]: any } } = {
     grid: {},
@@ -19,24 +19,24 @@ export function $sectionWrapperStyles(
     header: {},
     headerSecondary: {},
     HeaderStack: {
-      $width: t.$width,
+      $width,
       $widthAuto: true,
     },
     HeaderSecondaryStack: {
-      $width: t.$width,
+      $width,
       $widthAuto: true,
     },
   };
 
   const maxWidth =
-    compiled.containerMaxWidth === "none" ||
-    isNaN(parseInt(compiled.containerMaxWidth))
+    values.containerMaxWidth === "none" ||
+    isNaN(parseInt(values.containerMaxWidth))
       ? null
-      : parseInt(compiled.containerMaxWidth);
+      : parseInt(values.containerMaxWidth);
 
   const containerMargin: { css: string; px: number } = {
-    css: compiled.containerMargin,
-    px: spacingToPx(compiled.containerMargin, t.device.w),
+    css: values.containerMargin,
+    px: spacingToPx(values.containerMargin, device.w),
   };
 
   const containerWidth = $width - containerMargin.px * 2;
@@ -51,31 +51,31 @@ export function $sectionWrapperStyles(
 
   const margin = getCssAbsoluteMargin(containerMargin.css);
 
-  if (compiled.headerMode === "1-stack") {
+  if (values.headerMode === "1-stack") {
     styles.grid.gridTemplateColumns = `${margin} 1fr ${margin}`;
 
     styles.content.gridColumn = "1 / span 3";
     styles.content.gridRow = "2 / span 1";
-    styles.content.marginTop = compiled.headerSectionGap;
+    styles.content.marginTop = values.headerSectionGap;
 
     styles.header.gridColumn = "2 / span 1";
     styles.header.gridRow = "1 / span 1";
     styles.header.display = "flex";
     styles.header.justifyContent =
-      compiled.layout1Stack === "left"
+      values.layout1Stack === "left"
         ? "flex-start"
-        : compiled.layout1Stack === "right"
+        : values.layout1Stack === "right"
         ? "flex-end"
         : "center";
 
-    styles.HeaderStack.passedAlign = compiled.layout1Stack;
-  } else if (compiled.headerMode === "2-stacks") {
+    styles.HeaderStack.passedAlign = values.layout1Stack;
+  } else if (values.headerMode === "2-stacks") {
     if (
-      compiled.layout2Stacks.startsWith("below") ||
-      compiled.layout2Stacks.startsWith("stacked")
+      values.layout2Stacks.startsWith("below") ||
+      values.layout2Stacks.startsWith("stacked")
     ) {
-      const [, align] = compiled.layout2Stacks.split("-");
-      const isBelow = compiled.layout2Stacks.startsWith("below");
+      const [, align] = values.layout2Stacks.split("-");
+      const isBelow = values.layout2Stacks.startsWith("below");
 
       styles.grid.gridTemplateColumns = `${margin} 1fr ${margin}`;
 
@@ -89,14 +89,14 @@ export function $sectionWrapperStyles(
       styles.headerSecondary.justifySelf = align;
       styles.HeaderSecondaryStack.passedAlign = align;
       styles.headerSecondary.marginTop = isBelow
-        ? compiled.footerSectionGap
-        : compiled.headerStacksGap;
+        ? values.footerSectionGap
+        : values.headerStacksGap;
 
       styles.content.gridColumn = "1 / span 3";
       styles.content.gridRow = `${isBelow ? 2 : 3} / span 1`;
-      styles.content.marginTop = compiled.headerSectionGap;
+      styles.content.marginTop = values.headerSectionGap;
     } else {
-      const [primaryPos, secondaryPos] = compiled.layout2Stacks.split("-");
+      const [primaryPos, secondaryPos] = values.layout2Stacks.split("-");
 
       /**
        * Solution with items on the same grid cell is shitty but:
@@ -120,7 +120,7 @@ export function $sectionWrapperStyles(
 
         styles.content.gridColumn = "1 / span 4";
         styles.content.gridRow = "2 / span 1";
-        styles.content.marginTop = compiled.headerSectionGap;
+        styles.content.marginTop = values.headerSectionGap;
 
         styles.header.gridColumn = "2 / span 1";
         styles.header.gridRow = "1 / span 1";
@@ -138,7 +138,7 @@ export function $sectionWrapperStyles(
 
         styles.content.gridColumn = "1 / span 5";
         styles.content.gridRow = "2 / span 1";
-        styles.content.marginTop = compiled.headerSectionGap;
+        styles.content.marginTop = values.headerSectionGap;
 
         styles.header.gridColumn = "3 / span 1";
         styles.header.gridRow = "1 / span 1";
@@ -152,9 +152,9 @@ export function $sectionWrapperStyles(
         styles.HeaderSecondaryStack.passedAlign = "right";
       }
 
-      if (compiled.layout2StacksVerticalAlign === "top") {
+      if (values.layout2StacksVerticalAlign === "top") {
         styles.grid.alignItems = "start";
-      } else if (compiled.layout2StacksVerticalAlign === "center") {
+      } else if (values.layout2StacksVerticalAlign === "center") {
         styles.grid.alignItems = "center";
       } else {
         styles.grid.alignItems = "end";
@@ -172,19 +172,19 @@ export function $sectionWrapperStyles(
   let Component: Record<string, any>;
 
   // GridCard handles margins on its own because of advanced margins
-  if (compiled.Component[0]._template === "$GridCard") {
+  if (values.Component[0]._template === "$GridCard") {
     Component = {
       edgeLeft: true,
       edgeLeftMargin: containerMargin.css,
       edgeRight: true,
       edgeRightMargin: containerMargin.css,
-      escapeMargin: !!compiled.escapeMargin,
+      escapeMargin: !!values.escapeMargin,
       maxWidth: maxWidth,
       $width,
     };
   } else {
     // we must always display paddings even if max width is applied.
-    const escapeMargin = !!compiled.escapeMargin;
+    const escapeMargin = !!values.escapeMargin;
 
     styles.content.paddingLeft = getCssAbsoluteMargin(
       escapeMargin ? "0px" : containerMargin.css
@@ -215,51 +215,50 @@ export function $sectionWrapperStyles(
   }
 
   const hasNoBackground =
-    !compiled.Background__ || compiled.Background__.length === 0;
+    !values.Background__ || values.Background__.length === 0;
 
   return {
-    Root__: box(
-      {
+    styled: {
+      Root__: {
+        __as: "section",
         position: "relative",
-        paddingTop: hasNoBackground ? "0px" : compiled.padding,
-        paddingBottom: hasNoBackground ? "0px" : compiled.padding,
-        display:
-          !t.compilationContext.isEditing && compiled.hide ? "none" : "block",
-        opacity: t.compilationContext.isEditing && compiled.hide ? 0.33 : 1,
+        paddingTop: hasNoBackground ? "0px" : values.padding,
+        paddingBottom: hasNoBackground ? "0px" : values.padding,
+        display: !isEditing && values.hide ? "none" : "block",
+        opacity: isEditing && values.hide ? 0.33 : 1,
       },
-      "section"
-    ),
-    BackgroundContainer__: box({
-      position: "absolute",
-      top: 0,
-      left: 0,
-      overflow: "hidden",
-      width: "100%",
-      height: "100%",
-      display: "grid",
-    }),
-    Container__: box({
-      position: "relative",
-      paddingLeft: 0,
-      paddingRight: 0,
-      display: "grid",
-      gridTemplateRows: "auto auto auto",
-      ...styles.grid,
-    }),
-    Background__: {
-      noAction: true,
+      BackgroundContainer__: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        overflow: "hidden",
+        width: "100%",
+        height: "100%",
+        display: "grid",
+      },
+      Container__: {
+        position: "relative",
+        paddingLeft: 0,
+        paddingRight: 0,
+        display: "grid",
+        gridTemplateRows: "auto auto auto",
+        ...styles.grid,
+      },
+      HeaderStackContainer__: styles.header,
+      SubheaderStackContainer__: styles.headerSecondary,
+      ContentContainer__: {
+        ...styles.content,
+        position: "relative",
+      },
     },
-    HeaderStackContainer__: box(styles.header),
-    SubheaderStackContainer__: box(styles.headerSecondary),
-    ContentContainer__: box({
-      ...styles.content,
-      position: "relative",
-    }),
-    HeaderStack: styles.HeaderStack,
-    HeaderSecondaryStack: styles.HeaderSecondaryStack,
-    Component: {
-      ...Component,
-      tracingType: "section",
+
+    components: {
+      Background__: {
+        noAction: true,
+      },
+      HeaderStack: styles.HeaderStack,
+      HeaderSecondaryStack: styles.HeaderSecondaryStack,
+      Component,
     },
   };
 }

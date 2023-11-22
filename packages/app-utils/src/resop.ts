@@ -1,5 +1,6 @@
 import {
   Devices,
+  NoCodeComponentStylesFunctionResult,
   ResponsiveValue,
   SchemaProp,
   TrulyResponsiveValue,
@@ -14,10 +15,7 @@ import {
   isSchemaPropComponentOrComponentCollection,
   isSchemaPropTextModifier,
 } from "./schema";
-import type {
-  InternalComponentDefinition,
-  UnwrapResponsiveValue,
-} from "./types";
+import type { InternalComponentDefinition } from "./types";
 
 type Config = { [key: string]: any };
 
@@ -338,16 +336,6 @@ export function scalarizeConfig(
   return ret;
 }
 
-type Scalar<Input extends Record<string, ResponsiveValue<unknown>>> = {
-  [key in keyof Input]: UnwrapResponsiveValue<Input[key]>;
-};
-
-type Responsify<T extends Record<string, unknown>> = {
-  [key in keyof T]: T[key] extends Record<string, unknown>
-    ? Responsify<T[key]>
-    : ResponsiveValue<T[key]>;
-};
-
 function getUndefinedBreakpoints(
   resVal: TrulyResponsiveValue<any>,
   devices: Devices
@@ -369,37 +357,46 @@ function hasDefinedBreakpoints(
   return undefinedBreakpoints.length < devices.length;
 }
 
-export function resop2<
-  Input extends Record<string, ResponsiveValue<unknown>>,
-  ScalarResult extends Record<string, unknown>
->(
-  config: Input,
+type Resop2Result = Required<NoCodeComponentStylesFunctionResult>;
+
+export function resop2(
+  input: {
+    values: Record<string, ResponsiveValue<unknown>>;
+    params: Record<string, ResponsiveValue<unknown>>;
+  },
   callback: (
-    scalarInput: Scalar<Input>,
+    scalarInput: {
+      values: Record<string, unknown>;
+      params: Record<string, unknown>;
+    },
     breakpointIndex: string
-  ) => ScalarResult,
+  ) => NoCodeComponentStylesFunctionResult,
   devices: Devices,
   componentDefinition?: InternalComponentDefinition
-): Responsify<ScalarResult> {
+): Resop2Result {
   const schema = componentDefinition?.schema ?? [];
 
   // Decompose config into scalar configs
-  const scalarConfigs: Record<string, Scalar<Input>> = {};
+  const scalarInputs: Record<
+    string,
+    {
+      values: Record<string, unknown>;
+      params: Record<string, unknown>;
+    }
+  > = {};
 
   devices.forEach((device) => {
-    scalarConfigs[device.id] = scalarizeConfig(
-      config,
-      device.id,
-      devices,
-      schema
-    );
+    scalarInputs[device.id] = {
+      params: scalarizeConfig(input.params, device.id, devices, []),
+      values: scalarizeConfig(input.values, device.id, devices, schema),
+    };
   });
 
-  const scalarOutputs: Record<string, any> = {};
+  const scalarOutputs: Record<string, NoCodeComponentStylesFunctionResult> = {};
 
   // run callback for scalar configs
   devices.forEach((device) => {
-    scalarOutputs[device.id] = callback(scalarConfigs[device.id], device.id);
+    scalarOutputs[device.id] = callback(scalarInputs[device.id], device.id);
   });
 
   /**
@@ -429,7 +426,8 @@ export function resop2<
   // Let's find all output prop names
   devices.forEach((device) => {
     // prop names
-    const propsObject = scalarOutputs[device.id].__props ?? {};
+    const propsObject = scalarOutputs[device.id].props ?? {};
+
     if (typeof propsObject !== "object" || propsObject === null) {
       throw new Error(
         `__props must be object, it is not for breakpoint: ${device.id}`
@@ -444,7 +442,7 @@ export function resop2<
     schema.forEach((schemaProp) => {
       if (isSchemaPropComponentOrComponentCollection(schemaProp)) {
         const componentObject: Record<string, any> =
-          scalarOutputs[device.id][schemaProp.prop] ?? {};
+          scalarOutputs[device.id].components?.[schemaProp.prop] ?? {};
 
         if (typeof componentObject !== "object" || componentObject === null) {
           throw new Error(
@@ -501,7 +499,7 @@ export function resop2<
 
     // If non-zero length, then there are extra requirements
     if (length > 0) {
-      const itemsLength = (config as any)[componentName].length;
+      const itemsLength = (input.values as any)[componentName].length;
 
       if (itemsLength === 0 ? length > 1 : itemsLength !== length) {
         throw new Error(
@@ -512,8 +510,10 @@ export function resop2<
   }
 
   // Let's compress
-  const output: Record<string, any> = {
-    __props: {},
+  const output: Resop2Result = {
+    props: {},
+    components: {},
+    styled: {},
   };
 
   // squash props
@@ -523,7 +523,7 @@ export function resop2<
     };
 
     devices.forEach((device) => {
-      squashedValue[device.id] = scalarOutputs[device.id]?.__props?.[propName];
+      squashedValue[device.id] = scalarOutputs[device.id]?.props?.[propName];
     });
 
     if (hasDefinedBreakpoints(squashedValue, devices)) {
@@ -536,16 +536,13 @@ export function resop2<
           `resop: undefined value (breakpoints: ${undefinedBreakpoints}) for __props.${propName}. Template: ${componentDefinition?.id}`
         );
       }
-      output.__props[propName] = responsiveValueNormalize(
-        squashedValue,
-        devices
-      ); // props should be normalized
+      output.props[propName] = responsiveValueNormalize(squashedValue, devices); // props should be normalized
     }
   });
 
   // Squash components
   for (const componentName in componentPropNames) {
-    output[componentName] = {};
+    output.components[componentName] = {};
 
     componentPropNames[componentName].forEach((componentPropName) => {
       const squashedValue: TrulyResponsiveValue<any> = {
@@ -553,7 +550,9 @@ export function resop2<
       };
       devices.forEach((device) => {
         squashedValue[device.id] =
-          scalarOutputs[device.id][componentName]?.[componentPropName];
+          scalarOutputs[device.id].components?.[componentName]?.[
+            componentPropName
+          ];
       });
 
       if (hasDefinedBreakpoints(squashedValue, devices)) {
@@ -566,21 +565,21 @@ export function resop2<
             `resop: undefined value (breakpoints ${undefinedBreakpoints}) for ${componentName}.${componentPropName}. Template: ${componentDefinition?.id}`
           );
         }
-        output[componentName][componentPropName] = squashedValue;
+        output.components[componentName][componentPropName] = squashedValue;
       }
     });
   }
 
   // Squash item props
   for (const componentName in componentItemPropsNamesAndLength) {
-    output[componentName].itemProps = [];
+    output.components[componentName].itemProps = [];
 
     const length = Array.from(
       componentItemPropsNamesAndLength[componentName].lengths
     )[0];
 
     for (let i = 0; i < length; i++) {
-      output[componentName].itemProps[i] = {};
+      output.components[componentName].itemProps![i] = {};
 
       componentItemPropsNamesAndLength[componentName].names.forEach(
         (itemPropName) => {
@@ -590,9 +589,9 @@ export function resop2<
 
           devices.forEach((device) => {
             squashedValue[device.id] =
-              scalarOutputs[device.id][componentName]?.itemProps?.[i]?.[
-                itemPropName
-              ];
+              scalarOutputs[device.id].components?.[componentName]?.itemProps?.[
+                i
+              ]?.[itemPropName];
           });
 
           if (hasDefinedBreakpoints(squashedValue, devices)) {
@@ -605,24 +604,22 @@ export function resop2<
                 `resop: undefined value (breakpoints ${undefinedBreakpoints}) for ${componentName}.${i}.${itemPropName}. Template: ${componentDefinition?.id}`
               );
             }
-            output[componentName].itemProps[i][itemPropName] = squashedValue;
+            output.components[componentName].itemProps![i][itemPropName] =
+              squashedValue;
           }
         }
       );
     }
   }
 
-  delete scalarOutputs.__props;
-  schema.forEach((schemaProp) => {
-    if (isSchemaPropComponentOrComponentCollection(schemaProp)) {
-      delete scalarOutputs[schemaProp.prop];
-    }
-  });
+  const styledOnlyScalarOutputs = Object.fromEntries(
+    Object.entries(scalarOutputs).map(([deviceId, result]) => [
+      deviceId,
+      result.styled,
+    ])
+  );
 
-  const result = {
-    ...squashCSSResults(scalarOutputs, devices),
-    ...output,
-  };
+  output.styled = squashCSSResults(styledOnlyScalarOutputs, devices);
 
-  return result;
+  return output;
 }

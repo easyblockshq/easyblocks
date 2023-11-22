@@ -8,8 +8,14 @@ type CompilationCacheItemValue = {
   /**
    * Values compared during compilation to determine if component has changed
    */
-  values: Record<string, any>;
-  valuesAfterAuto: Record<string, any>;
+  values: {
+    values: { _id: string; _template: string } & Record<string, any>;
+    params: Record<string, any>;
+  };
+  valuesAfterAuto: {
+    values: { _id: string; _template: string } & Record<string, any>;
+    params: Record<string, any>;
+  };
   compiledValues: Record<string, any>;
   compiledConfig:
     | CompiledShopstoryComponentConfig

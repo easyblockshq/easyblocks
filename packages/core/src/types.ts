@@ -2,7 +2,7 @@ import { ComponentType, ReactElement } from "react";
 import { PartialDeep } from "type-fest";
 import { Locale } from "./locales";
 
-type ScalarOrCollection<T> = T | Array<T>;
+export type ScalarOrCollection<T> = T | Array<T>;
 
 export type RefMap = { [key: string]: ConfigComponent };
 
@@ -488,14 +488,81 @@ export type RootContainer = {
   schema?: Array<ExternalSchemaProp>;
 };
 
-export type NoCodeComponentDefinition = {
+export type NoCodeComponentStylesFunctionInput<
+  Values extends Record<string, any> = Record<string, any>,
+  Params extends Record<string, any> = Record<string, any>
+> = {
+  values: Values;
+  params: { $width: number; $widthAuto: boolean } & Params;
+  device: DeviceRange;
+  isEditing: boolean;
+};
+
+export type NoCodeComponentStylesFunctionResult = {
+  props?: Record<string, unknown>;
+  components?: Record<
+    string,
+    {
+      /**
+       * `itemProps` can only be set if component prop is a collection.
+       */
+      itemProps?: Array<Record<string, unknown>>;
+      [key: string]: unknown;
+    }
+  >;
+  styled?: Record<string, ScalarOrCollection<Record<string, unknown>>>;
+};
+
+export type NoCodeComponentStylesFunction<
+  Values extends Record<string, any> = Record<string, any>,
+  Params extends Record<string, any> = Record<string, any>
+> = (
+  input: NoCodeComponentStylesFunctionInput<Values, Params>
+) => NoCodeComponentStylesFunctionResult;
+
+export type NoCodeComponentEditingFunctionInput<
+  Values extends Record<string, any> = Record<string, any>,
+  Params extends Record<string, any> = Record<string, any>
+> = {
+  values: Values;
+  params: Params;
+  editingInfo: EditingInfo;
+};
+
+export type NoCodeComponentEditingFunction<
+  Values extends Record<string, any> = Record<string, any>,
+  Params extends Record<string, any> = Record<string, any>
+> = (
+  input: NoCodeComponentEditingFunctionInput<Values, Params>
+) => NoCodeComponentEditingFunctionResult;
+
+export type NoCodeComponentAutoFunctionInput<
+  Values extends Record<string, any> = Record<string, any>,
+  Params extends Record<string, any> = Record<string, any>
+> = {
+  values: { [key in keyof Values]: ResponsiveValue<Values[key]> };
+  params: { [key in keyof Params]: ResponsiveValue<Params[key]> };
+  devices: Devices;
+};
+
+export type NoCodeComponentAutoFunction<
+  Values extends Record<string, any> = Record<string, any>,
+  Params extends Record<string, any> = Record<string, any>
+> = (
+  input: NoCodeComponentAutoFunctionInput<Values, { $width: number } & Params>
+) => any;
+
+export type NoCodeComponentDefinition<
+  Values extends Record<string, any> = Record<string, any>,
+  Params extends Record<string, any> = Record<string, any>
+> = {
   id: string;
   schema: Array<SchemaProp>;
   type?: string | string[];
   label?: string;
-  styles?: any;
-  editing?: any;
-  auto?: any;
+  styles?: NoCodeComponentStylesFunction<Values, Params>;
+  editing?: NoCodeComponentEditingFunction<Values, Params>;
+  auto?: NoCodeComponentAutoFunction<Values, Params>;
   pasteSlots?: Array<string>;
 };
 
@@ -658,7 +725,7 @@ export type Resource<Value = unknown> =
   | RejectedResource;
 
 export type DeviceRange = {
-  id: DeviceId;
+  id: string;
   w: number;
   h: number;
   breakpoint: number | null;
@@ -1006,20 +1073,12 @@ export type EditingInfo = {
   components: Record<string, ScalarOrCollection<ChildComponentEditingInfo>>;
 };
 
-export type EditingFunctionInput<
-  Values extends Record<string, any> = Record<string, any>
-> = { values: Values; editingInfo: EditingInfo };
-
-export type EditingFunctionResult = {
+export type NoCodeComponentEditingFunctionResult = {
   fields?: Array<AnyEditingField>;
   components?: {
     [field: string]: PartialDeep<ScalarOrCollection<ChildComponentEditingInfo>>;
   };
 };
-
-export type EditingFunction = (
-  input: EditingFunctionInput
-) => EditingFunctionResult | undefined;
 
 export type FetchInputResource = {
   externalId: string | null;

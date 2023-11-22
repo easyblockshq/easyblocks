@@ -1,11 +1,10 @@
-import { Devices } from "@easyblocks/core";
 import {
-  CompilationContextType,
   getDevicesWidths,
   responsiveValueForceGet,
 } from "@easyblocks/app-utils";
-import { testCompilationContext } from "../../test-utils";
+import { Devices } from "@easyblocks/core";
 import { gridAuto } from "./Grid.auto";
+import { GridCompiledValues } from "./Grid.types";
 
 const devices: Devices = [
   {
@@ -42,41 +41,41 @@ const devices: Devices = [
 
 const widths = getDevicesWidths(devices);
 
-const compilationContext: CompilationContextType = {
-  ...testCompilationContext,
-  devices,
-};
-
 const NUMBER_OF_ITEMS_1 = "1";
 const NUMBER_OF_ITEMS_2 = "2";
 const NUMBER_OF_ITEMS_3 = "3";
 const NUMBER_OF_ITEMS_4 = "4";
-const NUMBER_OF_ITEMS_5 = "5";
-const NUMBER_OF_ITEMS_6 = "6";
 
 describe("grid auto", () => {
-  const example: Record<string, any> = {
+  const exampleValues = {
     Cards: [{}, {}, {}, {}],
     numberOfItems: NUMBER_OF_ITEMS_4,
     variant: "grid",
     shouldSliderItemsBeVisibleOnMargin: false,
     fractionalItemWidth: "1",
+  } as unknown as GridCompiledValues;
+
+  const exampleParams = {
     edgeLeft: true,
     edgeRight: true,
     edgeLeftMargin: "100px",
     edgeRightMargin: "100px",
     escapeMargin: true,
     maxWidth: null,
+    $widthAuto: false,
   };
 
   describe("show items on margin", () => {
     test("keeps scalar when scalar", () => {
       expect(
-        gridAuto(
-          { ...example, shouldSliderItemsBeVisibleOnMargin: true },
-          compilationContext,
-          widths
-        ).shouldSliderItemsBeVisibleOnMargin
+        gridAuto({
+          values: {
+            ...exampleValues,
+            shouldSliderItemsBeVisibleOnMargin: true,
+          },
+          params: { ...exampleParams, $width: widths },
+          devices,
+        }).shouldSliderItemsBeVisibleOnMargin
       ).toEqual({
         $res: true,
         b1: true,
@@ -86,11 +85,14 @@ describe("grid auto", () => {
         b5: true,
       });
       expect(
-        gridAuto(
-          { ...example, shouldSliderItemsBeVisibleOnMargin: false },
-          compilationContext,
-          widths
-        ).shouldSliderItemsBeVisibleOnMargin
+        gridAuto({
+          values: {
+            ...exampleValues,
+            shouldSliderItemsBeVisibleOnMargin: false,
+          },
+          params: { ...exampleParams, $width: widths },
+          devices,
+        }).shouldSliderItemsBeVisibleOnMargin
       ).toEqual({
         $res: true,
         b1: false,
@@ -112,22 +114,20 @@ describe("grid auto", () => {
         ...devices,
       ];
 
-      const compilationContextWithXS = {
-        ...compilationContext,
-        devices: devicesWithXS,
-      };
-
       const widthsWithXS = getDevicesWidths(devicesWithXS);
 
       expect(
-        gridAuto(
-          {
-            ...example,
+        gridAuto({
+          values: {
+            ...exampleValues,
             shouldSliderItemsBeVisibleOnMargin: { $res: true, b4: false },
           },
-          compilationContextWithXS,
-          widthsWithXS
-        ).shouldSliderItemsBeVisibleOnMargin
+          params: {
+            ...exampleParams,
+            $width: widthsWithXS,
+          },
+          devices: devicesWithXS,
+        }).shouldSliderItemsBeVisibleOnMargin
       ).toEqual({
         $res: true,
         xs: true,
@@ -139,14 +139,14 @@ describe("grid auto", () => {
       });
 
       expect(
-        gridAuto(
-          {
-            ...example,
+        gridAuto({
+          values: {
+            ...exampleValues,
             shouldSliderItemsBeVisibleOnMargin: { $res: true, b4: true },
           },
-          compilationContextWithXS,
-          widthsWithXS
-        ).shouldSliderItemsBeVisibleOnMargin
+          params: { ...exampleParams, $width: widthsWithXS },
+          devices: devicesWithXS,
+        }).shouldSliderItemsBeVisibleOnMargin
       ).toEqual({
         $res: true,
         xs: true,
@@ -162,11 +162,11 @@ describe("grid auto", () => {
   describe("number of items", () => {
     test("keeps scalar when scalar", () => {
       expect(
-        gridAuto(
-          { ...example, numberOfItems: NUMBER_OF_ITEMS_4 },
-          compilationContext,
-          widths
-        ).numberOfItems
+        gridAuto({
+          values: { ...exampleValues, numberOfItems: NUMBER_OF_ITEMS_4 },
+          params: { ...exampleParams, $width: widths },
+          devices,
+        }).numberOfItems
       ).toEqual({
         $res: true,
         b1: NUMBER_OF_ITEMS_4,
@@ -176,11 +176,11 @@ describe("grid auto", () => {
         b5: NUMBER_OF_ITEMS_4,
       });
       expect(
-        gridAuto(
-          { ...example, numberOfItems: NUMBER_OF_ITEMS_2 },
-          compilationContext,
-          widths
-        ).numberOfItems
+        gridAuto({
+          values: { ...exampleValues, numberOfItems: NUMBER_OF_ITEMS_2 },
+          params: { ...exampleParams, $width: widths },
+          devices,
+        }).numberOfItems
       ).toEqual({
         $res: true,
         b1: NUMBER_OF_ITEMS_2,
@@ -193,11 +193,14 @@ describe("grid auto", () => {
 
     test("1 is always 1", () => {
       expect(
-        gridAuto(
-          { ...example, numberOfItems: { $res: true, b4: NUMBER_OF_ITEMS_1 } },
-          compilationContext,
-          widths
-        ).numberOfItems
+        gridAuto({
+          values: {
+            ...exampleValues,
+            numberOfItems: { $res: true, b4: NUMBER_OF_ITEMS_1 },
+          },
+          params: { ...exampleParams, $width: widths },
+          devices,
+        }).numberOfItems
       ).toEqual({
         $res: true,
         b1: NUMBER_OF_ITEMS_1,
@@ -207,18 +210,18 @@ describe("grid auto", () => {
         b5: NUMBER_OF_ITEMS_1,
       });
       expect(
-        gridAuto(
-          {
-            ...example,
+        gridAuto({
+          values: {
+            ...exampleValues,
             numberOfItems: {
               $res: true,
               b1: NUMBER_OF_ITEMS_1,
               b4: NUMBER_OF_ITEMS_1,
             },
           },
-          compilationContext,
-          widths
-        ).numberOfItems
+          params: { ...exampleParams, $width: widths },
+          devices,
+        }).numberOfItems
       ).toEqual({
         $res: true,
         b1: NUMBER_OF_ITEMS_1,
@@ -230,22 +233,28 @@ describe("grid auto", () => {
     });
 
     test("2 on desktop is 1 on mobile", () => {
-      const result = gridAuto(
-        { ...example, numberOfItems: { $res: true, b4: NUMBER_OF_ITEMS_2 } },
-        compilationContext,
-        widths
-      ).numberOfItems;
+      const result = gridAuto({
+        values: {
+          ...exampleValues,
+          numberOfItems: { $res: true, b4: NUMBER_OF_ITEMS_2 },
+        },
+        params: { ...exampleParams, $width: widths },
+        devices,
+      }).numberOfItems;
       expect(responsiveValueForceGet(result, "b1")).toEqual(NUMBER_OF_ITEMS_1);
       expect(responsiveValueForceGet(result, "b4")).toEqual(NUMBER_OF_ITEMS_2);
       expect(responsiveValueForceGet(result, "b3")).toEqual(NUMBER_OF_ITEMS_2);
     });
 
     test("[grid - 4 single row] 4 on b4 is 2 on b2, and 2 on b1 (2 is min), never 3!", () => {
-      const result = gridAuto(
-        { ...example, numberOfItems: { $res: true, b4: NUMBER_OF_ITEMS_4 } },
-        compilationContext,
-        widths
-      ).numberOfItems;
+      const result = gridAuto({
+        values: {
+          ...exampleValues,
+          numberOfItems: { $res: true, b4: NUMBER_OF_ITEMS_4 },
+        },
+        params: { ...exampleParams, $width: widths },
+        devices,
+      }).numberOfItems;
 
       expect(responsiveValueForceGet(result, "b1")).toEqual(NUMBER_OF_ITEMS_2);
       expect(responsiveValueForceGet(result, "b2")).toEqual(NUMBER_OF_ITEMS_2);
@@ -258,30 +267,30 @@ describe("grid auto", () => {
     });
 
     test("4 on b4 is 2 on b2, and 2 on b1 (2 is min) - for multiple rows", () => {
-      const result = gridAuto(
-        {
-          ...example,
+      const result = gridAuto({
+        values: {
+          ...exampleValues,
           numberOfItems: { $res: true, b4: NUMBER_OF_ITEMS_4 },
           Cards: [{}, {}, {}, {}, {}, {}, {}, {}],
         },
-        compilationContext,
-        widths
-      ).numberOfItems;
+        params: { ...exampleParams, $width: widths },
+        devices,
+      }).numberOfItems;
       expect(responsiveValueForceGet(result, "b4")).toEqual(NUMBER_OF_ITEMS_4);
       expect(responsiveValueForceGet(result, "b2")).toEqual(NUMBER_OF_ITEMS_2);
       expect(responsiveValueForceGet(result, "b1")).toEqual(NUMBER_OF_ITEMS_2);
     });
 
     test("[grid - 3 in a single row] 3 on b4 is 1 on lowest, but never 2", () => {
-      const result = gridAuto(
-        {
-          ...example,
+      const result = gridAuto({
+        values: {
+          ...exampleValues,
           numberOfItems: { $res: true, b4: NUMBER_OF_ITEMS_3 },
           Cards: [{}, {}, {}],
         },
-        compilationContext,
-        widths
-      ).numberOfItems;
+        params: { ...exampleParams, $width: widths },
+        devices,
+      }).numberOfItems;
 
       expect(responsiveValueForceGet(result, "b1")).toEqual(NUMBER_OF_ITEMS_1);
 
@@ -297,15 +306,15 @@ describe("grid auto", () => {
     });
 
     test("3 on b4 is 1 on lowest, and somewhere in between it is 2", () => {
-      const result = gridAuto(
-        {
-          ...example,
+      const result = gridAuto({
+        values: {
+          ...exampleValues,
           numberOfItems: { $res: true, b4: NUMBER_OF_ITEMS_3 },
           Cards: [{}, {}, {}, {}, {}, {}],
         },
-        compilationContext,
-        widths
-      ).numberOfItems;
+        params: { ...exampleParams, $width: widths },
+        devices,
+      }).numberOfItems;
 
       expect(responsiveValueForceGet(result, "b1")).toEqual(NUMBER_OF_ITEMS_1);
       expect([
@@ -335,15 +344,15 @@ describe("grid auto", () => {
      * 3. etc etc
      */
     test("[slider - 4 items] 4 on b4 is 2 on b2, and 1 on b1, never 3! Also, smallest breakpoint is 2", () => {
-      const result = gridAuto(
-        {
-          ...example,
+      const result = gridAuto({
+        values: {
+          ...exampleValues,
           variant: "slider",
           numberOfItems: { $res: true, b4: NUMBER_OF_ITEMS_4 },
         },
-        compilationContext,
-        widths
-      ).numberOfItems;
+        params: { ...exampleParams, $width: widths },
+        devices,
+      }).numberOfItems;
 
       expect(responsiveValueForceGet(result, "b1")).toEqual(NUMBER_OF_ITEMS_2);
       expect(responsiveValueForceGet(result, "b2")).toEqual(NUMBER_OF_ITEMS_2);

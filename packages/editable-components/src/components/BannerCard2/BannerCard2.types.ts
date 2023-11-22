@@ -1,12 +1,8 @@
 import { Spacing } from "@easyblocks/core";
-import {
-  EdgeCompiledValues,
-  GridContextCompiledValues,
-} from "../../common.types";
+import { GridContextCompiledValues } from "../../common.types";
 import { BorderCompiledValues } from "../../borderHelpers";
 
-export type BannerCard2CompiledValues = EdgeCompiledValues &
-  GridContextCompiledValues &
+export type BannerCard2CompiledValues = GridContextCompiledValues &
   BorderCompiledValues & {
     cornerRadius: string;
     Card1: any[];

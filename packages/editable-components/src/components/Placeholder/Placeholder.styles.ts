@@ -1,31 +1,40 @@
-import { box } from "../../box";
+import type {
+  NoCodeComponentStylesFunctionInput,
+  NoCodeComponentStylesFunctionResult,
+} from "@easyblocks/core";
 
-function styles(config: { gridBaseLineHeight: string }) {
+function styles({
+  values,
+}: NoCodeComponentStylesFunctionInput<{
+  gridBaseLineHeight: string;
+}>): NoCodeComponentStylesFunctionResult {
   const color = "#eaeaea";
 
-  const Image = box({
-    height: config.gridBaseLineHeight,
+  const Image = {
+    height: values.gridBaseLineHeight,
     background: color,
-  });
+  };
 
-  const Title = box({
+  const Title = {
     marginTop: 16,
     height: 24,
     width: "70%",
     background: color,
-  });
+  };
 
-  const Desc = box({
+  const Desc = {
     marginTop: 12,
     height: 16,
     width: "50%",
     background: color,
-  });
+  };
 
   return {
-    Image,
-    Title,
-    Desc,
+    styled: {
+      Image,
+      Title,
+      Desc,
+    },
   };
 }
 

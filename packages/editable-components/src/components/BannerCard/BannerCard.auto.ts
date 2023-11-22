@@ -1,14 +1,17 @@
-import { AutoFunction } from "@easyblocks/app-utils";
+import { getDevicesWidths } from "@easyblocks/app-utils";
+import { NoCodeComponentAutoFunction } from "@easyblocks/core";
 import { responsiveAuto } from "../../responsiveAuto";
 
-export const bannerCardAuto: AutoFunction = (
-  config,
-  compilationContext,
-  widths
-): Record<string, any> => {
-  const values = responsiveAuto(
-    config,
-    compilationContext,
+export const bannerCardAuto: NoCodeComponentAutoFunction = ({
+  values,
+  params,
+  devices,
+}): Record<string, any> => {
+  const widths = getDevicesWidths(devices);
+
+  const valuesAfterAuto = responsiveAuto(
+    { ...values, ...params },
+    devices,
     widths,
     ({
       values,
@@ -49,5 +52,5 @@ export const bannerCardAuto: AutoFunction = (
     }
   );
 
-  return values;
+  return valuesAfterAuto;
 };

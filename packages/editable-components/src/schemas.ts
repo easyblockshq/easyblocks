@@ -3,7 +3,7 @@ import {
   ChildComponentEditingInfo,
   EditingComponentFields,
   EditingField,
-  EditingFunctionResult,
+  NoCodeComponentEditingFunctionResult,
   SchemaProp,
 } from "@easyblocks/core";
 import { range } from "@easyblocks/utils";
@@ -1073,13 +1073,11 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
       auto: bannerCard2Auto,
       editing: ({ values, editingInfo }) => {
         const isNoneMode = values.mode === "none";
-        const isBackgroundMode = values.mode === "background";
         const isBackgroundWithSeparateStackMode =
           values.mode === "background-separate-stack";
 
-        let newFields: Required<EditingFunctionResult>["fields"] = [
-          ...editingInfo.fields,
-        ];
+        let newFields: Required<NoCodeComponentEditingFunctionResult>["fields"] =
+          [...editingInfo.fields];
 
         const modeIndexPlus1 =
           editingInfo.fields.findIndex(
@@ -1447,7 +1445,7 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
       ],
     },
 
-    vimeoPlayerEditableComponent,
+    vimeoPlayerEditableComponent as any,
     basicCardDefinition,
     basicBackgroundCardDefinition,
     cardPlaceholderDefinition,

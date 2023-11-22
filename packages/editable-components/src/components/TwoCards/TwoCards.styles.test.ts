@@ -17,7 +17,9 @@ const basicValues: TwoCardsCompiledValues = {
   collapse: false,
   gap: "20px",
   verticalGap: "50px",
+};
 
+const basicParams = {
   edgeLeft: true,
   edgeLeftMargin: "100px",
   edgeRight: true,
@@ -29,15 +31,11 @@ function runStyles(extraValues: any) {
     (device) => device.id === "b4"
   )!;
 
-  return styles(
-    { ...basicValues, ...extraValues },
-    {
-      $width: 1920,
-      $widthAuto: false,
-      compilationContext: testCompilationContext,
-      device: { ...device, w: 1920 },
-    }
-  );
+  return styles({
+    values: { ...basicValues, ...extraValues },
+    params: { ...basicParams, $width: 1920, $widthAuto: false },
+    device: { ...device, w: 1920 },
+  });
 }
 describe("TwoCards styles", () => {
   describe("not collapsed", () => {
