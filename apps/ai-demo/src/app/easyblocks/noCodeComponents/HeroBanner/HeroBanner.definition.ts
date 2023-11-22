@@ -56,6 +56,7 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
       responsive: true,
       params: {
         options: [
+          "hide",
           "left-stretch",
           "left-start",
           "left-center",
@@ -156,6 +157,7 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
 
     let coverGridRow: string;
     let coverGridCol: string;
+    let coverDisplay = "grid";
 
     let stackGridRow: string;
     let stackGridCol: string;
@@ -163,7 +165,29 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
     const coverFr = parseInt(coverWidth.replace("%", ""));
     const stackFr = 100 - coverFr;
 
-    if (coverMainPosition === "left") {
+    if (coverMainPosition === "hide") {
+      stackPaddings = {
+        left: "0",
+        right: "0",
+        top: paddingTop,
+        bottom: paddingBottom,
+      };
+
+      coverPaddings = {
+        top: "0",
+        bottom: "0",
+        right: "0",
+        left: "0",
+      };
+
+      gridTemplateColumns = `${paddingOnMarginSide} 1fr ${paddingOnMarginSide}`;
+
+      stackGridCol = "2 / span 1";
+      stackGridRow = "1";
+      coverDisplay = "none";
+      coverGridRow = "initial";
+      coverGridCol = "initial";
+    } else if (coverMainPosition === "left") {
       stackPaddings = {
         left: paddingInternal,
         right: "0",
@@ -301,7 +325,7 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
         gridColumn: stackGridCol,
       }),
       CoverContainer: box({
-        display: "grid",
+        display: coverDisplay,
         position: "relative",
         paddingLeft: coverPaddings.left,
         paddingRight: coverPaddings.right,
