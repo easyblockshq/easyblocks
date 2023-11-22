@@ -9,11 +9,9 @@
     "check": "tsc && eslint --quiet src/"
   },
   "dependencies": {
-    "@easyblocks/app-utils": "^0.1.0",
     "@easyblocks/core": "workspace:*",
-    "@easyblocks/editable-components": "^0.1.0",
-    "@easyblocks/reduce-css-calc": "^0.1.0",
-    "@easyblocks/utils": "link:../utils",
+    "@easyblocks/editable-components": "workspace:*",
+    "@easyblocks/reduce-css-calc": "workspace:*",
     "crypto-js": "^4.1.1",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
@@ -21,9 +19,11 @@
   },
   "devDependencies": {
     "@jest/types": "^26.6.2",
-    "@easyblocks/app-test-utils": "^0.1.0",
-    "@easyblocks/build-tools": "^0.1.0",
-    "@easyblocks/test-utils": "^0.1.0",
+    "@easyblocks/app-utils": "workspace:*",
+    "@easyblocks/app-test-utils": "workspace:*",
+    "@easyblocks/build-tools": "workspace:*",
+    "@easyblocks/utils": "workspace:*",
+    "@easyblocks/test-utils": "workspace:*",
     "@types/crypto-js": "^4.1.1",
     "@types/jest": "^26.0.20",
     "@types/lodash": "^4.14.192",

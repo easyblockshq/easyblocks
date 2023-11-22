@@ -1,3 +1,5 @@
+import type { ComponentConfigBase, RefMap, SchemaProp } from "@easyblocks/core";
+
 export type Stylesheet = {
   [key: string]: any;
 };
@@ -17,3 +19,14 @@ export type CompiledNoCodeComponentProps<
 } & StateProps & {
     [key in keyof Omit<Styles, "__props">]: React.ReactElement;
   } & ContextProps;
+
+export type EditableComponentToComponentConfig<
+  EditableComponent extends {
+    id: string;
+    label?: string;
+    type?: string | string[];
+    schema: Array<SchemaProp>;
+  }
+> = ComponentConfigBase<EditableComponent["id"]> & {
+  $$$refs?: RefMap;
+};

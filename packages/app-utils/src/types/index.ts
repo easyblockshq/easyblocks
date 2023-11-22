@@ -3,7 +3,6 @@ import {
   CompiledComponentConfig,
   CompiledShopstoryComponentConfig,
   ComponentConfig,
-  ComponentConfigBase,
   ComponentDefinitionShared,
   ConfigComponent,
   ContextParams,
@@ -18,10 +17,8 @@ import {
   NoCodeComponentAutoFunction,
   NoCodeComponentEditingFunction,
   NoCodeComponentStylesFunction,
-  RefMap,
   Resource,
   ResponsiveValue,
-  SchemaProp,
   Template,
   Theme,
   TrulyResponsiveValue,
@@ -206,17 +203,6 @@ export type EditorWindowAPI = {
   meta: CompilationMetadata;
   compiled: CompiledComponentConfig;
   externalData: ExternalData;
-};
-
-export type EditableComponentToComponentConfig<
-  EditableComponent extends {
-    id: string;
-    label?: string;
-    type?: string | string[];
-    schema: Array<SchemaProp>;
-  }
-> = ComponentConfigBase<EditableComponent["id"]> & {
-  $$$refs?: RefMap;
 };
 
 export type Alignment = "center" | "left" | "right";

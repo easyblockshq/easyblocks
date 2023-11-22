@@ -456,21 +456,15 @@ importers:
 
   packages/compiler:
     dependencies:
-      '@easyblocks/app-utils':
-        specifier: ^0.1.0
-        version: link:../app-utils
       '@easyblocks/core':
         specifier: workspace:*
         version: link:../core
       '@easyblocks/editable-components':
-        specifier: ^0.1.0
-        version: 0.1.5(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
+        specifier: workspace:*
+        version: link:../editable-components
       '@easyblocks/reduce-css-calc':
-        specifier: ^0.1.0
+        specifier: workspace:*
         version: link:../reduce-css-calc
-      '@easyblocks/utils':
-        specifier: link:../utils
-        version: link:../utils
       crypto-js:
         specifier: ^4.1.1
         version: 4.1.1
@@ -485,14 +479,20 @@ importers:
         version: 3.12.0
     devDependencies:
       '@easyblocks/app-test-utils':
-        specifier: ^0.1.0
+        specifier: workspace:*
         version: link:../app-test-utils
+      '@easyblocks/app-utils':
+        specifier: workspace:*
+        version: link:../app-utils
       '@easyblocks/build-tools':
-        specifier: ^0.1.0
+        specifier: workspace:*
         version: link:../build-tools
       '@easyblocks/test-utils':
-        specifier: ^0.1.0
+        specifier: workspace:*
         version: link:../test-utils
+      '@easyblocks/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@jest/types':
         specifier: ^26.6.2
         version: 26.6.2
@@ -3626,39 +3626,6 @@ packages:
     dependencies:
       react: 17.0.2
       tslib: 2.5.2
-    dev: false
-
-  /@easyblocks/core@0.1.5(react@18.2.0):
-    resolution: {integrity: sha512-PV4+gLK1/0gVGs+VO2MJadQBVDY1G6H7adsOYOuU/Jypsc0phjPn8BlASwxpJYlrVkzvD93ku9+3W2E9QWPQyw==}
-    peerDependencies:
-      react: '>= 16.8'
-    dependencies:
-      '@babel/runtime': 7.21.5
-      crypto-js: 4.1.1
-      lodash: 4.17.21
-      postcss-value-parser: 3.3.1
-      react: 18.2.0
-      type-fest: 3.13.1
-      zod: 3.22.2
-    dev: false
-
-  /@easyblocks/editable-components@0.1.5(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-QKFQpVgagax1cOZLEbTJgnUefS7iUUOEXB4odYfbPqxVBNmEaIaRW+Spg7N071Cif69y3c0mCVlYFzP2UIh49g==}
-    dependencies:
-      '@babel/runtime': 7.21.5
-      '@easyblocks/core': 0.1.5(react@18.2.0)
-      '@vimeo/player': 2.18.0
-      fast-xml-parser: 4.1.3
-      lodash: 4.17.21
-      postcss-value-parser: 3.3.1
-      react-textarea-autosize: 8.4.1(@types/react@18.2.20)(react@18.2.0)
-      slate: 0.77.2
-      slate-react: 0.77.2(react-dom@18.2.0)(react@18.2.0)(slate@0.77.2)
-      type-fest: 3.13.1
-    transitivePeerDependencies:
-      - '@types/react'
-      - react
-      - react-dom
     dev: false
 
   /@emotion/babel-plugin@11.10.6:

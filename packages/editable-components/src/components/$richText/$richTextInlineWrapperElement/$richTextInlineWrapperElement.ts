@@ -1,12 +1,9 @@
-import {
-  EditableComponentToComponentConfig,
-  InternalRenderableComponentDefinition,
-  textModifierSchemaProp,
-} from "@easyblocks/app-utils";
+import { textModifierSchemaProp } from "@easyblocks/app-utils";
 import {
   CompiledComponentConfigBase,
   ComponentSchemaProp,
   ConfigComponent,
+  NoCodeComponentDefinition,
   NoCodeComponentStylesFunction,
 } from "@easyblocks/core";
 import {
@@ -17,6 +14,7 @@ import richTextInlineWrapperElementStyles, {
   RichTextActionElementValues,
 } from "./$richTextInlineWrapperElement.styles";
 import { richTextInlineWrapperActionSchemaProp } from "./richTextInlineWrapperActionSchemaProp";
+import { EditableComponentToComponentConfig } from "../../../types";
 
 export const optionalTextModifierSchemaProp = textModifierSchemaProp({
   prop: "textModifier",
@@ -39,24 +37,22 @@ const requiredActionTextModifierSchemaProp: ComponentSchemaProp = {
     action.length === 1,
 };
 
-const richTextInlineWrapperElementEditableComponent: InternalRenderableComponentDefinition<
-  "$richTextInlineWrapperElement",
-  RichTextActionElementValues
-> = {
-  id: "$richTextInlineWrapperElement",
-  schema: [
-    {
-      prop: "elements",
-      type: "component-collection",
-      accepts: ["$richTextPart"],
-    },
-    // optionalTextModifierSchemaProp,
-    richTextInlineWrapperActionSchemaProp,
-    requiredActionTextModifierSchemaProp,
-  ],
-  styles:
-    richTextInlineWrapperElementStyles as NoCodeComponentStylesFunction<RichTextActionElementValues>,
-};
+const richTextInlineWrapperElementEditableComponent: NoCodeComponentDefinition<RichTextActionElementValues> =
+  {
+    id: "$richTextInlineWrapperElement",
+    schema: [
+      {
+        prop: "elements",
+        type: "component-collection",
+        accepts: ["$richTextPart"],
+      },
+      // optionalTextModifierSchemaProp,
+      richTextInlineWrapperActionSchemaProp,
+      requiredActionTextModifierSchemaProp,
+    ],
+    styles:
+      richTextInlineWrapperElementStyles as NoCodeComponentStylesFunction<RichTextActionElementValues>,
+  };
 
 type RichTextInlineWrapperElementEditableComponentConfig =
   EditableComponentToComponentConfig<

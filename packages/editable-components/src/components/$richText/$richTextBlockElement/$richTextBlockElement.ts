@@ -1,8 +1,8 @@
-import { CompiledComponentConfigBase, Option } from "@easyblocks/core";
-import type {
-  EditableComponentToComponentConfig,
-  InternalRenderableComponentDefinition,
-} from "@easyblocks/app-utils";
+import {
+  CompiledComponentConfigBase,
+  NoCodeComponentDefinition,
+  Option,
+} from "@easyblocks/core";
 import {
   RichTextLineElementCompiledComponentConfig,
   RichTextLineElementComponentConfig,
@@ -12,6 +12,7 @@ import richTextBlockElementStyles, {
   RichTextBlockElementParams,
   RichTextBlockElementValues,
 } from "./$richTextBlockElement.styles";
+import { EditableComponentToComponentConfig } from "../../../types";
 
 type RichTextBlockElementType = "bulleted-list" | "numbered-list" | "paragraph";
 
@@ -36,8 +37,7 @@ const RICH_TEXT_BLOCK_ELEMENT_TYPE_OPTIONS: Array<Option> = [
   },
 ];
 
-const richTextBlockElementEditableComponent: InternalRenderableComponentDefinition<
-  "$richTextBlockElement",
+const richTextBlockElementEditableComponent: NoCodeComponentDefinition<
   RichTextBlockElementValues,
   RichTextBlockElementParams
 > = {

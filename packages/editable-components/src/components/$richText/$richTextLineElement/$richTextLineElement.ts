@@ -1,8 +1,7 @@
 import {
-  EditableComponentToComponentConfig,
-  InternalRenderableComponentDefinition,
-} from "@easyblocks/app-utils";
-import { CompiledComponentConfigBase } from "@easyblocks/core";
+  CompiledComponentConfigBase,
+  NoCodeComponentDefinition,
+} from "@easyblocks/core";
 import {
   RichTextInlineWrapperElementEditableComponentConfig,
   richTextInlineWrapperElementEditableComponent,
@@ -15,24 +14,23 @@ import {
 import richTextLineElementStyles, {
   RichTextLineCompiledComponentValues,
 } from "./$richTextLineElement.styles";
+import { EditableComponentToComponentConfig } from "../../../types";
 
-const richTextLineElementEditableComponent: InternalRenderableComponentDefinition<
-  "$richTextLineElement",
-  RichTextLineCompiledComponentValues
-> = {
-  id: "$richTextLineElement",
-  schema: [
-    {
-      prop: "elements",
-      type: "component-collection",
-      accepts: [
-        richTextPartEditableComponent.id,
-        richTextInlineWrapperElementEditableComponent.id,
-      ],
-    },
-  ],
-  styles: richTextLineElementStyles,
-};
+const richTextLineElementEditableComponent: NoCodeComponentDefinition<RichTextLineCompiledComponentValues> =
+  {
+    id: "$richTextLineElement",
+    schema: [
+      {
+        prop: "elements",
+        type: "component-collection",
+        accepts: [
+          richTextPartEditableComponent.id,
+          richTextInlineWrapperElementEditableComponent.id,
+        ],
+      },
+    ],
+    styles: richTextLineElementStyles,
+  };
 
 type RichTextLineElementComponentConfig = EditableComponentToComponentConfig<
   typeof richTextLineElementEditableComponent

@@ -3,8 +3,8 @@ import type { Text } from "slate";
 import { RichTextComponentConfig } from "../$richText";
 import type { BlockElement } from "../$richText.types";
 import { RichTextBlockElementComponentConfig } from "../$richTextBlockElement/$richTextBlockElement";
-import { richTextInlineWrapperElementEditableComponent } from "../$richTextInlineWrapperElement/$richTextInlineWrapperElement";
 import { RichTextPartComponentConfig } from "../$richTextPart/$richTextPart";
+import { isRichTextInlineWrapperElementNoCodeEntry } from "./checkers";
 
 function convertRichTextElementsToEditorValue(
   richTextElements: RichTextComponentConfig["elements"][string] | undefined
@@ -51,8 +51,9 @@ function convertRichTextBlockElementComponentConfigToEditorElement(
             children: lineElementComponentConfig.elements.map(
               (childComponentConfig) => {
                 if (
-                  childComponentConfig._template ===
-                  richTextInlineWrapperElementEditableComponent.id
+                  isRichTextInlineWrapperElementNoCodeEntry(
+                    childComponentConfig
+                  )
                 ) {
                   return {
                     id: childComponentConfig._id,
@@ -92,8 +93,7 @@ function convertRichTextBlockElementComponentConfigToEditorElement(
           children: lineElementComponentConfig.elements.map(
             (childComponentConfig) => {
               if (
-                childComponentConfig._template ===
-                richTextInlineWrapperElementEditableComponent.id
+                isRichTextInlineWrapperElementNoCodeEntry(childComponentConfig)
               ) {
                 return {
                   id: childComponentConfig._id,

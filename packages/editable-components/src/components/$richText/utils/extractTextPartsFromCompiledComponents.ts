@@ -1,4 +1,5 @@
 import type { RichTextProps } from "../$richText.editor";
+import { RichTextInlineWrapperElementCompiledComponentConfig } from "../$richTextInlineWrapperElement/$richTextInlineWrapperElement";
 import { RichTextPartCompiledComponentConfig } from "../$richTextPart/$richTextPart";
 import { traverseCompiledRichTextComponentConfig } from "./traverseCompiledRichTextComponentConfig";
 
@@ -12,11 +13,15 @@ function extractTextPartsFromCompiledComponents(
     compiledRichText,
     (compiledConfig) => {
       if (compiledConfig._template === "$richTextPart") {
-        extractedTextPartComponents.push(compiledConfig);
+        extractedTextPartComponents.push(
+          compiledConfig as RichTextPartCompiledComponentConfig
+        );
       }
 
       if (compiledConfig._template === "$richTextInlineWrapperElement") {
-        compiledConfig.components.elements.forEach((compiledTextPart) => {
+        (
+          compiledConfig as RichTextInlineWrapperElementCompiledComponentConfig
+        ).components.elements.forEach((compiledTextPart) => {
           extractedTextPartComponents.push(compiledTextPart);
         });
       }

@@ -1,11 +1,8 @@
-import {
-  configFindAllPaths,
-  EditableComponentToComponentConfig,
-  InternalRenderableComponentDefinition,
-} from "@easyblocks/app-utils";
+import { configFindAllPaths } from "@easyblocks/app-utils";
 import {
   getFallbackLocaleForLocale,
   LocalisedConfigs,
+  NoCodeComponentDefinition,
   RefValue,
   ResponsiveValue,
 } from "@easyblocks/core";
@@ -17,6 +14,7 @@ import {
   richTextBlockElementEditableComponent,
 } from "./$richTextBlockElement/$richTextBlockElement";
 import type { RichTextPartComponentConfig } from "./$richTextPart/$richTextPart";
+import { EditableComponentToComponentConfig } from "../../types";
 
 type RichTextAccessibilityRole =
   | "div"
@@ -165,92 +163,92 @@ const editing: RichTextEditingFunction = ({
   };
 };
 
-const richTextEditableComponent: InternalRenderableComponentDefinition<"$richText"> =
-  {
-    id: "$richText",
-    label: "Text",
-    thumbnail:
-      "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_text.png",
-    schema: [
-      {
-        prop: "elements",
-        type: "component-collection-localised",
-        accepts: [richTextBlockElementEditableComponent.id],
-        visible: false,
+const richTextEditableComponent: NoCodeComponentDefinition = {
+  id: "$richText",
+  label: "Text",
+  // @ts-ignore
+  thumbnail:
+    "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_text.png",
+  schema: [
+    {
+      prop: "elements",
+      type: "component-collection-localised",
+      accepts: [richTextBlockElementEditableComponent.id],
+      visible: false,
+    },
+    {
+      prop: "align",
+      label: "Align",
+      type: "radio-group",
+      responsive: true,
+      params: {
+        options: [
+          {
+            value: "left",
+            label: "Left",
+            icon: "AlignLeft",
+            hideLabel: true,
+          },
+          {
+            value: "center",
+            label: "Center",
+            icon: "AlignCenter",
+            hideLabel: true,
+          },
+          {
+            value: "right",
+            label: "Right",
+            icon: "AlignRight",
+            hideLabel: true,
+          },
+        ],
       },
-      {
-        prop: "align",
-        label: "Align",
-        type: "radio-group",
-        responsive: true,
-        params: {
-          options: [
-            {
-              value: "left",
-              label: "Left",
-              icon: "AlignLeft",
-              hideLabel: true,
-            },
-            {
-              value: "center",
-              label: "Center",
-              icon: "AlignCenter",
-              hideLabel: true,
-            },
-            {
-              value: "right",
-              label: "Right",
-              icon: "AlignRight",
-              hideLabel: true,
-            },
-          ],
-        },
-        defaultValue: "left",
-        group: "Layout",
-        buildOnly: true,
+      defaultValue: "left",
+      group: "Layout",
+      buildOnly: true,
+    },
+    {
+      prop: "accessibilityRole",
+      type: "select",
+      label: "Role",
+      params: {
+        options: [
+          { value: "div", label: "Paragraph" },
+          ...range(1, 6).map((index) => ({
+            value: `h${index}`,
+            label: `Heading ${index}`,
+          })),
+        ],
       },
-      {
-        prop: "accessibilityRole",
-        type: "select",
-        label: "Role",
-        params: {
-          options: [
-            { value: "div", label: "Paragraph" },
-            ...range(1, 6).map((index) => ({
-              value: `h${index}`,
-              label: `Heading ${index}`,
-            })),
-          ],
-        },
-        group: "Accessibility and SEO",
-      },
-      {
-        prop: "isListStyleAuto",
-        type: "boolean",
-        label: "Auto list styles",
-        defaultValue: true,
-        visible: false,
-        group: "Text",
-      },
-      {
-        prop: "mainFont",
-        type: "font",
-        label: "Main font",
-        visible: false,
-        group: "Text",
-      },
-      {
-        prop: "mainColor",
-        type: "color",
-        label: "Main color",
-        visible: false,
-        group: "Text",
-      },
-    ],
-    type: "item",
-    styles: richTextStyles,
-    editing,
-  };
+      group: "Accessibility and SEO",
+    },
+    {
+      prop: "isListStyleAuto",
+      type: "boolean",
+      label: "Auto list styles",
+      defaultValue: true,
+      visible: false,
+      group: "Text",
+    },
+    {
+      prop: "mainFont",
+      type: "font",
+      label: "Main font",
+      visible: false,
+      group: "Text",
+    },
+    {
+      prop: "mainColor",
+      type: "color",
+      label: "Main color",
+      visible: false,
+      group: "Text",
+    },
+  ],
+  type: "item",
+  styles: richTextStyles,
+  editing,
+};
 
 function isRichTextPartPathForLocale(locale: string) {
   return function innerIsLocalizedRichTextPart(richTextPartConfigPath: string) {

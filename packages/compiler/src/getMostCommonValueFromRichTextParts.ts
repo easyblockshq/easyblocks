@@ -9,6 +9,7 @@ import { DeviceRange, getFallbackForLocale } from "@easyblocks/core";
 import type {
   RichTextBlockElementComponentConfig,
   RichTextComponentConfig,
+  RichTextInlineWrapperElementEditableComponentConfig,
   RichTextPartComponentConfig,
 } from "@easyblocks/editable-components";
 import { entries } from "@easyblocks/utils";
@@ -48,13 +49,17 @@ function getMostCommonValueFromRichTextParts<
 
   const richTextParts = richTextBlockElements.flatMap((blockElement) => {
     return blockElement.elements.flatMap((lineElement) => {
-      return lineElement.elements.flatMap((child) => {
-        if (child._template === "$richTextInlineWrapperElement") {
-          return child.elements;
-        }
+      return lineElement.elements.flatMap<RichTextPartComponentConfig>(
+        (child) => {
+          if (child._template === "$richTextInlineWrapperElement") {
+            return (
+              child as RichTextInlineWrapperElementEditableComponentConfig
+            ).elements;
+          }
 
-        return child;
-      });
+          return child as RichTextPartComponentConfig;
+        }
+      );
     });
   });
 

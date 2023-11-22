@@ -1,19 +1,16 @@
 import {
-  EditableComponentToComponentConfig,
-  InternalRenderableComponentDefinition,
-} from "@easyblocks/app-utils";
-import {
   Color,
   Font,
+  NoCodeComponentDefinition,
   RefValue,
   ResponsiveValue,
   UnresolvedResource,
 } from "@easyblocks/core";
 import { range } from "@easyblocks/utils";
 import $textStyles from "./$text.styles";
+import { EditableComponentToComponentConfig } from "../../types";
 
-const textEditableComponent: InternalRenderableComponentDefinition<
-  "$text",
+const textEditableComponent: NoCodeComponentDefinition<
   {
     color: string;
     value: string;
@@ -26,6 +23,7 @@ const textEditableComponent: InternalRenderableComponentDefinition<
   label: "Simple Text",
   styles: $textStyles,
   type: "item",
+  // @ts-ignore
   thumbnail:
     "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_text.png",
   schema: [

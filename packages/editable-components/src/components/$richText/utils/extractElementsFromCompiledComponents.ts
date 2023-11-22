@@ -23,7 +23,12 @@ function extractElementsFromCompiledComponents(
         compiledConfig._template === "$richTextLineElement" ||
         compiledConfig._template === "$richTextInlineWrapperElement"
       ) {
-        extractedCompiledElementComponents.push(compiledConfig);
+        extractedCompiledElementComponents.push(
+          compiledConfig as
+            | RichTextBlockElementCompiledComponentConfig
+            | RichTextLineElementCompiledComponentConfig
+            | RichTextInlineWrapperElementCompiledComponentConfig
+        );
       }
     }
   );
