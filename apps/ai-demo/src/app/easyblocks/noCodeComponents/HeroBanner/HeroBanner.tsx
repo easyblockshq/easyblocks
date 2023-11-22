@@ -1,11 +1,19 @@
 import React from "react";
 
 export function HeroBanner(props: any) {
-  const { Container } = props;
+  const { Container, Root, Stack, StackContainer, CoverContainer, Cover } =
+    props;
 
   return (
-    <Container.type {...Container.props}>
-      <h1>Hero Banner</h1>
-    </Container.type>
+    <Root.type {...Root.props}>
+      <Container.type {...Container.props}>
+        <StackContainer.type {...StackContainer.props}>
+          <Stack.type {...Stack.props} />
+        </StackContainer.type>
+        <CoverContainer.type {...CoverContainer.props}>
+          <Cover.type {...Cover.props} />
+        </CoverContainer.type>
+      </Container.type>
+    </Root.type>
   );
 }
