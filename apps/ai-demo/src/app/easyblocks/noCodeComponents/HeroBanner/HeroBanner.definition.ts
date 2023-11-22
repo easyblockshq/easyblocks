@@ -139,20 +139,20 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
     };
 
     let gridTemplateColumns: string;
-    let coverOrder: string;
-    //
-    // let coverGridRow: string;
-    // let coverGridCol: string;
-    //
-    // let stackGridRow: string;
-    // let stackGridCol: string;
 
-    const coverWidthAsNumber = parseInt(coverWidth.replace("%", "")) / 100;
+    let coverGridRow: string;
+    let coverGridCol: string;
+
+    let stackGridRow: string;
+    let stackGridCol: string;
+
+    const coverFr = parseInt(coverWidth.replace("%", ""));
+    const stackFr = 100 - coverFr;
 
     if (coverPosition === "left") {
       stackPaddings = {
         left: paddingInternal,
-        right: paddingOnMarginSide,
+        right: "0",
         top: paddingTop,
         bottom: paddingBottom,
       };
@@ -161,23 +161,23 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
         top: snapCoverToTop ? 0 : paddingTop,
         bottom: snapCoverToBottom ? 0 : paddingBottom,
         right: "0",
-        left: snapCoverToLeft ? 0 : paddingOnMarginSide,
+        left: "0",
       };
 
-      coverOrder = "-1";
-      gridTemplateColumns =
-        coverWidth === "50%"
-          ? `1fr 1fr`
-          : `calc(calc(100vw - ${paddingOnMarginSide}) / 2) 1fr`;
+      gridTemplateColumns = `${paddingOnMarginSide} ${coverFr}fr ${stackFr}fr ${paddingOnMarginSide}`;
 
-      // gridTemplateColumns = `${margin} 1fr 1fr ${margin}`;
-      // coverGridCol = "1 / span 2";
-      // coverGridRow = "1"
-      // stackGridCol = "3";
-      // stackGridRow = "1";
+      stackGridCol = "3 / span 1";
+      stackGridRow = "1";
+      coverGridRow = "1";
+
+      if (snapCoverToLeft) {
+        coverGridCol = "1 / span 2";
+      } else {
+        coverGridCol = "2 / span 1";
+      }
     } else if (coverPosition === "right") {
       stackPaddings = {
-        left: paddingOnMarginSide,
+        left: "0",
         right: paddingInternal,
         top: paddingTop,
         bottom: paddingBottom,
@@ -186,16 +186,25 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
       coverPaddings = {
         top: snapCoverToTop ? 0 : paddingTop,
         bottom: snapCoverToBottom ? 0 : paddingBottom,
-        right: snapCoverToRight ? 0 : paddingOnMarginSide,
+        right: "0",
         left: "0",
       };
 
-      gridTemplateColumns = "1fr 1fr";
-      coverOrder = "initial";
+      gridTemplateColumns = `${paddingOnMarginSide} ${stackFr}fr ${coverFr}fr ${paddingOnMarginSide}`;
+
+      stackGridCol = "2 / span 1";
+      stackGridRow = "1";
+      coverGridRow = "1";
+
+      if (snapCoverToLeft) {
+        coverGridCol = "3 / span 2";
+      } else {
+        coverGridCol = "3 / span 1";
+      }
     } else if (coverPosition === "top") {
       stackPaddings = {
-        left: paddingOnMarginSide,
-        right: paddingOnMarginSide,
+        left: "0",
+        right: "0",
         top: paddingInternal,
         bottom: paddingBottom,
       };
@@ -203,16 +212,29 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
       coverPaddings = {
         top: snapCoverToTop ? 0 : paddingTop,
         bottom: "0",
-        right: snapCoverToRight ? 0 : paddingOnMarginSide,
-        left: snapCoverToLeft ? 0 : paddingOnMarginSide,
+        right: "0",
+        left: "0",
       };
 
-      gridTemplateColumns = "1fr";
-      coverOrder = "-1";
+      gridTemplateColumns = `${paddingOnMarginSide} 1fr ${paddingOnMarginSide}`;
+
+      stackGridCol = "2 / span 1";
+      stackGridRow = "2";
+      coverGridRow = "1";
+
+      if (snapCoverToLeft && snapCoverToRight) {
+        coverGridCol = "1 / span 3";
+      } else if (snapCoverToLeft) {
+        coverGridCol = "1 / span 2";
+      } else if (snapCoverToRight) {
+        coverGridCol = "2 / span 2";
+      } else {
+        coverGridCol = "2 / span 1";
+      }
     } else if (coverPosition === "bottom") {
       stackPaddings = {
-        left: paddingOnMarginSide,
-        right: paddingOnMarginSide,
+        left: "0",
+        right: "0",
         top: paddingTop,
         bottom: paddingInternal,
       };
@@ -220,12 +242,25 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
       coverPaddings = {
         top: "0",
         bottom: snapCoverToBottom ? 0 : paddingBottom,
-        right: snapCoverToRight ? 0 : paddingOnMarginSide,
-        left: snapCoverToLeft ? 0 : paddingOnMarginSide,
+        right: "0",
+        left: "0",
       };
 
-      gridTemplateColumns = "1fr";
-      coverOrder = "initial";
+      gridTemplateColumns = `${paddingOnMarginSide} 1fr ${paddingOnMarginSide}`;
+
+      stackGridCol = "2 / span 1";
+      stackGridRow = "1";
+      coverGridRow = "2";
+
+      if (snapCoverToLeft && snapCoverToRight) {
+        coverGridCol = "1 / span 3";
+      } else if (snapCoverToLeft) {
+        coverGridCol = "1 / span 2";
+      } else if (snapCoverToRight) {
+        coverGridCol = "2 / span 2";
+      } else {
+        coverGridCol = "2 / span 1";
+      }
     } else {
       throw "dupa";
     }
@@ -248,6 +283,8 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
         paddingRight: stackPaddings.right,
         paddingTop: stackPaddings.top,
         paddingBottom: stackPaddings.bottom,
+        gridRow: stackGridRow,
+        gridColumn: stackGridCol,
       }),
       CoverContainer: box({
         display: "grid",
@@ -256,7 +293,8 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
         paddingRight: coverPaddings.right,
         paddingTop: coverPaddings.top,
         paddingBottom: coverPaddings.bottom,
-        order: coverOrder,
+        gridRow: coverGridRow,
+        gridColumn: coverGridCol,
       }),
       Cover: box({
         background: "black",
