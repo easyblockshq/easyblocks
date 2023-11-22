@@ -58,6 +58,15 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
         options: ["left", "right", "top", "bottom", "background"],
       },
     },
+    {
+      prop: "coverWidth",
+      type: "select",
+      responsive: true,
+      params: {
+        options: ["25%", "33%", "40%", "50%", "60%", "66%", "75%"],
+      },
+      defaultValue: "50%",
+    },
     paddingSchemaProp("paddingLeft"),
     paddingSchemaProp("paddingRight"),
     paddingSchemaProp("paddingTop"),
@@ -104,6 +113,7 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
       snapCoverToLeft,
       snapCoverToRight,
       coverPosition,
+      coverWidth,
     } = values;
 
     const margin =
@@ -120,14 +130,24 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
       top: string;
       bottom: string;
     };
+
     let coverPaddings: {
       left: string;
       right: string;
       top: string;
       bottom: string;
     };
+
     let gridTemplateColumns: string;
     let coverOrder: string;
+    //
+    // let coverGridRow: string;
+    // let coverGridCol: string;
+    //
+    // let stackGridRow: string;
+    // let stackGridCol: string;
+
+    const coverWidthAsNumber = parseInt(coverWidth.replace("%", "")) / 100;
 
     if (coverPosition === "left") {
       stackPaddings = {
@@ -145,7 +165,16 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
       };
 
       coverOrder = "-1";
-      gridTemplateColumns = "1fr 1fr";
+      gridTemplateColumns =
+        coverWidth === "50%"
+          ? `1fr 1fr`
+          : `calc(calc(100vw - ${paddingOnMarginSide}) / 2) 1fr`;
+
+      // gridTemplateColumns = `${margin} 1fr 1fr ${margin}`;
+      // coverGridCol = "1 / span 2";
+      // coverGridRow = "1"
+      // stackGridCol = "3";
+      // stackGridRow = "1";
     } else if (coverPosition === "right") {
       stackPaddings = {
         left: paddingOnMarginSide,
