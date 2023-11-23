@@ -10,6 +10,7 @@ export type EasyblocksEditorProps = {
   config: Config;
   externalData: ExternalData;
   onExternalDataChange: ExternalDataChangeHandler;
+  components?: Record<string, React.ComponentType<any>>;
 };
 
 export function EasyblocksEditor(props: EasyblocksEditorProps) {
@@ -73,12 +74,19 @@ export function EasyblocksEditor(props: EasyblocksEditorProps) {
         });
       });
     }
-  }, [selectedWindow, props.externalData]);
+  }, [
+    selectedWindow,
+    props.externalData,
+    props.onExternalDataChange,
+    props.config,
+  ]);
 
   return (
     <>
       {selectedWindow === "parent" && <div id="shopstory-main-window" />}
-      {selectedWindow === "child" && <EasyblocksCanvas />}
+      {selectedWindow === "child" && (
+        <EasyblocksCanvas components={props.components} />
+      )}
       {selectedWindow === "preview" && (
         <PreviewRenderer config={props.config} />
       )}

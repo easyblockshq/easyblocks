@@ -23,7 +23,8 @@ type EditableComponentBuilderProps = ComponentBuilderProps & {
 type EditableComponentBuilderComponent = FC<EditableComponentBuilderProps>;
 
 function EditableComponentBuilder(props: EditableComponentBuilderProps) {
-  const { path, compiled, index, length, ...restPassedProps } = props;
+  const { path, compiled, index, length, components, ...restPassedProps } =
+    props;
 
   const content = (
     <BlocksControls
@@ -40,6 +41,7 @@ function EditableComponentBuilder(props: EditableComponentBuilderProps) {
         compiled={compiled}
         path={path}
         passedProps={restPassedProps}
+        components={components}
       />
     </BlocksControls>
   );

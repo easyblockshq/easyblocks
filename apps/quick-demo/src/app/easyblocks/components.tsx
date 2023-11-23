@@ -1,8 +1,6 @@
 "use client";
 import { ProductCard } from "@/components/ProductCard/ProductCard";
 import { builtinEditableComponents } from "@easyblocks/editable-components";
-import { EasyblocksProvider } from "@easyblocks/react";
-import React from "react";
 
 const $Link = (props: any) => {
   const { url, shouldOpenInNewWindow, trigger: TriggerElement } = props;
@@ -31,19 +29,11 @@ const $AlertAction = (props: any) => {
   );
 };
 
-export const QuickDemoEasyblocksProvider: React.FC<{
-  children?: React.ReactNode;
-}> = ({ children }) => {
-  return (
-    <EasyblocksProvider
-      components={{
-        ...builtinEditableComponents(),
-        ProductCard,
-        $Link,
-        $AlertAction,
-      }}
-    >
-      {children}
-    </EasyblocksProvider>
-  );
+const components = {
+  ...builtinEditableComponents(),
+  ProductCard,
+  $Link,
+  $AlertAction,
 };
+
+export { components };

@@ -1,16 +1,12 @@
 "use client";
 
 import { CompilationMetadata } from "@easyblocks/core";
+import { createStitches } from "@stitches/core";
 import React, { createContext, ReactNode, useContext } from "react";
-import { useEasyblocksProviderContext } from "./EasyblocksProvider";
+import { easyblocksStitchesInstances } from "./ssr";
 
 const EasyblocksMetadataContext = createContext<
-  | (CompilationMetadata & {
-      easyblocksProviderContext: ReturnType<
-        typeof useEasyblocksProviderContext
-      >;
-    })
-  | undefined
+  (CompilationMetadata & { stitches: any }) | undefined
 >(undefined);
 
 export type EasyblocksMetadataProviderProps = {
@@ -22,13 +18,16 @@ const EasyblocksMetadataProvider: React.FC<EasyblocksMetadataProviderProps> = ({
   meta,
   children,
 }) => {
-  const easyblocksProviderContext = useEasyblocksProviderContext();
+  // Let's load stitches instance
+  if (easyblocksStitchesInstances.length === 0) {
+    easyblocksStitchesInstances.push(createStitches({}));
+  }
 
   return (
     <EasyblocksMetadataContext.Provider
       value={{
         ...meta,
-        easyblocksProviderContext,
+        stitches: easyblocksStitchesInstances[0],
       }}
     >
       {children}

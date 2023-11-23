@@ -229,20 +229,20 @@ importers:
         specifier: 18.14.2
         version: 18.14.2
       '@types/react':
-        specifier: ^17.0.2
-        version: 17.0.59
+        specifier: ^18
+        version: 18.2.20
       '@types/react-dom':
-        specifier: ^17.0.2
-        version: 17.0.20
+        specifier: ^18
+        version: 18.2.8
       next:
         specifier: ^12.0.8
-        version: 12.3.4(@babel/core@7.21.3)(react-dom@17.0.2)(react@17.0.2)
+        version: 12.3.4(@babel/core@7.21.3)(react-dom@18.2.0)(react@18.2.0)
       react:
-        specifier: ^17.0.2
-        version: 17.0.2
+        specifier: ^18
+        version: 18.2.0
       react-dom:
-        specifier: ^17.0.2
-        version: 17.0.2(react@17.0.2)
+        specifier: ^18
+        version: 18.2.0(react@18.2.0)
       typescript:
         specifier: 4.9.5
         version: 4.9.5
@@ -539,8 +539,8 @@ importers:
         specifier: ^3.3.0
         version: 3.3.1
       react:
-        specifier: '>= 16.8'
-        version: 17.0.2
+        specifier: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+        version: 18.2.0
       type-fest:
         specifier: ^3.0.0
         version: 3.7.0
@@ -703,10 +703,10 @@ importers:
         specifier: ^3.3.0
         version: 3.3.1
       react:
-        specifier: '>= 16.8'
+        specifier: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
         version: 18.2.0
       react-dom:
-        specifier: '>= 16.8'
+        specifier: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
         version: 18.2.0(react@18.2.0)
       react-textarea-autosize:
         specifier: '>=7.1'
@@ -806,7 +806,7 @@ importers:
         specifier: ^3.3.0
         version: 3.3.1
       react:
-        specifier: ^18.2.0
+        specifier: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
         version: 18.2.0
       react-beautiful-dnd:
         specifier: ^13.1.0
@@ -818,7 +818,7 @@ importers:
         specifier: ^1.3.0
         version: 1.3.0
       react-dom:
-        specifier: ^18.2.0
+        specifier: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
         version: 18.2.0(react@18.2.0)
       react-draggable:
         specifier: ^4.4.3
@@ -924,10 +924,10 @@ importers:
         specifier: ^2.0.5
         version: 2.0.5(@types/react-dom@18.2.7)(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
       react:
-        specifier: '>= 16.8'
+        specifier: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
         version: 18.2.0
       react-dom:
-        specifier: '>= 16.8'
+        specifier: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
         version: 18.2.0(react@18.2.0)
       react-modal:
         specifier: ^3.12.1
@@ -962,10 +962,10 @@ importers:
         version: 7.21.0
       '@dnd-kit/core':
         specifier: ^6.0.8
-        version: 6.0.8(react-dom@17.0.2)(react@17.0.2)
+        version: 6.0.8(react-dom@18.2.0)(react@18.2.0)
       '@dnd-kit/sortable':
         specifier: ^7.0.2
-        version: 7.0.2(@dnd-kit/core@6.0.8)(react@17.0.2)
+        version: 7.0.2(@dnd-kit/core@6.0.8)(react@18.2.0)
       '@easyblocks/core':
         specifier: workspace:*
         version: link:../core
@@ -985,11 +985,11 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       react:
-        specifier: '>= 16.8.0'
-        version: 17.0.2
+        specifier: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+        version: 18.2.0
       react-dom:
-        specifier: '>= 16.8.0'
-        version: 17.0.2(react@17.0.2)
+        specifier: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+        version: 18.2.0(react@18.2.0)
       zod:
         specifier: ^3.21.4
         version: 3.22.2
@@ -1011,7 +1011,7 @@ importers:
         version: 5.16.5
       '@testing-library/react':
         specifier: ^12.1.2
-        version: 12.1.5(react-dom@17.0.2)(react@17.0.2)
+        version: 12.1.5(react-dom@18.2.0)(react@18.2.0)
       '@types/jest':
         specifier: ^26.0.20
         version: 26.0.24
@@ -1071,7 +1071,7 @@ importers:
         specifier: ^3.4.0
         version: 3.7.0(graphql@16.6.0)
       react:
-        specifier: '>=16.8.0'
+        specifier: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
         version: 18.2.0
     devDependencies:
       '@easyblocks/build-tools':
@@ -3585,46 +3585,46 @@ packages:
     engines: {node: '>=10.0.0'}
     dev: true
 
-  /@dnd-kit/accessibility@3.0.1(react@17.0.2):
+  /@dnd-kit/accessibility@3.0.1(react@18.2.0):
     resolution: {integrity: sha512-HXRrwS9YUYQO9lFRc/49uO/VICbM+O+ZRpFDe9Pd1rwVv2PCNkRiTZRdxrDgng/UkvdC3Re9r2vwPpXXrWeFzg==}
     peerDependencies:
       react: '>=16.8.0'
     dependencies:
-      react: 17.0.2
+      react: 18.2.0
       tslib: 2.5.2
     dev: false
 
-  /@dnd-kit/core@6.0.8(react-dom@17.0.2)(react@17.0.2):
+  /@dnd-kit/core@6.0.8(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-lYaoP8yHTQSLlZe6Rr9qogouGUz9oRUj4AHhDQGQzq/hqaJRpFo65X+JKsdHf8oUFBzx5A+SJPUvxAwTF2OabA==}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
-      '@dnd-kit/accessibility': 3.0.1(react@17.0.2)
-      '@dnd-kit/utilities': 3.2.1(react@17.0.2)
-      react: 17.0.2
-      react-dom: 17.0.2(react@17.0.2)
+      '@dnd-kit/accessibility': 3.0.1(react@18.2.0)
+      '@dnd-kit/utilities': 3.2.1(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
       tslib: 2.5.2
     dev: false
 
-  /@dnd-kit/sortable@7.0.2(@dnd-kit/core@6.0.8)(react@17.0.2):
+  /@dnd-kit/sortable@7.0.2(@dnd-kit/core@6.0.8)(react@18.2.0):
     resolution: {integrity: sha512-wDkBHHf9iCi1veM834Gbk1429bd4lHX4RpAwT0y2cHLf246GAvU2sVw/oxWNpPKQNQRQaeGXhAVgrOl1IT+iyA==}
     peerDependencies:
       '@dnd-kit/core': ^6.0.7
       react: '>=16.8.0'
     dependencies:
-      '@dnd-kit/core': 6.0.8(react-dom@17.0.2)(react@17.0.2)
-      '@dnd-kit/utilities': 3.2.1(react@17.0.2)
-      react: 17.0.2
+      '@dnd-kit/core': 6.0.8(react-dom@18.2.0)(react@18.2.0)
+      '@dnd-kit/utilities': 3.2.1(react@18.2.0)
+      react: 18.2.0
       tslib: 2.5.2
     dev: false
 
-  /@dnd-kit/utilities@3.2.1(react@17.0.2):
+  /@dnd-kit/utilities@3.2.1(react@18.2.0):
     resolution: {integrity: sha512-OOXqISfvBw/1REtkSK2N3Fi2EQiLMlWUlqnOK/UpOISqBZPWpE6TqL+jcPtMOkE8TqYGiURvRdPSI9hltNUjEA==}
     peerDependencies:
       react: '>=16.8.0'
     dependencies:
-      react: 17.0.2
+      react: 18.2.0
       tslib: 2.5.2
     dev: false
 
@@ -7319,7 +7319,7 @@ packages:
       redent: 3.0.0
     dev: true
 
-  /@testing-library/react@12.1.5(react-dom@17.0.2)(react@17.0.2):
+  /@testing-library/react@12.1.5(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-OfTXCJUFgjd/digLUuPxa0+/3ZxsQmE7ub9kcbW/wi96Bh3o/p5vrETcBGfP17NWPGqeYYl5LTRpwyGoMC4ysg==}
     engines: {node: '>=12'}
     peerDependencies:
@@ -7329,8 +7329,8 @@ packages:
       '@babel/runtime': 7.21.5
       '@testing-library/dom': 8.20.0
       '@types/react-dom': 17.0.20
-      react: 17.0.2
-      react-dom: 17.0.2(react@17.0.2)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: true
 
   /@testing-library/react@14.0.0(react-dom@18.2.0)(react@18.2.0):
@@ -7636,6 +7636,7 @@ packages:
     resolution: {integrity: sha512-4pzIjSxDueZZ90F52mU3aPoogkHIoSIDG+oQ+wQK7Cy2B9S+MvOqY0uEA/qawKz381qrEDkvpwyt8Bm31I8sbA==}
     dependencies:
       '@types/react': 17.0.59
+    dev: true
 
   /@types/react-dom@18.2.7:
     resolution: {integrity: sha512-GRaAEriuT4zp9N4p1i8BDBYmEyfo+xQ3yHjJU4eiK5NDa1RmUZG+unZABUTK4/Ox/M+GaHwb6Ow8rUITrtjszA==}
@@ -7674,6 +7675,7 @@ packages:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.3
       csstype: 3.1.2
+    dev: true
 
   /@types/react@18.2.20:
     resolution: {integrity: sha512-WKNtmsLWJM/3D5mG4U84cysVY31ivmyw85dE84fOCk5Hx78wezB/XEjVPWl2JTZ5FkEeaTJf+VgUAUn3PE7Isw==}
@@ -16076,7 +16078,7 @@ packages:
       escalade: 3.1.1
     dev: true
 
-  /next@12.3.4(@babel/core@7.21.3)(react-dom@17.0.2)(react@17.0.2):
+  /next@12.3.4(@babel/core@7.21.3)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-VcyMJUtLZBGzLKo3oMxrEF0stxh8HwuW976pAzlHhI3t8qJ4SROjCrSh1T24bhrbjw55wfZXAbXPGwPt5FLRfQ==}
     engines: {node: '>=12.22.0'}
     hasBin: true
@@ -16098,10 +16100,10 @@ packages:
       '@swc/helpers': 0.4.11
       caniuse-lite: 1.0.30001519
       postcss: 8.4.14
-      react: 17.0.2
-      react-dom: 17.0.2(react@17.0.2)
-      styled-jsx: 5.0.7(@babel/core@7.21.3)(react@17.0.2)
-      use-sync-external-store: 1.2.0(react@17.0.2)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      styled-jsx: 5.0.7(@babel/core@7.21.3)(react@18.2.0)
+      use-sync-external-store: 1.2.0(react@18.2.0)
     optionalDependencies:
       '@next/swc-android-arm-eabi': 12.3.4
       '@next/swc-android-arm64': 12.3.4
@@ -17814,16 +17816,6 @@ packages:
     resolution: {integrity: sha512-KqShOnw84Ft2Hx/O5KrwTDY1bXmICcJ8HlRIqSdn6j4Lg3OLVrETBiPgGUB4CRNRquVihcd5JmgDa0WUVdBG9g==}
     dev: false
 
-  /react-dom@17.0.2(react@17.0.2):
-    resolution: {integrity: sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA==}
-    peerDependencies:
-      react: 17.0.2
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
-      react: 17.0.2
-      scheduler: 0.20.2
-
   /react-dom@18.2.0(react@18.2.0):
     resolution: {integrity: sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==}
     peerDependencies:
@@ -18073,13 +18065,6 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
-
-  /react@17.0.2:
-    resolution: {integrity: sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA==}
-    engines: {node: '>=0.10.0'}
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
 
   /react@18.2.0:
     resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
@@ -18707,12 +18692,6 @@ packages:
     dependencies:
       xmlchars: 2.2.0
     dev: true
-
-  /scheduler@0.20.2:
-    resolution: {integrity: sha512-2eWfGgAqqWFGqtdMmcL5zCMK1U8KlXv8SQFGglL3CEtd0aDVDWgeF/YoCmvln55m5zSk3J/20hTaSBeSObsQDQ==}
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
 
   /scheduler@0.23.0:
     resolution: {integrity: sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==}
@@ -19493,7 +19472,7 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /styled-jsx@5.0.7(@babel/core@7.21.3)(react@17.0.2):
+  /styled-jsx@5.0.7(@babel/core@7.21.3)(react@18.2.0):
     resolution: {integrity: sha512-b3sUzamS086YLRuvnaDigdAewz1/EFYlHpYBP5mZovKEdQQOIIYq8lApylub3HHZ6xFjV051kkGU7cudJmrXEA==}
     engines: {node: '>= 12.0.0'}
     peerDependencies:
@@ -19507,7 +19486,7 @@ packages:
         optional: true
     dependencies:
       '@babel/core': 7.21.3
-      react: 17.0.2
+      react: 18.2.0
     dev: false
 
   /styled-jsx@5.0.7(@babel/core@7.21.8)(react@18.2.0):
@@ -20532,14 +20511,6 @@ packages:
       detect-node-es: 1.1.0
       react: 18.2.0
       tslib: 2.5.2
-    dev: false
-
-  /use-sync-external-store@1.2.0(react@17.0.2):
-    resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    dependencies:
-      react: 17.0.2
     dev: false
 
   /use-sync-external-store@1.2.0(react@18.2.0):

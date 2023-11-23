@@ -8,12 +8,19 @@ import type { RichTextBlockElementType } from "../$richTextBlockElement/$richTex
 
 export type RichTextLineCompiledComponentValues = {
   align: Alignment;
+};
+
+export type RichTextLineParams = {
   blockType: RichTextBlockElementType;
 };
 
 export default function styles({
   values,
-}: NoCodeComponentStylesFunctionInput<RichTextLineCompiledComponentValues>): NoCodeComponentStylesFunctionResult {
+  params,
+}: NoCodeComponentStylesFunctionInput<
+  RichTextLineCompiledComponentValues,
+  RichTextLineParams
+>): NoCodeComponentStylesFunctionResult {
   return {
     styled: {
       TextLine: {
@@ -38,7 +45,7 @@ export default function styles({
     },
 
     props: {
-      blockType: values.blockType,
+      blockType: params.blockType,
     },
   };
 }
