@@ -13,24 +13,27 @@ import {
 } from "../$richTextPart/$richTextPart";
 import richTextLineElementStyles, {
   RichTextLineCompiledComponentValues,
+  RichTextLineParams,
 } from "./$richTextLineElement.styles";
 import { EditableComponentToComponentConfig } from "../../../types";
 
-const richTextLineElementEditableComponent: NoCodeComponentDefinition<RichTextLineCompiledComponentValues> =
-  {
-    id: "@easyblocks/rich-text-line-element",
-    schema: [
-      {
-        prop: "elements",
-        type: "component-collection",
-        accepts: [
-          richTextPartEditableComponent.id,
-          richTextInlineWrapperElementEditableComponent.id,
-        ],
-      },
-    ],
-    styles: richTextLineElementStyles,
-  };
+const richTextLineElementEditableComponent: NoCodeComponentDefinition<
+  RichTextLineCompiledComponentValues,
+  RichTextLineParams
+> = {
+  id: "@easyblocks/rich-text-line-element",
+  schema: [
+    {
+      prop: "elements",
+      type: "component-collection",
+      accepts: [
+        richTextPartEditableComponent.id,
+        richTextInlineWrapperElementEditableComponent.id,
+      ],
+    },
+  ],
+  styles: richTextLineElementStyles,
+};
 
 type RichTextLineElementComponentConfig = EditableComponentToComponentConfig<
   typeof richTextLineElementEditableComponent

@@ -1,12 +1,12 @@
 import { useDndContext } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
 import { parsePath } from "@easyblocks/app-utils";
+import { PlaceholderAppearance } from "@easyblocks/core";
 import { SSColors, SSFonts } from "@easyblocks/design-system";
 import { EditorContextType } from "@easyblocks/editor";
 import { toArray } from "@easyblocks/utils";
 import React, { FC } from "react";
 import { useEasyblocksMetadata } from "./EasyblocksMetadataProvider";
-import { PlaceholderAppearance } from "@easyblocks/core";
 
 export type PlaceholderProps = {
   onClick: () => void;
@@ -16,9 +16,7 @@ export type PlaceholderProps = {
 };
 
 function Placeholder(props: PlaceholderProps) {
-  const {
-    easyblocksProviderContext: { stitches },
-  } = useEasyblocksMetadata();
+  const { stitches } = useEasyblocksMetadata();
   const styles: Record<string, any> = {};
 
   const { aspectRatio, width, height, label } = props.appearance;
@@ -212,6 +210,6 @@ export default function TypePlaceholder(
 }
 
 export type {
-  TypePlaceholderComponentBuilderProps,
   PlaceholderBuilderComponent,
+  TypePlaceholderComponentBuilderProps,
 };

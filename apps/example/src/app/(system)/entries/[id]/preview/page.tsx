@@ -6,10 +6,10 @@ import {
   ExternalData,
   RenderableDocument,
 } from "@easyblocks/core";
+import { builtinEditableComponents } from "@easyblocks/editable-components";
 import { Easyblocks } from "@easyblocks/react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { AcmeEasyblocksProvider } from "../../../../easyblocks/AcmeEasyblocksProvider";
 import { easyblocksConfig } from "../../../../easyblocks/easyblocks.config";
 import { createMyCustomFetch } from "../../../../easyblocks/myCustomFetch";
 
@@ -32,11 +32,7 @@ export default function EntryPreviewPage() {
     }
 
     buildDocument({
-      document: {
-        documentId: entry.page.id,
-        projectId: entry.page.projectId,
-        rootContainer: entry.page.rootContainer,
-      },
+      documentId: entry.page.id,
       config: easyblocksConfig,
       locale: "en",
     }).then(({ renderableDocument, externalData }) => {
@@ -63,11 +59,10 @@ export default function EntryPreviewPage() {
   }
 
   return (
-    <AcmeEasyblocksProvider>
-      <Easyblocks
-        renderableDocument={renderableDocument}
-        externalData={externalData}
-      />
-    </AcmeEasyblocksProvider>
+    <Easyblocks
+      renderableDocument={renderableDocument}
+      externalData={externalData}
+      components={builtinEditableComponents()}
+    />
   );
 }

@@ -1,6 +1,6 @@
 import { easyblocksConfig } from "@/app/easyblocks/easyblocks.config";
 import { createMyCustomFetch } from "@/app/easyblocks/myCustomFetch";
-import { QuickDemoEasyblocksProvider } from "@/app/easyblocks/QuickDemoEasyblocksProvider";
+import { components } from "@/app/easyblocks/components";
 import { buildDocument } from "@easyblocks/core";
 import { EasyblocksContent } from "./EasyblocksContent";
 
@@ -34,12 +34,11 @@ export default async function Page({
           Easyblocks content can be rendered anywhere within your project.
         </div>
       </div>
-      <QuickDemoEasyblocksProvider>
-        <EasyblocksContent
-          renderableDocument={renderableDocument}
-          externalData={fetchedExternalData}
-        />
-      </QuickDemoEasyblocksProvider>
+      <EasyblocksContent
+        renderableDocument={renderableDocument}
+        externalData={fetchedExternalData}
+        components={components}
+      />
     </div>
   );
 }

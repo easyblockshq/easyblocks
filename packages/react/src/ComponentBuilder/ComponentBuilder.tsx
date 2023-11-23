@@ -41,18 +41,14 @@ import {
   ResponsiveValue,
   UnresolvedResource,
 } from "@easyblocks/core";
-import React, { Fragment, ReactElement } from "react";
+import React, { ComponentType, Fragment, ReactElement } from "react";
 import Box from "../Box/Box";
 import { useEasyblocksExternalData } from "../EasyblocksExternalDataProvider";
 import { useEasyblocksMetadata } from "../EasyblocksMetadataProvider";
-import {
-  EasyblocksProviderContextValue,
-  useEasyblocksProviderContext,
-} from "../EasyblocksProvider";
-import EditableComponentBuilderClient from "../EditableComponentBuilder/EditableComponentBuilder.client";
-import EditableComponentBuilderEditor from "../EditableComponentBuilder/EditableComponentBuilder.editor";
 import MissingComponent from "../MissingComponent";
 import Placeholder from "../Placeholder";
+import { resop } from "../resop";
+import { ImageProps } from "../StandardImage";
 
 function buildBoxes(
   compiled: any,
@@ -70,7 +66,7 @@ function buildBoxes(
         __compiled: compiled,
         __name: name,
         devices: meta.vars.devices,
-        stitches: meta.easyblocksProviderContext.stitches,
+        stitches: meta.stitches,
       };
 
       return <Box {...boxProps} />;
@@ -186,7 +182,8 @@ function getCompiledSubcomponents(
     | ComponentCollectionLocalisedSchemaProp,
   path: string,
   meta: CompilationMetadata,
-  isEditing: boolean
+  isEditing: boolean,
+  components: ComponentBuilderProps["components"]
 ) {
   const originalPath = path;
 
@@ -197,7 +194,11 @@ function getCompiledSubcomponents(
   if (schemaProp.noInline) {
     const elements = compiledArray.map((compiledChild, index) =>
       "_template" in compiledChild ? (
-        <ComponentBuilder path={`${path}.${index}`} compiled={compiledChild} />
+        <ComponentBuilder
+          path={`${path}.${index}`}
+          compiled={compiledChild}
+          components={components}
+        />
       ) : (
         compiledChild
       )
@@ -211,8 +212,8 @@ function getCompiledSubcomponents(
   }
 
   const EditableComponentBuilder = isEditing
-    ? EditableComponentBuilderEditor
-    : EditableComponentBuilderClient;
+    ? components["EditableComponentBuilder.editor"]
+    : components["EditableComponentBuilder.client"];
 
   let elements = compiledArray.map((compiledChild, index) =>
     "_template" in compiledChild ? (
@@ -223,6 +224,7 @@ function getCompiledSubcomponents(
         length={compiledArray.length}
         contextProps={contextProps}
         path={`${path}.${index}`}
+        components={components}
       />
     ) : (
       compiledChild
@@ -290,19 +292,29 @@ export type ComponentBuilderProps = {
     [key: string]: any; // any extra props passed in components
   };
   compiled: CompiledShopstoryComponentConfig | CompiledCustomComponentConfig;
+  components: {
+    "$richText.client": ComponentType<any>;
+    $richTextBlockElement: ComponentType<any>;
+    $richTextInlineWrapperElement: ComponentType<any>;
+    $richTextLineElement: ComponentType<any>;
+    $richTextPart: ComponentType<any>;
+    "$text.client": ComponentType<any>;
+    "EditableComponentBuilder.client": ComponentType<any>;
+    Image: ComponentType<ImageProps>;
+    [key: string]: ComponentType<any>;
+  };
 };
 
 type ComponentBuilderComponent = React.FC<ComponentBuilderProps>;
 
 function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
-  const { compiled, passedProps, path, ...restProps } = props;
+  const { compiled, passedProps, path, components, ...restProps } = props;
 
   const allPassedProps: Record<string, any> = {
     ...passedProps,
     ...restProps,
   };
 
-  const easyblocksProvider = useEasyblocksProviderContext();
   const meta = useEasyblocksMetadata();
   const externalData = useEasyblocksExternalData();
 
@@ -319,11 +331,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
     definitions: meta.vars.definitions,
   })!;
 
-  const component = getComponent(
-    componentDefinition,
-    easyblocksProvider,
-    isEditing
-  );
+  const component = getComponent(componentDefinition, components, isEditing);
   const isMissingComponent = compiled._template === "$MissingComponent";
   const isMissingInstance = component === undefined;
   const isMissing = isMissingComponent || isMissingInstance;
@@ -407,7 +415,8 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
         schemaProp,
         `${path}${pathSeparator}${schemaProp.prop}`,
         meta,
-        isEditing
+        isEditing,
+        components
       );
     }
   });
@@ -416,10 +425,9 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
   const { ref, ...restPassedProps } = allPassedProps || {};
 
   const runtime = {
-    eventSink: meta.easyblocksProviderContext.eventSink,
-    Image: meta.easyblocksProviderContext.Image,
-    stitches: meta.easyblocksProviderContext.stitches,
-    resop: meta.easyblocksProviderContext.resop,
+    stitches: meta.stitches,
+    Image: components["Image"],
+    resop: resop,
     Box,
     devices: meta.vars.devices,
     isEditing,
@@ -446,26 +454,24 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
 
 function getComponent(
   componentDefinition: InternalComponentDefinition,
-  easyblocksProvider: EasyblocksProviderContextValue,
+  components: ComponentBuilderProps["components"],
   isEditing: boolean
 ) {
   let component: any;
 
   // We first try to find editor version of that component
   if (isEditing) {
-    component =
-      easyblocksProvider.components[componentDefinition.id + ".editor"];
+    component = components[componentDefinition.id + ".editor"];
   }
 
   // If it still missing, we try to find client version of that component
   if (!component) {
-    component =
-      easyblocksProvider.components[componentDefinition.id + ".client"];
+    component = components[componentDefinition.id + ".client"];
   }
 
   if (!component) {
     // In most cases we're going to pick component by its id
-    component = easyblocksProvider.components[componentDefinition.id];
+    component = components[componentDefinition.id];
   }
 
   return component;

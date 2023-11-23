@@ -215,7 +215,7 @@ export function BlocksControls({
         isActive={isActive}
         isChildrenSelectionDisabled={!isActive && !isChildComponentActive}
         onSelect={focusOnBlock}
-        stitches={meta.easyblocksProviderContext.stitches}
+        stitches={meta.stitches}
         sortable={sortable}
         id={id}
         direction={direction}
@@ -288,7 +288,7 @@ function DroppablePlaceholder({
 
   const isInsertingBefore = sortable.activeIndex > sortable.index;
 
-  const wrapperStyles = meta.easyblocksProviderContext.stitches.css({
+  const wrapperStyles = meta.stitches.css({
     position: "absolute",
     [position === "before" ? "top" : "bottom"]:
       direction === "vertical" ? "-100%" : 0,
