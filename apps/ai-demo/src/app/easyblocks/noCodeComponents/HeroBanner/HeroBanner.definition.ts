@@ -116,6 +116,10 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
     snapToEdge("snapCoverToRight"),
     snapToEdge("snapCoverToTop"),
     snapToEdge("snapCoverToBottom"),
+    noFillPaddingSchemaProp("noFillPaddingLeft"),
+    noFillPaddingSchemaProp("noFillPaddingRight"),
+    noFillPaddingSchemaProp("noFillPaddingTop"),
+    noFillPaddingSchemaProp("noFillPaddingBottom"),
     {
       prop: "enableFill",
       type: "boolean",
@@ -166,9 +170,6 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
       containerMaxWidth === "none"
         ? containerMargin
         : `max(calc(calc(100vw - ${containerMaxWidth}px) / 2), ${containerMargin})`;
-    const paddingOnMarginSide = isFullWidth
-      ? `max(${margin}, ${paddingLeft})`
-      : paddingLeft;
 
     const [coverMainPosition, coverAlign] = coverPosition.split("-");
 
@@ -200,12 +201,19 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
 
     const [stackAlign, stackJustify] = values.stackPosition.split("-");
 
-    if (coverMainPosition === "hide") {
-      if (!enableFill) {
-        paddingTop = "0";
-        paddingBottom = "0";
-      }
+    if (!enableFill) {
+      paddingTop = "0px";
+      paddingBottom = "0px";
+      paddingLeft = "0px";
+      paddingRight = "0px";
+      isFullWidth = true;
+    }
 
+    const paddingOnMarginSide = isFullWidth
+      ? `max(${margin}, ${paddingLeft})`
+      : paddingLeft;
+
+    if (coverMainPosition === "hide") {
       stackPaddings = {
         left: "0",
         right: "0",
@@ -228,11 +236,6 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
       coverGridRow = "initial";
       coverGridCol = "initial";
     } else if (coverMainPosition === "left") {
-      if (!enableFill) {
-        snapCoverToTop = true;
-        snapCoverToBottom = true;
-      }
-
       stackPaddings = {
         left: paddingInternal,
         right: "0",
@@ -259,11 +262,6 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
         coverGridCol = "2 / span 1";
       }
     } else if (coverMainPosition === "right") {
-      if (!enableFill) {
-        snapCoverToTop = true;
-        snapCoverToBottom = true;
-      }
-
       stackPaddings = {
         left: "0",
         right: paddingInternal,
@@ -290,11 +288,6 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
         coverGridCol = "3 / span 1";
       }
     } else if (coverMainPosition === "top") {
-      if (!enableFill) {
-        paddingTop = "0";
-        paddingBottom = "0";
-      }
-
       stackPaddings = {
         left: "0",
         right: "0",
@@ -325,11 +318,6 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
         coverGridCol = "2 / span 1";
       }
     } else if (coverMainPosition === "bottom") {
-      if (!enableFill) {
-        paddingTop = "0";
-        paddingBottom = "0";
-      }
-
       stackPaddings = {
         left: "0",
         right: "0",
