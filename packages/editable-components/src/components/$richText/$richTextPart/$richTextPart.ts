@@ -21,13 +21,13 @@ const editing: RichTextEditingFunction = ({
 
   const richTextPath = findPathOfFirstAncestorOfType(
     pathPrefix,
-    "$richText",
+    "@easyblocks/rich-text",
     editorContext.form
   );
 
   const richTextBlockPath = findPathOfFirstAncestorOfType(
     pathPrefix,
-    "$richTextBlockElement",
+    "@easyblocks/rich-text-block-element",
     editorContext.form
   );
 
@@ -74,14 +74,14 @@ const editing: RichTextEditingFunction = ({
     // sidebar when text is selected.
     const inlineWrapperPath = findPathOfFirstAncestorOfType(
       pathPrefix,
-      "$richTextInlineWrapperElement",
+      "@easyblocks/rich-text-inline-wrapper-element",
       editorContext.form
     );
 
     resultFields.push({ type: "fields", path: inlineWrapperPath });
   } catch (error) {
-    // When $richTextPart is outside of wrapper element, we add field for displaying action schema prop to allow
-    // to add action to selected text without putting it into schemas of $richTextPart.
+    // When @easyblocks/rich-text-part is outside of wrapper element, we add field for displaying action schema prop to allow
+    // to add action to selected text without putting it into schemas of @easyblocks/rich-text-part.
     resultFields.push({
       type: "field",
       path: `$action`,
@@ -96,7 +96,7 @@ const editing: RichTextEditingFunction = ({
     //       ...optionalTextModifierSchemaProp,
     //       prop: "$textModifier",
     //       definition: findComponentDefinitionById(
-    //         "$richTextInlineWrapperElement",
+    //         "@easyblocks/rich-text-inline-wrapper-element",
     //         editorContext
     //       )!,
     //       defaultValue: [],
@@ -119,7 +119,7 @@ const editing: RichTextEditingFunction = ({
 
 const richTextPartEditableComponent: NoCodeComponentDefinition<RichTextPartValues> =
   {
-    id: "$richTextPart",
+    id: "@easyblocks/rich-text-part",
     label: "Text",
     schema: [
       {

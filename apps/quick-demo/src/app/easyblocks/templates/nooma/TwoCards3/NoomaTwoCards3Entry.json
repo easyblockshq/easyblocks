@@ -145,7 +145,7 @@
                   "Items": [
                     {
                       "_id": "06f622be-54a6-4877-b61e-a256f6905c14",
-                      "_template": "$richText",
+                      "_template": "@easyblocks/rich-text",
                       "traceId": "$richText-fd8fcb96",
                       "_itemProps": {
                         "$stack": {
@@ -163,18 +163,18 @@
                         "en-US": [
                           {
                             "_id": "930df0e2-53c0-4270-abda-a5a77ae36d79",
-                            "_template": "$richTextBlockElement",
+                            "_template": "@easyblocks/rich-text-block-element",
                             "traceId": "$richTextBlockElement-5a87f155",
                             "type": "paragraph",
                             "elements": [
                               {
                                 "_id": "f2b6c1e3-ccc1-457e-9d33-2d8ecdcdf8ad",
-                                "_template": "$richTextLineElement",
+                                "_template": "@easyblocks/rich-text-line-element",
                                 "traceId": "$richTextLineElement-4fff18c9",
                                 "elements": [
                                   {
                                     "_id": "87f68ae4-c5e8-442d-a952-866aa0446d49",
-                                    "_template": "$richTextPart",
+                                    "_template": "@easyblocks/rich-text-part",
                                     "traceId": "$richTextPart-c14c97d1",
                                     "value": "Kitchen stories",
                                     "font": {
@@ -228,7 +228,7 @@
                     },
                     {
                       "_id": "9b83108a-4804-4069-8e42-43e205716219",
-                      "_template": "$richText",
+                      "_template": "@easyblocks/rich-text",
                       "traceId": "$richText-64ee6447",
                       "_itemProps": {
                         "$stack": {
@@ -246,18 +246,18 @@
                         "en-US": [
                           {
                             "_id": "d2505f36-4645-4981-b646-3ddbbcd184f5",
-                            "_template": "$richTextBlockElement",
+                            "_template": "@easyblocks/rich-text-block-element",
                             "traceId": "$richTextBlockElement-df49c783",
                             "type": "paragraph",
                             "elements": [
                               {
                                 "_id": "47603894-5f64-49bb-9ad3-a75c4b2a57a6",
-                                "_template": "$richTextLineElement",
+                                "_template": "@easyblocks/rich-text-line-element",
                                 "traceId": "$richTextLineElement-fca02215",
                                 "elements": [
                                   {
                                     "_id": "be9edcc2-4cc5-4581-b77c-bc05fe21e7db",
-                                    "_template": "$richTextPart",
+                                    "_template": "@easyblocks/rich-text-part",
                                     "traceId": "$richTextPart-81c0a9f3",
                                     "value": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
                                     "font": {

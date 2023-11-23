@@ -64,12 +64,12 @@ describe("stack item parameters", () => {
     expect(compiled.Items.itemProps[2].$widthAuto).toBe(false);
   });
 
-  test('it sets pointerEvents to "none" if the child of stack is $richText', () => {
+  test('it sets pointerEvents to "none" if the child of stack is @easyblocks/rich-text', () => {
     const compiled = runStyles({
       ...stackValues,
       Items: [
         {
-          _template: "$richText",
+          _template: "@easyblocks/rich-text",
           width: "256px",
           align: "left",
           marginBottom: "0px",

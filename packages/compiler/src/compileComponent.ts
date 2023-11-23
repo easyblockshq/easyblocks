@@ -356,8 +356,8 @@ export function compileComponent(
     });
 
     // We want to style block element based on the most common values from all text parts within all lines.
-    // Only for this component, we compile nested $richTextPart components values.
-    if (editableElement._template === "$richText") {
+    // Only for this component, we compile nested @easyblocks/rich-text-part components values.
+    if (editableElement._template === "@easyblocks/rich-text") {
       if (compiledValues.isListStyleAuto) {
         const {
           mainColor = compiledValues.mainColor,
@@ -450,8 +450,8 @@ export function compileComponent(
           values: scalarizedConfig,
           params: ownPropsAfterAuto.params,
           editingInfo: editingInfoInput,
-          ...(componentDefinition.id === "$richText" ||
-          componentDefinition.id === "$richTextPart"
+          ...(componentDefinition.id === "@easyblocks/rich-text" ||
+          componentDefinition.id === "@easyblocks/rich-text-part"
             ? {
                 __SECRET_INTERNALS__: {
                   pathPrefix: configPrefix,
@@ -517,7 +517,8 @@ export function compileComponent(
           },
           isEditing: !!compilationContext.isEditing,
           device,
-          ...(componentDefinition!.id === "$richTextInlineWrapperElement"
+          ...(componentDefinition!.id ===
+          "@easyblocks/rich-text-inline-wrapper-element"
             ? { __COMPILATION_CONTEXT__: compilationContext }
             : {}),
         };
@@ -636,8 +637,8 @@ export function compileComponent(
         values: scalarizedValues,
         params: ownPropsAfterAuto!.params,
         editingInfo: editingInfoInput,
-        ...(componentDefinition.id === "$richText" ||
-        componentDefinition.id === "$richTextPart"
+        ...(componentDefinition.id === "@easyblocks/rich-text" ||
+        componentDefinition.id === "@easyblocks/rich-text-part"
           ? {
               __SECRET_INTERNALS__: {
                 pathPrefix: configPrefix,
@@ -1194,13 +1195,13 @@ function compileTextModifier(
   );
 
   const textPartDefinition = findComponentDefinitionById(
-    "$richTextPart",
+    "@easyblocks/rich-text-part",
     compilationContext
   );
 
   if (!textPartDefinition) {
     throw new Error(
-      `[compile] Couldn't find a modifier definition for "$richTextPart". `
+      `[compile] Couldn't find a modifier definition for "@easyblocks/rich-text-part". `
     );
   }
 
@@ -1821,8 +1822,8 @@ function convertEditingFieldToInternalEditingField(
   configPrefix: string | undefined
 ): NonNullable<InternalEditingFunctionResult["fields"]>[number] {
   if (
-    componentDefinition.id === "$richText" ||
-    componentDefinition.id === "$richTextPart"
+    componentDefinition.id === "@easyblocks/rich-text" ||
+    componentDefinition.id === "@easyblocks/rich-text-part"
   ) {
     // This is a special case. Rich text components have a really nasty `editing` function implementation
     // relying on `editorContext`, absolute paths and multi field portals. Ideally it would best to address this,
@@ -1873,14 +1874,14 @@ function convertEditingFieldToInternalEditingField(
     }
 
     if (field.path === "$action") {
-      // When $richTextPart is outside of wrapper element, we add field for displaying action schema prop to allow
-      // to add action to selected text without putting it into schemas of $richTextPart.
+      // When @easyblocks/rich-text-part is outside of wrapper element, we add field for displaying action schema prop to allow
+      // to add action to selected text without putting it into schemas of @easyblocks/rich-text-part.
       const actionField = getTinaField(
         {
           ...richTextInlineWrapperActionSchemaProp,
           prop: "$action",
           definition: findComponentDefinitionById(
-            "$richTextInlineWrapperElement",
+            "@easyblocks/rich-text-inline-wrapper-element",
             editorContext
           )!,
           defaultValue: [],

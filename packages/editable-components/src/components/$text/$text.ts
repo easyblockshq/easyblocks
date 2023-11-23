@@ -19,7 +19,7 @@ const textEditableComponent: NoCodeComponentDefinition<
   },
   { passedAlign: string }
 > = {
-  id: "$text",
+  id: "@easyblocks/text",
   label: "Simple Text",
   styles: $textStyles,
   type: "item",

@@ -39,12 +39,12 @@ const requiredActionTextModifierSchemaProp: ComponentSchemaProp = {
 
 const richTextInlineWrapperElementEditableComponent: NoCodeComponentDefinition<RichTextActionElementValues> =
   {
-    id: "$richTextInlineWrapperElement",
+    id: "@easyblocks/rich-text-inline-wrapper-element",
     schema: [
       {
         prop: "elements",
         type: "component-collection",
-        accepts: ["$richTextPart"],
+        accepts: ["@easyblocks/rich-text-part"],
       },
       // optionalTextModifierSchemaProp,
       richTextInlineWrapperActionSchemaProp,

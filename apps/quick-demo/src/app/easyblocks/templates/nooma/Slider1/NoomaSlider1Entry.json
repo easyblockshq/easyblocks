@@ -121,7 +121,7 @@
                   "Items": [
                     {
                       "_id": "e425be97-7c9a-4452-8cc2-b298c262bfd9",
-                      "_template": "$richText",
+                      "_template": "@easyblocks/rich-text",
                       "traceId": "$richText-4802103f",
                       "_itemProps": {
                         "$stack": {
@@ -139,18 +139,18 @@
                         "en-US": [
                           {
                             "_id": "70147449-9622-418a-bd34-42968b65e326",
-                            "_template": "$richTextBlockElement",
+                            "_template": "@easyblocks/rich-text-block-element",
                             "traceId": "$richTextBlockElement-232466ee",
                             "type": "paragraph",
                             "elements": [
                               {
                                 "_id": "4461ea6d-9a4e-4e05-b953-ad00a4731622",
-                                "_template": "$richTextLineElement",
+                                "_template": "@easyblocks/rich-text-line-element",
                                 "traceId": "$richTextLineElement-4e6e7834",
                                 "elements": [
                                   {
                                     "_id": "7a6a4803-b963-4164-b605-7fd16f304e27",
-                                    "_template": "$richTextPart",
+                                    "_template": "@easyblocks/rich-text-part",
                                     "traceId": "$richTextPart-0e2cee63",
                                     "value": "NEW ARRIVALS",
                                     "font": {

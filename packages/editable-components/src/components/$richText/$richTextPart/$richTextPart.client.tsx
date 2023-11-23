@@ -3,7 +3,7 @@ import React from "react";
 
 interface RichTextPartProps {
   _id: string;
-  _template: "$richTextPart";
+  _template: "@easyblocks/rich-text-part";
   color: string;
   font: Record<string, any>;
   value: string;

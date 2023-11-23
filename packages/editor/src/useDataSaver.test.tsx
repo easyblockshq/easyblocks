@@ -89,13 +89,13 @@ function createEditorContext(
 
 const textItems: Array<ComponentConfig> = [
   {
-    _template: "$text",
+    _template: "@easyblocks/text",
     value: {
       id: "123",
     },
   },
   {
-    _template: "$text",
+    _template: "@easyblocks/text",
     value: {
       id: "345",
     },
@@ -286,14 +286,14 @@ describe("useDataSaver", () => {
             Items: [
               ...textItems,
               {
-                _template: "$text",
+                _template: "@easyblocks/text",
                 value: {
                   id: "local.123",
                   value: { en: "Lorem ipsum" },
                 },
               },
               {
-                _template: "$text",
+                _template: "@easyblocks/text",
                 value: {
                   id: "local.345",
                   value: { en: "Dolor sit amet" },
@@ -1147,7 +1147,7 @@ describe("useDataSaver", () => {
     "Adding new text",
     undefined,
     {
-      _template: "$text",
+      _template: "@easyblocks/text",
       value: {
         id: "local.123",
         value: "Lorem ipsum",
@@ -1159,14 +1159,14 @@ describe("useDataSaver", () => {
   runTestsForAddOrModify(
     "Modifying existing text",
     {
-      _template: "$text",
+      _template: "@easyblocks/text",
       value: {
         id: "new.123",
         value: "Blablabla",
       },
     },
     {
-      _template: "$text",
+      _template: "@easyblocks/text",
       value: {
         id: "new.123",
         value: "Lorem ipsum",
@@ -1177,7 +1177,7 @@ describe("useDataSaver", () => {
 
   describe("mode without text CRUD", () => {
     const text1 = {
-      _template: "$text",
+      _template: "@easyblocks/text",
       value: {
         id: "local.123",
         value: { en: "Lorem ipsum" },
@@ -1185,7 +1185,7 @@ describe("useDataSaver", () => {
     };
 
     const text2 = {
-      _template: "$text",
+      _template: "@easyblocks/text",
       value: {
         id: "local.345",
         value: { en: "Dolor sit amet" },
@@ -1193,7 +1193,7 @@ describe("useDataSaver", () => {
     };
 
     const text3 = {
-      _template: "$text",
+      _template: "@easyblocks/text",
       value: {
         id: "local.xxx",
         value: { en: "Blabla" },
@@ -1276,7 +1276,7 @@ describe("useDataSaver", () => {
   describe("Saving to remote storage", () => {
     const localTextItems = [
       {
-        _template: "$text",
+        _template: "@easyblocks/text",
         value: {
           id: "local.123",
           value: {
@@ -1286,7 +1286,7 @@ describe("useDataSaver", () => {
         },
       },
       {
-        _template: "$text",
+        _template: "@easyblocks/text",
         value: {
           id: "local.345",
           value: {

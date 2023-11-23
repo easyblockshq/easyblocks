@@ -13,7 +13,7 @@ import {
   buildRichTextPartComponentConfig,
 } from "./builders";
 
-describe("$richTextPart", () => {
+describe("@easyblocks/rich-text-part", () => {
   test("builds", () => {
     expect(
       buildRichTextPartComponentConfig({
@@ -35,7 +35,7 @@ describe("$richTextPart", () => {
     ).toEqual(
       expect.objectContaining<RichTextPartComponentConfig>({
         _id: expect.any(String),
-        _template: "$richTextPart",
+        _template: "@easyblocks/rich-text-part",
         color: {
           $res: true,
           xl: {
@@ -55,7 +55,7 @@ describe("$richTextPart", () => {
   });
 });
 
-describe("$richTextLineElement", () => {
+describe("@easyblocks/rich-text-line-element", () => {
   test("builds", () => {
     expect(
       buildRichTextLineElementComponentConfig({
@@ -64,21 +64,21 @@ describe("$richTextLineElement", () => {
     ).toEqual(
       expect.objectContaining<RichTextLineElementComponentConfig>({
         _id: expect.any(String),
-        _template: "$richTextLineElement",
+        _template: "@easyblocks/rich-text-line-element",
         elements: [],
       })
     );
   });
 });
 
-describe("$richTextBlockElement", () => {
+describe("@easyblocks/rich-text-block-element", () => {
   test.each(RICH_TEXT_BLOCK_ELEMENT_TYPES)(
     "builds block element of type %s",
     (type) => {
       expect(buildRichTextBlockElementComponentConfig(type, [])).toEqual(
         expect.objectContaining<RichTextBlockElementComponentConfig>({
           _id: expect.any(String),
-          _template: "$richTextBlockElement",
+          _template: "@easyblocks/rich-text-block-element",
           elements: [],
           type,
         })
@@ -111,7 +111,7 @@ describe("$richText", () => {
     ).toEqual(
       expect.objectContaining<RichTextComponentConfig>({
         _id: expect.any(String),
-        _template: "$richText",
+        _template: "@easyblocks/rich-text",
         accessibilityRole: "div",
         elements: {
           [testCompilationContext.contextParams.locale]: [],

@@ -67,7 +67,7 @@
           "Items": [
             {
               "_id": "908aafac-38c0-4a55-8a46-f90a82d2be56",
-              "_template": "$richText",
+              "_template": "@easyblocks/rich-text",
               "traceId": "$richText-cc2ea50e",
               "_itemProps": {
                 "$stack": {
@@ -85,18 +85,18 @@
                 "en-US": [
                   {
                     "_id": "1f32c640-0df5-4b4c-97be-c48010bf7524",
-                    "_template": "$richTextBlockElement",
+                    "_template": "@easyblocks/rich-text-block-element",
                     "traceId": "$richTextBlockElement-17ccb2ae",
                     "type": "paragraph",
                     "elements": [
                       {
                         "_id": "1b92a3e7-1b92-4a88-8399-7e8ff2289b27",
-                        "_template": "$richTextLineElement",
+                        "_template": "@easyblocks/rich-text-line-element",
                         "traceId": "$richTextLineElement-5a0be3d7",
                         "elements": [
                           {
                             "_id": "981316dc-cfa6-45d0-92ec-dca89f1a3cd9",
-                            "_template": "$richTextPart",
+                            "_template": "@easyblocks/rich-text-part",
                             "traceId": "$richTextPart-691392bf",
                             "value": "Make it stand out",
                             "font": {
@@ -148,7 +148,7 @@
             },
             {
               "_id": "03455345-ea45-42b4-bb7e-a235de5c2cc1",
-              "_template": "$richText",
+              "_template": "@easyblocks/rich-text",
               "traceId": "$richText-7d7437b5",
               "_itemProps": {
                 "$stack": {
@@ -166,18 +166,18 @@
                 "en-US": [
                   {
                     "_id": "df09313d-7111-4484-8b07-f05cf948af75",
-                    "_template": "$richTextBlockElement",
+                    "_template": "@easyblocks/rich-text-block-element",
                     "traceId": "$richTextBlockElement-029866dd",
                     "type": "paragraph",
                     "elements": [
                       {
                         "_id": "7991cefb-fd31-4faa-8382-e9cdf0f4bc08",
-                        "_template": "$richTextLineElement",
+                        "_template": "@easyblocks/rich-text-line-element",
                         "traceId": "$richTextLineElement-ca41442d",
                         "elements": [
                           {
                             "_id": "8ecdaaec-cdb2-4f5b-a00a-2ed633900a0b",
-                            "_template": "$richTextPart",
+                            "_template": "@easyblocks/rich-text-part",
                             "traceId": "$richTextPart-c0a2f83c",
                             "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                             "font": {

@@ -23,7 +23,7 @@ test.describe("configs", () => {
       data: {
         id: uniqueId(),
         config: {
-          _template: "$text",
+          _template: "@easyblocks/text",
           _id: "local.xxx",
           value: {
             __localized: true,
@@ -60,7 +60,7 @@ test.describe("configs", () => {
       data: {
         id: uniqueId(),
         config: {
-          _template: "$text",
+          _template: "@easyblocks/text",
           _id: "local.xxx",
           value: {
             __localized: true,
@@ -90,7 +90,7 @@ test.describe("configs", () => {
     expect(data).toEqual({
       ...testConfig,
       config: {
-        _template: "$text",
+        _template: "@easyblocks/text",
         _id: "local.xxx",
         value: {
           de: "Deutsch",
@@ -109,7 +109,7 @@ test.describe("configs", () => {
       data: {
         id: uniqueId(),
         config: {
-          _template: "$text",
+          _template: "@easyblocks/text",
           _id: "local.xxx",
           value1: {
             __localized: true,
@@ -143,7 +143,7 @@ test.describe("configs", () => {
     expect(data).toEqual({
       ...testConfig,
       config: {
-        _template: "$text",
+        _template: "@easyblocks/text",
         _id: "local.xxx",
         value1: {
           de: "Deutsch",
@@ -166,7 +166,7 @@ test.describe("configs", () => {
       data: {
         id: uniqueId(),
         config: {
-          _template: "$text",
+          _template: "@easyblocks/text",
           _id: "local.xxx",
           value: {
             __localized: true,
@@ -194,7 +194,7 @@ test.describe("configs", () => {
 
     const data = await response.json();
     expect(data.config).toEqual({
-      _template: "$text",
+      _template: "@easyblocks/text",
       _id: "local.xxx",
       value: {
         de: "Deutsch",
@@ -212,7 +212,7 @@ test.describe("configs", () => {
       data: {
         id: uniqueId(),
         config: {
-          _template: "$text",
+          _template: "@easyblocks/text",
           _id: "local.xxx",
           value1: {
             __localized: true,
@@ -244,7 +244,7 @@ test.describe("configs", () => {
 
     const data = await response.json();
     expect(data.config).toEqual({
-      _template: "$text",
+      _template: "@easyblocks/text",
       _id: "local.xxx",
       value1: {
         de: "Deutsch",

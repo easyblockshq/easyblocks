@@ -91,8 +91,8 @@ export function EasyblocksCanvas() {
       {...easyblocksProviderValue}
       components={{
         ...easyblocksProviderValue.components,
-        "$richText.editor": RichTextEditor,
-        "$text.editor": TextEditor,
+        "@easyblocks/rich-text.editor": RichTextEditor,
+        "@easyblocks/text.editor": TextEditor,
       }}
     >
       {/* EasyblocksMetadataProvider must be defined in case of nested <Easyblocks /> components are used! */}

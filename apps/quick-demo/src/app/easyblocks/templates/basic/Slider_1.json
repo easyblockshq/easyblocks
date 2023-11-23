@@ -495,7 +495,7 @@
       "Items": [
         {
           "_id": "d1af5d32-23e6-4434-a4fb-cfbfb186a5e3",
-          "_template": "$richText",
+          "_template": "@easyblocks/rich-text",
           "traceId": "$richText-234076f0",
           "_itemProps": {
             "$stack": {
@@ -513,18 +513,18 @@
             "en-US": [
               {
                 "_id": "2967976b-5811-4320-97a5-e6791befc8d6",
-                "_template": "$richTextBlockElement",
+                "_template": "@easyblocks/rich-text-block-element",
                 "traceId": "$richTextBlockElement-7b9ca8ff",
                 "type": "paragraph",
                 "elements": [
                   {
                     "_id": "5287ba5b-d304-470a-ad6e-b5c4eab57353",
-                    "_template": "$richTextLineElement",
+                    "_template": "@easyblocks/rich-text-line-element",
                     "traceId": "$richTextLineElement-4a09b707",
                     "elements": [
                       {
                         "_id": "42d862a0-3d59-45c2-8bcc-0854c2684401",
-                        "_template": "$richTextPart",
+                        "_template": "@easyblocks/rich-text-part",
                         "traceId": "$richTextPart-48ebc161",
                         "value": "Heading goes here",
                         "font": {

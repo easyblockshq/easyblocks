@@ -12,13 +12,16 @@ function extractTextPartsFromCompiledComponents(
   traverseCompiledRichTextComponentConfig(
     compiledRichText,
     (compiledConfig) => {
-      if (compiledConfig._template === "$richTextPart") {
+      if (compiledConfig._template === "@easyblocks/rich-text-part") {
         extractedTextPartComponents.push(
           compiledConfig as RichTextPartCompiledComponentConfig
         );
       }
 
-      if (compiledConfig._template === "$richTextInlineWrapperElement") {
+      if (
+        compiledConfig._template ===
+        "@easyblocks/rich-text-inline-wrapper-element"
+      ) {
         (
           compiledConfig as RichTextInlineWrapperElementCompiledComponentConfig
         ).components.elements.forEach((compiledTextPart) => {

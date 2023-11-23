@@ -67,7 +67,7 @@
           "Items": [
             {
               "_id": "ca7c0183-c963-477f-a304-30ba716924f1",
-              "_template": "$richText",
+              "_template": "@easyblocks/rich-text",
               "traceId": "$richText-073c5f8a",
               "_itemProps": {
                 "$stack": {
@@ -85,18 +85,18 @@
                 "en-US": [
                   {
                     "_id": "703844d3-0a0b-47ab-9bf1-df322a5d56a4",
-                    "_template": "$richTextBlockElement",
+                    "_template": "@easyblocks/rich-text-block-element",
                     "traceId": "$richTextBlockElement-af804a08",
                     "type": "paragraph",
                     "elements": [
                       {
                         "_id": "0aad5018-ef09-4c6c-a384-2676f335b9ed",
-                        "_template": "$richTextLineElement",
+                        "_template": "@easyblocks/rich-text-line-element",
                         "traceId": "$richTextLineElement-50ebc9eb",
                         "elements": [
                           {
                             "_id": "0f368abd-22cd-4f3c-81e0-7117e49001e5",
-                            "_template": "$richTextPart",
+                            "_template": "@easyblocks/rich-text-part",
                             "traceId": "$richTextPart-e3193799",
                             "value": "Lorem ipsum dolor sit amet",
                             "font": {

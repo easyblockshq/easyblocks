@@ -17,7 +17,7 @@ import { CompilationCache } from "./CompilationCache";
 import { compileComponentValues } from "./compileComponentValues";
 
 /**
- * Returns the most common value for given `prop` parameter among all $richTextPart components from `richTextComponentConfig`.
+ * Returns the most common value for given `prop` parameter among all @easyblocks/rich-text-part components from `richTextComponentConfig`.
  */
 function getMostCommonValueFromRichTextParts<
   RichTextPartProperty extends Extract<
@@ -51,7 +51,9 @@ function getMostCommonValueFromRichTextParts<
     return blockElement.elements.flatMap((lineElement) => {
       return lineElement.elements.flatMap<RichTextPartComponentConfig>(
         (child) => {
-          if (child._template === "$richTextInlineWrapperElement") {
+          if (
+            child._template === "@easyblocks/rich-text-inline-wrapper-element"
+          ) {
             return (
               child as RichTextInlineWrapperElementEditableComponentConfig
             ).elements;
@@ -64,7 +66,7 @@ function getMostCommonValueFromRichTextParts<
   });
 
   const richTextPartComponentDefinition = findComponentDefinitionById(
-    "$richTextPart",
+    "@easyblocks/rich-text-part",
     compilationContext
   )!;
 

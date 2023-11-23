@@ -5,7 +5,7 @@ import type { CompiledNoCodeComponentProps } from "../../types";
 import { InlineTextarea } from "./InlineTextarea";
 
 type TextProps = CompiledNoCodeComponentProps<
-  "$text",
+  "@easyblocks/text",
   {
     value: string | undefined;
   },

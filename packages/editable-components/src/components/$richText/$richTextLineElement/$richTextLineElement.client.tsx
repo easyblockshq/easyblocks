@@ -27,7 +27,9 @@ export default function RichTextLineElement(props: RichTextLineElementProps) {
   }
 
   if (process.env.NODE_ENV === "development") {
-    console.warn(`Unknown $richTextLineElement blockType ${blockType}`);
+    console.warn(
+      `Unknown @easyblocks/rich-text-line-element blockType "${blockType}"`
+    );
   }
 
   return <div>{elements}</div>;

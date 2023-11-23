@@ -48,15 +48,15 @@ function IdentityField({ input, field }: IdentityFieldProps) {
     editorContext.activeRootContainer.defaultConfig._template;
 
   const isNonRemovable =
-    (componentDefinition?.id.startsWith("$richText") &&
-      componentDefinition.id !== "$richText") ||
+    (componentDefinition?.id.startsWith("@easyblocks/rich-text") &&
+      componentDefinition.id !== "@easyblocks/rich-text") ||
     (parentSchemaProp
       ? parentSchemaProp.type === "component" &&
         (parentSchemaProp as ComponentSchemaProp).required
       : true);
 
   const isNonChangable =
-    componentDefinition?.id === "$richTextPart" ||
+    componentDefinition?.id === "@easyblocks/rich-text-part" ||
     componentDefinition?.id === rootComponentId;
 
   function handleChangeComponentType() {
@@ -90,7 +90,8 @@ function IdentityField({ input, field }: IdentityFieldProps) {
 
     if (
       componentType.includes("action") &&
-      parentComponentDefinition?.id === "$richTextInlineWrapperElement"
+      parentComponentDefinition?.id ===
+        "@easyblocks/rich-text-inline-wrapper-element"
     ) {
       // When component we're about to remove is an action and it's parent is a rich text inline wrapper element
       // we handle the removal by dispatching rich text changed event and let the rich text editor handle the removal

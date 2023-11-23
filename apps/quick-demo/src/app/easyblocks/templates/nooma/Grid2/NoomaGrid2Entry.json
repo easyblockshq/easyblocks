@@ -126,7 +126,7 @@
                   "Items": [
                     {
                       "_id": "bfdc978d-381c-472a-8be6-96505f54f062",
-                      "_template": "$richText",
+                      "_template": "@easyblocks/rich-text",
                       "traceId": "$richText-ee83d62d",
                       "_itemProps": {
                         "$stack": {
@@ -144,18 +144,18 @@
                         "en-US": [
                           {
                             "_id": "4fc64d57-408d-4b62-a4ef-85ba05d8dfbe",
-                            "_template": "$richTextBlockElement",
+                            "_template": "@easyblocks/rich-text-block-element",
                             "traceId": "$richTextBlockElement-c0f78751",
                             "type": "paragraph",
                             "elements": [
                               {
                                 "_id": "7d523415-a264-42d4-9cf5-82b353cf7796",
-                                "_template": "$richTextLineElement",
+                                "_template": "@easyblocks/rich-text-line-element",
                                 "traceId": "$richTextLineElement-a7558ddd",
                                 "elements": [
                                   {
                                     "_id": "f4c55653-59bc-4c89-89b3-d2f27d82892d",
-                                    "_template": "$richTextPart",
+                                    "_template": "@easyblocks/rich-text-part",
                                     "traceId": "$richTextPart-02420dd2",
                                     "value": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
                                     "font": {
@@ -668,7 +668,7 @@
       "Items": [
         {
           "_id": "044ac5dc-716f-4bb5-a3f2-d6bbc7ad6531",
-          "_template": "$richText",
+          "_template": "@easyblocks/rich-text",
           "traceId": "$richText-931f951f",
           "_itemProps": {
             "$stack": {
@@ -686,18 +686,18 @@
             "en-US": [
               {
                 "_id": "4bea1f5f-5451-4ece-82ce-a3fd91f8d93b",
-                "_template": "$richTextBlockElement",
+                "_template": "@easyblocks/rich-text-block-element",
                 "traceId": "$richTextBlockElement-76e06a30",
                 "type": "paragraph",
                 "elements": [
                   {
                     "_id": "bc8dab92-5784-4172-a524-4868eb9faaea",
-                    "_template": "$richTextLineElement",
+                    "_template": "@easyblocks/rich-text-line-element",
                     "traceId": "$richTextLineElement-a9cf1708",
                     "elements": [
                       {
                         "_id": "2c5e9f5f-036e-46c7-a428-a847258dc0f0",
-                        "_template": "$richTextPart",
+                        "_template": "@easyblocks/rich-text-part",
                         "traceId": "$richTextPart-37d2b564",
                         "value": "Teidi shelving unit",
                         "font": {

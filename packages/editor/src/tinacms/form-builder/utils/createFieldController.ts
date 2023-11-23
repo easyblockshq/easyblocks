@@ -69,7 +69,7 @@ function createFieldController({
 
       if (focussedField.some(isConfigPathRichTextPart)) {
         // For editor selection we can safely pick a first field name because:
-        // * we only can select fields that are children of $richTextPart
+        // * we only can select fields that are children of @easyblocks/rich-text-part
         // * we only can update only single property
         const { templateId } = parsePath(normalizedFieldName[0], form);
 
@@ -378,7 +378,7 @@ type CacheInvalidator = (
   context: EditorContextType
 ) => Array<string>;
 
-// $richText and $richTextPart uses a lot of portals to display correct fields within sidebar
+// $richText and @easyblocks/rich-text-part uses a lot of portals to display correct fields within sidebar
 // Changing value through portal won't trigger the recompilation of component using that portal.
 // When we change any $richText related component we remove cache for that component (if it is $richText)
 // and for all of its ancestors.
@@ -394,21 +394,25 @@ const richTextCacheInvalidator: CacheInvalidator = (
   );
 
   const isRichTextOrRichTextAncestorComponent =
-    templateId.startsWith("$richText") ||
-    parent?.templateId.startsWith("$richText");
+    templateId.startsWith("@easyblocks/rich-text") ||
+    parent?.templateId.startsWith("@easyblocks/rich-text");
 
   if (isRichTextOrRichTextAncestorComponent) {
     const richTextPath =
-      templateId === "$richText" && fieldName
+      templateId === "@easyblocks/rich-text" && fieldName
         ? changedPath.replace(`.${fieldName}`, "")
-        : findPathOfFirstAncestorOfType(changedPath, "$richText", context.form);
+        : findPathOfFirstAncestorOfType(
+            changedPath,
+            "@easyblocks/rich-text",
+            context.form
+          );
 
     const richTextConfig = dotNotationGet(context.form.values, richTextPath);
 
     traverseComponents(richTextConfig, context, ({ componentConfig }) => {
       if (
         componentConfig &&
-        componentConfig._template.startsWith("$richText")
+        componentConfig._template.startsWith("@easyblocks/rich-text")
       ) {
         cacheKeysToRemove.push(componentConfig._id!);
       }

@@ -41,7 +41,7 @@ const richTextBlockElementEditableComponent: NoCodeComponentDefinition<
   RichTextBlockElementValues,
   RichTextBlockElementParams
 > = {
-  id: "$richTextBlockElement",
+  id: "@easyblocks/rich-text-block-element",
   schema: [
     {
       prop: "type",

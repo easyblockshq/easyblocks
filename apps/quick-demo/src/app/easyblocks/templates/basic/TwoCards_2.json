@@ -137,7 +137,7 @@
                   "Items": [
                     {
                       "_id": "dddd087c-6fb6-4498-be28-b308aaaa4e4e",
-                      "_template": "$richText",
+                      "_template": "@easyblocks/rich-text",
                       "traceId": "$richText-5547d598",
                       "_itemProps": {
                         "$stack": {
@@ -155,18 +155,18 @@
                         "en-US": [
                           {
                             "_id": "553b7c65-2323-415a-a22c-2cce54a526e9",
-                            "_template": "$richTextBlockElement",
+                            "_template": "@easyblocks/rich-text-block-element",
                             "traceId": "$richTextBlockElement-c90d9348",
                             "type": "paragraph",
                             "elements": [
                               {
                                 "_id": "d24c879c-c688-40d0-b1e4-5a4b325f8d45",
-                                "_template": "$richTextLineElement",
+                                "_template": "@easyblocks/rich-text-line-element",
                                 "traceId": "$richTextLineElement-bb22a73d",
                                 "elements": [
                                   {
                                     "_id": "d80232f6-dc4a-4077-8127-5757d9afc518",
-                                    "_template": "$richTextPart",
+                                    "_template": "@easyblocks/rich-text-part",
                                     "traceId": "$richTextPart-cf4b8716",
                                     "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
                                     "font": {
