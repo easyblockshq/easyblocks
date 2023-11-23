@@ -18,6 +18,16 @@ function snapToEdge(fieldName: string): SchemaProp {
   };
 }
 
+function toStartEnd(position: "left" | "center" | "right" | "top" | "bottom") {
+  if (position === "left" || position === "top") {
+    return "start";
+  } else if (position === "center") {
+    return "center";
+  } else if (position === "right" || position === "bottom") {
+    return "end";
+  }
+}
+
 export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
   id: "HeroBanner",
   label: "Hero Banner v2 NEW",
@@ -70,6 +80,12 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
           "background",
         ],
       },
+    },
+    {
+      prop: "stackPosition",
+      label: "Stack position",
+      type: "position",
+      responsive: true,
     },
     {
       prop: "coverWidth",
@@ -164,6 +180,8 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
 
     const coverFr = parseInt(coverWidth.replace("%", ""));
     const stackFr = 100 - coverFr;
+
+    const [stackAlign, stackJustify] = values.stackPosition.split("-");
 
     if (coverMainPosition === "hide") {
       stackPaddings = {
@@ -323,6 +341,13 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
         paddingBottom: stackPaddings.bottom,
         gridRow: stackGridRow,
         gridColumn: stackGridCol,
+        display: "grid",
+        alignItems: toStartEnd(stackAlign),
+        justifyItems: toStartEnd(stackJustify),
+        position: "relative",
+      }),
+      StackInnerContainer: box({
+        // background: "red",
       }),
       CoverContainer: box({
         display: coverDisplay,

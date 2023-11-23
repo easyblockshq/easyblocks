@@ -6,6 +6,7 @@ export function HeroBanner(props: any) {
     Root,
     Stack,
     StackContainer,
+    StackInnerContainer,
     CoverContainer,
     Cover,
     CoverAspectRatioMaker,
@@ -15,7 +16,9 @@ export function HeroBanner(props: any) {
     <Root.type {...Root.props}>
       <Container.type {...Container.props}>
         <StackContainer.type {...StackContainer.props}>
-          <Stack.type {...Stack.props} />
+          <StackInnerContainer.type {...StackInnerContainer.props}>
+            <Stack.type {...Stack.props} />
+          </StackInnerContainer.type>
         </StackContainer.type>
         <CoverContainer.type {...CoverContainer.props}>
           <Cover.type {...Cover.props}>
