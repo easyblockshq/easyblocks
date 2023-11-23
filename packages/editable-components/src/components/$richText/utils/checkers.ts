@@ -4,7 +4,7 @@ import { RichTextInlineWrapperElementEditableComponentConfig } from "../$richTex
 function isRichTextInlineWrapperElementNoCodeEntry(
   entry: ComponentConfig
 ): entry is RichTextInlineWrapperElementEditableComponentConfig {
-  return entry.id === "$richTextInlineWrapperElement";
+  return entry._template === "$richTextInlineWrapperElement";
 }
 
 export { isRichTextInlineWrapperElementNoCodeEntry };

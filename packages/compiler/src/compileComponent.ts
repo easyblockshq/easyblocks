@@ -517,7 +517,7 @@ export function compileComponent(
           },
           isEditing: !!compilationContext.isEditing,
           device,
-          ...(componentDefinition!.id === "richTextInlineWrapperElement"
+          ...(componentDefinition!.id === "$richTextInlineWrapperElement"
             ? { __COMPILATION_CONTEXT__: compilationContext }
             : {}),
         };
