@@ -1688,7 +1688,7 @@ function convertEditingInfoToInternalEditingInfo(
 
       if (!sourceInternalEditingInfoComponent) {
         throw new Error(
-          `Found component at path ${configPrefix} but it's not defined in the schema`
+          `Found component '${name}' at path ${configPrefix} that is not defined in the schema`
         );
       }
 

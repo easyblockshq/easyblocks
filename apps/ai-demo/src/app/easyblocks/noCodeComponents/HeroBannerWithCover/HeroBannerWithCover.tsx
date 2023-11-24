@@ -1,6 +1,6 @@
 import React from "react";
 
-export function HeroBanner(props: any) {
+export function HeroBannerWithCover(props: any) {
   const {
     Container,
     Root,
@@ -8,17 +8,14 @@ export function HeroBanner(props: any) {
     StackContainer,
     StackInnerContainer,
     CoverContainer,
-    Cover,
-    CoverAspectRatioMaker,
+    CoverCard,
   } = props;
 
   return (
     <Root.type {...Root.props}>
       <Container.type {...Container.props}>
         <CoverContainer.type {...CoverContainer.props}>
-          <Cover.type {...Cover.props}>
-            <CoverAspectRatioMaker.type {...CoverAspectRatioMaker.props} />
-          </Cover.type>
+          <CoverCard.type {...CoverCard.props} />
         </CoverContainer.type>
         <StackContainer.type {...StackContainer.props}>
           <StackInnerContainer.type {...StackInnerContainer.props}>

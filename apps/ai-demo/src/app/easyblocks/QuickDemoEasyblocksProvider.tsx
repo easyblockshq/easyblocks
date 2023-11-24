@@ -3,7 +3,8 @@ import React from "react";
 import { ProductCard } from "@/components/ProductCard/ProductCard";
 import { builtinEditableComponents } from "@easyblocks/editable-components";
 import { EasyblocksProvider } from "@easyblocks/react";
-import { HeroBanner } from "@/app/easyblocks/noCodeComponents/HeroBanner/HeroBanner";
+import { HeroBannerWithCover } from "@/app/easyblocks/noCodeComponents/HeroBannerWithCover/HeroBannerWithCover";
+import { CoverCard } from "@/app/easyblocks/noCodeComponents/CoverCard/CoverCard";
 
 const $Link = (props: any) => {
   const { url, shouldOpenInNewWindow, trigger: TriggerElement } = props;
@@ -42,7 +43,8 @@ export const QuickDemoEasyblocksProvider: React.FC<{
         ProductCard,
         $Link,
         $AlertAction,
-        HeroBanner,
+        HeroBannerWithCover,
+        CoverCard,
       }}
     >
       {children}

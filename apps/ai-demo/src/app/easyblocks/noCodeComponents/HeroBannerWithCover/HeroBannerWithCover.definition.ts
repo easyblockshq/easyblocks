@@ -1,30 +1,11 @@
 import { NoCodeComponentDefinition, box, SchemaProp } from "@easyblocks/core";
-
-function normalizePxValue(min: number, max: number) {
-  return (val: string) => {
-    const num = parseInt(val);
-    if (isNaN(num)) {
-      return "0";
-    } else if (num < min) {
-      return min.toString();
-    } else if (num > max) {
-      return max.toString();
-    } else {
-      return num.toString();
-    }
-  };
-}
-
-function paddingSchemaProp(fieldName: string): SchemaProp {
-  return {
-    prop: fieldName,
-    type: "space",
-    defaultValue: {
-      ref: "16",
-      value: "16px",
-    },
-  };
-}
+import {
+  normalizePxValue,
+  snapToEdgeSchemaProp,
+  paddingSchemaProp,
+  borderSchemaProp,
+  toStartEnd,
+} from "@/app/easyblocks/noCodeComponents/utils";
 
 function noFillPaddingSchemaProp(fieldName: string): SchemaProp {
   return {
@@ -37,37 +18,9 @@ function noFillPaddingSchemaProp(fieldName: string): SchemaProp {
   };
 }
 
-function borderSchemaProp(fieldName: string): SchemaProp {
-  return {
-    prop: fieldName,
-    type: "string",
-    params: {
-      normalize: normalizePxValue(0, 32),
-    },
-    defaultValue: "1",
-  };
-}
-
-function snapToEdge(fieldName: string): SchemaProp {
-  return {
-    prop: fieldName,
-    type: "boolean",
-  };
-}
-
-function toStartEnd(position: "left" | "center" | "right" | "top" | "bottom") {
-  if (position === "left" || position === "top") {
-    return "start";
-  } else if (position === "center") {
-    return "center";
-  } else if (position === "right" || position === "bottom") {
-    return "end";
-  }
-}
-
-export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
-  id: "HeroBanner",
-  label: "Hero Banner v2 NEW",
+export const heroBannerWithCoverDefinition: NoCodeComponentDefinition = {
+  id: "HeroBannerWithCover",
+  label: "Hero Banner - Cover",
   type: "section",
   schema: [
     {
@@ -138,10 +91,10 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
     paddingSchemaProp("paddingTop"),
     paddingSchemaProp("paddingBottom"),
     paddingSchemaProp("paddingInternal"),
-    snapToEdge("snapCoverToLeft"),
-    snapToEdge("snapCoverToRight"),
-    snapToEdge("snapCoverToTop"),
-    snapToEdge("snapCoverToBottom"),
+    snapToEdgeSchemaProp("snapCoverToLeft"),
+    snapToEdgeSchemaProp("snapCoverToRight"),
+    snapToEdgeSchemaProp("snapCoverToTop"),
+    snapToEdgeSchemaProp("snapCoverToBottom"),
     noFillPaddingSchemaProp("noFillPaddingLeft"),
     noFillPaddingSchemaProp("noFillPaddingRight"),
     noFillPaddingSchemaProp("noFillPaddingTop"),
@@ -177,12 +130,20 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
       params: {
         normalize: normalizePxValue(0, 32),
       },
+      defaultValue: "0",
     },
     {
       prop: "Stack",
       type: "component",
       required: true,
       accepts: ["$stack"],
+    },
+    {
+      prop: "CoverCard",
+      type: "component",
+      required: true,
+      accepts: ["CoverCard"],
+      visible: true,
     },
   ],
   editing: ({ editingInfo }) => {
@@ -491,12 +452,6 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
         gridRow: coverGridRow,
         gridColumn: coverGridCol,
         alignSelf: coverAlign,
-      }),
-      Cover: box({
-        background: "black",
-      }),
-      CoverAspectRatioMaker: box({
-        aspectRatio: "16 / 9",
       }),
 
       // const DEBUG_COLOR = "rgb(34, 150, 254)";

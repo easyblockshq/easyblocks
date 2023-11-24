@@ -4,7 +4,8 @@ import { builtinEditableComponentsDefinitions } from "@easyblocks/editable-compo
 import { mockImageWidget } from "./externalData/mockMedia/mockImageWidget";
 import { pexelsImageWidget } from "./resources/pexels/pexelsImageWidget";
 import { productWidget } from "./resources/product/productWidget";
-import { heroBannerNoCodeDefinition } from "@/app/easyblocks/noCodeComponents/HeroBanner/HeroBanner.definition";
+import { heroBannerWithCoverDefinition } from "@/app/easyblocks/noCodeComponents/HeroBannerWithCover/HeroBannerWithCover.definition";
+import { coverCardDefinition } from "@/app/easyblocks/noCodeComponents/CoverCard/CoverCard.definition";
 
 if (!process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN) {
   throw new Error("Missing NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN");
@@ -36,7 +37,8 @@ export const easyblocksConfig: Config = {
     },
   },
   components: [
-    heroBannerNoCodeDefinition,
+    heroBannerWithCoverDefinition,
+    coverCardDefinition,
     ...builtinEditableComponentsDefinitions,
     {
       id: "$Link",
