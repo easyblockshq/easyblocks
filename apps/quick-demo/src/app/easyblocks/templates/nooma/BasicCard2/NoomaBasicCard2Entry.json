@@ -67,7 +67,7 @@
           "Items": [
             {
               "_id": "028c0751-9f7c-4c21-8b90-b19f9bc3bf61",
-              "_template": "$richText",
+              "_template": "@easyblocks/rich-text",
               "traceId": "$richText-4394e2ef",
               "_itemProps": {
                 "$stack": {
@@ -84,14 +84,14 @@
               "elements": {
                 "en-US": [
                   {
-                    "_template": "$richTextBlockElement",
+                    "_template": "@easyblocks/rich-text-block-element",
                     "elements": [
                       {
-                        "_template": "$richTextLineElement",
+                        "_template": "@easyblocks/rich-text-line-element",
                         "elements": [
                           {
                             "_id": "bb6e2bbc-8cc5-4f24-80fe-5781e0701436",
-                            "_template": "$richTextPart",
+                            "_template": "@easyblocks/rich-text-part",
                             "color": {
                               "$res": true,
                               "xl": { "ref": "grey_05", "value": "#252525" }

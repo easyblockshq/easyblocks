@@ -52,7 +52,9 @@ export default function ({
     }
 
     const isChildRichText =
-      "_template" in item && item._template === "$richText" && !isEditing;
+      "_template" in item &&
+      item._template === "@easyblocks/rich-text" &&
+      !isEditing;
 
     outerItemWrappers.push({
       display: "flex",

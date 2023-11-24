@@ -107,7 +107,7 @@
                   "Items": [
                     {
                       "_id": "3dee2224-f932-42d4-875d-de6570a8e5a9",
-                      "_template": "$richText",
+                      "_template": "@easyblocks/rich-text",
                       "traceId": "$richText-dad6e497",
                       "_itemProps": {
                         "$stack": {
@@ -125,18 +125,18 @@
                         "en-US": [
                           {
                             "_id": "e8602e47-4135-4f99-a18a-68a514096714",
-                            "_template": "$richTextBlockElement",
+                            "_template": "@easyblocks/rich-text-block-element",
                             "traceId": "$richTextBlockElement-544501ec",
                             "type": "paragraph",
                             "elements": [
                               {
                                 "_id": "4debb20d-5ae8-461a-ba04-f1a9e1ca797d",
-                                "_template": "$richTextLineElement",
+                                "_template": "@easyblocks/rich-text-line-element",
                                 "traceId": "$richTextLineElement-da84883c",
                                 "elements": [
                                   {
                                     "_id": "4e1426cf-84eb-4c17-bf20-40c960b74107",
-                                    "_template": "$richTextPart",
+                                    "_template": "@easyblocks/rich-text-part",
                                     "traceId": "$richTextPart-75264eb7",
                                     "value": "Lorem ipsum dolor sit amet",
                                     "font": {
@@ -481,7 +481,7 @@
                   "Items": [
                     {
                       "_id": "05397706-aa18-485d-aae1-1af684a4845b",
-                      "_template": "$richText",
+                      "_template": "@easyblocks/rich-text",
                       "traceId": "$richText-1c879b05",
                       "_itemProps": {
                         "$stack": {
@@ -499,18 +499,18 @@
                         "en-US": [
                           {
                             "_id": "a0d67d69-502a-431b-a46c-ccc5ad9b0d56",
-                            "_template": "$richTextBlockElement",
+                            "_template": "@easyblocks/rich-text-block-element",
                             "traceId": "$richTextBlockElement-a728a6a6",
                             "type": "paragraph",
                             "elements": [
                               {
                                 "_id": "c8486b99-21b9-4356-a240-5e401ffdfb69",
-                                "_template": "$richTextLineElement",
+                                "_template": "@easyblocks/rich-text-line-element",
                                 "traceId": "$richTextLineElement-8b544dbe",
                                 "elements": [
                                   {
                                     "_id": "a5c3c7a4-f880-4038-9a5f-316e56645ad0",
-                                    "_template": "$richTextPart",
+                                    "_template": "@easyblocks/rich-text-part",
                                     "traceId": "$richTextPart-a302c251",
                                     "value": "Lorem ipsum dolor sit amet",
                                     "font": {
@@ -841,7 +841,7 @@
       "Items": [
         {
           "_id": "baf126f5-c86f-469b-aa42-fb925cf34108",
-          "_template": "$richText",
+          "_template": "@easyblocks/rich-text",
           "traceId": "$richText-a29fe887",
           "_itemProps": {
             "$stack": {
@@ -859,18 +859,18 @@
             "en-US": [
               {
                 "_id": "cc4e1b2b-3c6e-42e9-8f58-6a60186b9995",
-                "_template": "$richTextBlockElement",
+                "_template": "@easyblocks/rich-text-block-element",
                 "traceId": "$richTextBlockElement-5d74a1c6",
                 "type": "paragraph",
                 "elements": [
                   {
                     "_id": "4a23f4e7-4ae4-4cbd-a634-5aad0c2a7581",
-                    "_template": "$richTextLineElement",
+                    "_template": "@easyblocks/rich-text-line-element",
                     "traceId": "$richTextLineElement-7750f38b",
                     "elements": [
                       {
                         "_id": "e1ff1a17-41e5-4077-9ca4-a98bd9818d36",
-                        "_template": "$richTextPart",
+                        "_template": "@easyblocks/rich-text-part",
                         "traceId": "$richTextPart-d6848926",
                         "value": "Heading goes here",
                         "font": {

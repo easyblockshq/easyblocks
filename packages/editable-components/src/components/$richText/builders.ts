@@ -37,7 +37,7 @@ function buildRichTextNoCodeEntry(options?: {
 
   return {
     _id: uniqueId(),
-    _template: "$richText",
+    _template: "@easyblocks/rich-text",
     accessibilityRole: accessibilityRole ?? "div",
     elements: {
       [locale ?? "en"]: [
@@ -76,7 +76,7 @@ function buildRichTextComponentConfig({
   }): RichTextComponentConfig {
   return {
     _id: uniqueId(),
-    _template: "$richText",
+    _template: "@easyblocks/rich-text",
     accessibilityRole: accessibilityRole ?? "div",
     elements: {
       [compilationContext.contextParams.locale]: elements,
@@ -92,7 +92,7 @@ function buildRichTextBlockElementComponentConfig(
   elements: RichTextBlockElementComponentConfig["elements"]
 ): RichTextBlockElementComponentConfig {
   return {
-    _template: "$richTextBlockElement",
+    _template: "@easyblocks/rich-text-block-element",
     elements,
     type,
     _id: uniqueId(),
@@ -106,7 +106,7 @@ function buildRichTextParagraphBlockElementComponentConfig({
   "elements"
 >): RichTextBlockElementComponentConfig {
   return {
-    _template: "$richTextBlockElement",
+    _template: "@easyblocks/rich-text-block-element",
     elements,
     type: "paragraph",
     _id: uniqueId(),
@@ -120,7 +120,7 @@ function buildRichTextBulletedListBlockElementComponentConfig({
   "elements"
 >): RichTextBlockElementComponentConfig {
   return {
-    _template: "$richTextBlockElement",
+    _template: "@easyblocks/rich-text-block-element",
     elements,
     type: "bulleted-list",
     _id: uniqueId(),
@@ -134,7 +134,7 @@ function buildRichTextLineElementComponentConfig({
   "elements"
 >): RichTextLineElementComponentConfig {
   return {
-    _template: "$richTextLineElement",
+    _template: "@easyblocks/rich-text-line-element",
     elements,
     _id: uniqueId(),
   };
@@ -156,7 +156,7 @@ function buildRichTextInlineWrapperElementComponentConfig({
   >): RichTextInlineWrapperElementEditableComponentConfig {
   return {
     _id: id ?? uniqueId(),
-    _template: "$richTextInlineWrapperElement",
+    _template: "@easyblocks/rich-text-inline-wrapper-element",
     elements,
     action: action ?? [],
     textModifier: textModifier ?? [],
@@ -173,7 +173,7 @@ function buildRichTextPartComponentConfig({
   Partial<Identity>): RichTextPartComponentConfig {
   return {
     _id: id ?? uniqueId(),
-    _template: "$richTextPart",
+    _template: "@easyblocks/rich-text-part",
     color,
     font,
     value,

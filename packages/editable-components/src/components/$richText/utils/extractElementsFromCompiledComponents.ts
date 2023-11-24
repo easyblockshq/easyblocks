@@ -19,9 +19,10 @@ function extractElementsFromCompiledComponents(
     compiledRichText,
     (compiledConfig) => {
       if (
-        compiledConfig._template === "$richTextBlockElement" ||
-        compiledConfig._template === "$richTextLineElement" ||
-        compiledConfig._template === "$richTextInlineWrapperElement"
+        compiledConfig._template === "@easyblocks/rich-text-block-element" ||
+        compiledConfig._template === "@easyblocks/rich-text-line-element" ||
+        compiledConfig._template ===
+          "@easyblocks/rich-text-inline-wrapper-element"
       ) {
         extractedCompiledElementComponents.push(
           compiledConfig as

@@ -344,7 +344,7 @@ function RichText(props: RichTextProps) {
     }
 
     const compiledStyles = (() => {
-      if (Element._template === "$richTextBlockElement") {
+      if (Element._template === "@easyblocks/rich-text-block-element") {
         if (Element.props.type === "bulleted-list") {
           return Element.styled.BulletedList;
         } else if (Element.props.type === "numbered-list") {
@@ -352,13 +352,15 @@ function RichText(props: RichTextProps) {
         } else if (Element.props.type === "paragraph") {
           return Element.styled.Paragraph;
         }
-      } else if (Element._template === "$richTextLineElement") {
+      } else if (Element._template === "@easyblocks/rich-text-line-element") {
         if (element.type === "text-line") {
           return Element.styled.TextLine;
         } else if (element.type === "list-item") {
           return Element.styled.ListItem;
         }
-      } else if (Element._template === "$richTextInlineWrapperElement") {
+      } else if (
+        Element._template === "@easyblocks/rich-text-inline-wrapper-element"
+      ) {
         return Element.styled.Link;
       }
     })();

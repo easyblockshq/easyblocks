@@ -144,7 +144,7 @@
               "Items": [
                 {
                   "_id": "b1605c04-4e7f-4940-b13c-18470b8ce0bc",
-                  "_template": "$richText",
+                  "_template": "@easyblocks/rich-text",
                   "traceId": "$richText-b213d4ff",
                   "_itemProps": {
                     "$stack": {
@@ -161,14 +161,14 @@
                   "elements": {
                     "en-US": [
                       {
-                        "_template": "$richTextBlockElement",
+                        "_template": "@easyblocks/rich-text-block-element",
                         "elements": [
                           {
-                            "_template": "$richTextLineElement",
+                            "_template": "@easyblocks/rich-text-line-element",
                             "elements": [
                               {
                                 "_id": "ac728b4c-49d1-4101-adfa-6849447fc000",
-                                "_template": "$richTextPart",
+                                "_template": "@easyblocks/rich-text-part",
                                 "color": {
                                   "$res": true,
                                   "xl": { "ref": "grey_01", "value": "#f9f8f3" }
@@ -228,7 +228,7 @@
                 },
                 {
                   "_id": "0c085c58-8179-4547-9b19-406db14710f5",
-                  "_template": "$richText",
+                  "_template": "@easyblocks/rich-text",
                   "traceId": "$richText-6402037e",
                   "_itemProps": {
                     "$stack": {
@@ -245,14 +245,14 @@
                   "elements": {
                     "en-US": [
                       {
-                        "_template": "$richTextBlockElement",
+                        "_template": "@easyblocks/rich-text-block-element",
                         "elements": [
                           {
-                            "_template": "$richTextLineElement",
+                            "_template": "@easyblocks/rich-text-line-element",
                             "elements": [
                               {
                                 "_id": "93d02dce-4e78-4d82-aba6-1e9987133455",
-                                "_template": "$richTextPart",
+                                "_template": "@easyblocks/rich-text-part",
                                 "color": {
                                   "ref": "grey_01",
                                   "value": "#f9f8f3"

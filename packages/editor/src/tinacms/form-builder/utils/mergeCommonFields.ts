@@ -43,7 +43,7 @@ function mergeCommonFields({
      */
     const uniqueDefinitionIds = getUniqueValues(fieldDefinitionIds);
 
-    // It's common when interacting with $richText to pass fields of parent or ancestor down to $richTextPart.
+    // It's common when interacting with $richText to pass fields of parent or ancestor down to @easyblocks/rich-text-part.
     // Verify if the all unique ids aren't fields of $richText components.
     if (
       uniqueDefinitionIds.length > 1 &&

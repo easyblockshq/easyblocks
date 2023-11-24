@@ -42,7 +42,7 @@ export default function RichTextBlockElement(props: RichTextBlockElementProps) {
   }
 
   if (process.env.NODE_ENV === "development") {
-    console.warn(`Unknown $richTextBlockElement type ${type}`);
+    console.warn(`Unknown @easyblocks/rich-text-block-element type "${type}"`);
   }
 
   return <div>{elements}</div>;

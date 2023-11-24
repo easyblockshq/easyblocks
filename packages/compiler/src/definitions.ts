@@ -1366,10 +1366,10 @@ export function normalizeComponent(
   }
 
   // RichText is a really specific component. It must have concrete shape to work properly.
-  // When using prop of type `component` with `accepts: ["$richText"]` it's going to be initialized with empty
+  // When using prop of type `component` with `accepts: ["@easyblocks/rich-text"]` it's going to be initialized with empty
   // `elements` property which in result will cause RichText to not work properly. To fix this, we're going
   // to initialize `elements` with default template - the same that's being added when user adds RichText to Stack manually.
-  if (ret._template === "$richText") {
+  if (ret._template === "@easyblocks/rich-text") {
     if (
       Object.keys(ret.elements).length === 0 ||
       ret.elements[compilationContext.contextParams.locale]?.length === 0

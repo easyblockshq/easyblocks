@@ -19,7 +19,17 @@ export default function MainPage() {
     if (!documentRaw) {
       setDocument(null);
     } else {
-      setDocument(JSON.parse(documentRaw));
+      // On this date we've introduced a change for names of text and rich text component.
+      // This change is not backwards compatible, so we need to reset the saved document.
+      const date = new Date("2023-11-24:00:00:00");
+      const parsedDocument = JSON.parse(documentRaw);
+
+      if (parsedDocument.updatedAt < date.getTime()) {
+        setDocument(null);
+        localStorage.removeItem(DOCUMENT_KEY);
+      } else {
+        setDocument(parsedDocument);
+      }
     }
 
     setOpen(true);

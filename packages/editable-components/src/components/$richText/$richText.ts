@@ -43,7 +43,7 @@ const editing: RichTextEditingFunction = ({
     richTextConfig,
     editorContext,
     (config): config is RichTextBlockElementComponentConfig => {
-      return config._template === "$richTextBlockElement";
+      return config._template === "@easyblocks/rich-text-block-element";
     }
   );
 
@@ -110,7 +110,7 @@ const editing: RichTextEditingFunction = ({
     richTextConfig,
     editorContext,
     (config): config is RichTextPartComponentConfig => {
-      return config._template === "$richTextPart";
+      return config._template === "@easyblocks/rich-text-part";
     }
   );
 
@@ -164,7 +164,7 @@ const editing: RichTextEditingFunction = ({
 };
 
 const richTextEditableComponent: NoCodeComponentDefinition = {
-  id: "$richText",
+  id: "@easyblocks/rich-text",
   label: "Text",
   // @ts-ignore
   thumbnail:

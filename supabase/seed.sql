@@ -203,24 +203,24 @@
 --                                     "Items": [
 --                                         {
 --                                             "_id": "1c11a2f0-f43a-484b-bd63-7e87ddce53b7",
---                                             "_template": "$richText",
+--                                             "_template": "@easyblocks/rich-text",
 --                                             "traceId": "$richText-cc11e866",
 --                                             "elements": {
 --                                                 "en": [
 --                                                     {
 --                                                         "_id": "ba770adb-6d14-441e-8897-988054d457f7",
---                                                         "_template": "$richTextBlockElement",
+--                                                         "_template": "@easyblocks/rich-text-block-element",
 --                                                         "traceId": "$richTextBlockElement-a6b9ed34",
 --                                                         "type": "paragraph",
 --                                                         "elements": [
 --                                                             {
 --                                                                 "_id": "b168614b-a349-4418-9931-f5687d5e518b",
---                                                                 "_template": "$richTextLineElement",
+--                                                                 "_template": "@easyblocks/rich-text-line-element",
 --                                                                 "traceId": "$richTextLineElement-e1394d92",
 --                                                                 "elements": [
 --                                                                     {
 --                                                                         "_id": "ec81b2f4-9866-4af3-8b77-f4ecae553706",
---                                                                         "_template": "$richTextPart",
+--                                                                         "_template": "@easyblocks/rich-text-part",
 --                                                                         "traceId": "$richTextPart-b2679512",
 --                                                                         "value": "Supabase",
 --                                                                         "font": {
@@ -441,24 +441,24 @@
 --                                     "Items": [
 --                                         {
 --                                             "_id": "31411030-b540-4bae-bae3-4e3a2cae1e69",
---                                             "_template": "$richText",
+--                                             "_template": "@easyblocks/rich-text",
 --                                             "traceId": "$richText-6790669b",
 --                                             "elements": {
 --                                                 "en": [
 --                                                     {
 --                                                         "_id": "b21ba32f-9c02-4c8b-a2ab-42d4a5dee3f7",
---                                                         "_template": "$richTextBlockElement",
+--                                                         "_template": "@easyblocks/rich-text-block-element",
 --                                                         "traceId": "$richTextBlockElement-6ad96624",
 --                                                         "type": "paragraph",
 --                                                         "elements": [
 --                                                             {
 --                                                                 "_id": "822ba151-99e0-4017-af80-481794a38a6b",
---                                                                 "_template": "$richTextLineElement",
+--                                                                 "_template": "@easyblocks/rich-text-line-element",
 --                                                                 "traceId": "$richTextLineElement-99d4c879",
 --                                                                 "elements": [
 --                                                                     {
 --                                                                         "_id": "fa3391de-03f5-4b6e-9c31-26f8ef2b404b",
---                                                                         "_template": "$richTextPart",
+--                                                                         "_template": "@easyblocks/rich-text-part",
 --                                                                         "traceId": "$richTextPart-fb1d9413",
 --                                                                         "value": "Lorem ipsum",
 --                                                                         "font": {
@@ -825,25 +825,25 @@
 --                 "Items": [
 --                     {
 --                     "_id": "6348c6d1-24c6-4e2b-a494-d347701f08e9",
---                     "_template": "$richText",
+--                     "_template": "@easyblocks/rich-text",
 --                     "traceId": "$richText-f2e233df",
 --                     "elements": {
 --                         "__localized": true,
 --                         "en": [
 --                         {
 --                             "_id": "c804e87a-9fbb-45f1-953b-80896e1effb0",
---                             "_template": "$richTextBlockElement",
+--                             "_template": "@easyblocks/rich-text-block-element",
 --                             "traceId": "$richTextBlockElement-c2200216",
 --                             "type": "paragraph",
 --                             "elements": [
 --                             {
 --                                 "_id": "b40d00c5-ad8b-477f-9333-b6d209985f6d",
---                                 "_template": "$richTextLineElement",
+--                                 "_template": "@easyblocks/rich-text-line-element",
 --                                 "traceId": "$richTextLineElement-24135ec4",
 --                                 "elements": [
 --                                 {
 --                                     "_id": "ccf7c9a9-861d-444d-b98c-794729b03bc8",
---                                     "_template": "$richTextPart",
+--                                     "_template": "@easyblocks/rich-text-part",
 --                                     "traceId": "$richTextPart-3c041046",
 --                                     "value": "English",
 --                                     "font": {
@@ -887,18 +887,18 @@
 --                         "pl": [
 --                         {
 --                             "_id": "c804e87a-9fbb-45f1-953b-80896e1effb0",
---                             "_template": "$richTextBlockElement",
+--                             "_template": "@easyblocks/rich-text-block-element",
 --                             "traceId": "$richTextBlockElement-9852d0b1",
 --                             "type": "paragraph",
 --                             "elements": [
 --                             {
 --                                 "_id": "b40d00c5-ad8b-477f-9333-b6d209985f6d",
---                                 "_template": "$richTextLineElement",
+--                                 "_template": "@easyblocks/rich-text-line-element",
 --                                 "traceId": "$richTextLineElement-1c64c154",
 --                                 "elements": [
 --                                 {
 --                                     "_id": "ccf7c9a9-861d-444d-b98c-794729b03bc8",
---                                     "_template": "$richTextPart",
+--                                     "_template": "@easyblocks/rich-text-part",
 --                                     "traceId": "$richTextPart-5c1f86e1",
 --                                     "value": "Polski",
 --                                     "font": {
@@ -1203,20 +1203,20 @@
 --                 "Items": [
 --                     {
 --                     "_id": "01bd3ce7-002d-4137-abd6-8635d6cd1035",
---                     "_template": "$richText",
+--                     "_template": "@easyblocks/rich-text",
 --                     "traceId": "$richText-38fea738",
 --                     "elements": {
 --                         "__localized": true,
 --                         "en": [
 --                         {
---                             "_template": "$richTextBlockElement",
+--                             "_template": "@easyblocks/rich-text-block-element",
 --                             "elements": [
 --                             {
---                                 "_template": "$richTextLineElement",
+--                                 "_template": "@easyblocks/rich-text-line-element",
 --                                 "elements": [
 --                                 {
 --                                     "_id": "3f65707a-9101-4309-9d78-010aa27e6281",
---                                     "_template": "$richTextPart",
+--                                     "_template": "@easyblocks/rich-text-part",
 --                                     "color": {
 --                                     "$res": true,
 --                                     "xl": {

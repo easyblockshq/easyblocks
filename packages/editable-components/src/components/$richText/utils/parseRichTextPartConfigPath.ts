@@ -10,7 +10,7 @@ function parseFocusedRichTextPartConfigPath(
     focusedRichTextPartConfigPath.match(/\d+(\.elements\.\d+){2,3}/);
 
   if (focusedRichTextPartConfigPathMatch === null) {
-    throw new Error("Invalid $richTextPart config path");
+    throw new Error("Invalid @easyblocks/rich-text-part config path");
   }
 
   const [richTextPartConfigPath] = focusedRichTextPartConfigPathMatch;

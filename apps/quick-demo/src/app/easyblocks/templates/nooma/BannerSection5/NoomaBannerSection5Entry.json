@@ -128,7 +128,7 @@
               "Items": [
                 {
                   "_id": "9bfdab95-c408-4166-ad78-2d259d713110",
-                  "_template": "$richText",
+                  "_template": "@easyblocks/rich-text",
                   "traceId": "$richText-1055c6fa",
                   "_itemProps": {
                     "$stack": {
@@ -145,14 +145,14 @@
                   "elements": {
                     "en-US": [
                       {
-                        "_template": "$richTextBlockElement",
+                        "_template": "@easyblocks/rich-text-block-element",
                         "elements": [
                           {
-                            "_template": "$richTextLineElement",
+                            "_template": "@easyblocks/rich-text-line-element",
                             "elements": [
                               {
                                 "_id": "81eedb0b-ef66-4670-97b6-75b765d7c5b5",
-                                "_template": "$richTextPart",
+                                "_template": "@easyblocks/rich-text-part",
                                 "color": {
                                   "$res": true,
                                   "xl": { "value": "#252525", "ref": "grey_05" }
@@ -205,7 +205,7 @@
                 },
                 {
                   "_id": "8498abaa-9fc0-40e7-8f6b-805bc3b39c9c",
-                  "_template": "$richText",
+                  "_template": "@easyblocks/rich-text",
                   "traceId": "$richText-1554f2b1",
                   "_itemProps": {
                     "$stack": {
@@ -222,14 +222,14 @@
                   "elements": {
                     "en-US": [
                       {
-                        "_template": "$richTextBlockElement",
+                        "_template": "@easyblocks/rich-text-block-element",
                         "elements": [
                           {
-                            "_template": "$richTextLineElement",
+                            "_template": "@easyblocks/rich-text-line-element",
                             "elements": [
                               {
                                 "_id": "0bdc14ab-5fe4-4633-814f-5c7109cf7ba8",
-                                "_template": "$richTextPart",
+                                "_template": "@easyblocks/rich-text-part",
                                 "color": {
                                   "$res": true,
                                   "xl": { "ref": "grey_05", "value": "#252525" }
@@ -318,7 +318,7 @@
                 },
                 {
                   "_id": "8498abaa-9fc0-40e7-8f6b-805bc3b39c9c",
-                  "_template": "$richText",
+                  "_template": "@easyblocks/rich-text",
                   "traceId": "$richText-1554f2b1",
                   "_itemProps": {
                     "$stack": {
@@ -335,14 +335,14 @@
                   "elements": {
                     "en-US": [
                       {
-                        "_template": "$richTextBlockElement",
+                        "_template": "@easyblocks/rich-text-block-element",
                         "elements": [
                           {
-                            "_template": "$richTextLineElement",
+                            "_template": "@easyblocks/rich-text-line-element",
                             "elements": [
                               {
                                 "_id": "7a8fc998-1d13-4fb4-8c14-3e012c1c3103",
-                                "_template": "$richTextPart",
+                                "_template": "@easyblocks/rich-text-part",
                                 "color": {
                                   "$res": true,
                                   "xl": { "ref": "grey_05", "value": "#252525" }
@@ -395,7 +395,7 @@
                 },
                 {
                   "_id": "8498abaa-9fc0-40e7-8f6b-805bc3b39c9c",
-                  "_template": "$richText",
+                  "_template": "@easyblocks/rich-text",
                   "traceId": "$richText-1554f2b1",
                   "_itemProps": {
                     "$stack": {
@@ -412,14 +412,14 @@
                   "elements": {
                     "en-US": [
                       {
-                        "_template": "$richTextBlockElement",
+                        "_template": "@easyblocks/rich-text-block-element",
                         "elements": [
                           {
-                            "_template": "$richTextLineElement",
+                            "_template": "@easyblocks/rich-text-line-element",
                             "elements": [
                               {
                                 "_id": "25729b9c-7318-4a69-9b8c-e5fe051618ca",
-                                "_template": "$richTextPart",
+                                "_template": "@easyblocks/rich-text-part",
                                 "color": {
                                   "$res": true,
                                   "xl": { "value": "#252525", "ref": "grey_05" }

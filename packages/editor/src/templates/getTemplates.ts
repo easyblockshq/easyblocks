@@ -23,7 +23,7 @@ function getDefaultTemplateForDefinition(
 ): InternalTemplate {
   // Text has different way of building a default config
   const config: ComponentConfig =
-    def.id === "$richText"
+    def.id === "@easyblocks/rich-text"
       ? buildRichTextNoCodeEntry()
       : {
           _template: def.id,

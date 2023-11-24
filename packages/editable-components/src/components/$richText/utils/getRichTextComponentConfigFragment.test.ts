@@ -83,25 +83,25 @@ test("returns whole component config when all text is selected", () => {
 
   const expectedRichTextComponentConfigFragment: RichTextComponentConfig = {
     _id: testEditorContext.form.values._id,
-    _template: "$richText",
+    _template: "@easyblocks/rich-text",
     accessibilityRole: "div",
     elements: {
       [testEditorContext.contextParams.locale]: [
         {
-          _template: "$richTextBlockElement",
+          _template: "@easyblocks/rich-text-block-element",
           _id: testEditorContext.form.values.elements[
             testEditorContext.contextParams.locale
           ][0]._id,
           elements: [
             {
-              _template: "$richTextLineElement",
+              _template: "@easyblocks/rich-text-line-element",
               _id: testEditorContext.form.values.elements[
                 testEditorContext.contextParams.locale
               ][0].elements[0]._id,
               elements: [
                 {
                   _id: expect.any(String),
-                  _template: "$richTextPart",
+                  _template: "@easyblocks/rich-text-part",
                   color: {
                     $res: true,
                     [testEditorContext.mainBreakpointIndex]: {
@@ -248,25 +248,25 @@ test("returns fragment of component config when is bulleted list and only last l
 
   const expectedRichTextComponentConfigFragment: RichTextComponentConfig = {
     _id: testEditorContext.form.values._id,
-    _template: "$richText",
+    _template: "@easyblocks/rich-text",
     accessibilityRole: "div",
     elements: {
       [testEditorContext.contextParams.locale]: [
         {
-          _template: "$richTextBlockElement",
+          _template: "@easyblocks/rich-text-block-element",
           _id: testEditorContext.form.values.elements[
             testEditorContext.contextParams.locale
           ][0]._id,
           elements: [
             {
-              _template: "$richTextLineElement",
+              _template: "@easyblocks/rich-text-line-element",
               _id: testEditorContext.form.values.elements[
                 testEditorContext.contextParams.locale
               ][0].elements[2]._id,
               elements: [
                 {
                   _id: expect.any(String),
-                  _template: "$richTextPart",
+                  _template: "@easyblocks/rich-text-part",
                   color: {
                     $res: true,
                     [testEditorContext.mainBreakpointIndex]: {

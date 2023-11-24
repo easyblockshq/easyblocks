@@ -283,7 +283,7 @@
       "Items": [
         {
           "_id": "55215394-f7fe-4f77-be48-3d52a5420bef",
-          "_template": "$richText",
+          "_template": "@easyblocks/rich-text",
           "traceId": "$richText-fb63fd15",
           "_itemProps": {
             "$stack": {
@@ -300,14 +300,14 @@
           "elements": {
             "en-US": [
               {
-                "_template": "$richTextBlockElement",
+                "_template": "@easyblocks/rich-text-block-element",
                 "elements": [
                   {
-                    "_template": "$richTextLineElement",
+                    "_template": "@easyblocks/rich-text-line-element",
                     "elements": [
                       {
                         "_id": "54400ec9-853c-411f-b1c3-a6016c4873da",
-                        "_template": "$richTextPart",
+                        "_template": "@easyblocks/rich-text-part",
                         "color": {
                           "$res": true,
                           "xl": { "ref": "grey_05", "value": "#252525" }

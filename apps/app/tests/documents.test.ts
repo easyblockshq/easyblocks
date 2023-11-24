@@ -306,7 +306,7 @@ test.describe.serial("documents", () => {
           data: {
             title: "DocumentA_1",
             config: {
-              _template: "$text",
+              _template: "@easyblocks/text",
               _id: "xxx",
               value: {
                 __localized: true,
@@ -340,7 +340,7 @@ test.describe.serial("documents", () => {
 
       expect(document.config.config).toEqual({
         _id: "xxx",
-        _template: "$text",
+        _template: "@easyblocks/text",
         value: { de: "Deutsch" },
       });
     } catch (error) {

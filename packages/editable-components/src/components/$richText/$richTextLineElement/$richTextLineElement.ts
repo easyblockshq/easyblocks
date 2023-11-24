@@ -18,7 +18,7 @@ import { EditableComponentToComponentConfig } from "../../../types";
 
 const richTextLineElementEditableComponent: NoCodeComponentDefinition<RichTextLineCompiledComponentValues> =
   {
-    id: "$richTextLineElement",
+    id: "@easyblocks/rich-text-line-element",
     schema: [
       {
         prop: "elements",

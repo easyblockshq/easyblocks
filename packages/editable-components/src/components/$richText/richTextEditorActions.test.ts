@@ -70,19 +70,19 @@ describe("updateSelection", () => {
     );
 
     expect(result?.elements).toEqual([
-      configContaining("$richTextBlockElement", {
+      configContaining("@easyblocks/rich-text-block-element", {
         type: "paragraph",
         elements: [
-          configContaining("$richTextLineElement", {
+          configContaining("@easyblocks/rich-text-line-element", {
             elements: [
-              configContaining("$richTextPart", {
+              configContaining("@easyblocks/rich-text-part", {
                 value: "Lorem",
                 color: {
                   $res: true,
                   xl: "red",
                 },
               }),
-              configContaining("$richTextPart", {
+              configContaining("@easyblocks/rich-text-part", {
                 value: " ipsum",
                 color: {
                   $res: true,
@@ -142,19 +142,19 @@ describe("updateSelection", () => {
     );
 
     expect(result?.elements).toEqual([
-      configContaining("$richTextBlockElement", {
+      configContaining("@easyblocks/rich-text-block-element", {
         type: "paragraph",
         elements: [
-          configContaining("$richTextLineElement", {
+          configContaining("@easyblocks/rich-text-line-element", {
             elements: [
-              configContaining("$richTextPart", {
+              configContaining("@easyblocks/rich-text-part", {
                 value: "Lorem",
                 font: {
                   $res: true,
                   xl: "Comic Sans",
                 },
               }),
-              configContaining("$richTextPart", {
+              configContaining("@easyblocks/rich-text-part", {
                 value: " ipsum",
                 font: {
                   $res: true,
@@ -213,27 +213,30 @@ describe("updateSelection", () => {
       );
 
       expect(result?.elements).toEqual([
-        configContaining("$richTextBlockElement", {
+        configContaining("@easyblocks/rich-text-block-element", {
           type: "paragraph",
           elements: [
-            configContaining("$richTextLineElement", {
+            configContaining("@easyblocks/rich-text-line-element", {
               elements: [
                 emptyTextPartConfig(),
-                configContaining("$richTextInlineWrapperElement", {
-                  elements: [
-                    configContaining("$richTextPart", {
-                      value: "Lorem",
-                    }),
-                  ],
-                  action: [
-                    {
-                      _template: "$SomeAction",
-                    },
-                  ],
-                  actionTextModifier: actionTextModifierConfig(),
-                  textModifier: [],
-                }),
-                configContaining("$richTextPart", {
+                configContaining(
+                  "@easyblocks/rich-text-inline-wrapper-element",
+                  {
+                    elements: [
+                      configContaining("@easyblocks/rich-text-part", {
+                        value: "Lorem",
+                      }),
+                    ],
+                    action: [
+                      {
+                        _template: "$SomeAction",
+                      },
+                    ],
+                    actionTextModifier: actionTextModifierConfig(),
+                    textModifier: [],
+                  }
+                ),
+                configContaining("@easyblocks/rich-text-part", {
                   value: " ipsum",
                 }),
               ],
@@ -321,41 +324,47 @@ describe("updateSelection", () => {
       );
 
       expect(result?.elements).toEqual([
-        configContaining("$richTextBlockElement", {
+        configContaining("@easyblocks/rich-text-block-element", {
           type: "paragraph",
           elements: [
-            configContaining("$richTextLineElement", {
+            configContaining("@easyblocks/rich-text-line-element", {
               elements: [
                 emptyTextPartConfig(),
-                configContaining("$richTextInlineWrapperElement", {
-                  elements: [
-                    configContaining("$richTextPart", {
-                      value: "Lorem",
-                    }),
-                  ],
-                  action: [
-                    expect.objectContaining({
-                      _template: "$SomeOtherAction",
-                    }),
-                  ],
-                  actionTextModifier: actionTextModifierConfig(),
-                  textModifier: [],
-                }),
+                configContaining(
+                  "@easyblocks/rich-text-inline-wrapper-element",
+                  {
+                    elements: [
+                      configContaining("@easyblocks/rich-text-part", {
+                        value: "Lorem",
+                      }),
+                    ],
+                    action: [
+                      expect.objectContaining({
+                        _template: "$SomeOtherAction",
+                      }),
+                    ],
+                    actionTextModifier: actionTextModifierConfig(),
+                    textModifier: [],
+                  }
+                ),
                 emptyTextPartConfig(),
-                configContaining("$richTextInlineWrapperElement", {
-                  elements: [
-                    configContaining("$richTextPart", {
-                      value: " ipsum",
-                    }),
-                  ],
-                  action: [
-                    expect.objectContaining({
-                      _template: "$SomeAction",
-                    }),
-                  ],
-                  actionTextModifier: actionTextModifierConfig(),
-                  textModifier: [],
-                }),
+                configContaining(
+                  "@easyblocks/rich-text-inline-wrapper-element",
+                  {
+                    elements: [
+                      configContaining("@easyblocks/rich-text-part", {
+                        value: " ipsum",
+                      }),
+                    ],
+                    action: [
+                      expect.objectContaining({
+                        _template: "$SomeAction",
+                      }),
+                    ],
+                    actionTextModifier: actionTextModifierConfig(),
+                    textModifier: [],
+                  }
+                ),
                 emptyTextPartConfig(),
               ],
             }),
@@ -424,26 +433,29 @@ describe("updateSelection", () => {
       );
 
       expect(result?.elements).toEqual([
-        configContaining("$richTextBlockElement", {
+        configContaining("@easyblocks/rich-text-block-element", {
           type: "paragraph",
           elements: [
-            configContaining("$richTextLineElement", {
+            configContaining("@easyblocks/rich-text-line-element", {
               elements: [
                 emptyTextPartConfig(),
-                configContaining("$richTextInlineWrapperElement", {
-                  elements: [
-                    configContaining("$richTextPart", {
-                      value: "Lorem ipsum",
-                    }),
-                  ],
-                  action: [
-                    expect.objectContaining({
-                      _template: "$SomeOtherAction",
-                    }),
-                  ],
-                  actionTextModifier: actionTextModifierConfig(),
-                  textModifier: [],
-                }),
+                configContaining(
+                  "@easyblocks/rich-text-inline-wrapper-element",
+                  {
+                    elements: [
+                      configContaining("@easyblocks/rich-text-part", {
+                        value: "Lorem ipsum",
+                      }),
+                    ],
+                    action: [
+                      expect.objectContaining({
+                        _template: "$SomeOtherAction",
+                      }),
+                    ],
+                    actionTextModifier: actionTextModifierConfig(),
+                    textModifier: [],
+                  }
+                ),
                 emptyTextPartConfig(),
               ],
             }),
@@ -554,45 +566,51 @@ describe("updateSelection", () => {
       );
 
       expect(result?.elements).toEqual([
-        configContaining("$richTextBlockElement", {
+        configContaining("@easyblocks/rich-text-block-element", {
           type: "paragraph",
           elements: [
-            configContaining("$richTextLineElement", {
+            configContaining("@easyblocks/rich-text-line-element", {
               elements: [
                 emptyTextPartConfig(),
-                configContaining("$richTextInlineWrapperElement", {
-                  elements: [
-                    configContaining("$richTextPart", {
-                      value: "Lor",
-                    }),
-                  ],
-                  action: [
-                    {
-                      _template: "$SomeAction",
-                      _id: "xxx",
-                    },
-                  ],
-                  actionTextModifier: actionTextModifierConfig(),
-                  textModifier: [],
-                }),
-                configContaining("$richTextPart", {
+                configContaining(
+                  "@easyblocks/rich-text-inline-wrapper-element",
+                  {
+                    elements: [
+                      configContaining("@easyblocks/rich-text-part", {
+                        value: "Lor",
+                      }),
+                    ],
+                    action: [
+                      {
+                        _template: "$SomeAction",
+                        _id: "xxx",
+                      },
+                    ],
+                    actionTextModifier: actionTextModifierConfig(),
+                    textModifier: [],
+                  }
+                ),
+                configContaining("@easyblocks/rich-text-part", {
                   value: "em ip",
                 }),
-                configContaining("$richTextInlineWrapperElement", {
-                  elements: [
-                    configContaining("$richTextPart", {
-                      value: "sum",
-                    }),
-                  ],
-                  action: [
-                    {
-                      _template: "$SomeAction",
-                      _id: "xxx",
-                    },
-                  ],
-                  actionTextModifier: actionTextModifierConfig(),
-                  textModifier: [],
-                }),
+                configContaining(
+                  "@easyblocks/rich-text-inline-wrapper-element",
+                  {
+                    elements: [
+                      configContaining("@easyblocks/rich-text-part", {
+                        value: "sum",
+                      }),
+                    ],
+                    action: [
+                      {
+                        _template: "$SomeAction",
+                        _id: "xxx",
+                      },
+                    ],
+                    actionTextModifier: actionTextModifierConfig(),
+                    textModifier: [],
+                  }
+                ),
                 emptyTextPartConfig(),
               ],
             }),
@@ -651,12 +669,12 @@ describe("updateSelection", () => {
       );
 
       expect(result?.elements).toEqual([
-        configContaining("$richTextBlockElement", {
+        configContaining("@easyblocks/rich-text-block-element", {
           type: "paragraph",
           elements: [
-            configContaining("$richTextLineElement", {
+            configContaining("@easyblocks/rich-text-line-element", {
               elements: [
-                configContaining("$richTextPart", {
+                configContaining("@easyblocks/rich-text-part", {
                   value: "Lorem ipsum",
                 }),
               ],
@@ -739,12 +757,12 @@ describe("updateSelection", () => {
       );
 
       expect(result?.elements).toEqual([
-        configContaining("$richTextBlockElement", {
+        configContaining("@easyblocks/rich-text-block-element", {
           type: "paragraph",
           elements: [
-            configContaining("$richTextLineElement", {
+            configContaining("@easyblocks/rich-text-line-element", {
               elements: [
-                configContaining("$richTextPart", {
+                configContaining("@easyblocks/rich-text-part", {
                   value: "Lorem ",
                   font: {
                     $res: true,
@@ -753,20 +771,23 @@ describe("updateSelection", () => {
                     },
                   },
                 }),
-                configContaining("$richTextInlineWrapperElement", {
-                  elements: [
-                    configContaining("$richTextPart", {
-                      value: "ipsum",
-                      font: {
-                        $res: true,
-                        xl: {
-                          fontFamily: "fontFamily3",
+                configContaining(
+                  "@easyblocks/rich-text-inline-wrapper-element",
+                  {
+                    elements: [
+                      configContaining("@easyblocks/rich-text-part", {
+                        value: "ipsum",
+                        font: {
+                          $res: true,
+                          xl: {
+                            fontFamily: "fontFamily3",
+                          },
                         },
-                      },
-                    }),
-                  ],
-                }),
-                configContaining("$richTextPart", {
+                      }),
+                    ],
+                  }
+                ),
+                configContaining("@easyblocks/rich-text-part", {
                   value: "",
                   font: {
                     $res: true,
@@ -825,29 +846,32 @@ describe("updateSelection", () => {
       );
 
       expect(result?.elements).toEqual([
-        configContaining("$richTextBlockElement", {
+        configContaining("@easyblocks/rich-text-block-element", {
           type: "paragraph",
           elements: [
-            configContaining("$richTextLineElement", {
+            configContaining("@easyblocks/rich-text-line-element", {
               elements: [
-                configContaining("$richTextPart", {
+                configContaining("@easyblocks/rich-text-part", {
                   value: "Lorem",
                 }),
-                configContaining("$richTextInlineWrapperElement", {
-                  elements: [
-                    configContaining("$richTextPart", {
-                      value: " ip",
-                    }),
-                  ],
-                  textModifier: [
-                    {
-                      _template: "$TestTextModifier",
-                    },
-                  ],
-                  action: [],
-                  actionTextModifier: [],
-                }),
-                configContaining("$richTextPart", {
+                configContaining(
+                  "@easyblocks/rich-text-inline-wrapper-element",
+                  {
+                    elements: [
+                      configContaining("@easyblocks/rich-text-part", {
+                        value: " ip",
+                      }),
+                    ],
+                    textModifier: [
+                      {
+                        _template: "$TestTextModifier",
+                      },
+                    ],
+                    action: [],
+                    actionTextModifier: [],
+                  }
+                ),
+                configContaining("@easyblocks/rich-text-part", {
                   value: "sum",
                 }),
               ],
@@ -916,41 +940,47 @@ describe("updateSelection", () => {
       );
 
       expect(result?.elements).toEqual([
-        configContaining("$richTextBlockElement", {
+        configContaining("@easyblocks/rich-text-block-element", {
           type: "paragraph",
           elements: [
-            configContaining("$richTextLineElement", {
+            configContaining("@easyblocks/rich-text-line-element", {
               elements: [
                 emptyTextPartConfig(),
-                configContaining("$richTextInlineWrapperElement", {
-                  elements: [
-                    configContaining("$richTextPart", {
-                      value: "Lorem",
-                    }),
-                  ],
-                  textModifier: [
-                    {
-                      _template: "$SomeOtherTextModifier",
-                    },
-                  ],
-                  action: [],
-                  actionTextModifier: [],
-                }),
+                configContaining(
+                  "@easyblocks/rich-text-inline-wrapper-element",
+                  {
+                    elements: [
+                      configContaining("@easyblocks/rich-text-part", {
+                        value: "Lorem",
+                      }),
+                    ],
+                    textModifier: [
+                      {
+                        _template: "$SomeOtherTextModifier",
+                      },
+                    ],
+                    action: [],
+                    actionTextModifier: [],
+                  }
+                ),
                 emptyTextPartConfig(),
-                configContaining("$richTextInlineWrapperElement", {
-                  elements: [
-                    configContaining("$richTextPart", {
-                      value: " ipsum",
-                    }),
-                  ],
-                  textModifier: [
-                    {
-                      _template: "$SomeTextModifier",
-                    },
-                  ],
-                  action: [],
-                  actionTextModifier: [],
-                }),
+                configContaining(
+                  "@easyblocks/rich-text-inline-wrapper-element",
+                  {
+                    elements: [
+                      configContaining("@easyblocks/rich-text-part", {
+                        value: " ipsum",
+                      }),
+                    ],
+                    textModifier: [
+                      {
+                        _template: "$SomeTextModifier",
+                      },
+                    ],
+                    action: [],
+                    actionTextModifier: [],
+                  }
+                ),
                 emptyTextPartConfig(),
               ],
             }),
@@ -1014,41 +1044,47 @@ describe("updateSelection", () => {
       );
 
       expect(result?.elements).toEqual([
-        configContaining("$richTextBlockElement", {
+        configContaining("@easyblocks/rich-text-block-element", {
           type: "paragraph",
           elements: [
-            configContaining("$richTextLineElement", {
+            configContaining("@easyblocks/rich-text-line-element", {
               elements: [
                 emptyTextPartConfig(),
-                configContaining("$richTextInlineWrapperElement", {
-                  elements: [
-                    configContaining("$richTextPart", {
-                      value: "Lorem",
-                    }),
-                  ],
-                  textModifier: [
-                    {
-                      _template: "$TestTextModifier",
-                      _id: expect.any(String),
-                    },
-                  ],
-                }),
-                configContaining("$richTextPart", {
+                configContaining(
+                  "@easyblocks/rich-text-inline-wrapper-element",
+                  {
+                    elements: [
+                      configContaining("@easyblocks/rich-text-part", {
+                        value: "Lorem",
+                      }),
+                    ],
+                    textModifier: [
+                      {
+                        _template: "$TestTextModifier",
+                        _id: expect.any(String),
+                      },
+                    ],
+                  }
+                ),
+                configContaining("@easyblocks/rich-text-part", {
                   value: " ip",
                 }),
-                configContaining("$richTextInlineWrapperElement", {
-                  elements: [
-                    configContaining("$richTextPart", {
-                      value: "sum",
-                    }),
-                  ],
-                  textModifier: [
-                    {
-                      _template: "$TestTextModifier",
-                      _id: expect.any(String),
-                    },
-                  ],
-                }),
+                configContaining(
+                  "@easyblocks/rich-text-inline-wrapper-element",
+                  {
+                    elements: [
+                      configContaining("@easyblocks/rich-text-part", {
+                        value: "sum",
+                      }),
+                    ],
+                    textModifier: [
+                      {
+                        _template: "$TestTextModifier",
+                        _id: expect.any(String),
+                      },
+                    ],
+                  }
+                ),
                 emptyTextPartConfig(),
               ],
             }),
@@ -1185,7 +1221,7 @@ function setup(
 }
 
 function emptyTextPartConfig() {
-  return configContaining("$richTextPart", {
+  return configContaining("@easyblocks/rich-text-part", {
     value: "",
   });
 }

@@ -310,7 +310,7 @@ describe("multiple fields", () => {
 });
 
 describe("rich text editor", () => {
-  test("updates when setting value for $richTextPart", () => {
+  test("updates when setting value for @easyblocks/rich-text-part", () => {
     const editorContext = createTestEditorContext();
 
     editorContext.focussedField.push(
@@ -344,7 +344,7 @@ describe("rich text editor", () => {
     );
   });
 
-  test("updates when setting value for $richTextPart using event", () => {
+  test("updates when setting value for @easyblocks/rich-text-part using event", () => {
     const editorContext = createTestEditorContext();
 
     editorContext.focussedField.push(
@@ -378,7 +378,7 @@ describe("rich text editor", () => {
     );
   });
 
-  test("updates when setting value for $richTextBlockElement", () => {
+  test("updates when setting value for @easyblocks/rich-text-block-element", () => {
     const editorContext = createTestEditorContext();
 
     editorContext.focussedField.push("richText");
@@ -403,7 +403,7 @@ describe("rich text editor", () => {
     expect(getValue()).toBe("bulleted-list");
   });
 
-  test("updates when setting multiple values for different $richTextPart", () => {
+  test("updates when setting multiple values for different @easyblocks/rich-text-part", () => {
     const editorContext = createTestEditorContext();
 
     editorContext.focussedField.push(

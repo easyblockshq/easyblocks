@@ -15,14 +15,14 @@ const testCases: Array<[string, ParseRichTextPartConfigPathResult]> = [
 ];
 
 test.each(testCases)(
-  "parses $richTextPart config path %s",
+  "parses @easyblocks/rich-text-part config path %s",
   (path, expectedResult) => {
     expect(parseFocusedRichTextPartConfigPath(path)).toEqual(expectedResult);
   }
 );
 
-test("throws error on invalid $richTextPart config path", () => {
+test("throws error on invalid @easyblocks/rich-text-part config path", () => {
   expect(() => parseFocusedRichTextPartConfigPath("invalid path")).toThrowError(
-    "Invalid $richTextPart config path"
+    "Invalid @easyblocks/rich-text-part config path"
   );
 });
