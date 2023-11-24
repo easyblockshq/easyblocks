@@ -1,8 +1,7 @@
 import { isResolvedCompoundExternalDataValue } from "@easyblocks/app-utils";
 import {
-  ExternalDataCompoundResourceResolvedResult,
   getExternalReferenceLocationKey,
-  Widget,
+  type ExternalDataCompoundResourceResolvedResult,
 } from "@easyblocks/core";
 import { Typography } from "@easyblocks/design-system";
 import { assertDefined } from "@easyblocks/utils";
@@ -11,14 +10,15 @@ import {
   CompoundResourceValueSelect,
   getBasicResourcesOfType,
 } from "../tinacms/fields/plugins/ExternalField/ExternalField";
-import { InternalWidgetComponentProps } from "../types";
+import type { InternalWidgetComponentProps } from "../types";
+import type { EditorWidget } from "./types";
 
-function documentDataWidgetFactory(options: { type: string }): Widget {
+function documentDataWidgetFactory(options: { type: string }): EditorWidget {
   const DocumentDataWidgetComponent = createDocumentDataWidgetComponent(
     options.type
   );
 
-  const documentDataWidget: Widget = {
+  const documentDataWidget: EditorWidget = {
     id: "@easyblocks/document-data",
     label: "Document data",
     component: DocumentDataWidgetComponent,

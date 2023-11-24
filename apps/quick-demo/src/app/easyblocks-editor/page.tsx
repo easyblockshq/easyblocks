@@ -5,7 +5,27 @@ import { easyblocksConfig } from "@/app/easyblocks/easyblocks.config";
 import { ExternalData } from "@easyblocks/core";
 import { EasyblocksEditor } from "@easyblocks/react";
 import { useState } from "react";
+import {
+  MockImagePicker,
+  mockImageWidget,
+} from "../easyblocks/externalData/mockMedia/mockImageWidget";
+import {
+  MockVideoPicker,
+  mockVideoWidget,
+} from "../easyblocks/externalData/mockMedia/mockVideoWidget";
 import { createMyCustomFetch } from "../easyblocks/myCustomFetch";
+import {
+  PexelsImagePicker,
+  pexelsImageWidget,
+} from "../easyblocks/resources/pexels/pexelsImageWidget";
+import {
+  PexelsVideoPicker,
+  pexelsVideoWidget,
+} from "../easyblocks/resources/pexels/pexelsVideoWidget";
+import {
+  ProductPicker,
+  productWidget,
+} from "../easyblocks/resources/product/productWidget";
 
 const myCustomFetch = createMyCustomFetch(easyblocksConfig.accessToken);
 
@@ -37,6 +57,13 @@ export default function EeasyblocksEditorPage() {
         setExternalData(newExternalData);
       }}
       components={components}
+      widgets={{
+        [mockImageWidget.id]: MockImagePicker,
+        [mockVideoWidget.id]: MockVideoPicker,
+        [productWidget.id]: ProductPicker,
+        [pexelsImageWidget.id]: PexelsImagePicker,
+        [pexelsVideoWidget.id]: PexelsVideoPicker,
+      }}
     />
   );
 }

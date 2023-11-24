@@ -11,9 +11,10 @@ import {
   Template,
 } from "@easyblocks/core";
 import React, { useContext } from "react";
+import { EditorWidget } from "./sidebar/types";
 import { ActionsType, TextSyncers } from "./types";
 
-export type EditorContextType = BaseEditorContextType & {
+export type EditorContextType = Omit<BaseEditorContextType, "types"> & {
   templates?: Template[];
   syncTemplates: () => void;
   focussedField: Array<string>;
@@ -42,6 +43,7 @@ export type EditorContextType = BaseEditorContextType & {
   isPlayground: boolean;
   disableCustomTemplates: boolean;
   isFullScreen: boolean;
+  types: Record<string, { widgets: Array<EditorWidget> }>;
 };
 
 export const EditorContext = React.createContext<EditorContextType | null>(

@@ -12,12 +12,15 @@ import {
 } from "@easyblocks/build-tools";
 import visualizer from "rollup-plugin-visualizer";
 import packageJson from "./package.json";
+import preserveDirectives from "rollup-plugin-preserve-directives";
 
 const extensions = [".js", ".jsx", ".ts", ".tsx"];
 
 internalDependenciesValidator();
 
 function getPlugins(format) {
+  const preserveDirectivesPlugin = preserveDirectives();
+
   /**
    * @type import('rollup').RollupOptions['plugins']
    */
@@ -42,6 +45,12 @@ function getPlugins(format) {
 
     commonjs(),
     json(),
+
+    {
+      ...preserveDirectivesPlugin,
+      // @ts-expect-error preserveDirectivesPlugin is incompatible by default with our version or rollup
+      renderChunk: preserveDirectivesPlugin.renderChunk.handler,
+    },
   ];
 
   if (isProduction) {
