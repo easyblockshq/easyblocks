@@ -386,18 +386,9 @@ export const heroBannerWithCoverDefinition: NoCodeComponentDefinition = {
       stackGridCol = "2 / span 1";
       stackGridRow = "1";
       coverGridRow = "1";
-
-      if (snapCoverToLeft && snapCoverToRight) {
-        coverGridCol = "1 / span 3";
-      } else if (snapCoverToLeft) {
-        coverGridCol = "1 / span 2";
-      } else if (snapCoverToRight) {
-        coverGridCol = "2 / span 2";
-      } else {
-        coverGridCol = "2 / span 1";
-      }
+      coverGridCol = "1 / span 3";
     } else {
-      throw "dupa";
+      throw "wrong cover position";
     }
 
     return {
