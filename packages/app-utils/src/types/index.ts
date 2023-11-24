@@ -1,4 +1,4 @@
-import {
+import type {
   CompilationMetadata,
   CompiledComponentConfig,
   CompiledShopstoryComponentConfig,
@@ -22,10 +22,13 @@ import {
   Template,
   Theme,
   TrulyResponsiveValue,
+  Widget,
+  WidgetComponentProps,
 } from "@easyblocks/core";
 import type { PartialDeep } from "type-fest";
-import { InternalAnyTinaField } from "../schema";
-import { Form } from "../tinacms";
+import type { InternalAnyTinaField } from "../schema";
+import type { Form } from "../tinacms";
+import type { ComponentType } from "react";
 
 export * from "./ConfigComponentIdentifier";
 export * from "./ConfigModel";
@@ -173,7 +176,7 @@ type EditorActions = {
   logSelectedItems: () => void;
 };
 
-export type EditorContextType = CompilationContextType & {
+export type EditorContextType = Omit<CompilationContextType, "types"> & {
   breakpointIndex: string;
   locales: Locale[];
   setBreakpointIndex: (breakpoint: string) => void;
@@ -184,6 +187,16 @@ export type EditorContextType = CompilationContextType & {
   actions: EditorActions;
   activeRootContainer: CompilationRootContainer;
   templates?: Template[];
+  types: Record<
+    string,
+    {
+      widgets: Array<
+        Widget & {
+          component: ComponentType<WidgetComponentProps>;
+        }
+      >;
+    }
+  >;
 };
 
 export type InternalCompilationOutput = {

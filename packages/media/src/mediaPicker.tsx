@@ -1,5 +1,5 @@
 "use client";
-import { Widget, WidgetComponentProps } from "@easyblocks/core";
+import { WidgetComponentProps } from "@easyblocks/core";
 import {
   IconButtonPrimary,
   Menu,
@@ -21,7 +21,7 @@ import {
   useToaster,
 } from "@easyblocks/design-system";
 import { useApiClient, useEditorContext } from "@easyblocks/editor";
-import React, { useEffect, useRef, useState } from "react";
+import React, { ComponentType, useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import { mediaAdapter } from "./mediaAdapter";
 
@@ -544,7 +544,9 @@ const Component = (
   );
 };
 
-export function mockMediaPicker(key: "image" | "video"): Widget["component"] {
+export function mockMediaPicker(
+  key: "image" | "video"
+): ComponentType<WidgetComponentProps> {
   return ({ onChange, id }) => {
     return <Component id={id} onChange={onChange} mediaType={key} key={key} />;
   };

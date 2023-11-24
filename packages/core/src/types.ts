@@ -459,6 +459,7 @@ export type PickerItem = {
   title: string;
   thumbnail?: string;
 };
+
 export type WidgetComponentProps = {
   id: string | null;
   onChange: (newId: string | null) => void;
@@ -467,7 +468,6 @@ export type WidgetComponentProps = {
 export type Widget = {
   id: string;
   label: string;
-  component: ComponentType<WidgetComponentProps>;
 };
 
 export type ExternalDefinition = {

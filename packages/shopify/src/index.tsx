@@ -1,4 +1,4 @@
-import { Widget } from "@easyblocks/core";
+import type { Widget, WidgetComponentProps } from "@easyblocks/core";
 import { SimplePicker } from "@easyblocks/design-system";
 import { gql, GraphQLClient } from "graphql-request";
 import React from "react";
@@ -68,7 +68,15 @@ export type ShopifyAPISettings = {
 /**
  * @public
  */
-export const shopifyProductWidget = (options: ShopifyAPISettings): Widget => {
+export const shopifyProductWidget: Widget = {
+  id: "@easyblocks/shopify",
+  label: "Shopify",
+};
+
+/**
+ * @public
+ */
+export function createShopifyProductPicker(options: ShopifyAPISettings) {
   const storeName: string = options.store;
   const storefrontAccessToken: string = options.storefrontAccessToken;
 
@@ -78,66 +86,62 @@ export const shopifyProductWidget = (options: ShopifyAPISettings): Widget => {
 
   const useHandleAsId = !!options.useHandleAsId;
 
-  return {
-    id: "@easyblocks/shopify",
-    label: "Shopify",
-    component: (props) => {
-      return (
-        <SimplePicker
-          getItemById={(id) => {
-            return new Promise((resolve, reject) => {
-              client
-                .request(
-                  useHandleAsId ? productByHandleQuery : productByIdQuery,
-                  { id },
-                  { "X-Shopify-Storefront-Access-Token": storefrontAccessToken }
-                )
-                .then((data) => {
-                  const product = useHandleAsId
-                    ? data.productByHandle
-                    : data.node;
+  return function ShopifyProductPicker(props: WidgetComponentProps) {
+    return (
+      <SimplePicker
+        getItemById={(id) => {
+          return new Promise((resolve, reject) => {
+            client
+              .request(
+                useHandleAsId ? productByHandleQuery : productByIdQuery,
+                { id },
+                { "X-Shopify-Storefront-Access-Token": storefrontAccessToken }
+              )
+              .then((data) => {
+                const product = useHandleAsId
+                  ? data.productByHandle
+                  : data.node;
 
-                  resolve({
-                    id: useHandleAsId ? product.handle : product.id,
-                    title: product.title,
-                    thumbnail: product.images.edges[0].node.transformedSrc,
-                  });
-                })
-                .catch((error) => {
-                  console.error("graphql error!!!", error);
-                  reject(error);
+                resolve({
+                  id: useHandleAsId ? product.handle : product.id,
+                  title: product.title,
+                  thumbnail: product.images.edges[0].node.transformedSrc,
                 });
-            });
-          }}
-          getItems={(query) => {
-            return new Promise((resolve, reject) => {
-              client
-                .request(
-                  productsQuery,
-                  { query },
-                  { "X-Shopify-Storefront-Access-Token": storefrontAccessToken }
-                )
-                .then((data) => {
-                  const products = data.products.edges.map((x: any) => ({
-                    id: useHandleAsId ? x.node.handle : x.node.id,
-                    title: x.node.title,
-                    thumbnail: x.node.images.edges[0]?.node.transformedSrc,
-                  }));
+              })
+              .catch((error) => {
+                console.error("graphql error!!!", error);
+                reject(error);
+              });
+          });
+        }}
+        getItems={(query) => {
+          return new Promise((resolve, reject) => {
+            client
+              .request(
+                productsQuery,
+                { query },
+                { "X-Shopify-Storefront-Access-Token": storefrontAccessToken }
+              )
+              .then((data) => {
+                const products = data.products.edges.map((x: any) => ({
+                  id: useHandleAsId ? x.node.handle : x.node.id,
+                  title: x.node.title,
+                  thumbnail: x.node.images.edges[0]?.node.transformedSrc,
+                }));
 
-                  resolve(products);
-                })
-                .catch((error) => {
-                  console.error("graphql error!!!", error);
-                  reject(error);
-                });
-            });
-          }}
-          onChange={(id) => {
-            props.onChange(id);
-          }}
-          value={props.id}
-        />
-      );
-    },
+                resolve(products);
+              })
+              .catch((error) => {
+                console.error("graphql error!!!", error);
+                reject(error);
+              });
+          });
+        }}
+        onChange={(id) => {
+          props.onChange(id);
+        }}
+        value={props.id}
+      />
+    );
   };
-};
+}

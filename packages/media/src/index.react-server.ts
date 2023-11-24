@@ -15,17 +15,19 @@ import {
 export const easyblocksImageWidget: Widget = {
   id: "@easyblocks/image",
   label: "No CMS",
-  component: () => {
-    throw new Error("This method is not available in Server Components");
-  },
+};
+
+export const easyblocksImageWidgetComponent = () => {
+  throw new Error("This method is not available in Server Components");
 };
 
 export const easyblocksVideoWidget: Widget = {
   id: "@easyblocks/video",
   label: "No CMS",
-  component: () => {
-    throw new Error("This method is not available in Server Components");
-  },
+};
+
+export const easyblocksVideoWidgetComponent = () => {
+  throw new Error("This method is not available in Server Components");
 };
 
 export async function fetchEasyblocksMediaResources(

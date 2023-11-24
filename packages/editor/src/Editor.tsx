@@ -40,10 +40,18 @@ import {
   LocalisedDocument,
   NonEmptyRenderableContent,
   Template,
+  WidgetComponentProps,
 } from "@easyblocks/core";
 import { SSColors, SSFonts, useToaster } from "@easyblocks/design-system";
-import { assertDefined, dotNotationGet } from "@easyblocks/utils";
-import React, { memo, useCallback, useEffect, useRef, useState } from "react";
+import { assertDefined, dotNotationGet, raiseError } from "@easyblocks/utils";
+import React, {
+  ComponentType,
+  memo,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Modal from "react-modal";
 import styled from "styled-components";
 import { ConfigAfterAutoContext } from "./ConfigAfterAutoContext";
@@ -176,6 +184,7 @@ type EditorContainerProps = {
   canvasUrl?: string;
   externalData: FetchOutputResources;
   onExternalDataChange: ExternalDataChangeHandler;
+  widgets?: Record<string, ComponentType<WidgetComponentProps>>;
 };
 
 function EditorContainer(props: EditorContainerProps) {
@@ -270,6 +279,7 @@ export type EditorProps = {
   documentId: string | null;
   externalData: ExternalData;
   onExternalDataChange: ExternalDataChangeHandler;
+  widgets?: Record<string, ComponentType<WidgetComponentProps>>;
 };
 
 const Editor = memo((props: EditorProps) => {
@@ -711,8 +721,29 @@ const EditorContent = ({
     syncTemplates();
   }, []);
 
+  const editorTypes: EditorContextType["types"] = Object.fromEntries(
+    Object.entries(compilationContext.types).map(
+      ([typeName, typeDefinition]) => {
+        return [
+          typeName,
+          {
+            widgets: typeDefinition.widgets.map((w) => {
+              return {
+                ...w,
+                component:
+                  props.widgets?.[w.id] ??
+                  raiseError(`Missing widget component for widget "${w.id}"`),
+              };
+            }),
+          },
+        ];
+      }
+    )
+  );
+
   const editorContext: EditorContextType = {
     ...compilationContext,
+    types: editorTypes,
     isAdminMode,
     templates,
     syncTemplates,
@@ -742,7 +773,6 @@ const EditorContent = ({
       compilationContext.rootContainers.find((r) => r.id === rootContainer)
     ),
     disableCustomTemplates: props.config.disableCustomTemplates ?? false,
-
     isFullScreen,
   };
 

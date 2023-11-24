@@ -1,9 +1,14 @@
 "use client";
-import type { Config, ExternalData } from "@easyblocks/core";
-import React, { useEffect, useState } from "react";
+import type {
+  Config,
+  ExternalData,
+  WidgetComponentProps,
+} from "@easyblocks/core";
+import type { LaunchEditorProps } from "@easyblocks/editor";
+import React, { ComponentType, useEffect, useState } from "react";
 import { EasyblocksCanvas } from "./EditorChildWindow";
-import { parseQueryParams } from "./parseQueryParams";
 import { PreviewRenderer } from "./PreviewRenderer";
+import { parseQueryParams } from "./parseQueryParams";
 import type { ExternalDataChangeHandler } from "./types";
 
 export type EasyblocksEditorProps = {
@@ -11,13 +16,13 @@ export type EasyblocksEditorProps = {
   externalData: ExternalData;
   onExternalDataChange: ExternalDataChangeHandler;
   components?: Record<string, React.ComponentType<any>>;
+  widgets?: Record<string, ComponentType<WidgetComponentProps>>;
 };
 
 export function EasyblocksEditor(props: EasyblocksEditorProps) {
   const [selectedWindow, setSelectedWindow] = useState<
     "parent" | "child" | "preview" | null
   >(null);
-  const [editorModule, setEditorModule] = useState<any>();
 
   const setSelectedWindowToParent = () => {
     window.isShopstoryEditor = true;
@@ -55,23 +60,15 @@ export function EasyblocksEditor(props: EasyblocksEditorProps) {
 
   useEffect(() => {
     if (selectedWindow === "parent") {
-      if (editorModule) {
-        editorModule.launchEditor({
-          config: props.config,
-          externalData: props.externalData,
-          onExternalDataChange: props.onExternalDataChange,
-        });
-        return;
-      }
-
       loadEditorModule().then((editorModule) => {
-        setEditorModule(setEditorModule);
-
-        editorModule.launchEditor({
+        const editorParams: LaunchEditorProps = {
           config: props.config,
           externalData: props.externalData,
           onExternalDataChange: props.onExternalDataChange,
-        });
+          widgets: props.widgets,
+        };
+
+        editorModule.launchEditor(editorParams);
       });
     }
   }, [
@@ -79,6 +76,7 @@ export function EasyblocksEditor(props: EasyblocksEditorProps) {
     props.externalData,
     props.onExternalDataChange,
     props.config,
+    props.widgets,
   ]);
 
   return (

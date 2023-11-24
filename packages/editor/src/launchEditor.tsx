@@ -3,6 +3,7 @@ import {
   ContextParams,
   ExternalDataChangeHandler,
   FetchOutputResources,
+  WidgetComponentProps,
   getDefaultLocale,
 } from "@easyblocks/core";
 import {
@@ -13,16 +14,17 @@ import {
 } from "@easyblocks/design-system";
 import { raiseError } from "@easyblocks/utils";
 import isPropValid from "@emotion/is-prop-valid";
-import React from "react";
+import React, { ComponentType } from "react";
 import { createRoot, Root } from "react-dom/client";
 import { ShouldForwardProp, StyleSheetManager } from "styled-components";
 import { Editor } from "./Editor";
 import { GlobalStyles } from "./tinacms/styles";
 
-type LaunchEditorProps = {
+export type LaunchEditorProps = {
   config: Config;
   externalData: FetchOutputResources;
   onExternalDataChange: ExternalDataChangeHandler;
+  widgets?: Record<string, ComponentType<WidgetComponentProps>>;
 };
 
 const shouldForwardProp: ShouldForwardProp<"web"> = (propName, target) => {
@@ -82,6 +84,7 @@ export function launchEditor(props: LaunchEditorProps) {
             rootContainer={rootContainer}
             externalData={props.externalData}
             onExternalDataChange={props.onExternalDataChange}
+            widgets={props.widgets}
           />
         </TooltipProvider>
         <Toaster containerStyle={{ zIndex: 100100 }} />
