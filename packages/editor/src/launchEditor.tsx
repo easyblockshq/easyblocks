@@ -15,7 +15,6 @@ import {
 import { raiseError } from "@easyblocks/utils";
 import isPropValid from "@emotion/is-prop-valid";
 import React, { ComponentType } from "react";
-import { createRoot, Root } from "react-dom/client";
 import { ShouldForwardProp, StyleSheetManager } from "styled-components";
 import { Editor } from "./Editor";
 import { GlobalStyles } from "./tinacms/styles";
@@ -36,15 +35,7 @@ const shouldForwardProp: ShouldForwardProp<"web"> = (propName, target) => {
   return true;
 };
 
-let reactRoot: Root | null = null;
-
-export function launchEditor(props: LaunchEditorProps) {
-  const rootNode = document.getElementById("shopstory-main-window");
-
-  if (!rootNode) {
-    throw new Error("Can't find #shopstory-main-window element");
-  }
-
+export function EasyblocksParent(props: LaunchEditorProps) {
   const locales = props.config.locales ?? raiseError("Missing locales");
   const editorSearchParams = parseEditorSearchParams();
   const contextParams = editorSearchParams.contextParams ?? {
@@ -54,11 +45,7 @@ export function launchEditor(props: LaunchEditorProps) {
     editorSearchParams.rootContainer ?? raiseError("Missing rootContainer");
   const mode = editorSearchParams.mode ?? "playground";
 
-  if (!reactRoot) {
-    reactRoot = createRoot(rootNode);
-  }
-
-  reactRoot.render(
+  return (
     <StyleSheetManager
       shouldForwardProp={shouldForwardProp}
       enableVendorPrefixes
