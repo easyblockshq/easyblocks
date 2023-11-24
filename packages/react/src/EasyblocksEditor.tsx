@@ -4,7 +4,6 @@ import type {
   ExternalData,
   WidgetComponentProps,
 } from "@easyblocks/core";
-import type { LaunchEditorProps } from "@easyblocks/editor";
 import React, { ComponentType, useEffect, useState } from "react";
 import { EasyblocksCanvas } from "./EditorChildWindow";
 import { PreviewRenderer } from "./PreviewRenderer";
@@ -22,6 +21,10 @@ export type EasyblocksEditorProps = {
 export function EasyblocksEditor(props: EasyblocksEditorProps) {
   const [selectedWindow, setSelectedWindow] = useState<
     "parent" | "child" | "preview" | null
+  >(null);
+
+  const [editorModule, setEditorModule] = useState<
+    typeof import("@easyblocks/editor") | null
   >(null);
 
   const setSelectedWindowToParent = () => {
@@ -61,30 +64,26 @@ export function EasyblocksEditor(props: EasyblocksEditorProps) {
   useEffect(() => {
     if (selectedWindow === "parent") {
       loadEditorModule().then((editorModule) => {
-        const editorParams: LaunchEditorProps = {
-          config: props.config,
-          externalData: props.externalData,
-          onExternalDataChange: props.onExternalDataChange,
-          widgets: props.widgets,
-        };
-
-        editorModule.launchEditor(editorParams);
+        setEditorModule(editorModule);
       });
     }
-  }, [
-    selectedWindow,
-    props.externalData,
-    props.onExternalDataChange,
-    props.config,
-    props.widgets,
-  ]);
+  }, [selectedWindow]);
 
   return (
     <>
-      {selectedWindow === "parent" && <div id="shopstory-main-window" />}
+      {selectedWindow === "parent" && editorModule !== null && (
+        <editorModule.EasyblocksParent
+          config={props.config}
+          externalData={props.externalData}
+          onExternalDataChange={props.onExternalDataChange}
+          widgets={props.widgets}
+        />
+      )}
+
       {selectedWindow === "child" && (
         <EasyblocksCanvas components={props.components} />
       )}
+
       {selectedWindow === "preview" && (
         <PreviewRenderer config={props.config} />
       )}
