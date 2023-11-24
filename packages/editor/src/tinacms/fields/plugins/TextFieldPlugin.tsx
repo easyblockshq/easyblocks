@@ -5,7 +5,7 @@ import React from "react";
 import { FieldRenderProps } from "react-final-form";
 import { useEditorContext } from "../../../EditorContext";
 import { parse } from "./textFormat";
-import { wrapFieldsWithMeta } from "./wrapFieldWithMeta";
+import { FieldMetaWrapper } from "./wrapFieldWithMeta";
 
 type TextFieldProps = FieldRenderProps<
   ResponsiveValue<string> | LocalTextReference
@@ -29,19 +29,28 @@ export function TextField({ input, field, noWrap }: TextFieldProps) {
     field.normalize
   );
 
+  const isTextSchemaProp = field.schemaProp.type === "text";
+
   return (
-    <SSInput
-      {...restInputProperties}
-      {...inputProps}
-      controlSize="full-width"
-      align={noWrap ? "right" : "left"}
-      withBorder={!noWrap}
-    />
+    <FieldMetaWrapper
+      input={input}
+      field={field}
+      layout={isTextSchemaProp ? "column" : "row"}
+      noWrap={noWrap}
+    >
+      <SSInput
+        {...restInputProperties}
+        {...inputProps}
+        controlSize="full-width"
+        align={!isTextSchemaProp ? "right" : "left"}
+        withBorder={isTextSchemaProp}
+      />
+    </FieldMetaWrapper>
   );
 }
 
 export const TextFieldPlugin = {
   name: "text",
-  Component: wrapFieldsWithMeta(TextField, { layout: "column" }),
+  Component: TextField,
   parse,
 };
