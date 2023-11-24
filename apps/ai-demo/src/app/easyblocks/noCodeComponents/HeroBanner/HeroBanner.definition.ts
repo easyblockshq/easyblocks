@@ -1,5 +1,20 @@
 import { NoCodeComponentDefinition, box, SchemaProp } from "@easyblocks/core";
 
+function normalizePxValue(min: number, max: number) {
+  return (val: string) => {
+    const num = parseInt(val);
+    if (isNaN(num)) {
+      return "0";
+    } else if (num < min) {
+      return min.toString();
+    } else if (num > max) {
+      return max.toString();
+    } else {
+      return num.toString();
+    }
+  };
+}
+
 function paddingSchemaProp(fieldName: string): SchemaProp {
   return {
     prop: fieldName,
@@ -19,6 +34,17 @@ function noFillPaddingSchemaProp(fieldName: string): SchemaProp {
       ref: "0",
       value: "0px",
     },
+  };
+}
+
+function borderSchemaProp(fieldName: string): SchemaProp {
+  return {
+    prop: fieldName,
+    type: "string",
+    params: {
+      normalize: normalizePxValue(0, 32),
+    },
+    defaultValue: "1",
   };
 }
 
@@ -130,6 +156,29 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
       type: "color",
     },
     {
+      prop: "enableBorder",
+      type: "boolean",
+      responsive: true,
+    },
+    {
+      prop: "borderColor",
+      type: "color",
+      responsive: true,
+    },
+    borderSchemaProp("borderLeft"),
+    borderSchemaProp("borderRight"),
+    borderSchemaProp("borderTop"),
+    borderSchemaProp("borderBottom"),
+
+    {
+      prop: "cornerRadius",
+      type: "string",
+      responsive: true,
+      params: {
+        normalize: normalizePxValue(0, 32),
+      },
+    },
+    {
       prop: "Stack",
       type: "component",
       required: true,
@@ -164,6 +213,12 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
       coverPosition,
       coverWidth,
       enableFill,
+      enableBorder,
+      borderLeft,
+      borderRight,
+      borderTop,
+      borderBottom,
+      borderColor,
     } = values;
 
     const margin =
@@ -201,7 +256,9 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
 
     const [stackAlign, stackJustify] = values.stackPosition.split("-");
 
-    if (!enableFill) {
+    const isNaked = !enableFill && !enableBorder;
+
+    if (isNaked) {
       paddingTop = "0px";
       paddingBottom = "0px";
       paddingLeft = "0px";
@@ -360,6 +417,20 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
       Container: box({
         margin: "0 auto",
         backgroundColor: enableFill ? fillColor : "initial",
+        borderLeft: enableBorder
+          ? `${borderLeft}px solid ${borderColor}`
+          : "none",
+        borderRight: enableBorder
+          ? `${borderRight}px solid ${borderColor}`
+          : "none",
+        borderTop: enableBorder
+          ? `${borderTop}px solid ${borderColor}`
+          : "none",
+        borderBottom: enableBorder
+          ? `${borderBottom}px solid ${borderColor}`
+          : "none",
+        borderRadius: isNaked ? "initial" : `${values.cornerRadius}px`,
+        overflow: isNaked ? "initial" : "hidden",
 
         display: "grid",
         gridTemplateColumns,
