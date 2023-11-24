@@ -256,7 +256,8 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
 
     const [stackAlign, stackJustify] = values.stackPosition.split("-");
 
-    const isNaked = !enableFill && !enableBorder;
+    const isNaked =
+      !enableFill && !enableBorder && coverPosition !== "background";
 
     if (isNaked) {
       paddingTop = "0px";
@@ -394,6 +395,36 @@ export const heroBannerNoCodeDefinition: NoCodeComponentDefinition = {
       stackGridCol = "2 / span 1";
       stackGridRow = "1";
       coverGridRow = "2";
+
+      if (snapCoverToLeft && snapCoverToRight) {
+        coverGridCol = "1 / span 3";
+      } else if (snapCoverToLeft) {
+        coverGridCol = "1 / span 2";
+      } else if (snapCoverToRight) {
+        coverGridCol = "2 / span 2";
+      } else {
+        coverGridCol = "2 / span 1";
+      }
+    } else if (coverPosition === "background") {
+      stackPaddings = {
+        left: "0",
+        right: "0",
+        top: paddingTop,
+        bottom: paddingBottom,
+      };
+
+      coverPaddings = {
+        top: "0",
+        bottom: "0",
+        right: "0",
+        left: "0",
+      };
+
+      gridTemplateColumns = `${paddingOnMarginSide} 1fr ${paddingOnMarginSide}`;
+
+      stackGridCol = "2 / span 1";
+      stackGridRow = "1";
+      coverGridRow = "1";
 
       if (snapCoverToLeft && snapCoverToRight) {
         coverGridCol = "1 / span 3";

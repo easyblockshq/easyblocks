@@ -15,16 +15,16 @@ export function HeroBanner(props: any) {
   return (
     <Root.type {...Root.props}>
       <Container.type {...Container.props}>
-        <StackContainer.type {...StackContainer.props}>
-          <StackInnerContainer.type {...StackInnerContainer.props}>
-            <Stack.type {...Stack.props} />
-          </StackInnerContainer.type>
-        </StackContainer.type>
         <CoverContainer.type {...CoverContainer.props}>
           <Cover.type {...Cover.props}>
             <CoverAspectRatioMaker.type {...CoverAspectRatioMaker.props} />
           </Cover.type>
         </CoverContainer.type>
+        <StackContainer.type {...StackContainer.props}>
+          <StackInnerContainer.type {...StackInnerContainer.props}>
+            <Stack.type {...Stack.props} />
+          </StackInnerContainer.type>
+        </StackContainer.type>
       </Container.type>
     </Root.type>
   );
