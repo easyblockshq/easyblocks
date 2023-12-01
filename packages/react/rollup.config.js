@@ -73,10 +73,10 @@ const baseConfig = {
   input: "./src/index.ts",
   external: [
     ...Object.keys(packageJson.peerDependencies),
-    ...Object.keys(packageJson.dependencies),
+    ...Object.keys(packageJson.dependencies).map(
+      (packageName) => new RegExp(packageName)
+    ),
     /crypto-js/,
-    /@babel\/runtime/,
-    /lodash/,
   ],
   onwarn: (warning, warn) => {
     // We're using eval on purpose, so let's ignore this warning.

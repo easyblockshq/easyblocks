@@ -1,12 +1,11 @@
+import { Form, FormApi } from "@easyblocks/app-utils";
+import { ComponentSchemaProp, ConfigComponent } from "@easyblocks/core";
 import {
   Component$$$SchemaProp,
-  findComponentDefinition,
-  Form,
-  FormApi,
   InternalField,
+  findComponentDefinition,
   isConfigPathRichTextPart,
-} from "@easyblocks/app-utils";
-import { ComponentSchemaProp, ConfigComponent } from "@easyblocks/core";
+} from "@easyblocks/core/_internals";
 import {
   SSButtonGhost,
   SSColors,
@@ -19,16 +18,15 @@ import {
 import { dotNotationGet, toArray } from "@easyblocks/utils";
 import React from "react";
 import ReactDOM from "react-dom";
-import styled, { css } from "styled-components";
-import { buildTinaFields } from "../../../buildTinaFields";
+import styled, { css, keyframes } from "styled-components";
 import { useEditorContext } from "../../../EditorContext";
 import { useEditorExternalData } from "../../../EditorExternalDataProvider";
 import { SidebarFooter } from "../../../SidebarFooter";
+import { buildTinaFields } from "../../../buildTinaFields";
 import { FieldMixedValue } from "../../../types";
 import { FieldRenderProps, FieldsBuilder } from "../../form-builder";
 import { mergeCommonFields } from "../../form-builder/utils/mergeCommonFields";
 import { isMixedFieldValue } from "../components/isMixedFieldValue";
-import { GroupPanel, PanelBody } from "./GroupFieldPlugin";
 
 export interface BlocksFieldDefinition extends InternalField {
   component: "ss-block";
@@ -322,3 +320,50 @@ export const BlockFieldPlugin = {
   name: "ss-block",
   Component: BlockField,
 };
+
+const PanelBody = styled.div`
+  background: white;
+  position: relative;
+  height: 100%;
+  overflow-y: auto;
+`;
+
+const GroupPanelKeyframes = keyframes`
+  0% {
+    transform: translate3d( 100%, 0, 0 );
+  }
+  100% {
+    transform: translate3d( 0, 0, 0 );
+  }
+`;
+
+const GroupPanel = styled.div<{ isExpanded: boolean }>`
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  /* z-index: var(--tina-z-index-1); */
+  pointer-events: ${(p) => (p.isExpanded ? "all" : "none")};
+
+  > * {
+    ${(p) =>
+      p.isExpanded &&
+      css`
+        animation-name: ${GroupPanelKeyframes};
+        animation-duration: 150ms;
+        animation-delay: 0ms;
+        animation-iteration-count: 1;
+        animation-timing-function: ease-out;
+        animation-fill-mode: backwards;
+      `};
+
+    ${(p) =>
+      !p.isExpanded &&
+      css`
+        transition: transform 150ms ease-out;
+        transform: translate3d(100%, 0, 0);
+      `};
+  }
+`;

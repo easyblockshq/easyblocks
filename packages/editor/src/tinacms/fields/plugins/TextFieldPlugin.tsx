@@ -1,5 +1,5 @@
-import { InternalField, useTextValue } from "@easyblocks/app-utils";
 import { LocalTextReference, ResponsiveValue } from "@easyblocks/core";
+import { InternalField, useTextValue } from "@easyblocks/core/_internals";
 import { SSInput } from "@easyblocks/design-system";
 import React from "react";
 import { FieldRenderProps } from "react-final-form";

@@ -7,7 +7,7 @@ import {
   RichTextLineElementClient,
   RichTextPartClient,
   TextClient,
-} from "@easyblocks/editable-components";
+} from "@easyblocks/core/_internals";
 import React, { ReactElement, useEffect } from "react";
 import ComponentBuilder, {
   ComponentBuilderProps,

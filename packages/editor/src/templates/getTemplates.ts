@@ -1,22 +1,22 @@
+import { configMap } from "@easyblocks/app-utils";
 import {
-  configMap,
-  findComponentDefinitionById,
-  InternalComponentDefinition,
-} from "@easyblocks/app-utils";
-import { normalize } from "@easyblocks/compiler";
-import {
-  ConfigComponent,
-  getDefaultLocale,
-  Template,
-  IApiClient,
-  UserDefinedTemplate,
-  InternalTemplate,
   ComponentConfig,
+  ConfigComponent,
+  IApiClient,
+  InternalTemplate,
+  Template,
+  UserDefinedTemplate,
+  getDefaultLocale,
 } from "@easyblocks/core";
+import {
+  InternalComponentDefinition,
+  buildRichTextNoCodeEntry,
+  findComponentDefinitionById,
+  normalize,
+} from "@easyblocks/core/_internals";
+import { uniqueId } from "@easyblocks/utils";
 import { EditorContextType } from "../EditorContext";
 import { getRemoteUserTemplates } from "./getRemoteUserTemplates";
-import { buildRichTextNoCodeEntry } from "@easyblocks/editable-components";
-import { uniqueId } from "@easyblocks/utils";
 
 function getDefaultTemplateForDefinition(
   def: InternalComponentDefinition

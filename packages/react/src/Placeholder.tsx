@@ -1,7 +1,7 @@
 import { useDndContext } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
-import { parsePath } from "@easyblocks/app-utils";
 import { PlaceholderAppearance } from "@easyblocks/core";
+import { parsePath } from "@easyblocks/core/_internals";
 import { SSColors, SSFonts } from "@easyblocks/design-system";
 import { EditorContextType } from "@easyblocks/editor";
 import { toArray } from "@easyblocks/utils";

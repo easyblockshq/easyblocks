@@ -1,4 +1,4 @@
-import { InternalLinkDefinition } from "@easyblocks/app-utils";
+import { InternalLinkDefinition } from "@easyblocks/core/_internals";
 
 const StandardLink: InternalLinkDefinition = {
   id: "$StandardLink",

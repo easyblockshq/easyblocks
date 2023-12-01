@@ -1,7 +1,9 @@
+import {
+  EditorContextType,
+  duplicateConfig,
+} from "@easyblocks/core/_internals";
 import { dotNotationGet, preOrderPathComparator } from "@easyblocks/utils";
 import { useEffect } from "react";
-import { duplicateConfig } from "../config";
-import { EditorContextType } from "../types";
 
 const GLOBAL_SHORTCUTS_KEYS = [
   "Delete",

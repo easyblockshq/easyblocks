@@ -1,16 +1,17 @@
 import { serialize } from "@easyblocks/utils";
 import { z } from "zod";
 import { buildEntry } from "./buildEntry";
-import { ApiClient } from "./infrastructure/apiClient";
 import { ShopstoryAccessTokenApiAuthenticationStrategy } from "./infrastructure/ShopstoryAccessTokenApiAuthenticationStrategy";
-import { loadCompilerScript } from "./loadScripts";
+import { ApiClient } from "./infrastructure/apiClient";
 import { getFallbackLocaleForLocale } from "./locales";
 import type {
   ChangedExternalData,
+  CompilerModule,
   ComponentConfig,
   Config,
   RenderableDocument,
 } from "./types";
+import { compile, findExternals, validate } from "./compiler";
 
 async function buildDocument({
   documentId,
@@ -30,7 +31,11 @@ async function buildDocument({
     locale,
   });
 
-  const compiler = await loadCompilerScript();
+  const compiler: CompilerModule = {
+    compile,
+    findExternals,
+    validate,
+  };
 
   const { meta, externalData, renderableContent, configAfterAuto } = buildEntry(
     {

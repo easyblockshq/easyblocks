@@ -1,5 +1,4 @@
-import { spacingToPx } from "@easyblocks/app-utils";
-import { DeviceRange } from "@easyblocks/core";
+import { DeviceRange, spacingToPx } from "@easyblocks/core";
 import { GridCompiledValues, GridParams } from "./Grid.types";
 
 export function gridContainerController(

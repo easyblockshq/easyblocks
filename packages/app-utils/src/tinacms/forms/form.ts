@@ -1,7 +1,7 @@
+import { InternalAnyField, InternalField } from "@easyblocks/core/_internals";
 import { dotNotationGet } from "@easyblocks/utils";
-import { Config, createForm, FormApi, FormState, FORM_ERROR } from "final-form";
+import { Config, FORM_ERROR, FormApi, FormState, createForm } from "final-form";
 import arrayMutators from "final-form-arrays";
-import { InternalAnyField, InternalField } from "../../schema";
 import { Plugin } from "../core";
 
 export interface FormOptions<S, F extends InternalField = InternalAnyField>

@@ -1,7 +1,5 @@
-import {
-  CompilationRootContainer,
-  useEditorGlobalKeyboardShortcuts,
-} from "@easyblocks/app-utils";
+import { useEditorGlobalKeyboardShortcuts } from "@easyblocks/app-utils";
+import { CompilationRootContainer } from "@easyblocks/core/_internals";
 import React, { ReactNode, useRef } from "react";
 
 type CanvasRootProps = {

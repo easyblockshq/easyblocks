@@ -1,4 +1,5 @@
-import { Form, InternalField } from "@easyblocks/app-utils";
+import { Form } from "@easyblocks/app-utils";
+import { InternalField } from "@easyblocks/core/_internals";
 import { SSColors, SSFonts } from "@easyblocks/design-system";
 import { toArray } from "@easyblocks/utils";
 import React from "react";

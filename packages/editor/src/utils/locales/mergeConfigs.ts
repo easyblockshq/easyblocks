@@ -1,9 +1,10 @@
-import { CompilationContextType, configMap } from "@easyblocks/app-utils";
+import { configMap } from "@easyblocks/app-utils";
 import {
   ConfigComponent,
   LocalisedConfigs,
   LocalizedText,
 } from "@easyblocks/core";
+import { CompilationContextType } from "@easyblocks/core/_internals";
 import { dotNotationGet } from "@easyblocks/utils";
 
 export const validateIntegrity = (

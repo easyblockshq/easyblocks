@@ -1,5 +1,7 @@
-import { InternalRenderableComponentDefinition } from "@easyblocks/app-utils";
-import { ChildComponentEditingInfo } from "@easyblocks/core";
+import {
+  ChildComponentEditingInfo,
+  NoCodeComponentDefinition,
+} from "@easyblocks/core";
 import $stackStyles from "./$stack.styles";
 import { StackCompiledValues, StackParams } from "./Stack.types";
 
@@ -13,8 +15,7 @@ for (let i = 4; i < 24; i++) {
   maxWidthScale.push(i * 64 + "px");
 }
 
-const stackComponentDefinition: InternalRenderableComponentDefinition<
-  "$stack",
+const stackComponentDefinition: NoCodeComponentDefinition<
   StackCompiledValues,
   StackParams
 > = {

@@ -1,5 +1,4 @@
 export * from "./ColorFieldPlugin";
-export * from "./GroupFieldPlugin";
 export * from "./NumberFieldPlugin";
 export * from "./SelectFieldPlugin";
 export * from "./RadioGroupFieldPlugin";

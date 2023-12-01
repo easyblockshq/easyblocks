@@ -1,47 +1,47 @@
 import {
-  CompilationContextType,
   componentPickerClosed,
   ComponentPickerOpenedEvent,
-  duplicateConfig,
-  findComponentDefinitionById,
-  findConfigById,
   Form,
   ItemInsertedEvent,
   ItemMovedEvent,
-  mergeCompilationMeta,
-  parsePath,
-  responsiveValueGet,
   useEditorGlobalKeyboardShortcuts,
 } from "@easyblocks/app-utils";
 import {
-  CompilationCache,
-  compileInternal,
-  createCompilationContext,
-  findExternals,
-  normalize,
-  normalizeInput,
-  validate,
-} from "@easyblocks/compiler";
-import {
   buildEntry,
+  CompilationCache,
   CompilationMetadata,
+  compileInternal,
   ComponentConfig,
   Config,
   ConfigComponent,
   ContextParams,
+  createCompilationContext,
   DocumentWithResolvedConfigDTO,
   EditorLauncherProps,
   ExternalData,
   ExternalDataChangeHandler,
   ExternalReference,
   FetchOutputResources,
+  findExternals,
   IApiClient,
   Locale,
   LocalisedDocument,
+  mergeCompilationMeta,
   NonEmptyRenderableContent,
+  normalize,
+  normalizeInput,
+  responsiveValueGet,
   Template,
+  validate,
   WidgetComponentProps,
 } from "@easyblocks/core";
+import {
+  CompilationContextType,
+  duplicateConfig,
+  findComponentDefinitionById,
+  parsePath,
+  traverseComponents,
+} from "@easyblocks/core/_internals";
 import { SSColors, SSFonts, useToaster } from "@easyblocks/design-system";
 import { assertDefined, dotNotationGet, raiseError } from "@easyblocks/utils";
 import React, {
@@ -1329,4 +1329,24 @@ function getMostCommonSubPath(path1: string, path2: string) {
   }
 
   return mostCommonPathParts?.join(".");
+}
+
+export function findConfigById(
+  config: ComponentConfig,
+  context: CompilationContextType,
+  configId: string
+): ComponentConfig | undefined {
+  let foundConfig: ComponentConfig | undefined;
+
+  traverseComponents(config, context, ({ componentConfig }) => {
+    if (foundConfig) {
+      return;
+    }
+
+    if (componentConfig._id === configId) {
+      foundConfig = componentConfig;
+    }
+  });
+
+  return foundConfig;
 }

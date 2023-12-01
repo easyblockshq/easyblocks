@@ -2,7 +2,7 @@ import { EditorContextType } from "./EditorContext";
 import { getAllComponentTypes } from "./getAllComponentTypes";
 import { normalizeToStringArray } from "./normalizeToStringArray";
 import { getAllComponentsOfType } from "./getAllComponentsOfType";
-import { findComponentDefinitionById } from "@easyblocks/app-utils";
+import { findComponentDefinitionById } from "@easyblocks/core/_internals";
 import { ComponentDefinitionShared } from "@easyblocks/core";
 
 export function unrollAcceptsFieldIntoComponents(

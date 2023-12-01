@@ -1,3 +1,4 @@
+"use client";
 import {
   CollisionDetection,
   DndContext,
@@ -7,13 +8,14 @@ import {
   useSensor,
 } from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
+import { itemMoved } from "@easyblocks/app-utils";
+import { ComponentConfig } from "@easyblocks/core";
 import {
   EditorContextType,
+  RichTextEditor,
+  TextEditor,
   configTraverse,
-  itemMoved,
-} from "@easyblocks/app-utils";
-import { ComponentConfig } from "@easyblocks/core";
-import { RichTextEditor, TextEditor } from "@easyblocks/editable-components";
+} from "@easyblocks/core/_internals";
 import React, { useEffect, useRef, useState } from "react";
 import { z } from "zod";
 import CanvasRoot from "./CanvasRoot/CanvasRoot";

@@ -1,18 +1,16 @@
 import {
-  duplicateConfig,
-  findComponentDefinition,
-} from "@easyblocks/app-utils";
-import { normalize } from "@easyblocks/compiler";
-import {
   ComponentSchemaProp,
   ConfigComponent,
   Template,
 } from "@easyblocks/core";
 import {
+  duplicateConfig,
+  findComponentDefinition,
+  normalize,
   optionalTextModifierSchemaProp,
   richTextInlineWrapperActionSchemaProp,
   richTextPartEditableComponent,
-} from "@easyblocks/editable-components";
+} from "@easyblocks/core/_internals";
 import { dotNotationGet } from "@easyblocks/utils";
 import React, { FC } from "react";
 import { useEditorContext } from "./EditorContext";

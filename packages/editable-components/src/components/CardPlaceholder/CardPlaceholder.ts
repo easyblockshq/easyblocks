@@ -1,47 +1,48 @@
-import { InternalRenderableComponentDefinition } from "@easyblocks/app-utils";
+import { NoCodeComponentDefinition } from "@easyblocks/core";
 import { cardPlaceholderStyles } from "./CardPlaceholder.styles";
 
-export const cardPlaceholderDefinition: InternalRenderableComponentDefinition<"$CardPlaceholder"> =
-  {
-    id: "$CardPlaceholder",
-    label: "Card Placeholder",
-    type: "card",
-    hideTemplates: true,
-    styles: cardPlaceholderStyles,
-    schema: [
-      {
-        prop: "font",
-        type: "font",
-        defaultValue: {
-          ref: "$body",
-          value: {},
-        },
-        visible: false,
+export const cardPlaceholderDefinition: NoCodeComponentDefinition & {
+  hideTemplates: boolean;
+} = {
+  id: "$CardPlaceholder",
+  label: "Card Placeholder",
+  type: "card",
+  hideTemplates: true,
+  styles: cardPlaceholderStyles,
+  schema: [
+    {
+      prop: "font",
+      type: "font",
+      defaultValue: {
+        ref: "$body",
+        value: {},
       },
-      {
-        prop: "aspectRatio",
-        label: "Aspect ratio",
-        type: "stringToken",
-        params: { tokenId: "aspectRatios" },
-        defaultValue: {
-          ref: "$portrait",
-          value: "",
-        },
-        visible: false,
+      visible: false,
+    },
+    {
+      prop: "aspectRatio",
+      label: "Aspect ratio",
+      type: "stringToken",
+      params: { tokenId: "aspectRatios" },
+      defaultValue: {
+        ref: "$portrait",
+        value: "",
       },
-      {
-        prop: "backgroundColor",
-        type: "color",
-        defaultValue: {
-          value: "rgb(242, 242, 242)",
-        },
-        visible: false,
+      visible: false,
+    },
+    {
+      prop: "backgroundColor",
+      type: "color",
+      defaultValue: {
+        value: "rgb(242, 242, 242)",
       },
-      {
-        prop: "value",
-        type: "string",
-        defaultValue: "Product",
-        visible: false,
-      },
-    ],
-  };
+      visible: false,
+    },
+    {
+      prop: "value",
+      type: "string",
+      defaultValue: "Product",
+      visible: false,
+    },
+  ],
+};

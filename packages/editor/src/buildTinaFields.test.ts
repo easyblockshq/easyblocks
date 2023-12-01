@@ -1,9 +1,9 @@
-import { compileInternal } from "@easyblocks/compiler";
-import { ConfigComponent } from "@easyblocks/core";
 import type { InternalComponentDefinitions } from "@easyblocks/app-utils";
+import { ConfigComponent } from "@easyblocks/core";
+import { compileInternal } from "@easyblocks/core/_internals";
+import { EditorContextType } from "./EditorContext";
 import { buildTinaFields } from "./buildTinaFields";
 import { createForm, testEditorContext } from "./utils/tests";
-import { EditorContextType } from "./EditorContext";
 
 const testDefinitions: InternalComponentDefinitions = {
   components: [

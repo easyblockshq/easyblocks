@@ -9,7 +9,7 @@ import {
   CompilationCacheItemValue,
   compileInternal,
   normalize,
-} from "@easyblocks/compiler";
+} from "@easyblocks/core/_internals";
 import { AnyTinaField } from "@easyblocks/core";
 import {
   actionTextModifier,

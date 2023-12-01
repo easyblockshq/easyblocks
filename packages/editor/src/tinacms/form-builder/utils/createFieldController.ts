@@ -1,23 +1,24 @@
+import { richTextChangedEvent } from "@easyblocks/app-utils";
 import {
+  getFallbackLocaleForLocale,
+  isTrulyResponsiveValue,
+  responsiveValueGetDefinedValue,
+} from "@easyblocks/core";
+import {
+  CompilationCache,
+  InternalAnyTinaField,
+  InternalField,
   duplicateConfig,
   findComponentDefinitionById,
   findPathOfFirstAncestorOfType,
   getDevicesWidths,
-  InternalAnyTinaField,
-  InternalField,
+  getSchemaDefinition,
   isConfigPathRichTextPart,
-  isTrulyResponsiveValue,
   parsePath,
-  responsiveValueGetDefinedValue,
-  richTextChangedEvent,
-  traverseComponents,
-} from "@easyblocks/app-utils";
-import { CompilationCache, getSchemaDefinition } from "@easyblocks/compiler";
-import { getFallbackLocaleForLocale } from "@easyblocks/core";
-import {
   richTextInlineWrapperElementEditableComponent,
   richTextPartEditableComponent,
-} from "@easyblocks/editable-components";
+  traverseComponents,
+} from "@easyblocks/core/_internals";
 import { dotNotationGet, last, toArray } from "@easyblocks/utils";
 import { EditorContextType } from "../../../EditorContext";
 import { getUniqueValues } from "../../fields/components/getUniqueValues";

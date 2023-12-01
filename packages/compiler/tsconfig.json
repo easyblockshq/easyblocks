@@ -1,8 +1,0 @@
-{
-  "extends": "../../base.tsconfig.json",
-  "compilerOptions": {
-    "declarationDir": "./dist"
-  },
-  "include": ["./src/**/*", "../editor/typings/globals.d.ts"],
-  "exclude": ["./src/**/*.test.tsx", "./src/**/*.test.ts"]
-}

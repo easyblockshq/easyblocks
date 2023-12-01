@@ -1,9 +1,9 @@
+import { CompiledTextModifier } from "@easyblocks/core";
 import {
   CompilationContextType,
   findComponentDefinitionById,
   InternalTextModifierDefinition,
-} from "@easyblocks/app-utils";
-import { CompiledTextModifier } from "@easyblocks/core";
+} from "@easyblocks/core/_internals";
 
 export function getTextModifierStyles(
   modifier: [CompiledTextModifier] | [],

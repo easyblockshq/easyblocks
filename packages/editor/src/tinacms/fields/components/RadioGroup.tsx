@@ -1,10 +1,10 @@
 import { Option } from "@easyblocks/core";
+import { InternalField } from "@easyblocks/core/_internals";
 import {
   SSIcons,
   SSSelectInline,
   SSToggleButton,
 } from "@easyblocks/design-system";
-import { InternalField } from "@easyblocks/app-utils";
 import React from "react";
 import { FieldMixedValue } from "../../../types";
 import { FieldRenderProps } from "../../form-builder";

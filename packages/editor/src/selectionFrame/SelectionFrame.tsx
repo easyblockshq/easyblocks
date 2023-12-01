@@ -1,20 +1,21 @@
-import {
-  findComponentDefinitionById,
-  isConfigPathRichTextPart,
-  isSchemaPropCollection,
-  parsePath,
-  RICH_TEXT_PART_CONFIG_PATH_REGEXP,
-  SelectionFramePositionChangedEvent,
-} from "@easyblocks/app-utils";
+import { SelectionFramePositionChangedEvent } from "@easyblocks/app-utils";
 import {
   CompiledShopstoryComponentConfig,
   EditingInfoBase,
 } from "@easyblocks/core";
+import {
+  RICH_TEXT_PART_CONFIG_PATH_REGEXP,
+  findComponentDefinitionById,
+  isConfigPathRichTextPart,
+  isSchemaPropCollection,
+  parsePath,
+} from "@easyblocks/core/_internals";
 import { dotNotationGet } from "@easyblocks/utils";
 import React, { useLayoutEffect } from "react";
-import { pathToCompiledPath } from "../pathToCompiledPath";
 import { EditorContextType, useEditorContext } from "../EditorContext";
+import { pathToCompiledPath } from "../pathToCompiledPath";
 import { AddButton } from "./AddButton";
+import { FrameWrapper, Wrapper } from "./SelectionFrame.styles";
 import { calculateAddButtonsProperties } from "./calculateAddButtonProperties";
 import {
   AFTER_ADD_BUTTON_DISPLAY,
@@ -24,7 +25,6 @@ import {
   BEFORE_ADD_BUTTON_LEFT,
   BEFORE_ADD_BUTTON_TOP,
 } from "./cssVariables";
-import { FrameWrapper, Wrapper } from "./SelectionFrame.styles";
 
 type SelectionFrameProps = {
   width: number;

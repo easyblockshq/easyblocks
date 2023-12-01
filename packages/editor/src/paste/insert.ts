@@ -1,18 +1,18 @@
-import {
-  CompilationContextType,
-  duplicateConfig,
-  findComponentDefinition,
-  Form,
-} from "@easyblocks/app-utils";
+import { Form } from "@easyblocks/app-utils";
 import {
   ComponentCollectionSchemaProp,
   ComponentSchemaProp,
   ConfigComponent,
   SchemaProp,
 } from "@easyblocks/core";
+import {
+  CompilationContextType,
+  duplicateConfig,
+  findComponentDefinition,
+} from "@easyblocks/core/_internals";
 import { includesAny } from "@easyblocks/utils";
-import { reconcile } from "./reconcile";
 import { normalizeToStringArray } from "../normalizeToStringArray";
+import { reconcile } from "./reconcile";
 
 const getTypes = (schema?: SchemaProp) => {
   if (schema?.type === "component-collection" || schema?.type === "component") {

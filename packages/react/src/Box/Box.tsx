@@ -1,5 +1,5 @@
-import { getBoxStyles } from "@easyblocks/app-utils";
 import { Devices } from "@easyblocks/core";
+import { getBoxStyles } from "@easyblocks/core/_internals";
 import React, { useMemo } from "react";
 
 const boxStyles = {

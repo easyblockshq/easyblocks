@@ -1,5 +1,6 @@
 import { Devices } from "@easyblocks/core";
-import { Form, CompilationContextType } from "@easyblocks/app-utils";
+import { Form } from "@easyblocks/app-utils";
+import { CompilationContextType } from "@easyblocks/core/_internals";
 
 export const testDevices: Devices = [
   {

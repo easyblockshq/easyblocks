@@ -1,7 +1,7 @@
-import { InternalRenderableComponentDefinition } from "@easyblocks/app-utils";
 import {
   BooleanSchemaProp,
   ComponentSchemaProp,
+  NoCodeComponentDefinition,
   SchemaProp,
   StringTokenSchemaProp,
 } from "@easyblocks/core";
@@ -14,8 +14,7 @@ import {
 import basicCardStyles from "./BasicCard.styles";
 import { BasicCardCompiledValues } from "./BasicCard.types";
 
-export const basicCardDefinition: InternalRenderableComponentDefinition<
-  "$BasicCard",
+export const basicCardDefinition: NoCodeComponentDefinition<
   BasicCardCompiledValues,
   EdgeCompiledValues & Record<string, any>
 > = {
@@ -323,8 +322,7 @@ basicBackgroundCardSchema[enableContentSchemaPropIndex] = {
   defaultValue: true,
 } as BooleanSchemaProp;
 
-export const basicBackgroundCardDefinition: InternalRenderableComponentDefinition<
-  "$BasicCardBackground",
+export const basicBackgroundCardDefinition: NoCodeComponentDefinition<
   BasicCardCompiledValues,
   EdgeCompiledValues & Record<string, any>
 > = {

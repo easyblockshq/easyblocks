@@ -1,4 +1,8 @@
 import {
+  DeviceRange,
+  Devices,
+  ResponsiveValue,
+  TrulyResponsiveValue,
   isTrulyResponsiveValue,
   responsiveValueFindDeviceWithDefinedValue,
   responsiveValueFindHigherDeviceWithDefinedValue,
@@ -6,12 +10,6 @@ import {
   responsiveValueGetDefinedValue,
   responsiveValueGetFirstHigherValue,
   responsiveValueGetFirstLowerValue,
-} from "@easyblocks/app-utils";
-import {
-  DeviceRange,
-  Devices,
-  ResponsiveValue,
-  TrulyResponsiveValue,
 } from "@easyblocks/core";
 
 export type ValueForWidth = { value: any; width: number; device: DeviceRange };

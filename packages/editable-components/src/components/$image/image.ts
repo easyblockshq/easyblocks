@@ -1,16 +1,16 @@
-import {
-  buttonActionSchemaProp,
-  InternalRenderableComponentDefinition,
-  isCompoundExternalDataValue,
-  responsiveValueFindDeviceWithDefinedValue,
-  responsiveValueForceGet,
-} from "@easyblocks/app-utils";
+import { isCompoundExternalDataValue } from "@easyblocks/app-utils";
 import {
   ExternalReference,
+  ImageSrc,
   getExternalReferenceLocationKey,
   getExternalValue,
-  ImageSrc,
+  responsiveValueFindDeviceWithDefinedValue,
+  responsiveValueForceGet,
 } from "@easyblocks/core";
+import {
+  InternalRenderableComponentDefinition,
+  buttonActionSchemaProp,
+} from "@easyblocks/core/_internals";
 import { assertDefined, last } from "@easyblocks/utils";
 import imageStyles from "./$image.styles";
 

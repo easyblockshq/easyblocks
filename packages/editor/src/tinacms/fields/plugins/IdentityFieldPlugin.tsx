@@ -1,9 +1,9 @@
+import { richTextChangedEvent } from "@easyblocks/app-utils";
+import { ComponentSchemaProp, ConfigComponent, Field } from "@easyblocks/core";
 import {
   findComponentDefinitionById,
   parsePath,
-  richTextChangedEvent,
-} from "@easyblocks/app-utils";
-import { ComponentSchemaProp, ConfigComponent, Field } from "@easyblocks/core";
+} from "@easyblocks/core/_internals";
 import { SSButtonGhost, SSIcons, Typography } from "@easyblocks/design-system";
 import { assertDefined, toArray } from "@easyblocks/utils";
 import React, { useContext } from "react";

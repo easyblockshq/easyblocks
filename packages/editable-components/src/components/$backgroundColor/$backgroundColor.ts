@@ -1,9 +1,10 @@
 import {
-  InternalRenderableComponentDefinition,
+  Color,
+  RefValue,
   responsiveValueFindDeviceWithDefinedValue,
   responsiveValueForceGet,
-} from "@easyblocks/app-utils";
-import { Color, RefValue } from "@easyblocks/core";
+} from "@easyblocks/core";
+import type { InternalRenderableComponentDefinition } from "@easyblocks/core/_internals";
 import { backgroundColorStyles } from "./$backgroundColor.styles";
 
 const backgroundColorComponentDefinition: InternalRenderableComponentDefinition<"$backgroundColor"> =

@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "module": "Node16",
+    "moduleResolution": "Node16",
     "strict": true,
     "declaration": true,
     "target": "es5",

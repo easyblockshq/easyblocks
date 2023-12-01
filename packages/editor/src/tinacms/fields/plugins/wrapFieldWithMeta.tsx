@@ -1,25 +1,28 @@
 import {
-  InternalField,
+  FormApi,
   isEmptyExternalReference,
-  isExternalSchemaProp,
   isIdReferenceToDocumentExternalValue,
-  isTrulyResponsiveValue,
-  responsiveValueFindDeviceWithDefinedValue,
-  responsiveValueForceGet,
 } from "@easyblocks/app-utils";
 import {
   ExternalReference,
   ExternalSchemaProp,
-  getExternalReferenceLocationKey,
   LocalTextReference,
   TextSchemaProp,
   TrulyResponsiveValue,
+  getExternalReferenceLocationKey,
+  isTrulyResponsiveValue,
+  responsiveValueFindDeviceWithDefinedValue,
+  responsiveValueForceGet,
 } from "@easyblocks/core";
 import {
+  InternalField,
+  isExternalSchemaProp,
+} from "@easyblocks/core/_internals";
+import {
   Loader,
+  SSFonts,
   Select,
   SelectItem,
-  SSFonts,
   Typography,
 } from "@easyblocks/design-system";
 import { dotNotationGet, toArray, uniqueId } from "@easyblocks/utils";
@@ -28,9 +31,9 @@ import styled, { css } from "styled-components";
 import { useConfigAfterAuto } from "../../../ConfigAfterAutoContext";
 import { useEditorContext } from "../../../EditorContext";
 import { useEditorExternalData } from "../../../EditorExternalDataProvider";
+import { FieldRenderProps } from "../../form-builder";
 import { COMPONENTS_SUPPORTING_MIXED_VALUES } from "../components/constants";
 import { isMixedFieldValue } from "../components/isMixedFieldValue";
-import { FieldProps } from "./fieldProps";
 import type { ResponsiveFieldDefinition } from "./ResponsiveField/responsiveFieldController";
 import { Tooltip, TooltipArrow, TooltipBody } from "./Tooltip";
 import { useTooltip } from "./useTooltip";
@@ -40,6 +43,12 @@ type ExtraFieldMetaWrapperFields = {
   noWrap?: boolean;
   isLabelHidden?: boolean;
 };
+
+export interface FieldProps<InputProps extends Record<string, unknown>>
+  extends FieldRenderProps<any, HTMLElement> {
+  field: InternalField;
+  form: FormApi;
+}
 
 type InputFieldType<
   ExtraFieldProps extends Record<string, unknown>,

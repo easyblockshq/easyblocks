@@ -1,15 +1,15 @@
-import {
-  CompilationContextType,
-  duplicateConfig,
-  findComponentDefinitionById,
-  Form,
-  parsePath,
-} from "@easyblocks/app-utils";
+import { Form } from "@easyblocks/app-utils";
 import {
   ComponentSchemaProp,
   ConfigComponent,
   isNoCodeComponentOfType,
 } from "@easyblocks/core";
+import {
+  CompilationContextType,
+  duplicateConfig,
+  findComponentDefinitionById,
+  parsePath,
+} from "@easyblocks/core/_internals";
 import {
   assertDefined,
   dotNotationGet,
@@ -400,11 +400,11 @@ function logItems(form: Form, configPaths: Array<string>) {
 
 export {
   duplicateItems,
-  removeItems,
-  moveItems,
-  replaceItems,
-  pasteItems,
   logItems,
+  moveItems,
+  pasteItems,
+  removeItems,
+  replaceItems,
 };
 
 function groupFieldsByParentPath(

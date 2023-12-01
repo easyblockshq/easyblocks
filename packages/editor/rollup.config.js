@@ -11,7 +11,6 @@ import {
   isProduction,
 } from "@easyblocks/build-tools";
 import visualizer from "rollup-plugin-visualizer";
-import preserveDirectives from "rollup-plugin-preserve-directives";
 import packageJson from "./package.json";
 
 const extensions = [".js", ".jsx", ".ts", ".tsx"];
@@ -19,8 +18,6 @@ const extensions = [".js", ".jsx", ".ts", ".tsx"];
 internalDependenciesValidator();
 
 function getPlugins(format) {
-  const preserveDirectivesPlugin = preserveDirectives();
-
   /**
    * @type import('rollup').RollupOptions['plugins']
    */
@@ -45,12 +42,6 @@ function getPlugins(format) {
     commonjs({}),
 
     json(),
-
-    {
-      ...preserveDirectivesPlugin,
-      // @ts-expect-error preserveDirectivesPlugin is incompatible by default with our version or rollup
-      renderChunk: preserveDirectivesPlugin.renderChunk.handler,
-    },
   ];
 
   if (isProduction) {
@@ -77,23 +68,8 @@ const baseConfig = {
     /@babel\/runtime/,
     /lodash/,
     /react-dom/,
+    /@easyblocks\/core/,
   ],
-  onwarn: (warning, warn) => {
-    // We're using eval on purpose, so let's ignore this warning.
-    if (warning.code === "EVAL") {
-      return;
-    }
-
-    if (
-      warning.message.includes(
-        "Module level directives cause errors when bundled, 'use client' was ignored."
-      )
-    ) {
-      return;
-    }
-
-    warn(warning);
-  },
 };
 
 /**

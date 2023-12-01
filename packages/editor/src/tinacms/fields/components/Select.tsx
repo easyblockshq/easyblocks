@@ -1,4 +1,4 @@
-import { InternalField } from "@easyblocks/app-utils";
+import { InternalField } from "@easyblocks/core/_internals";
 import { Select, SelectItem, SelectSeparator } from "@easyblocks/design-system";
 import React from "react";
 import { FieldMixedValue } from "../../../types";
