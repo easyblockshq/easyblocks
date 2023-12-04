@@ -859,118 +859,116 @@ const EditorContent = ({
   ]);
 
   useEffect(() => {
-    window.addEventListener(
-      "message",
-      (
-        event: ComponentPickerOpenedEvent | ItemInsertedEvent | ItemMovedEvent
-      ) => {
-        if (event.data.type === "@shopstory-editor/component-picker-opened") {
-          actions
-            .openComponentPicker({ path: event.data.payload.path })
-            .then((config) => {
-              const shopstoryCanvasIframe = window.document.getElementById(
-                "shopstory-canvas"
-              ) as HTMLIFrameElement | undefined;
+    function handleEditorEvents(
+      event: ComponentPickerOpenedEvent | ItemInsertedEvent | ItemMovedEvent
+    ) {
+      if (event.data.type === "@shopstory-editor/component-picker-opened") {
+        actions
+          .openComponentPicker({ path: event.data.payload.path })
+          .then((config) => {
+            const shopstoryCanvasIframe = window.document.getElementById(
+              "shopstory-canvas"
+            ) as HTMLIFrameElement | undefined;
 
-              shopstoryCanvasIframe?.contentWindow?.postMessage(
-                componentPickerClosed(config)
-              );
-            });
+            shopstoryCanvasIframe?.contentWindow?.postMessage(
+              componentPickerClosed(config)
+            );
+          });
+      }
+
+      if (event.data.type === "@shopstory-editor/item-inserted") {
+        actions.insertItem(event.data.payload);
+      }
+
+      if (event.data.type === "@shopstory-editor/item-moved") {
+        const { fromPath, toPath, placement } = event.data.payload;
+
+        const fromPathParseResult = parsePath(fromPath, editorContext.form);
+        const toPathParseResult = parsePath(toPath, editorContext.form);
+
+        if (
+          !fromPathParseResult.parent ||
+          !toPathParseResult.parent ||
+          fromPathParseResult.index === undefined ||
+          toPathParseResult === undefined
+        ) {
+          return;
         }
 
-        if (event.data.type === "@shopstory-editor/item-inserted") {
-          actions.insertItem(event.data.payload);
-        }
+        if (fromPathParseResult.parent.path === toPathParseResult.parent.path) {
+          const pathToMove = `${
+            fromPathParseResult.parent.path
+              ? fromPathParseResult.parent.path + "."
+              : ""
+          }${fromPathParseResult.parent.fieldName}`;
 
-        if (event.data.type === "@shopstory-editor/item-moved") {
-          const { fromPath, toPath, placement } = event.data.payload;
+          actions.runChange(() => {
+            form.mutators.move(
+              pathToMove,
+              fromPathParseResult.index,
+              toPathParseResult.index
+            );
 
-          const fromPathParseResult = parsePath(fromPath, editorContext.form);
-          const toPathParseResult = parsePath(toPath, editorContext.form);
+            return [toPath];
+          });
+        } else {
+          // TODO: We should reuse logic of pasting items here, but we need to handle the case of pasting into placeholder (empty array)
+          const isToPathPlaceholder = toPathParseResult.fieldName !== undefined;
 
-          if (
-            !fromPathParseResult.parent ||
-            !toPathParseResult.parent ||
-            fromPathParseResult.index === undefined ||
-            toPathParseResult === undefined
-          ) {
-            return;
-          }
+          const insertionPath = `${
+            toPathParseResult.parent.path === ""
+              ? ""
+              : toPathParseResult.parent.path + "."
+          }${toPathParseResult.parent.fieldName}${
+            isToPathPlaceholder
+              ? `.${toPathParseResult.index}.${toPathParseResult.fieldName}`
+              : ""
+          }`;
 
-          if (
-            fromPathParseResult.parent.path === toPathParseResult.parent.path
-          ) {
-            const pathToMove = `${
-              fromPathParseResult.parent.path
-                ? fromPathParseResult.parent.path + "."
-                : ""
-            }${fromPathParseResult.parent.fieldName}`;
+          actions.runChange(() => {
+            let newConfig = duplicateConfig(
+              dotNotationGet(form.values, fromPath),
+              editorContext
+            );
 
-            actions.runChange(() => {
-              form.mutators.move(
-                pathToMove,
-                fromPathParseResult.index,
-                toPathParseResult.index
-              );
+            if (
+              !newConfig._itemProps[toPathParseResult.templateId]?.[
+                toPathParseResult.fieldName!
+              ]
+            ) {
+              newConfig._itemProps = {
+                [toPathParseResult.templateId]: {
+                  [toPathParseResult.fieldName!]: {},
+                },
+              };
 
-              return [toPath];
-            });
-          } else {
-            // TODO: We should reuse logic of pasting items here, but we need to handle the case of pasting into placeholder (empty array)
-            const isToPathPlaceholder =
-              toPathParseResult.fieldName !== undefined;
+              newConfig = normalize(newConfig, editorContext);
+            }
 
-            const insertionPath = `${
-              toPathParseResult.parent.path === ""
-                ? ""
-                : toPathParseResult.parent.path + "."
-            }${toPathParseResult.parent.fieldName}${
+            const insertionIndex = calculateInsertionIndex(
+              fromPath,
+              toPath,
+              placement,
+              form
+            );
+
+            form.mutators.insert(insertionPath, insertionIndex, newConfig);
+
+            actions.removeItems([fromPath]);
+
+            return [
               isToPathPlaceholder
-                ? `.${toPathParseResult.index}.${toPathParseResult.fieldName}`
-                : ""
-            }`;
-
-            actions.runChange(() => {
-              let newConfig = duplicateConfig(
-                dotNotationGet(form.values, fromPath),
-                editorContext
-              );
-
-              if (
-                !newConfig._itemProps[toPathParseResult.templateId]?.[
-                  toPathParseResult.fieldName!
-                ]
-              ) {
-                newConfig._itemProps = {
-                  [toPathParseResult.templateId]: {
-                    [toPathParseResult.fieldName!]: {},
-                  },
-                };
-
-                newConfig = normalize(newConfig, editorContext);
-              }
-
-              const insertionIndex = calculateInsertionIndex(
-                fromPath,
-                toPath,
-                placement,
-                form
-              );
-
-              form.mutators.insert(insertionPath, insertionIndex, newConfig);
-
-              actions.removeItems([fromPath]);
-
-              return [
-                isToPathPlaceholder
-                  ? `${insertionPath}.0`
-                  : `${insertionPath}.${insertionIndex}`,
-              ];
-            });
-          }
+                ? `${insertionPath}.0`
+                : `${insertionPath}.${insertionIndex}`,
+            ];
+          });
         }
       }
-    );
+    }
+
+    window.addEventListener("message", handleEditorEvents);
+
+    return () => window.removeEventListener("message", handleEditorEvents);
   }, []);
 
   useEffect(() => {
