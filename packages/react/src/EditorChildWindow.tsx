@@ -148,8 +148,8 @@ export function EasyblocksCanvas({
               externalData={externalData}
               components={{
                 ...components,
-                "$richText.editor": RichTextEditor,
-                "$text.editor": TextEditor,
+                "@easyblocks/rich-text.editor": RichTextEditor,
+                "@easyblocks/text.editor": TextEditor,
                 "EditableComponentBuilder.editor": EditableComponentBuilder,
               }}
             />
