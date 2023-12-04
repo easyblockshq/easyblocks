@@ -27,12 +27,13 @@ export type EasyblocksProps = {
 export type ComponentOverrides = Record<string, ReactElement>;
 
 const builtinComponents: ComponentBuilderProps["components"] = {
-  "$richText.client": RichTextClient,
-  $richTextBlockElement: RichTextBlockElementClient,
-  $richTextInlineWrapperElement: RichTextInlineWrapperElementClient,
-  $richTextLineElement: RichTextLineElementClient,
-  $richTextPart: RichTextPartClient,
-  "$text.client": TextClient,
+  "@easyblocks/rich-text.client": RichTextClient,
+  "@easyblocks/rich-text-block-element": RichTextBlockElementClient,
+  "@easyblocks/rich-text-inline-wrapper-element":
+    RichTextInlineWrapperElementClient,
+  "@easyblocks/rich-text-line-element": RichTextLineElementClient,
+  "@easyblocks/rich-text-part": RichTextPartClient,
+  "@easyblocks/text.client": TextClient,
   "EditableComponentBuilder.client": EditableComponentBuilderClient,
   Image: StandardImage,
 };

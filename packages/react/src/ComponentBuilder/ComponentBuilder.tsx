@@ -293,12 +293,12 @@ export type ComponentBuilderProps = {
   };
   compiled: CompiledShopstoryComponentConfig | CompiledCustomComponentConfig;
   components: {
-    "$richText.client": ComponentType<any>;
-    $richTextBlockElement: ComponentType<any>;
-    $richTextInlineWrapperElement: ComponentType<any>;
-    $richTextLineElement: ComponentType<any>;
-    $richTextPart: ComponentType<any>;
-    "$text.client": ComponentType<any>;
+    "@easyblocks/rich-text.client": ComponentType<any>;
+    "@easyblocks/rich-text-block-element": ComponentType<any>;
+    "@easyblocks/rich-text-inline-wrapper-element": ComponentType<any>;
+    "@easyblocks/rich-text-line-element": ComponentType<any>;
+    "@easyblocks/rich-text-part": ComponentType<any>;
+    "@easyblocks/text.client": ComponentType<any>;
     "EditableComponentBuilder.client": ComponentType<any>;
     Image: ComponentType<ImageProps>;
     [key: string]: ComponentType<any>;

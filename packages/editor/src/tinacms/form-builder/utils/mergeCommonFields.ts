@@ -47,7 +47,7 @@ function mergeCommonFields({
     // Verify if the all unique ids aren't fields of $richText components.
     if (
       uniqueDefinitionIds.length > 1 &&
-      !uniqueDefinitionIds.every((id) => id.startsWith("$richText"))
+      !uniqueDefinitionIds.every((id) => id.startsWith("@easyblocks/rich-text"))
     ) {
       continue;
     }

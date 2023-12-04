@@ -17,6 +17,8 @@ export function richTextStyles({
         justifyContent: mapAlignmentToFlexAlignment(align),
         textAlign: align,
       },
+    },
+    components: {
       elements: {
         // We store values within $richText to allow for changing them from sidebar, but we use them inside of $richTextBlockElement.
         itemProps: values.elements.map(() => ({
