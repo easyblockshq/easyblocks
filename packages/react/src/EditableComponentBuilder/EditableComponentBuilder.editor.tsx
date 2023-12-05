@@ -1,9 +1,9 @@
-import { ContextProps } from "@easyblocks/app-utils";
 import {
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
   ComponentSchemaProp,
 } from "@easyblocks/core";
+import { ContextProps } from "@easyblocks/core/_internals";
 import React, { FC } from "react";
 import ComponentBuilder, {
   ComponentBuilderProps,
@@ -51,6 +51,6 @@ function EditableComponentBuilder(props: EditableComponentBuilderProps) {
 
 export default EditableComponentBuilder;
 export type {
-  EditableComponentBuilderProps,
   EditableComponentBuilderComponent,
+  EditableComponentBuilderProps,
 };

@@ -1,8 +1,8 @@
-import { spacingToPx } from "@easyblocks/app-utils";
 import type {
   NoCodeComponentStylesFunctionInput,
   NoCodeComponentStylesFunctionResult,
 } from "@easyblocks/core";
+import { spacingToPx } from "@easyblocks/core";
 import { parseAspectRatio } from "../../parseAspectRatio";
 import { gridController } from "./Grid.controller";
 import type { GridCompiledValues, GridParams } from "./Grid.types";

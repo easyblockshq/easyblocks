@@ -1,5 +1,5 @@
-import { CompilationContextType } from "@easyblocks/app-utils";
-import { normalize } from "@easyblocks/compiler";
+import { CompilationContextType } from "@easyblocks/core/_internals";
+import { normalize } from "@easyblocks/core/_internals";
 import { ConfigComponent } from "@easyblocks/core";
 
 export function reconcile({

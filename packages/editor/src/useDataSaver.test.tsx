@@ -1,12 +1,12 @@
-import { normalize } from "@easyblocks/compiler";
 import {
   ComponentConfig,
   Document,
-  ResponsiveValue,
   DocumentDTO,
   DocumentWithResolvedConfigDTO,
   IApiClient,
+  ResponsiveValue,
 } from "@easyblocks/core";
+import { normalize } from "@easyblocks/core/_internals";
 import { mock, mockConsoleMethod } from "@easyblocks/test-utils";
 import { assertDefined, deepClone, dotNotationSet } from "@easyblocks/utils";
 import { renderHook } from "@testing-library/react";

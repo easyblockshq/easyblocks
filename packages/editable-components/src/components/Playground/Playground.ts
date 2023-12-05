@@ -1,7 +1,7 @@
 import {
   buttonActionSchemaProp,
   InternalRenderableComponentDefinition,
-} from "@easyblocks/app-utils";
+} from "@easyblocks/core/_internals";
 import playgroundStyles from "./Playground.styles";
 
 // TODO: I really would like to get rid of this component in builtins and only keep it as editor only thing

@@ -1,7 +1,7 @@
 import { getAppUrlRoot, serialize } from "@easyblocks/utils";
 import { buildEntry } from "./buildEntry";
-import { loadCompilerScript } from "./loadScripts";
-import { Config, ContextParams } from "./types";
+import { compile, findExternals, validate } from "./compiler";
+import { CompilerModule, Config, ContextParams } from "./types";
 
 export async function buildPreview(
   documentId: string,
@@ -25,7 +25,11 @@ export async function buildPreview(
 
   const data = await response.json();
 
-  const compiler = await loadCompilerScript();
+  const compiler: CompilerModule = {
+    compile,
+    findExternals,
+    validate,
+  };
 
   const { externalData, renderableContent, meta, configAfterAuto } =
     await buildEntry({

@@ -1,6 +1,6 @@
 import type { ComponentConfig, SchemaProp } from "@easyblocks/core";
+import { Component$$$SchemaProp } from "@easyblocks/core/_internals";
 import { serialize } from "@easyblocks/utils";
-import type { Component$$$SchemaProp } from "../schema";
 
 type ShopstoryEditorEventData<
   Type extends `@shopstory-editor/${string}${string}`,
@@ -129,20 +129,20 @@ function itemMoved(
 }
 
 export {
-  selectionFramePositionChanged,
-  richTextChangedEvent,
-  componentPickerOpened,
   componentPickerClosed,
+  componentPickerOpened,
   itemInserted,
   itemMoved,
+  richTextChangedEvent,
+  selectionFramePositionChanged,
 };
 export type {
-  ShopstoryEditorEventData,
-  InferShopstoryEditorEventData,
-  SelectionFramePositionChangedEvent,
-  RichTextChangedEvent,
-  ComponentPickerOpenedEvent,
   ComponentPickerClosedEvent,
+  ComponentPickerOpenedEvent,
+  InferShopstoryEditorEventData,
   ItemInsertedEvent,
   ItemMovedEvent,
+  RichTextChangedEvent,
+  SelectionFramePositionChangedEvent,
+  ShopstoryEditorEventData,
 };

@@ -81,33 +81,6 @@ export type TrulyResponsiveValue<T> = {
 
 export type ResponsiveValue<T> = T | TrulyResponsiveValue<T>;
 
-export type Theme = {
-  space: {
-    [key: string]: ThemeRefValue<ResponsiveValue<Spacing>>;
-  };
-  fonts: {
-    [key: string]: ThemeRefValue<ResponsiveValue<Font>>;
-  };
-  colors: {
-    [key: string]: ThemeRefValue<ResponsiveValue<Color>>;
-  };
-  icons: {
-    [key: string]: ThemeRefValue<string>;
-  };
-  numberOfItemsInRow: {
-    [key: string]: ThemeRefValue<ResponsiveValue<NumberOfItemsInRow>>;
-  };
-  aspectRatios: {
-    [key: string]: ThemeRefValue<ResponsiveValue<string>>;
-  };
-  containerWidths: {
-    [key: string]: ThemeRefValue<ResponsiveValue<string>>;
-  };
-  boxShadows: {
-    [key: string]: ThemeRefValue<ResponsiveValue<string>>;
-  };
-};
-
 export type ThemeSpaceScalar = number | string;
 
 export type ThemeSpace = ThemeSpaceScalar | { [key: string]: ThemeSpaceScalar };
@@ -564,6 +537,7 @@ export type NoCodeComponentDefinition<
   editing?: NoCodeComponentEditingFunction<Values, Params>;
   auto?: NoCodeComponentAutoFunction<Values, Params>;
   pasteSlots?: Array<string>;
+  thumbnail?: string;
 };
 
 export type Config = {
@@ -738,7 +712,7 @@ export type DeviceId = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
 export type Devices = DeviceRange[];
 
-export type ComponentConfigChangeFunction = (arg: {
+export type NoCodeComponentChangeFunction = (arg: {
   value: any;
   closestDefinedValue: any;
   // closestDefinedValue: any;
@@ -774,7 +748,7 @@ export type ComponentDefinitionShared<Identifier extends string = string> = {
   schema: SchemaProp[];
   thumbnail?: string;
 
-  change?: ComponentConfigChangeFunction;
+  change?: NoCodeComponentChangeFunction;
   icon?: "link" | "grid_3x3";
   getEditorSidebarPreview?: (
     config: ConfigComponent,
@@ -998,10 +972,6 @@ export type ExternalWithSchemaProp = {
   externalReference: ExternalReference;
   schemaProp: ExternalSchemaProp;
 };
-
-/**
- * This is sacred API. It "fixes" current library version to what is available for compilation from our cloud script.
- */
 
 export type CompilationMetadata = {
   vars: {

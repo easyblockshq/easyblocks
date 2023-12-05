@@ -2,22 +2,10 @@
 import {
   ComponentPickerClosedEvent,
   componentPickerOpened,
-  ContextProps,
-  findComponentDefinitionById,
   getComponentMainType,
-  InternalComponentDefinition,
   isCompoundExternalDataValue,
   isEmptyRenderableContent,
-  isExternalSchemaProp,
-  isSchemaPropActionTextModifier,
-  isSchemaPropComponent,
-  isSchemaPropComponentOrComponentCollection,
-  isSchemaPropTextModifier,
   itemInserted,
-  responsiveValueGetDefinedValue,
-  responsiveValueMap,
-  responsiveValueReduce,
-  splitTemplateName,
 } from "@easyblocks/app-utils";
 import {
   CompilationMetadata,
@@ -33,22 +21,36 @@ import {
   ExternalReference,
   ExternalReferenceNonEmpty,
   ExternalSchemaProp,
-  getExternalReferenceLocationKey,
-  getExternalValue,
-  isLocalTextReference,
   LocalReference,
   LocalTextReference,
   ResponsiveValue,
   UnresolvedResource,
+  getExternalReferenceLocationKey,
+  getExternalValue,
+  isLocalTextReference,
+  responsiveValueGetDefinedValue,
+  responsiveValueMap,
+  responsiveValueReduce,
 } from "@easyblocks/core";
+import {
+  ContextProps,
+  InternalComponentDefinition,
+  findComponentDefinitionById,
+  isExternalSchemaProp,
+  isSchemaPropActionTextModifier,
+  isSchemaPropComponent,
+  isSchemaPropComponentOrComponentCollection,
+  isSchemaPropTextModifier,
+  splitTemplateName,
+} from "@easyblocks/core/_internals";
 import React, { ComponentType, Fragment, ReactElement } from "react";
 import Box from "../Box/Box";
 import { useEasyblocksExternalData } from "../EasyblocksExternalDataProvider";
 import { useEasyblocksMetadata } from "../EasyblocksMetadataProvider";
 import MissingComponent from "../MissingComponent";
 import Placeholder from "../Placeholder";
-import { resop } from "../resop";
 import { ImageProps } from "../StandardImage";
+import { resop } from "../resop";
 
 function buildBoxes(
   compiled: any,

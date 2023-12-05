@@ -1,5 +1,6 @@
-import { CompilationContextType, configMap } from "@easyblocks/app-utils";
+import { configMap } from "@easyblocks/app-utils";
 import { ConfigComponent } from "@easyblocks/core";
+import { CompilationContextType } from "@easyblocks/core/_internals";
 
 export function addLocalizedFlag(
   config: ConfigComponent,

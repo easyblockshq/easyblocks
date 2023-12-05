@@ -1,4 +1,5 @@
-import { Form, FormOptions, InternalField } from "@easyblocks/app-utils";
+import { Form, FormOptions } from "@easyblocks/app-utils";
+import { InternalField } from "@easyblocks/core/_internals";
 import React from "react";
 import { useCMSEvent } from "./use-cms-event";
 import { usePlugins } from "./use-plugin";

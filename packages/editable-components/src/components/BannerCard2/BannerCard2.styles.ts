@@ -1,7 +1,7 @@
-import { spacingToPx } from "@easyblocks/app-utils";
 import {
   NoCodeComponentStylesFunctionInput,
   NoCodeComponentStylesFunctionResult,
+  spacingToPx,
 } from "@easyblocks/core";
 import { getBorderCSSProps, getBorderInfo } from "../../borderHelpers";
 import { EdgeCompiledValues } from "../../common.types";

@@ -1,4 +1,4 @@
-import { InternalField } from "@easyblocks/app-utils";
+import { InternalField } from "@easyblocks/core/_internals";
 import React, { MouseEvent } from "react";
 import styled from "styled-components";
 import { useEditorContext } from "./EditorContext";

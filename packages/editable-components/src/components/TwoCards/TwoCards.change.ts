@@ -1,4 +1,4 @@
-import { ComponentConfigChangeFunction } from "@easyblocks/app-utils";
+import { NoCodeComponentChangeFunction } from "@easyblocks/core";
 import { TWO_CARDS_COL_NUM } from "./twoCardsConstants";
 
 type WidthRelatedValues = {
@@ -30,7 +30,7 @@ function correctCardWidths(
   return ret;
 }
 
-export const twoCardsChange: ComponentConfigChangeFunction = ({
+export const twoCardsChange: NoCodeComponentChangeFunction = ({
   value,
   fieldName,
   values,

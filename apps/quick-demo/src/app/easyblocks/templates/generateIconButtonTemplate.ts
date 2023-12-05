@@ -1,5 +1,5 @@
+import { buildText } from "@easyblocks/core/_internals";
 import { EditorContextType } from "@easyblocks/editor";
-import { buildText } from "@easyblocks/editor/dist/types/text/buildText";
 
 export const generateIconButtonTemplate = (
   editorContext: EditorContextType,

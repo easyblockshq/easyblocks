@@ -1,10 +1,13 @@
 import {
+  ConfigComponent,
+  UnresolvedResource,
+  isTrulyResponsiveValue,
+} from "@easyblocks/core";
+import {
   CompilationContextType,
   configTraverse,
   isExternalSchemaProp,
-  isTrulyResponsiveValue,
-} from "@easyblocks/app-utils";
-import { ConfigComponent, UnresolvedResource } from "@easyblocks/core";
+} from "@easyblocks/core/_internals";
 
 type ExternalValueWithPositionInConfig = {
   type: string;

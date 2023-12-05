@@ -1,25 +1,17 @@
 import {
-  ComponentConfig,
   EmptyRenderableContent,
   NonEmptyRenderableContent,
   RenderableContent,
 } from "@easyblocks/core";
-import { CompilationContextType } from "../types";
 import { isCompiledComponentConfig } from "./isCompiledComponentConfig";
-import { traverseComponents } from "./traverseComponents";
 
-export * from "./configFindAllPaths";
 export * from "./configMap";
-export * from "./configTraverse";
-export * from "./duplicateConfig";
-export * from "./isComponentConfig";
-export * from "./traverseComponents";
 export {
-  isCompiledComponentConfig,
-  isRenderableContent,
-  isNonEmptyRenderableContent,
-  isEmptyRenderableContent,
   getComponentMainType,
+  isCompiledComponentConfig,
+  isEmptyRenderableContent,
+  isNonEmptyRenderableContent,
+  isRenderableContent,
 };
 
 function isRenderableContent(input: unknown): input is RenderableContent {
@@ -92,23 +84,3 @@ const getComponentMainType = (componentTypes: string[]) => {
 
   return type;
 };
-
-export function findConfigById(
-  config: ComponentConfig,
-  context: CompilationContextType,
-  configId: string
-): ComponentConfig | undefined {
-  let foundConfig: ComponentConfig | undefined;
-
-  traverseComponents(config, context, ({ componentConfig }) => {
-    if (foundConfig) {
-      return;
-    }
-
-    if (componentConfig._id === configId) {
-      foundConfig = componentConfig;
-    }
-  });
-
-  return foundConfig;
-}

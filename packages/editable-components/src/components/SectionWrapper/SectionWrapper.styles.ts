@@ -1,8 +1,8 @@
-import { spacingToPx } from "@easyblocks/app-utils";
 import type {
   NoCodeComponentStylesFunctionInput,
   NoCodeComponentStylesFunctionResult,
 } from "@easyblocks/core";
+import { spacingToPx } from "@easyblocks/core";
 import type { SectionWrapperCompiledValues } from "./SectionWrapper.types";
 
 export function $sectionWrapperStyles({

@@ -1,6 +1,8 @@
 {
   "extends": "../../base.tsconfig.json",
   "compilerOptions": {
+    "module": "Node16",
+    "moduleResolution": "node16",
     "outDir": "./dist",
     "declaration": true,
     "emitDeclarationOnly": true,

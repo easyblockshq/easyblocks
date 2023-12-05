@@ -3,17 +3,9 @@ import Buttons from "./$buttons/$buttons.client";
 import Icon from "./$icon/$icon.client";
 import ImageClient from "./$image/$image.client";
 import ImageEditor from "./$image/$image.editor";
-import RichTextClient from "./$richText/$richText.client";
-import RichTextEditor from "./$richText/$richText.editor";
-import RichTextBlockElement from "./$richText/$richTextBlockElement/$richTextBlockElement.client";
-import RichTextLineElement from "./$richText/$richTextLineElement/$richTextLineElement.client";
-import RichTextInlineWrapperElement from "./$richText/$richTextInlineWrapperElement/$richTextInlineWrapperElement.client";
-import RichTextPart from "./$richText/$richTextPart/$richTextPart.client";
 import RootGrid from "./$RootGrid/$RootGrid.client";
 import RootSections from "./$RootSections/$RootSections.client";
 import Stack from "./$stack/$stack";
-import TextClient from "./$text/$text.client";
-import TextEditor from "./$text/$text.editor";
 import TwoItems from "./$twoItems/$twoItems";
 import VideoClient from "./$video/$video.client";
 import VideoEditor from "./$video/$video.editor";
@@ -39,10 +31,6 @@ import SectionWrapper from "./SectionWrapper/SectionWrapper";
 const defaultEditableComponents = Object.freeze({
   "$image.client": ImageClient,
   "$image.editor": ImageEditor,
-  "@easyblocks/rich-text.client": RichTextClient,
-  "@easyblocks/rich-text.editor": RichTextEditor,
-  "@easyblocks/text.client": TextClient,
-  "@easyblocks/text.editor": TextEditor,
   "$video.client": VideoClient,
   "$video.editor": VideoEditor,
   $backgroundColor: BackgroundColor,
@@ -62,10 +50,6 @@ const defaultEditableComponents = Object.freeze({
   $IconButton2: IconButton_v2,
   $Placeholder: Placeholder,
   $Playground: Playground,
-  "@easyblocks/rich-text-block-element": RichTextBlockElement,
-  "@easyblocks/rich-text-inline-wrapper-element": RichTextInlineWrapperElement,
-  "@easyblocks/rich-text-line-element": RichTextLineElement,
-  "@easyblocks/rich-text-part": RichTextPart,
   $RootGrid: RootGrid,
   $RootSections: RootSections,
   $separator: Separator,
@@ -92,8 +76,6 @@ function builtinEditableComponents(
 
 const defaultBuiltinClientOnlyEditableComponents = Object.freeze({
   "$image.client": ImageClient,
-  "@easyblocks/rich-text.client": RichTextClient,
-  "@easyblocks/text.client": TextClient,
   "$video.client": VideoClient,
   $backgroundColor: BackgroundColor,
   // $BannerCard: BannerCard_v1,
@@ -111,10 +93,6 @@ const defaultBuiltinClientOnlyEditableComponents = Object.freeze({
   $IconButton: IconButton_v1,
   $IconButton2: IconButton_v2,
   $Playground: Playground,
-  "@easyblocks/rich-text-block-element": RichTextBlockElement,
-  "@easyblocks/rich-text-inline-wrapper-element": RichTextInlineWrapperElement,
-  "@easyblocks/rich-text-line-element": RichTextLineElement,
-  "@easyblocks/rich-text-part": RichTextPart,
   $RootGrid: RootGrid,
   $RootSections: RootSections,
   $separator: Separator,

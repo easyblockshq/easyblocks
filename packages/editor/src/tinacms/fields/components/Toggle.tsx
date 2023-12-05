@@ -1,4 +1,4 @@
-import { InternalField } from "@easyblocks/app-utils";
+import { InternalField } from "@easyblocks/core/_internals";
 import { SSToggle } from "@easyblocks/design-system";
 import React, { FC } from "react";
 import styled from "styled-components";

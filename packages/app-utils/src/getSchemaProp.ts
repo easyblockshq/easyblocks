@@ -1,5 +1,5 @@
-import { InternalComponentDefinition } from "./types";
 import { SchemaProp } from "@easyblocks/core";
+import { InternalComponentDefinition } from "@easyblocks/core/_internals";
 
 function getSchemaPropByProp(
   definition: InternalComponentDefinition,

@@ -1,15 +1,15 @@
-import {
-  EditorContextType as BaseEditorContextType,
-  Form,
-  InternalAnyField,
-} from "@easyblocks/app-utils";
-import { CompilationCache } from "@easyblocks/compiler";
+import { Form } from "@easyblocks/app-utils";
 import {
   CompiledComponentConfig,
   ConfigComponent,
   Resource,
   Template,
 } from "@easyblocks/core";
+import {
+  EditorContextType as BaseEditorContextType,
+  CompilationCache,
+  InternalAnyField,
+} from "@easyblocks/core/_internals";
 import React, { useContext } from "react";
 import { EditorWidget } from "./sidebar/types";
 import { ActionsType, TextSyncers } from "./types";

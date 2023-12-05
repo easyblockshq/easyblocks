@@ -1,8 +1,8 @@
-import { spacingToPx } from "@easyblocks/app-utils";
 import type {
   NoCodeComponentStylesFunctionInput,
   NoCodeComponentStylesFunctionResult,
 } from "@easyblocks/core";
+import { spacingToPx } from "@easyblocks/core";
 import { type EdgeCompiledValues } from "../../common.types";
 import { getEdgeValues } from "../../getEdgeValues";
 import type { TwoCardsCompiledValues } from "./TwoCards.types";

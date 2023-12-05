@@ -1,6 +1,9 @@
-import { Devices, ResponsiveValue } from "@easyblocks/core";
+import {
+  Devices,
+  ResponsiveValue,
+  isTrulyResponsiveValue,
+} from "@easyblocks/core";
 import React from "react";
-import { isTrulyResponsiveValue } from "./isTrulyResponsiveValue";
 
 export function responsiveValueToSelectivelyDisplayedComponents<T>(
   input: ResponsiveValue<T | undefined>,

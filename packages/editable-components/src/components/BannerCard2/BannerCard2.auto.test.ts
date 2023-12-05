@@ -2,7 +2,7 @@ import { ConfigComponent, Devices } from "@easyblocks/core";
 import {
   CompilationContextType,
   getDevicesWidths,
-} from "@easyblocks/app-utils";
+} from "@easyblocks/core/_internals";
 import { testCompilationContext } from "../../test-utils";
 import { bannerCard2Auto } from "./BannerCard2.auto";
 

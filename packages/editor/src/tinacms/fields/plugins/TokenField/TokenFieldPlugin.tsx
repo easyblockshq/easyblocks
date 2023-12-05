@@ -1,25 +1,23 @@
 import {
-  getDevicesWidths,
-  isTrulyResponsiveValue,
-  responsiveValueGetDefinedValue,
-} from "@easyblocks/app-utils";
-import {
   Field,
   RefValue,
   ResponsiveValue,
   ThemeRefValue,
+  isTrulyResponsiveValue,
+  responsiveValueGetDefinedValue,
 } from "@easyblocks/core";
+import { getDevicesWidths } from "@easyblocks/core/_internals";
 import {
+  SSColors,
+  SSInput,
   Select,
   SelectItem,
   SelectSeparator,
-  SSColors,
-  SSInput,
 } from "@easyblocks/design-system";
 import React, {
-  forwardRef,
   Fragment,
   ReactNode,
+  forwardRef,
   useRef,
   useState,
 } from "react";

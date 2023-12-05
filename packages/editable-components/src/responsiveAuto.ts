@@ -1,5 +1,9 @@
-import { responsiveValueSet } from "@easyblocks/app-utils";
-import { DeviceRange, Devices, TrulyResponsiveValue } from "@easyblocks/core";
+import {
+  DeviceRange,
+  Devices,
+  TrulyResponsiveValue,
+  responsiveValueSet,
+} from "@easyblocks/core";
 import { DecomposedValues, decomposeValues } from "./decomposeValues";
 
 export type ResponsiveAutoCallback = (

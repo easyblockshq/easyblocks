@@ -1,5 +1,4 @@
 export * from "./checkers";
-export { loadScript } from "./loadScripts";
 export * from "./types";
 export * from "./resourcesUtils";
 export * from "./buildPreview";
@@ -21,3 +20,5 @@ export { buildDocument } from "./buildDocument";
 export { isNoCodeComponentOfType } from "./isNoCodeComponentOfType";
 export { spacingToPx } from "./spacingToPx";
 export { box } from "./box";
+export * from "./compiler";
+export * from "./responsiveness";

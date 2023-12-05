@@ -1,4 +1,4 @@
-import { responsiveValueForceGet } from "@easyblocks/app-utils";
+import { responsiveValueForceGet } from "@easyblocks/core";
 import { SSColors, SSFonts, SSIcons } from "@easyblocks/design-system";
 import { dotNotationGet, toArray } from "@easyblocks/utils";
 import React from "react";
@@ -12,8 +12,8 @@ import { Tooltip, TooltipArrow, TooltipBody } from "../Tooltip";
 import { useTooltip } from "../useTooltip";
 import { FieldMetaWrapper } from "../wrapFieldWithMeta";
 import {
-  responsiveFieldController,
   ResponsiveFieldDefinition,
+  responsiveFieldController,
 } from "./responsiveFieldController";
 
 type ResponsivePluginProps = {

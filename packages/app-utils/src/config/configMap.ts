@@ -2,10 +2,12 @@ import {
   ConfigComponent,
   SchemaProp,
   TrulyResponsiveValue,
+  isTrulyResponsiveValue,
 } from "@easyblocks/core";
-import { findComponentDefinition } from "../findComponentDefinition";
-import { isTrulyResponsiveValue } from "../responsive/isTrulyResponsiveValue";
-import { CompilationContextType } from "../types";
+import {
+  CompilationContextType,
+  findComponentDefinition,
+} from "@easyblocks/core/_internals";
 
 /**
  * Traverses recursively the config tree (similar to traverseConfig) but behaves like "Array.map". It returns new tree with elements mapped to new ones.

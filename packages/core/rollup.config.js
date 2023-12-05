@@ -7,10 +7,14 @@ import replace from "@rollup/plugin-replace";
 import { getFullySpecifiedEnvs } from "@easyblocks/build-tools";
 import path from "node:path";
 import visualizer from "rollup-plugin-visualizer";
+import preserveDirectives from "rollup-plugin-preserve-directives";
+import packageJson from "./package.json";
 
 const extensions = [".js", ".jsx", ".ts", ".tsx"];
 
 const getPlugins = (stat, isFullBundle = false) => {
+  const preserveDirectivesPlugin = preserveDirectives();
+
   /**
    * @type {Array<import('rollup').Plugin>}
    */
@@ -41,17 +45,9 @@ const getPlugins = (stat, isFullBundle = false) => {
     }),
 
     {
-      name: "preserve-api-script-module-import",
-      renderDynamicImport: (options) => {
-        if (options.moduleId.endsWith("loadScripts.ts")) {
-          return {
-            left: "import(",
-            right: ")",
-          };
-        }
-
-        return;
-      },
+      ...preserveDirectivesPlugin,
+      // @ts-expect-error preserveDirectivesPlugin is incompatible by default with our version or rollup
+      renderChunk: preserveDirectivesPlugin.renderChunk.handler,
     },
   ];
 
@@ -62,16 +58,12 @@ const getPlugins = (stat, isFullBundle = false) => {
   return plugins;
 };
 
-// Get all external dependencies from package.json
-const absolutePath = process.cwd();
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const packageJson = require(path.join(absolutePath, "package.json"));
 const dependencyKeys = Object.keys(packageJson.dependencies || {});
 const peerDependencyKeys = Object.keys(packageJson.peerDependencies || {});
 
 const allDependenciesKeys = [
   ...dependencyKeys,
-  ...peerDependencyKeys,
+  ...peerDependencyKeys.map((key) => new RegExp(`^${key}`)),
   /@babel\/runtime/,
   /^lodash\//,
 ];
@@ -124,7 +116,7 @@ function createRollupConfigs({
 }
 
 export default createRollupConfigs({
-  inputFile: "src/index.ts",
+  inputFile: ["src/index.ts", "src/_internals.ts"],
   baseOutputDir: "dist",
   baseStatOutputDir: "stats",
 });

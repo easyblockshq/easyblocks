@@ -1,4 +1,4 @@
-import { InternalRenderableComponentDefinition } from "@easyblocks/app-utils";
+import { InternalRenderableComponentDefinition } from "@easyblocks/core/_internals";
 import {
   ChildComponentEditingInfo,
   EditingComponentFields,

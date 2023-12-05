@@ -5,16 +5,16 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import {
-  isConfigPathRichTextPart,
-  parsePath,
-  RICH_TEXT_PART_CONFIG_PATH_REGEXP,
-} from "@easyblocks/app-utils";
-import {
   CompiledCustomComponentConfig,
   CompiledShopstoryComponentConfig,
   ComponentCollectionSchemaProp,
   SerializedRenderableComponentDefinition,
 } from "@easyblocks/core";
+import {
+  RICH_TEXT_PART_CONFIG_PATH_REGEXP,
+  isConfigPathRichTextPart,
+  parsePath,
+} from "@easyblocks/core/_internals";
 import { SSColors } from "@easyblocks/design-system";
 import { EditorContextType } from "@easyblocks/editor";
 import { toArray } from "@easyblocks/utils";

@@ -1,8 +1,8 @@
+import { SchemaProp } from "@easyblocks/core";
 import {
   InternalComponentDefinition,
   InternalField,
-} from "@easyblocks/app-utils";
-import { SchemaProp } from "@easyblocks/core";
+} from "@easyblocks/core/_internals";
 import { last } from "@easyblocks/utils";
 import { getUniqueValues } from "../../fields/components/getUniqueValues";
 

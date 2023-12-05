@@ -1,3 +1,8 @@
+import { ConfigComponent } from "@easyblocks/core";
+import {
+  findComponentDefinition,
+  stripRichTextPartSelection,
+} from "@easyblocks/core/_internals";
 import {
   SSButtonPrimary,
   SSButtonSecondary,
@@ -8,10 +13,7 @@ import { dotNotationGet } from "@easyblocks/utils";
 import * as React from "react";
 import styled from "styled-components";
 import { useEditorContext } from "./EditorContext";
-import { ConfigComponent } from "@easyblocks/core";
 import { pathToCompiledPath } from "./pathToCompiledPath";
-import { stripRichTextPartSelection } from "@easyblocks/app-utils";
-import { findComponentDefinition } from "@easyblocks/app-utils";
 
 const IdWrapper = styled.div`
   display: block;

@@ -1,15 +1,13 @@
-import {
-  InternalRenderableComponentDefinition,
-  isCompoundExternalDataValue,
-  responsiveValueFindDeviceWithDefinedValue,
-  responsiveValueForceGet,
-} from "@easyblocks/app-utils";
+import { isCompoundExternalDataValue } from "@easyblocks/app-utils";
 import {
   ExternalReference,
   getExternalReferenceLocationKey,
   getExternalValue,
   VideoSrc,
+  responsiveValueFindDeviceWithDefinedValue,
+  responsiveValueForceGet,
 } from "@easyblocks/core";
+import { InternalRenderableComponentDefinition } from "@easyblocks/core/_internals";
 import { assertDefined, last } from "@easyblocks/utils";
 import videoStyles from "./$video.styles";
 

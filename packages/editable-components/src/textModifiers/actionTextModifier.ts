@@ -1,4 +1,4 @@
-import type { InternalTextModifierDefinition } from "@easyblocks/app-utils";
+import type { InternalTextModifierDefinition } from "@easyblocks/core/_internals";
 import { ColorSchemaProp, ComponentConfigBase } from "@easyblocks/core";
 
 const TRANSITION_TIMING_FUNCTION = "cubic-bezier(0.4, 0, 0.2, 1)";

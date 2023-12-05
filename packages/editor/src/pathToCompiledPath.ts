@@ -1,12 +1,11 @@
-import { EditorContextType } from "./EditorContext";
+import { SchemaProp } from "@easyblocks/core";
 import {
   findComponentDefinitionById,
-  isSchemaPropAction,
   isSchemaPropActionTextModifier,
   isSchemaPropTextModifier,
   parsePath,
-} from "@easyblocks/app-utils";
-import { SchemaProp } from "@easyblocks/core";
+} from "@easyblocks/core/_internals";
+import { EditorContextType } from "./EditorContext";
 
 export function pathToCompiledPath(
   path: string,

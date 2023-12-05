@@ -1,9 +1,9 @@
+import { Form } from "@easyblocks/app-utils";
 import {
-  Form,
-  InternalField,
   isTrulyResponsiveValue,
   responsiveValueForceGet,
-} from "@easyblocks/app-utils";
+} from "@easyblocks/core";
+import { InternalField } from "@easyblocks/core/_internals";
 import { dotNotationGet, toArray } from "@easyblocks/utils";
 import { EditorContextType } from "../../../../EditorContext";
 
