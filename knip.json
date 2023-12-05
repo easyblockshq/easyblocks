@@ -1,11 +1,20 @@
 {
+  "$schema": "https://unpkg.com/knip@3/schema.json",
   "workspaces": {
-    "packages/compiler": {
-      "ignore": ["src/built/**/*"]
+    "apps/*": {
+      "next": true
     },
-    "packages/editable-components": {
-      "ignore": ["src/built/**/*"]
+    "packages/*": {
+      "project": ["src/**/*.{js,ts,tsx}"]
+    },
+    "packages/core": {
+      "entry": ["src/index.ts", "src/_internals.ts"]
     }
   },
+  "ignore": [
+    "apps/website/src/components/TwitterSection/TwitterSection.tsx",
+    "packages/.eslintrc.js",
+    "packages/editable-components/src/textModifiers/inlineCodeTextModifier.ts"
+  ],
   "ignoreBinaries": ["supabase"]
 }
