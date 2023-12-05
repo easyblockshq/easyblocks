@@ -1,4 +1,4 @@
-import convertUnits from "./css-unit-converter";
+import { convertUnits } from "./css-unit-converter";
 
 function convertNodes(left, right, precision) {
   switch (left.type) {
@@ -24,4 +24,4 @@ function convertAbsoluteLength(left, right, precision) {
   return { left, right };
 }
 
-export default convertNodes;
+export { convertNodes as convert };

@@ -13,7 +13,6 @@
     "@easyblocks/editable-components": "workspace:*",
     "@easyblocks/design-system": "workspace:*",
     "@easyblocks/media": "workspace:*",
-    "@easyblocks/editor": "workspace:*",
     "@easyblocks/react": "workspace:*",
     "@radix-ui/react-dialog": "^1.0.4",
     "@types/node": "20.7.1",

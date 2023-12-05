@@ -1,4 +1,4 @@
-import convert from "./convert";
+import { convert } from "./convert";
 
 function reduce(node, precision) {
   if (node.type === "MathExpression")
@@ -302,4 +302,4 @@ function reduceMathExpression(node, precision) {
   return node;
 }
 
-export default reduce;
+export { reduce as reducer };

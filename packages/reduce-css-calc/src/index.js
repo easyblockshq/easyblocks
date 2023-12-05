@@ -1,7 +1,7 @@
 import valueParser from "postcss-value-parser";
 import { parser } from "./parser"; // eslint-disable-line
-import reducer from "./lib/reducer";
-import stringifier from "./lib/stringifier";
+import { reducer } from "./lib/reducer";
+import { stringifier } from "./lib/stringifier";
 
 const MATCH_CALC = /((?:\-[a-z]+\-)?calc)/;
 
@@ -38,7 +38,7 @@ function calculateAllViewportValues(ast, map) {
   return ast;
 }
 
-export default (value, precision = 5, map = {}) => {
+export function reduceCSSCalc(value, precision = 5, map = {}) {
   return valueParser(value)
     .walk((node) => {
       // skip anything which isn't a calc() function
@@ -62,4 +62,4 @@ export default (value, precision = 5, map = {}) => {
       node.value = stringifier(node.value, reducedAst, precision);
     }, true)
     .toString();
-};
+}

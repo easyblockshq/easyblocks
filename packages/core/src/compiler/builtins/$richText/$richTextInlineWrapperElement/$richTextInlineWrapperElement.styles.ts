@@ -17,7 +17,7 @@ export type RichTextActionElementValues = {
   actionTextModifier: [CompiledTextModifier] | [];
 };
 
-export default function styles({
+export function richTextInlineWrapperElementStyles({
   values: { elements, actionTextModifier },
   isEditing,
   __COMPILATION_CONTEXT__,

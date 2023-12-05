@@ -63,7 +63,7 @@ function stringify(node, prec) {
   }
 }
 
-export default function (calc, node, precision) {
+export function stringifier(calc, node, precision) {
   let str = stringify(node, precision);
 
   if (node.type === "MathExpression") {

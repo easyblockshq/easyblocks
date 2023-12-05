@@ -15,7 +15,7 @@ export interface RichTextPartValues {
   // textModifier: [CompiledTextModifier] | [];
 }
 
-export default function styles({
+export function richTextPartStyles({
   values: { color, font },
   params: { __modifierStyles },
 }: NoCodeComponentStylesFunctionInput<

@@ -32,8 +32,6 @@
     "@easyblocks/core": "^0.3.0",
     "@easyblocks/design-system": "workspace:*",
     "@easyblocks/editor": "workspace:*",
-    "@radix-ui/react-dropdown-menu": "^2.0.5",
-    "react-modal": "^3.12.1",
     "styled-components": "^5.3.3"
   },
   "peerDependencies": {
@@ -42,10 +40,8 @@
   },
   "devDependencies": {
     "@easyblocks/build-tools": "^0.1.0",
-    "@easyblocks/utils": "workspace:*",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
-    "@types/react-modal": "^3.13.1",
     "@types/styled-components": "^5.1.26"
   },
   "files": [

@@ -1,4 +1,4 @@
-import reduceCSSCalc from "@easyblocks/reduce-css-calc";
+import { reduceCSSCalc } from "@easyblocks/reduce-css-calc";
 import { Spacing } from "./types";
 
 type PxSpacing = {

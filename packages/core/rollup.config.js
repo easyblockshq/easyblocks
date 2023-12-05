@@ -77,6 +77,27 @@ function createRollupConfigs({
   const banner = "/* with love from shopstory */";
   const external = isFullBundle ? [] : allDependenciesKeys;
 
+  const onwarn = (warning, warn) => {
+    if (
+      warning.message.includes(
+        "Module level directives cause errors when bundled, 'use client' was ignored."
+      )
+    ) {
+      return;
+    }
+
+    // parser file is automatically generated and we don't have control over it
+    if (
+      warning.message.includes(
+        `Entry module "../reduce-css-calc/src/parser.js" is implicitly using "default" export mode`
+      )
+    ) {
+      return;
+    }
+
+    warn(warning);
+  };
+
   /** @type import('rollup').RollupOptions */
   const esBundleConfig = {
     input: inputFile,
@@ -92,6 +113,7 @@ function createRollupConfigs({
       isFullBundle
     ),
     external,
+    onwarn,
   };
 
   /** @type import('rollup').RollupOptions */
@@ -110,6 +132,7 @@ function createRollupConfigs({
       isFullBundle
     ),
     external,
+    onwarn,
   };
 
   return [esBundleConfig, cjsBundleConfig];

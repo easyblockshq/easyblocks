@@ -4,5 +4,5 @@ declare module "@easyblocks/reduce-css-calc" {
     precision: number,
     map?: { vw?: number; percent?: number }
   ) => string;
-  export default reduceCSSCalc;
+  export { reduceCSSCalc };
 }

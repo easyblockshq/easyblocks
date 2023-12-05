@@ -1,5 +1,3 @@
-import noop from "lodash/noop";
-
 /**
  * Mocks given method of `console` object. If `implementation` is not given, it defaults to noop.
  */
@@ -7,7 +5,7 @@ function mockConsoleMethod<
   ConsoleMethodName extends Exclude<keyof Console, "Console">
 >(
   methodName: ConsoleMethodName,
-  implementation: (...args: Array<any>) => void = noop,
+  implementation: (...args: Array<any>) => void = () => {},
   options: { debug: boolean } = { debug: false }
 ) {
   const originalConsoleMethod = console[methodName];

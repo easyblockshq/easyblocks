@@ -109,7 +109,7 @@ const conversions = {
   },
 };
 
-export default function (value, sourceUnit, targetUnit, precision) {
+export function convertUnits(value, sourceUnit, targetUnit, precision) {
   if (!conversions.hasOwnProperty(targetUnit))
     throw new Error("Cannot convert to " + targetUnit);
 

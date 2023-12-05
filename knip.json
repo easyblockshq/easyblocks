@@ -1,19 +1,27 @@
 {
   "$schema": "https://unpkg.com/knip@3/schema.json",
   "workspaces": {
+    ".": {
+      "entry": ["packages/.eslintrc.js"]
+    },
     "apps/*": {
-      "next": true
+      "next": true,
+      "ignoreDependencies": ["eslint", "eslint-config-next"]
     },
     "packages/*": {
-      "project": ["src/**/*.{js,ts,tsx}"]
+      "project": ["src/**/*.{js,ts,tsx}"],
+      "ignoreDependencies": ["@babel/runtime"]
     },
     "packages/core": {
-      "entry": ["src/index.ts", "src/_internals.ts"]
+      "entry": ["src/index.ts", "src/_internals.ts"],
+      "ignoreDependencies": ["@babel/runtime", "postcss-value-parser"]
+    },
+    "packages/editor": {
+      "ignoreDependencies": ["@babel/runtime", "final-form-arrays"]
     }
   },
   "ignore": [
     "apps/website/src/components/TwitterSection/TwitterSection.tsx",
-    "packages/.eslintrc.js",
     "packages/editable-components/src/textModifiers/inlineCodeTextModifier.ts"
   ],
   "ignoreBinaries": ["supabase"]

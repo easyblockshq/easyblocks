@@ -39,7 +39,7 @@ export type RichTextBlockElementParams = {
   mainFontSize: string | number;
 };
 
-export default function styles({
+export function richTextBlockElementStyles({
   values: { elements, type },
   params: { accessibilityRole, align, mainColor, mainFont, mainFontSize },
 }: NoCodeComponentStylesFunctionInput<

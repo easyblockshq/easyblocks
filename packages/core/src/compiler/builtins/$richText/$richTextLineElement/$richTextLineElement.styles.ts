@@ -14,7 +14,7 @@ export type RichTextLineParams = {
   blockType: RichTextBlockElementType;
 };
 
-export default function styles({
+export function richTextLineElementStyles({
   values,
   params,
 }: NoCodeComponentStylesFunctionInput<

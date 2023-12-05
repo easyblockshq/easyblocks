@@ -6,7 +6,7 @@ import {
 } from "../../../../types";
 import { findPathOfFirstAncestorOfType } from "../../../parsePath";
 import { EditableComponentToComponentConfig } from "../../../types";
-import richTextPartStyles, { RichTextPartValues } from "./$richTextPart.styles";
+import { RichTextPartValues, richTextPartStyles } from "./$richTextPart.styles";
 
 const editing: RichTextEditingFunction = ({
   editingInfo,

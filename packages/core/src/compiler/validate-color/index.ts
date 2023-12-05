@@ -298,4 +298,4 @@ const validateColor = (color: string) => {
   return false;
 };
 
-export default validateColor;
+export { validateColor };

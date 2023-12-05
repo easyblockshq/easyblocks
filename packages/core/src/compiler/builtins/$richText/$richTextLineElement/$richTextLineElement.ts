@@ -12,9 +12,10 @@ import {
   NoCodeComponentDefinition,
 } from "../../../../types";
 import { EditableComponentToComponentConfig } from "../../../types";
-import richTextLineElementStyles, {
+import {
   RichTextLineCompiledComponentValues,
   RichTextLineParams,
+  richTextLineElementStyles,
 } from "./$richTextLineElement.styles";
 
 const richTextLineElementEditableComponent: NoCodeComponentDefinition<

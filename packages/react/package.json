@@ -32,21 +32,15 @@
     "@dnd-kit/sortable": "^7.0.2",
     "@easyblocks/core": "workspace:*",
     "@easyblocks/design-system": "workspace:*",
-    "@easyblocks/editable-components": "workspace:*",
     "@easyblocks/editor": "workspace:*",
     "@stitches/core": "^1.2.5",
-    "lodash": "^4.17.21",
     "zod": "^3.21.4"
   },
   "devDependencies": {
     "@easyblocks/app-utils": "workspace:*",
     "@easyblocks/build-tools": "^0.1.0",
     "@easyblocks/utils": "workspace:*",
-    "@jest/types": "^26.6.2",
-    "@testing-library/jest-dom": "^5.16.1",
-    "@testing-library/react": "^12.1.2",
-    "@types/jest": "^26.0.20",
-    "@types/react": "^18.2.20",
+    "@types/react": "^18.2.42",
     "@types/react-dom": "^18.2.7"
   },
   "peerDependencies": {

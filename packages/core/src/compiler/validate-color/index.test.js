@@ -1,4 +1,5 @@
-import validateColor, {
+import {
+  validateColor,
   validateHTMLColor,
   validateHTMLColorHex,
   validateHTMLColorHsl,

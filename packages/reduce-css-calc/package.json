@@ -26,11 +26,9 @@
     "@babel/core": "^7.20.12",
     "@babel/preset-env": "^7.19.1",
     "ava": "^0.18.2",
-    "babel-register": "^6.18.0",
     "cross-env": "^3.1.4",
     "del-cli": "^0.2.1",
-    "jison-gho": "^0.6.1-216",
-    "process-nextick-args": "^2.0.1"
+    "jison-gho": "^0.6.1-216"
   },
   "dependencies": {
     "postcss-value-parser": "^3.3.0"

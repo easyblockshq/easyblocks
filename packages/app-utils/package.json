@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "@easyblocks/core": "workspace:*",
-    "@easyblocks/reduce-css-calc": "^0.1.0",
     "@easyblocks/utils": "link:../utils",
     "final-form": "^4.20.4",
     "final-form-arrays": "^3.0.1"
@@ -17,9 +16,7 @@
     "@jest/types": "^26.6.2",
     "@testing-library/react": "^14.0.0",
     "@types/jest": "^26.0.20",
-    "@types/lodash": "^4.14.199",
-    "@types/react": "^18.2.20",
-    "type-fest": "^3.8.0"
+    "@types/react": "^18.2.20"
   },
   "version": "0.1.0"
 }

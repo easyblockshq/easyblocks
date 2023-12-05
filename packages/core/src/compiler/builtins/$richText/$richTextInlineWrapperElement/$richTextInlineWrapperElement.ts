@@ -11,8 +11,9 @@ import {
 } from "../../../../types";
 import { textModifierSchemaProp } from "../../../schema";
 import { EditableComponentToComponentConfig } from "../../../types";
-import richTextInlineWrapperElementStyles, {
+import {
   RichTextActionElementValues,
+  richTextInlineWrapperElementStyles,
 } from "./$richTextInlineWrapperElement.styles";
 import { richTextInlineWrapperActionSchemaProp } from "./richTextInlineWrapperActionSchemaProp";
 

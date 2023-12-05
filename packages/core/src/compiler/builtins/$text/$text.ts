@@ -7,7 +7,7 @@ import {
   UnresolvedResource,
 } from "../../../types";
 import { range } from "@easyblocks/utils";
-import $textStyles from "./$text.styles";
+import { textStyles } from "./$text.styles";
 import { EditableComponentToComponentConfig } from "../../types";
 
 const textEditableComponent: NoCodeComponentDefinition<
@@ -21,7 +21,7 @@ const textEditableComponent: NoCodeComponentDefinition<
 > = {
   id: "@easyblocks/text",
   label: "Simple Text",
-  styles: $textStyles,
+  styles: textStyles,
   type: "item",
   thumbnail:
     "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_text.png",

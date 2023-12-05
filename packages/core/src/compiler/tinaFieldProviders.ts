@@ -28,7 +28,7 @@ import {
 } from "../types";
 import { isExternalSchemaProp } from "./schema";
 import { EditorContextType } from "./types";
-import validateColor from "./validate-color";
+import { validateColor } from "./validate-color";
 
 function getCommonFieldProps(
   schemaProp: SchemaProp

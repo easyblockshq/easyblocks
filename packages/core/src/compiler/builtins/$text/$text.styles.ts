@@ -3,7 +3,7 @@ import type {
   NoCodeComponentStylesFunctionResult,
 } from "../../../types";
 
-export default function ({
+export function textStyles({
   values,
   params,
 }: NoCodeComponentStylesFunctionInput<

@@ -3,16 +3,17 @@ import {
   RichTextLineElementComponentConfig,
   richTextLineElementEditableComponent,
 } from "../$richTextLineElement/$richTextLineElement";
-import richTextBlockElementStyles, {
-  RichTextBlockElementParams,
-  RichTextBlockElementValues,
-} from "./$richTextBlockElement.styles";
-import { EditableComponentToComponentConfig } from "../../../types";
 import {
-  NoCodeComponentDefinition,
   CompiledComponentConfigBase,
+  NoCodeComponentDefinition,
   Option,
 } from "../../../../types";
+import { EditableComponentToComponentConfig } from "../../../types";
+import {
+  RichTextBlockElementParams,
+  RichTextBlockElementValues,
+  richTextBlockElementStyles,
+} from "./$richTextBlockElement.styles";
 
 type RichTextBlockElementType = "bulleted-list" | "numbered-list" | "paragraph";
 
@@ -81,12 +82,12 @@ type RichTextBlockElementCompiledComponentConfig = CompiledComponentConfigBase<
 };
 
 export {
-  richTextBlockElementEditableComponent,
   RICH_TEXT_BLOCK_ELEMENT_TYPES,
   RICH_TEXT_BLOCK_ELEMENT_TYPE_OPTIONS,
+  richTextBlockElementEditableComponent,
 };
 export type {
-  RichTextBlockElementComponentConfig,
   RichTextBlockElementCompiledComponentConfig,
+  RichTextBlockElementComponentConfig,
   RichTextBlockElementType,
 };

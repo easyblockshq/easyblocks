@@ -7,36 +7,11 @@ const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const {
   internalDependenciesValidator,
 } = require("./internalDependenciesValidator");
-const { nodeExternals } = require("./webpack");
 
 const NODE_ENV =
   process.env.NODE_ENV === "development" ? "development" : "production";
 const isProduction = NODE_ENV === "production";
 const isDevelopment = NODE_ENV === "development";
-
-/**
- * To generate typings during the Webpack's build we run `ts-loader` in "emit only declarations" mode.
- * This means that `ts-loader` doesn't output any transformed code which is treated as error by `ts-loader` itself.
- * This plugin suppress this error.
- */
-class SuppressTSLoaderNoEmitErrorPlugin {
-  /**
-   * @param {import('webpack').Compiler} compiler
-   */
-  apply(compiler) {
-    compiler.hooks.shouldEmit.tap(
-      "SuppressTSLoaderNoEmitErrorPlugin",
-      (compilation) => {
-        compilation.errors = compilation.errors.filter((error) => {
-          console.log(error.toString());
-          return !error.toString().includes("TypeScript emitted no output for");
-        });
-
-        return true;
-      }
-    );
-  }
-}
 
 const { parsed } = dotenv.config({
   path: path.join(__dirname, `../../../.env.${NODE_ENV}`),
@@ -61,34 +36,9 @@ function getFullySpecifiedEnvs() {
   return fullySpecifiedEnvs;
 }
 
-function DefineShopstoryEnvironmentVariablesPlugin() {
-  const fullySpecifiedEnvs = getFullySpecifiedEnvs();
-  return new webpack.DefinePlugin(fullySpecifiedEnvs);
-}
-
-/**
- *
- * @param {import('webpack').Configuration} config
- * @returns {import('webpack').Configuration}
- */
-function withBundleAnalyze(config) {
-  if (!config.plugins) {
-    config.plugins = [];
-  }
-
-  config.plugins.push(new BundleAnalyzerPlugin());
-
-  return config;
-}
-
 module.exports = {
   isProduction,
   isDevelopment,
-  envs,
-  SuppressTSLoaderNoEmitErrorPlugin,
-  DefineShopstoryEnvironmentVariablesPlugin,
   getFullySpecifiedEnvs,
-  withBundleAnalyze,
   internalDependenciesValidator,
-  nodeExternals,
 };
