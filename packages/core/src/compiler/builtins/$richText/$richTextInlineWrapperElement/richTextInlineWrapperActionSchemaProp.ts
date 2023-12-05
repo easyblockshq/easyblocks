@@ -14,6 +14,8 @@ const richTextInlineWrapperActionSchemaProp: ComponentSchemaProp = {
   visible: true,
   group: "Action",
   isLabelHidden: true,
+  // @ts-ignore
+  defaultValue: [],
 };
 
 export { richTextInlineWrapperActionSchemaProp };
