@@ -1,6 +1,7 @@
-import { EditorContextType, Form } from "@easyblocks/app-utils";
+import { Form } from "@easyblocks/app-utils";
 import { RichTextComponentConfig } from "../$richText";
-import { builtinEditableComponentsDefinitions } from "../../../schemas";
+import { createCompilationContext } from "../../../createCompilationContext";
+import { EditorContextType } from "../../../types";
 import {
   buildRichTextBlockElementComponentConfig,
   buildRichTextComponentConfig,
@@ -9,16 +10,14 @@ import {
 } from "../builders";
 import { getRichTextComponentConfigFragment } from "./getRichTextComponentConfigFragment";
 
+const compilationContext = createCompilationContext(
+  { accessToken: "" },
+  { locale: "en" },
+  "content"
+);
+
 const testEditorContext: EditorContextType = {
-  definitions: {
-    actions: [],
-    components: [...builtinEditableComponentsDefinitions],
-    links: [],
-    textModifiers: [],
-  },
-  contextParams: {
-    locale: "en",
-  },
+  ...compilationContext,
   mainBreakpointIndex: "b4",
   form: new Form({
     label: "Test",

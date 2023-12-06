@@ -1,4 +1,3 @@
-import { noCMSPlugin } from "@easyblocks/media";
 import { render, waitFor } from "@testing-library/react";
 import React, { ComponentPropsWithoutRef } from "react";
 import { Editor } from "./Editor";
@@ -55,8 +54,7 @@ describe("Local and remote changes", () => {
     ],
     save: () => Promise.resolve(),
     config: {
-      resourceTypes: {},
-      plugins: [noCMSPlugin],
+      types: {},
     },
     onClose: () => {},
     configs: {

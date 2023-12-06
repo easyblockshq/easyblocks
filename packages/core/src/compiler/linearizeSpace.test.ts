@@ -1,24 +1,20 @@
+import { parseSpacing } from "../spacingToPx";
 import {
   RefValue,
   ResponsiveValue,
   Spacing,
   TrulyResponsiveValue,
 } from "../types";
-import {
-  getDevicesWidths,
-  parseSpacing,
-  CompilationContextType,
-} from "@easyblocks/app-utils";
+import { createCompilationContext } from "./createCompilationContext";
+import { getDevicesWidths } from "./devices";
 import { linearizeSpace } from "./linearizeSpace";
-import { testCompilationContext as testCompilationContextTemplate } from "@easyblocks/app-test-utils";
+import { CompilationContextType } from "./types";
 
-const testEditorContext = {
-  ...testCompilationContextTemplate,
-  theme: {
-    ...testCompilationContextTemplate.theme,
-    space: {},
-  },
-};
+const testEditorContext = createCompilationContext(
+  { accessToken: "" },
+  { locale: "en" },
+  "content"
+);
 
 const devicesWidths = getDevicesWidths(testEditorContext.devices);
 

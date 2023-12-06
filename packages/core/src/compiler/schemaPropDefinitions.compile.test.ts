@@ -1,12 +1,12 @@
-import {
-  CompilationContextType,
-  InternalActionComponentDefinition,
-  InternalRenderableComponentDefinition,
-} from "@easyblocks/app-utils";
 import { CompiledComponentConfig, ConfigComponent, Devices } from "../types";
 import { SetRequired } from "type-fest";
 import { CompilationCache } from "./CompilationCache";
 import { compileInternal } from "./compileInternal";
+import {
+  InternalRenderableComponentDefinition,
+  InternalActionComponentDefinition,
+  CompilationContextType,
+} from "./types";
 
 type TestComponentConfig = SetRequired<ConfigComponent, "_id">;
 

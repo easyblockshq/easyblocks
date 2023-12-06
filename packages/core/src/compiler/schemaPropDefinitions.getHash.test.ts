@@ -1,5 +1,5 @@
-import { CompilationContextType } from "@easyblocks/app-utils";
 import { schemaPropDefinitions } from "./definitions";
+import { CompilationContextType } from "./types";
 
 const testCompilationContext: CompilationContextType = {
   devices: [],

@@ -1,13 +1,10 @@
-import { CompilationContextType } from "@easyblocks/app-utils";
 import { Config } from "../types";
-import { assertDefined } from "@easyblocks/utils";
 import { createCompilationContext } from "./createCompilationContext";
+import { CompilationContextType } from "./types";
 
 const basicConfig: Config = {
-  resourceTypes: {},
-  fetch() {
-    return Promise.resolve({});
-  },
+  accessToken: "",
+  types: {},
 };
 
 const defaults = {
@@ -134,74 +131,6 @@ describe("max widths", () => {
   });
 });
 
-describe("components", () => {
-  const context = createCompilationContext(
-    {
-      ...basicConfig,
-      components: [
-        {
-          id: "TestComponent",
-          schema: [
-            {
-              prop: "text1",
-              type: "text",
-            },
-            {
-              prop: "image1",
-              type: "resource",
-              resourceType: "image",
-            },
-            {
-              prop: "video1",
-              type: "resource",
-              resourceType: "video",
-            },
-            {
-              prop: "resource1",
-              type: "resource",
-              resourceType: "testResource1",
-            },
-          ],
-          type: "item",
-        },
-      ],
-    },
-    { locale: "en-US" },
-    "content"
-  );
-
-  const testComponentDefinition = assertDefined(
-    context.definitions.components.find((c) => c.id === "TestComponent")
-  );
-
-  test("adds traceId, traceImpressions, and traceClicks schema props", () => {
-    expect(testComponentDefinition.schema).toEqual(
-      expect.arrayContaining([
-        {
-          type: "string",
-          prop: "traceId",
-          label: "Trace Id",
-          group: "Analytics",
-          normalize: expect.any(Function),
-        },
-        {
-          type: "boolean",
-          prop: "traceImpressions",
-          label: "Trace Impressions",
-          group: "Analytics",
-        },
-        {
-          type: "boolean",
-          prop: "traceClicks",
-          label: "Trace clicks",
-          group: "Analytics",
-          visible: expect.any(Function),
-        },
-      ])
-    );
-  });
-});
-
 describe("root containers", () => {
   test('returns empty root containers when "rootContainers" is not defined in config', () => {
     const context = createCompilationContext(
@@ -273,9 +202,9 @@ describe("root containers", () => {
       {
         id: "rootContainer1",
         widths: {
-          xs: "100%",
-          sm: "100%",
-          md: "100%",
+          xs: 1000,
+          sm: 900,
+          md: 800,
           lg: 700,
           xl: 600,
           "2xl": 500,

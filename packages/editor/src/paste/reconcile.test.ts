@@ -1,5 +1,4 @@
-import * as compilerModule from "@easyblocks/compiler";
-import { CompilationContextType } from "@easyblocks/app-utils";
+import * as coreInternals from "@easyblocks/core/_internals";
 import { reconcile } from "./reconcile";
 
 jest.mock("@easyblocks/compiler", () => {
@@ -17,16 +16,16 @@ describe("reconscile", () => {
   `(
     "Should reconscile items _itemProps with destination",
     ({ itemProps, parentTemplateId, parentFieldName, expectedItem }) => {
-      jest.spyOn(compilerModule, "normalize").mockReturnValue(expectedItem);
+      jest.spyOn(coreInternals, "normalize").mockReturnValue(expectedItem);
 
       const item = {
         _template: "child",
-        id: "newChild",
+        _id: "newChild",
         _itemProps: itemProps,
       };
 
       const result = reconcile({
-        context: {} as CompilationContextType,
+        context: {} as coreInternals.CompilationContextType,
         fieldName: parentFieldName,
         templateId: parentTemplateId,
       })(item);
@@ -43,11 +42,11 @@ describe("reconscile", () => {
     ({ itemProps, parentTemplateId, parentFieldName }) => {
       const item = {
         _template: "child",
-        id: "newChild",
+        _id: "newChild",
         _itemProps: itemProps,
       };
       const result = reconcile({
-        context: {} as CompilationContextType,
+        context: {} as coreInternals.CompilationContextType,
         fieldName: parentFieldName,
         templateId: parentTemplateId,
       })(item);
