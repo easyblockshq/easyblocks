@@ -3,11 +3,12 @@ import {
   ComponentCollectionSchemaProp,
   ComponentSchemaProp,
 } from "@easyblocks/core";
-import { ContextProps } from "@easyblocks/core/_internals";
-import React, { FC } from "react";
-import ComponentBuilder, {
+import {
+  ComponentBuilder,
   ComponentBuilderProps,
-} from "../ComponentBuilder/ComponentBuilder";
+  ContextProps,
+} from "@easyblocks/core/_internals";
+import React, { FC } from "react";
 import { BlocksControls } from "./BlockControls";
 
 type EditableComponentBuilderProps = ComponentBuilderProps & {

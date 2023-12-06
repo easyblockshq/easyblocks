@@ -1,42 +1,39 @@
+import { Form, useEditorGlobalKeyboardShortcuts } from "@easyblocks/app-utils";
 import {
-  componentPickerClosed,
-  ComponentPickerOpenedEvent,
-  Form,
-  ItemInsertedEvent,
-  ItemMovedEvent,
-  useEditorGlobalKeyboardShortcuts,
-} from "@easyblocks/app-utils";
-import {
-  buildEntry,
   CompilationCache,
   CompilationMetadata,
-  compileInternal,
   ComponentConfig,
   Config,
   ConfigComponent,
   ContextParams,
-  createCompilationContext,
   DocumentWithResolvedConfigDTO,
   EditorLauncherProps,
   ExternalData,
   ExternalDataChangeHandler,
   ExternalReference,
   FetchOutputResources,
-  findExternals,
   IApiClient,
   Locale,
   LocalisedDocument,
-  mergeCompilationMeta,
   NonEmptyRenderableContent,
+  Template,
+  WidgetComponentProps,
+  buildEntry,
+  compileInternal,
+  createCompilationContext,
+  findExternals,
+  mergeCompilationMeta,
   normalize,
   normalizeInput,
   responsiveValueGet,
-  Template,
   validate,
-  WidgetComponentProps,
 } from "@easyblocks/core";
 import {
   CompilationContextType,
+  ComponentPickerOpenedEvent,
+  ItemInsertedEvent,
+  ItemMovedEvent,
+  componentPickerClosed,
   duplicateConfig,
   findComponentDefinitionById,
   parsePath,
@@ -55,6 +52,13 @@ import React, {
 import Modal from "react-modal";
 import styled from "styled-components";
 import { ConfigAfterAutoContext } from "./ConfigAfterAutoContext";
+import { EditorContext, EditorContextType } from "./EditorContext";
+import { EditorExternalDataProvider } from "./EditorExternalDataProvider";
+import { EditorIframe } from "./EditorIframe";
+import { EditorSidebar } from "./EditorSidebar";
+import { EditorTopBar, TOP_BAR_HEIGHT } from "./EditorTopBar";
+import { ModalPicker } from "./ModalPicker";
+import { TemplateModal } from "./TemplateModal";
 import {
   duplicateItems,
   logItems,
@@ -63,23 +67,16 @@ import {
   removeItems,
   replaceItems,
 } from "./editorActions";
-import { EditorContext, EditorContextType } from "./EditorContext";
-import { EditorExternalDataProvider } from "./EditorExternalDataProvider";
-import { EditorIframe } from "./EditorIframe";
-import { EditorSidebar } from "./EditorSidebar";
-import { EditorTopBar, TOP_BAR_HEIGHT } from "./EditorTopBar";
 import {
   ApiClientProvider,
   useApiClient,
 } from "./infrastructure/ApiClientProvider";
 import { createApiClient } from "./infrastructure/createApiClient";
 import { ProjectsApiService } from "./infrastructure/projectsApiService";
-import { ModalPicker } from "./ModalPicker";
 import { destinationResolver } from "./paste/destinationResolver";
 import { pasteManager } from "./paste/manager";
 import { SelectionFrame } from "./selectionFrame/SelectionFrame";
 import { documentDataWidgetFactory } from "./sidebar/DocumentDataWidget";
-import { TemplateModal } from "./TemplateModal";
 import { getTemplates } from "./templates/getTemplates";
 import { TinaProvider } from "./tinacms";
 import { useForm, usePlugin } from "./tinacms/react-core";

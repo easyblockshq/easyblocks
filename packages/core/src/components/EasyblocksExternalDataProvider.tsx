@@ -1,6 +1,6 @@
 "use client";
-import type { ExternalData } from "@easyblocks/core";
 import React, { createContext, useContext } from "react";
+import { ExternalData } from "../types";
 
 const EasyblocksExternalDataContext = createContext<ExternalData | null>(null);
 

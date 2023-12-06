@@ -9,7 +9,6 @@ import {
   normalize,
   optionalTextModifierSchemaProp,
   richTextInlineWrapperActionSchemaProp,
-  richTextPartEditableComponent,
 } from "@easyblocks/core/_internals";
 import { dotNotationGet } from "@easyblocks/utils";
 import React, { FC } from "react";
@@ -29,8 +28,6 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
   const editorContext = useEditorContext();
   const { form } = editorContext;
 
-  let modal: any;
-
   const split = config.path.split("."); // TODO: right now only for collections
   const parentPath = split.slice(0, split.length - 1).join(".");
   const fieldName = split[split.length - 1];
@@ -41,10 +38,7 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
     editorContext
   )!.schema.find((x) => x.prop === fieldName) as ComponentSchemaProp;
 
-  if (
-    !schemaProp &&
-    parentData._template === richTextPartEditableComponent.id
-  ) {
+  if (!schemaProp && parentData._template === "@easyblocks/rich-text-part") {
     if (fieldName === "$action") {
       schemaProp = richTextInlineWrapperActionSchemaProp;
     }

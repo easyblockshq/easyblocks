@@ -5,9 +5,9 @@ import {
   buildDocument,
   ExternalData,
   RenderableDocument,
+  Easyblocks,
 } from "@easyblocks/core";
 import { builtinEditableComponents } from "@easyblocks/editable-components";
-import { Easyblocks } from "@easyblocks/react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { easyblocksConfig } from "../../../../easyblocks/easyblocks.config";

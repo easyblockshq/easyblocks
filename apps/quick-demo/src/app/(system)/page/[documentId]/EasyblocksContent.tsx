@@ -1,5 +1,5 @@
 "use client";
-import { Easyblocks, easyblocksGetStyleTag } from "@easyblocks/react";
+import { Easyblocks, easyblocksGetStyleTag } from "@easyblocks/core";
 import { useServerInsertedHTML } from "next/navigation";
 import { ComponentPropsWithoutRef } from "react";
 

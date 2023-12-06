@@ -10,17 +10,15 @@ import {
   ComponentCollectionSchemaProp,
   SerializedRenderableComponentDefinition,
 } from "@easyblocks/core";
+import { parsePath, useEasyblocksMetadata } from "@easyblocks/core/_internals";
+import { SSColors } from "@easyblocks/design-system";
+import { toArray } from "@easyblocks/utils";
+import React, { Fragment } from "react";
+import { SelectionFrameController } from "./SelectionFrameController";
 import {
   RICH_TEXT_PART_CONFIG_PATH_REGEXP,
   isConfigPathRichTextPart,
-  parsePath,
-} from "@easyblocks/core/_internals";
-import { SSColors } from "@easyblocks/design-system";
-import { EditorContextType } from "@easyblocks/editor";
-import { toArray } from "@easyblocks/utils";
-import React, { Fragment } from "react";
-import { useEasyblocksMetadata } from "../EasyblocksMetadataProvider";
-import { SelectionFrameController } from "./SelectionFrameController";
+} from "../utils/isConfigPathRichTextPart";
 
 interface BlocksControlsProps {
   children: React.ReactNode;
@@ -42,8 +40,8 @@ export function BlocksControls({
   index,
   length,
 }: BlocksControlsProps) {
-  const { focussedField, setFocussedField, form } = window.parent
-    .editorWindowAPI.editorContext as EditorContextType;
+  const { focussedField, setFocussedField, form } =
+    window.parent.editorWindowAPI.editorContext;
 
   const meta = useEasyblocksMetadata();
   const dndContext = useDndContext();

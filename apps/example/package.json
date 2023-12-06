@@ -10,10 +10,10 @@
   },
   "dependencies": {
     "@easyblocks/core": "workspace:*",
-    "@easyblocks/editable-components": "workspace:*",
     "@easyblocks/design-system": "workspace:*",
+    "@easyblocks/editable-components": "workspace:*",
+    "@easyblocks/editor": "workspace:*",
     "@easyblocks/media": "workspace:*",
-    "@easyblocks/react": "workspace:*",
     "@radix-ui/react-dialog": "^1.0.4",
     "@types/node": "20.7.1",
     "@types/react": "18.2.20",

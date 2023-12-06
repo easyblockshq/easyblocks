@@ -1,4 +1,3 @@
-import { richTextChangedEvent } from "@easyblocks/app-utils";
 import {
   getFallbackLocaleForLocale,
   isTrulyResponsiveValue,
@@ -13,15 +12,14 @@ import {
   findPathOfFirstAncestorOfType,
   getDevicesWidths,
   getSchemaDefinition,
-  isConfigPathRichTextPart,
   parsePath,
-  richTextInlineWrapperElementEditableComponent,
-  richTextPartEditableComponent,
+  richTextChangedEvent,
   traverseComponents,
 } from "@easyblocks/core/_internals";
 import { dotNotationGet, last, toArray } from "@easyblocks/utils";
 import { EditorContextType } from "../../../EditorContext";
 import { getUniqueValues } from "../../fields/components/getUniqueValues";
+import { isConfigPathRichTextPart } from "../../../utils/isConfigPathRichTextPart";
 
 // "any" here is on purpose (although doesn't make sense from TS perspective).
 // It suggests that in onChange you can pass event OR any value. It's a bit confusing and should be cleaned up in the future.
@@ -77,8 +75,8 @@ function createFieldController({
         invalidateCache(normalizedFieldName[0], editorContext);
 
         if (
-          templateId === richTextPartEditableComponent.id ||
-          templateId === richTextInlineWrapperElementEditableComponent.id
+          templateId === "@easyblocks/rich-text-part" ||
+          templateId === "@easyblocks/rich-text-inline-wrapper-element"
         ) {
           let schemaPropNameToUpdate = last(normalizedFieldName[0].split("."));
 

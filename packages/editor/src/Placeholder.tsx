@@ -1,12 +1,11 @@
 import { useDndContext } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
 import { PlaceholderAppearance } from "@easyblocks/core";
-import { parsePath } from "@easyblocks/core/_internals";
+import { parsePath, useEasyblocksMetadata } from "@easyblocks/core/_internals";
 import { SSColors, SSFonts } from "@easyblocks/design-system";
-import { EditorContextType } from "@easyblocks/editor";
 import { toArray } from "@easyblocks/utils";
 import React, { FC } from "react";
-import { useEasyblocksMetadata } from "./EasyblocksMetadataProvider";
+import { EditorContextType } from "./EditorContext";
 
 export type PlaceholderProps = {
   onClick: () => void;

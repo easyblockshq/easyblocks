@@ -1,6 +1,6 @@
-import { Devices } from "@easyblocks/core";
-import { getBoxStyles } from "@easyblocks/core/_internals";
 import React, { useMemo } from "react";
+import { getBoxStyles } from "../../compiler/box";
+import { Devices } from "../../types";
 
 const boxStyles = {
   boxSizing: "border-box",
@@ -72,4 +72,4 @@ const Box = React.forwardRef<HTMLElement, BoxProps>((props, ref) => {
   );
 });
 
-export default Box;
+export { Box };

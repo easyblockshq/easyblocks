@@ -1,5 +1,5 @@
+import { ComponentBuilder } from "@easyblocks/core/_internals";
 import React from "react";
-import ComponentBuilder from "../ComponentBuilder/ComponentBuilder";
 import { EditableComponentBuilderProps } from "./EditableComponentBuilder.editor";
 
 function EditableComponentBuilder(props: EditableComponentBuilderProps) {

@@ -6,11 +6,9 @@
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "default": {
-        "types": "./dist/index.d.ts",
-        "browser": "./dist/es/index.js",
-        "node": "./dist/cjs/index.js"
-      }
+      "types": "./dist/index.d.ts",
+      "browser": "./dist/es/index.js",
+      "node": "./dist/cjs/index.js"
     }
   },
   "sideEffects": false,
