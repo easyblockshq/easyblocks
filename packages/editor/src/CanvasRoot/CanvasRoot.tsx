@@ -178,4 +178,4 @@ const globalEditorRendererStyles = `
   }
 `;
 
-export default CanvasRoot;
+export { CanvasRoot };

@@ -3,7 +3,7 @@
 import { easyblocksConfig } from "@/app/easyblocks/easyblocks.config";
 import { ExternalData } from "@easyblocks/core";
 import { builtinEditableComponents } from "@easyblocks/editable-components";
-import { EasyblocksEditor } from "@easyblocks/react";
+import { EasyblocksEditor } from "@easyblocks/editor";
 import { useState } from "react";
 import { createMyCustomFetch } from "../easyblocks/myCustomFetch";
 

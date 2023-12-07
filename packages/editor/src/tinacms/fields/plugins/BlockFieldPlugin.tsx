@@ -4,7 +4,6 @@ import {
   Component$$$SchemaProp,
   InternalField,
   findComponentDefinition,
-  isConfigPathRichTextPart,
 } from "@easyblocks/core/_internals";
 import {
   SSButtonGhost,
@@ -27,6 +26,7 @@ import { FieldMixedValue } from "../../../types";
 import { FieldRenderProps, FieldsBuilder } from "../../form-builder";
 import { mergeCommonFields } from "../../form-builder/utils/mergeCommonFields";
 import { isMixedFieldValue } from "../components/isMixedFieldValue";
+import { isConfigPathRichTextPart } from "../../../utils/isConfigPathRichTextPart";
 
 export interface BlocksFieldDefinition extends InternalField {
   component: "ss-block";

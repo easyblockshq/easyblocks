@@ -237,12 +237,12 @@ importers:
       '@easyblocks/editable-components':
         specifier: workspace:*
         version: link:../../packages/editable-components
+      '@easyblocks/editor':
+        specifier: workspace:*
+        version: link:../../packages/editor
       '@easyblocks/media':
         specifier: workspace:*
         version: link:../../packages/media
-      '@easyblocks/react':
-        specifier: workspace:*
-        version: link:../../packages/react
       '@radix-ui/react-dialog':
         specifier: ^1.0.4
         version: 1.0.4(@types/react-dom@18.2.8)(@types/react@18.2.42)(react-dom@18.2.0)(react@18.2.0)
@@ -294,9 +294,9 @@ importers:
       '@easyblocks/editable-components':
         specifier: workspace:*
         version: link:../../packages/editable-components
-      '@easyblocks/react':
+      '@easyblocks/editor':
         specifier: workspace:*
-        version: link:../../packages/react
+        version: link:../../packages/editor
       '@radix-ui/react-dialog':
         specifier: ^1.0.4
         version: 1.0.4(@types/react-dom@18.2.7)(@types/react@18.2.42)(react-dom@18.2.0)(react@18.2.0)
@@ -414,6 +414,9 @@ importers:
       '@babel/runtime':
         specifier: ^7.21.0
         version: 7.21.0
+      '@stitches/core':
+        specifier: ^1.2.8
+        version: 1.2.8
       crypto-js:
         specifier: ^4.1.1
         version: 4.1.1
@@ -600,6 +603,12 @@ importers:
       '@babel/runtime':
         specifier: ^7.21.0
         version: 7.21.0
+      '@dnd-kit/core':
+        specifier: ^6.0.8
+        version: 6.0.8(react-dom@18.2.0)(react@18.2.0)
+      '@dnd-kit/sortable':
+        specifier: ^7.0.2
+        version: 7.0.2(@dnd-kit/core@6.0.8)(react@18.2.0)
       '@easyblocks/core':
         specifier: workspace:*
         version: link:../core
@@ -666,6 +675,9 @@ importers:
       type-fest:
         specifier: ^3.11.1
         version: 3.11.1
+      zod:
+        specifier: ^3.21.4
+        version: 3.22.4
     devDependencies:
       '@easyblocks/app-utils':
         specifier: workspace:*
@@ -746,55 +758,6 @@ importers:
       '@types/styled-components':
         specifier: ^5.1.26
         version: 5.1.26
-
-  packages/react:
-    dependencies:
-      '@babel/runtime':
-        specifier: ^7.21.0
-        version: 7.21.0
-      '@dnd-kit/core':
-        specifier: ^6.0.8
-        version: 6.0.8(react-dom@18.2.0)(react@18.2.0)
-      '@dnd-kit/sortable':
-        specifier: ^7.0.2
-        version: 7.0.2(@dnd-kit/core@6.0.8)(react@18.2.0)
-      '@easyblocks/core':
-        specifier: workspace:*
-        version: link:../core
-      '@easyblocks/design-system':
-        specifier: workspace:*
-        version: link:../design-system
-      '@easyblocks/editor':
-        specifier: workspace:*
-        version: link:../editor
-      '@stitches/core':
-        specifier: ^1.2.5
-        version: 1.2.8
-      react:
-        specifier: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
-        version: 18.2.0
-      react-dom:
-        specifier: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
-        version: 18.2.0(react@18.2.0)
-      zod:
-        specifier: ^3.21.4
-        version: 3.22.2
-    devDependencies:
-      '@easyblocks/app-utils':
-        specifier: workspace:*
-        version: link:../app-utils
-      '@easyblocks/build-tools':
-        specifier: ^0.1.0
-        version: link:../build-tools
-      '@easyblocks/utils':
-        specifier: workspace:*
-        version: link:../utils
-      '@types/react':
-        specifier: ^18.2.20
-        version: 18.2.42
-      '@types/react-dom':
-        specifier: ^18.2.7
-        version: 18.2.7
 
   packages/reduce-css-calc:
     dependencies:
@@ -20635,10 +20598,5 @@ packages:
     resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
     dev: false
 
-  /zod@3.22.2:
-    resolution: {integrity: sha512-wvWkphh5WQsJbVk1tbx1l1Ly4yg+XecD+Mq280uBGt9wa5BKSWf4Mhp6GmrkPixhMxmabYY7RbzlwVP32pbGCg==}
-    dev: false
-
   /zod@3.22.4:
     resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
-    dev: true

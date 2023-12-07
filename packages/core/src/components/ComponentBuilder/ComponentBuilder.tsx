@@ -1,12 +1,35 @@
-"use client";
+import React, { ComponentType, Fragment, ReactElement } from "react";
+import { isEmptyRenderableContent } from "../../checkers";
+import { findComponentDefinitionById } from "../../compiler/findComponentDefinition";
+import {
+  isExternalSchemaProp,
+  isSchemaPropActionTextModifier,
+  isSchemaPropComponent,
+  isSchemaPropComponentOrComponentCollection,
+  isSchemaPropTextModifier,
+} from "../../compiler/schema";
+import { splitTemplateName } from "../../compiler/splitTemplateName";
+import {
+  ContextProps,
+  InternalComponentDefinition,
+} from "../../compiler/types";
 import {
   ComponentPickerClosedEvent,
   componentPickerOpened,
-  getComponentMainType,
-  isCompoundExternalDataValue,
-  isEmptyRenderableContent,
   itemInserted,
-} from "@easyblocks/app-utils";
+} from "../../events";
+import {
+  getExternalReferenceLocationKey,
+  getExternalValue,
+  isCompoundExternalDataValue,
+  isLocalTextReference,
+} from "../../resourcesUtils";
+import {
+  responsiveValueGetDefinedValue,
+  responsiveValueMap,
+  responsiveValueReduce,
+} from "../../responsiveness";
+import { resop } from "../../responsiveness/resop";
 import {
   CompilationMetadata,
   CompiledComponentConfig,
@@ -25,32 +48,12 @@ import {
   LocalTextReference,
   ResponsiveValue,
   UnresolvedResource,
-  getExternalReferenceLocationKey,
-  getExternalValue,
-  isLocalTextReference,
-  responsiveValueGetDefinedValue,
-  responsiveValueMap,
-  responsiveValueReduce,
-} from "@easyblocks/core";
-import {
-  ContextProps,
-  InternalComponentDefinition,
-  findComponentDefinitionById,
-  isExternalSchemaProp,
-  isSchemaPropActionTextModifier,
-  isSchemaPropComponent,
-  isSchemaPropComponentOrComponentCollection,
-  isSchemaPropTextModifier,
-  splitTemplateName,
-} from "@easyblocks/core/_internals";
-import React, { ComponentType, Fragment, ReactElement } from "react";
-import Box from "../Box/Box";
+} from "../../types";
+import { Box } from "../Box/Box";
 import { useEasyblocksExternalData } from "../EasyblocksExternalDataProvider";
 import { useEasyblocksMetadata } from "../EasyblocksMetadataProvider";
-import MissingComponent from "../MissingComponent";
-import Placeholder from "../Placeholder";
+import { MissingComponent } from "../MissingComponent";
 import { ImageProps } from "../StandardImage";
-import { resop } from "../resop";
 
 function buildBoxes(
   compiled: any,
@@ -233,9 +236,12 @@ function getCompiledSubcomponents(
     )
   );
 
+  const Placeholder = components["Placeholder"];
+
   // TODO: this code should be editor-only
   if (
     isEditing &&
+    Placeholder &&
     elements.length === 0 &&
     !contextProps.noInline &&
     // We don't want to show add button for this type
@@ -585,7 +591,7 @@ function resolveExternalValue(
   });
 }
 
-export default ComponentBuilder;
+export { ComponentBuilder };
 export type { ComponentBuilderComponent };
 
 function getFieldStatus(
@@ -670,4 +676,39 @@ function getResolvedExternalDataValue(
   }
 
   return externalValue;
+}
+
+function getComponentMainType(componentTypes: string[]) {
+  let type;
+
+  if (
+    componentTypes.includes("action") ||
+    componentTypes.includes("actionLink")
+  ) {
+    type = "action";
+  } else if (componentTypes.includes("card")) {
+    type = "card";
+  } else if (componentTypes.includes("symbol")) {
+    type = "icon";
+  } else if (componentTypes.includes("button")) {
+    type = "button";
+  } else if (
+    componentTypes.includes("section") ||
+    componentTypes.includes("token")
+  ) {
+    type = "section";
+  } else if (componentTypes.includes("item")) {
+    type = "item";
+  } else if (
+    componentTypes.includes("image") ||
+    componentTypes.includes("$image")
+  ) {
+    type = "image";
+  } else if (componentTypes.includes("actionTextModifier")) {
+    type = "actionTextModifier";
+  } else {
+    type = "item";
+  }
+
+  return type;
 }

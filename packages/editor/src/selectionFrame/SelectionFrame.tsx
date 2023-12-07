@@ -1,12 +1,10 @@
-import { SelectionFramePositionChangedEvent } from "@easyblocks/app-utils";
 import {
   CompiledShopstoryComponentConfig,
   EditingInfoBase,
 } from "@easyblocks/core";
 import {
-  RICH_TEXT_PART_CONFIG_PATH_REGEXP,
+  SelectionFramePositionChangedEvent,
   findComponentDefinitionById,
-  isConfigPathRichTextPart,
   isSchemaPropCollection,
   parsePath,
 } from "@easyblocks/core/_internals";
@@ -25,6 +23,10 @@ import {
   BEFORE_ADD_BUTTON_LEFT,
   BEFORE_ADD_BUTTON_TOP,
 } from "./cssVariables";
+import {
+  isConfigPathRichTextPart,
+  RICH_TEXT_PART_CONFIG_PATH_REGEXP,
+} from "../utils/isConfigPathRichTextPart";
 
 type SelectionFrameProps = {
   width: number;

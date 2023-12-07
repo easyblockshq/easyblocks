@@ -1,11 +1,11 @@
-import type {
-  Config,
-  ContextParams,
-  ExternalData,
-  RenderableDocument,
+import {
+  Easyblocks,
+  type Config,
+  type ContextParams,
+  type ExternalData,
+  type RenderableDocument,
 } from "@easyblocks/core";
 import React, { useEffect, useState } from "react";
-import { Easyblocks } from "./Easyblocks";
 import { parseQueryParams } from "./parseQueryParams";
 
 type TemplateRendererProps = {

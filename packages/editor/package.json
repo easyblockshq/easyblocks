@@ -27,6 +27,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.21.0",
+    "@dnd-kit/core": "^6.0.8",
+    "@dnd-kit/sortable": "^7.0.2",
     "@easyblocks/core": "workspace:*",
     "@easyblocks/design-system": "workspace:*",
     "@easyblocks/editable-components": "workspace:*",
@@ -46,7 +48,8 @@
     "react-modal": "^3.12.1",
     "react-popper": "^2.3.0",
     "styled-components": "^6.0.7",
-    "type-fest": "^3.11.1"
+    "type-fest": "^3.11.1",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@easyblocks/app-utils": "workspace:*",

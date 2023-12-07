@@ -1,5 +1,5 @@
 import React, { CSSProperties, FC } from "react";
-import { ComponentDefinitionShared } from "@easyblocks/core";
+import { ComponentDefinitionShared } from "../types";
 
 type MissingComponentType = "BUTTON" | "CARD" | "SECTION";
 
@@ -92,7 +92,7 @@ function MissingComponent({
   );
 }
 
-export default MissingComponent;
+export { MissingComponent };
 export type {
   MissingComponentType,
   MissingComponentBuilderProps,

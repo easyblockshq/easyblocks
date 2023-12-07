@@ -1,8 +1,4 @@
-import {
-  Devices,
-  ResponsiveValue,
-  TrulyResponsiveValue,
-} from "@easyblocks/core";
+import { Devices, ResponsiveValue, TrulyResponsiveValue } from "../types";
 
 type Values = { [key: string]: any };
 

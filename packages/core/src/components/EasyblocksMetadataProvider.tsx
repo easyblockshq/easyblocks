@@ -1,10 +1,10 @@
 "use client";
 
-import { CompilationMetadata } from "@easyblocks/core";
 // @ts-expect-error
 import { createStitches } from "@stitches/core";
 import React, { createContext, ReactNode, useContext } from "react";
 import { easyblocksStitchesInstances } from "./ssr";
+import { CompilationMetadata } from "../types";
 
 const EasyblocksMetadataContext = createContext<
   (CompilationMetadata & { stitches: any }) | undefined

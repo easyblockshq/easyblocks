@@ -174,4 +174,5 @@ export type EditorContextType = CompilationContextType & {
   actions: EditorActions;
   activeRootContainer: CompilationRootContainer;
   templates?: Template[];
+  isFullScreen: boolean;
 };

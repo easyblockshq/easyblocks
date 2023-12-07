@@ -1,22 +1,10 @@
 export { CompilationCache } from "./compiler/CompilationCache";
 export type { CompilationCacheItemValue } from "./compiler/CompilationCache";
 export { compileBox, getBoxStyles } from "./compiler/box";
-export * from "./compiler/builtins/$richText/$richText";
-export { RichTextClient } from "./compiler/builtins/$richText/$richText.client";
 export { RichTextEditor } from "./compiler/builtins/$richText/$richText.editor";
-export * from "./compiler/builtins/$richText/$richText.types";
-export * from "./compiler/builtins/$richText/$richTextBlockElement/$richTextBlockElement";
-export { RichTextBlockElementClient } from "./compiler/builtins/$richText/$richTextBlockElement/$richTextBlockElement.client";
-export * from "./compiler/builtins/$richText/$richTextInlineWrapperElement/$richTextInlineWrapperElement";
-export { RichTextInlineWrapperElementClient } from "./compiler/builtins/$richText/$richTextInlineWrapperElement/$richTextInlineWrapperElement.client";
+export { optionalTextModifierSchemaProp } from "./compiler/builtins/$richText/$richTextInlineWrapperElement/$richTextInlineWrapperElement";
 export { richTextInlineWrapperActionSchemaProp } from "./compiler/builtins/$richText/$richTextInlineWrapperElement/richTextInlineWrapperActionSchemaProp";
-export * from "./compiler/builtins/$richText/$richTextLineElement/$richTextLineElement";
-export { RichTextLineElementClient } from "./compiler/builtins/$richText/$richTextLineElement/$richTextLineElement.client";
-export * from "./compiler/builtins/$richText/$richTextPart/$richTextPart";
-export { RichTextPartClient } from "./compiler/builtins/$richText/$richTextPart/$richTextPart.client";
-export * from "./compiler/builtins/$richText/builders";
-export * from "./compiler/builtins/$text/$text";
-export { TextClient } from "./compiler/builtins/$text/$text.client";
+export { buildRichTextNoCodeEntry } from "./compiler/builtins/$richText/builders";
 export { TextEditor } from "./compiler/builtins/$text/$text.editor";
 export { buildText } from "./compiler/builtins/$text/buildText";
 export { useTextValue } from "./compiler/builtins/useTextValue";
@@ -49,6 +37,11 @@ export type {
   InternalTextModifierDefinition,
 } from "./compiler/types";
 export {
-  RICH_TEXT_PART_CONFIG_PATH_REGEXP,
-  isConfigPathRichTextPart,
-} from "./isConfigPathRichTextPart";
+  EasyblocksMetadataProvider,
+  useEasyblocksMetadata,
+} from "./components/EasyblocksMetadataProvider";
+export * from "./events";
+export {
+  ComponentBuilder,
+  type ComponentBuilderProps,
+} from "./components/ComponentBuilder/ComponentBuilder";

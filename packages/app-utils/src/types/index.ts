@@ -1,6 +1,5 @@
 import type {
   CompilationMetadata,
-  CompiledComponentConfig,
   CompiledShopstoryComponentConfig,
   ConfigComponent,
   ExternalData,
@@ -26,6 +25,6 @@ export type EditorWindowAPI = {
   compilationOutput: EditorCompilationOutput;
   onUpdate?: () => void; // this function will be called by parent window when data is changed, child should "subscribe" to this function
   meta: CompilationMetadata;
-  compiled: CompiledComponentConfig;
+  compiled: CompiledShopstoryComponentConfig;
   externalData: ExternalData;
 };

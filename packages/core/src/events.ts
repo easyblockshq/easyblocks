@@ -1,6 +1,6 @@
-import type { ComponentConfig, SchemaProp } from "@easyblocks/core";
-import { Component$$$SchemaProp } from "@easyblocks/core/_internals";
 import { serialize } from "@easyblocks/utils";
+import { ComponentConfig, SchemaProp } from "./types";
+import { Component$$$SchemaProp } from "./compiler/schema";
 
 type ShopstoryEditorEventData<
   Type extends `@shopstory-editor/${string}${string}`,

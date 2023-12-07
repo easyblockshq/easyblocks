@@ -3,7 +3,7 @@
 import { components } from "@/app/easyblocks/components";
 import { easyblocksConfig } from "@/app/easyblocks/easyblocks.config";
 import { ExternalData } from "@easyblocks/core";
-import { EasyblocksEditor } from "@easyblocks/react";
+import { EasyblocksEditor } from "@easyblocks/editor";
 import { useState } from "react";
 import {
   MockImagePicker,

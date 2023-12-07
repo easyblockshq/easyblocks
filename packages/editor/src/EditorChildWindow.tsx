@@ -1,4 +1,3 @@
-"use client";
 import {
   CollisionDetection,
   DndContext,
@@ -8,21 +7,21 @@ import {
   useSensor,
 } from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
-import { itemMoved } from "@easyblocks/app-utils";
-import { ComponentConfig } from "@easyblocks/core";
+import { ComponentConfig, Easyblocks } from "@easyblocks/core";
 import {
+  EasyblocksMetadataProvider,
   EditorContextType,
   RichTextEditor,
   TextEditor,
   configTraverse,
+  itemMoved,
 } from "@easyblocks/core/_internals";
+import { useForceRerender } from "@easyblocks/utils";
 import React, { useEffect, useRef, useState } from "react";
 import { z } from "zod";
-import CanvasRoot from "./CanvasRoot/CanvasRoot";
-import { Easyblocks } from "./Easyblocks";
-import { EasyblocksMetadataProvider } from "./EasyblocksMetadataProvider";
+import { CanvasRoot } from "./CanvasRoot/CanvasRoot";
 import EditableComponentBuilder from "./EditableComponentBuilder/EditableComponentBuilder.editor";
-import { useForceRerender } from "./hooks/useForceRerender";
+import TypePlaceholder from "./Placeholder";
 
 const dragDataSchema = z.object({
   path: z.string(),
@@ -153,6 +152,7 @@ export function EasyblocksCanvas({
                 "@easyblocks/rich-text.editor": RichTextEditor,
                 "@easyblocks/text.editor": TextEditor,
                 "EditableComponentBuilder.editor": EditableComponentBuilder,
+                Placeholder: TypePlaceholder,
               }}
             />
           </SortableContext>

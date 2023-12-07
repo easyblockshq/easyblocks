@@ -1,21 +1,19 @@
 "use client";
-import type { ExternalData, RenderableDocument } from "@easyblocks/core";
-import {
-  RichTextBlockElementClient,
-  RichTextClient,
-  RichTextInlineWrapperElementClient,
-  RichTextLineElementClient,
-  RichTextPartClient,
-  TextClient,
-} from "@easyblocks/core/_internals";
 import React, { ReactElement, useEffect } from "react";
-import ComponentBuilder, {
+import {
+  ComponentBuilder,
   ComponentBuilderProps,
 } from "./ComponentBuilder/ComponentBuilder";
 import { EasyblocksExternalDataProvider } from "./EasyblocksExternalDataProvider";
 import { EasyblocksMetadataProvider } from "./EasyblocksMetadataProvider";
-import EditableComponentBuilderClient from "./EditableComponentBuilder/EditableComponentBuilder.client";
 import { StandardImage } from "./StandardImage";
+import { RenderableDocument, ExternalData } from "../types";
+import { RichTextClient } from "../compiler/builtins/$richText/$richText.client";
+import { RichTextBlockElementClient } from "../compiler/builtins/$richText/$richTextBlockElement/$richTextBlockElement.client";
+import { RichTextInlineWrapperElementClient } from "../compiler/builtins/$richText/$richTextInlineWrapperElement/$richTextInlineWrapperElement.client";
+import { RichTextLineElementClient } from "../compiler/builtins/$richText/$richTextLineElement/$richTextLineElement.client";
+import { RichTextPartClient } from "../compiler/builtins/$richText/$richTextPart/$richTextPart.client";
+import { TextClient } from "../compiler/builtins/$text/$text.client";
 
 export type EasyblocksProps = {
   renderableDocument: RenderableDocument;
@@ -34,7 +32,7 @@ const builtinComponents: ComponentBuilderProps["components"] = {
   "@easyblocks/rich-text-line-element": RichTextLineElementClient,
   "@easyblocks/rich-text-part": RichTextPartClient,
   "@easyblocks/text.client": TextClient,
-  "EditableComponentBuilder.client": EditableComponentBuilderClient,
+  "EditableComponentBuilder.client": ComponentBuilder,
   Image: StandardImage,
 };
 

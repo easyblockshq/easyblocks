@@ -1,4 +1,4 @@
-import type { ExternalData } from "./types";
+import type { ExternalData, FetchOutputCompoundResources } from "./types";
 
 export function getExternalValue(externalDataValue: ExternalData[string]) {
   if ("error" in externalDataValue) {
@@ -31,4 +31,13 @@ export function getExternalReferenceLocationKey(
   }
 
   return resourceId;
+}
+
+export function isCompoundExternalDataValue(
+  value: ExternalData[string]
+): value is FetchOutputCompoundResources[string] {
+  return (
+    ("type" in value && value.type === "object" && "value" in value) ||
+    "error" in value
+  );
 }

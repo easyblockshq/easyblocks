@@ -1,14 +1,20 @@
-"use client";
 import type {
+  ChangedExternalData,
   Config,
+  ContextParams,
   ExternalData,
   WidgetComponentProps,
 } from "@easyblocks/core";
 import React, { ComponentType, useEffect, useState } from "react";
 import { EasyblocksCanvas } from "./EditorChildWindow";
 import { PreviewRenderer } from "./PreviewRenderer";
+import { EasyblocksParent } from "./launchEditor";
 import { parseQueryParams } from "./parseQueryParams";
-import type { ExternalDataChangeHandler } from "./types";
+
+export type ExternalDataChangeHandler = (
+  externalData: ChangedExternalData,
+  contextParams: ContextParams
+) => void;
 
 export type EasyblocksEditorProps = {
   config: Config;
@@ -21,10 +27,6 @@ export type EasyblocksEditorProps = {
 export function EasyblocksEditor(props: EasyblocksEditorProps) {
   const [selectedWindow, setSelectedWindow] = useState<
     "parent" | "child" | "preview" | null
-  >(null);
-
-  const [editorModule, setEditorModule] = useState<
-    typeof import("@easyblocks/editor") | null
   >(null);
 
   const setSelectedWindowToParent = () => {
@@ -61,18 +63,10 @@ export function EasyblocksEditor(props: EasyblocksEditorProps) {
     }
   }, []);
 
-  useEffect(() => {
-    if (selectedWindow === "parent") {
-      loadEditorModule().then((editorModule) => {
-        setEditorModule(editorModule);
-      });
-    }
-  }, [selectedWindow]);
-
   return (
     <>
-      {selectedWindow === "parent" && editorModule !== null && (
-        <editorModule.EasyblocksParent
+      {selectedWindow === "parent" && (
+        <EasyblocksParent
           config={props.config}
           externalData={props.externalData}
           onExternalDataChange={props.onExternalDataChange}
@@ -89,9 +83,4 @@ export function EasyblocksEditor(props: EasyblocksEditorProps) {
       )}
     </>
   );
-}
-
-async function loadEditorModule() {
-  const editorModule = await import("@easyblocks/editor");
-  return editorModule;
 }
