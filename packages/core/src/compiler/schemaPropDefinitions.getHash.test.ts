@@ -64,8 +64,8 @@ const testCompilationContext: CompilationContextType = {
   },
   imageVariants: [],
   videoVariants: [],
-  rootContainers: [],
-  rootContainer: "content",
+  documentTypes: [],
+  documentType: "content",
 };
 
 type SchemaPropTestCaseArray<

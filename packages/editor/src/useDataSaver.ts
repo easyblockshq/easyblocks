@@ -347,15 +347,9 @@ export function useDataSaver(
           remoteDocument.current.config.config = configToSave;
           remoteDocument.current.version = updatedDocument.version;
         } else {
-          const source = new URLSearchParams(window.location.search).get(
-            "source"
-          );
-
-          if (!source) {
-            throw new Error(
-              "Trying to save data to backend without source. This is an unexpected error."
-            );
-          }
+          const source =
+            new URLSearchParams(window.location.search).get("source") ??
+            "default";
 
           const newDocument = await apiClient.documents.createDocument({
             title: "Untitled",
@@ -363,7 +357,7 @@ export function useDataSaver(
             source,
             uniqueSourceIdentifier,
             projectId: project.id,
-            rootContainer: editorContext.rootContainer,
+            rootContainer: editorContext.documentType,
           });
 
           remoteDocument.current = {
@@ -386,33 +380,8 @@ export function useDataSaver(
         updatedAt: new Date().getTime(),
         projectId: editorContext.project.id,
         rootContainer:
-          remoteDocument.current?.root_container ?? editorContext.rootContainer,
+          remoteDocument.current?.root_container ?? editorContext.documentType,
       };
-
-      // const configAfterSplit = splitConfigIntoSingleLocaleConfigs(
-      //   configToSaveWithLocalisedFlag,
-      //   editorContext.locales
-      // );
-      //
-      // const localisedDocument: LocalisedDocument = {};
-      // const previewData = getPreviewData(
-      //   configToSaveWithLocalisedFlag,
-      //   editorContext.rootContainer
-      // );
-      //
-      // editorContext.locales.forEach((locale) => {
-      //   localisedDocument[locale.code] = {
-      //     documentId: editorContext.isPlayground
-      //       ? "playground-document"
-      //       : remoteDocument.current!.id,
-      //     config: configAfterSplit[locale.code],
-      //     preview: previewData,
-      //     projectId: editorContext.project
-      //       ? editorContext.project.id
-      //       : "playground",
-      //     rootContainer: editorContext.rootContainer,
-      //   };
-      // });
 
       await editorContext.save(documentData);
 

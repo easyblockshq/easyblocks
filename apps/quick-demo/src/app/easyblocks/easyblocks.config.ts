@@ -27,14 +27,14 @@ export const easyblocksConfig: Config = {
       fallback: "en-US",
     },
   ],
-  rootContainers: {
+  documentTypes: {
     content: {
       label: "Content document template",
-      defaultConfig: starterTemplate,
+      defaultEntry: starterTemplate,
     },
     product: {
       label: "Product document template",
-      defaultConfig: {
+      defaultEntry: {
         _template: "$RootSections",
         data: [],
       },

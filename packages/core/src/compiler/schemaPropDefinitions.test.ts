@@ -256,8 +256,8 @@ export const testEditorContext: EditorContextType = {
     },
   ],
   videoVariantsDisplay: ["test.default"],
-  rootContainers: [],
-  rootContainer: "content",
+  documentTypes: [],
+  documentType: "content",
 };
 
 beforeEach(() => {

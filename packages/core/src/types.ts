@@ -451,9 +451,9 @@ export type LocalizedText = {
   [locale: string]: string;
 };
 
-export type RootContainer = {
+export type DocumentType = {
   label?: string;
-  defaultConfig: Omit<ComponentConfig, "_id">;
+  defaultEntry: Omit<ComponentConfig, "_id">;
   widths?: Array<number>;
   resource?: {
     type: string;
@@ -559,7 +559,7 @@ export type Config = {
   __masterEnvironment?: boolean;
   strict?: boolean;
   locales?: Array<Locale>;
-  rootContainers?: Record<string, RootContainer>;
+  documentTypes?: Record<string, DocumentType>;
   disableCustomTemplates?: boolean;
   hideCloseButton?: boolean;
   templates?: Template[];
@@ -586,7 +586,7 @@ type EditorProps = {
   config: Config;
   contextParams: ContextParams;
   onClose: () => void;
-  rootContainer: string;
+  documentType: string;
   container?: HTMLElement;
   heightMode?: "viewport" | "parent";
   canvasUrl?: string;

@@ -45,7 +45,7 @@ function IdentityField({ input, field }: IdentityFieldProps) {
     (schemaProp) => schemaProp.prop === parent!.fieldName
   );
   const rootComponentId =
-    editorContext.activeRootContainer.defaultConfig._template;
+    editorContext.activeDocumentType.defaultConfig._template;
 
   const isNonRemovable =
     (componentDefinition?.id.startsWith("@easyblocks/rich-text") &&
@@ -136,9 +136,9 @@ function IdentityField({ input, field }: IdentityFieldProps) {
         `}
       >
         {componentDefinition?.id === rootComponentId &&
-        editorContext.activeRootContainer
-          ? editorContext.activeRootContainer.label ??
-            `${editorContext.activeRootContainer.id} document template`
+        editorContext.activeDocumentType
+          ? editorContext.activeDocumentType.label ??
+            `${editorContext.activeDocumentType.id} document template`
           : componentDefinition?.label ?? componentDefinition?.id}
       </Typography>
       {!isNonChangable && <SSIcons.ChevronDown size={16} />}
