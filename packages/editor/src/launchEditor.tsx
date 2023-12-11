@@ -1,6 +1,5 @@
 import {
   Config,
-  ContextParams,
   ExternalDataChangeHandler,
   FetchOutputResources,
   WidgetComponentProps,
@@ -38,11 +37,12 @@ const shouldForwardProp: ShouldForwardProp<"web"> = (propName, target) => {
 export function EasyblocksParent(props: LaunchEditorProps) {
   const locales = props.config.locales ?? raiseError("Missing locales");
   const editorSearchParams = parseEditorSearchParams();
-  const contextParams = editorSearchParams.contextParams ?? {
-    locale: getDefaultLocale(locales).code,
+  const contextParams = {
+    locale: editorSearchParams.locale ?? getDefaultLocale(locales).code,
   };
-  const rootContainer =
-    editorSearchParams.rootContainer ?? raiseError("Missing rootContainer");
+  const documentType =
+    editorSearchParams.documentType ??
+    raiseError("Missing documentType search param");
   const mode = editorSearchParams.mode ?? "playground";
 
   return (
@@ -68,7 +68,7 @@ export function EasyblocksParent(props: LaunchEditorProps) {
             locales={locales}
             mode={mode}
             documentId={editorSearchParams.documentId}
-            rootContainer={rootContainer}
+            documentType={documentType}
             externalData={props.externalData}
             onExternalDataChange={props.onExternalDataChange}
             widgets={props.widgets}
@@ -85,8 +85,8 @@ type EditorSearchParams = {
   documentId: string | null;
   source: string | null;
   uniqueSourceIdentifier: string | null;
-  rootContainer: "content" | "grid" | (string & Record<never, never>) | null;
-  contextParams: ContextParams | null;
+  documentType: string | null;
+  locale: string | null;
 };
 
 function parseEditorSearchParams() {
@@ -106,35 +106,16 @@ function parseEditorSearchParams() {
   const documentId = searchParams.get("documentId");
   const source = searchParams.get("source");
   const uniqueSourceIdentifier = searchParams.get("uniqueSourceIdentifier");
-  const rootContainer = searchParams.get("rootContainer");
-  const contextParamsSearchParam = searchParams.get("contextParams");
-
-  let contextParams: ContextParams | null = null;
-
-  if (contextParamsSearchParam) {
-    try {
-      const parsedContextParams = JSON.parse(contextParamsSearchParam);
-
-      contextParams = {
-        locale:
-          typeof parsedContextParams.locale === "string"
-            ? parsedContextParams.locale
-            : raiseError(
-                `Missing "locale" value in "contextParams" search param`
-              ),
-      };
-    } catch {
-      contextParams = null;
-    }
-  }
+  const documentType = searchParams.get("documentType");
+  const locale = searchParams.get("locale");
 
   const editorSearchParams: EditorSearchParams = {
     mode,
     documentId,
-    rootContainer,
+    documentType,
     source,
     uniqueSourceIdentifier,
-    contextParams,
+    locale,
   };
 
   return editorSearchParams;

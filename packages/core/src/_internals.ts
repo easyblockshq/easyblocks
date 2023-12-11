@@ -28,7 +28,7 @@ export { defaultTheme } from "./compiler/theme";
 export { traverseComponents } from "./compiler/traverseComponents";
 export type {
   CompilationContextType,
-  CompilationRootContainer,
+  CompilationDocumentType,
   ContextProps,
   EditorContextType,
   InternalComponentDefinition,

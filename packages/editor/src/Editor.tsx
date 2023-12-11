@@ -169,7 +169,7 @@ type EditorContainerProps = {
   locales: Locale[];
   mode: "app" | "playground";
   documentId: string | null;
-  rootContainer: NonNullable<EditorLauncherProps["rootContainer"]>;
+  documentType: NonNullable<EditorLauncherProps["documentType"]>;
   configs?: CMSInput;
   save?: (
     contentPiece: CMSInput,
@@ -247,7 +247,7 @@ function EditorContainer(props: EditorContainerProps) {
         contextParams={props.contextParams}
         documentId={props.documentId}
         isPlayground={isPlayground}
-        rootContainer={props.rootContainer}
+        documentType={props.documentType}
         project={project}
         isEnabled={enabled}
       />
@@ -265,7 +265,7 @@ export type EditorProps = {
   config: Config;
   contextParams: ContextParams;
   onClose?: () => void;
-  rootContainer: NonNullable<EditorLauncherProps["rootContainer"]>;
+  documentType: NonNullable<EditorLauncherProps["documentType"]>;
   container?: HTMLElement;
   heightMode?: "viewport" | "parent";
   canvasUrl?: string;
@@ -290,7 +290,7 @@ const Editor = memo((props: EditorProps) => {
   const compilationContext = createCompilationContext(
     props.config,
     props.contextParams,
-    props.rootContainer
+    props.documentType
   );
 
   useEffect(() => {
@@ -308,7 +308,7 @@ const Editor = memo((props: EditorProps) => {
               compilationContext
             )
           : getDefaultInput({
-              rootContainer: props.rootContainer,
+              documentType: props.documentType,
               compilationContext,
             });
 
@@ -379,7 +379,7 @@ function useBuiltContent(
   config: Config,
   contextParams: ContextParams,
   rawContent: ConfigComponent,
-  rootContainer: string,
+  documentType: string,
   externalData: ExternalData,
   onExternalDataChange: ExternalDataChangeHandler
 ): NonEmptyRenderableContent & {
@@ -424,7 +424,7 @@ function useBuiltContent(
       config,
       contextParams: {
         locale: contextParams.locale,
-        rootContainer,
+        rootContainer: documentType,
       },
       externalData,
       compiler: {
@@ -533,7 +533,7 @@ const EditorContent = ({
   initialConfig,
   uniqueSourceIdentifier,
   isPlayground,
-  rootContainer,
+  documentType,
   externalData,
   ...props
 }: EditorContentProps) => {
@@ -766,15 +766,15 @@ const EditorContent = ({
     compilationCache: compilationCache.current,
     project: props.project,
     isPlayground,
-    activeRootContainer: assertDefined(
-      compilationContext.rootContainers.find((r) => r.id === rootContainer)
+    activeDocumentType: assertDefined(
+      compilationContext.documentTypes.find((r) => r.id === documentType)
     ),
     disableCustomTemplates: props.config.disableCustomTemplates ?? false,
     isFullScreen,
   };
 
-  if (editorContext.activeRootContainer.schema) {
-    const documentParamsTypes = editorContext.activeRootContainer.schema.map(
+  if (editorContext.activeDocumentType.schema) {
+    const documentParamsTypes = editorContext.activeDocumentType.schema.map(
       (s) => s.type
     );
     const types = Array.from(
@@ -811,7 +811,7 @@ const EditorContent = ({
       isEditing,
     },
     editableData,
-    rootContainer,
+    documentType,
     externalData,
     props.onExternalDataChange
   );
@@ -1172,38 +1172,38 @@ function useIframeSize({
 }
 
 function getDefaultInput({
-  rootContainer,
+  documentType,
   compilationContext,
 }: {
-  rootContainer: EditorLauncherProps["rootContainer"];
+  documentType: EditorLauncherProps["documentType"];
   compilationContext: CompilationContextType;
 }): {
   config: ConfigComponent;
   document: DocumentWithResolvedConfigDTO | null;
 } {
-  const rootContainerDefaultConfig = compilationContext.rootContainers.find(
-    (r) => r.id === rootContainer
+  const documentTypeDefaultConfig = compilationContext.documentTypes.find(
+    (r) => r.id === documentType
   )?.defaultConfig;
 
-  if (!rootContainerDefaultConfig) {
+  if (!documentTypeDefaultConfig) {
     throw new Error(
-      `Missing default config for root container "${rootContainer}"`
+      `Missing default config for document type "${documentType}"`
     );
   }
 
   if (
     !findComponentDefinitionById(
-      rootContainerDefaultConfig._template,
+      documentTypeDefaultConfig._template,
       compilationContext
     )
   ) {
     throw new Error(
-      `Missing definition for root container component "${rootContainerDefaultConfig._template}"`
+      `Missing definition for document type component "${documentTypeDefaultConfig._template}"`
     );
   }
 
   const defaultConfig = normalize(
-    rootContainerDefaultConfig,
+    documentTypeDefaultConfig,
     compilationContext
   );
 

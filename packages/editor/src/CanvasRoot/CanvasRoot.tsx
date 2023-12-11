@@ -1,5 +1,5 @@
 import { useEditorGlobalKeyboardShortcuts } from "@easyblocks/app-utils";
-import { CompilationRootContainer } from "@easyblocks/core/_internals";
+import { CompilationDocumentType } from "@easyblocks/core/_internals";
 import React, { ReactNode, useRef } from "react";
 
 type CanvasRootProps = {
@@ -12,16 +12,16 @@ function CanvasRoot(props: CanvasRootProps) {
 
   useEditorGlobalKeyboardShortcuts(editorContext);
 
-  const rootContainer: CompilationRootContainer | undefined =
-    editorContext.rootContainers.find(
-      (container: CompilationRootContainer) =>
-        container.id === editorContext.rootContainer
+  const documentType: CompilationDocumentType | undefined =
+    editorContext.documentTypes.find(
+      (container: CompilationDocumentType) =>
+        container.id === editorContext.documentType
     );
 
   const rootInlineStyle =
-    !editorContext.isFullScreen && rootContainer?.widths
+    !editorContext.isFullScreen && documentType?.widths
       ? {
-          maxWidth: rootContainer.widths[editorContext.breakpointIndex],
+          maxWidth: documentType.widths[editorContext.breakpointIndex],
           margin: "0 auto",
         }
       : undefined;

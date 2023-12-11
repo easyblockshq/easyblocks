@@ -10,7 +10,7 @@ import {
   ExternalSchemaProp,
   NoCodeComponentDefinition,
   ResponsiveValue,
-  RootContainer,
+  DocumentType,
   Spacing,
 } from "../types";
 import { buildFullTheme } from "./buildFullTheme";
@@ -27,7 +27,7 @@ import {
   themeObjectValueToResponsiveValue,
   themeScalarValueToResponsiveValue,
 } from "./themeValueToResponsiveValue";
-import { CompilationContextType, CompilationRootContainer } from "./types";
+import { CompilationContextType, CompilationDocumentType } from "./types";
 
 function normalizeSpace(
   space: ResponsiveValue<number | string>
@@ -73,7 +73,7 @@ function prepareDevices(configDevices: Config["devices"]): Devices {
 export function createCompilationContext(
   config: Config,
   contextParams: ContextParams,
-  rootContainer: NonNullable<EditorLauncherProps["rootContainer"]>
+  documentType: NonNullable<EditorLauncherProps["documentType"]>
 ): CompilationContextType {
   const devices = prepareDevices(config.devices);
   const mainDevice = devices.find((x) => x.isMain);
@@ -194,7 +194,7 @@ export function createCompilationContext(
   }
 
   const fetchingContext = createFetchingContext(config);
-  const rootContainers = buildRootContainers(config.rootContainers, devices);
+  const documentTypes = buildDocumentTypes(config.documentTypes, devices);
 
   const components: Array<NoCodeComponentDefinition<any, any>> = [
     textEditableComponent,
@@ -209,26 +209,24 @@ export function createCompilationContext(
     components.push(...config.components);
   }
 
-  const activeRootContainer = rootContainers.find(
-    (r) => r.id === rootContainer
-  );
+  const activeDocument = documentTypes.find((r) => r.id === documentType);
 
-  if (!activeRootContainer) {
-    throw new Error(`Root container "${rootContainer}" doesn't exist.`);
+  if (!activeDocument) {
+    throw new Error(`Document type "${documentType}" doesn't exist.`);
   }
 
-  if (activeRootContainer.schema) {
+  if (activeDocument.schema) {
     const rootComponentDefinition = components.find(
-      (c) => c.id === activeRootContainer.defaultConfig._template
+      (c) => c.id === activeDocument.defaultConfig._template
     );
 
     if (!rootComponentDefinition) {
       throw new Error(
-        `Missing definition for component "${activeRootContainer.defaultConfig._template}".`
+        `Missing definition for component "${activeDocument.defaultConfig._template}".`
       );
     }
 
-    activeRootContainer.schema.forEach((schemaProp) => {
+    activeDocument.schema.forEach((schemaProp) => {
       if (
         !rootComponentDefinition.schema.some((s) => s.prop === schemaProp.prop)
       ) {
@@ -279,52 +277,52 @@ export function createCompilationContext(
     contextParams,
     strict: fetchingContext.strict,
     locales: config.locales,
-    rootContainer,
-    rootContainers,
+    documentType,
+    documentTypes,
   };
 
   return compilationContext;
 }
 
-function buildRootContainers(
-  rootContainers: Config["rootContainers"],
+function buildDocumentTypes(
+  documentTypes: Config["documentTypes"],
   devices: Devices
-): CompilationContextType["rootContainers"] {
-  const resultRootContainers: CompilationContextType["rootContainers"] = [];
+): CompilationContextType["documentTypes"] {
+  const resultDocumentTypes: CompilationContextType["documentTypes"] = [];
 
-  if (rootContainers) {
-    for (const [id, rootContainer] of Object.entries(rootContainers)) {
-      const resultRootContainer: CompilationRootContainer = {
+  if (documentTypes) {
+    for (const [id, documentType] of Object.entries(documentTypes)) {
+      const resultDocumentType: CompilationDocumentType = {
         id,
-        label: rootContainer.label,
-        defaultConfig: rootContainer.defaultConfig,
-        schema: rootContainer.schema,
-        widths: buildRootContainerWidths(id, rootContainer, devices),
+        label: documentType.label,
+        defaultConfig: documentType.defaultEntry,
+        schema: documentType.schema,
+        widths: buildDocumentTypesWidths(id, documentType, devices),
       };
 
-      resultRootContainers.push(resultRootContainer);
+      resultDocumentTypes.push(resultDocumentType);
     }
   }
 
-  return resultRootContainers;
+  return resultDocumentTypes;
 }
 
-function buildRootContainerWidths(
+function buildDocumentTypesWidths(
   id: string,
-  rootContainer: RootContainer,
+  documentType: DocumentType,
   devices: Devices
 ) {
-  let widths: CompilationRootContainer["widths"];
+  let widths: CompilationDocumentType["widths"];
 
-  if (rootContainer.widths) {
-    if (rootContainer.widths.length !== devices.length) {
+  if (documentType.widths) {
+    if (documentType.widths.length !== devices.length) {
       throw new Error(
-        `Invalid number of widths for root container "${id}". Expected ${devices.length} widths, got ${rootContainer.widths.length}.`
+        `Invalid number of widths for root container "${id}". Expected ${devices.length} widths, got ${documentType.widths.length}.`
       );
     }
 
     widths = Object.fromEntries(
-      rootContainer.widths.map((containerWidth, index) => {
+      documentType.widths.map((containerWidth, index) => {
         const currentDevice = devices[index];
         return [currentDevice.id, Math.min(containerWidth, currentDevice.w)];
       })

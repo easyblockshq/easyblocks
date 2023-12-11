@@ -552,8 +552,8 @@ function createTestCompilationContext({
       },
     },
     imageVariants: [],
-    rootContainer: "content",
-    rootContainers: [],
+    documentType: "content",
+    documentTypes: [],
     videoVariants: [],
   };
 }

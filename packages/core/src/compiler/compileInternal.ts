@@ -40,13 +40,13 @@ export function compileInternal(
     },
   };
 
-  const activeRootContainer = compilationContext.rootContainers.find(
-    (container) => container.id === compilationContext.rootContainer
+  const activeDocumentType = compilationContext.documentTypes.find(
+    (container) => container.id === compilationContext.documentType
   );
   const contextProps: ContextProps = {};
 
-  if (activeRootContainer?.widths) {
-    contextProps.$width = activeRootContainer.widths;
+  if (activeDocumentType?.widths) {
+    contextProps.$width = activeDocumentType.widths;
     contextProps.$widthAuto = false;
   }
 

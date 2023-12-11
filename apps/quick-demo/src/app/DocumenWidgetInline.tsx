@@ -51,13 +51,7 @@ export const DocumenWidgetInline: React.FC<{
   const [canvasUrl] = useState(() => {
     const rootContainer = document?.rootContainer ?? "content";
 
-    let canvasUrl = `${
-      window.location.origin
-    }/easyblocks-editor?rootContainer=${rootContainer}&mode=app&source=sales-app&contextParams=${JSON.stringify(
-      {
-        locale: "en-US",
-      }
-    )}`;
+    let canvasUrl = `${window.location.origin}/easyblocks-editor?documentType=${rootContainer}&mode=app`;
 
     if (document) {
       canvasUrl += `&documentId=${document.id}`;

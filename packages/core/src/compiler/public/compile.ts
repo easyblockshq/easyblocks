@@ -16,16 +16,16 @@ export const compile: CompilerModule["compile"] = (
     code: {},
   };
 
-  const rootContainer = getRootContainer(content, contextParams);
+  const documentType = getRootContainer(content, contextParams);
   const compilationContext = createCompilationContext(
     config,
     contextParams,
-    rootContainer
+    documentType
   );
 
   if (!content) {
-    content = compilationContext.rootContainers.find(
-      (c) => c.id === rootContainer
+    content = compilationContext.documentTypes.find(
+      (c) => c.id === documentType
     )?.defaultConfig;
   }
 

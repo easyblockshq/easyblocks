@@ -131,25 +131,25 @@ describe("max widths", () => {
   });
 });
 
-describe("root containers", () => {
-  test('returns empty root containers when "rootContainers" is not defined in config', () => {
+describe("document types", () => {
+  test('returns empty document types when "documentTypes" is not defined in config', () => {
     const context = createCompilationContext(
       basicConfig,
       { locale: "en-US" },
       "content"
     );
 
-    expect(context.rootContainers).toEqual([]);
+    expect(context.documentTypes).toEqual([]);
   });
 
-  test('returns root containers when "rootContainers" is defined in config', () => {
+  test('returns document types when "documentTypes" is defined in config', () => {
     const context = createCompilationContext(
       {
         ...basicConfig,
-        rootContainers: {
-          rootContainer1: {
+        documentTypes: {
+          documentType1: {
             widths: [100, 200, 300, 400, 500, 600],
-            defaultConfig: {
+            defaultEntry: {
               _template: "$TestComponent",
             },
           },
@@ -159,11 +159,11 @@ describe("root containers", () => {
       "content"
     );
 
-    expect(context.rootContainers).toEqual<
-      CompilationContextType["rootContainers"]
+    expect(context.documentTypes).toEqual<
+      CompilationContextType["documentTypes"]
     >([
       {
-        id: "rootContainer1",
+        id: "documentType1",
         widths: {
           xs: 100,
           sm: 200,
@@ -179,52 +179,15 @@ describe("root containers", () => {
     ]);
   });
 
-  test("replaces width of given root container with 100% if width is bigger than breakpoint for which it's defined", () => {
-    const context = createCompilationContext(
-      {
-        ...basicConfig,
-        rootContainers: {
-          rootContainer1: {
-            widths: [1000, 900, 800, 700, 600, 500],
-            defaultConfig: {
-              _template: "$TestComponent",
-            },
-          },
-        },
-      },
-      { locale: "en-US" },
-      "content"
-    );
-
-    expect(context.rootContainers).toEqual<
-      CompilationContextType["rootContainers"]
-    >([
-      {
-        id: "rootContainer1",
-        widths: {
-          xs: 1000,
-          sm: 900,
-          md: 800,
-          lg: 700,
-          xl: 600,
-          "2xl": 500,
-        },
-        defaultConfig: {
-          _template: "$TestComponent",
-        },
-      },
-    ]);
-  });
-
-  test("throws an error when number of widths of given root container is less than number of devices", () => {
+  test("throws an error when number of widths of given document type is less than number of devices", () => {
     expect(() => {
       createCompilationContext(
         {
           ...basicConfig,
-          rootContainers: {
-            rootContainer1: {
+          documentTypes: {
+            documentType1: {
               widths: [100, 200, 300, 400, 500],
-              defaultConfig: {
+              defaultEntry: {
                 _template: "$TestComponent",
               },
             },
@@ -234,7 +197,7 @@ describe("root containers", () => {
         "content"
       );
     }).toThrowErrorMatchingInlineSnapshot(
-      `"Invalid number of widths for root container \\"rootContainer1\\". Expected 6 widths, got 5."`
+      `"Invalid number of widths for document type \\"documentType1\\". Expected 6 widths, got 5."`
     );
   });
 });

@@ -22,7 +22,7 @@ import {
 import { Theme } from "./theme";
 import { InternalAnyTinaField } from "./schema";
 
-export type CompilationRootContainer = {
+export type CompilationDocumentType = {
   id: string;
   label?: string;
   defaultConfig: Omit<ComponentConfig, "_id">;
@@ -44,8 +44,8 @@ export type CompilationContextType = {
   eventSink?: EventSink;
   strict?: boolean;
   locales?: Array<Locale>;
-  rootContainer: string;
-  rootContainers: Array<CompilationRootContainer>;
+  documentType: string;
+  documentTypes: Array<CompilationDocumentType>;
 };
 
 export type EditableComponentToComponentConfig<
@@ -172,7 +172,7 @@ export type EditorContextType = CompilationContextType & {
   focussedField: Array<string>;
   setFocussedField: (focusedFields: string | Array<string>) => void;
   actions: EditorActions;
-  activeRootContainer: CompilationRootContainer;
+  activeDocumentType: CompilationDocumentType;
   templates?: Template[];
   isFullScreen: boolean;
 };
