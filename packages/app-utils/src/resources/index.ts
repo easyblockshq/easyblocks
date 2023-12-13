@@ -27,8 +27,10 @@ export function isResolvedCompoundExternalDataValue(
   return "type" in value && value.type === "object" && "value" in value;
 }
 
-export function isIdReferenceToDocumentExternalValue(id: string) {
-  return id.startsWith("$.");
+export function isIdReferenceToDocumentExternalValue(
+  id: NonNullable<ExternalReference["id"]>
+) {
+  return typeof id === "string" && id.startsWith("$.");
 }
 
 export function isEmptyExternalReference(

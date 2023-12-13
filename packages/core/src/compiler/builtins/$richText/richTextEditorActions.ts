@@ -154,7 +154,7 @@ function updateInlineWrapper(
       const defaultActionTextModifier: StandardActionStylesConfig | undefined =
         editorContext.templates!.find((template) => {
           const component = findComponentDefinition(
-            template.config,
+            template.entry,
             editorContext
           )!;
 
@@ -166,7 +166,7 @@ function updateInlineWrapper(
             return true;
           }
           return false;
-        })?.config as StandardActionStylesConfig | undefined;
+        })?.entry as StandardActionStylesConfig | undefined;
 
       // .getTemplates(["actionTextModifier"])
       // .find((template) => template.isDefaultTextModifier)?.config as

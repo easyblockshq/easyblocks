@@ -1,31 +1,33 @@
+import { Locale } from "./locales";
 import { isLocalTextReference } from "./resourcesUtils";
 import type {
   ChangedExternalData,
   CompilationMetadata,
   CompiledShopstoryComponentConfig,
+  CompilerModule,
   ComponentConfig,
   Config,
   ExternalData,
   ExternalParams,
+  ExternalReference,
   ExternalSchemaProp,
   ExternalWithSchemaProp,
-  CompilerModule,
 } from "./types";
 
 type BuildEntryOptions = {
   entry: ComponentConfig;
   config: Config;
-  contextParams: { locale: string; rootContainer: string };
+  contextParams: { locale: Locale["code"]; rootContainer: string };
   compiler: CompilerModule;
   externalData: ExternalData;
   isExternalDataChanged?: (
     externalData: {
       id: string;
-      externalId: string | null;
+      externalId: ExternalReference["id"];
     },
     defaultIsExternalDataChanged: (externalData: {
       id: string;
-      externalId: string | null;
+      externalId: ExternalReference["id"];
     }) => boolean
   ) => boolean;
 };
@@ -78,20 +80,34 @@ function findChangedExternalData(
 
   function defaultIsExternalDataPending(
     id: string,
-    resource: { id: string; externalId: string | null },
+    resource: { id: string; externalId: ExternalReference["id"] },
     type: string
   ) {
-    return (
-      resource.externalId !== null &&
-      !isLocalTextReference(
+    // If null, then it's empty external value and it's not pending
+    if (resource.externalId === null) {
+      return false;
+    }
+
+    // If it's already fetched, then it's not pending
+    if (externalData[id]) {
+      return false;
+    }
+
+    // If id is a string and it's either local text reference or a reference to document's data, then it's not pending
+    if (
+      typeof resource.externalId === "string" &&
+      (isLocalTextReference(
         {
           id: resource.externalId,
         },
         type
-      ) &&
-      !externalData[id] &&
-      !resource.externalId?.startsWith("$.")
-    );
+      ) ||
+        resource.externalId.startsWith("$."))
+    ) {
+      return false;
+    }
+
+    return true;
   }
 
   resourcesWithSchemaProps.forEach(({ id, externalReference, schemaProp }) => {
@@ -127,7 +143,7 @@ function findChangedExternalData(
     }
 
     changedExternalData[id] = {
-      externalId: externalReference.id,
+      id: externalReference.id,
       type: schemaProp.type,
       widgetId: externalReference.widgetId,
       fetchParams,

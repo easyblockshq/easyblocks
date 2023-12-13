@@ -217,12 +217,12 @@ export function createCompilationContext(
 
   if (activeDocument.schema) {
     const rootComponentDefinition = components.find(
-      (c) => c.id === activeDocument.defaultConfig._template
+      (c) => c.id === activeDocument.entry._template
     );
 
     if (!rootComponentDefinition) {
       throw new Error(
-        `Missing definition for component "${activeDocument.defaultConfig._template}".`
+        `Missing definition for component "${activeDocument.entry._template}".`
       );
     }
 
@@ -295,7 +295,7 @@ function buildDocumentTypes(
       const resultDocumentType: CompilationDocumentType = {
         id,
         label: documentType.label,
-        defaultConfig: documentType.defaultEntry,
+        entry: documentType.entry,
         schema: documentType.schema,
         widths: buildDocumentTypesWidths(id, documentType, devices),
       };

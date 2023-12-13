@@ -33,7 +33,7 @@ function getDefaultTemplateForDefinition(
   return {
     id: `${def.id}_default`,
     label: def.label ?? def.id,
-    config,
+    entry: config,
     isUserDefined: false,
   };
 }
@@ -73,7 +73,7 @@ function getNecessaryDefaultTemplates(
 
   components.forEach((component) => {
     const componentTemplates = templates.filter(
-      (template) => template.config._template === component.id
+      (template) => template.entry._template === component.id
     );
     if (componentTemplates.length === 0) {
       result.push(getDefaultTemplateForDefinition(component));
@@ -147,7 +147,7 @@ export function getTemplatesInternal(
   const result = allUserTemplates
     .filter((template) => {
       const definition = findComponentDefinitionById(
-        template.config._template,
+        template.entry._template,
         editorContext
       );
       if (!definition || definition.hideTemplates) {
@@ -156,8 +156,8 @@ export function getTemplatesInternal(
       return true;
     })
     .filter((template) => {
-      return template.config._itemProps
-        ? Object.keys(template.config._itemProps).every((componentId) =>
+      return template.entry._itemProps
+        ? Object.keys(template.entry._itemProps).every((componentId) =>
             findComponentDefinitionById(componentId, editorContext)
           )
         : true;
@@ -166,7 +166,7 @@ export function getTemplatesInternal(
       return {
         ...template,
         config: normalizeTextLocales(
-          normalize(template.config, editorContext),
+          normalize(template.entry, editorContext),
           editorContext
         ),
       };

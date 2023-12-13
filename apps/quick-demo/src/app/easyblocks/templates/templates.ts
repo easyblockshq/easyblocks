@@ -58,7 +58,7 @@ import { NoomaBasicCard5 } from "@/app/easyblocks/templates/nooma/BasicCard5/Noo
 export const templates: Template[] = [
   {
     id: "BannerSection2_Empty",
-    config: BannerSection2_empty,
+    entry: BannerSection2_empty,
     thumbnailLabel: "Empty Hero Banner",
   },
   NoomaBannerSection4,
@@ -92,12 +92,12 @@ export const templates: Template[] = [
   // },
   {
     id: "Slider_empty",
-    config: Slider_empty,
+    entry: Slider_empty,
     thumbnailLabel: "Empty Slider",
   },
   {
     id: "Grid_empty",
-    config: Grid_empty,
+    entry: Grid_empty,
     thumbnailLabel: "Empty Grid",
   },
   NoomaGrid1,
@@ -134,7 +134,7 @@ export const templates: Template[] = [
   // },
   {
     id: "TwoCards_Empty",
-    config: TwoCards_empty,
+    entry: TwoCards_empty,
     thumbnailLabel: "Empty Two Cards",
   },
 
@@ -145,7 +145,7 @@ export const templates: Template[] = [
 
   {
     id: "BasicCard_Empty",
-    config: BasicCard_empty,
+    entry: BasicCard_empty,
     thumbnailLabel: "Empty Basic Card",
   },
   NoomaBasicCard1,
@@ -226,7 +226,7 @@ export const templates: Template[] = [
     id: "ButtonGroup_default",
     label: "Default",
     // @ts-expect-error
-    config: {
+    entry: {
       _template: "$buttons",
       gap: {
         $res: true,
@@ -240,12 +240,12 @@ export const templates: Template[] = [
   {
     id: "Video_default",
     label: "Default",
-    config: video,
+    entry: video,
   },
   {
     id: "RichText_default",
     label: "Default",
-    config: buildRichTextNoCodeEntry({
+    entry: buildRichTextNoCodeEntry({
       text: "Lorem ipsum",
       color: "grey_05",
       font: "body",
@@ -256,27 +256,27 @@ export const templates: Template[] = [
     label: "Standard",
     thumbnail:
       "https://images.ctfassets.net/blh4anz05qu1/1LdC2xsiaoytmv2PgAnQQD/379daa392c46ff7a33761fb6f0a7d889/Screenshot_2023-10-06_at_13.59.15.png",
-    config: Button_standard,
+    entry: Button_standard,
   },
   {
     id: "Button_standard_light",
     label: "Standard light",
     thumbnail:
       "https://images.ctfassets.net/blh4anz05qu1/5ZjWVxfWfAPLYivhp1nlUQ/360d5cb90b75cd51ad099447b2e4a5b1/Screenshot_2023-10-16_at_16.27.32.png",
-    config: Button_standard_light,
+    entry: Button_standard_light,
   },
   {
     id: "Button_text",
     label: "Text",
     thumbnail:
       "https://images.ctfassets.net/blh4anz05qu1/7t6QX8UnUDcwvbVRvJrW5Z/6ce07aa0d99eee0977fb447e8a39810e/Screenshot_2023-10-16_at_16.28.54.png",
-    config: Button_text,
+    entry: Button_text,
   },
   {
     id: "Button_icon",
     label: "Icon standard",
     thumbnail:
       "https://images.ctfassets.net/blh4anz05qu1/5qsvp8xUQZjayKaj5XNmil/84f6f90a3c5779390e9eaabce5a3e1d3/Screenshot_2023-10-06_at_14.03.11.png",
-    config: Button_icon_standard,
+    entry: Button_icon_standard,
   },
 ];

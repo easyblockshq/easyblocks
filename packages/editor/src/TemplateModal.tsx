@@ -26,11 +26,6 @@ export const TemplateModal: React.FC<TemplateModalProps> = (props) => {
   const apiClient = useApiClient();
   const mode = props.action.mode;
 
-  const config =
-    props.action.mode === "edit"
-      ? props.action.template.config
-      : props.action.config;
-
   const editorContext = useEditorContext();
   const [isLoadingEdit, setLoadingEdit] = useState(false);
   const [isLoadingDelete, setLoadingDelete] = useState(false);
@@ -42,7 +37,7 @@ export const TemplateModal: React.FC<TemplateModalProps> = (props) => {
     } else {
       return {
         label: "",
-        config: props.action.config,
+        entry: props.action.config,
       };
     }
   });

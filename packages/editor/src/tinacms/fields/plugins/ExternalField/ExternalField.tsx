@@ -14,7 +14,7 @@ import {
 } from "@easyblocks/core";
 import { Select, SelectItem, Typography } from "@easyblocks/design-system";
 import { dotNotationGet, toArray } from "@easyblocks/utils";
-import React, { ComponentType } from "react";
+import React, { ComponentType, useLayoutEffect } from "react";
 import { useEditorContext } from "../../../../EditorContext";
 import { useEditorExternalData } from "../../../../EditorExternalDataProvider";
 import {
@@ -73,17 +73,19 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
     !isIdReferenceToDocumentExternalValue(value.id) &&
     basicResources.length > 1;
 
-  if (
-    isExternalValueResolvedCompoundExternalDataValue &&
-    basicResources.length === 1 &&
-    !value.key
-  ) {
-    // We perform form change manually to avoid storing this change in editor's history
-    editorContext.form.change(fieldNames[0], {
-      ...value,
-      key: basicResources[0].key,
-    });
-  }
+  useLayoutEffect(() => {
+    if (
+      isExternalValueResolvedCompoundExternalDataValue &&
+      basicResources.length === 1 &&
+      !value.key
+    ) {
+      // We perform form change manually to avoid storing this change in editor's history
+      editorContext.form.change(fieldNames[0], {
+        ...value,
+        key: basicResources[0].key,
+      });
+    }
+  });
 
   return (
     <FieldMetaWrapper {...props} form={tinaForm} layout="column">
@@ -113,7 +115,7 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
                     widgetId: value.widgetId,
                   };
 
-                  if (newKey) {
+                  if (newKey && newValue.id !== null) {
                     newValue.key = newKey;
                   }
 

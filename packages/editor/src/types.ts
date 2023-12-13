@@ -3,6 +3,7 @@ import {
   ComponentConfig,
   ConfigComponent,
   ContextParams,
+  ExternalReference,
   LocalisedConfigs,
   LocalisedDocument,
   LocalizedText,
@@ -108,7 +109,7 @@ export type Template = TemplateBase & {
   isGroupEmptyTemplate?: boolean;
   mapTo?: string | string[];
   isDefaultTextModifier?: boolean; // maybe to remove in the future. But we need to know which template is default text modifier!
-  config: ComponentConfig; // this includes type and id!!!
+  entry: ComponentConfig; // this includes type and id!!!
   configId?: string;
   isRemoteUserDefined?: boolean;
   previewSettings?: {
@@ -161,7 +162,7 @@ export type InternalWidgetComponentProps = Omit<
   WidgetComponentProps,
   "onChange"
 > & {
-  onChange: (id: string, key?: string) => void;
+  onChange: (id: ExternalReference["id"], key?: string) => void;
   resourceKey?: string;
   path?: string;
 };

@@ -4,7 +4,6 @@ import {
   Devices,
   ExternalDefinition,
   ContextParams,
-  EventSink,
   ComponentConfig,
   ExternalSchemaProp,
   SchemaProp,
@@ -25,7 +24,7 @@ import { InternalAnyTinaField } from "./schema";
 export type CompilationDocumentType = {
   id: string;
   label?: string;
-  defaultConfig: Omit<ComponentConfig, "_id">;
+  entry: Omit<ComponentConfig, "_id">;
   widths: Record<string, number>;
   schema?: Array<ExternalSchemaProp>;
 };
@@ -41,7 +40,6 @@ export type CompilationContextType = {
   mainBreakpointIndex: string;
   isEditing?: boolean;
   contextParams: ContextParams;
-  eventSink?: EventSink;
   strict?: boolean;
   locales?: Array<Locale>;
   documentType: string;

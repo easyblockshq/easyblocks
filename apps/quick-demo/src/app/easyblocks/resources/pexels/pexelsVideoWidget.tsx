@@ -12,7 +12,10 @@ export const pexelsVideoWidget: Widget = {
   label: "Pexels",
 };
 
-export function PexelsVideoPicker({ id, onChange }: WidgetComponentProps) {
+export function PexelsVideoPicker({
+  id,
+  onChange,
+}: WidgetComponentProps<string>) {
   return (
     <SimplePicker
       value={id}

@@ -16,14 +16,14 @@ async function fetchProductResources(
   }
 
   const deletedResources = allResources.filter(
-    ([, resource]) => resource.externalId === null
+    ([, resource]) => resource.id === null
   );
   const productResources = allResources.filter(
-    ([, resource]) => resource.externalId !== null
+    ([, resource]) => resource.id !== null
   );
 
   const productIds = productResources.map(
-    ([, resource]) => resource.externalId
+    ([, resource]) => resource.id
   ) as string[];
 
   const result: any = {};
@@ -37,15 +37,14 @@ async function fetchProductResources(
       includeRelated: true,
     });
 
-    productResources.forEach(([fieldId, { externalId }]) => {
+    productResources.forEach(([fieldId, { id }]) => {
       const product = products.find(
-        (product) =>
-          decodeObjectId(product.id) === decodeObjectId(externalId as string)
+        (product) => decodeObjectId(product.id) === decodeObjectId(id as string)
       );
 
       if (!product) {
         result[fieldId] = {
-          error: `Couldn't fetch product with id: ${externalId}`,
+          error: `Couldn't fetch product with id: ${id}`,
         };
       } else {
         result[fieldId] = {

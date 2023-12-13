@@ -54,7 +54,7 @@ export async function fetchEasyblocksMediaResources(
   }
 
   const requestedAssetsIds = mediaInputResources
-    .map(([, resource]) => resource.externalId)
+    .map(([, resource]) => resource.id)
     .filter<string>((externalId): externalId is string => externalId !== null);
 
   const assets = await apiClient.assets.getAssets({
@@ -64,15 +64,13 @@ export async function fetchEasyblocksMediaResources(
 
   const fetchResult = Object.fromEntries(
     mediaInputResources.map(([id, inputResource]) => {
-      const asset = assets.find((a) => inputResource.externalId === a.id);
+      const asset = assets.find((a) => inputResource.id === a.id);
 
       if (!asset) {
         return [
           id,
           {
-            error: new Error(
-              `Asset with id "${inputResource.externalId}" not found`
-            ),
+            error: new Error(`Asset with id "${inputResource.id}" not found`),
           },
         ];
       }

@@ -11,7 +11,7 @@ export const productWidget: Widget = {
   label: "Product",
 };
 
-export function ProductPicker({ id, onChange }: WidgetComponentProps) {
+export function ProductPicker({ id, onChange }: WidgetComponentProps<string>) {
   return (
     <SimplePicker
       value={id}
