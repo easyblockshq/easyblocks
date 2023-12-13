@@ -21,7 +21,7 @@ export default function MainPage() {
     } else {
       // On this date we've introduced a change for names of text and rich text component.
       // This change is not backwards compatible, so we need to reset the saved document.
-      const date = new Date("2023-11-23:00:00:00");
+      const date = new Date("2023-11-25:00:00:00");
       const parsedDocument = JSON.parse(documentRaw);
 
       if (parsedDocument.updatedAt < date.getTime()) {
