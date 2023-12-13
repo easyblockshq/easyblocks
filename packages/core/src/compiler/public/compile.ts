@@ -26,7 +26,7 @@ export const compile: CompilerModule["compile"] = (
   if (!content) {
     content = compilationContext.documentTypes.find(
       (c) => c.id === documentType
-    )?.defaultConfig;
+    )?.entry;
   }
 
   const inputConfigComponent = normalizeInput(content);

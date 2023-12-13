@@ -66,7 +66,7 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
       };
 
       editorContext.templates!.forEach((template) => {
-        if (component.id === template.config._template) {
+        if (component.id === template.entry._template) {
           templatesDictionary![component.id].templates.push(template);
         }
       });
@@ -111,7 +111,7 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
 
   const onModalClose = (template?: Template) => {
     if (template) {
-      close(normalize(template.config, editorContext));
+      close(normalize(template.entry, editorContext));
     } else {
       onClose();
     }

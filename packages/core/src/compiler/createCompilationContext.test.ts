@@ -149,7 +149,7 @@ describe("document types", () => {
         documentTypes: {
           documentType1: {
             widths: [100, 200, 300, 400, 500, 600],
-            defaultEntry: {
+            entry: {
               _template: "$TestComponent",
             },
           },
@@ -187,7 +187,7 @@ describe("document types", () => {
           documentTypes: {
             documentType1: {
               widths: [100, 200, 300, 400, 500],
-              defaultEntry: {
+              entry: {
                 _template: "$TestComponent",
               },
             },

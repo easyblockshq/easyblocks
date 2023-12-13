@@ -86,7 +86,7 @@ export function createShopifyProductPicker(options: ShopifyAPISettings) {
 
   const useHandleAsId = !!options.useHandleAsId;
 
-  return function ShopifyProductPicker(props: WidgetComponentProps) {
+  return function ShopifyProductPicker(props: WidgetComponentProps<string>) {
     return (
       <SimplePicker
         getItemById={(id) => {

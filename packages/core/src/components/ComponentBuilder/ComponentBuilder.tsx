@@ -47,7 +47,6 @@ import {
   LocalReference,
   LocalTextReference,
   ResponsiveValue,
-  UnresolvedResource,
 } from "../../types";
 import { Box } from "../Box/Box";
 import { useEasyblocksExternalData } from "../EasyblocksExternalDataProvider";
@@ -517,7 +516,7 @@ function mapExternalProps(
         isExternalSchemaProp(schemaProp) ||
         (schemaProp.type === "text" &&
           !isLocalTextReference(
-            propValue as LocalReference | ExternalReference,
+            propValue as LocalReference | ExternalReference<string>,
             "text"
           ))
       ) {
@@ -537,7 +536,7 @@ function mapExternalProps(
 }
 
 function resolveExternalValue(
-  responsiveResource: ResponsiveValue<UnresolvedResource>,
+  responsiveResource: ResponsiveValue<ExternalReference>,
   configId: string,
   schemaProp: ExternalSchemaProp,
   externalData: ExternalData
@@ -546,36 +545,39 @@ function resolveExternalValue(
     if (r.id) {
       // If resource field has `key` defined and its `id` starts with "$.", it means that it's a reference to the
       // root resource and we need to look for the resource with the same id as the root resource.
-      const resourceId =
-        r.key && r.id.startsWith("$.")
+      const locationKey =
+        r.key && typeof r.id === "string" && r.id.startsWith("$.")
           ? r.id
           : getExternalReferenceLocationKey(
               configId,
               schemaProp.prop,
               breakpointIndex
             );
-      const resource = externalData[resourceId];
+      const externalDataValue = externalData[locationKey];
 
       let resourceValue: ReturnType<typeof getExternalValue>;
 
-      if (resource) {
-        resourceValue = getExternalValue(resource);
+      if (externalDataValue) {
+        resourceValue = getExternalValue(externalDataValue);
       }
 
-      if (resource === undefined || isEmptyRenderableContent(resourceValue)) {
+      if (
+        externalDataValue === undefined ||
+        isEmptyRenderableContent(resourceValue)
+      ) {
         return;
       }
 
-      if ("error" in resource) {
+      if ("error" in externalDataValue) {
         return;
       }
 
-      if (isCompoundExternalDataValue(resource)) {
+      if (isCompoundExternalDataValue(externalDataValue)) {
         if (!r.key) {
           return;
         }
 
-        const resolvedResourceValue = resource.value[r.key].value;
+        const resolvedResourceValue = externalDataValue.value[r.key].value;
 
         if (!resolvedResourceValue) {
           return;
@@ -621,7 +623,10 @@ function getFieldStatus(
 
         return {
           isLoading: currentStatus.isLoading || externalValue === undefined,
-          renderable: currentStatus.renderable && externalValue !== undefined,
+          renderable:
+            currentStatus.renderable &&
+            externalValue !== undefined &&
+            (externalValue.type === "object" ? value.key !== undefined : true),
         };
       }
 
@@ -651,7 +656,12 @@ function getFieldStatus(
 
       return {
         isLoading: currentStatus.isLoading || externalValue === undefined,
-        renderable: currentStatus.renderable && externalValue !== undefined,
+        renderable:
+          currentStatus.renderable &&
+          externalValue !== undefined &&
+          (externalValue.type === "object"
+            ? externalReferenceValue.key !== undefined
+            : true),
       };
     },
     { renderable: true, isLoading: false },
@@ -665,9 +675,10 @@ function getResolvedExternalDataValue(
   fieldName: string,
   value: ExternalReferenceNonEmpty
 ) {
-  const externalReferenceLocationKey = value.id.startsWith("$.")
-    ? value.id
-    : getExternalReferenceLocationKey(configId, fieldName);
+  const externalReferenceLocationKey =
+    typeof value.id === "string" && value.id.startsWith("$.")
+      ? value.id
+      : getExternalReferenceLocationKey(configId, fieldName);
 
   const externalValue = externalData[externalReferenceLocationKey];
 

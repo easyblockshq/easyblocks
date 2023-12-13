@@ -21,7 +21,7 @@ export type EasyblocksEditorProps = {
   externalData: ExternalData;
   onExternalDataChange: ExternalDataChangeHandler;
   components?: Record<string, React.ComponentType<any>>;
-  widgets?: Record<string, ComponentType<WidgetComponentProps>>;
+  widgets?: Record<string, ComponentType<WidgetComponentProps<any>>>;
 };
 
 export function EasyblocksEditor(props: EasyblocksEditorProps) {

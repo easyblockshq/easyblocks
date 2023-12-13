@@ -15,8 +15,8 @@ export async function fetchMockImages(
   const assets = await fetchAssetsFromContentful("image");
   const results: Record<string, any> = {};
 
-  allResources.forEach(([fieldId, { externalId }]) => {
-    const asset = assets.find((asset) => asset.id === externalId);
+  allResources.forEach(([fieldId, { id }]) => {
+    const asset = assets.find((asset) => asset.id === id);
 
     if (!asset) {
       results[fieldId] = {

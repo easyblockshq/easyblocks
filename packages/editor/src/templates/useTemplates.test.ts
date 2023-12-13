@@ -6,7 +6,7 @@ import { testEditorContext } from "../utils/tests";
 
 const remoteSection1: Template = {
   type: "section",
-  config: {
+  entry: {
     _template: "$Section",
     identifier: "remoteSection1",
     field: 10,
@@ -15,7 +15,7 @@ const remoteSection1: Template = {
 
 const remoteSection2: Template = {
   type: "section",
-  config: {
+  entry: {
     _template: "$Section",
     identifier: "remoteSection2",
     field: 20,
@@ -32,7 +32,7 @@ const remoteSection2: Template = {
 const remoteSectionMaster: Template = {
   // identifier: "remoteSectionMaster",
   type: "section",
-  config: {
+  entry: {
     _template: "$Section",
     _master: "masterSection",
     identifier: "remoteSectionMaster",
@@ -43,7 +43,7 @@ const remoteSectionMaster: Template = {
 const remoteCard1: Template = {
   // id: "card1",
   type: "card",
-  config: {
+  entry: {
     _template: "$Card",
     prop: "yyy",
   },
@@ -120,7 +120,7 @@ function hasMasterConfigsDeep(arg: any): boolean {
 
 function haveMasterTemplates(templates: Template[]) {
   return templates.reduce(
-    (prev, curr) => prev || curr.config._master !== undefined,
+    (prev, curr) => prev || curr.entry._master !== undefined,
     false
   );
 }
@@ -154,7 +154,7 @@ describe("useTemplates - user environment", () => {
     );
 
     expect(remoteSection2Template?.config.Card[0]).toMatchObject(
-      remoteCard1.config
+      remoteCard1.entry
     );
   });
 
@@ -247,7 +247,7 @@ describe("useTemplates - master environment", () => {
       (template) => template.config.identifier === "remoteSection2"
     );
     expect(remoteSection2Template?.config.Card[0]).toMatchObject(
-      remoteSection2.config.Card[0]
+      remoteSection2.entry.Card[0]
     );
   });
 

@@ -44,8 +44,7 @@ function IdentityField({ input, field }: IdentityFieldProps) {
   const parentSchemaProp = parentComponentDefinition?.schema.find(
     (schemaProp) => schemaProp.prop === parent!.fieldName
   );
-  const rootComponentId =
-    editorContext.activeDocumentType.defaultConfig._template;
+  const rootComponentId = editorContext.activeDocumentType.entry._template;
 
   const isNonRemovable =
     (componentDefinition?.id.startsWith("@easyblocks/rich-text") &&

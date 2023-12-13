@@ -36,6 +36,19 @@ function createDocumentDataWidgetComponent(type: string) {
     resourceKey,
     path,
   }: InternalWidgetComponentProps) {
+    if (id !== null && typeof id !== "string") {
+      return (
+        <Typography
+          css={`
+            white-space: normal;
+          `}
+        >
+          Unsupported type of identifier for document data widget. Expected
+          "string", but got "{typeof id}".
+        </Typography>
+      );
+    }
+
     const { editorContext, externalData } = window.editorWindowAPI;
 
     const documentExternalLocationKeys = assertDefined(

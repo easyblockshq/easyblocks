@@ -42,7 +42,7 @@ export default function EntryPreviewPage() {
         ...externalData,
         ...(entry.type === "product" && {
           "$.product": {
-            externalId: "flec-candle-holder-pink-blossom",
+            id: "flec-candle-holder-pink-blossom",
             type: "product",
             widgetId: "product",
           },

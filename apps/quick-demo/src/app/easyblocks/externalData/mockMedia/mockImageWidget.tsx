@@ -7,6 +7,9 @@ export const mockImageWidget: Widget = {
   label: "Library",
 };
 
-export function MockImagePicker({ id, onChange }: WidgetComponentProps) {
+export function MockImagePicker({
+  id,
+  onChange,
+}: WidgetComponentProps<string>) {
   return <MediaPicker id={id} onChange={onChange} mediaType={"image"} />;
 }

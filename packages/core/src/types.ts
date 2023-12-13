@@ -48,7 +48,6 @@ export type Document = {
    * It shouldn't be used by editor. It's missing when the config was too big to be stored in the CMS.
    */
   config?: ConfigComponent;
-  preview?: PreviewMetadata;
 };
 
 export type LocalisedDocument = Record<string, Document>;
@@ -347,30 +346,12 @@ export type ConfigDevices = {
   "2xl"?: ConfigDeviceRange;
 };
 
-export type EventSourceType = "section" | "card" | "item" | "button";
-
-export type EventSource = {
-  type: EventSourceType;
-  traceId?: string;
-  component?: string;
-  props: Record<string, any> | undefined;
-};
-
-export type EventType = "click" | "impression";
-
-export interface TracingEvent {
-  event: EventType;
-  source: EventSource;
-}
-
-export type EventSink = (event: TracingEvent) => void;
-
 export type UserDefinedTemplate = {
   id: string;
   label: string;
   thumbnail?: string;
   thumbnailLabel?: string;
-  config: ConfigComponent;
+  entry: ConfigComponent;
   isUserDefined: true;
 };
 
@@ -379,7 +360,7 @@ export type InternalTemplate = {
   label?: string;
   thumbnail?: string;
   thumbnailLabel?: string;
-  config: ConfigComponent;
+  entry: ConfigComponent;
   isUserDefined?: false;
 };
 
@@ -433,9 +414,9 @@ export type PickerItem = {
   thumbnail?: string;
 };
 
-export type WidgetComponentProps = {
-  id: string | null;
-  onChange: (newId: string | null) => void;
+export type WidgetComponentProps<Identifier extends NonNullish = NonNullish> = {
+  id: ExternalReference<Identifier>["id"];
+  onChange: (newId: ExternalReference<Identifier>["id"]) => void;
 };
 
 export type Widget = {
@@ -453,7 +434,7 @@ export type LocalizedText = {
 
 export type DocumentType = {
   label?: string;
-  defaultEntry: Omit<ComponentConfig, "_id">;
+  entry: Omit<ComponentConfig, "_id">;
   widths?: Array<number>;
   resource?: {
     type: string;
@@ -564,16 +545,6 @@ export type Config = {
   hideCloseButton?: boolean;
   templates?: Template[];
 };
-
-export type PreviewMetadata =
-  | {
-      mode: "grid";
-      extraCardsCount: number;
-    }
-  | {
-      mode: "content" | (string & Record<never, never>);
-      sectionsCount: number;
-    };
 
 type EditorProps = {
   configs?: LocalisedConfigs | LocalisedDocument;
@@ -804,13 +775,6 @@ export type RenderableDocument = {
   configAfterAuto?: ComponentConfig;
 };
 
-export interface Tracing {
-  traceClicks?: boolean;
-  traceImpressions?: boolean;
-  traceId?: string;
-  type?: EventSourceType;
-}
-
 export type AnyField = Field & { [key: string]: any };
 
 export type AnyTinaField = AnyField;
@@ -861,7 +825,6 @@ export type CompiledComponentConfigBase<
   _template: Identifier; // instance of the component (unique id)
   _id: string;
   props: Props;
-  tracing?: Tracing;
 };
 
 export type CompiledActionComponentConfig = CompiledComponentConfigBase & {
@@ -1050,13 +1013,6 @@ export type NoCodeComponentEditingFunctionResult = {
   };
 };
 
-export type FetchInputResource = {
-  externalId: string | null;
-  type: string;
-  widgetId: string;
-  fetchParams?: ExternalParams;
-};
-
 type FetchResourceResolvedResult<T> = {
   type: string & Record<never, never>;
   value: T;
@@ -1120,13 +1076,8 @@ export type FetchOutputResources = Record<
   (FetchOutputBasicResources | FetchOutputCompoundResources)[string]
 >;
 
-/**
- * @deprecated Remove before push
- */
-export type PendingExternalData = ExternalData;
-
 export type ChangedExternalDataValue = {
-  externalId: string | null;
+  id: ExternalReference["id"];
   type: string;
   widgetId: string;
   fetchParams?: ExternalParams;
@@ -1165,14 +1116,14 @@ export type ExternalReferenceEmpty = {
   widgetId: string;
 };
 
-export type ExternalReferenceNonEmpty = {
-  id: string;
+export type ExternalReferenceNonEmpty<
+  Identifier extends NonNullish = NonNullish
+> = {
+  id: Identifier;
   widgetId: string;
   key?: string;
 };
 
-export type ExternalReference =
+export type ExternalReference<Identifier extends NonNullish = NonNullish> =
   | ExternalReferenceEmpty
-  | ExternalReferenceNonEmpty;
-
-export type CompiledExternalDataValue = ExternalReference;
+  | ExternalReferenceNonEmpty<Identifier>;

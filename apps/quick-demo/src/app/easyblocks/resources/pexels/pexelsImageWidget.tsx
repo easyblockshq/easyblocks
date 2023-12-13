@@ -11,7 +11,10 @@ export const pexelsImageWidget: Widget = {
   label: "Pexels",
 };
 
-export function PexelsImagePicker({ id, onChange }: WidgetComponentProps) {
+export function PexelsImagePicker({
+  id,
+  onChange,
+}: WidgetComponentProps<string>) {
   return (
     <SimplePicker
       value={id}

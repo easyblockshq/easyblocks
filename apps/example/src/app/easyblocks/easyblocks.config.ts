@@ -30,14 +30,14 @@ export const easyblocksConfig: Config = {
   documentTypes: {
     content: {
       label: "Content document template",
-      defaultEntry: {
+      entry: {
         _template: "$RootSections",
         data: [],
       },
     },
     product: {
       label: "Product document template",
-      defaultEntry: {
+      entry: {
         _template: "$RootSections",
         data: [],
       },

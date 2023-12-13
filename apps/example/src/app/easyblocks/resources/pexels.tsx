@@ -108,25 +108,19 @@ async function fetchPexelsResources(
 ): Promise<ExternalData> {
   const pexelsPhotoResources = Object.entries(externalData).filter(
     ([, resource]) => {
-      return (
-        resource.widgetId === pexelsImageWidget.id &&
-        resource.externalId !== null
-      );
+      return resource.widgetId === pexelsImageWidget.id && resource.id !== null;
     }
   );
 
   const pexelsVideoResources = Object.entries(externalData).filter(
     ([, resource]) => {
-      return (
-        resource.widgetId === pexelsVideoWidget.id &&
-        resource.externalId !== null
-      );
+      return resource.widgetId === pexelsVideoWidget.id && resource.id !== null;
     }
   );
 
   const photos = await Promise.all(
     pexelsPhotoResources.map(([, resource]) => {
-      return pexelsApiFetch(`/v1/photos/${resource.externalId}`).then((res) =>
+      return pexelsApiFetch(`/v1/photos/${resource.id}`).then((res) =>
         res.json()
       );
     })
@@ -134,7 +128,7 @@ async function fetchPexelsResources(
 
   const videos = await Promise.all(
     pexelsVideoResources.map(([, resource]) => {
-      return pexelsApiFetch(`/v1/photos/${resource.externalId}`).then((res) =>
+      return pexelsApiFetch(`/v1/photos/${resource.id}`).then((res) =>
         res.json()
       );
     })
@@ -143,9 +137,7 @@ async function fetchPexelsResources(
   const photosResults = Object.fromEntries(
     pexelsPhotoResources.map(([id, inputResource]) => {
       // Pexels API returns id as a number
-      const photo = photos.find(
-        (p) => p.id.toString() === inputResource.externalId
-      );
+      const photo = photos.find((p) => p.id.toString() === inputResource.id);
 
       if (!photo) {
         return [
@@ -184,7 +176,7 @@ async function fetchPexelsResources(
     pexelsVideoResources.map(([id, inputResource]) => {
       const video = videos.find(
         // Pexels API returns id as a number
-        (p) => p.id.toString() === inputResource.externalId
+        (p) => p.id.toString() === inputResource.id
       );
 
       if (!video) {

@@ -196,10 +196,6 @@ function EditorContainer(props: EditorContainerProps) {
 
   useEffect(() => {
     async function handleAccessTokenAuthorization() {
-      if (enabled) {
-        return;
-      }
-
       const projectsApiService = new ProjectsApiService(apiClient);
       const projects = await projectsApiService.getProjects();
 
@@ -220,11 +216,15 @@ function EditorContainer(props: EditorContainerProps) {
       setEnabled(true);
     }
 
+    if (enabled) {
+      return;
+    }
+
     if (isPlayground) {
-      console.debug(`Opening Shopstory in playground mode.`);
+      console.debug(`Opening Easyblocks in playground mode.`);
     } else {
       console.debug(
-        `Opening Shopstory with access token: ${props.config.accessToken}`
+        `Opening Easyblocks with access token: ${props.config.accessToken}`
       );
     }
 
@@ -699,12 +699,6 @@ const EditorContent = ({
   const [isAdminMode, setAdminMode] = useState(false);
   const [isFullScreen, setFullScreen] = useState(false);
 
-  useEffect(() => {
-    window.editorWindowAPI.externalData = externalData;
-    console.debug("external data", window.editorWindowAPI.externalData);
-    window.editorWindowAPI.onUpdate?.();
-  }, [externalData]);
-
   const syncTemplates = () => {
     // @ts-expect-error
     getTemplates(editorContext, apiClient, props.config.templates ?? []).then(
@@ -778,22 +772,29 @@ const EditorContent = ({
       (s) => s.type
     );
     const types = Array.from(
-      new Set(["image", "video", "text", ...Object.keys(editorContext.types)])
-    ).filter((t) => !documentParamsTypes.includes(t) && editorContext.types[t]);
+      new Set([
+        "image",
+        "video",
+        "text",
+        ...Object.keys(editorContext.types).filter(
+          (t) => !documentParamsTypes.includes(t) && editorContext.types[t]
+        ),
+      ])
+    );
 
     types.forEach((builtinExternalType) => {
+      if (!editorContext.types[builtinExternalType]) {
+        editorContext.types[builtinExternalType] = {
+          widgets: [],
+        };
+      }
+
       // Make sure to add the document data widget to custom types
       if (
         !editorContext.types[builtinExternalType].widgets.some(
           (w) => w.id === "@easyblocks/document-data"
         )
       ) {
-        if (!editorContext.types[builtinExternalType]) {
-          editorContext.types[builtinExternalType] = {
-            widgets: [],
-          };
-        }
-
         editorContext.types[builtinExternalType].widgets.push(
           documentDataWidgetFactory({
             type: builtinExternalType,
@@ -826,13 +827,13 @@ const EditorContent = ({
     configAfterAuto,
     renderableContent,
   });
+  console.debug("external data", externalData);
 
   window.editorWindowAPI = window.editorWindowAPI || {};
   window.editorWindowAPI.editorContext = editorContext;
   window.editorWindowAPI.meta = meta;
   window.editorWindowAPI.compiled = renderableContent;
-  window.editorWindowAPI.externalData =
-    window.editorWindowAPI.externalData ?? {};
+  window.editorWindowAPI.externalData = externalData;
 
   usePlugin(form);
 
@@ -853,6 +854,7 @@ const EditorContent = ({
     isEditing,
     breakpointIndex,
     isFullScreen,
+    externalData,
   ]);
 
   useEffect(() => {
@@ -1183,7 +1185,7 @@ function getDefaultInput({
 } {
   const documentTypeDefaultConfig = compilationContext.documentTypes.find(
     (r) => r.id === documentType
-  )?.defaultConfig;
+  )?.entry;
 
   if (!documentTypeDefaultConfig) {
     throw new Error(

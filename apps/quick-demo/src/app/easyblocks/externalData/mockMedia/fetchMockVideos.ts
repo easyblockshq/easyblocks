@@ -15,8 +15,8 @@ export async function fetchMockVideos(
   const assets = await fetchAssetsFromContentful("video");
   const results: Record<string, any> = {};
 
-  allResources.forEach(([fieldId, { externalId }]) => {
-    const asset = assets.find((asset) => asset.id === externalId);
+  allResources.forEach(([fieldId, { id }]) => {
+    const asset = assets.find((asset) => asset.id === id);
 
     if (!asset) {
       results[fieldId] = {

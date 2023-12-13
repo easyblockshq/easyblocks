@@ -1,23 +1,23 @@
+import { assertDefined } from "@easyblocks/utils";
+import {
+  getExternalReferenceLocationKey,
+  isLocalTextReference,
+} from "../../resourcesUtils";
+import {
+  isTrulyResponsiveValue,
+  responsiveValueEntries,
+} from "../../responsiveness";
 import {
   CompilerModule,
   ExternalReference,
   ExternalSchemaProp,
   ExternalWithSchemaProp,
 } from "../../types";
-import { assertDefined } from "@easyblocks/utils";
+import { configTraverse } from "../configTraverse";
 import { createCompilationContext } from "../createCompilationContext";
 import { normalize } from "../normalize";
 import { normalizeInput } from "../normalizeInput";
-import {
-  getExternalReferenceLocationKey,
-  isLocalTextReference,
-} from "../../resourcesUtils";
 import { isExternalSchemaProp } from "../schema";
-import {
-  isTrulyResponsiveValue,
-  responsiveValueEntries,
-} from "../../responsiveness";
-import { configTraverse } from "../configTraverse";
 
 export const findExternals: CompilerModule["findExternals"] = (
   input,
@@ -52,7 +52,7 @@ export const findExternals: CompilerModule["findExternals"] = (
           ? "$"
           : assertDefined(config._id);
 
-      if (isTrulyResponsiveValue<ExternalReference | undefined>(value)) {
+      if (isTrulyResponsiveValue(value)) {
         responsiveValueEntries(value).forEach(([breakpoint, currentValue]) => {
           if (currentValue === undefined) {
             return;
@@ -65,14 +65,14 @@ export const findExternals: CompilerModule["findExternals"] = (
               breakpoint
             ),
             schemaProp: schemaProp as ExternalSchemaProp,
-            externalReference: currentValue,
+            externalReference: currentValue as ExternalReference,
           });
         });
       } else {
         externalsWithSchemaProps.push({
           id: getExternalReferenceLocationKey(configId, schemaProp.prop),
           schemaProp: schemaProp as ExternalSchemaProp,
-          externalReference: value,
+          externalReference: value as ExternalReference,
         });
       }
     }

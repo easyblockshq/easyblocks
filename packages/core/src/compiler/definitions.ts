@@ -86,8 +86,8 @@ export type SchemaPropDefinition<Type, CompiledType> = {
 };
 
 export type TextSchemaPropDefinition = SchemaPropDefinition<
-  LocalTextReference | ExternalReference,
-  CompiledLocalTextReference | ExternalReference
+  LocalTextReference | ExternalReference<string>,
+  CompiledLocalTextReference | ExternalReference<string>
 >;
 
 export type StringSchemaPropDefinition = SchemaPropDefinition<
@@ -850,15 +850,17 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
 
   external: (schemaProp, compilationContext) => {
     if (schemaProp.responsive) {
+      const defaultValue: ExternalReferenceEmpty = {
+        id: null,
+        widgetId: compilationContext.isEditing
+          ? compilationContext.types[schemaProp.type]?.widgets[0]?.id
+          : "",
+      };
+
       const normalize = getResponsiveNormalize<ExternalReference>(
         compilationContext,
-        {},
-        {
-          id: null,
-          widgetId: compilationContext.isEditing
-            ? compilationContext.types[schemaProp.type]?.widgets[0]?.id
-            : "",
-        },
+        defaultValue,
+        defaultValue,
         externalNormalize(schemaProp.type)
       );
 
@@ -1228,7 +1230,7 @@ function externalNormalize(
 ) => ExternalReference | undefined {
   return (x, compilationContext) => {
     if (typeof x === "object" && x !== null) {
-      if (typeof x.id === "string") {
+      if (x.id !== null) {
         const normalized: ExternalReferenceNonEmpty = {
           id: x.id,
           widgetId: x.widgetId,

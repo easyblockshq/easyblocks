@@ -60,7 +60,7 @@ async function fetchProductResources(
   }
 
   const productIds = productResources
-    .map(([, resource]) => resource.externalId)
+    .map(([, resource]) => resource.id)
     .filter<string>((externalId): externalId is string => externalId !== null);
 
   const products = await MockProductsService.getProductsByIds(productIds);
@@ -68,13 +68,11 @@ async function fetchProductResources(
   const result: FetchOutputCompoundResources = {};
 
   productResources.forEach(([id, inputResource]) => {
-    const product = products.find((p) => p.id === inputResource.externalId);
+    const product = products.find((p) => p.id === inputResource.id);
 
     if (!product) {
       result[id] = {
-        error: new Error(
-          `Product with id "${inputResource.externalId}" not found`
-        ),
+        error: new Error(`Product with id "${inputResource.id}" not found`),
       };
       return;
     }

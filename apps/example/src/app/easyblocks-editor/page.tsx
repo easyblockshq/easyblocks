@@ -21,7 +21,7 @@ export default function EeasyblocksEditorPage() {
         const removedExternals = Object.entries(externals)
           .filter(
             ([id, externalDataValue]) =>
-              externalDataValue.externalId === null && externalData[id]
+              externalDataValue.id === null && externalData[id]
           )
           .map(([externalId]) => externalId);
 
