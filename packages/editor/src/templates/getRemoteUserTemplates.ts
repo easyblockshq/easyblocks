@@ -6,12 +6,12 @@ export async function getRemoteUserTemplates(
 ): Promise<UserDefinedTemplate[]> {
   try {
     const response = await apiClient.get(`/projects/${projectId}/templates`);
-    const data = await response.json();
+    const data: Array<any> = await response.json();
 
-    const templates: UserDefinedTemplate[] = data.map((item: any) => ({
+    const templates = data.map<UserDefinedTemplate>((item) => ({
       id: item.id,
       label: item.label,
-      config: item.config.config,
+      entry: item.config.config,
       isUserDefined: true,
       // configId: item.config.id,
       // mapTo: item.mapTo,

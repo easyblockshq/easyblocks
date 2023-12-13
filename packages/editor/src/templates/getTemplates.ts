@@ -52,7 +52,7 @@ export async function getTemplates(
         "Trying to access templates API without project id. This is an unexpected error state."
       );
     }
-    remoteUserDefinedTemplates = await await getRemoteUserTemplates(
+    remoteUserDefinedTemplates = await getRemoteUserTemplates(
       apiClient,
       project.id
     );
@@ -163,13 +163,15 @@ export function getTemplatesInternal(
         : true;
     })
     .map((template) => {
-      return {
+      const newTemplate: Template = {
         ...template,
-        config: normalizeTextLocales(
+        entry: normalizeTextLocales(
           normalize(template.entry, editorContext),
           editorContext
         ),
       };
+
+      return newTemplate;
     });
 
   return result;
