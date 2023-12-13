@@ -1,6 +1,6 @@
 {
   "name": "@easyblocks/media",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
   "types": "dist/index.d.ts",
@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.21.0",
-    "@easyblocks/core": "^0.4.0",
+    "@easyblocks/core": "^0.5.0",
     "@easyblocks/design-system": "workspace:*",
     "@easyblocks/editor": "workspace:*",
     "styled-components": "^5.3.3"
