@@ -773,11 +773,9 @@ const EditorContent = ({
     );
     const types = Array.from(
       new Set([
-        "image",
-        "video",
         "text",
         ...Object.keys(editorContext.types).filter(
-          (t) => !documentParamsTypes.includes(t) && editorContext.types[t]
+          (t) => !documentParamsTypes.includes(t)
         ),
       ])
     );

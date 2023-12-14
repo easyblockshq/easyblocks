@@ -1,13 +1,8 @@
-import type {
-  ChangedExternalData,
-  ExternalData,
-  ImageSrc,
-  VideoSrc,
-} from "@easyblocks/core";
-
+import type { ChangedExternalData, ExternalData } from "@easyblocks/core";
+import type { ImageSrc, VideoSrc } from "@easyblocks/editable-components";
 import {
-  PEXELS_VIDEO_WIDGET_ID,
   PEXELS_IMAGE_WIDGET_ID,
+  PEXELS_VIDEO_WIDGET_ID,
   pexelsApiFetch,
 } from "./pexelsShared";
 
@@ -77,7 +72,7 @@ export async function fetchPexelsResources(
       return [
         id,
         {
-          type: "image",
+          type: "@easyblocks/image",
           value: photoValue,
         },
       ];

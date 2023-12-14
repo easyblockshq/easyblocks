@@ -31,7 +31,7 @@ export async function fetchMockVideos(
     }
 
     results[fieldId] = {
-      type: "video",
+      type: "@easyblocks/video",
       value: {
         url: asset.url,
         alt: asset.title,

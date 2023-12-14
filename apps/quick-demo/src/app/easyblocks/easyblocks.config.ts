@@ -461,10 +461,10 @@ export const easyblocksConfig: Config = {
     },
   ],
   types: {
-    image: {
+    "@easyblocks/image": {
       widgets: [mockImageWidget, pexelsImageWidget],
     },
-    video: {
+    "@easyblocks/video": {
       widgets: [mockVideoWidget],
     },
     product: {

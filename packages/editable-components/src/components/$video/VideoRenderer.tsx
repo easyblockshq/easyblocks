@@ -1,5 +1,5 @@
-import { VideoSrc } from "@easyblocks/core";
 import React, { useEffect, useRef, useState } from "react";
+import { VideoSrc } from "../../types";
 import { VideoProps } from "./$video.editor";
 import { VideoPlaceholder } from "./VideoPlaceholder";
 

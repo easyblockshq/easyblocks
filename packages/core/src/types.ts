@@ -627,26 +627,6 @@ export type UnresolvedResourceEmpty = {
   widgetId: string;
 };
 
-export type ImageSrcSetEntry = {
-  w: number;
-  h: number;
-  url: string;
-};
-
-export type ImageSrc = {
-  alt: string;
-  url: string; // original URL
-  aspectRatio: number;
-  srcset: ImageSrcSetEntry[];
-  mimeType: string;
-};
-
-export type VideoSrc = {
-  alt: string;
-  url: string;
-  aspectRatio: number;
-};
-
 export type ResourceIdentity = {
   id: string;
   type: string;
@@ -1039,19 +1019,11 @@ export type FetchCompoundResourceResultValue<
   label?: string;
 };
 
-export type FetchCompoundImageResourceResultValue =
-  FetchCompoundResourceResultValue<"image", ImageSrc>;
-
-export type FetchCompoundVideoResourceResultValue =
-  FetchCompoundResourceResultValue<"video", VideoSrc>;
-
 export type FetchCompoundTextResourceResultValue =
   FetchCompoundResourceResultValue<"text", string>;
 
 export type FetchCompoundResourceResultValues = Record<
   string,
-  | FetchCompoundImageResourceResultValue
-  | FetchCompoundVideoResourceResultValue
   | FetchCompoundTextResourceResultValue
   | FetchCompoundResourceResultValue<string & Record<never, never>, NonNullish>
 >;

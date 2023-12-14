@@ -5,3 +5,4 @@ export {
   builtinEditableComponents,
   builtinClientOnlyEditableComponents,
 } from "./components";
+export type { ImageSrc, ImageSrcSetEntry, VideoSrc } from "./types";

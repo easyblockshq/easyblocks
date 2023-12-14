@@ -3,13 +3,13 @@ import {
   ExternalReference,
   getExternalReferenceLocationKey,
   getExternalValue,
-  VideoSrc,
   responsiveValueFindDeviceWithDefinedValue,
   responsiveValueForceGet,
 } from "@easyblocks/core";
 import { InternalRenderableComponentDefinition } from "@easyblocks/core/_internals";
 import { assertDefined, last } from "@easyblocks/utils";
 import videoStyles from "./$video.styles";
+import { VideoSrc } from "../../types";
 
 const VIDEO_THUMBNAIL_URL =
   "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_video.png";
@@ -37,7 +37,7 @@ const videoComponentDefinition: InternalRenderableComponentDefinition<"$video"> 
       {
         prop: "image",
         label: "Video",
-        type: "video",
+        type: "@easyblocks/video",
         responsive: true,
         optional: true,
       },

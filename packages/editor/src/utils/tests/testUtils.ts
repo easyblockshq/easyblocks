@@ -63,22 +63,6 @@ export const testTypes: EditorContextType["types"] = {
   },
 };
 
-export const testImage: EditorContextType["image"] = {
-  resourceType: "image",
-  params: {
-    mimetypeGroups: ["image"],
-  },
-  transform: (x) => x,
-};
-
-export const testVideo: EditorContextType["video"] = {
-  resourceType: "video",
-  params: {
-    mimetypeGroups: ["video"],
-  },
-  transform: (x) => x,
-};
-
 export const testText: EditorContextType["text"] = {
   fetch: async (resources) => {
     return resources.map((resource) => {
@@ -153,8 +137,6 @@ export const testEditorContext: EditorContextType = {
   setBreakpointIndex: (b) => null,
   devices: testDevices,
   types: testTypes,
-  image: testImage,
-  video: testVideo,
   text: testText,
   templates: {},
   contextParams: {
@@ -188,7 +170,6 @@ export const testEditorContext: EditorContextType = {
     replaceItems: () => {},
     pasteItems: () => {},
     logSelectedItems: () => {},
-    getTemplates: () => [],
   },
   save: async () => {},
   locales: [

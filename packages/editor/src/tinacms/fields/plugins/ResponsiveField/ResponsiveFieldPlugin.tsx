@@ -27,7 +27,7 @@ type ResponsivePluginProps = {
   meta: any;
 };
 
-export const ResponsiveField = (props: ResponsivePluginProps) => {
+const ResponsiveField = (props: ResponsivePluginProps) => {
   const { tinaForm, field, input } = props;
 
   const editorContext = useEditorContext();
@@ -134,8 +134,6 @@ export const ResponsiveFieldPlugin = {
   name: "responsive2" as const,
   Component: ResponsiveField,
 };
-
-export default ResponsiveFieldPlugin;
 
 const AutoLabel = styled.div<{ align: "left" | "right" }>`
   ${SSFonts.body};
