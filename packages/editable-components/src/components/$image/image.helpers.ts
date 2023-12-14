@@ -1,8 +1,6 @@
 import {
   Devices,
-  ImageSrc,
   ResponsiveValue,
-  VideoSrc,
   responsiveValueFill,
   responsiveValueMap,
 } from "@easyblocks/core";
@@ -13,7 +11,7 @@ import {
 } from "@easyblocks/core/_internals";
 import { ReactElement } from "react";
 import { getPaddingBottomAndHeightFromAspectRatio } from "../../parseAspectRatio";
-import { CompiledNoCodeComponentProps } from "../../types";
+import { CompiledNoCodeComponentProps, ImageSrc, VideoSrc } from "../../types";
 
 export type ImageProps = CompiledNoCodeComponentProps<
   "$image",

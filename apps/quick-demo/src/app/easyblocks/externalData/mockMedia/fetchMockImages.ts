@@ -35,7 +35,7 @@ export async function fetchMockImages(
     }
 
     results[fieldId] = {
-      type: "image",
+      type: "@easyblocks/image",
       value: {
         url: asset.url,
         alt: asset.title,

@@ -18,24 +18,17 @@
 
 import { CMS, CMSConfig, Form, PluginType } from "@easyblocks/app-utils";
 import {
-  ColorFieldPlugin,
-  ImageFieldPlugin,
   NumberFieldPlugin,
   RadioGroupFieldPlugin,
   SelectFieldPlugin,
-  TextareaFieldPlugin,
   TextFieldPlugin,
   ToggleFieldPlugin,
 } from "../tinacms/fields";
 import { FieldPlugin } from "../tinacms/form-builder";
 import { PositionFieldPlugin } from "./fields/plugins/PositionFieldPlugin";
-import { ScreenPlugin } from "./react-screens";
 
 const DEFAULT_FIELDS = [
   TextFieldPlugin,
-  TextareaFieldPlugin,
-  ImageFieldPlugin,
-  ColorFieldPlugin,
   NumberFieldPlugin,
   ToggleFieldPlugin,
   SelectFieldPlugin,
@@ -66,9 +59,5 @@ export class TinaCMS extends CMS {
 
   get fields(): PluginType<FieldPlugin> {
     return this.plugins.findOrCreateMap("field");
-  }
-
-  get screens(): PluginType<ScreenPlugin> {
-    return this.plugins.findOrCreateMap("screen");
   }
 }

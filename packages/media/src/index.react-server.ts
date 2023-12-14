@@ -3,14 +3,13 @@ import type {
   ChangedExternalData,
   ExternalData,
   IApiClient,
-  ImageSrc,
-  VideoSrc,
   Widget,
 } from "@easyblocks/core";
 import {
   ApiClient,
   ShopstoryAccessTokenApiAuthenticationStrategy,
 } from "@easyblocks/core";
+import type { ImageSrc, VideoSrc } from "@easyblocks/editable-components";
 
 export const easyblocksImageWidget: Widget = {
   id: "@easyblocks/image",

@@ -1,7 +1,6 @@
 import { isCompoundExternalDataValue } from "@easyblocks/app-utils";
 import {
   ExternalReference,
-  ImageSrc,
   getExternalReferenceLocationKey,
   getExternalValue,
   responsiveValueFindDeviceWithDefinedValue,
@@ -12,6 +11,7 @@ import {
   buttonActionSchemaProp,
 } from "@easyblocks/core/_internals";
 import { assertDefined, last } from "@easyblocks/utils";
+import { ImageSrc } from "../../types";
 import imageStyles from "./$image.styles";
 
 const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> =
@@ -41,7 +41,7 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
     schema: [
       {
         prop: "image",
-        type: "image",
+        type: "@easyblocks/image",
         label: "Source",
         responsive: true,
         optional: true,

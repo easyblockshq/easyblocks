@@ -1,6 +1,6 @@
 import { Devices } from "@easyblocks/core";
 import { Form } from "../tinacms";
-import { CompilationContextType } from "../types";
+import { CompilationContextType } from "@easyblocks/core/_internals";
 
 export const testDevices: Devices = [
   {
@@ -34,22 +34,6 @@ export const testDevices: Devices = [
     breakpoint: null,
   },
 ];
-
-export const testImage: CompilationContextType["image"] = {
-  resourceType: "image",
-  params: {
-    mimetypeGroups: ["image"],
-  },
-  transform: (x) => x,
-};
-
-export const testVideo: CompilationContextType["video"] = {
-  resourceType: "video",
-  params: {
-    mimetypeGroups: ["video"],
-  },
-  transform: (x) => x,
-};
 
 export const testCompilationContext: CompilationContextType = {
   definitions: {

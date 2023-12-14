@@ -1,22 +1,6 @@
-import { CompilationContextType } from "@easyblocks/app-utils";
+import { CompilationContextType } from "@easyblocks/core/_internals";
 import { Devices } from "@easyblocks/core";
 import { builtinEditableComponentsDefinitions } from "../schemas";
-
-export const testImage: CompilationContextType["image"] = {
-  resourceType: "image",
-  params: {
-    mimetypeGroups: ["image"],
-  },
-  transform: (x) => x,
-};
-
-export const testVideo: CompilationContextType["video"] = {
-  resourceType: "video",
-  params: {
-    mimetypeGroups: ["video"],
-  },
-  transform: (x) => x,
-};
 
 export const testDevices: Devices = [
   {
@@ -60,8 +44,6 @@ export const testCompilationContext: CompilationContextType = {
   },
   devices: testDevices,
   types: {},
-  image: testImage,
-  video: testVideo,
   contextParams: {
     locale: "en",
   },

@@ -1,14 +1,11 @@
-export * from "./ColorFieldPlugin";
 export * from "./NumberFieldPlugin";
 export * from "./SelectFieldPlugin";
 export * from "./RadioGroupFieldPlugin";
-export * from "./TextareaFieldPlugin";
 export * from "./TextFieldPlugin";
 export * from "./ToggleFieldPlugin";
 export * from "./FontTokenFieldPlugin";
 export * from "./TokenField/TokenFieldPlugin";
 export * from "./IdentityFieldPlugin";
-export * from "./ImageFieldPlugin";
 export { BlockFieldPlugin } from "./BlockFieldPlugin";
 export { ExternalFieldPlugin } from "./ExternalField/ExternalField";
 export { ResponsiveFieldPlugin } from "./ResponsiveField/ResponsiveFieldPlugin";

@@ -1,6 +1,6 @@
-import type { ImageSrc } from "@easyblocks/core";
 import type { ComponentType } from "react";
 import React from "react";
+import { ImageSrc } from "../../types";
 import { Placeholder } from "./Placeholder";
 
 type ImageRendererProps = {

@@ -1,13 +1,13 @@
 import React from "react";
 import { responsiveValueToSelectivelyDisplayedComponents } from "@easyblocks/app-utils";
-import { ResponsiveValue, VideoSrc } from "@easyblocks/core";
+import { ResponsiveValue } from "@easyblocks/core";
 import { useForceRerender } from "@easyblocks/utils";
 import { useEffect, useState } from "react";
 import {
   getAspectRatioClassName,
   getWrapperClassName,
 } from "../$image/image.helpers";
-import { CompiledNoCodeComponentProps } from "../../types";
+import { CompiledNoCodeComponentProps, VideoSrc } from "../../types";
 import { VideoRenderer } from "./VideoRenderer";
 
 export type VideoProps = CompiledNoCodeComponentProps<

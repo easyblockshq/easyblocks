@@ -35,22 +35,6 @@ export const testDevices: Devices = [
   },
 ];
 
-export const testImage: CompilationContextType["image"] = {
-  resourceType: "image",
-  params: {
-    mimetypeGroups: ["image"],
-  },
-  transform: (x) => x,
-};
-
-export const testVideo: CompilationContextType["video"] = {
-  resourceType: "video",
-  params: {
-    mimetypeGroups: ["video"],
-  },
-  transform: (x) => x,
-};
-
 export const testCompilationContext: CompilationContextType = {
   definitions: {
     components: [],
