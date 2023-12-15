@@ -2,6 +2,15 @@ import { mockVideoWidget } from "@/app/easyblocks/externalData/mockMedia/mockVid
 import { templates } from "@/app/easyblocks/templates/templates";
 import { Config } from "@easyblocks/core";
 import { builtinEditableComponentsDefinitions } from "@easyblocks/editable-components";
+import { backgroundColorComponentDefinition } from "./components/BackgroundColor/BackgroundColor";
+import { buttonComponentDefinition } from "./components/Button/Button";
+import { buttonsComponentDefinition } from "./components/Buttons/Buttons";
+import { gridComponentDefinition } from "./components/Grid/Grid";
+import { imageComponentDefinition } from "./components/Image/Image";
+import { rootSectionsComponentDefinition } from "./components/RootSections/RootSections";
+import { stackComponentDefinition } from "./components/Stack/Stack";
+import { twoCardsComponentDefinition } from "./components/TwoCards/TwoCards";
+import { videoComponentDefinition } from "./components/Video/Video";
 import { mockImageWidget } from "./externalData/mockMedia/mockImageWidget";
 import { pexelsImageWidget } from "./resources/pexels/pexelsImageWidget";
 import { productWidget } from "./resources/product/productWidget";
@@ -12,8 +21,6 @@ if (!process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN) {
 }
 
 const easyblocksAccessToken = process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN;
-
-const MASTER_FONT_FAMILY = "-apple-system, BlinkMacSystemFont, sans-serif";
 
 export const easyblocksConfig: Config = {
   accessToken: easyblocksAccessToken,
@@ -35,7 +42,7 @@ export const easyblocksConfig: Config = {
     product: {
       label: "Product document template",
       entry: {
-        _template: "$RootSections",
+        _template: "RootSections",
         data: [],
       },
       schema: [
@@ -126,6 +133,15 @@ export const easyblocksConfig: Config = {
         },
       ],
     },
+    rootSectionsComponentDefinition,
+    gridComponentDefinition,
+    buttonsComponentDefinition,
+    imageComponentDefinition,
+    videoComponentDefinition,
+    stackComponentDefinition,
+    twoCardsComponentDefinition,
+    backgroundColorComponentDefinition,
+    buttonComponentDefinition,
   ],
   colors: [
     {

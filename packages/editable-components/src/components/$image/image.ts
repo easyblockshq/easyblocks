@@ -58,13 +58,9 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
       },
       buttonActionSchemaProp,
     ],
-    getEditorSidebarPreview(
-      config,
-      externalData,
-      { breakpointIndex, devices }
-    ) {
+    getEditorSidebarPreview(entry, externalData, { breakpointIndex, devices }) {
       const device = responsiveValueFindDeviceWithDefinedValue(
-        config.image,
+        entry.image,
         breakpointIndex,
         devices
       );
@@ -76,7 +72,7 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
       }
 
       const activeImageValue = responsiveValueForceGet<ExternalReference>(
-        config.image,
+        entry.image,
         device.id
       );
 
@@ -89,7 +85,7 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
       const imageExternalValue =
         externalData[
           getExternalReferenceLocationKey(
-            assertDefined(config._id),
+            assertDefined(entry._id),
             "image",
             device.id
           )

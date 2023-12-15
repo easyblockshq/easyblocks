@@ -13,6 +13,7 @@
     "@easyblocks/design-system": "workspace:*",
     "@easyblocks/editable-components": "workspace:*",
     "@easyblocks/editor": "workspace:*",
+    "@easyblocks/utils": "workspace:*",
     "@radix-ui/react-dialog": "^1.0.4",
     "@types/node": "20.4.2",
     "@types/react": "18.2.20",
@@ -28,6 +29,10 @@
     "tailwindcss": "3.3.3",
     "typescript": "5.1.6",
     "styled-components": "^6.0.7",
-    "contentful": "^9.3.5"
+    "contentful": "^9.3.5",
+    "@vimeo/player": "^2.20.1"
+  },
+  "devDependencies": {
+    "@types/vimeo__player": "^2.18.3"
   }
 }

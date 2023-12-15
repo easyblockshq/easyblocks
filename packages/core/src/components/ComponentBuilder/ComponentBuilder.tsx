@@ -52,7 +52,6 @@ import { Box } from "../Box/Box";
 import { useEasyblocksExternalData } from "../EasyblocksExternalDataProvider";
 import { useEasyblocksMetadata } from "../EasyblocksMetadataProvider";
 import { MissingComponent } from "../MissingComponent";
-import { ImageProps } from "../StandardImage";
 
 function buildBoxes(
   compiled: any,
@@ -307,7 +306,6 @@ export type ComponentBuilderProps = {
     "@easyblocks/rich-text-part": ComponentType<any>;
     "@easyblocks/text.client": ComponentType<any>;
     "EditableComponentBuilder.client": ComponentType<any>;
-    Image: ComponentType<ImageProps>;
     [key: string]: ComponentType<any>;
   };
 };
@@ -433,7 +431,6 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
 
   const runtime = {
     stitches: meta.stitches,
-    Image: components["Image"],
     resop: resop,
     Box,
     devices: meta.vars.devices,

@@ -3,9 +3,9 @@ import {
   responsiveValueGetDefinedValue,
 } from "@easyblocks/core";
 import { getDevicesWidths } from "@easyblocks/core/_internals";
-import { DecomposedValues } from "../../decomposeValues";
 import { ResponsiveAutoCallback, responsiveAuto } from "../../responsiveAuto";
 import { TWO_CARDS_COL_NUM } from "./twoCardsConstants";
+import { DecomposedValues } from "../../decomposeValues";
 
 function calculateWidthsFromNonRoundedGap(
   autoGapNotRounded: number,

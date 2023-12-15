@@ -530,7 +530,6 @@ const coreComponents: InternalRenderableComponentDefinition[] = [
     ],
   },
   schemas.find(({ id }) => id === "$MissingComponent")!,
-  schemas.find(({ id }) => id === "$MissingAction")!,
 ];
 
 function mapProduct(product: any) {

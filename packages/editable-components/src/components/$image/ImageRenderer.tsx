@@ -1,25 +1,19 @@
-import type { ComponentType } from "react";
 import React from "react";
 import { ImageSrc } from "../../types";
 import { Placeholder } from "./Placeholder";
 
 type ImageRendererProps = {
   image: ImageSrc | undefined;
-  Image: ComponentType<ImageProps>;
 };
 
-function ImageRenderer({ image, Image }: ImageRendererProps) {
+function ImageRenderer({ image }: ImageRendererProps) {
   if (!image) {
     return <Placeholder />;
   }
 
   const { srcset, alt, mimeType } = image;
 
-  if (mimeType === "image/svg+xml") {
-    return <StandardImage src={srcset[0].url} alt={alt} mimeType={mimeType} />;
-  }
-
-  return <Image src={srcset[0].url} alt={alt} mimeType={mimeType} />;
+  return <StandardImage src={srcset[0].url} alt={alt} mimeType={mimeType} />;
 }
 
 export { ImageRenderer };

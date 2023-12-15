@@ -1,6 +1,24 @@
-import React from "react";
+import React, { ReactElement } from "react";
 
-export default function Grid(props: any) {
+export default function Grid(props: {
+  Container: ReactElement;
+  InnerContainer: ReactElement;
+  SpacerLeft: ReactElement;
+  SpacerRight: ReactElement;
+  Cards: Array<ReactElement>;
+  LeftArrowWrapper: ReactElement;
+  LeftArrowInnerWrapper: ReactElement;
+  LeftArrow: ReactElement;
+  RightArrowWrapper: ReactElement;
+  RightArrowInnerWrapper: ReactElement;
+  RightArrow: ReactElement;
+  Root: ReactElement;
+  itemContainers: Array<ReactElement>;
+  itemInnerContainers: Array<ReactElement>;
+  horizontalLines: Array<ReactElement>;
+  verticalLines: Array<ReactElement>;
+  isEditing: boolean;
+}) {
   const {
     Container,
     InnerContainer,
@@ -28,7 +46,6 @@ export default function Grid(props: any) {
   const leftArrowWrapperRef = React.useRef<HTMLElement | null>(null);
   const rightArrowWrapperRef = React.useRef<HTMLElement | null>(null);
 
-  // TODO: move this method to lazy-loaded payload!!!
   function getNextPos(
     scrollableContainer: HTMLElement,
     spacer: HTMLElement,
@@ -130,18 +147,18 @@ export default function Grid(props: any) {
         );
       }
     };
-  }, []);
+  }, [isEditing]);
 
   return (
     <Root.type {...Root.props}>
       <Container.type
         {...Container.props}
         ref={containerRef}
-        data-shopstory-scrollable-root
+        data-easyblocks-scrollable-root
       >
         <InnerContainer.type {...InnerContainer.props} ref={innerContainerRef}>
           <SpacerLeft.type {...SpacerLeft.props} ref={spacerRef} />
-          {Cards.map((Card: any, index: number) => {
+          {Cards.map((Card, index) => {
             const ItemContainer = itemContainers[index];
             const ItemInnerContainer = itemInnerContainers[index];
             const HorizontalLine = horizontalLines[index];

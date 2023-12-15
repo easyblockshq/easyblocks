@@ -1,14 +1,14 @@
 import type {
-  NoCodeComponentStylesFunctionInput,
+  InferNoCodeComponentStylesFunctionInput,
   NoCodeComponentStylesFunctionResult,
 } from "@easyblocks/core";
+import type { separatorDefinition } from "./Separator";
 
 export default function ({
   values,
-}: NoCodeComponentStylesFunctionInput<{
-  height: string;
-  color: string;
-}>): NoCodeComponentStylesFunctionResult {
+}: InferNoCodeComponentStylesFunctionInput<
+  typeof separatorDefinition
+>): NoCodeComponentStylesFunctionResult {
   return {
     styled: {
       Container: {

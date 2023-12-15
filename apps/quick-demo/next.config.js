@@ -8,6 +8,7 @@ const nextConfig = {
 
     return config;
   },
+  transpilePackages: ["@easyblocks/utils"],
 };
 
 module.exports = nextConfig;

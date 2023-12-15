@@ -297,6 +297,9 @@ importers:
       '@easyblocks/editor':
         specifier: workspace:*
         version: link:../../packages/editor
+      '@easyblocks/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
       '@radix-ui/react-dialog':
         specifier: ^1.0.4
         version: 1.0.4(@types/react-dom@18.2.7)(@types/react@18.2.42)(react-dom@18.2.0)(react@18.2.0)
@@ -309,6 +312,9 @@ importers:
       '@types/react-dom':
         specifier: 18.2.7
         version: 18.2.7
+      '@vimeo/player':
+        specifier: ^2.20.1
+        version: 2.20.1
       autoprefixer:
         specifier: 10.4.14
         version: 10.4.14(postcss@8.4.26)
@@ -345,6 +351,10 @@ importers:
       typescript:
         specifier: 5.1.6
         version: 5.1.6
+    devDependencies:
+      '@types/vimeo__player':
+        specifier: ^2.18.3
+        version: 2.18.3
 
   apps/website:
     dependencies:
@@ -7354,6 +7364,10 @@ packages:
     resolution: {integrity: sha512-AcPX2xDSl2gRrZGXOjEg1LUyuabgCxpakHTnVr+H6EqlNS6e5I8zR7AqEtN2J2dgMLc5cVm1YvkuyIRpMOcnEg==}
     dev: true
 
+  /@types/vimeo__player@2.18.3:
+    resolution: {integrity: sha512-IzSzb6doT4I4uAnBHa+mBCiNtK7iAllEJjtpkX0sKY6/s1Vi+aX1134IAiPgiyFlMvFab/oZQpSeccK4r0/T2A==}
+    dev: true
+
   /@types/webpack-bundle-analyzer@4.6.0:
     resolution: {integrity: sha512-XeQmQCCXdZdap+A/60UKmxW5Mz31Vp9uieGlHB3T4z/o2OLVLtTI3bvTuS6A2OWd/rbAAQiGGWIEFQACu16szA==}
     dependencies:
@@ -7612,6 +7626,13 @@ packages:
 
   /@vimeo/player@2.18.0:
     resolution: {integrity: sha512-AJ8LQJ0WQXoPO6GBiMRmcBpdpUMnNm12blG/H80BgKD75w/+pLw0t1vzDHCE915O2OlFau6u1Q0QVw2HS1eRvg==}
+    dependencies:
+      native-promise-only: 0.8.1
+      weakmap-polyfill: 2.0.4
+    dev: false
+
+  /@vimeo/player@2.20.1:
+    resolution: {integrity: sha512-eoKkqsMY33RQn8lFtlUbb3uo+xDL3V8PTN01SdrJ1E9PI+5pLyqNGh/GO/2EyX9Vr6antLm0/v36ABF2rcwXIQ==}
     dependencies:
       native-promise-only: 0.8.1
       weakmap-polyfill: 2.0.4

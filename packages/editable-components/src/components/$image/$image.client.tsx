@@ -13,7 +13,7 @@ export default function ImageClient(props: ImageProps) {
     ImageWrapper,
     runtime,
   } = props;
-  const { resop, devices, Image, stitches } = runtime;
+  const { resop, devices, stitches } = runtime;
 
   const aspectRatioClassName = getAspectRatioClassName(
     image,
@@ -35,7 +35,7 @@ export default function ImageClient(props: ImageProps) {
         {responsiveValueToSelectivelyDisplayedComponents(
           image,
           (image) => {
-            return <ImageRenderer image={image} Image={Image} />;
+            return <ImageRenderer image={image} />;
           },
           devices,
           stitches

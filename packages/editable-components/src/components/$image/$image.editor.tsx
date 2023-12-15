@@ -15,7 +15,7 @@ export default function ImageEditor(props: ImageProps) {
     Wrapper,
     AspectRatioMaker,
     ImageWrapper,
-    runtime: { resop, devices, Image, stitches },
+    runtime: { resop, devices, stitches },
   } = props;
 
   const aspectRatioClassName = getAspectRatioClassName(
@@ -43,7 +43,7 @@ export default function ImageEditor(props: ImageProps) {
         {responsiveValueToSelectivelyDisplayedComponents(
           image,
           (image) => {
-            return <ImageRenderer image={image} Image={Image} />;
+            return <ImageRenderer image={image} />;
           },
           devices,
           stitches

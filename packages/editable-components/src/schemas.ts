@@ -20,8 +20,6 @@ import grid2Styles from "./components/Grid/Grid.styles";
 import placeholderStyles from "./components/Placeholder/Placeholder.styles";
 import { StandardButtonNoCodeComponent } from "./components/StandardButton/StandardButton";
 
-import $separatorStyles from "./components/Separator/Separator.styles";
-
 import { sectionWrapperEditing } from "./components/SectionWrapper/SectionWrapper.editing";
 import { $sectionWrapperStyles } from "./components/SectionWrapper/SectionWrapper.styles";
 
@@ -46,7 +44,7 @@ import { playgroundComponentDefinition } from "./components/Playground/Playgroun
 import { twoCardsAuto } from "./components/TwoCards/TwoCards.auto";
 import { TWO_CARDS_COL_NUM } from "./components/TwoCards/twoCardsConstants";
 import { vimeoPlayerEditableComponent } from "./components/vimeoPlayer/vimeoPlayer";
-import { zoneComponentDefinition } from "./components/Zone/Zone";
+import { separatorDefinition } from "./components/Separator/Separator";
 
 export const sectionWrapperFieldsProvider = (options: {
   fixedEscapeMarginValue?: boolean;
@@ -311,63 +309,15 @@ const sectionWrapperFieldsWithoutEscapeMargin = sectionWrapperFieldsProvider({
 export const builtinEditableComponentsDefinitions: InternalRenderableComponentDefinition[] =
   [
     // root sections
-    zoneComponentDefinition,
     rootSectionsComponentDefinition,
     rootGridComponentDefinition,
 
     imageComponentDefinition,
     videoComponentDefinition,
     buttonsComponentDefinition,
-
-    {
-      id: "$separator",
-      type: "item",
-      label: "Separator",
-      thumbnail:
-        "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_separator.png",
-      styles: $separatorStyles,
-      schema: [
-        {
-          prop: "color",
-          type: "color",
-          label: "Color",
-          defaultValue: {
-            ref: "black",
-            value: "black",
-          },
-        },
-        {
-          prop: "height",
-          label: "Stroke width",
-          type: "select",
-          responsive: true,
-          params: {
-            options: [
-              "1",
-              "2",
-              "3",
-              "4",
-              "5",
-              "6",
-              "7",
-              "8",
-              "9",
-              "10",
-              "11",
-              "12",
-              "13",
-              "14",
-              "15",
-              "16",
-            ],
-          },
-        },
-      ],
-    },
+    separatorDefinition,
     twoItemsComponentDefinition,
-
     backgroundColorComponentDefinition,
-
     stackComponentDefinition,
 
     {
@@ -1282,19 +1232,12 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
 
           components: {
             Card1: {
-              selectable: isBackgroundWithSeparateStackMode, //!(isBackgroundMode || isNoneMode),
+              selectable: isBackgroundWithSeparateStackMode,
               fields: card1Fields,
-              // passedSize: isNoneMode ? "__undefined__" : "none", // "__undefined__" is a shit workaround for things going messy when "undefined" is set and responsiveness
             },
             Card2: {
               selectable: !isBackgroundWithSeparateStackMode,
-              // passedSize: "gowno"
-
-              // passedSize: "__undefined__",
             },
-            // Background: {
-            //   selectable: false
-            // }
           },
         };
       },
@@ -1310,16 +1253,6 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
           group: "General",
         },
         ...borderSchemaProps("General"),
-
-        // {
-        //   prop: "Background",
-        //   label: "Background",
-        //   type: "component",
-        //   accepts: ["$backgroundColor", "$image", "$video"],
-        //   visible: true,
-        //   group: "General",
-        // },
-
         {
           prop: "Card1",
           label: "Card1",
@@ -1450,18 +1383,6 @@ export const builtinEditableComponentsDefinitions: InternalRenderableComponentDe
     basicBackgroundCardDefinition,
     cardPlaceholderDefinition,
     componentContainerDefinition,
-
-    {
-      id: "$MissingComponent",
-      label: "Missing",
-      schema: [
-        {
-          prop: "error",
-          type: "string",
-          visible: false,
-        },
-      ],
-    },
     // {
     //   id: "$MissingAction",
     //   label: "Missing",

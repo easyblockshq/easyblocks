@@ -196,7 +196,7 @@ function useUpdateFramePosition({
       });
 
     const closestScrollableElement = node.closest(
-      "[data-shopstory-scrollable-root]"
+      "[data-easyblocks-scrollable-root]"
     );
 
     closestScrollableElement?.addEventListener(

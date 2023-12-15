@@ -15,11 +15,10 @@ import ComponentContainer from "./ComponentContainer/ComponentContainer.client";
 import Grid from "./Grid/Grid";
 import Placeholder from "./Placeholder/Placeholder";
 import Playground from "./Playground/Playground.client";
-import Separator from "./Separator/Separator";
+import Separator from "./Separator/Separator.client";
 import StandardButton from "./StandardButton/StandardButton.client";
 import TwoCards from "./TwoCards/TwoCards";
 import VimeoPlayer from "./vimeoPlayer/vimeoPlayer.client";
-import Zone from "./Zone/Zone.client";
 import SectionWrapper from "./SectionWrapper/SectionWrapper";
 
 const defaultEditableComponents = Object.freeze({
@@ -28,9 +27,7 @@ const defaultEditableComponents = Object.freeze({
   "$video.client": VideoClient,
   "$video.editor": VideoEditor,
   $backgroundColor: BackgroundColor,
-  // $BannerCard: BannerCard_v1,
   $BannerCard2: BannerCard_v2,
-  // $BannerSection: SectionWrapper,
   $BannerSection2: SectionWrapper,
   $BasicCard: BasicCard,
   $BasicCardBackground: BasicCard,
@@ -50,7 +47,6 @@ const defaultEditableComponents = Object.freeze({
   $TwoCardsCard: TwoCards,
   $twoItems: TwoItems,
   $vimeoPlayer: VimeoPlayer,
-  $Zone: Zone,
 });
 
 function builtinEditableComponents(
@@ -67,7 +63,6 @@ const defaultBuiltinClientOnlyEditableComponents = Object.freeze({
   "$video.client": VideoClient,
   $backgroundColor: BackgroundColor,
   $BannerCard2: BannerCard_v2,
-  // $BannerSection: SectionWrapper,
   $BannerSection2: SectionWrapper,
   $BasicCard: BasicCard,
   $BasicCardBackground: BasicCard,
@@ -86,7 +81,6 @@ const defaultBuiltinClientOnlyEditableComponents = Object.freeze({
   $TwoCardsCard: TwoCards,
   $twoItems: TwoItems,
   $vimeoPlayer: VimeoPlayer,
-  $Zone: Zone,
 });
 
 function builtinClientOnlyEditableComponents(

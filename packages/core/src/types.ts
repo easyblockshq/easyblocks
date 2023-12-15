@@ -452,6 +452,11 @@ export type NoCodeComponentStylesFunctionInput<
   isEditing: boolean;
 };
 
+export type InferNoCodeComponentStylesFunctionInput<T> =
+  T extends NoCodeComponentDefinition<infer Values, infer Params>
+    ? NoCodeComponentStylesFunctionInput<Values, Params>
+    : never;
+
 export type NoCodeComponentStylesFunctionResult = {
   props?: Record<string, unknown>;
   components?: Record<
@@ -519,6 +524,11 @@ export type NoCodeComponentDefinition<
   auto?: NoCodeComponentAutoFunction<Values, Params>;
   pasteSlots?: Array<string>;
   thumbnail?: string;
+  getEditorSidebarPreview?: (
+    entry: ConfigComponent,
+    externalData: ExternalData,
+    options: EditorSidebarPreviewOptions
+  ) => SidebarPreviewVariant | undefined;
 };
 
 export type Config = {
@@ -702,9 +712,9 @@ export type ComponentDefinitionShared<Identifier extends string = string> = {
   change?: NoCodeComponentChangeFunction;
   icon?: "link" | "grid_3x3";
   getEditorSidebarPreview?: (
-    config: ConfigComponent,
+    entry: ConfigComponent,
     externalData: ExternalData,
-    editorContext: EditorSidebarPreviewOptions
+    options: EditorSidebarPreviewOptions
   ) => SidebarPreviewVariant | undefined;
   previewImage?: string;
 
@@ -899,7 +909,6 @@ export type EditorSidebarPreviewOptions = {
   breakpointIndex: string;
   devices: Devices;
   contextParams: ContextParams;
-  resources: Array<Resource>;
 };
 
 export interface ConfigModel {

@@ -203,6 +203,17 @@ export function createCompilationContext(
     richTextLineElementEditableComponent,
     richTextInlineWrapperElementEditableComponent,
     richTextPartEditableComponent,
+    {
+      id: "$MissingComponent",
+      label: "Missing",
+      schema: [
+        {
+          prop: "error",
+          type: "string",
+          visible: false,
+        },
+      ],
+    },
   ];
 
   if (config.components) {

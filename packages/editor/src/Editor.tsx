@@ -707,7 +707,7 @@ const EditorContent = ({
 
   useEffect(() => {
     syncTemplates();
-  }, []);
+  }, [props.config.components, props.config.templates]);
 
   const editorTypes: EditorContextType["types"] = Object.fromEntries(
     Object.entries(compilationContext.types).map(
