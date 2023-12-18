@@ -1,16 +1,8 @@
-import { isCompoundExternalDataValue } from "@easyblocks/app-utils";
-import {
-  ExternalReference,
-  getExternalReferenceLocationKey,
-  getExternalValue,
-  responsiveValueFindDeviceWithDefinedValue,
-  responsiveValueForceGet,
-} from "@easyblocks/core";
 import {
   InternalRenderableComponentDefinition,
   buttonActionSchemaProp,
 } from "@easyblocks/core/_internals";
-import { assertDefined, last } from "@easyblocks/utils";
+import { last } from "@easyblocks/utils";
 import { ImageSrc } from "../../types";
 import imageStyles from "./$image.styles";
 
@@ -58,85 +50,22 @@ const imageComponentDefinition: InternalRenderableComponentDefinition<"$image"> 
       },
       buttonActionSchemaProp,
     ],
-    getEditorSidebarPreview(entry, externalData, { breakpointIndex, devices }) {
-      const device = responsiveValueFindDeviceWithDefinedValue(
-        entry.image,
-        breakpointIndex,
-        devices
-      );
+    preview({ values }) {
+      const activeImageValue = values.image as ImageSrc | undefined;
 
-      if (!device) {
+      if (!activeImageValue) {
         return {
           description: "None",
         };
       }
 
-      const activeImageValue = responsiveValueForceGet<ExternalReference>(
-        entry.image,
-        device.id
-      );
-
-      if (activeImageValue.id === null) {
-        return {
-          description: "None",
-        };
-      }
-
-      const imageExternalValue =
-        externalData[
-          getExternalReferenceLocationKey(
-            assertDefined(entry._id),
-            "image",
-            device.id
-          )
-        ];
-
-      if (!imageExternalValue || "error" in imageExternalValue) {
-        return {
-          description: "None",
-        };
-      }
-
-      if (isCompoundExternalDataValue(imageExternalValue)) {
-        if (!activeImageValue.key) {
-          return {
-            description: "None",
-          };
-        }
-
-        const resolvedCompoundExternalValueResult =
-          imageExternalValue.value[activeImageValue.key];
-
-        if (!resolvedCompoundExternalValueResult) {
-          return {
-            description: "None",
-          };
-        }
-
-        const imageFileName = last(
-          (resolvedCompoundExternalValueResult.value as ImageSrc).url.split("/")
-        );
-        const imageFileNameWithoutQueryParams = imageFileName.split("?")[0];
-
-        return {
-          thumbnail: {
-            type: "image",
-            src: (resolvedCompoundExternalValueResult.value as ImageSrc).url,
-          },
-          description: imageFileNameWithoutQueryParams,
-        };
-      }
-
-      const imageResourceValue = getExternalValue(
-        imageExternalValue
-      ) as ImageSrc;
-      const imageFileName = last(imageResourceValue.url.split("/"));
+      const imageFileName = last(activeImageValue.url.split("/"));
       const imageFileNameWithoutQueryParams = imageFileName.split("?")[0];
 
       return {
         thumbnail: {
           type: "image",
-          src: imageResourceValue.url,
+          src: activeImageValue.url,
         },
         description: imageFileNameWithoutQueryParams,
       };

@@ -2,7 +2,7 @@ import type {
   NoCodeComponentStylesFunctionInput,
   NoCodeComponentStylesFunctionResult,
 } from "@easyblocks/core";
-import { getPaddingBottomAndHeightFromAspectRatio } from "@easyblocks/editable-components";
+import { getPaddingBottomAndHeightFromAspectRatio } from "../utils/parseAspectRatio";
 
 export interface VimeoPlayerValues {
   aspectRatio: string;

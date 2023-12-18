@@ -28,3 +28,4 @@ export * from "./resourcesUtils";
 export * from "./responsiveness";
 export { spacingToPx } from "./spacingToPx";
 export * from "./types";
+export { resolveLocalisedValue } from "./compiler/definitions";

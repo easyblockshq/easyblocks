@@ -17,14 +17,10 @@ const StandardLink: InternalLinkDefinition = {
   ],
   type: "actionLink",
   icon: "link",
-  getEditorSidebarPreview: (config, _, options) => {
-    if (!config.url) {
-      return undefined;
-    }
-
+  preview: ({ values }) => {
     return {
       type: "icon",
-      description: config.url.value?.[options.contextParams.locale] ?? "None",
+      description: values.url ?? "None",
     };
   },
 };

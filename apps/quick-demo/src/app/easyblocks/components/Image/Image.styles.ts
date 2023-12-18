@@ -2,14 +2,14 @@ import type {
   NoCodeComponentStylesFunctionInput,
   NoCodeComponentStylesFunctionResult,
 } from "@easyblocks/core";
-import { getPaddingBottomAndHeightFromAspectRatio } from "@easyblocks/editable-components";
+import { getPaddingBottomAndHeightFromAspectRatio } from "../utils/parseAspectRatio";
 
 export function imageStyles({
   values,
   params,
 }: NoCodeComponentStylesFunctionInput): NoCodeComponentStylesFunctionResult {
   const aspectRatioMakerStyles = getPaddingBottomAndHeightFromAspectRatio(
-    params.passedAspectRatio ?? values.aspectRatio
+    params.aspectRatio ?? values.aspectRatio
   );
 
   const isNaturalAspectRatio = values.aspectRatio === "natural";
@@ -20,7 +20,6 @@ export function imageStyles({
         position: "relative",
       },
       ImageWrapper: {
-        __action: "action",
         position: "absolute",
         top: 0,
         left: 0,

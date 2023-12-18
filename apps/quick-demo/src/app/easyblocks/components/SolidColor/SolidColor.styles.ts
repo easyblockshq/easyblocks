@@ -2,16 +2,15 @@ import type {
   NoCodeComponentStylesFunctionInput,
   NoCodeComponentStylesFunctionResult,
 } from "@easyblocks/core";
-import { getPaddingBottomAndHeightFromAspectRatio } from "@easyblocks/editable-components";
+import { getPaddingBottomAndHeightFromAspectRatio } from "../utils/parseAspectRatio";
 
-export function backgroundColorStyles({
+export function solidColorStyles({
   values,
   params,
 }: NoCodeComponentStylesFunctionInput): NoCodeComponentStylesFunctionResult {
   const { height, paddingBottom } = getPaddingBottomAndHeightFromAspectRatio(
-    params.passedAspectRatio,
-    10,
-    params.gridBaseLineHeight
+    params.aspectRatio,
+    10
   );
 
   return {

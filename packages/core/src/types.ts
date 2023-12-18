@@ -524,11 +524,10 @@ export type NoCodeComponentDefinition<
   auto?: NoCodeComponentAutoFunction<Values, Params>;
   pasteSlots?: Array<string>;
   thumbnail?: string;
-  getEditorSidebarPreview?: (
-    entry: ConfigComponent,
-    externalData: ExternalData,
-    options: EditorSidebarPreviewOptions
-  ) => SidebarPreviewVariant | undefined;
+  preview?: (input: {
+    values: Values;
+    externalData: ExternalData;
+  }) => SidebarPreviewVariant | undefined;
 };
 
 export type Config = {
@@ -711,11 +710,10 @@ export type ComponentDefinitionShared<Identifier extends string = string> = {
 
   change?: NoCodeComponentChangeFunction;
   icon?: "link" | "grid_3x3";
-  getEditorSidebarPreview?: (
-    entry: ConfigComponent,
-    externalData: ExternalData,
-    options: EditorSidebarPreviewOptions
-  ) => SidebarPreviewVariant | undefined;
+  preview?: (input: {
+    values: Record<string, any>;
+    externalData: ExternalData;
+  }) => SidebarPreviewVariant | undefined;
   previewImage?: string;
 
   hideTemplates?: boolean;

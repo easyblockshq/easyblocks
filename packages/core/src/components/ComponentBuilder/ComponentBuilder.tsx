@@ -1,5 +1,4 @@
 import React, { ComponentType, Fragment, ReactElement } from "react";
-import { isEmptyRenderableContent } from "../../checkers";
 import { findComponentDefinitionById } from "../../compiler/findComponentDefinition";
 import {
   isExternalSchemaProp,
@@ -19,14 +18,12 @@ import {
   itemInserted,
 } from "../../events";
 import {
-  getExternalReferenceLocationKey,
-  getExternalValue,
-  isCompoundExternalDataValue,
+  getResolvedExternalDataValue,
   isLocalTextReference,
+  resolveExternalValue,
 } from "../../resourcesUtils";
 import {
   responsiveValueGetDefinedValue,
-  responsiveValueMap,
   responsiveValueReduce,
 } from "../../responsiveness";
 import { resop } from "../../responsiveness/resop";
@@ -42,7 +39,6 @@ import {
   Devices,
   ExternalData,
   ExternalReference,
-  ExternalReferenceNonEmpty,
   ExternalSchemaProp,
   LocalReference,
   LocalTextReference,
@@ -532,64 +528,6 @@ function mapExternalProps(
   return resultsProps;
 }
 
-function resolveExternalValue(
-  responsiveResource: ResponsiveValue<ExternalReference>,
-  configId: string,
-  schemaProp: ExternalSchemaProp,
-  externalData: ExternalData
-) {
-  return responsiveValueMap(responsiveResource, (r, breakpointIndex) => {
-    if (r.id) {
-      // If resource field has `key` defined and its `id` starts with "$.", it means that it's a reference to the
-      // root resource and we need to look for the resource with the same id as the root resource.
-      const locationKey =
-        r.key && typeof r.id === "string" && r.id.startsWith("$.")
-          ? r.id
-          : getExternalReferenceLocationKey(
-              configId,
-              schemaProp.prop,
-              breakpointIndex
-            );
-      const externalDataValue = externalData[locationKey];
-
-      let resourceValue: ReturnType<typeof getExternalValue>;
-
-      if (externalDataValue) {
-        resourceValue = getExternalValue(externalDataValue);
-      }
-
-      if (
-        externalDataValue === undefined ||
-        isEmptyRenderableContent(resourceValue)
-      ) {
-        return;
-      }
-
-      if ("error" in externalDataValue) {
-        return;
-      }
-
-      if (isCompoundExternalDataValue(externalDataValue)) {
-        if (!r.key) {
-          return;
-        }
-
-        const resolvedResourceValue = externalDataValue.value[r.key].value;
-
-        if (!resolvedResourceValue) {
-          return;
-        }
-
-        return resolvedResourceValue;
-      }
-
-      return resourceValue;
-    }
-
-    return;
-  });
-}
-
 export { ComponentBuilder };
 export type { ComponentBuilderComponent };
 
@@ -664,26 +602,6 @@ function getFieldStatus(
     { renderable: true, isLoading: false },
     devices
   );
-}
-
-function getResolvedExternalDataValue(
-  externalData: ExternalData,
-  configId: string,
-  fieldName: string,
-  value: ExternalReferenceNonEmpty
-) {
-  const externalReferenceLocationKey =
-    typeof value.id === "string" && value.id.startsWith("$.")
-      ? value.id
-      : getExternalReferenceLocationKey(configId, fieldName);
-
-  const externalValue = externalData[externalReferenceLocationKey];
-
-  if (externalValue === undefined || "error" in externalValue) {
-    return;
-  }
-
-  return externalValue;
 }
 
 function getComponentMainType(componentTypes: string[]) {

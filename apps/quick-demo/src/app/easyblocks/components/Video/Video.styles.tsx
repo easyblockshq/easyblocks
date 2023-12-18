@@ -41,8 +41,6 @@ export default function styles(
     ...(imageBoxes.styled!.ImageWrapper as Record<string, unknown>),
   };
 
-  delete ImageWrapper.__action; // Video doesn't have action!!!
-
   return {
     ...imageBoxes,
     styled: {

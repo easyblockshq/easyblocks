@@ -2,7 +2,7 @@ import { mockVideoWidget } from "@/app/easyblocks/externalData/mockMedia/mockVid
 import { templates } from "@/app/easyblocks/templates/templates";
 import { Config } from "@easyblocks/core";
 import { builtinEditableComponentsDefinitions } from "@easyblocks/editable-components";
-import { backgroundColorComponentDefinition } from "./components/BackgroundColor/BackgroundColor";
+import { solidColorComponentDefinition } from "./components/SolidColor/SolidColor";
 import { buttonComponentDefinition } from "./components/Button/Button";
 import { buttonsComponentDefinition } from "./components/Buttons/Buttons";
 import { gridComponentDefinition } from "./components/Grid/Grid";
@@ -140,7 +140,7 @@ export const easyblocksConfig: Config = {
     videoComponentDefinition,
     stackComponentDefinition,
     twoCardsComponentDefinition,
-    backgroundColorComponentDefinition,
+    solidColorComponentDefinition,
     buttonComponentDefinition,
   ],
   colors: [

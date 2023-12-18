@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 
-function BackgroundColor(props: {
+function SolidColor(props: {
   Wrapper: ReactElement;
   AspectRatioMaker: ReactElement;
   Background: ReactElement;
@@ -15,4 +15,4 @@ function BackgroundColor(props: {
   );
 }
 
-export { BackgroundColor };
+export { SolidColor };

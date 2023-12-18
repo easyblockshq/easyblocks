@@ -3,7 +3,6 @@ import type {
   NoCodeComponentStylesFunctionResult,
 } from "@easyblocks/core";
 import { spacingToPx } from "@easyblocks/core";
-import { parseAspectRatio } from "@easyblocks/editable-components";
 import { SectionValues, getSectionStyles } from "../utils/sectionHelpers";
 import type { gridComponentDefinition } from "./Grid";
 import { gridController } from "./Grid.controller";
@@ -247,17 +246,6 @@ function gridStyles({
 
   const itemProps: any[] = [];
 
-  // This is tricky. Ask Andrzej in case of questions. vw is problematic because of potential scrollbar, but we should introduce global CSS var with correct vw.
-  const sizeWithVw = size.replace(
-    /100%/g,
-    "var(--shopstory-viewport-width, 100vw)"
-  );
-
-  const GRID_BASELINE_ASPECT_RATIO = parseAspectRatio(
-    values.gridMainObjectAspectRatio
-  );
-  const gridBaseLineHeight = `calc(${sizeWithVw} * ${GRID_BASELINE_ASPECT_RATIO})`;
-
   // We set default item container for placeholder
   const cardStyles =
     values.Cards.length > 0
@@ -291,7 +279,6 @@ function gridStyles({
     // For slider we always return item container
 
     const baseProps = {
-      gridBaseLineHeight,
       $widthAuto: false,
       $width: $widthItem,
       edgeLeft: calculateEdge(

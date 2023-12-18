@@ -8,7 +8,7 @@ import { Buttons } from "./components/Buttons/Buttons.client";
 import { RootSections } from "./components/RootSections/RootSections.client";
 import { Grid } from "./components/Grid/Grid.client";
 import { TwoCards } from "./components/TwoCards/TwoCards.client";
-import { BackgroundColor } from "./components/BackgroundColor/BackgroundColor.client";
+import { SolidColor } from "./components/SolidColor/SolidColor.client";
 import { Button } from "./components/Button/Button.client";
 
 const $Link = (props: any) => {
@@ -46,12 +46,12 @@ const components = {
   RootSections,
   Buttons,
   Button,
-  Image: Image,
-  Video: Video,
+  Image,
+  Video,
   Stack,
   Grid,
   TwoCards,
-  BackgroundColor,
+  SolidColor,
 };
 
 export { components };

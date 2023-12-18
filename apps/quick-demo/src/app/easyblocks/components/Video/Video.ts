@@ -154,77 +154,16 @@ const videoComponentDefinition: NoCodeComponentDefinition = {
       group: "Controls styling",
     },
   ],
-  getEditorSidebarPreview: (
-    config,
-    externalData,
-    { breakpointIndex, devices }
-  ) => {
-    const device = responsiveValueFindDeviceWithDefinedValue(
-      config.image,
-      breakpointIndex,
-      devices
-    );
+  preview: ({ values }) => {
+    const activeVideoValue = values.image as VideoSrc | undefined;
 
-    if (!device) {
+    if (!activeVideoValue) {
       return {
         description: "None",
       };
     }
 
-    const activeVideoValue = responsiveValueForceGet<ExternalReference>(
-      config.image,
-      device.id
-    );
-
-    if (activeVideoValue.id == null) {
-      return {
-        description: "None",
-      };
-    }
-
-    const videoExternalValue =
-      externalData[
-        getExternalReferenceLocationKey(
-          assertDefined(config._id),
-          "image",
-          breakpointIndex
-        )
-      ];
-
-    if (!videoExternalValue || "error" in videoExternalValue) {
-      return {
-        description: "None",
-      };
-    }
-
-    if (isCompoundExternalDataValue(videoExternalValue)) {
-      if (!activeVideoValue.key) {
-        return {
-          description: "None",
-        };
-      }
-
-      const resolvedCompoundExternalDataResult =
-        videoExternalValue.value[activeVideoValue.key];
-
-      if (!resolvedCompoundExternalDataResult) {
-        return {
-          description: "None",
-        };
-      }
-
-      const imageFileName = last(
-        (resolvedCompoundExternalDataResult.value as VideoSrc).url.split("/")
-      );
-      const imageFileNameWithoutQueryParams = imageFileName.split("?")[0];
-
-      return {
-        description: imageFileNameWithoutQueryParams,
-      };
-    }
-
-    const videoResourceValue = getExternalValue(videoExternalValue) as VideoSrc;
-    const videoFileName = last(videoResourceValue.url.split("/"));
+    const videoFileName = last(activeVideoValue.url.split("/"));
     const videoFileNameWithoutQueryParams = videoFileName.split("?")[0];
 
     return {

@@ -1,9 +1,22 @@
 import { Form, FormApi } from "@easyblocks/app-utils";
-import { ComponentSchemaProp, ConfigComponent } from "@easyblocks/core";
+import {
+  ComponentConfig,
+  ComponentSchemaProp,
+  ConfigComponent,
+  ExternalData,
+  ExternalReference,
+  LocalTextReference,
+  NoCodeComponentDefinition,
+  SidebarPreviewVariant,
+  resolveExternalValue,
+  resolveLocalisedValue,
+  responsiveValueForceGet,
+} from "@easyblocks/core";
 import {
   Component$$$SchemaProp,
   InternalField,
   findComponentDefinition,
+  isExternalSchemaProp,
 } from "@easyblocks/core/_internals";
 import {
   SSButtonGhost,
@@ -18,15 +31,16 @@ import { dotNotationGet, toArray } from "@easyblocks/utils";
 import React from "react";
 import ReactDOM from "react-dom";
 import styled, { css, keyframes } from "styled-components";
-import { useEditorContext } from "../../../EditorContext";
+import { useConfigAfterAuto } from "../../../ConfigAfterAutoContext";
+import { EditorContextType, useEditorContext } from "../../../EditorContext";
 import { useEditorExternalData } from "../../../EditorExternalDataProvider";
 import { SidebarFooter } from "../../../SidebarFooter";
 import { buildTinaFields } from "../../../buildTinaFields";
 import { FieldMixedValue } from "../../../types";
+import { isConfigPathRichTextPart } from "../../../utils/isConfigPathRichTextPart";
 import { FieldRenderProps, FieldsBuilder } from "../../form-builder";
 import { mergeCommonFields } from "../../form-builder/utils/mergeCommonFields";
 import { isMixedFieldValue } from "../components/isMixedFieldValue";
-import { isConfigPathRichTextPart } from "../../../utils/isConfigPathRichTextPart";
 
 export interface BlocksFieldDefinition extends InternalField {
   component: "ss-block";
@@ -208,6 +222,7 @@ const SubComponentPanelButton = ({
   const sidebarPanelsRoot = document.getElementById("sidebar-panels-root");
   const editorContext = useEditorContext();
   const externalData = useEditorExternalData();
+  const entryAfterAuto = useConfigAfterAuto();
 
   const config = dotNotationGet(editorContext.form.values, paths[0]);
   const componentDefinition = findComponentDefinition(config, editorContext);
@@ -217,20 +232,22 @@ const SubComponentPanelButton = ({
     `Shopstory can’t find custom component with id: ${config._template} in your project. Please contact your developers to resolve this issue.`;
   const showError = componentDefinition === undefined;
 
-  const sidebarPreview =
-    componentDefinition?.getEditorSidebarPreview?.(
-      config,
-      externalData,
-      editorContext
-    ) ?? {};
+  const sidebarPreview = componentDefinition
+    ? getSidebarPreview(
+        componentDefinition,
+        dotNotationGet(entryAfterAuto, paths[0]),
+        externalData,
+        editorContext
+      )
+    : undefined;
 
   const defaultThumbnail: ThumbnailType | undefined =
     componentDefinition?.thumbnail
       ? { type: "image", src: componentDefinition.thumbnail }
       : undefined;
   const thumbnail: ThumbnailType | undefined =
-    sidebarPreview.thumbnail ?? defaultThumbnail;
-  const description: string | undefined = sidebarPreview.description;
+    sidebarPreview?.thumbnail ?? defaultThumbnail;
+  const description: string | undefined = sidebarPreview?.description;
 
   return showError ? (
     <Error>{label}</Error>
@@ -255,6 +272,46 @@ const SubComponentPanelButton = ({
     </>
   );
 };
+
+function getSidebarPreview(
+  componentDefinition: NoCodeComponentDefinition,
+  entryAfterAuto: ComponentConfig,
+  externalData: ExternalData,
+  editorContext: EditorContextType
+): SidebarPreviewVariant | undefined {
+  const previewValues = Object.fromEntries(
+    componentDefinition.schema.map((s) => {
+      const value = responsiveValueForceGet(
+        entryAfterAuto[s.prop],
+        editorContext.breakpointIndex
+      );
+
+      if (isExternalSchemaProp(s)) {
+        const externalDataValue = resolveExternalValue(
+          value as ExternalReference,
+          entryAfterAuto._id,
+          s,
+          externalData
+        );
+        return [s.prop, externalDataValue];
+      }
+
+      if (s.type === "text") {
+        return [
+          s.prop,
+          resolveLocalisedValue<string>(
+            (value as LocalTextReference).value,
+            editorContext
+          )?.value,
+        ];
+      }
+
+      return [s.prop, value];
+    })
+  );
+
+  return componentDefinition.preview?.({ values: previewValues, externalData });
+}
 
 const Error = styled.div`
   ${SSFonts.body}

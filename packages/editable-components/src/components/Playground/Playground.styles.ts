@@ -17,7 +17,6 @@ function styles(): NoCodeComponentStylesFunctionResult {
       },
 
       ActionElement: {
-        __action: "action",
         left: 100,
       },
     },

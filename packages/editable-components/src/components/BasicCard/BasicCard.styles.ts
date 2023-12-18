@@ -65,7 +65,7 @@ function styles({
 
     components: {
       Background: {
-        passedAspectRatio: backgroundAspectRatio, // we set name "passedAspectRatio" to avoid conflict with "aspectRatio" internal prop. For now overriding is risky.
+        aspectRatio: backgroundAspectRatio,
         gridBaseLineHeight: params.gridBaseLineHeight,
         noAction: true,
         noAspectRatio: true,

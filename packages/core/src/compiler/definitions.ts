@@ -1395,7 +1395,7 @@ export function getSchemaDefinition<
   return provider(schemaProp as any, compilationContext);
 }
 
-function resolveLocalisedValue<T>(
+export function resolveLocalisedValue<T>(
   localisedValue: Record<string, T>,
   compilationContext: CompilationContextType
 ): { value: T; locale: string } | undefined {

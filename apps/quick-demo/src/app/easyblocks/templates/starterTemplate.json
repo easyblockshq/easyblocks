@@ -1675,8 +1675,8 @@
       "Background__": [
         {
           "_id": "1e94e1c2-0862-4a63-89ec-363e26bee786",
-          "_template": "BackgroundColor",
-          "traceId": "BackgroundColor-5071f09c",
+          "_template": "SolidColor",
+          "traceId": "SolidColor-5071f09c",
           "_itemProps": {
             "TwoCards": {
               "Background__": {}

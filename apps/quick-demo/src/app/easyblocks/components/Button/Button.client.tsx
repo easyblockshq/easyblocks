@@ -14,23 +14,8 @@ function Button(
 ) {
   const { ButtonRoot, IconWrapper, Action, variant, icon, label = "" } = props;
 
-  const buttonProps: Record<string, any> = {
-    ref: props.forwardedRef,
-  };
-
-  for (const key in props) {
-    if (
-      key === "as" ||
-      key === "onClick" ||
-      key === "href" ||
-      key === "target"
-    ) {
-      buttonProps[key] = props[key];
-    }
-  }
-
   const triggerElement = (
-    <ButtonRoot.type {...ButtonRoot.props} {...buttonProps}>
+    <ButtonRoot.type {...ButtonRoot.props} {...props}>
       {variant !== "icon" && <div>{label}</div>}
       {variant !== "label" && (
         <IconWrapper.type

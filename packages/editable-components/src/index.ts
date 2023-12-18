@@ -6,8 +6,4 @@ export {
   builtinClientOnlyEditableComponents,
 } from "./components";
 export type { ImageSrc, ImageSrcSetEntry, VideoSrc } from "./types";
-export {
-  getPaddingBottomAndHeightFromAspectRatio,
-  parseAspectRatio,
-} from "./parseAspectRatio";
 export { cleanupIconSVG } from "./cleanupIconSVG";

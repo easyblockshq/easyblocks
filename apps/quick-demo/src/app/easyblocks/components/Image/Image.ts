@@ -54,64 +54,22 @@ const imageComponentDefinition: NoCodeComponentDefinition = {
     },
     buttonActionSchemaProp,
   ],
-  getEditorSidebarPreview(entry, externalData, { breakpointIndex, devices }) {
-    const activeImageValue: ExternalReference = entry.image;
+  preview({ values }) {
+    const activeImageValue = values.image as ImageSrc | undefined;
 
-    if (activeImageValue.id === null) {
+    if (!activeImageValue) {
       return {
         description: "None",
       };
     }
 
-    const imageExternalValue =
-      externalData[
-        getExternalReferenceLocationKey(assertDefined(entry._id), "image")
-      ];
-
-    if (!imageExternalValue || "error" in imageExternalValue) {
-      return {
-        description: "None",
-      };
-    }
-
-    if (isCompoundExternalDataValue(imageExternalValue)) {
-      if (!activeImageValue.key) {
-        return {
-          description: "None",
-        };
-      }
-
-      const resolvedCompoundExternalValueResult =
-        imageExternalValue.value[activeImageValue.key];
-
-      if (!resolvedCompoundExternalValueResult) {
-        return {
-          description: "None",
-        };
-      }
-
-      const imageFileName = last(
-        (resolvedCompoundExternalValueResult.value as ImageSrc).url.split("/")
-      );
-      const imageFileNameWithoutQueryParams = imageFileName.split("?")[0];
-
-      return {
-        thumbnail: {
-          type: "image",
-          src: (resolvedCompoundExternalValueResult.value as ImageSrc).url,
-        },
-        description: imageFileNameWithoutQueryParams,
-      };
-    }
-
-    const imageResourceValue = getExternalValue(imageExternalValue) as ImageSrc;
-    const imageFileName = last(imageResourceValue.url.split("/"));
+    const imageFileName = last(activeImageValue.url.split("/"));
     const imageFileNameWithoutQueryParams = imageFileName.split("?")[0];
 
     return {
       thumbnail: {
         type: "image",
-        src: imageResourceValue.url,
+        src: activeImageValue.url,
       },
       description: imageFileNameWithoutQueryParams,
     };

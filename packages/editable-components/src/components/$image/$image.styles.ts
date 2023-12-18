@@ -13,7 +13,6 @@ export default function styles({
         position: "relative",
       },
       ImageWrapper: {
-        __action: "action",
         position: "absolute",
         top: 0,
         left: 0,
