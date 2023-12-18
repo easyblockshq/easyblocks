@@ -78,8 +78,7 @@ import { pasteManager } from "./paste/manager";
 import { SelectionFrame } from "./selectionFrame/SelectionFrame";
 import { documentDataWidgetFactory } from "./sidebar/DocumentDataWidget";
 import { getTemplates } from "./templates/getTemplates";
-import { TinaProvider } from "./tinacms";
-import { useForm, usePlugin } from "./tinacms/react-core";
+import { useForm } from "./tinacms/react-core";
 import {
   ActionsType,
   CMSInput,
@@ -342,14 +341,12 @@ const Editor = memo((props: EditorProps) => {
   }
 
   return resolvedInput === null || !props.isEnabled ? null : (
-    <TinaProvider>
-      <EditorContent
-        {...props}
-        compilationContext={compilationContext}
-        initialDocument={resolvedInput.document}
-        initialConfig={resolvedInput.config}
-      />
-    </TinaProvider>
+    <EditorContent
+      {...props}
+      compilationContext={compilationContext}
+      initialDocument={resolvedInput.document}
+      initialConfig={resolvedInput.config}
+    />
   );
 });
 
@@ -832,8 +829,6 @@ const EditorContent = ({
   window.editorWindowAPI.meta = meta;
   window.editorWindowAPI.compiled = renderableContent;
   window.editorWindowAPI.externalData = externalData;
-
-  usePlugin(form);
 
   useEffect(() => {
     push({

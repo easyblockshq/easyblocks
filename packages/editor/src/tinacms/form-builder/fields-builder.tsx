@@ -5,7 +5,22 @@ import { toArray } from "@easyblocks/utils";
 import React from "react";
 import styled, { css } from "styled-components";
 import { useEditorContext } from "../../EditorContext";
-import { useCMS } from "../react-core";
+import {
+  BlockFieldPlugin,
+  ExternalFieldPlugin,
+  FontTokenFieldPlugin,
+  IdentityFieldPlugin,
+  NumberFieldPlugin,
+  RadioGroupFieldPlugin,
+  ResponsiveFieldPlugin,
+  SVGPickerFieldPlugin,
+  SelectFieldPlugin,
+  SliderFieldPlugin,
+  TextFieldPlugin,
+  ToggleFieldPlugin,
+  TokenFieldPlugin,
+} from "../fields";
+import { PositionFieldPlugin } from "../fields/plugins/PositionFieldPlugin";
 import { FieldPlugin } from "./field-plugin";
 import { createFieldController } from "./utils/createFieldController";
 
@@ -30,33 +45,49 @@ function shouldFieldBeDisplayed(form: Form, field: InternalField): boolean {
   return true;
 }
 
+const FIELD_COMPONENTS: Array<FieldPlugin> = [
+  TextFieldPlugin,
+  NumberFieldPlugin,
+  ToggleFieldPlugin,
+  SelectFieldPlugin,
+  RadioGroupFieldPlugin,
+  PositionFieldPlugin,
+  BlockFieldPlugin,
+  SliderFieldPlugin,
+  SVGPickerFieldPlugin,
+  ResponsiveFieldPlugin,
+  ExternalFieldPlugin,
+  TokenFieldPlugin,
+  IdentityFieldPlugin,
+  FontTokenFieldPlugin,
+];
+
 export function FieldBuilder({
   form,
   field,
   noWrap,
   isLabelHidden,
 }: FieldBuilderProps) {
-  const cms = useCMS();
   const editorContext = useEditorContext();
 
   if (!shouldFieldBeDisplayed(form, field)) {
     return null;
   }
 
-  const plugin = cms.plugins
-    .findOrCreateMap<FieldPlugin>("field")
-    .find(field.component as string);
+  const fieldComponent = FIELD_COMPONENTS.find(
+    (component) => component.name === (field.component as string)
+  );
 
   const { onChange, getValue } = createFieldController({
     field,
     editorContext,
-    format: field.format ?? plugin?.format,
-    parse: field.parse ?? plugin?.parse,
+    format: field.format ?? fieldComponent?.format,
+    parse: field.parse ?? fieldComponent?.parse,
   });
 
-  if (plugin) {
+  if (fieldComponent) {
     return (
-      <plugin.Component
+      <fieldComponent.Component
         // Let's talk about this code
         // This branch of code is created to display single input and label that handles multiple inputs under the hood
         // To make this work, we had to skip usage of `Field` from `Final Form` because it requires a single field object with single name

@@ -639,15 +639,9 @@ importers:
       react:
         specifier: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
         version: 18.2.0
-      react-dismissible:
-        specifier: ^1.3.0
-        version: 1.3.0
       react-dom:
         specifier: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
         version: 18.2.0(react@18.2.0)
-      react-draggable:
-        specifier: ^4.4.3
-        version: 4.4.5(react-dom@18.2.0)(react@18.2.0)
       react-final-form:
         specifier: ^6.5.7
         version: 6.5.9(final-form@4.20.9)(react@18.2.0)
@@ -17245,10 +17239,6 @@ packages:
       strip-json-comments: 2.0.1
     dev: true
 
-  /react-dismissible@1.3.0:
-    resolution: {integrity: sha512-KqShOnw84Ft2Hx/O5KrwTDY1bXmICcJ8HlRIqSdn6j4Lg3OLVrETBiPgGUB4CRNRquVihcd5JmgDa0WUVdBG9g==}
-    dev: false
-
   /react-dom@18.2.0(react@18.2.0):
     resolution: {integrity: sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==}
     peerDependencies:
@@ -17257,18 +17247,6 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
-
-  /react-draggable@4.4.5(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-OMHzJdyJbYTZo4uQE393fHcqqPYsEtkjfMgvCHr6rejT+Ezn4OZbNyGH50vv+SunC1RMvwOTSWkEODQLzw1M9g==}
-    peerDependencies:
-      react: '>= 16.3.0'
-      react-dom: '>= 16.3.0'
-    dependencies:
-      clsx: 1.2.1
-      prop-types: 15.8.1
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-    dev: false
 
   /react-fast-compare@3.2.1:
     resolution: {integrity: sha512-xTYf9zFim2pEif/Fw16dBiXpe0hoy5PxcD8+OwBnTtNLfIm3g6WxhKNurY+6OmdH1u6Ta/W/Vl6vjbYP1MFnDg==}

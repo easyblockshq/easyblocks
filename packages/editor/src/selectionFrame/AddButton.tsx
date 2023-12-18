@@ -1,7 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { IconButton, ICON_BUTTON_SIZE } from "../tinacms/styles";
-import { AddIcon } from "../tinacms/icons";
 import {
   AFTER_ADD_BUTTON_DISPLAY,
   AFTER_ADD_BUTTON_LEFT,

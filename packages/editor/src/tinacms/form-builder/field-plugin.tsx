@@ -2,7 +2,6 @@ import { InternalField } from "@easyblocks/core/_internals";
 import React from "react";
 
 export interface FieldPlugin {
-  __type: "field";
   name: string;
   Component: React.FC<any>;
   type?: string;

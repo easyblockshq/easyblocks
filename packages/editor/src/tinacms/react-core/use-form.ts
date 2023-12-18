@@ -1,27 +1,11 @@
 import { Form, FormOptions } from "@easyblocks/app-utils";
 import { InternalField } from "@easyblocks/core/_internals";
 import React from "react";
-import { useCMSEvent } from "./use-cms-event";
-import { usePlugins } from "./use-plugin";
 
 export interface WatchableFormValue {
   values: any;
   label: FormOptions<any>["label"];
   fields: FormOptions<any>["fields"];
-}
-
-/**
- * @deprecated See https://github.com/tinacms/rfcs/blob/master/0006-form-hook-conventions.md
- */
-export function useLocalForm<FormShape = any>(
-  options: FormOptions<any>,
-  watch: Partial<WatchableFormValue> = {}
-): [FormShape, Form] {
-  const [values, form] = useForm<FormShape>(options, watch);
-
-  usePlugins(form);
-
-  return [values, form];
 }
 
 /**
@@ -81,14 +65,6 @@ export function useForm<FormShape = any>(
   React.useEffect(() => {
     loadFormData();
   }, [form, loadFormData]);
-  useCMSEvent(
-    "unstable:reload-form-data",
-    async () => {
-      await loadFormData();
-      await form.reset();
-    },
-    [loadFormData, form]
-  );
 
   useUpdateFormFields(form, watch.fields);
   useUpdateFormLabel(form, watch.label);
