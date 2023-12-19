@@ -16,57 +16,7 @@ export const gridComponentDefinition: NoCodeComponentDefinition<
 > = {
   id: "Grid",
   label: "Collection",
-  pasteSlots: ["Cards"],
   type: "section",
-  styles: gridStyles,
-  auto: gridAuto,
-  editing: ({ values, params, editingInfo }) => {
-    const sectionEditing = sectionWrapperEditing({
-      editingInfo,
-      values,
-      params,
-    });
-
-    const fields = Object.fromEntries(
-      editingInfo.fields.map((f) => [f.path, f])
-    );
-
-    const leftArrowFields = [fields.leftArrowPlacement];
-
-    if (values.leftArrowPlacement !== "center") {
-      leftArrowFields.push(fields.leftArrowOffset);
-    }
-
-    const rightArrowFields = [fields.rightArrowPlacement];
-
-    if (values.rightArrowPlacement !== "center") {
-      rightArrowFields.push(fields.rightArrowOffset);
-    }
-
-    const cards = editingInfo.components
-      .Cards as Array<ChildComponentEditingInfo>;
-
-    return {
-      fields: [...(sectionEditing.fields ?? []), ...editingInfo.fields].filter(
-        (field) =>
-          !field.path.startsWith("rightArrow") &&
-          !field.path.startsWith("leftArrow")
-      ),
-      components: {
-        ...sectionEditing.components,
-        Cards: cards.map((cardItem) => ({
-          ...cardItem,
-          direction: "horizontal",
-        })),
-        LeftArrow: {
-          fields: leftArrowFields,
-        },
-        RightArrow: {
-          fields: rightArrowFields,
-        },
-      },
-    };
-  },
   schema: [
     ...sectionWrapperSchemaProps.margins,
     {
@@ -325,4 +275,53 @@ export const gridComponentDefinition: NoCodeComponentDefinition<
     },
     ...sectionWrapperSchemaProps.headerAndBackground,
   ],
+  styles: gridStyles,
+  editing: ({ values, params, editingInfo }) => {
+    const sectionEditing = sectionWrapperEditing({
+      editingInfo,
+      values,
+      params,
+    });
+
+    const fields = Object.fromEntries(
+      editingInfo.fields.map((f) => [f.path, f])
+    );
+
+    const leftArrowFields = [fields.leftArrowPlacement];
+
+    if (values.leftArrowPlacement !== "center") {
+      leftArrowFields.push(fields.leftArrowOffset);
+    }
+
+    const rightArrowFields = [fields.rightArrowPlacement];
+
+    if (values.rightArrowPlacement !== "center") {
+      rightArrowFields.push(fields.rightArrowOffset);
+    }
+
+    const cards = editingInfo.components
+      .Cards as Array<ChildComponentEditingInfo>;
+
+    return {
+      fields: [...(sectionEditing.fields ?? []), ...editingInfo.fields].filter(
+        (field) =>
+          !field.path.startsWith("rightArrow") &&
+          !field.path.startsWith("leftArrow")
+      ),
+      components: {
+        ...sectionEditing.components,
+        Cards: cards.map((cardItem) => ({
+          ...cardItem,
+          direction: "horizontal",
+        })),
+        LeftArrow: {
+          fields: leftArrowFields,
+        },
+        RightArrow: {
+          fields: rightArrowFields,
+        },
+      },
+    };
+  },
+  auto: gridAuto,
 };
