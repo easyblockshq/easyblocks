@@ -1,6 +1,7 @@
 import { Spacing } from "@easyblocks/core";
+import { SectionWrapperValues } from "@/app/easyblocks/components/utils/sectionWrapper";
 
-export type GridCompiledValues = {
+export type GridCompiledValues = SectionWrapperValues & {
   Cards: any[];
   variant: string;
   numberOfItems: string;
@@ -24,14 +25,6 @@ export type GridCompiledValues = {
 };
 
 export type GridParams = {
-  edgeLeft?: boolean;
-  edgeRight?: boolean;
-  edgeTop?: boolean;
-  edgeBottom?: boolean;
-  edgeLeftMargin?: Spacing | null;
-  edgeRightMargin?: Spacing | null;
   $width: number;
   $widthAuto: boolean;
-  maxWidth: null | number;
-  escapeMargin: boolean;
 };

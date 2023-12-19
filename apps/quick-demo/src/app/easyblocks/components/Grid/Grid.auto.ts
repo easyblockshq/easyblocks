@@ -3,16 +3,13 @@ import {
   Devices,
   NoCodeComponentAutoFunction,
   TrulyResponsiveValue,
-  responsiveValueFill,
   responsiveValueForceGet,
   responsiveValueGet,
   responsiveValueGetDefinedValue,
   spacingToPx,
 } from "@easyblocks/core";
-import { getDevicesWidths, scalarizeConfig } from "@easyblocks/core/_internals";
 import { responsiveAuto } from "../utils/responsiveAuto";
-import { gridContainerController } from "./Grid.controller";
-import { GridCompiledValues, GridParams } from "./Grid.types";
+import { calculateGridMarginsAndWidth } from "./calculateGridMarginsAndWidth";
 
 function calculateContainerWidth(
   config: Record<string, any>,
@@ -45,47 +42,44 @@ function calculateContainerWidth(
 
 const MAGIC_NUMBER = 1;
 
-export const gridAuto: NoCodeComponentAutoFunction<
-  GridCompiledValues,
-  GridParams
-> = ({ values, params, devices }) => {
-  // Auto should be done relative to real container widths but Grid also have container margins inside.
+export const gridAuto: NoCodeComponentAutoFunction<any, any> = ({
+  values,
+  params,
+  devices,
+}) => {
+  /**
+   * We start with calculating widths. Widths is a responsive value that is a "real" width of grid container (without margins).
+   * It takes into account margins, margin escape and max width.
+   *
+   * It's important because auto function is built with respect to those "real widths".
+   *
+   * Why?
+   *
+   * Imagine situation when screen width is 1600px and grid is only 800px wide and margins on left and right are 400px.
+   * When we switch screen to 1000px it's highly possible that the grid will still be 800px wide but the screen resolution changed a lot.
+   * In such case auto shouldn't switch for example 4-column grid to 2-column grid. It should stay 4-column.
+   * If we calculated auto based on screen width (params.$width) the behaviour would be incorrect.
+   *
+   */
   const widths: TrulyResponsiveValue<number> = { $res: true };
-  const devicesWidths = getDevicesWidths(devices);
 
   devices.forEach((device) => {
-    const scalarizedContainerProps = scalarizeConfig(
-      {
-        edgeLeftMargin: responsiveValueFill(
-          params.edgeLeftMargin,
-          devices,
-          devicesWidths
-        ),
-        edgeRightMargin: responsiveValueFill(
-          params.edgeRightMargin,
-          devices,
-          devicesWidths
-        ),
-        escapeMargin: responsiveValueFill(
-          params.escapeMargin,
-          devices,
-          devicesWidths
-        ),
-        maxWidth: responsiveValueFill(params.maxWidth, devices, devicesWidths),
-      },
-      device.id,
-      devices,
-      []
-    );
-    const { realWidth } = gridContainerController(
-      {
-        ...scalarizedContainerProps,
-        $width: responsiveValueForceGet(params.$width, device.id),
-      },
-      device
-    );
+    const { widthWithoutMargins } = calculateGridMarginsAndWidth({
+      containerMargin: responsiveValueForceGet(
+        values.containerMargin,
+        device.id
+      ),
+      escapeMargin: responsiveValueForceGet(!!values.escapeMargin, device.id),
+      containerMaxWidth: responsiveValueForceGet(
+        values.containerMaxWidth,
+        device.id
+      ),
+      device,
+      $width: responsiveValueForceGet(params.$width, device.id),
+      $widthAuto: false,
+    });
 
-    widths[device.id] = realWidth;
+    widths[device.id] = widthWithoutMargins;
   });
 
   let valuesAfterAuto = responsiveAuto(

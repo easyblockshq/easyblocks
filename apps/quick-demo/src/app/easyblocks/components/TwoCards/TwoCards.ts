@@ -2,10 +2,10 @@ import { NoCodeComponentDefinition } from "@easyblocks/core";
 import { twoCardsStyles } from "./TwoCards.styles";
 import { TwoCardsCompiledValues } from "./TwoCards.types";
 import {
-  SectionValues,
-  getSectionEditing,
+  SectionWrapperValues,
+  sectionWrapperEditing,
   getSectionFields,
-} from "../utils/sectionHelpers";
+} from "../utils/sectionWrapper";
 import { twoCardsChange } from "./TwoCards.change";
 import { TWO_CARDS_COL_NUM } from "./twoCardsConstants";
 import { range } from "@easyblocks/utils";
@@ -15,7 +15,7 @@ const sectionFields = getSectionFields({
 });
 
 const twoCardsComponentDefinition: NoCodeComponentDefinition<
-  TwoCardsCompiledValues & SectionValues
+  TwoCardsCompiledValues & SectionWrapperValues
 > = {
   id: "TwoCards",
   type: "section",
@@ -23,7 +23,7 @@ const twoCardsComponentDefinition: NoCodeComponentDefinition<
   styles: twoCardsStyles,
   // change: twoCardsChange,
   editing: (args) => {
-    const sectionEditing = getSectionEditing(args);
+    const sectionEditing = sectionWrapperEditing(args);
     const { editingInfo, values } = args;
 
     const fields = Object.fromEntries(

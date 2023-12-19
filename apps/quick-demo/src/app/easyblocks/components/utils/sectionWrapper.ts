@@ -1,5 +1,9 @@
 /**
- * This file contains helpers for building section components
+ * This file contains all the building blocks for a universal section wrapper. Section wrapper handles:
+ * 1. Container max width
+ * 2. Container margins
+ * 3. Section header and footer
+ *
  */
 
 import {
@@ -10,6 +14,235 @@ import {
   spacingToPx,
 } from "@easyblocks/core";
 import { ReactElement } from "react";
+
+export const sectionWrapperSchemaProps: {
+  margins: SchemaProp[];
+  headerAndBackground: SchemaProp[];
+} = {
+  margins: [
+    {
+      prop: "containerMargin",
+      label: "Left / Right",
+      type: "space",
+      group: "Section margins",
+      params: {
+        prefix: "containerMargin",
+      },
+    },
+    {
+      prop: "containerMaxWidth", // main image size
+      label: "Max width",
+      type: "stringToken",
+      params: {
+        tokenId: "containerWidths",
+      },
+      defaultValue: {
+        ref: "none",
+        value: "none",
+      },
+      group: "Section margins",
+    },
+  ],
+  headerAndBackground: [
+    {
+      prop: "headerMode",
+      label: "Variant",
+      type: "select",
+      params: {
+        options: [
+          { value: "none", label: "No header" },
+          { value: "1-stack", label: "1 stack" },
+          { value: "2-stacks", label: "2 stacks" },
+        ],
+      },
+      group: "Section Header",
+    },
+    {
+      prop: "layout1Stack",
+      label: "Position",
+      type: "select",
+      group: "Section Header",
+      params: {
+        options: [
+          {
+            value: "left",
+            label: "Left",
+            // icon: SSIcons.AlignLeft,
+            // hideLabel: true,
+          },
+          {
+            value: "center",
+            label: "Center",
+            // icon: SSIcons.AlignCenter,
+            // hideLabel: true,
+          },
+          {
+            value: "right",
+            label: "Right",
+            // icon: SSIcons.AlignRight,
+            // hideLabel: true,
+          },
+        ],
+      },
+      visible: (values) => {
+        return values.headerMode === "1-stack";
+      },
+    },
+
+    {
+      prop: "layout2Stacks",
+      label: "Position",
+      type: "select",
+      responsive: true,
+      group: "Section Header",
+      params: {
+        options: [
+          {
+            value: "left-right",
+            label: "left + right",
+          },
+          {
+            value: "center-right",
+            label: "center + right",
+          },
+          {
+            value: "stacked-left",
+            label: "stacked left",
+          },
+          {
+            value: "stacked-center",
+            label: "stacked center",
+          },
+          {
+            value: "stacked-right",
+            label: "stacked right",
+          },
+          {
+            value: "below-left",
+            label: "above+below left",
+          },
+          {
+            value: "below-center",
+            label: "above+below center",
+          },
+          {
+            value: "below-right",
+            label: "above+below right",
+          },
+        ],
+      },
+      visible: (values) => {
+        return values.headerMode === "2-stacks";
+      },
+    },
+    {
+      prop: "layout2StacksVerticalAlign",
+      label: "Align",
+      type: "select",
+      responsive: true,
+      group: "Section Header",
+      params: {
+        options: ["center", "top", "bottom"],
+      },
+      visible: (values) => {
+        return (
+          values.headerMode === "2-stacks" &&
+          !values.layout2Stacks.startsWith("stacked") &&
+          !values.layout2Stacks.startsWith("below")
+        );
+      },
+    },
+
+    {
+      prop: "headerStacksGap",
+      label: "Stacks gap",
+      type: "space",
+      group: "Section Header",
+      visible: (values) => {
+        return (
+          values.headerMode === "2-stacks" &&
+          values.layout2Stacks &&
+          values.layout2Stacks.startsWith("stacked")
+        );
+      },
+      defaultValue: {
+        value: "12px",
+        ref: "12",
+      },
+    },
+
+    {
+      prop: "headerSectionGap",
+      label: "Gap",
+      type: "space",
+      group: "Section Header",
+      visible: (values) => {
+        return values.headerMode !== "none";
+      },
+      defaultValue: {
+        value: "12px",
+        ref: "12",
+      },
+    },
+    {
+      prop: "footerSectionGap",
+      label: "Bottom gap",
+      type: "space",
+      group: "Section Header",
+      visible: (values) => {
+        return (
+          values.headerMode === "2-stacks" &&
+          values.layout2Stacks &&
+          values.layout2Stacks.startsWith("below")
+        );
+      },
+      defaultValue: {
+        value: "12px",
+        ref: "12",
+      },
+    },
+    /**
+     * The problem is that we can't show label based on values :(
+     */
+    {
+      prop: "HeaderStack",
+      label: "Stack",
+      type: "component",
+      accepts: ["Stack"],
+      required: true,
+    },
+    {
+      prop: "HeaderSecondaryStack",
+      label: "Stack",
+      type: "component",
+      accepts: ["Stack"],
+      required: true,
+    },
+
+    // section background
+    {
+      prop: "Background__",
+      label: "Outer Background",
+      type: "component",
+      group: "Section background",
+      accepts: ["BackgroundColor", "Image", "Video"],
+      visible: true,
+    },
+    {
+      prop: "padding",
+      label: "Inner margin",
+      type: "space",
+      group: "Section background",
+      visible: (values) => {
+        return values.Background__ && values.Background__.length > 0;
+      },
+      defaultValue: {
+        value: "24px",
+        ref: "24",
+      },
+    },
+  ],
+};
 
 export const getSectionFields = (
   options: {
@@ -51,22 +284,6 @@ export const getSectionFields = (
         value: "none",
       },
       group: "Section margins",
-    },
-
-    {
-      prop: "escapeMargin",
-      label: "Escape",
-      type: "boolean",
-      responsive: true,
-      group: "Section margins",
-      ...extraEscapeMarginProps,
-    },
-    {
-      prop: "hide",
-      label: "Hide",
-      type: "boolean",
-      responsive: true,
-      group: "General",
     },
 
     // HEADER
@@ -270,7 +487,7 @@ export const getSectionFields = (
   ];
 };
 
-export type SectionValues = {
+export type SectionWrapperValues = {
   containerMargin: Spacing;
   containerMaxWidth: string;
   escapeMargin: boolean;
@@ -290,12 +507,12 @@ export type SectionValues = {
   _template: string;
 };
 
-export function getSectionStyles({
+export function sectionWrapperStyles({
   values,
   params,
   isEditing,
   device,
-}: NoCodeComponentStylesFunctionInput<SectionValues>) {
+}: NoCodeComponentStylesFunctionInput<SectionWrapperValues>) {
   const $width = params.$width;
 
   const styles: { [key: string]: { [key: string]: any } } = {
@@ -323,8 +540,6 @@ export function getSectionStyles({
     css: values.containerMargin,
     px: spacingToPx(values.containerMargin, device.w),
   };
-
-  const containerWidth = $width - containerMargin.px * 2;
 
   const getCssAbsoluteMargin = (margin: string) => {
     return maxWidth !== null
@@ -452,50 +667,51 @@ export function getSectionStyles({
   // styles.grid.width = "100%";
   // styles.grid.justifySelf = "center";
 
-  let Component: Record<string, any>;
-
-  // GridCard handles margins on its own because of advanced margins
-  if (values._template === "Grid") {
-    Component = {
-      edgeLeft: true,
-      edgeLeftMargin: containerMargin.css,
-      edgeRight: true,
-      edgeRightMargin: containerMargin.css,
-      escapeMargin: !!values.escapeMargin,
-      maxWidth: maxWidth,
-      $width,
-    };
-  } else {
-    // we must always display paddings even if max width is applied.
-    const escapeMargin = !!values.escapeMargin;
-
-    styles.content.paddingLeft = getCssAbsoluteMargin(
-      escapeMargin ? "0px" : containerMargin.css
-    );
-    styles.content.paddingRight = getCssAbsoluteMargin(
-      escapeMargin ? "0px" : containerMargin.css
-    );
-
-    // Should we apply max width
-    if (maxWidth && maxWidth < containerWidth) {
-      // styles.grid.maxWidth = `${maxWidth + leftMargin + rightMargin}px`;
-      Component = {
-        edgeLeft: false,
-        edgeRight: false,
-        edgeLeftMargin: null,
-        edgeRightMargin: null,
-        $width: maxWidth,
-      };
-    } else {
-      Component = {
-        edgeLeft: escapeMargin,
-        edgeRight: escapeMargin,
-        edgeLeftMargin: escapeMargin ? containerMargin.css : null,
-        edgeRightMargin: escapeMargin ? containerMargin.css : null,
-        $width: escapeMargin ? $width : $width - 2 * containerMargin.px,
-      };
-    }
-  }
+  //
+  // let Component: Record<string, any>;
+  //
+  // // GridCard handles margins on its own because of advanced margins
+  // if (values._template === "Grid") {
+  //   Component = {
+  //     edgeLeft: true,
+  //     edgeLeftMargin: containerMargin.css,
+  //     edgeRight: true,
+  //     edgeRightMargin: containerMargin.css,
+  //     escapeMargin: !!values.escapeMargin,
+  //     maxWidth: maxWidth,
+  //     $width,
+  //   };
+  // } else {
+  //   // we must always display paddings even if max width is applied.
+  //   const escapeMargin = !!values.escapeMargin;
+  //
+  //   styles.content.paddingLeft = getCssAbsoluteMargin(
+  //     escapeMargin ? "0px" : containerMargin.css
+  //   );
+  //   styles.content.paddingRight = getCssAbsoluteMargin(
+  //     escapeMargin ? "0px" : containerMargin.css
+  //   );
+  //
+  //   // Should we apply max width
+  //   if (maxWidth && maxWidth < containerWidth) {
+  //     // styles.grid.maxWidth = `${maxWidth + leftMargin + rightMargin}px`;
+  //     Component = {
+  //       edgeLeft: false,
+  //       edgeRight: false,
+  //       edgeLeftMargin: null,
+  //       edgeRightMargin: null,
+  //       $width: maxWidth,
+  //     };
+  //   } else {
+  //     Component = {
+  //       edgeLeft: escapeMargin,
+  //       edgeRight: escapeMargin,
+  //       edgeLeftMargin: escapeMargin ? containerMargin.css : null,
+  //       edgeRightMargin: escapeMargin ? containerMargin.css : null,
+  //       $width: escapeMargin ? $width : $width - 2 * containerMargin.px,
+  //     };
+  //   }
+  // }
 
   const hasNoBackground =
     !values.Background__ || values.Background__.length === 0;
@@ -541,7 +757,6 @@ export function getSectionStyles({
       },
       HeaderStack: styles.HeaderStack,
       HeaderSecondaryStack: styles.HeaderSecondaryStack,
-      Component,
     },
   };
 }
@@ -558,20 +773,7 @@ export type SectionProps = {
   ContentContainer__: ReactElement;
 };
 
-export type SectionComponentParams = {
-  edgeLeft?: boolean;
-  edgeRight?: boolean;
-  edgeTop?: boolean;
-  edgeBottom?: boolean;
-  edgeLeftMargin?: Spacing | null;
-  edgeRightMargin?: Spacing | null;
-  $width: number;
-  $widthAuto: boolean;
-  maxWidth: null | number;
-  escapeMargin: boolean;
-};
-
-export const getSectionEditing: NoCodeComponentEditingFunction = ({
+export const sectionWrapperEditing: NoCodeComponentEditingFunction = ({
   editingInfo,
 }) => {
   const fields = Object.fromEntries(editingInfo.fields.map((f) => [f.path, f]));

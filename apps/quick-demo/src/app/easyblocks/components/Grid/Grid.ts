@@ -6,15 +6,12 @@ import { gridStyles } from "./Grid.styles";
 import { gridAuto } from "./Grid.auto";
 import { GridCompiledValues, GridParams } from "./Grid.types";
 import {
-  SectionValues,
-  getSectionEditing,
-  getSectionFields,
-} from "../utils/sectionHelpers";
-
-const sectionFields = getSectionFields();
+  sectionWrapperEditing,
+  sectionWrapperSchemaProps,
+} from "../utils/sectionWrapper";
 
 export const gridComponentDefinition: NoCodeComponentDefinition<
-  GridCompiledValues & SectionValues,
+  GridCompiledValues,
   GridParams
 > = {
   id: "Grid",
@@ -24,7 +21,7 @@ export const gridComponentDefinition: NoCodeComponentDefinition<
   styles: gridStyles,
   auto: gridAuto,
   editing: ({ values, params, editingInfo }) => {
-    const sectionEditing = getSectionEditing({
+    const sectionEditing = sectionWrapperEditing({
       editingInfo,
       values,
       params,
@@ -71,7 +68,14 @@ export const gridComponentDefinition: NoCodeComponentDefinition<
     };
   },
   schema: [
-    ...sectionFields.filter((x) => x.group === "General"),
+    ...sectionWrapperSchemaProps.margins,
+    {
+      prop: "escapeMargin",
+      label: "Escape",
+      type: "boolean",
+      responsive: true,
+      group: "Section margins",
+    },
     {
       prop: "Cards",
       type: "component-collection",
@@ -319,6 +323,6 @@ export const gridComponentDefinition: NoCodeComponentDefinition<
       type: "space",
       group: "Placement",
     },
-    ...sectionFields.filter((x) => x.group !== "General"),
+    ...sectionWrapperSchemaProps.headerAndBackground,
   ],
 };

@@ -4,7 +4,7 @@ import type {
 } from "@easyblocks/core";
 import { spacingToPx } from "@easyblocks/core";
 import { getEdgeValues } from "../utils/getEdgeValues";
-import { getSectionStyles } from "../utils/sectionHelpers";
+import { sectionWrapperStyles } from "../utils/sectionWrapper";
 import { twoCardsComponentDefinition } from "./TwoCards";
 import { TWO_CARDS_COL_NUM } from "./twoCardsConstants";
 
@@ -16,7 +16,12 @@ function twoCardsStyles({
 }: InferNoCodeComponentStylesFunctionInput<
   typeof twoCardsComponentDefinition
 >): NoCodeComponentStylesFunctionResult {
-  const sectionStyles = getSectionStyles({ values, params, device, isEditing });
+  const sectionStyles = sectionWrapperStyles({
+    values,
+    params,
+    device,
+    isEditing,
+  });
 
   const edgeInfo = getEdgeValues(sectionStyles.components.Component);
 

@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { SectionProps } from "../utils/sectionHelpers";
+import { SectionProps } from "../utils/sectionWrapper";
 
 export function Grid(
   props: {

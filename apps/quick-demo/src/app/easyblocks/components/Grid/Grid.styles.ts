@@ -3,9 +3,9 @@ import type {
   NoCodeComponentStylesFunctionResult,
 } from "@easyblocks/core";
 import { spacingToPx } from "@easyblocks/core";
-import { SectionValues, getSectionStyles } from "../utils/sectionHelpers";
+import { sectionWrapperStyles } from "../utils/sectionWrapper";
 import type { gridComponentDefinition } from "./Grid";
-import { gridController } from "./Grid.controller";
+import { calculateGridMarginsAndWidth } from "./calculateGridMarginsAndWidth";
 import {
   buildItemPositions,
   buildRows,
@@ -17,10 +17,15 @@ function gridStyles({
   params,
   device,
   isEditing,
-}: InferNoCodeComponentStylesFunctionInput<typeof gridComponentDefinition> & {
-  values: SectionValues;
-}): NoCodeComponentStylesFunctionResult {
-  const sectionStyles = getSectionStyles({ values, params, device, isEditing });
+}: InferNoCodeComponentStylesFunctionInput<
+  typeof gridComponentDefinition
+>): NoCodeComponentStylesFunctionResult {
+  const sectionStyles = sectionWrapperStyles({
+    values,
+    params,
+    device,
+    isEditing,
+  });
 
   const {
     leftArrowOffset,
@@ -32,15 +37,43 @@ function gridStyles({
     rowGap,
   } = values;
 
-  const {
-    cssAbsoluteLeftPosition,
-    cssAbsoluteRightPosition,
-    itemsVisible,
-    $widthItem,
-  } = gridController(values, sectionStyles.components.Component as any, device);
-
-  const numberOfItems = parseInt(values.numberOfItems);
   const isSlider = values.variant === "slider";
+  const numberOfItems = parseInt(values.numberOfItems);
+
+  const {
+    marginRight,
+    marginLeft,
+    hasMaxWidth,
+    widthWithoutMargins,
+    maxWidth,
+  } = calculateGridMarginsAndWidth({
+    containerMargin: values.containerMargin,
+    containerMaxWidth: values.containerMaxWidth,
+    escapeMargin: !!values.escapeMargin,
+    device,
+    $width: params.$width,
+    $widthAuto: params.$widthAuto,
+  });
+
+  const gap: number = spacingToPx(values.columnGap, device.w);
+
+  const itemsVisible =
+    isSlider && device.id === "xs"
+      ? numberOfItems + (parseFloat(values.fractionalItemWidth) - 1)
+      : numberOfItems;
+
+  const calculateCSSAbsoluteMargin = (margin: string) => {
+    return hasMaxWidth
+      ? `max(calc(calc(100% - ${maxWidth}px) / 2), ${margin})`
+      : margin;
+  };
+
+  const cssAbsoluteLeftPosition = calculateCSSAbsoluteMargin(marginLeft);
+  const cssAbsoluteRightPosition = calculateCSSAbsoluteMargin(marginRight);
+
+  const itemWidth =
+    (widthWithoutMargins - gap * (itemsVisible - 1)) / itemsVisible;
+
   const showSliderControls = isSlider && device.id !== "xs";
 
   let base = "100%";
@@ -263,14 +296,8 @@ function gridStyles({
     isSlider ? cardStyles.length : numberOfItems
   );
 
-  const colGapPx = spacingToPx(
-    values.columnGap,
-    sectionStyles.components.Component.$width
-  );
-  const rowGapPx = spacingToPx(
-    values.rowGap,
-    sectionStyles.components.Component.$width
-  );
+  const colGapPx = spacingToPx(values.columnGap, widthWithoutMargins);
+  const rowGapPx = spacingToPx(values.rowGap, widthWithoutMargins);
 
   const colDiff = colGapPx / 2;
   const rowDiff = rowGapPx / 2;
@@ -280,35 +307,7 @@ function gridStyles({
 
     const baseProps = {
       $widthAuto: false,
-      $width: $widthItem,
-      edgeLeft: calculateEdge(
-        sectionStyles.components.Component.$width,
-        paddingLeft,
-        itemPositions[index].isFirstColumn,
-        sectionStyles.components.Component.escapeMargin,
-        colDiff
-      ),
-      edgeRight: calculateEdge(
-        sectionStyles.components.Component.$width,
-        paddingRight,
-        itemPositions[index].isLastColumn,
-        sectionStyles.components.Component.escapeMargin,
-        colDiff
-      ),
-      edgeTop: calculateEdge(
-        sectionStyles.components.Component.$width,
-        paddingTop,
-        itemPositions[index].isFirstRow,
-        false,
-        rowDiff
-      ),
-      edgeBottom: calculateEdge(
-        sectionStyles.components.Component.$width,
-        paddingBottom,
-        itemPositions[index].isLastRow,
-        false,
-        rowDiff
-      ),
+      $width: itemWidth,
     };
 
     if (isSlider) {
@@ -339,7 +338,7 @@ function gridStyles({
     } else if (card.itemSize === "2x1" || card.itemSize === "2x2") {
       itemProps.push({
         ...baseProps,
-        $width: $widthItem * 2 + spacingToPx(columnGap, device.w),
+        $width: itemWidth * 2 + spacingToPx(columnGap, device.w),
       });
 
       if (numberOfItems === 1) {
@@ -413,24 +412,6 @@ function verticalAlignToFlexAlign(align: string) {
   } else {
     return "flex-start";
   }
-}
-
-const THRESHOLD = 4;
-
-function calculateEdge(
-  width: number,
-  padding: string,
-  isAtEdge: boolean,
-  touching: boolean,
-  innerDiff: number
-) {
-  const paddingPx = spacingToPx(padding, width);
-
-  return (
-    (isAtEdge && touching) ||
-    (isAtEdge && paddingPx < THRESHOLD) ||
-    (!isAtEdge && innerDiff < THRESHOLD)
-  );
 }
 
 export { gridStyles };

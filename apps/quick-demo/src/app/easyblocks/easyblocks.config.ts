@@ -37,7 +37,10 @@ export const easyblocksConfig: Config = {
   documentTypes: {
     content: {
       label: "Content document template",
-      entry: starterTemplate,
+      entry: {
+        _template: "RootSections",
+        data: [],
+      },
     },
     product: {
       label: "Product document template",
