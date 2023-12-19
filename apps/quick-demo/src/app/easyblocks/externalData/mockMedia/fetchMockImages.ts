@@ -1,5 +1,5 @@
 import { ChangedExternalData, ExternalData } from "@easyblocks/core";
-import { fetchAssetsFromContentful } from "@/app/easyblocks/externalData/mockMedia/fetchAssetsFromContentful";
+import { MOCK_ASSETS } from "./mockAssets";
 
 export async function fetchMockImages(
   externalData: ChangedExternalData
@@ -12,11 +12,10 @@ export async function fetchMockImages(
     return {};
   }
 
-  const assets = await fetchAssetsFromContentful("image");
   const results: Record<string, any> = {};
 
   allResources.forEach(([fieldId, { id }]) => {
-    const asset = assets.find((asset) => asset.id === id);
+    const asset = MOCK_ASSETS.find((asset) => asset.id === id);
 
     if (!asset) {
       results[fieldId] = {

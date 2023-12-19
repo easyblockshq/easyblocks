@@ -17,15 +17,15 @@ import { createMyCustomFetch } from "../easyblocks/myCustomFetch";
 import {
   PexelsImagePicker,
   pexelsImageWidget,
-} from "../easyblocks/resources/pexels/pexelsImageWidget";
+} from "../easyblocks/externalData/pexels/pexelsImageWidget";
 import {
   PexelsVideoPicker,
   pexelsVideoWidget,
-} from "../easyblocks/resources/pexels/pexelsVideoWidget";
+} from "../easyblocks/externalData/pexels/pexelsVideoWidget";
 import {
   ProductPicker,
   productWidget,
-} from "../easyblocks/resources/product/productWidget";
+} from "../easyblocks/externalData/product/productWidget";
 
 const myCustomFetch = createMyCustomFetch(easyblocksConfig.accessToken);
 

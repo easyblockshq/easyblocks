@@ -1,14 +1,13 @@
-"use client";
 import {
   SSColors,
   SSFonts,
   SSModal,
   ThumbnailButton,
 } from "@easyblocks/design-system";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import type { Media } from "./Media";
-import { fetchAssetsFromContentful } from "@/app/easyblocks/externalData/mockMedia/fetchAssetsFromContentful";
+import { MOCK_ASSETS } from "./mockAssets";
 
 const ModalRoot = styled.div`
   display: flex;
@@ -133,9 +132,8 @@ export const MediaPicker: React.FC<{
   mediaType: "video" | "image";
 }> = ({ onChange, id, mediaType }) => {
   const [isOpen, setOpen] = useState(false);
-  const [items, setItems] = useState<Media[] | null>(null);
 
-  const selectedItem = items && items.find((item) => item.id === id);
+  const selectedItem = MOCK_ASSETS.find((item) => item.id === id);
 
   let label = "Pick media";
 
@@ -146,12 +144,6 @@ export const MediaPicker: React.FC<{
   } else if (selectedItem) {
     label = "Image";
   }
-
-  useEffect(() => {
-    fetchAssetsFromContentful(mediaType).then((assets) => {
-      setItems(assets);
-    });
-  }, []);
 
   return (
     <div className="w-full">
@@ -183,7 +175,9 @@ export const MediaPicker: React.FC<{
               onChange(item.id);
               setOpen(false);
             }}
-            items={items ?? []}
+            items={MOCK_ASSETS.filter(
+              (a) => a.isVideo === (mediaType === "video")
+            )}
             mediaType={mediaType}
           />
         </ModalRoot>

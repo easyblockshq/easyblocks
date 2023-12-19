@@ -449,16 +449,6 @@ function GoogleSignInButton(props: {
               props.onSignInError(authResponse.error);
               return;
             }
-
-            window.parent.postMessage(
-              {
-                type: "@shopstory-editor/auth/signed-in",
-                payload: {
-                  provider: "google",
-                },
-              },
-              "*"
-            );
           });
       }}
     >

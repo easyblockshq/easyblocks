@@ -2,7 +2,7 @@ import type {
   NoCodeComponentStylesFunctionInput,
   NoCodeComponentStylesFunctionResult,
 } from "@easyblocks/core";
-import { cleanupIconSVG } from "@easyblocks/editable-components";
+import { cleanupIconSVG } from "../utils/cleanupIconSVG";
 
 function buttonStyles({
   values,

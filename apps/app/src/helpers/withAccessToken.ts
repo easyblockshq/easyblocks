@@ -1,3 +1,4 @@
+import { createPagesServerClient } from "@supabase/auth-helpers-nextjs";
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { createSupabaseClient } from "../createSupabaseClient";
 import { parseBearerToken } from "./parseBearerToken";
@@ -48,6 +49,21 @@ const withAccessToken =
         request,
         response,
         request.headers[ACCESS_TOKEN_HEADER]
+      );
+    }
+
+    const supabaseClient = createPagesServerClient({
+      req: request as any,
+      res: response as any,
+    });
+
+    const session = await supabaseClient.auth.getSession();
+
+    if (session.data?.session) {
+      return authenticatedHandler(
+        request as any,
+        response,
+        session.data.session.access_token
       );
     }
 

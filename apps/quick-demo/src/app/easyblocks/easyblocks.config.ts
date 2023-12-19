@@ -12,8 +12,8 @@ import { stackComponentDefinition } from "./components/Stack/Stack";
 import { twoCardsComponentDefinition } from "./components/TwoCards/TwoCards";
 import { videoComponentDefinition } from "./components/Video/Video";
 import { mockImageWidget } from "./externalData/mockMedia/mockImageWidget";
-import { pexelsImageWidget } from "./resources/pexels/pexelsImageWidget";
-import { productWidget } from "./resources/product/productWidget";
+import { pexelsImageWidget } from "./externalData/pexels/pexelsImageWidget";
+import { productWidget } from "./externalData/product/productWidget";
 import starterTemplate from "./templates/starterTemplate.json";
 
 if (!process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN) {

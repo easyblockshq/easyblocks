@@ -1,4 +1,3 @@
-"use client";
 import type { Widget, WidgetComponentProps } from "@easyblocks/core";
 import { MediaPicker } from "./MediaPicker";
 
