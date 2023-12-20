@@ -1,12 +1,11 @@
 import React from "react";
 
 export function CoverCard(props: any) {
-  const { Root, Background, Placeholder, Overlay, image } = props;
+  const { Root, Background, Overlay } = props;
 
   return (
     <Root.type {...Root.props}>
-      {!image && <Placeholder.type {...Placeholder.props} />}
-      {image && <Image.type {...Image.props} src={image.url} alt={image.alt} />}
+      <Background.type {...Background.props} />
       <Overlay.type {...Overlay.props} />
     </Root.type>
   );

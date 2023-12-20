@@ -15,6 +15,7 @@ import { mockImageWidget } from "./externalData/mockMedia/mockImageWidget";
 import { pexelsImageWidget } from "./externalData/pexels/pexelsImageWidget";
 import { productWidget } from "./externalData/product/productWidget";
 import starterTemplate from "./templates/starterTemplate.json";
+import { coverCardDefinition } from "@/app/easyblocks/components/CoverCard/CoverCard.definition";
 
 if (!process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN) {
   throw new Error("Missing NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN");
@@ -145,6 +146,7 @@ export const easyblocksConfig: Config = {
     twoCardsComponentDefinition,
     solidColorComponentDefinition,
     buttonComponentDefinition,
+    coverCardDefinition,
   ],
   colors: [
     {

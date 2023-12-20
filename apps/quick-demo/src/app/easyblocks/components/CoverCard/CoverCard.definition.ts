@@ -1,14 +1,11 @@
-import { NoCodeComponentDefinition, box, SchemaProp } from "@easyblocks/core";
-import {
-  normalizePxValue,
-  paddingSchemaProp,
-  borderSchemaProp,
-  toStartEnd,
-} from "@/app/easyblocks/noCodeComponents/utils";
+import { NoCodeComponentDefinition } from "@easyblocks/core";
+import { borderSchemaProp } from "../utils/schemaProps";
+import { pxValueNormalize } from "../utils/pxValueNormalize";
 
 export const coverCardDefinition: NoCodeComponentDefinition = {
   id: "CoverCard",
   label: "Cover Card",
+  type: "card",
   schema: [
     {
       prop: "Background",
@@ -25,7 +22,7 @@ export const coverCardDefinition: NoCodeComponentDefinition = {
         tokenId: "aspectRatios",
         extraValues: ["natural"],
       },
-      defaultValue: { value: "natural" },
+      // defaultValue: { value: "natural" },
     },
 
     // paddingSchemaProp("paddingLeft"),
@@ -52,7 +49,7 @@ export const coverCardDefinition: NoCodeComponentDefinition = {
       type: "string",
       responsive: true,
       params: {
-        normalize: normalizePxValue(0, 32),
+        normalize: pxValueNormalize(0, 32),
       },
       defaultValue: "0",
     },
@@ -103,12 +100,12 @@ export const coverCardDefinition: NoCodeComponentDefinition = {
       overlayOpacity,
     } = values;
 
-    const aspectRatio =
-      values.aspectRatio === "natural"
-        ? null
-        : values.aspectRatio.replace(":", " / ");
-
     return {
+      components: {
+        Background: {
+          aspectRatio: values.aspectRatio,
+        },
+      },
       styled: {
         Root: {
           display: "grid",
@@ -135,16 +132,6 @@ export const coverCardDefinition: NoCodeComponentDefinition = {
             : "none",
           borderRadius: `${values.cornerRadius}px`,
         },
-        Placeholder: {
-          aspectRatio: aspectRatio ?? "1 / 1",
-        },
-        // Image: {
-        //   __as: "img",
-        //   aspectRatio: aspectRatio ?? "initial",
-        //   objectFit: "cover",
-        //   alignSelf: "stretch",
-        //   justifySelf: "stretch",
-        // },
         Overlay: {
           position: "absolute",
           top: 0,

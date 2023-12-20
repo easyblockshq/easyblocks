@@ -1,15 +1,6 @@
-import {
-  ExternalReference,
-  NoCodeComponentDefinition,
-  getExternalReferenceLocationKey,
-  getExternalValue,
-  isCompoundExternalDataValue,
-  responsiveValueFindDeviceWithDefinedValue,
-  responsiveValueForceGet,
-} from "@easyblocks/core";
-import { buttonActionSchemaProp } from "@easyblocks/core/_internals";
+import { NoCodeComponentDefinition } from "@easyblocks/core";
 import { ImageSrc } from "@easyblocks/editable-components";
-import { assertDefined, last } from "@easyblocks/utils";
+import { last } from "@easyblocks/utils";
 import { imageStyles } from "./Image.styles";
 
 const imageComponentDefinition: NoCodeComponentDefinition = {
@@ -25,10 +16,6 @@ const imageComponentDefinition: NoCodeComponentDefinition = {
     // If aspect ratio passed from external, we don't need it.
     if (params.noAspectRatio) {
       fields = fields.filter((field) => field.path !== "aspectRatio");
-    }
-
-    if (params.noAction) {
-      fields = fields.filter((field) => field.path !== "action");
     }
 
     return {
@@ -52,7 +39,6 @@ const imageComponentDefinition: NoCodeComponentDefinition = {
       },
       buildOnly: true,
     },
-    buttonActionSchemaProp,
   ],
   preview({ values }) {
     const activeImageValue = values.image as ImageSrc | undefined;

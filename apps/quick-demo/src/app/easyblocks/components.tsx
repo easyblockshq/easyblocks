@@ -10,6 +10,7 @@ import { Grid } from "./components/Grid/Grid.client";
 import { TwoCards } from "./components/TwoCards/TwoCards.client";
 import { SolidColor } from "./components/SolidColor/SolidColor.client";
 import { Button } from "./components/Button/Button.client";
+import { CoverCard } from "./components/CoverCard/CoverCard";
 
 const $Link = (props: any) => {
   const { url, shouldOpenInNewWindow, trigger: TriggerElement } = props;
@@ -39,7 +40,7 @@ const $AlertAction = (props: any) => {
 };
 
 const components = {
-  ...builtinEditableComponents(),
+  // ...builtinEditableComponents(),
   ProductCard,
   $Link,
   $AlertAction,
@@ -52,6 +53,7 @@ const components = {
   Grid,
   TwoCards,
   SolidColor,
+  CoverCard,
 };
 
 export { components };
