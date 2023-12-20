@@ -28,7 +28,7 @@ function ProjectPage({
   project,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [pageNumber, setPageNumber] = useState(0);
-  const pageSize = 10;
+  const pageSize = 20;
 
   const paginatedProjectDocuments = project.documents.slice(
     pageNumber * pageSize,
@@ -51,10 +51,44 @@ function ProjectPage({
         </Text>
         <CopyTextToClipboardButton text={project.id} />
       </Flex>
+
       <Flex
-        mb="8"
         direction={"column"}
         align={"start"}
+        mb="8"
+        style={{ maxWidth: 768, width: "100%" }}
+      >
+        <Heading as="h2" mb="1">
+          Tokens
+        </Heading>
+        <TableRoot style={{ width: "100%" }} mb="3">
+          <TableHeader>
+            <TableRow>
+              <TableRowHeaderCell>Key</TableRowHeaderCell>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {project.tokens.map((token) => {
+              return (
+                <TableRow key={token}>
+                  <TableCell>
+                    <Flex gap="2" align={"center"}>
+                      {maskToken(token)}
+                      <CopyTextToClipboardButton text={token} />
+                    </Flex>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </TableRoot>
+        <GenerateAccessTokenButton projectId={project.id} />
+      </Flex>
+
+      <Flex
+        direction={"column"}
+        align={"start"}
+        mb="8"
         style={{ maxWidth: 768, width: "100%" }}
       >
         <Heading as="h2" mb="2">
@@ -139,39 +173,6 @@ function ProjectPage({
           </IconButton>
         </Flex>
       </Flex>
-
-      <Flex
-        direction={"column"}
-        align={"start"}
-        mb="3"
-        style={{ maxWidth: 768, width: "100%" }}
-      >
-        <Heading as="h2" mb="1">
-          Tokens
-        </Heading>
-        <TableRoot style={{ width: "100%" }}>
-          <TableHeader>
-            <TableRow>
-              <TableRowHeaderCell>Key</TableRowHeaderCell>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {project.tokens.map((token) => {
-              return (
-                <TableRow key={token}>
-                  <TableCell>
-                    <Flex gap="2" align={"center"}>
-                      {maskToken(token)}
-                      <CopyTextToClipboardButton text={token} />
-                    </Flex>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </TableRoot>
-      </Flex>
-      <GenerateAccessTokenButton projectId={project.id} />
     </Container>
   );
 }
