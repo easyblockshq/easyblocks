@@ -5,14 +5,10 @@ import { easyblocksConfig } from "@/app/easyblocks/easyblocks.config";
 import { ExternalData } from "@easyblocks/core";
 import { EasyblocksEditor } from "@easyblocks/editor";
 import { useState } from "react";
-import {
-  MockImagePicker,
-  mockImageWidget,
-} from "../easyblocks/externalData/mockMedia/mockImageWidget";
-import {
-  MockVideoPicker,
-  mockVideoWidget,
-} from "../easyblocks/externalData/mockMedia/mockVideoWidget";
+import { mockImageWidget } from "../easyblocks/externalData/mockMedia/mockImageWidget";
+import { MockImagePicker } from "../easyblocks/externalData/mockMedia/MockImagePicker";
+import { mockVideoWidget } from "../easyblocks/externalData/mockMedia/mockVideoWidget";
+import { MockVideoPicker } from "../easyblocks/externalData/mockMedia/MockVideoPicker";
 import { createMyCustomFetch } from "../easyblocks/myCustomFetch";
 import {
   PexelsImagePicker,
