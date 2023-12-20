@@ -96,6 +96,17 @@ function ProjectPage({
                   </TableRow>
                 );
               })}
+              {paginatedProjectDocuments.length < pageSize && (
+                <TableRow
+                  style={{
+                    height: (pageSize - paginatedProjectDocuments.length) * 44,
+                  }}
+                >
+                  <TableCell colSpan={4} style={{ boxShadow: "none" }}>
+                    &nbsp;
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </TableRoot>
         )}
