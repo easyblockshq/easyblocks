@@ -297,36 +297,6 @@ export function sectionWrapperCalculateMarginAndMaxWidth(
   };
 }
 
-//   // we must always display paddings even if max width is applied.
-//   const escapeMargin = !!values.escapeMargin;
-//
-//   styles.content.paddingLeft = getCssAbsoluteMargin(
-//     escapeMargin ? "0px" : containerMargin.css
-//   );
-//   styles.content.paddingRight = getCssAbsoluteMargin(
-//     escapeMargin ? "0px" : containerMargin.css
-//   );
-//
-//   // Should we apply max width
-//   if (maxWidth && maxWidth < containerWidth) {
-//     // styles.grid.maxWidth = `${maxWidth + leftMargin + rightMargin}px`;
-//     Component = {
-//       edgeLeft: false,
-//       edgeRight: false,
-//       edgeLeftMargin: null,
-//       edgeRightMargin: null,
-//       $width: maxWidth,
-//     };
-//   } else {
-//     Component = {
-//       edgeLeft: escapeMargin,
-//       edgeRight: escapeMargin,
-//       edgeLeftMargin: escapeMargin ? containerMargin.css : null,
-//       edgeRightMargin: escapeMargin ? containerMargin.css : null,
-//       $width: escapeMargin ? $width : $width - 2 * containerMargin.px,
-//     };
-//   }
-
 export function sectionWrapperStyles({
   values,
   params,
@@ -355,25 +325,6 @@ export function sectionWrapperStyles({
     values.containerMaxWidth,
     device
   );
-
-  // const maxWidth =
-  //   values.containerMaxWidth === "none" ||
-  //   isNaN(parseInt(values.containerMaxWidth))
-  //     ? null
-  //     : parseInt(values.containerMaxWidth);
-  //
-  // const containerMargin: { css: string; px: number } = {
-  //   css: values.containerMargin,
-  //   px: spacingToPx(values.containerMargin, device.w),
-  // };
-  //
-  // const getCssAbsoluteMargin = (margin: string) => {
-  //   return maxWidth !== null
-  //     ? `max(${margin}, calc(calc(100% - ${maxWidth}px) / 2))`
-  //     : margin;
-  // };
-  //
-  // const margin = getCssAbsoluteMargin(containerMargin.css);
 
   if (values.headerMode === "1-stack") {
     styles.grid.gridTemplateColumns = `${margin} 1fr ${margin}`;
@@ -488,56 +439,6 @@ export function sectionWrapperStyles({
     styles.grid.gridTemplateColumns = `1fr`;
     styles.content.gridColumn = "1 / span 1";
   }
-
-  // container max width
-  // styles.grid.width = "100%";
-  // styles.grid.justifySelf = "center";
-
-  //
-  // let Component: Record<string, any>;
-  //
-  // // GridCard handles margins on its own because of advanced margins
-  // if (values._template === "Grid") {
-  //   Component = {
-  //     edgeLeft: true,
-  //     edgeLeftMargin: containerMargin.css,
-  //     edgeRight: true,
-  //     edgeRightMargin: containerMargin.css,
-  //     escapeMargin: !!values.escapeMargin,
-  //     maxWidth: maxWidth,
-  //     $width,
-  //   };
-  // } else {
-  //   // we must always display paddings even if max width is applied.
-  //   const escapeMargin = !!values.escapeMargin;
-  //
-  //   styles.content.paddingLeft = getCssAbsoluteMargin(
-  //     escapeMargin ? "0px" : containerMargin.css
-  //   );
-  //   styles.content.paddingRight = getCssAbsoluteMargin(
-  //     escapeMargin ? "0px" : containerMargin.css
-  //   );
-  //
-  //   // Should we apply max width
-  //   if (maxWidth && maxWidth < containerWidth) {
-  //     // styles.grid.maxWidth = `${maxWidth + leftMargin + rightMargin}px`;
-  //     Component = {
-  //       edgeLeft: false,
-  //       edgeRight: false,
-  //       edgeLeftMargin: null,
-  //       edgeRightMargin: null,
-  //       $width: maxWidth,
-  //     };
-  //   } else {
-  //     Component = {
-  //       edgeLeft: escapeMargin,
-  //       edgeRight: escapeMargin,
-  //       edgeLeftMargin: escapeMargin ? containerMargin.css : null,
-  //       edgeRightMargin: escapeMargin ? containerMargin.css : null,
-  //       $width: escapeMargin ? $width : $width - 2 * containerMargin.px,
-  //     };
-  //   }
-  // }
 
   const hasNoBackground =
     !values.Background__ || values.Background__.length === 0;
