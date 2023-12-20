@@ -150,23 +150,31 @@ export function getTemplatesInternal(
         template.entry._template,
         editorContext
       );
+
       if (!definition || definition.hideTemplates) {
         return false;
       }
       return true;
     })
-    .filter((template) => {
-      return template.entry._itemProps
-        ? Object.keys(template.entry._itemProps).every((componentId) =>
-            findComponentDefinitionById(componentId, editorContext)
-          )
-        : true;
-    })
+    // .filter((template) => {
+    //
+    //   const result = template.entry._itemProps
+    //     ? Object.keys(template.entry._itemProps).every((componentId) =>
+    //       findComponentDefinitionById(componentId, editorContext)
+    //     )
+    //     : true;
+    //
+    //   if (template.entry._template === "ProductCard") {
+    //     console.log('WOW2222!!!', result);
+    //   }
+    //
+    //   return result;
+    // })
     .map((template) => {
       const newTemplate: Template = {
         ...template,
         entry: normalizeTextLocales(
-          normalize(template.entry, editorContext),
+          normalize({ ...template.entry, _itemProps: {} }, editorContext),
           editorContext
         ),
       };

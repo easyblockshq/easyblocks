@@ -54,6 +54,8 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
     editorContext
   );
 
+  console.log("PICKER!!!!", componentTypes, components);
+
   let templatesDictionary: TemplatesDictionary | undefined = undefined;
 
   if (editorContext.templates) {
@@ -76,6 +78,8 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
       }
     });
   }
+
+  console.log(templatesDictionary, editorContext.templates);
 
   const picker = schemaProp.picker ?? "compact";
 

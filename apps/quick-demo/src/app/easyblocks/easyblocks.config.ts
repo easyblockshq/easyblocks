@@ -63,7 +63,7 @@ export const easyblocksConfig: Config = {
     },
   },
   components: [
-    ...builtinEditableComponentsDefinitions,
+    // ...builtinEditableComponentsDefinitions,
     {
       id: "ProductCard",
       label: "Product Card",

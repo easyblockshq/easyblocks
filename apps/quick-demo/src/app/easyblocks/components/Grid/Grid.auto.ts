@@ -6,10 +6,13 @@ import {
   responsiveValueForceGet,
   responsiveValueGet,
   responsiveValueGetDefinedValue,
+  responsiveValueMap,
+  responsiveValueFlatten,
   spacingToPx,
 } from "@easyblocks/core";
+
 import { responsiveAuto } from "../utils/responsiveAuto";
-import { calculateGridMarginsAndWidth } from "./calculateGridMarginsAndWidth";
+import { sectionWrapperCalculateMarginAndMaxWidth } from "@/app/easyblocks/components/utils/sectionWrapper";
 
 function calculateContainerWidth(
   config: Record<string, any>,
@@ -64,23 +67,38 @@ export const gridAuto: NoCodeComponentAutoFunction<any, any> = ({
   const widths: TrulyResponsiveValue<number> = { $res: true };
 
   devices.forEach((device) => {
-    const { widthWithoutMargins } = calculateGridMarginsAndWidth({
-      containerMargin: responsiveValueForceGet(
-        values.containerMargin,
-        device.id
-      ),
-      escapeMargin: responsiveValueForceGet(!!values.escapeMargin, device.id),
-      containerMaxWidth: responsiveValueForceGet(
-        values.containerMaxWidth,
-        device.id
-      ),
-      device,
-      $width: responsiveValueForceGet(params.$width, device.id),
-      $widthAuto: false,
-    });
+    const escapeMargin = responsiveValueGetDefinedValue(
+      values.escapeMargin,
+      device.id,
+      devices
+    );
+    const containerMargin = escapeMargin
+      ? "0px"
+      : responsiveValueForceGet(
+          responsiveValueFlatten(
+            responsiveValueMap(values.containerMargin, (val) => val.value),
+            devices
+          ),
+          device.id
+        ); // TODO: we should have helpers to make those operations easier
+    const containerMaxWidth = responsiveValueGetDefinedValue(
+      values.containerMaxWidth,
+      device.id,
+      devices
+    ).value;
 
-    widths[device.id] = widthWithoutMargins;
+    const { containerWidth } = sectionWrapperCalculateMarginAndMaxWidth(
+      escapeMargin ? "0px" : containerMargin,
+      containerMaxWidth,
+      device
+    );
+
+    widths[device.id] = containerWidth.px;
   });
+
+  /**
+   * shouldSliderItemsBeVisibleOnMargin
+   */
 
   let valuesAfterAuto = responsiveAuto(
     { ...values, ...params },

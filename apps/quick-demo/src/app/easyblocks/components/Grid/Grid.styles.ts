@@ -3,9 +3,11 @@ import type {
   NoCodeComponentStylesFunctionResult,
 } from "@easyblocks/core";
 import { spacingToPx } from "@easyblocks/core";
-import { sectionWrapperStyles } from "../utils/sectionWrapper";
+import {
+  sectionWrapperCalculateMarginAndMaxWidth,
+  sectionWrapperStyles,
+} from "../utils/sectionWrapper";
 import type { gridComponentDefinition } from "./Grid";
-import { calculateGridMarginsAndWidth } from "./calculateGridMarginsAndWidth";
 import {
   buildItemPositions,
   buildRows,
@@ -40,20 +42,14 @@ function gridStyles({
   const isSlider = values.variant === "slider";
   const numberOfItems = parseInt(values.numberOfItems);
 
-  const {
-    marginRight,
-    marginLeft,
-    hasMaxWidth,
-    widthWithoutMargins,
-    maxWidth,
-  } = calculateGridMarginsAndWidth({
-    containerMargin: values.containerMargin,
-    containerMaxWidth: values.containerMaxWidth,
-    escapeMargin: !!values.escapeMargin,
-    device,
-    $width: params.$width,
-    $widthAuto: params.$widthAuto,
-  });
+  const { margin, containerWidth } = sectionWrapperCalculateMarginAndMaxWidth(
+    values.escapeMargin ? "0px" : values.containerMargin,
+    values.containerMaxWidth,
+    device
+  );
+
+  const cssAbsoluteLeftPosition = margin.css;
+  const cssAbsoluteRightPosition = margin.css;
 
   const gap: number = spacingToPx(values.columnGap, device.w);
 
@@ -62,24 +58,15 @@ function gridStyles({
       ? numberOfItems + (parseFloat(values.fractionalItemWidth) - 1)
       : numberOfItems;
 
-  const calculateCSSAbsoluteMargin = (margin: string) => {
-    return hasMaxWidth
-      ? `max(calc(calc(100% - ${maxWidth}px) / 2), ${margin})`
-      : margin;
-  };
-
-  const cssAbsoluteLeftPosition = calculateCSSAbsoluteMargin(marginLeft);
-  const cssAbsoluteRightPosition = calculateCSSAbsoluteMargin(marginRight);
-
   const itemWidth =
-    (widthWithoutMargins - gap * (itemsVisible - 1)) / itemsVisible;
+    (containerWidth.px - gap * (itemsVisible - 1)) / itemsVisible;
 
   const showSliderControls = isSlider && device.id !== "xs";
 
   let base = "100%";
 
   if (shouldSliderItemsBeVisibleOnMargin) {
-    base = `calc(100% - ${cssAbsoluteLeftPosition} - ${cssAbsoluteRightPosition})`;
+    base = `calc(100% - ${margin.css} - ${margin.css})`;
   }
 
   base += ` - calc(${columnGap} * ${itemsVisible - 1})`;
@@ -296,8 +283,8 @@ function gridStyles({
     isSlider ? cardStyles.length : numberOfItems
   );
 
-  const colGapPx = spacingToPx(values.columnGap, widthWithoutMargins);
-  const rowGapPx = spacingToPx(values.rowGap, widthWithoutMargins);
+  const colGapPx = spacingToPx(values.columnGap, containerWidth.px);
+  const rowGapPx = spacingToPx(values.rowGap, containerWidth.px);
 
   const colDiff = colGapPx / 2;
   const rowDiff = rowGapPx / 2;

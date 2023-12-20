@@ -4,15 +4,12 @@ import { TwoCardsCompiledValues } from "./TwoCards.types";
 import {
   SectionWrapperValues,
   sectionWrapperEditing,
-  getSectionFields,
+  sectionWrapperSchemaProps,
 } from "../utils/sectionWrapper";
 import { twoCardsChange } from "./TwoCards.change";
 import { TWO_CARDS_COL_NUM } from "./twoCardsConstants";
 import { range } from "@easyblocks/utils";
-
-const sectionFields = getSectionFields({
-  fixedEscapeMarginValue: true,
-});
+import { twoCardsAuto } from "@/app/easyblocks/components/TwoCards/TwoCards.auto";
 
 const twoCardsComponentDefinition: NoCodeComponentDefinition<
   TwoCardsCompiledValues & SectionWrapperValues
@@ -20,94 +17,8 @@ const twoCardsComponentDefinition: NoCodeComponentDefinition<
   id: "TwoCards",
   type: "section",
   label: "Two Cards",
-  styles: twoCardsStyles,
-  // change: twoCardsChange,
-  editing: (args) => {
-    const sectionEditing = sectionWrapperEditing(args);
-    const { editingInfo, values } = args;
-
-    const fields = Object.fromEntries(
-      editingInfo.fields.map((f) => [f.path, f])
-    );
-
-    fields.card1Width.visible = false;
-    fields.card1EscapeMargin.visible = false;
-    fields.card2Width.visible = false;
-    fields.card2EscapeMargin.visible = false;
-    fields.verticalOffset.visible = values.verticalLayout === "irregular";
-    fields.gap.visible =
-      parseInt(values.card1Width) + parseInt(values.card2Width) ===
-        TWO_CARDS_COL_NUM && !values.collapse;
-    fields.verticalGap.visible = values.collapse;
-    fields.invertCollapsed.visible = values.collapse;
-
-    return {
-      fields: editingInfo.fields,
-      components: {
-        ...sectionEditing.components,
-        Card1: {
-          fields: [
-            {
-              ...fields.card1Width,
-              visible: true,
-              group: "Placement and size",
-              label: "Width",
-            },
-            {
-              ...fields.card1EscapeMargin,
-              visible: true,
-              group: "Placement and size",
-              label: "Escape margin",
-            },
-            {
-              ...fields.gap,
-              group: "Placement and size",
-              label: "Gap",
-            },
-            {
-              ...fields.verticalLayout,
-              group: "Placement and size",
-            },
-            {
-              ...fields.verticalOffset,
-              group: "Placement and size",
-            },
-          ],
-        },
-        Card2: {
-          fields: [
-            {
-              ...fields.card2Width,
-              visible: true,
-              group: "Placement and size",
-              label: "Width",
-            },
-            {
-              ...fields.card2EscapeMargin,
-              visible: true,
-              group: "Placement and size",
-              label: "Escape margin",
-            },
-            {
-              ...fields.gap,
-              group: "Placement and size",
-              label: "Gap",
-            },
-            {
-              ...fields.verticalLayout,
-              group: "Placement and size",
-            },
-            {
-              ...fields.verticalOffset,
-              group: "Placement and size",
-            },
-          ],
-        },
-      },
-    };
-  },
   schema: [
-    ...sectionFields,
+    ...sectionWrapperSchemaProps.margins,
     {
       prop: "Card1",
       type: "component",
@@ -229,7 +140,96 @@ const twoCardsComponentDefinition: NoCodeComponentDefinition<
       type: "boolean",
       group: "Layout",
     },
+    ...sectionWrapperSchemaProps.headerAndBackground,
   ],
+  styles: twoCardsStyles,
+  // change: twoCardsChange,
+  editing: (args) => {
+    const sectionEditing = sectionWrapperEditing(args);
+    const { editingInfo, values } = args;
+
+    const fields = Object.fromEntries(
+      editingInfo.fields.map((f) => [f.path, f])
+    );
+
+    fields.card1Width.visible = false;
+    fields.card1EscapeMargin.visible = false;
+    fields.card2Width.visible = false;
+    fields.card2EscapeMargin.visible = false;
+    fields.verticalOffset.visible = values.verticalLayout === "irregular";
+    fields.gap.visible =
+      parseInt(values.card1Width) + parseInt(values.card2Width) ===
+        TWO_CARDS_COL_NUM && !values.collapse;
+    fields.verticalGap.visible = values.collapse;
+    fields.invertCollapsed.visible = values.collapse;
+
+    return {
+      fields: editingInfo.fields,
+      components: {
+        ...sectionEditing.components,
+        Card1: {
+          fields: [
+            {
+              ...fields.card1Width,
+              visible: true,
+              group: "Placement and size",
+              label: "Width",
+            },
+            {
+              ...fields.card1EscapeMargin,
+              visible: true,
+              group: "Placement and size",
+              label: "Escape margin",
+            },
+            {
+              ...fields.gap,
+              group: "Placement and size",
+              label: "Gap",
+            },
+            {
+              ...fields.verticalLayout,
+              group: "Placement and size",
+            },
+            {
+              ...fields.verticalOffset,
+              group: "Placement and size",
+            },
+          ],
+        },
+        Card2: {
+          fields: [
+            {
+              ...fields.card2Width,
+              visible: true,
+              group: "Placement and size",
+              label: "Width",
+            },
+            {
+              ...fields.card2EscapeMargin,
+              visible: true,
+              group: "Placement and size",
+              label: "Escape margin",
+            },
+            {
+              ...fields.gap,
+              group: "Placement and size",
+              label: "Gap",
+            },
+            {
+              ...fields.verticalLayout,
+              group: "Placement and size",
+            },
+            {
+              ...fields.verticalOffset,
+              group: "Placement and size",
+            },
+          ],
+        },
+      },
+    };
+  },
+  auto: twoCardsAuto,
+  change: twoCardsChange,
 };
 
 export { twoCardsComponentDefinition };

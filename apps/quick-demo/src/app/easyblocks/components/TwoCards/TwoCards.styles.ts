@@ -4,7 +4,10 @@ import type {
 } from "@easyblocks/core";
 import { spacingToPx } from "@easyblocks/core";
 import { getEdgeValues } from "../utils/getEdgeValues";
-import { sectionWrapperStyles } from "../utils/sectionWrapper";
+import {
+  sectionWrapperCalculateMarginAndMaxWidth,
+  sectionWrapperStyles,
+} from "../utils/sectionWrapper";
 import { twoCardsComponentDefinition } from "./TwoCards";
 import { TWO_CARDS_COL_NUM } from "./twoCardsConstants";
 
@@ -23,10 +26,13 @@ function twoCardsStyles({
     isEditing,
   });
 
-  const edgeInfo = getEdgeValues(sectionStyles.components.Component);
-
-  const edgeLeftMargin = edgeInfo.edgeLeftMargin ?? "0px";
-  const edgeRightMargin = edgeInfo.edgeRightMargin ?? "0px";
+  const { margin, containerWidth } = sectionWrapperCalculateMarginAndMaxWidth(
+    values.containerMargin,
+    values.containerMaxWidth,
+    device
+  );
+  const marginLeft = margin.css;
+  const marginRight = margin.css;
 
   const card1Width = parseInt(values.card1Width);
   const card2Width = parseInt(values.card2Width);
@@ -50,7 +56,7 @@ function twoCardsStyles({
 
   const verticalOffset = parseInt(values.verticalOffset);
 
-  const containerWidthCalc = `calc(100% - ${edgeLeftMargin} - ${edgeRightMargin})`;
+  const containerWidthCalc = `calc(100% - ${marginLeft} - ${marginRight})`;
 
   // Init state is for "non-collapsed" state
   let card1ContainerStyles;
@@ -66,17 +72,15 @@ function twoCardsStyles({
 
   const horizontalGapNumber = spacingToPx(horizontalGap, device.w);
 
-  const edgeLeftMarginNumber = spacingToPx(edgeLeftMargin, device.w);
-  const edgeRightMarginNumber = spacingToPx(edgeRightMargin, device.w);
+  const edgeLeftMarginPx = margin.px;
+  const edgeRightMarginPx = margin.px;
 
-  const $widthContainer =
-    sectionStyles.components.Component.$width -
-    edgeLeftMarginNumber -
-    edgeRightMarginNumber;
   let $widthContainer1 =
-    (card1Width / TWO_CARDS_COL_NUM) * ($widthContainer - horizontalGapNumber);
+    (card1Width / TWO_CARDS_COL_NUM) *
+    (containerWidth.px - horizontalGapNumber);
   let $widthContainer2 =
-    (card2Width / TWO_CARDS_COL_NUM) * ($widthContainer - horizontalGapNumber);
+    (card2Width / TWO_CARDS_COL_NUM) *
+    (containerWidth.px - horizontalGapNumber);
 
   const container1WidthCalc = `calc(${
     card1Width / TWO_CARDS_COL_NUM
@@ -87,7 +91,7 @@ function twoCardsStyles({
 
   if (!values.collapse) {
     card1ContainerStyles = {
-      marginLeft: edgeLeftMargin,
+      marginLeft: marginLeft,
       marginRight: 0,
       position: "relative",
       marginTop:
@@ -99,7 +103,7 @@ function twoCardsStyles({
 
     card2ContainerStyles = {
       marginLeft: 0,
-      marginRight: edgeRightMargin,
+      marginRight: marginRight,
       marginTop:
         values.verticalLayout === "irregular" && verticalOffset < 0
           ? `calc(${containerWidthCalc} / ${TWO_CARDS_COL_NUM} * ${-verticalOffset})`
@@ -123,32 +127,32 @@ function twoCardsStyles({
 
     if (values.card1EscapeMargin) {
       card1ContainerStyles.marginLeft = "0px";
-      card1ContainerStyles.width = `calc(${container1WidthCalc} + ${edgeLeftMargin})`;
+      card1ContainerStyles.width = `calc(${container1WidthCalc} + ${marginLeft})`;
       card1Props.edgeLeft = true;
-      card1Props.edgeLeftMargin = edgeInfo.edgeLeftMargin;
+      card1Props.edgeLeftMargin = marginLeft;
 
-      $widthContainer1 = $widthContainer1 + edgeLeftMarginNumber;
+      $widthContainer1 = $widthContainer1 + edgeLeftMarginPx;
     }
 
     if (values.card2EscapeMargin) {
       card2ContainerStyles.marginRight = "0px";
-      card2ContainerStyles.width = `calc(${container2WidthCalc} + ${edgeRightMargin})`;
+      card2ContainerStyles.width = `calc(${container2WidthCalc} + ${marginRight})`;
       card2Props.edgeRight = true;
-      card2Props.edgeRightMargin = edgeInfo.edgeRightMargin;
+      card2Props.edgeRightMargin = marginRight;
 
-      $widthContainer2 = $widthContainer2 + edgeRightMarginNumber;
+      $widthContainer2 = $widthContainer2 + edgeRightMarginPx;
     }
   } else {
     card1ContainerStyles = {
-      marginLeft: edgeLeftMargin,
-      marginRight: edgeRightMargin,
+      marginLeft: marginLeft,
+      marginRight: marginRight,
       alignSelf: "start",
       width: container1WidthCalc,
     };
 
     card2ContainerStyles = {
-      marginLeft: edgeLeftMargin,
-      marginRight: edgeRightMargin,
+      marginLeft: marginLeft,
+      marginRight: marginRight,
       alignSelf: "end",
       width: container2WidthCalc,
     };
@@ -175,18 +179,18 @@ function twoCardsStyles({
         card1ContainerStyles.width = "100%";
 
         card1Props.edgeLeft = true;
-        card1Props.edgeLeftMargin = edgeInfo.edgeLeftMargin;
+        card1Props.edgeLeftMargin = marginLeft;
 
         card1Props.edgeRight = true;
-        card1Props.edgeRightMargin = edgeInfo.edgeRightMargin;
+        card1Props.edgeRightMargin = marginRight;
 
-        $widthContainer1 = sectionStyles.components.Component.$width;
+        $widthContainer1 = containerWidth.px;
       } else {
-        card1ContainerStyles.width = `calc(${container1WidthCalc} + ${edgeLeftMargin})`;
+        card1ContainerStyles.width = `calc(${container1WidthCalc} + ${marginLeft})`;
         card1Props.edgeLeft = true;
-        card1Props.edgeLeftMargin = edgeInfo.edgeLeftMargin;
+        card1Props.edgeLeftMargin = marginLeft;
 
-        $widthContainer1 = $widthContainer1 + edgeLeftMarginNumber;
+        $widthContainer1 = $widthContainer1 + edgeLeftMarginPx;
       }
     }
 
@@ -198,18 +202,18 @@ function twoCardsStyles({
         card2ContainerStyles.width = "100%";
 
         card2Props.edgeLeft = true;
-        card2Props.edgeLeftMargin = edgeInfo.edgeLeftMargin;
+        card2Props.edgeLeftMargin = marginLeft;
 
         card2Props.edgeRight = true;
-        card2Props.edgeRightMargin = edgeInfo.edgeRightMargin;
+        card2Props.edgeRightMargin = marginRight;
 
-        $widthContainer2 = sectionStyles.components.Component.$width;
+        $widthContainer2 = containerWidth.px;
       } else {
-        card2ContainerStyles.width = `calc(${container2WidthCalc} + ${edgeRightMargin})`;
+        card2ContainerStyles.width = `calc(${container2WidthCalc} + ${marginRight})`;
         card2Props.edgeRight = true;
-        card2Props.edgeRightMargin = edgeInfo.edgeRightMargin;
+        card2Props.edgeRightMargin = marginRight;
 
-        $widthContainer2 = $widthContainer2 + edgeRightMarginNumber;
+        $widthContainer2 = $widthContainer2 + edgeRightMarginPx;
       }
     }
   }
