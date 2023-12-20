@@ -177,7 +177,7 @@ export const getServerSideProps: GetServerSideProps<
         id: string;
         version: number;
         documentType: string;
-        updatedAt: string | null;
+        updatedAt: string;
       }>;
     };
   },
@@ -201,11 +201,25 @@ export const getServerSideProps: GetServerSideProps<
   const projectQueryResult = await supabase
     .from("projects")
     .select(
-      "id, name, tokens, documents(id, version, root_container, configs(updated_at))"
+      "id, name, tokens, documents(id, version, root_container, ...configs(updated_at))"
     )
     .match({
       id: ctx.params!.projectId,
-    });
+    })
+    // Because we're using a new spread operator in the query, we need to help Supabase's query parser until it supports it on it's own
+    .returns<
+      Array<{
+        id: string;
+        name: string;
+        tokens: Array<string>;
+        documents: Array<{
+          id: string;
+          version: number;
+          root_container: string | null;
+          updated_at: string;
+        }>;
+      }>
+    >();
 
   if (!projectQueryResult.data || projectQueryResult.data.length === 0) {
     return {
@@ -221,16 +235,22 @@ export const getServerSideProps: GetServerSideProps<
         id: project.id,
         name: project.name,
         tokens: project.tokens,
-        documents: project.documents.map((d) => {
-          return {
-            id: d.id,
-            version: d.version,
-            documentType: d.root_container ?? "-",
-            updatedAt:
-              (d.configs as unknown as (typeof d)["configs"][number])
-                .updated_at ?? null,
-          };
-        }),
+        documents: project.documents
+          .map((d) => {
+            return {
+              id: d.id,
+              version: d.version,
+              documentType: d.root_container ?? "-",
+              updatedAt: d.updated_at,
+            };
+          })
+          // I have no idea how to sort correctly with Supabase query API by nested referenced table so we
+          // perform sort here
+          .sort(
+            (d1, d2) =>
+              new Date(d2.updatedAt).getTime() -
+              new Date(d1.updatedAt).getTime()
+          ),
       },
     },
   };
