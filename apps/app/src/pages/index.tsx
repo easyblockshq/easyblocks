@@ -1,3 +1,4 @@
+import { FileTextIcon, LockClosedIcon } from "@radix-ui/react-icons";
 import {
   Button,
   Card,
@@ -14,21 +15,32 @@ import {
 import { AuthSession } from "@supabase/supabase-js";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import NextLink from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import { Database } from "../infrastructure/supabaseSchema";
-import { FileTextIcon, LockClosedIcon } from "@radix-ui/react-icons";
-import { useRouter } from "next/navigation";
 
 function HomePage({
   user,
   projects,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const supabaseClient = createClientComponentClient();
+  const searchParams = useSearchParams();
   const router = useRouter();
+
+  const code = searchParams.get("code");
+
+  useEffect(() => {
+    // If we sign in with Google, we get redirected with search param code that's exchanged for a session
+    // After that, we should remove the code to prevent error when someone refreshes the page with already used code.
+    if (code !== null) {
+      router.replace("/");
+    }
+  }, [code, router]);
 
   return (
     <Container>
-      <Flex justify="between" align="center">
-        <Heading as="h1" size="8" mb="5">
+      <Flex justify="between" align="center" mb="5">
+        <Heading as="h1" size="8">
           Hi {user.email}
         </Heading>
         <Button
@@ -101,9 +113,18 @@ export const getServerSideProps: GetServerSideProps<{
 }> = async (ctx) => {
   const supabase = createPagesServerClient<Database>(ctx);
 
-  const {
+  let {
     data: { session },
   } = await supabase.auth.getSession();
+
+  const code = ctx.query.code as string;
+
+  if (code) {
+    const {
+      data: { session: exchangedSession },
+    } = await supabase.auth.exchangeCodeForSession(code);
+    session = exchangedSession;
+  }
 
   if (!session) {
     return {

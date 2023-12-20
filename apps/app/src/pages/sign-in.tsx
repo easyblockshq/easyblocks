@@ -220,7 +220,12 @@ function GoogleSignInButton(props: {
           .signInWithOAuth({
             provider: "google",
             options: {
-              redirectTo: window.location.origin,
+              ...(process.env.NODE_ENV === "development" && {
+                queryParams: {
+                  access_type: "offline",
+                  prompt: "consent",
+                },
+              }),
             },
           })
           .then((authResponse) => {

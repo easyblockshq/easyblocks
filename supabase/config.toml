@@ -36,9 +36,9 @@ pop3_port = 54326
 [auth]
 # The base URL of your website. Used as an allow-list for redirects and for constructing URLs used
 # in emails.
-site_url = "http://localhost:3000"
+site_url = "http://localhost:3100"
 # A list of *exact* URLs that auth providers are permitted to redirect to post authentication.
-additional_redirect_urls = ["https://localhost:3000"]
+additional_redirect_urls = ["https://localhost:3100"]
 # How long tokens are valid for, in seconds. Defaults to 3600 (1 hour), maximum 604,800 seconds (one
 # week).
 jwt_expiry = 3600
@@ -64,5 +64,5 @@ secret = ""
 
 [auth.external.google]
 enabled = true
-client_id = "153394302755-t09ugopiijq1l6l0bvsjk5kvtt7came8.apps.googleusercontent.com"
-secret = "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"
+client_id = "298855286822-1jma1ljalb0j5qpoqcfvc664uoc6dei6.apps.googleusercontent.com"
+secret = "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"
