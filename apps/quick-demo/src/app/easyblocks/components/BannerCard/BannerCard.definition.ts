@@ -4,7 +4,7 @@ import {
   EditingField,
 } from "@easyblocks/core";
 
-import { toStartEnd } from "@/app/easyblocks/components/utils/stylesHelpers";
+import { toStartEnd } from "@/app/easyblocks/components/utils/toStartEnd";
 import {
   borderSchemaProps,
   bordersEditing,
