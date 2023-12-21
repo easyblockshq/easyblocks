@@ -1,6 +1,14 @@
 import { NoCodeComponentDefinition } from "@easyblocks/core";
-import { borderSchemaProp } from "../utils/schemaProps";
 import { pxValueNormalize } from "../utils/pxValueNormalize";
+import {
+  borderSchemaProps,
+  bordersEditing,
+  bordersStyles,
+} from "@/app/easyblocks/components/utils/borders";
+import {
+  cornerSchemaProps,
+  cornerStyles,
+} from "@/app/easyblocks/components/utils/corners";
 
 export const coverCardDefinition: NoCodeComponentDefinition = {
   id: "CoverCard",
@@ -24,38 +32,13 @@ export const coverCardDefinition: NoCodeComponentDefinition = {
       },
       defaultValue: { value: "natural" },
     },
-
-    // paddingSchemaProp("paddingLeft"),
-    // paddingSchemaProp("paddingRight"),
-    // paddingSchemaProp("paddingTop"),
-    // paddingSchemaProp("paddingBottom"),
-    // paddingSchemaProp("paddingInternal"),
-    {
-      prop: "enableBorder",
-      type: "boolean",
-      responsive: true,
-    },
-    {
-      prop: "borderColor",
-      type: "color",
-      responsive: true,
-    },
-    borderSchemaProp("borderLeft"),
-    borderSchemaProp("borderRight"),
-    borderSchemaProp("borderTop"),
-    borderSchemaProp("borderBottom"),
-    {
-      prop: "cornerRadius",
-      type: "string",
-      responsive: true,
-      params: {
-        normalize: pxValueNormalize(0, 32),
-      },
-      defaultValue: "0",
-    },
+    ...borderSchemaProps,
+    ...cornerSchemaProps,
     {
       prop: "overlayOpacity",
       type: "select",
+      group: "Overlay",
+      label: "Opacity",
       responsive: true,
       params: {
         options: [
@@ -75,28 +58,12 @@ export const coverCardDefinition: NoCodeComponentDefinition = {
       defaultValue: "0",
     },
   ],
-  editing: ({ editingInfo }) => {
-    return {
-      ...editingInfo,
-      components: {
-        Background: {
-          selectable: false,
-        },
-      },
-    };
-  },
   styles: ({ values }) => {
     let {
       paddingTop,
       paddingBottom,
       paddingLeft,
       paddingRight,
-      enableBorder,
-      borderLeft,
-      borderRight,
-      borderTop,
-      borderBottom,
-      borderColor,
       overlayOpacity,
     } = values;
 
@@ -118,19 +85,8 @@ export const coverCardDefinition: NoCodeComponentDefinition = {
           paddingTop,
           paddingBottom,
 
-          borderLeft: enableBorder
-            ? `${borderLeft}px solid ${borderColor}`
-            : "none",
-          borderRight: enableBorder
-            ? `${borderRight}px solid ${borderColor}`
-            : "none",
-          borderTop: enableBorder
-            ? `${borderTop}px solid ${borderColor}`
-            : "none",
-          borderBottom: enableBorder
-            ? `${borderBottom}px solid ${borderColor}`
-            : "none",
-          borderRadius: `${values.cornerRadius}px`,
+          ...bordersStyles(values),
+          ...cornerStyles(values),
         },
         Overlay: {
           position: "absolute",
@@ -141,6 +97,18 @@ export const coverCardDefinition: NoCodeComponentDefinition = {
           opacity: overlayOpacity,
           backgroundColor: "black",
           pointerEvents: "none",
+        },
+      },
+    };
+  },
+  editing: ({ editingInfo, values }) => {
+    bordersEditing(editingInfo, values);
+
+    return {
+      ...editingInfo,
+      components: {
+        Background: {
+          selectable: false,
         },
       },
     };

@@ -149,7 +149,6 @@ export const easyblocksConfig: Config = {
     solidColorComponentDefinition,
     buttonComponentDefinition,
     coverCardDefinition,
-    heroBannerWithCoverDefinition,
     bannerCardDefinition,
   ],
   colors: [

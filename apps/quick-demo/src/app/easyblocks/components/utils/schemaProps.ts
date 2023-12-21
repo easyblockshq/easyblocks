@@ -18,23 +18,6 @@ export function paddingSchemaProp(
   };
 }
 
-export function borderSchemaProp(
-  prop: string,
-  label: string,
-  group: string
-): SchemaProp {
-  return {
-    prop: prop,
-    label,
-    group,
-    type: "string",
-    params: {
-      normalize: pxValueNormalize(0, 32),
-    },
-    defaultValue: "1",
-  };
-}
-
 export function snapToEdgeSchemaProp(fieldName: string): SchemaProp {
   return {
     prop: fieldName,

@@ -4,14 +4,20 @@ import {
   SchemaProp,
   EditingField,
 } from "@easyblocks/core";
-import {
-  snapToEdgeSchemaProp,
-  paddingSchemaProp,
-  borderSchemaProp,
-} from "../utils/schemaProps";
+import { snapToEdgeSchemaProp, paddingSchemaProp } from "../utils/schemaProps";
 
 import { pxValueNormalize } from "@/app/easyblocks/components/utils/pxValueNormalize";
 import { toStartEnd } from "@/app/easyblocks/components/utils/stylesHelpers";
+import {
+  borderSchemaProps,
+  bordersEditing,
+  bordersStyles,
+} from "@/app/easyblocks/components/utils/borders";
+import {
+  cornerSchemaProps,
+  cornerStyles,
+} from "@/app/easyblocks/components/utils/corners";
+import { getFieldProvider } from "@/app/easyblocks/components/utils/getFieldProvider";
 
 function noFillPaddingSchemaProp(
   prop: string,
@@ -123,33 +129,8 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
       group: "Fill",
       type: "color",
     },
-    {
-      prop: "enableBorder",
-      label: "Enable",
-      group: "Border",
-      type: "boolean",
-      responsive: true,
-    },
-    {
-      prop: "borderColor",
-      label: "Color",
-      group: "Border",
-      type: "color",
-      responsive: true,
-    },
-    borderSchemaProp("borderLeft", "Left", "Border"),
-    borderSchemaProp("borderRight", "Right", "Border"),
-    borderSchemaProp("borderTop", "Top", "Border"),
-    borderSchemaProp("borderBottom", "Bottom", "Border"),
-    {
-      prop: "cornerRadius",
-      type: "string",
-      responsive: true,
-      params: {
-        normalize: pxValueNormalize(0, 32),
-      },
-      defaultValue: "0",
-    },
+    ...borderSchemaProps,
+    ...cornerSchemaProps,
     {
       prop: "Stack",
       type: "component",
@@ -302,19 +283,8 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
         Container: {
           margin: "0 auto",
           backgroundColor: enableFill ? fillColor : "initial",
-          borderLeft: enableBorder
-            ? `${borderLeft}px solid ${borderColor}`
-            : "none",
-          borderRight: enableBorder
-            ? `${borderRight}px solid ${borderColor}`
-            : "none",
-          borderTop: enableBorder
-            ? `${borderTop}px solid ${borderColor}`
-            : "none",
-          borderBottom: enableBorder
-            ? `${borderBottom}px solid ${borderColor}`
-            : "none",
-          borderRadius: isNaked ? "initial" : `${values.cornerRadius}px`,
+          ...bordersStyles(values),
+          ...cornerStyles(values, isNaked),
           overflow: isNaked ? "initial" : "hidden",
 
           display: "grid",
@@ -345,8 +315,8 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
   editing: ({ editingInfo, values }) => {
     const { isNaked, paddingModes } = calculateBannerCardStuff(values);
 
-    const getField = (path: string) =>
-      editingInfo.fields.find((field) => field.path === path)!;
+    const getField = getFieldProvider(editingInfo);
+
     const setPaddingFieldVisibilityBasedOnMode = (
       standardPaddingField: EditingField,
       noFillPaddingField: EditingField,
@@ -379,12 +349,6 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
     const paddingInternal = getField("paddingInternal");
 
     const fillColor = getField("fillColor");
-
-    const borderColor = getField("borderColor");
-    const borderLeft = getField("borderLeft");
-    const borderRight = getField("borderRight");
-    const borderTop = getField("borderTop");
-    const borderBottom = getField("borderBottom");
 
     setPaddingFieldVisibilityBasedOnMode(
       paddingLeft,
@@ -425,13 +389,7 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
       fillColor.visible = false;
     }
 
-    if (!values.enableBorder) {
-      borderColor.visible = false;
-      borderLeft.visible = false;
-      borderRight.visible = false;
-      borderTop.visible = false;
-      borderBottom.visible = false;
-    }
+    bordersEditing(editingInfo, values);
 
     return {
       ...editingInfo,
