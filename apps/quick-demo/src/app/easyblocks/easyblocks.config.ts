@@ -15,7 +15,7 @@ import { mockImageWidget } from "./externalData/mockMedia/mockImageWidget";
 import { pexelsImageWidget } from "./externalData/pexels/pexelsImageWidget";
 import { productWidget } from "./externalData/product/productWidget";
 import starterTemplate from "./templates/starterTemplate.json";
-import { coverCardDefinition } from "@/app/easyblocks/components/CoverCard/CoverCard.definition";
+import { coverCardDefinition } from "@/app/easyblocks/components/BannerCard/CoverCard/CoverCard.definition";
 import { heroBannerWithCoverDefinition } from "@/app/easyblocks/components/HeroBannerWithCover/HeroBannerWithCover.definition";
 import { bannerCardDefinition } from "@/app/easyblocks/components/BannerCard/BannerCard.definition";
 

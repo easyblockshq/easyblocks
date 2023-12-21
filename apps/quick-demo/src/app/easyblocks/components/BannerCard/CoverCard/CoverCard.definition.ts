@@ -1,5 +1,5 @@
 import { NoCodeComponentDefinition } from "@easyblocks/core";
-import { pxValueNormalize } from "../utils/pxValueNormalize";
+import { pxValueNormalize } from "../../utils/pxValueNormalize";
 import {
   borderSchemaProps,
   bordersEditing,
@@ -12,7 +12,7 @@ import {
 
 export const coverCardDefinition: NoCodeComponentDefinition = {
   id: "CoverCard",
-  label: "Cover Card",
+  label: "Banner Cover",
   type: "card",
   schema: [
     {

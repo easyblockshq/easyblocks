@@ -10,7 +10,7 @@ import { Grid } from "./components/Grid/Grid.client";
 import { TwoCards } from "./components/TwoCards/TwoCards.client";
 import { SolidColor } from "./components/SolidColor/SolidColor.client";
 import { Button } from "./components/Button/Button.client";
-import { CoverCard } from "./components/CoverCard/CoverCard";
+import { CoverCard } from "./components/BannerCard/CoverCard/CoverCard";
 import { BannerCard } from "@/app/easyblocks/components/BannerCard/BannerCard";
 
 const $Link = (props: any) => {
