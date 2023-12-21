@@ -150,10 +150,6 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
       noFillPaddingRight,
       paddingInternal,
       snapCoverToEdges,
-      // snapCoverToTop,
-      // snapCoverToBottom,
-      // snapCoverToLeft,
-      // snapCoverToRight,
       coverPosition,
       coverWidth,
       enableFill,
@@ -167,21 +163,8 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
 
     const [coverMainPosition, coverAlign] = coverPosition.split("-");
 
-    let stackPaddings: {
-      left: string;
-      right: string;
-      top: string;
-      bottom: string;
-    };
-
-    let coverPaddings: {
-      left: string;
-      right: string;
-      top: string;
-      bottom: string;
-    };
-
     let gridTemplateColumns: string;
+    let gridTemplateRows: string;
 
     let coverGridRow: string;
     let coverGridCol: string;
@@ -203,181 +186,116 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
       paddingBottom = noFillPaddingBottom;
       paddingLeft = noFillPaddingLeft;
       paddingRight = noFillPaddingRight;
-
-      // paddingTop = "0px";
-      // paddingBottom = "0px";
-      // paddingLeft = "0px";
-      // paddingRight = "0px";
-      // isFullWidth = true;
+      snapCoverToEdges = true;
     }
 
-    // const margin = paddingLeft;
-
-    // const paddingOnMarginSide = isFullWidth
-    //   ? `max(${margin}, ${paddingLeft})`
-    //   : paddingLeft;
-
-    // const paddingOnMarginSide = paddingLeft;
-
-    const snapCoverToTop = snapCoverToEdges;
-    const snapCoverToBottom = snapCoverToEdges;
-    const snapCoverToLeft = snapCoverToEdges;
-    const snapCoverToRight = snapCoverToEdges;
-
     if (coverMainPosition === "hide") {
-      stackPaddings = {
-        left: "0",
-        right: "0",
-        top: paddingTop,
-        bottom: paddingBottom,
-      };
+      if (isNaked) {
+        paddingTop = "0";
+        paddingBottom = "0";
+        paddingLeft = "0";
+        paddingRight = "0";
+      }
 
-      coverPaddings = {
-        top: "0",
-        bottom: "0",
-        right: "0",
-        left: "0",
-      };
-
-      gridTemplateColumns = `${paddingOnMarginSide} 1fr ${paddingOnMarginSide}`;
+      gridTemplateRows = `${paddingTop} 1fr ${paddingBottom}`;
+      gridTemplateColumns = `${paddingLeft} 1fr ${paddingRight}`;
 
       stackGridCol = "2 / span 1";
-      stackGridRow = "1";
+      stackGridRow = "2 / span 1";
+
       coverDisplay = "none";
       coverGridRow = "initial";
       coverGridCol = "initial";
     } else if (coverMainPosition === "left") {
-      stackPaddings = {
-        left: paddingInternal,
-        right: "0",
-        top: paddingTop,
-        bottom: paddingBottom,
-      };
+      if (isNaked) {
+        paddingLeft = "0";
+        paddingRight = "0";
+      }
 
-      coverPaddings = {
-        top: snapCoverToTop ? 0 : paddingTop,
-        bottom: snapCoverToBottom ? 0 : paddingBottom,
-        right: "0",
-        left: "0",
-      };
+      gridTemplateRows = `${paddingTop} 1fr ${paddingBottom}`;
+      gridTemplateColumns = `${paddingLeft} ${coverFr}fr ${paddingInternal} ${stackFr}fr ${paddingRight}`;
 
-      gridTemplateColumns = `${paddingOnMarginSide} ${coverFr}fr ${stackFr}fr ${paddingOnMarginSide}`;
+      stackGridCol = "4";
+      stackGridRow = "2";
 
-      stackGridCol = "3 / span 1";
-      stackGridRow = "1";
-      coverGridRow = "1";
+      coverGridCol = "2";
+      coverGridRow = "2";
 
-      if (snapCoverToLeft) {
+      if (snapCoverToEdges) {
         coverGridCol = "1 / span 2";
-      } else {
-        coverGridCol = "2 / span 1";
+        coverGridRow = "1 / span 3";
       }
     } else if (coverMainPosition === "right") {
-      stackPaddings = {
-        left: "0",
-        right: paddingInternal,
-        top: paddingTop,
-        bottom: paddingBottom,
-      };
+      if (isNaked) {
+        paddingLeft = "0";
+        paddingRight = "0";
+      }
 
-      coverPaddings = {
-        top: snapCoverToTop ? 0 : paddingTop,
-        bottom: snapCoverToBottom ? 0 : paddingBottom,
-        right: "0",
-        left: "0",
-      };
+      gridTemplateRows = `${paddingTop} 1fr ${paddingBottom}`;
+      gridTemplateColumns = `${paddingLeft} ${stackFr}fr ${paddingInternal} ${coverFr}fr ${paddingRight}`;
 
-      gridTemplateColumns = `${paddingOnMarginSide} ${stackFr}fr ${coverFr}fr ${paddingOnMarginSide}`;
+      stackGridCol = "2";
+      stackGridRow = "2";
 
-      stackGridCol = "2 / span 1";
-      stackGridRow = "1";
-      coverGridRow = "1";
+      coverGridCol = "4";
+      coverGridRow = "2";
 
-      if (snapCoverToRight) {
-        coverGridCol = "3 / span 2";
-      } else {
-        coverGridCol = "3 / span 1";
+      if (snapCoverToEdges) {
+        coverGridCol = "4 / span 2";
+        coverGridRow = "1 / span 3";
       }
     } else if (coverMainPosition === "top") {
-      stackPaddings = {
-        left: "0",
-        right: "0",
-        top: paddingInternal,
-        bottom: paddingBottom,
-      };
+      if (isNaked) {
+        paddingTop = "0";
+        paddingBottom = "0";
+      }
 
-      coverPaddings = {
-        top: snapCoverToTop ? 0 : paddingTop,
-        bottom: "0",
-        right: "0",
-        left: "0",
-      };
+      gridTemplateRows = `${paddingTop} auto ${paddingInternal} auto ${paddingBottom}`;
+      gridTemplateColumns = `${paddingLeft} 1fr ${paddingRight}`;
 
-      gridTemplateColumns = `${paddingOnMarginSide} 1fr ${paddingOnMarginSide}`;
+      stackGridCol = "2 / span 1";
+      stackGridRow = "4";
+
+      coverGridRow = "2";
+      coverGridCol = "2";
+
+      if (snapCoverToEdges) {
+        coverGridRow = "1 / span 2";
+        coverGridCol = "1 / span 3";
+      }
+    } else if (coverMainPosition === "bottom") {
+      if (isNaked) {
+        paddingTop = "0";
+        paddingBottom = "0";
+      }
+
+      gridTemplateRows = `${paddingTop} auto ${paddingInternal} auto ${paddingBottom}`;
+      gridTemplateColumns = `${paddingLeft} 1fr ${paddingRight}`;
 
       stackGridCol = "2 / span 1";
       stackGridRow = "2";
-      coverGridRow = "1";
 
-      if (snapCoverToLeft && snapCoverToRight) {
+      coverGridRow = "4";
+      coverGridCol = "2";
+
+      if (snapCoverToEdges) {
+        coverGridRow = "4 / span 2";
         coverGridCol = "1 / span 3";
-      } else if (snapCoverToLeft) {
-        coverGridCol = "1 / span 2";
-      } else if (snapCoverToRight) {
-        coverGridCol = "2 / span 2";
-      } else {
-        coverGridCol = "2 / span 1";
-      }
-    } else if (coverMainPosition === "bottom") {
-      stackPaddings = {
-        left: "0",
-        right: "0",
-        top: paddingTop,
-        bottom: paddingInternal,
-      };
-
-      coverPaddings = {
-        top: "0",
-        bottom: snapCoverToBottom ? 0 : paddingBottom,
-        right: "0",
-        left: "0",
-      };
-
-      gridTemplateColumns = `${paddingOnMarginSide} 1fr ${paddingOnMarginSide}`;
-
-      stackGridCol = "2 / span 1";
-      stackGridRow = "1";
-      coverGridRow = "2";
-
-      if (snapCoverToLeft && snapCoverToRight) {
-        coverGridCol = "1 / span 3";
-      } else if (snapCoverToLeft) {
-        coverGridCol = "1 / span 2";
-      } else if (snapCoverToRight) {
-        coverGridCol = "2 / span 2";
-      } else {
-        coverGridCol = "2 / span 1";
       }
     } else if (coverPosition === "background") {
-      stackPaddings = {
-        left: "0",
-        right: "0",
-        top: paddingTop,
-        bottom: paddingBottom,
-      };
+      if (isNaked) {
+        paddingLeft = "0";
+        paddingRight = "0";
+        paddingTop = "0";
+        paddingBottom = "0";
+      }
 
-      coverPaddings = {
-        top: "0",
-        bottom: "0",
-        right: "0",
-        left: "0",
-      };
+      gridTemplateRows = `${paddingTop} 1fr ${paddingBottom}`;
+      gridTemplateColumns = `${paddingLeft} 1fr ${paddingRight}`;
 
-      gridTemplateColumns = `${paddingOnMarginSide} 1fr ${paddingOnMarginSide}`;
-
-      stackGridCol = "2 / span 1";
-      stackGridRow = "1";
-      coverGridRow = "1";
+      stackGridCol = "2";
+      stackGridRow = "2";
+      coverGridRow = "1 / span 3";
       coverGridCol = "1 / span 3";
     } else {
       throw "wrong cover position";
@@ -386,8 +304,6 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
     return {
       styled: {
         Root: {
-          // paddingLeft: paddingLeft,
-          // paddingRight: paddingRight,
           position: "relative",
         },
         Container: {
@@ -410,12 +326,9 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
 
           display: "grid",
           gridTemplateColumns,
+          gridTemplateRows,
         },
         StackContainer: {
-          paddingLeft: stackPaddings.left,
-          paddingRight: stackPaddings.right,
-          paddingTop: stackPaddings.top,
-          paddingBottom: stackPaddings.bottom,
           gridRow: stackGridRow,
           gridColumn: stackGridCol,
           display: "grid",
@@ -429,10 +342,6 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
         CoverContainer: {
           display: coverDisplay,
           position: "relative",
-          paddingLeft: coverPaddings.left,
-          paddingRight: coverPaddings.right,
-          paddingTop: coverPaddings.top,
-          paddingBottom: coverPaddings.bottom,
           gridRow: coverGridRow,
           gridColumn: coverGridCol,
           alignSelf: coverAlign,
