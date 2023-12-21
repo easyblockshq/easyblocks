@@ -1,12 +1,9 @@
 import {
   NoCodeComponentDefinition,
-  box,
   SchemaProp,
   EditingField,
 } from "@easyblocks/core";
-import { snapToEdgeSchemaProp, paddingSchemaProp } from "../utils/schemaProps";
 
-import { pxValueNormalize } from "@/app/easyblocks/components/utils/pxValueNormalize";
 import { toStartEnd } from "@/app/easyblocks/components/utils/stylesHelpers";
 import {
   borderSchemaProps,
@@ -460,4 +457,21 @@ function calculatePadding(
   } else {
     return padding;
   }
+}
+
+export function paddingSchemaProp(
+  prop: string,
+  label: string,
+  group: string
+): SchemaProp {
+  return {
+    prop,
+    label,
+    group,
+    type: "space",
+    defaultValue: {
+      ref: "16",
+      value: "16px",
+    },
+  };
 }

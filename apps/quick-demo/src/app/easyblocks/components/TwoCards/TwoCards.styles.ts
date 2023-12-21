@@ -3,7 +3,6 @@ import type {
   NoCodeComponentStylesFunctionResult,
 } from "@easyblocks/core";
 import { spacingToPx } from "@easyblocks/core";
-import { getEdgeValues } from "../utils/getEdgeValues";
 import {
   sectionWrapperCalculateMarginAndMaxWidth,
   sectionWrapperStyles,
