@@ -231,6 +231,11 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
         paddingRight = "0";
       }
 
+      if (stackJustify === "center") {
+        paddingInternal = `max(${paddingInternal}, ${paddingRight})`;
+        paddingRight = `max(${paddingInternal}, ${paddingRight})`;
+      }
+
       gridTemplateRows = `${paddingTop} 1fr ${paddingBottom}`;
       gridTemplateColumns = `${paddingLeft} ${stackFr}fr ${paddingInternal} ${coverFr}fr ${paddingRight}`;
 
