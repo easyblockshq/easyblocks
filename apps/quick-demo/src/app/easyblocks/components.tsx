@@ -11,6 +11,8 @@ import { TwoCards } from "./components/TwoCards/TwoCards.client";
 import { SolidColor } from "./components/SolidColor/SolidColor.client";
 import { Button } from "./components/Button/Button.client";
 import { CoverCard } from "./components/CoverCard/CoverCard";
+import { HeroBannerWithCover } from "./components/HeroBannerWithCover/HeroBannerWithCover";
+import { BannerCard } from "@/app/easyblocks/components/BannerCard/BannerCard";
 
 const $Link = (props: any) => {
   const { url, shouldOpenInNewWindow, trigger: TriggerElement } = props;
@@ -54,6 +56,8 @@ const components = {
   TwoCards,
   SolidColor,
   CoverCard,
+  HeroBannerWithCover,
+  BannerCard,
 };
 
 export { components };

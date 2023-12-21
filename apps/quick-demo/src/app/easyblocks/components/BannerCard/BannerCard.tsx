@@ -1,6 +1,6 @@
 import React from "react";
 
-export function HeroBannerWithCover(props: any) {
+export function BannerCard(props: any) {
   const {
     Container,
     Root,

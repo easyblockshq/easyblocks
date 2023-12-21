@@ -22,7 +22,7 @@ export const coverCardDefinition: NoCodeComponentDefinition = {
         tokenId: "aspectRatios",
         extraValues: ["natural"],
       },
-      // defaultValue: { value: "natural" },
+      defaultValue: { value: "natural" },
     },
 
     // paddingSchemaProp("paddingLeft"),

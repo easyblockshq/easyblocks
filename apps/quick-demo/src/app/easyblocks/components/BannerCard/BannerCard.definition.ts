@@ -19,37 +19,11 @@ function noFillPaddingSchemaProp(fieldName: string): SchemaProp {
   };
 }
 
-export const heroBannerWithCoverDefinition: NoCodeComponentDefinition = {
-  id: "HeroBannerWithCover",
-  label: "Hero Banner - Cover",
-  type: "section",
+export const bannerCardDefinition: NoCodeComponentDefinition = {
+  id: "BannerCard",
+  label: "Banner Card",
+  type: "card",
   schema: [
-    {
-      prop: "containerMargin",
-      label: "Container margin",
-      type: "space",
-      params: {
-        prefix: "containerMargin",
-      },
-    },
-    {
-      prop: "containerMaxWidth", // main image size
-      label: "Max width",
-      type: "stringToken",
-      params: {
-        tokenId: "containerWidths",
-      },
-      defaultValue: {
-        ref: "none",
-        value: "none",
-      },
-    },
-    {
-      prop: "isFullWidth",
-      label: "Full width",
-      type: "boolean",
-      responsive: true,
-    },
     {
       prop: "coverPosition",
       label: "Cover position",
@@ -92,10 +66,16 @@ export const heroBannerWithCoverDefinition: NoCodeComponentDefinition = {
     paddingSchemaProp("paddingTop"),
     paddingSchemaProp("paddingBottom"),
     paddingSchemaProp("paddingInternal"),
-    snapToEdgeSchemaProp("snapCoverToLeft"),
-    snapToEdgeSchemaProp("snapCoverToRight"),
-    snapToEdgeSchemaProp("snapCoverToTop"),
-    snapToEdgeSchemaProp("snapCoverToBottom"),
+
+    {
+      prop: "snapCoverToEdges",
+      type: "boolean",
+    },
+
+    // snapToEdgeSchemaProp("snapCoverToLeft"),
+    // snapToEdgeSchemaProp("snapCoverToRight"),
+    // snapToEdgeSchemaProp("snapCoverToTop"),
+    // snapToEdgeSchemaProp("snapCoverToBottom"),
     noFillPaddingSchemaProp("noFillPaddingLeft"),
     noFillPaddingSchemaProp("noFillPaddingRight"),
     noFillPaddingSchemaProp("noFillPaddingTop"),
@@ -159,19 +139,21 @@ export const heroBannerWithCoverDefinition: NoCodeComponentDefinition = {
   },
   styles: ({ values }) => {
     let {
-      isFullWidth,
-      containerMargin,
-      containerMaxWidth,
       fillColor,
       paddingTop,
       paddingBottom,
       paddingLeft,
       paddingRight,
+      noFillPaddingTop,
+      noFillPaddingBottom,
+      noFillPaddingLeft,
+      noFillPaddingRight,
       paddingInternal,
-      snapCoverToTop,
-      snapCoverToBottom,
-      snapCoverToLeft,
-      snapCoverToRight,
+      snapCoverToEdges,
+      // snapCoverToTop,
+      // snapCoverToBottom,
+      // snapCoverToLeft,
+      // snapCoverToRight,
       coverPosition,
       coverWidth,
       enableFill,
@@ -182,11 +164,6 @@ export const heroBannerWithCoverDefinition: NoCodeComponentDefinition = {
       borderBottom,
       borderColor,
     } = values;
-
-    const margin =
-      containerMaxWidth === "none"
-        ? containerMargin
-        : `max(calc(calc(100vw - ${containerMaxWidth}px) / 2), ${containerMargin})`;
 
     const [coverMainPosition, coverAlign] = coverPosition.split("-");
 
@@ -222,16 +199,30 @@ export const heroBannerWithCoverDefinition: NoCodeComponentDefinition = {
       !enableFill && !enableBorder && coverPosition !== "background";
 
     if (isNaked) {
-      paddingTop = "0px";
-      paddingBottom = "0px";
-      paddingLeft = "0px";
-      paddingRight = "0px";
-      isFullWidth = true;
+      paddingTop = noFillPaddingTop;
+      paddingBottom = noFillPaddingBottom;
+      paddingLeft = noFillPaddingLeft;
+      paddingRight = noFillPaddingRight;
+
+      // paddingTop = "0px";
+      // paddingBottom = "0px";
+      // paddingLeft = "0px";
+      // paddingRight = "0px";
+      // isFullWidth = true;
     }
 
-    const paddingOnMarginSide = isFullWidth
-      ? `max(${margin}, ${paddingLeft})`
-      : paddingLeft;
+    // const margin = paddingLeft;
+
+    // const paddingOnMarginSide = isFullWidth
+    //   ? `max(${margin}, ${paddingLeft})`
+    //   : paddingLeft;
+
+    // const paddingOnMarginSide = paddingLeft;
+
+    const snapCoverToTop = snapCoverToEdges;
+    const snapCoverToBottom = snapCoverToEdges;
+    const snapCoverToLeft = snapCoverToEdges;
+    const snapCoverToRight = snapCoverToEdges;
 
     if (coverMainPosition === "hide") {
       stackPaddings = {
@@ -395,8 +386,8 @@ export const heroBannerWithCoverDefinition: NoCodeComponentDefinition = {
     return {
       styled: {
         Root: {
-          paddingLeft: isFullWidth ? 0 : margin,
-          paddingRight: isFullWidth ? 0 : margin,
+          // paddingLeft: paddingLeft,
+          // paddingRight: paddingRight,
           position: "relative",
         },
         Container: {

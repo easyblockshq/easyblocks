@@ -13,8 +13,8 @@ const imageComponentDefinition: NoCodeComponentDefinition = {
   editing: ({ params, editingInfo }) => {
     let fields = [...editingInfo.fields];
 
-    // If aspect ratio passed from external, we don't need it.
-    if (params.noAspectRatio) {
+    // If aspectRatio is passed from a parent component, we don't display it
+    if (params.aspectRatio) {
       fields = fields.filter((field) => field.path !== "aspectRatio");
     }
 

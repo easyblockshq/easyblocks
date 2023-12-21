@@ -23,8 +23,7 @@ const videoComponentDefinition: NoCodeComponentDefinition = {
   editing: ({ params, editingInfo }) => {
     let fields = [...editingInfo.fields];
 
-    // If aspect ratio passed from external, we don't need it.
-    if (params.noAspectRatio) {
+    if (params.aspectRatio) {
       fields = fields.filter((field) => field.path !== "aspectRatio");
     }
 
