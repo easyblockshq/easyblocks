@@ -147,12 +147,6 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
       coverPosition,
       coverWidth,
       enableFill,
-      enableBorder,
-      borderLeft,
-      borderRight,
-      borderTop,
-      borderBottom,
-      borderColor,
       coverVerticalAlign,
     } = values;
 
