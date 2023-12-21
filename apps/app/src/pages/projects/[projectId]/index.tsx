@@ -10,6 +10,7 @@ import {
   Flex,
   Heading,
   IconButton,
+  Link as RadixLink,
   TableBody,
   TableCell,
   TableHeader,
@@ -95,55 +96,74 @@ function ProjectPage({
           Documents
         </Heading>
 
-        {paginatedProjectDocuments.length === 0 ? (
-          <Text>No documents</Text>
-        ) : (
-          <TableRoot style={{ width: "100%" }} mb="3">
-            <TableHeader>
-              <TableRow>
-                <TableRowHeaderCell>ID</TableRowHeaderCell>
-                <TableRowHeaderCell>Document type</TableRowHeaderCell>
-                <TableRowHeaderCell align="right">
-                  Updated at
-                </TableRowHeaderCell>
-                <TableRowHeaderCell align="right">Version</TableRowHeaderCell>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {paginatedProjectDocuments.map((project) => {
-                return (
-                  <TableRow key={project.id}>
-                    <TableCell>{project.id}</TableCell>
-                    <TableCell>{project.documentType}</TableCell>
-                    <TableCell align="right">
-                      {project.updatedAt
-                        ? new Intl.DateTimeFormat("en-US", {
-                            day: "numeric",
-                            month: "numeric",
-                            year: "numeric",
-                            hour: "numeric",
-                            minute: "numeric",
-                          }).format(new Date(project.updatedAt))
-                        : "-"}
-                    </TableCell>
-                    <TableCell align="right">{project.version}</TableCell>
-                  </TableRow>
-                );
-              })}
-              {paginatedProjectDocuments.length < pageSize && (
-                <TableRow
-                  style={{
-                    height: (pageSize - paginatedProjectDocuments.length) * 44,
-                  }}
-                >
-                  <TableCell colSpan={4} style={{ boxShadow: "none" }}>
-                    &nbsp;
+        <TableRoot style={{ width: "100%" }} mb="3">
+          <TableHeader>
+            <TableRow>
+              <TableRowHeaderCell>ID</TableRowHeaderCell>
+              <TableRowHeaderCell>Document type</TableRowHeaderCell>
+              <TableRowHeaderCell align="right">Updated at</TableRowHeaderCell>
+              <TableRowHeaderCell align="right">Version</TableRowHeaderCell>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {paginatedProjectDocuments.map((project) => {
+              return (
+                <TableRow key={project.id}>
+                  <TableCell>{project.id}</TableCell>
+                  <TableCell>{project.documentType}</TableCell>
+                  <TableCell align="right">
+                    {project.updatedAt
+                      ? new Intl.DateTimeFormat("en-US", {
+                          day: "numeric",
+                          month: "numeric",
+                          year: "numeric",
+                          hour: "numeric",
+                          minute: "numeric",
+                        }).format(new Date(project.updatedAt))
+                      : "-"}
                   </TableCell>
+                  <TableCell align="right">{project.version}</TableCell>
                 </TableRow>
-              )}
-            </TableBody>
-          </TableRoot>
-        )}
+              );
+            })}
+            {paginatedProjectDocuments.length === 0 && (
+              <TableRow style={{ height: 2 * 44 }}>
+                <TableCell colSpan={4}>
+                  <Flex
+                    width={"100%"}
+                    height={"100%"}
+                    justify={"center"}
+                    align={"center"}
+                  >
+                    <Text align={"center"}>
+                      No documents to display.
+                      <br />
+                      Learn more about about the editor{" "}
+                      <RadixLink
+                        href="https://docs.easyblocks.io/essentials/editor-page"
+                        target="_blank"
+                      >
+                        here
+                      </RadixLink>{" "}
+                      to create your first document.
+                    </Text>
+                  </Flex>
+                </TableCell>
+              </TableRow>
+            )}
+            {paginatedProjectDocuments.length < pageSize && (
+              <TableRow
+                style={{
+                  height: (pageSize - paginatedProjectDocuments.length) * 44,
+                }}
+              >
+                <TableCell colSpan={4} style={{ boxShadow: "none" }}>
+                  &nbsp;
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </TableRoot>
 
         <Flex width={"100%"} justify={"center"} align={"center"} gap="2">
           <Text size="2">
