@@ -1,4 +1,9 @@
-import { NoCodeComponentDefinition, box, SchemaProp } from "@easyblocks/core";
+import {
+  NoCodeComponentDefinition,
+  box,
+  SchemaProp,
+  EditingField,
+} from "@easyblocks/core";
 import {
   snapToEdgeSchemaProp,
   paddingSchemaProp,
@@ -8,9 +13,15 @@ import {
 import { pxValueNormalize } from "@/app/easyblocks/components/utils/pxValueNormalize";
 import { toStartEnd } from "@/app/easyblocks/components/utils/stylesHelpers";
 
-function noFillPaddingSchemaProp(fieldName: string): SchemaProp {
+function noFillPaddingSchemaProp(
+  prop: string,
+  label: string,
+  group: string
+): SchemaProp {
   return {
-    prop: fieldName,
+    prop,
+    label,
+    group,
     type: "space",
     defaultValue: {
       ref: "0",
@@ -26,84 +37,110 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
   schema: [
     {
       prop: "coverPosition",
-      label: "Cover position",
+      label: "Position",
+      group: "Cover",
       type: "select",
       responsive: true,
       params: {
-        options: [
-          "hide",
-          "left-stretch",
-          "left-start",
-          "left-center",
-          "left-end",
-          "right-stretch",
-          "right-start",
-          "right-center",
-          "right-end",
-          "top",
-          "bottom",
-          "background",
-        ],
+        options: ["hide", "left", "right", "top", "bottom", "background"],
       },
     },
     {
-      prop: "stackPosition",
-      label: "Stack position",
-      type: "position",
-      responsive: true,
+      prop: "coverVerticalAlign",
+      label: "Vertical align",
+      group: "Cover",
+      type: "select",
+      params: {
+        options: ["stretch", "start", "center", "end"],
+      },
+      visible: (values) => {
+        return (
+          values.coverPosition === "left" || values.coverPosition === "right"
+        );
+      },
     },
     {
       prop: "coverWidth",
+      label: "Width",
+      group: "Cover",
       type: "select",
       responsive: true,
       params: {
         options: ["25%", "33%", "40%", "50%", "60%", "66%", "75%"],
       },
       defaultValue: "50%",
+      visible: (values) => {
+        return (
+          values.coverPosition === "left" || values.coverPosition === "right"
+        );
+      },
     },
-    paddingSchemaProp("paddingLeft"),
-    paddingSchemaProp("paddingRight"),
-    paddingSchemaProp("paddingTop"),
-    paddingSchemaProp("paddingBottom"),
-    paddingSchemaProp("paddingInternal"),
-
     {
       prop: "snapCoverToEdges",
+      label: "Snap to edges",
+      group: "Cover",
       type: "boolean",
     },
+    {
+      prop: "CoverCard",
+      label: "Cover",
+      group: "Cover",
+      type: "component",
+      required: true,
+      accepts: ["CoverCard"],
+      visible: (values) => values.coverPosition === "background",
+    },
+    {
+      prop: "stackPosition",
+      label: "Position",
+      group: "Stack",
+      type: "position",
+      responsive: true,
+    },
+    paddingSchemaProp("paddingLeft", "Left", "Padding"),
+    paddingSchemaProp("paddingRight", "Right", "Padding"),
+    paddingSchemaProp("paddingTop", "Top", "Padding"),
+    paddingSchemaProp("paddingBottom", "Bottom", "Padding"),
 
-    // snapToEdgeSchemaProp("snapCoverToLeft"),
-    // snapToEdgeSchemaProp("snapCoverToRight"),
-    // snapToEdgeSchemaProp("snapCoverToTop"),
-    // snapToEdgeSchemaProp("snapCoverToBottom"),
-    noFillPaddingSchemaProp("noFillPaddingLeft"),
-    noFillPaddingSchemaProp("noFillPaddingRight"),
-    noFillPaddingSchemaProp("noFillPaddingTop"),
-    noFillPaddingSchemaProp("noFillPaddingBottom"),
+    noFillPaddingSchemaProp("noFillPaddingLeft", "Left", "Padding"),
+    noFillPaddingSchemaProp("noFillPaddingRight", "Right", "Padding"),
+    noFillPaddingSchemaProp("noFillPaddingTop", "Top", "Padding"),
+    noFillPaddingSchemaProp("noFillPaddingBottom", "Bottom", "Padding"),
+
+    paddingSchemaProp("paddingInternal", "Internal", "Padding"),
+
     {
       prop: "enableFill",
+      label: "Enable",
+      group: "Fill",
       type: "boolean",
       responsive: true,
     },
+
     {
       prop: "fillColor",
+      label: "Color",
+      group: "Fill",
       type: "color",
     },
     {
       prop: "enableBorder",
+      label: "Enable",
+      group: "Border",
       type: "boolean",
       responsive: true,
     },
     {
       prop: "borderColor",
+      label: "Color",
+      group: "Border",
       type: "color",
       responsive: true,
     },
-    borderSchemaProp("borderLeft"),
-    borderSchemaProp("borderRight"),
-    borderSchemaProp("borderTop"),
-    borderSchemaProp("borderBottom"),
-
+    borderSchemaProp("borderLeft", "Left", "Border"),
+    borderSchemaProp("borderRight", "Right", "Border"),
+    borderSchemaProp("borderTop", "Top", "Border"),
+    borderSchemaProp("borderBottom", "Bottom", "Border"),
     {
       prop: "cornerRadius",
       type: "string",
@@ -119,35 +156,11 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
       required: true,
       accepts: ["Stack"],
     },
-    {
-      prop: "CoverCard",
-      type: "component",
-      required: true,
-      accepts: ["CoverCard"],
-      visible: true,
-    },
   ],
-  editing: ({ editingInfo }) => {
-    return {
-      ...editingInfo,
-      components: {
-        Stack: {
-          selectable: false,
-        },
-      },
-    };
-  },
+
   styles: ({ values }) => {
     let {
       fillColor,
-      paddingTop,
-      paddingBottom,
-      paddingLeft,
-      paddingRight,
-      noFillPaddingTop,
-      noFillPaddingBottom,
-      noFillPaddingLeft,
-      noFillPaddingRight,
       paddingInternal,
       snapCoverToEdges,
       coverPosition,
@@ -159,9 +172,11 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
       borderTop,
       borderBottom,
       borderColor,
+      coverVerticalAlign,
     } = values;
 
-    const [coverMainPosition, coverAlign] = coverPosition.split("-");
+    const { isNaked, paddingModes, stackAlign, stackJustify } =
+      calculateBannerCardStuff(values);
 
     let gridTemplateColumns: string;
     let gridTemplateRows: string;
@@ -176,27 +191,32 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
     const coverFr = parseInt(coverWidth.replace("%", ""));
     const stackFr = 100 - coverFr;
 
-    const [stackAlign, stackJustify] = values.stackPosition.split("-");
-
-    const isNaked =
-      !enableFill && !enableBorder && coverPosition !== "background";
-
     if (isNaked) {
-      paddingTop = noFillPaddingTop;
-      paddingBottom = noFillPaddingBottom;
-      paddingLeft = noFillPaddingLeft;
-      paddingRight = noFillPaddingRight;
       snapCoverToEdges = true;
     }
 
-    if (coverMainPosition === "hide") {
-      if (isNaked) {
-        paddingTop = "0";
-        paddingBottom = "0";
-        paddingLeft = "0";
-        paddingRight = "0";
-      }
+    const paddingLeft = calculatePadding(
+      values.paddingLeft,
+      values.noFillPaddingLeft,
+      paddingModes.left
+    );
+    const paddingRight = calculatePadding(
+      values.paddingRight,
+      values.noFillPaddingRight,
+      paddingModes.right
+    );
+    const paddingTop = calculatePadding(
+      values.paddingTop,
+      values.noFillPaddingTop,
+      paddingModes.top
+    );
+    const paddingBottom = calculatePadding(
+      values.paddingBottom,
+      values.noFillPaddingBottom,
+      paddingModes.bottom
+    );
 
+    if (coverPosition === "hide") {
       gridTemplateRows = `${paddingTop} 1fr ${paddingBottom}`;
       gridTemplateColumns = `${paddingLeft} 1fr ${paddingRight}`;
 
@@ -206,12 +226,7 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
       coverDisplay = "none";
       coverGridRow = "initial";
       coverGridCol = "initial";
-    } else if (coverMainPosition === "left") {
-      if (isNaked) {
-        paddingLeft = "0";
-        paddingRight = "0";
-      }
-
+    } else if (coverPosition === "left") {
       gridTemplateRows = `${paddingTop} 1fr ${paddingBottom}`;
       gridTemplateColumns = `${paddingLeft} ${coverFr}fr ${paddingInternal} ${stackFr}fr ${paddingRight}`;
 
@@ -225,17 +240,7 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
         coverGridCol = "1 / span 2";
         coverGridRow = "1 / span 3";
       }
-    } else if (coverMainPosition === "right") {
-      if (isNaked) {
-        paddingLeft = "0";
-        paddingRight = "0";
-      }
-
-      if (stackJustify === "center") {
-        paddingInternal = `max(${paddingInternal}, ${paddingRight})`;
-        paddingRight = `max(${paddingInternal}, ${paddingRight})`;
-      }
-
+    } else if (coverPosition === "right") {
       gridTemplateRows = `${paddingTop} 1fr ${paddingBottom}`;
       gridTemplateColumns = `${paddingLeft} ${stackFr}fr ${paddingInternal} ${coverFr}fr ${paddingRight}`;
 
@@ -249,12 +254,7 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
         coverGridCol = "4 / span 2";
         coverGridRow = "1 / span 3";
       }
-    } else if (coverMainPosition === "top") {
-      if (isNaked) {
-        paddingTop = "0";
-        paddingBottom = "0";
-      }
-
+    } else if (coverPosition === "top") {
       gridTemplateRows = `${paddingTop} auto ${paddingInternal} auto ${paddingBottom}`;
       gridTemplateColumns = `${paddingLeft} 1fr ${paddingRight}`;
 
@@ -268,12 +268,7 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
         coverGridRow = "1 / span 2";
         coverGridCol = "1 / span 3";
       }
-    } else if (coverMainPosition === "bottom") {
-      if (isNaked) {
-        paddingTop = "0";
-        paddingBottom = "0";
-      }
-
+    } else if (coverPosition === "bottom") {
       gridTemplateRows = `${paddingTop} auto ${paddingInternal} auto ${paddingBottom}`;
       gridTemplateColumns = `${paddingLeft} 1fr ${paddingRight}`;
 
@@ -288,13 +283,6 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
         coverGridCol = "1 / span 3";
       }
     } else if (coverPosition === "background") {
-      if (isNaked) {
-        paddingLeft = "0";
-        paddingRight = "0";
-        paddingTop = "0";
-        paddingBottom = "0";
-      }
-
       gridTemplateRows = `${paddingTop} 1fr ${paddingBottom}`;
       gridTemplateColumns = `${paddingLeft} 1fr ${paddingRight}`;
 
@@ -349,9 +337,175 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
           position: "relative",
           gridRow: coverGridRow,
           gridColumn: coverGridCol,
-          alignSelf: coverAlign,
+          alignSelf: coverVerticalAlign,
+        },
+      },
+    };
+  },
+  editing: ({ editingInfo, values }) => {
+    const { isNaked, paddingModes } = calculateBannerCardStuff(values);
+
+    const getField = (path: string) =>
+      editingInfo.fields.find((field) => field.path === path)!;
+    const setPaddingFieldVisibilityBasedOnMode = (
+      standardPaddingField: EditingField,
+      noFillPaddingField: EditingField,
+      paddingMode: PaddingMode
+    ) => {
+      if (paddingMode === "standard") {
+        standardPaddingField.visible = true;
+        noFillPaddingField.visible = false;
+      } else if (paddingMode === "noFill") {
+        standardPaddingField.visible = false;
+        noFillPaddingField.visible = true;
+      } else {
+        standardPaddingField.visible = false;
+        noFillPaddingField.visible = false;
+      }
+    };
+
+    const coverVerticalAlign = getField("coverVerticalAlign");
+    const coverWidth = getField("coverWidth");
+    const snapCoverToEdges = getField("snapCoverToEdges");
+
+    const paddingLeft = getField("paddingLeft");
+    const paddingRight = getField("paddingRight");
+    const paddingTop = getField("paddingTop");
+    const paddingBottom = getField("paddingBottom");
+    const noFillPaddingLeft = getField("noFillPaddingLeft");
+    const noFillPaddingRight = getField("noFillPaddingRight");
+    const noFillPaddingTop = getField("noFillPaddingTop");
+    const noFillPaddingBottom = getField("noFillPaddingBottom");
+    const paddingInternal = getField("paddingInternal");
+
+    const fillColor = getField("fillColor");
+
+    const borderColor = getField("borderColor");
+    const borderLeft = getField("borderLeft");
+    const borderRight = getField("borderRight");
+    const borderTop = getField("borderTop");
+    const borderBottom = getField("borderBottom");
+
+    setPaddingFieldVisibilityBasedOnMode(
+      paddingLeft,
+      noFillPaddingLeft,
+      paddingModes.left
+    );
+    setPaddingFieldVisibilityBasedOnMode(
+      paddingRight,
+      noFillPaddingRight,
+      paddingModes.right
+    );
+    setPaddingFieldVisibilityBasedOnMode(
+      paddingTop,
+      noFillPaddingTop,
+      paddingModes.top
+    );
+    setPaddingFieldVisibilityBasedOnMode(
+      paddingBottom,
+      noFillPaddingBottom,
+      paddingModes.bottom
+    );
+    paddingInternal.visible = paddingModes.internal === "standard";
+
+    if (values.coverPosition !== "left" && values.coverPosition !== "right") {
+      coverVerticalAlign.visible = false;
+      coverWidth.visible = false;
+    }
+
+    if (
+      isNaked ||
+      values.coverPosition === "background" ||
+      values.coverPosition === "hide"
+    ) {
+      snapCoverToEdges.visible = false;
+    }
+
+    if (!values.enableFill) {
+      fillColor.visible = false;
+    }
+
+    if (!values.enableBorder) {
+      borderColor.visible = false;
+      borderLeft.visible = false;
+      borderRight.visible = false;
+      borderTop.visible = false;
+      borderBottom.visible = false;
+    }
+
+    return {
+      ...editingInfo,
+      components: {
+        Stack: {
+          selectable: false,
         },
       },
     };
   },
 };
+
+type PaddingMode = "standard" | "noFill" | "none";
+
+function calculateBannerCardStuff(values: Record<string, any>) {
+  const { enableFill, enableBorder, coverPosition } = values;
+
+  const [stackAlign, stackJustify] = values.stackPosition.split("-");
+
+  const isNaked =
+    !enableFill && !enableBorder && coverPosition !== "background";
+
+  const paddingModes = {
+    left: "standard" as PaddingMode,
+    right: "standard" as PaddingMode,
+    top: "standard" as PaddingMode,
+    bottom: "standard" as PaddingMode,
+    internal: "standard" as PaddingMode,
+  };
+
+  if (coverPosition === "hide") {
+    paddingModes.left = isNaked ? "none" : "standard";
+    paddingModes.right = isNaked ? "none" : "standard";
+    paddingModes.top = isNaked ? "none" : "standard";
+    paddingModes.bottom = isNaked ? "none" : "standard";
+    paddingModes.internal = "none";
+  } else if (coverPosition === "left" || coverPosition === "right") {
+    paddingModes.left = isNaked ? "none" : "standard";
+    paddingModes.right = isNaked ? "none" : "standard";
+    paddingModes.top = isNaked ? "noFill" : "standard";
+    paddingModes.bottom = isNaked ? "noFill" : "standard";
+    paddingModes.internal = "standard";
+  } else if (coverPosition === "top" || coverPosition === "bottom") {
+    paddingModes.left = isNaked ? "noFill" : "standard";
+    paddingModes.right = isNaked ? "noFill" : "standard";
+    paddingModes.top = isNaked ? "none" : "standard";
+    paddingModes.bottom = isNaked ? "none" : "standard";
+    paddingModes.internal = "standard";
+  } else if (coverPosition === "background") {
+    paddingModes.left = "standard";
+    paddingModes.right = "standard";
+    paddingModes.top = "standard";
+    paddingModes.bottom = "standard";
+    paddingModes.internal = "none";
+  }
+
+  return {
+    isNaked,
+    paddingModes,
+    stackAlign,
+    stackJustify,
+  };
+}
+
+function calculatePadding(
+  padding: string,
+  noFillPadding: string,
+  paddingMode: PaddingMode
+) {
+  if (paddingMode === "none") {
+    return "0";
+  } else if (paddingMode === "noFill") {
+    return noFillPadding;
+  } else {
+    return padding;
+  }
+}

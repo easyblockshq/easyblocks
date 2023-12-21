@@ -1,9 +1,15 @@
 import { SchemaProp } from "@easyblocks/core";
 import { pxValueNormalize } from "./pxValueNormalize";
 
-export function paddingSchemaProp(fieldName: string): SchemaProp {
+export function paddingSchemaProp(
+  prop: string,
+  label: string,
+  group: string
+): SchemaProp {
   return {
-    prop: fieldName,
+    prop,
+    label,
+    group,
     type: "space",
     defaultValue: {
       ref: "16",
@@ -12,9 +18,15 @@ export function paddingSchemaProp(fieldName: string): SchemaProp {
   };
 }
 
-export function borderSchemaProp(fieldName: string): SchemaProp {
+export function borderSchemaProp(
+  prop: string,
+  label: string,
+  group: string
+): SchemaProp {
   return {
-    prop: fieldName,
+    prop: prop,
+    label,
+    group,
     type: "string",
     params: {
       normalize: pxValueNormalize(0, 32),
