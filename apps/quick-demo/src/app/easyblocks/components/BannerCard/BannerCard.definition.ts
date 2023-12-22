@@ -217,7 +217,7 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
       coverGridCol = "initial";
     } else if (coverPosition === "left") {
       gridTemplateRows = `${paddingTop} 1fr ${paddingBottom}`;
-      gridTemplateColumns = `${paddingLeft} ${coverFr}fr ${paddingInternal} ${stackFr}fr ${paddingRight}`;
+      gridTemplateColumns = `${paddingLeft} calc(${coverWidth} - ${paddingLeft}) ${paddingInternal} 1fr ${paddingRight}`;
 
       stackGridCol = "4";
       stackGridRow = "2";
@@ -229,14 +229,9 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
         coverGridCol = "1 / span 2";
         coverGridRow = "1 / span 3";
       }
-
-      //
-      // if (isNaked) {
-      //   stackGridCol = "4 / span 2";
-      // }
     } else if (coverPosition === "right") {
       gridTemplateRows = `${paddingTop} 1fr ${paddingBottom}`;
-      gridTemplateColumns = `${paddingLeft} ${stackFr}fr ${paddingInternal} ${coverFr}fr ${paddingRight}`;
+      gridTemplateColumns = `${paddingLeft} 1fr ${paddingInternal} calc(${coverWidth} - ${paddingRight}) ${paddingRight}`;
 
       stackGridCol = "2";
       stackGridRow = "2";
@@ -248,10 +243,6 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
         coverGridCol = "4 / span 2";
         coverGridRow = "1 / span 3";
       }
-
-      // if (isNaked) {
-      //   stackGridCol = "1 / span 2";
-      // }
     } else if (coverPosition === "top") {
       gridTemplateRows = `${paddingTop} auto ${paddingInternal} auto ${paddingBottom}`;
       gridTemplateColumns = `${paddingLeft} 1fr ${paddingRight}`;
@@ -491,7 +482,7 @@ function calculatePadding(
   paddingMode: PaddingMode
 ) {
   if (paddingMode === "none") {
-    return "0";
+    return "0px";
   } else if (paddingMode === "noFill") {
     return noFillPadding;
   } else {
