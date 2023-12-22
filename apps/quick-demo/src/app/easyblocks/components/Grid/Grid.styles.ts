@@ -7,7 +7,7 @@ import {
   sectionWrapperCalculateMarginAndMaxWidth,
   sectionWrapperStyles,
 } from "../utils/sectionWrapper/sectionWrapperHelpers";
-import type { gridComponentDefinition } from "./Grid";
+import type { gridComponentDefinition } from "./Grid.definition";
 import {
   buildItemPositions,
   buildRows,
@@ -350,7 +350,7 @@ function gridStyles({
     }
   });
 
-  const itemInnerContainers = cardStyles.map((card) => {
+  const itemInnerContainers = cardStyles.map((card: any) => {
     const verticalAlign =
       card.verticalAlign === "auto" ? values.verticalAlign : card.verticalAlign;
 
