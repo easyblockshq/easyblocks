@@ -90,7 +90,7 @@ export const gridAuto: NoCodeComponentAutoFunction<
   });
 
   let valuesAfterAuto = responsiveAuto(
-    { ...values, ...params },
+    values,
     devices,
     widths,
     ({ values, closestDefinedValues }, { device }) => {

@@ -1,5 +1,4 @@
 import { NoCodeComponentAutoFunction } from "@easyblocks/core";
-import { getDevicesWidths } from "@easyblocks/core/_internals";
 import { responsiveAuto } from "@/app/easyblocks/components/utils/responsiveAuto";
 
 export const bannerCardAuto: NoCodeComponentAutoFunction = ({
@@ -7,12 +6,10 @@ export const bannerCardAuto: NoCodeComponentAutoFunction = ({
   params,
   devices,
 }) => {
-  const widths = getDevicesWidths(devices);
-
   const valuesAfterAuto = responsiveAuto(
-    { ...values, ...params },
+    values,
     devices,
-    widths,
+    params.$width,
     ({
       values,
       higherDefinedValues,
@@ -20,9 +17,9 @@ export const bannerCardAuto: NoCodeComponentAutoFunction = ({
       closestDefinedValues,
       width,
     }) => {
-      let mode = values.mode;
+      let coverPosition = values.coverPosition;
 
-      if (mode === undefined) {
+      if (coverPosition === undefined) {
         /**
          * The only thing we do here is switch from side mode to top mode only when all of those occur:
          * - higher defined is side-by-side
@@ -30,24 +27,24 @@ export const bannerCardAuto: NoCodeComponentAutoFunction = ({
          * - lower defined is not side-by-side
          */
 
-        const higherMode = higherDefinedValues.mode;
-        const lowerMode = lowerDefinedValues.mode;
+        const higherValue = higherDefinedValues.coverPosition;
+        const lowerValue = lowerDefinedValues.coverPosition;
 
         if (
-          higherMode &&
-          (higherMode.value === "left" || higherMode.value === "right") &&
-          higherMode.width / 2 > width &&
-          (!lowerMode ||
-            (lowerMode.value !== "left" && lowerMode.value !== "right"))
+          higherValue &&
+          (higherValue.value === "left" || higherValue.value === "right") &&
+          higherValue.width / 2 > width &&
+          (!lowerValue ||
+            (lowerValue.value !== "left" && lowerValue.value !== "right"))
         ) {
-          mode = "top";
+          coverPosition = "top";
         } else {
-          mode = closestDefinedValues.mode.value;
+          coverPosition = closestDefinedValues.coverPosition.value;
         }
       }
 
       return {
-        mode,
+        coverPosition,
       };
     }
   );

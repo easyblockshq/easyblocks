@@ -4,10 +4,12 @@ import { bannerCardDefinition } from "@/app/easyblocks/components/BannerCard/Ban
 import {
   sectionWrapperCalculateMarginAndMaxWidth,
   sectionWrapperEditing,
+  sectionWrapperGetContainerWidths,
   sectionWrapperSchemaProps,
   sectionWrapperStyles,
   SectionWrapperValues,
 } from "@/app/easyblocks/components/utils/sectionWrapper/sectionWrapperHelpers";
+import { bannerCardAuto } from "@/app/easyblocks/components/BannerCard/BannerCard.auto";
 
 function getBannerCardValues(values: Record<string, any>, device: DeviceRange) {
   const { margin } = sectionWrapperCalculateMarginAndMaxWidth(
@@ -108,5 +110,15 @@ export const bannerSectionDefinition: NoCodeComponentDefinition<
         ...bannerCardEditing.components,
       },
     };
+  },
+  auto: ({ values, params, devices }) => {
+    return bannerCardAuto({
+      values,
+      params: {
+        ...params,
+        $width: sectionWrapperGetContainerWidths(values, devices), // let's take width without margins
+      },
+      devices,
+    });
   },
 };

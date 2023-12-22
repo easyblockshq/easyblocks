@@ -15,6 +15,7 @@ import {
   cornerStyles,
 } from "@/app/easyblocks/components/utils/corners";
 import { getFieldProvider } from "@/app/easyblocks/components/utils/getFieldProvider";
+import { bannerCardAuto } from "@/app/easyblocks/components/BannerCard/BannerCard.auto";
 
 function noFillPaddingSchemaProp(
   prop: string,
@@ -419,6 +420,7 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
       },
     };
   },
+  auto: bannerCardAuto,
 };
 
 type PaddingMode = "standard" | "standard-hidden" | "noFill" | "none";

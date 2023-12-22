@@ -12,7 +12,10 @@ import {
 } from "@easyblocks/core";
 
 import { responsiveAuto } from "../utils/responsiveAuto";
-import { sectionWrapperCalculateMarginAndMaxWidth } from "@/app/easyblocks/components/utils/sectionWrapper/sectionWrapperHelpers";
+import {
+  sectionWrapperCalculateMarginAndMaxWidth,
+  sectionWrapperGetContainerWidths,
+} from "@/app/easyblocks/components/utils/sectionWrapper/sectionWrapperHelpers";
 
 function calculateContainerWidth(
   config: Record<string, any>,
@@ -50,56 +53,12 @@ export const gridAuto: NoCodeComponentAutoFunction<any, any> = ({
   params,
   devices,
 }) => {
-  /**
-   * We start with calculating widths. Widths is a responsive value that is a "real" width of grid container (without margins).
-   * It takes into account margins, margin escape and max width.
-   *
-   * It's important because auto function is built with respect to those "real widths".
-   *
-   * Why?
-   *
-   * Imagine situation when screen width is 1600px and grid is only 800px wide and margins on left and right are 400px.
-   * When we switch screen to 1000px it's highly possible that the grid will still be 800px wide but the screen resolution changed a lot.
-   * In such case auto shouldn't switch for example 4-column grid to 2-column grid. It should stay 4-column.
-   * If we calculated auto based on screen width (params.$width) the behaviour would be incorrect.
-   *
-   */
-  const widths: TrulyResponsiveValue<number> = { $res: true };
-
-  devices.forEach((device) => {
-    const escapeMargin = responsiveValueGetDefinedValue(
-      values.escapeMargin,
-      device.id,
-      devices
-    );
-    const containerMargin = escapeMargin
-      ? "0px"
-      : responsiveValueForceGet(
-          responsiveValueFlatten(
-            responsiveValueMap(values.containerMargin, (val) => val.value),
-            devices
-          ),
-          device.id
-        ); // TODO: we should have helpers to make those operations easier
-    const containerMaxWidth = responsiveValueGetDefinedValue(
-      values.containerMaxWidth,
-      device.id,
-      devices
-    ).value;
-
-    const { containerWidth } = sectionWrapperCalculateMarginAndMaxWidth(
-      escapeMargin ? "0px" : containerMargin,
-      containerMaxWidth,
-      device
-    );
-
-    widths[device.id] = containerWidth.px;
-  });
+  // Let's obtain true container widths
+  const widths = sectionWrapperGetContainerWidths(values, devices);
 
   /**
    * shouldSliderItemsBeVisibleOnMargin
    */
-
   let valuesAfterAuto = responsiveAuto(
     { ...values, ...params },
     devices,

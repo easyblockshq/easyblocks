@@ -7,7 +7,7 @@ import {
   sectionWrapperCalculateMarginAndMaxWidth,
   sectionWrapperStyles,
 } from "../utils/sectionWrapper/sectionWrapperHelpers";
-import { twoCardsComponentDefinition } from "./TwoCards";
+import { twoCardsComponentDefinition } from "./TwoCards.definition";
 import { TWO_CARDS_COL_NUM } from "./twoCardsConstants";
 
 function twoCardsStyles({

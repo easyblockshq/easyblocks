@@ -260,6 +260,7 @@ export function compileComponent(
         params: {
           ...ownPropsAfterAuto.params,
           $width,
+          $widthAuto,
         },
         devices: compilationContext.devices,
       });

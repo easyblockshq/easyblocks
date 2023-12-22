@@ -299,18 +299,6 @@ const autoVerticalOffset: ResponsiveAutoCallback = ({
   let verticalOffset = values.verticalOffset;
 
   if (verticalOffset === undefined) {
-    // const currentGap =
-    //   TWO_CARDS_COL_NUM -
-    //   parseInt(closestDefinedValues.card1Width.value) -
-    //   parseInt(closestDefinedValues.card2Width.value);
-
-    // const deviceId = closestDefinedValues.verticalOffset.device.id;
-    //
-    // const gapForClosestDefinedVerticalOffset =
-    //   TWO_CARDS_COL_NUM -
-    //   parseInt(config.card1Width[deviceId]) -
-    //   parseInt(config.card2Width[deviceId]);
-
     const closestDefinedVerticalOffsetValue = parseInt(
       closestDefinedValues.verticalOffset.value
     );
@@ -375,21 +363,20 @@ const autoVerticalGap: ResponsiveAutoCallback = (
 };
 
 export function twoCardsAuto({
-  values: inputValues,
-  params,
+  values,
   devices,
 }: NoCodeComponentAutoFunctionInput): Record<string, any> {
   const widths = getDevicesWidths(devices);
 
-  let values = responsiveAuto(
-    { ...inputValues, ...params },
+  let outputValues = responsiveAuto(values, devices, widths, autoCollapse);
+  outputValues = responsiveAuto(outputValues, devices, widths, autoWidths);
+  outputValues = responsiveAuto(
+    outputValues,
     devices,
     widths,
-    autoCollapse
+    autoVerticalOffset
   );
-  values = responsiveAuto(values, devices, widths, autoWidths);
-  values = responsiveAuto(values, devices, widths, autoVerticalOffset);
-  values = responsiveAuto(values, devices, widths, autoVerticalGap);
+  outputValues = responsiveAuto(outputValues, devices, widths, autoVerticalGap);
 
-  return values;
+  return outputValues;
 }
