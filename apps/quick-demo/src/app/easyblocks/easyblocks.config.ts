@@ -16,8 +16,8 @@ import { pexelsImageWidget } from "./externalData/pexels/pexelsImageWidget";
 import { productWidget } from "./externalData/product/productWidget";
 import starterTemplate from "./templates/starterTemplate.json";
 import { coverCardDefinition } from "@/app/easyblocks/components/BannerCard/CoverCard/CoverCard.definition";
-import { heroBannerWithCoverDefinition } from "@/app/easyblocks/components/HeroBannerWithCover/HeroBannerWithCover.definition";
 import { bannerCardDefinition } from "@/app/easyblocks/components/BannerCard/BannerCard.definition";
+import { bannerSectionDefinition } from "@/app/easyblocks/components/BannerSection/BannerSection.definition";
 
 if (!process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN) {
   throw new Error("Missing NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN");
@@ -66,7 +66,6 @@ export const easyblocksConfig: Config = {
     },
   },
   components: [
-    // ...builtinEditableComponentsDefinitions,
     {
       id: "ProductCard",
       label: "Product Card",
@@ -150,6 +149,7 @@ export const easyblocksConfig: Config = {
     buttonComponentDefinition,
     coverCardDefinition,
     bannerCardDefinition,
+    bannerSectionDefinition,
   ],
   colors: [
     {

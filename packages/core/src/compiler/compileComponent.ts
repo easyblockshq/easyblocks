@@ -455,6 +455,9 @@ export function compileComponent(
           values: scalarizedConfig,
           params: ownPropsAfterAuto.params,
           editingInfo: editingInfoInput,
+          device: editorContext.devices.find(
+            (device) => device.id === editorContext.breakpointIndex
+          )!,
           ...(componentDefinition.id === "@easyblocks/rich-text" ||
           componentDefinition.id === "@easyblocks/rich-text-part"
             ? {
@@ -642,6 +645,9 @@ export function compileComponent(
         values: scalarizedValues,
         params: ownPropsAfterAuto!.params,
         editingInfo: editingInfoInput,
+        device: editorContext.devices.find(
+          (device) => device.id === editorContext.breakpointIndex
+        )!,
         ...(componentDefinition.id === "@easyblocks/rich-text" ||
         componentDefinition.id === "@easyblocks/rich-text-part"
           ? {

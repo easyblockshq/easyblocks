@@ -486,6 +486,7 @@ export type NoCodeComponentEditingFunctionInput<
   values: Values;
   params: Params;
   editingInfo: EditingInfo;
+  device: DeviceRange;
 };
 
 export type NoCodeComponentEditingFunction<

@@ -1,12 +1,34 @@
-import { NoCodeComponentDefinition } from "@easyblocks/core";
+import { DeviceRange, NoCodeComponentDefinition } from "@easyblocks/core";
 
 import { bannerCardDefinition } from "@/app/easyblocks/components/BannerCard/BannerCard.definition";
 import {
+  sectionWrapperCalculateMarginAndMaxWidth,
   sectionWrapperEditing,
   sectionWrapperSchemaProps,
   sectionWrapperStyles,
   SectionWrapperValues,
-} from "@/app/easyblocks/components/utils/sectionWrapper/SectionWrapper";
+} from "@/app/easyblocks/components/utils/sectionWrapper/sectionWrapperHelpers";
+
+function getBannerCardValues(values: Record<string, any>, device: DeviceRange) {
+  const { margin } = sectionWrapperCalculateMarginAndMaxWidth(
+    values.containerMargin,
+    values.containerMaxWidth,
+    device
+  );
+
+  return {
+    ...values,
+    paddingLeft: values.escapeMargin ? margin.css : values.paddingLeft,
+    paddingRight: values.escapeMargin ? margin.css : values.paddingRight,
+    noFillPaddingLeft: values.escapeMargin
+      ? margin.css
+      : values.noFillPaddingLeft,
+    noFillPaddingRight: values.escapeMargin
+      ? margin.css
+      : values.noFillPaddingRight,
+    forceStandardHorizontalPaddings: !!values.escapeMargin,
+  };
+}
 
 export const bannerSectionDefinition: NoCodeComponentDefinition<
   Record<string, any> & SectionWrapperValues
@@ -16,6 +38,13 @@ export const bannerSectionDefinition: NoCodeComponentDefinition<
   type: "section",
   schema: [
     ...sectionWrapperSchemaProps.margins,
+    {
+      prop: "escapeMargin",
+      label: "Escape",
+      type: "boolean",
+      responsive: true,
+      group: "Section margins",
+    },
     ...bannerCardDefinition.schema,
     ...sectionWrapperSchemaProps.headerAndBackground,
   ],
@@ -29,16 +58,27 @@ export const bannerSectionDefinition: NoCodeComponentDefinition<
     });
 
     const bannerCardStyles = bannerCardDefinition.styles!({
-      values,
+      values: getBannerCardValues(values, device),
       params,
       device,
       isEditing,
     });
 
+    const { margin } = sectionWrapperCalculateMarginAndMaxWidth(
+      values.containerMargin,
+      values.containerMaxWidth,
+      device
+    );
+
     return {
       styled: {
         ...sectionStyles.styled,
         ...bannerCardStyles.styled,
+        SectionRoot: {
+          position: "relative",
+          paddingLeft: values.escapeMargin ? 0 : margin.css,
+          paddingRight: values.escapeMargin ? 0 : margin.css,
+        },
       },
       components: {
         ...sectionStyles.components,
@@ -46,17 +86,19 @@ export const bannerSectionDefinition: NoCodeComponentDefinition<
       },
     };
   },
-  editing: ({ editingInfo, values, params }) => {
+  editing: ({ editingInfo, values, params, device }) => {
     const sectionEditingInfo = sectionWrapperEditing({
       editingInfo,
       values,
       params,
+      device,
     });
 
     const bannerCardEditing = bannerCardDefinition.editing!({
       editingInfo,
-      values,
+      values: getBannerCardValues(values, device),
       params,
+      device,
     });
 
     return {

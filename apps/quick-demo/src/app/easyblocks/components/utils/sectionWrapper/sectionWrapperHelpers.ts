@@ -241,7 +241,6 @@ export const sectionWrapperSchemaProps: {
 export type SectionWrapperValues = {
   containerMargin: Spacing;
   containerMaxWidth: string;
-  escapeMargin: boolean;
   hide: boolean;
   headerMode: string;
   layout1Stack: string;

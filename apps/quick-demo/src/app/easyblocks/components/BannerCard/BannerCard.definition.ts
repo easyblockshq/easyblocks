@@ -112,6 +112,21 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
 
     paddingSchemaProp("paddingInternal", "Internal", "Padding"),
 
+    /**
+     * forceStandardHorizontalPaddings
+     *
+     * This is a special property that is ignored in BannerCard.
+     * However, in case of BannerSection which reuses BannerCard this property might be set to true.
+     * It happens when section is aligned to screen edges (escapeMargin = true) - in that case we want to use standard paddings instead of noFill ones.
+     */
+    {
+      prop: "forceStandardHorizontalPaddings",
+      type: "boolean",
+      responsive: true,
+      visible: false,
+      defaultValue: false,
+    },
+
     {
       prop: "enableFill",
       label: "Enable",
@@ -145,6 +160,7 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
       coverWidth,
       enableFill,
       coverVerticalAlign,
+      forceStandardHorizontalPaddings,
     } = values;
 
     const { isNaked, paddingModes, stackAlign, stackJustify } =
@@ -212,6 +228,11 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
         coverGridCol = "1 / span 2";
         coverGridRow = "1 / span 3";
       }
+
+      //
+      // if (isNaked) {
+      //   stackGridCol = "4 / span 2";
+      // }
     } else if (coverPosition === "right") {
       gridTemplateRows = `${paddingTop} 1fr ${paddingBottom}`;
       gridTemplateColumns = `${paddingLeft} ${stackFr}fr ${paddingInternal} ${coverFr}fr ${paddingRight}`;
@@ -226,6 +247,10 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
         coverGridCol = "4 / span 2";
         coverGridRow = "1 / span 3";
       }
+
+      // if (isNaked) {
+      //   stackGridCol = "1 / span 2";
+      // }
     } else if (coverPosition === "top") {
       gridTemplateRows = `${paddingTop} auto ${paddingInternal} auto ${paddingBottom}`;
       gridTemplateColumns = `${paddingLeft} 1fr ${paddingRight}`;
@@ -341,6 +366,8 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
 
     const fillColor = getField("fillColor");
 
+    console.log("left", paddingModes.left);
+
     setPaddingFieldVisibilityBasedOnMode(
       paddingLeft,
       noFillPaddingLeft,
@@ -361,6 +388,7 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
       noFillPaddingBottom,
       paddingModes.bottom
     );
+
     paddingInternal.visible = paddingModes.internal === "standard";
 
     if (values.coverPosition !== "left" && values.coverPosition !== "right") {
@@ -393,10 +421,15 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
   },
 };
 
-type PaddingMode = "standard" | "noFill" | "none";
+type PaddingMode = "standard" | "standard-hidden" | "noFill" | "none";
 
 function calculateBannerCardStuff(values: Record<string, any>) {
-  const { enableFill, enableBorder, coverPosition } = values;
+  const {
+    enableFill,
+    enableBorder,
+    coverPosition,
+    forceStandardHorizontalPaddings,
+  } = values;
 
   const [stackAlign, stackJustify] = values.stackPosition.split("-");
 
@@ -435,6 +468,11 @@ function calculateBannerCardStuff(values: Record<string, any>) {
     paddingModes.top = "standard";
     paddingModes.bottom = "standard";
     paddingModes.internal = "none";
+  }
+
+  if (forceStandardHorizontalPaddings) {
+    paddingModes.left = "standard-hidden";
+    paddingModes.right = "standard-hidden";
   }
 
   return {
