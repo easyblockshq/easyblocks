@@ -15,7 +15,7 @@ function Button(
   const { ButtonRoot, IconWrapper, Action, variant, icon, label = "" } = props;
 
   const triggerElement = (
-    <ButtonRoot.type {...ButtonRoot.props} {...props}>
+    <ButtonRoot.type {...ButtonRoot.props}>
       {variant !== "icon" && <div>{label}</div>}
       {variant !== "label" && (
         <IconWrapper.type
