@@ -1,9 +1,10 @@
 import { Spacing } from "@easyblocks/core";
-import { SectionWrapperValues } from "@/app/easyblocks/components/utils/sectionWrapper/SectionWrapper";
+import { SectionWrapperValues } from "@/app/easyblocks/components/utils/sectionWrapper/sectionWrapperHelpers";
 
 export type GridCompiledValues = SectionWrapperValues & {
   Cards: any[];
   variant: string;
+  escapeMargin: boolean;
   numberOfItems: string;
   fractionalItemWidth: string;
   columnGap: Spacing;

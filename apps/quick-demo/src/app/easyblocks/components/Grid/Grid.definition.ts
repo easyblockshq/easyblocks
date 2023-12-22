@@ -276,11 +276,12 @@ export const gridComponentDefinition: NoCodeComponentDefinition<
     ...sectionWrapperSchemaProps.headerAndBackground,
   ],
   styles: gridStyles,
-  editing: ({ values, params, editingInfo }) => {
+  editing: ({ values, params, editingInfo, device }) => {
     const sectionEditing = sectionWrapperEditing({
       editingInfo,
       values,
       params,
+      device,
     });
 
     const fields = Object.fromEntries(
