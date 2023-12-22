@@ -44,6 +44,18 @@ const vimeoPlayerEditableComponent: NoCodeComponentDefinition<VimeoPlayerValues>
       },
     ],
     styles: vimeoStyles,
+    editing: ({ params, editingInfo }) => {
+      let fields = [...editingInfo.fields];
+
+      // If aspectRatio is passed from a parent component, we don't display it
+      if (params.aspectRatio) {
+        fields = fields.filter((field) => field.path !== "aspectRatio");
+      }
+
+      return {
+        fields,
+      };
+    },
   };
 
 export { vimeoPlayerEditableComponent };

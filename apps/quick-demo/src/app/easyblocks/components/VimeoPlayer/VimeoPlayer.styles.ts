@@ -14,9 +14,11 @@ export interface VimeoPlayerValues {
 }
 
 export function vimeoStyles({
+  params,
   values,
 }: NoCodeComponentStylesFunctionInput<VimeoPlayerValues>): NoCodeComponentStylesFunctionResult {
-  const paddingBottom = getPaddingBottomFromAspectRatio(values.aspectRatio);
+  const aspectRatio = params.aspectRatio ?? values.aspectRatio;
+  const isNaturalAspectRatio = aspectRatio === "natural";
 
   return {
     styled: {
@@ -43,12 +45,15 @@ export function vimeoStyles({
       },
       AspectRatioMaker: {
         position: "relative",
-        paddingBottom,
+        paddingBottom: isNaturalAspectRatio
+          ? "56.25%"
+          : getPaddingBottomFromAspectRatio(aspectRatio), // we don't know natural size for vimeo so we set it to 16:9
       },
       PlayerContainer: {
         height: "100%",
         width: "100%",
         overflow: "hidden",
+        display: "grid",
       },
       ErrorContainer: {
         position: "absolute",
