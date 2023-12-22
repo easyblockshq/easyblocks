@@ -3,7 +3,7 @@ import { ProductCard } from "@/app/easyblocks/components/ProductCard/ProductCard
 import { Image } from "./components/Image/Image";
 import { Video } from "./components/Video/Video";
 import { Stack } from "./components/Stack/Stack";
-import { Buttons } from "./components/Buttons/Buttons";
+import { ButtonGroup } from "./components/ButtonGroup/ButtonGroup";
 import { RootSections } from "./components/RootSections/RootSections";
 import { Grid } from "./components/Grid/Grid";
 import { TwoCards } from "./components/TwoCards/TwoCards";
@@ -21,7 +21,7 @@ const components = {
   Link,
   AlertAction,
   RootSections,
-  Buttons,
+  ButtonGroup,
   Button,
   Image,
   Video,

@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 
-function Buttons(props: {
+function ButtonGroup(props: {
   ButtonsContainer: ReactElement;
   Buttons: Array<ReactElement>;
 }) {
@@ -15,4 +15,4 @@ function Buttons(props: {
   );
 }
 
-export { Buttons };
+export { ButtonGroup };

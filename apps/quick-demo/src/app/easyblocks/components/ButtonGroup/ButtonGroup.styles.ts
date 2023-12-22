@@ -3,7 +3,7 @@ import type {
   NoCodeComponentStylesFunctionResult,
 } from "@easyblocks/core";
 
-export function buttonsStyles({
+export function buttonGroupStyles({
   values,
   params,
 }: NoCodeComponentStylesFunctionInput): NoCodeComponentStylesFunctionResult {

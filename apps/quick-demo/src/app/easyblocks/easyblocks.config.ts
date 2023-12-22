@@ -3,7 +3,7 @@ import { templates } from "@/app/easyblocks/templates/templates";
 import { Config } from "@easyblocks/core";
 import { solidColorComponentDefinition } from "./components/SolidColor/SolidColor.definition";
 import { buttonComponentDefinition } from "./components/Button/Button.definition";
-import { buttonsComponentDefinition } from "./components/Buttons/Buttons.definition";
+import { buttonGroupDefinition } from "./components/ButtonGroup/ButtonGroup.definition";
 import { gridComponentDefinition } from "./components/Grid/Grid.definition";
 import { imageComponentDefinition } from "./components/Image/Image.definition";
 import { rootSectionsComponentDefinition } from "./components/RootSections/RootSections.definition";
@@ -72,7 +72,7 @@ export const easyblocksConfig: Config = {
   components: [
     rootSectionsComponentDefinition,
     gridComponentDefinition,
-    buttonsComponentDefinition,
+    buttonGroupDefinition,
     imageComponentDefinition,
     videoComponentDefinition,
     stackComponentDefinition,
