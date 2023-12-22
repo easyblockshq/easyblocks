@@ -31,56 +31,38 @@ function correctCardWidths(
 }
 
 export const twoCardsChange: NoCodeComponentChangeFunction = ({
-  value,
-  fieldName,
+  newValue,
+  prop,
   values,
-  closestDefinedValues,
-}): Record<string, any> => {
-  if (
-    fieldName === "card1Width" ||
-    fieldName === "card2Width" ||
-    fieldName === "collapse"
-  ) {
-    const definedValues: WidthRelatedValues = {
-      card1Width: closestDefinedValues.card1Width,
-      card2Width: closestDefinedValues.card2Width,
-      collapse: closestDefinedValues.collapse,
-    };
-
-    if (fieldName === "collapse") {
-      if (values.card1Width === undefined) {
-        // we don't touch undefined card widths
-        return {
-          collapse: value,
-        };
-      } else {
-        return correctCardWidths(
-          { ...definedValues, collapse: value },
-          "card1Width"
-        );
-      }
-    } else if (fieldName === "card1Width" || fieldName === "card2Width") {
-      if (value === undefined) {
-        return {
-          collapse: values.collapse,
-          card1Width: undefined,
-          card2Width: undefined,
-        };
-      }
-
+  valuesAfterAuto,
+}) => {
+  // card1Width, card2Width and collapse are strictly correlated. When auto is turned on, all should go auto at the same time and vice versa.
+  if (prop === "card1Width" || prop === "card2Width" || prop === "collapse") {
+    // Auto turned on
+    if (newValue === undefined) {
       return {
-        ...correctCardWidths(
-          { ...definedValues, [fieldName]: value },
-          fieldName
-        ),
-        collapse: values.collapse,
+        collapse: undefined,
+        card1Width: undefined,
+        card2Width: undefined,
       };
     } else {
-      throw new Error("unreachable");
+      const definedValues: WidthRelatedValues = {
+        card1Width: valuesAfterAuto.card1Width,
+        card2Width: valuesAfterAuto.card2Width,
+        collapse: valuesAfterAuto.collapse,
+      };
+
+      if (prop === "collapse") {
+        return correctCardWidths(
+          { ...definedValues, collapse: newValue },
+          "card1Width"
+        );
+      } else if (prop === "card1Width" || prop === "card2Width") {
+        return {
+          ...correctCardWidths({ ...definedValues, [prop]: newValue }, prop),
+          collapse: values.collapse,
+        };
+      }
     }
   }
-
-  return {
-    [fieldName]: value,
-  };
 };

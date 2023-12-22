@@ -218,11 +218,6 @@ function createFieldController({
                 ? val[editorContext.breakpointIndex]
                 : val;
 
-              /**
-               * IMPORTANT!!! Using responsiveValueGetClosestDefinedValue here is a total simplification. It can lead to bugs in the future, good thing it's only used in TwoCards, which are used in full screen mode.
-               * This should be fixed.
-               * Same applies
-               */
               closestDefinedValues[schemaProp.prop] =
                 responsiveValueGetDefinedValue(
                   val,
@@ -232,21 +227,25 @@ function createFieldController({
                 );
             });
 
+            const inputValue = isTrulyResponsiveValue(parsedValue)
+              ? parsedValue[editorContext.breakpointIndex]
+              : parsedValue;
+
             const result = parentDefinition.change({
-              value: isTrulyResponsiveValue(parsedValue)
-                ? parsedValue[editorContext.breakpointIndex]
-                : parsedValue,
-              closestDefinedValue: responsiveValueGetDefinedValue(
-                /** IMPORTANT!!! See warning above */
-                parsedValue,
-                editorContext.breakpointIndex,
-                editorContext.devices,
-                getDevicesWidths(editorContext.devices)
-              ),
-              fieldName: propName,
+              newValue: inputValue,
+              prop: propName,
               values,
-              closestDefinedValues,
-            });
+
+              /**
+               * IMPORTANT!!!
+               *
+               * valuesAfterAuto are an approximation for now, they're not real auto values, they just have closest defined values.
+               *
+               */
+              valuesAfterAuto: closestDefinedValues,
+            }) ?? {
+              [propName]: inputValue,
+            };
 
             parentDefinition.schema.forEach((schemaProp) => {
               if (!result.hasOwnProperty(schemaProp.prop)) {

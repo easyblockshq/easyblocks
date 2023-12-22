@@ -673,23 +673,11 @@ export type DeviceId = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 export type Devices = DeviceRange[];
 
 export type NoCodeComponentChangeFunction = (arg: {
-  value: any;
-  closestDefinedValue: any;
-  // closestDefinedValue: any;
-  // /**
-  //  * closestDefinedValue, why?
-  //  *
-  //  * 1. When change is called, the value can be undefined (resetting in auto).
-  //  * 2. But sometimes we need to know what auto value will be applied for this new undefined val.
-  //  * 3. We can't run auto here, it's too heavy. We just apply "responsiveValueGet" and this is our "guess" for now.
-  //  * 4. Remember that if we had a real auto here, after change, auto values can change again, and that should trigger another change etc... Very bad recursions.
-  //  * 5. That's why custom change is tricky, we must remember about that.
-  //  *
-  //  */
-  fieldName: string;
+  newValue: any;
+  prop: string;
   values: Record<string, any>;
-  closestDefinedValues: Record<string, any>;
-}) => Record<string, any>;
+  valuesAfterAuto: Record<string, any>;
+}) => Record<string, any> | undefined;
 
 export type SidebarPreviewVariant = {
   description?: string;

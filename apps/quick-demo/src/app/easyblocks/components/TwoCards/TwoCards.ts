@@ -143,7 +143,6 @@ const twoCardsComponentDefinition: NoCodeComponentDefinition<
     ...sectionWrapperSchemaProps.headerAndBackground,
   ],
   styles: twoCardsStyles,
-  // change: twoCardsChange,
   editing: (args) => {
     const sectionEditing = sectionWrapperEditing(args);
     const { editingInfo, values } = args;
