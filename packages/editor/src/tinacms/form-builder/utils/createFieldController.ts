@@ -1,4 +1,5 @@
 import {
+  getDevicesWidths,
   getFallbackLocaleForLocale,
   isTrulyResponsiveValue,
   responsiveValueGetDefinedValue,
@@ -10,7 +11,6 @@ import {
   duplicateConfig,
   findComponentDefinitionById,
   findPathOfFirstAncestorOfType,
-  getDevicesWidths,
   getSchemaDefinition,
   parsePath,
   richTextChangedEvent,

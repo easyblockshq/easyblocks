@@ -1,8 +1,8 @@
 import {
+  Devices,
   getDevicesWidths,
   responsiveValueForceGet,
-} from "@easyblocks/app-utils";
-import { Devices } from "@easyblocks/core";
+} from "@easyblocks/core";
 import { gridAuto } from "./Grid.auto";
 import { GridCompiledValues } from "./Grid.types";
 

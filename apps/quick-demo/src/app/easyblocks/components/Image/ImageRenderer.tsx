@@ -1,4 +1,4 @@
-import { ImageSrc } from "@easyblocks/editable-components";
+import { ImageSrc } from "../../externalData/types";
 import { Placeholder } from "./Placeholder";
 
 type ImageRendererProps = {

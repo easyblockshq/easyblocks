@@ -1,6 +1,7 @@
 import {
   DeviceRange,
   Devices,
+  getDevicesWidths,
   NoCodeComponentAutoFunction,
   TrulyResponsiveValue,
   responsiveValueFill,
@@ -9,7 +10,7 @@ import {
   responsiveValueGetDefinedValue,
   spacingToPx,
 } from "@easyblocks/core";
-import { getDevicesWidths, scalarizeConfig } from "@easyblocks/core/_internals";
+import { scalarizeConfig } from "@easyblocks/core/_internals";
 import { responsiveAuto } from "../../responsiveAuto";
 import { gridContainerController } from "./Grid.controller";
 import { GridCompiledValues, GridParams } from "./Grid.types";

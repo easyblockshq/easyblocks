@@ -1,8 +1,8 @@
 import {
+  getDevicesWidths,
   NoCodeComponentAutoFunctionInput,
   responsiveValueGetDefinedValue,
 } from "@easyblocks/core";
-import { getDevicesWidths } from "@easyblocks/core/_internals";
 import { ResponsiveAutoCallback, responsiveAuto } from "../../responsiveAuto";
 import { TWO_CARDS_COL_NUM } from "./twoCardsConstants";
 import { DecomposedValues } from "../../decomposeValues";

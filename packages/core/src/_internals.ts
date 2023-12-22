@@ -4,14 +4,12 @@ export { compileBox, getBoxStyles } from "./compiler/box";
 export { RichTextEditor } from "./compiler/builtins/$richText/$richText.editor";
 export { optionalTextModifierSchemaProp } from "./compiler/builtins/$richText/$richTextInlineWrapperElement/$richTextInlineWrapperElement";
 export { richTextInlineWrapperActionSchemaProp } from "./compiler/builtins/$richText/$richTextInlineWrapperElement/richTextInlineWrapperActionSchemaProp";
-export { buildRichTextNoCodeEntry } from "./compiler/builtins/$richText/builders";
 export { TextEditor } from "./compiler/builtins/$text/$text.editor";
 export { buildText } from "./compiler/builtins/$text/buildText";
 export { useTextValue } from "./compiler/builtins/useTextValue";
 export { compileInternal } from "./compiler/compileInternal";
 export { configTraverse } from "./compiler/configTraverse";
 export { getSchemaDefinition } from "./compiler/definitions";
-export { getDevicesWidths } from "./compiler/devices";
 export { duplicateConfig } from "./compiler/duplicateConfig";
 export {
   findComponentDefinition,

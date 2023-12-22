@@ -28,8 +28,7 @@ import Button_standard_light from "./basic/Button_standard_light.json";
 import Button_text from "./basic/Button_text.json";
 import Button_icon_standard from "./basic/Button_icon_standard.json";
 
-import { Template } from "@easyblocks/core";
-import { buildRichTextNoCodeEntry } from "@easyblocks/core/_internals";
+import { buildRichTextNoCodeEntry, Template } from "@easyblocks/core";
 
 import { NoomaBannerSection1 } from "@/app/easyblocks/templates/nooma/BannerSection1/NoomaBannerSection1";
 import { NoomaBannerSection2 } from "@/app/easyblocks/templates/nooma/BannerSection2/NoomaBannerSection2";

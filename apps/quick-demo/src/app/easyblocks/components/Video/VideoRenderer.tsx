@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { VideoSrc } from "../../externalData/types";
 import { VideoProps } from "./Video";
-import { VideoSrc } from "@easyblocks/editable-components";
 
 type VideoRendererProps = VideoProps & {
   video: VideoSrc | undefined;

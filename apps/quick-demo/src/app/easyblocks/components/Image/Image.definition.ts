@@ -1,7 +1,7 @@
 import { NoCodeComponentDefinition } from "@easyblocks/core";
-import { ImageSrc } from "@easyblocks/editable-components";
 import { last } from "@easyblocks/utils";
 import { imageStyles } from "./Image.styles";
+import { ImageSrc } from "../../externalData/types";
 
 const imageComponentDefinition: NoCodeComponentDefinition = {
   id: "Image",

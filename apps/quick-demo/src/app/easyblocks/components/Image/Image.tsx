@@ -1,5 +1,5 @@
-import { ImageSrc } from "@easyblocks/editable-components";
 import { ReactElement } from "react";
+import { ImageSrc } from "../../externalData/types";
 import { ImageRenderer } from "./ImageRenderer";
 
 type ImageProps = {

@@ -11,7 +11,6 @@
   "dependencies": {
     "@easyblocks/core": "workspace:*",
     "@easyblocks/design-system": "workspace:*",
-    "@easyblocks/editable-components": "workspace:*",
     "@easyblocks/editor": "workspace:*",
     "@easyblocks/utils": "workspace:*",
     "@radix-ui/react-dialog": "^1.0.4",

@@ -1,5 +1,7 @@
-import { NoCodeComponentAutoFunction } from "@easyblocks/core";
-import { getDevicesWidths } from "@easyblocks/core/_internals";
+import {
+  getDevicesWidths,
+  NoCodeComponentAutoFunction,
+} from "@easyblocks/core";
 import { responsiveAuto } from "../../responsiveAuto";
 
 export const bannerCard2Auto: NoCodeComponentAutoFunction = ({

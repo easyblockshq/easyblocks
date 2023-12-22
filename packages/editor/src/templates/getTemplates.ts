@@ -1,5 +1,6 @@
 import { configMap } from "@easyblocks/app-utils";
 import {
+  buildRichTextNoCodeEntry,
   ComponentConfig,
   ConfigComponent,
   IApiClient,
@@ -10,7 +11,6 @@ import {
 } from "@easyblocks/core";
 import {
   InternalComponentDefinition,
-  buildRichTextNoCodeEntry,
   findComponentDefinitionById,
   normalize,
 } from "@easyblocks/core/_internals";

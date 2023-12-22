@@ -1,12 +1,12 @@
 import {
   Field,
+  getDevicesWidths,
   RefValue,
   ResponsiveValue,
   ThemeRefValue,
   isTrulyResponsiveValue,
   responsiveValueGetDefinedValue,
 } from "@easyblocks/core";
-import { getDevicesWidths } from "@easyblocks/core/_internals";
 import {
   SSColors,
   SSInput,

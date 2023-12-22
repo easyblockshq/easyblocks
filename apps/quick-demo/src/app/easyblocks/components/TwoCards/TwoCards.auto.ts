@@ -1,8 +1,8 @@
 import {
+  getDevicesWidths,
   NoCodeComponentAutoFunctionInput,
   responsiveValueGetDefinedValue,
 } from "@easyblocks/core";
-import { getDevicesWidths } from "@easyblocks/core/_internals";
 import { DecomposedValues } from "../utils/decomposeValues";
 import {
   ResponsiveAutoCallback,

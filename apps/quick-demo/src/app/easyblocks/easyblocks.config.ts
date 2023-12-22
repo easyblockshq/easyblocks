@@ -1,27 +1,25 @@
-import { Config } from "@easyblocks/core";
+import { alertActionDefinition } from "@/app/easyblocks/components/AlertAction/AlertAction.definition";
+import { bannerCardDefinition } from "@/app/easyblocks/components/BannerCard/BannerCard.definition";
+import { coverCardDefinition } from "@/app/easyblocks/components/BannerCard/CoverCard/CoverCard.definition";
+import { bannerSectionDefinition } from "@/app/easyblocks/components/BannerSection/BannerSection.definition";
+import { linkDefinition } from "@/app/easyblocks/components/Link/Link.definition";
+import { productCardDefinition } from "@/app/easyblocks/components/ProductCard/ProductCard.definition";
+import { vimeoPlayerEditableComponent } from "@/app/easyblocks/components/VimeoPlayer/VimeoPlayer.definition";
 import { mockVideoWidget } from "@/app/easyblocks/externalData/mockMedia/mockVideoWidget";
 import { templates } from "@/app/easyblocks/templates/templates";
-import { solidColorComponentDefinition } from "./components/SolidColor/SolidColor.definition";
+import { Config } from "@easyblocks/core";
 import { buttonComponentDefinition } from "./components/Button/Button.definition";
 import { buttonGroupDefinition } from "./components/ButtonGroup/ButtonGroup.definition";
 import { gridComponentDefinition } from "./components/Grid/Grid.definition";
 import { imageComponentDefinition } from "./components/Image/Image.definition";
 import { rootSectionStackDefinition } from "./components/RootSectionStack/RootSectionStack.definition";
+import { solidColorComponentDefinition } from "./components/SolidColor/SolidColor.definition";
 import { stackComponentDefinition } from "./components/Stack/Stack.definition";
 import { twoCardsComponentDefinition } from "./components/TwoCards/TwoCards.definition";
 import { videoComponentDefinition } from "./components/Video/Video.definition";
 import { mockImageWidget } from "./externalData/mockMedia/mockImageWidget";
 import { pexelsImageWidget } from "./externalData/pexels/pexelsImageWidget";
 import { productWidget } from "./externalData/product/productWidget";
-import { coverCardDefinition } from "@/app/easyblocks/components/BannerCard/CoverCard/CoverCard.definition";
-import { bannerCardDefinition } from "@/app/easyblocks/components/BannerCard/BannerCard.definition";
-import { bannerSectionDefinition } from "@/app/easyblocks/components/BannerSection/BannerSection.definition";
-import { vimeoPlayerEditableComponent } from "@/app/easyblocks/components/VimeoPlayer/VimeoPlayer.definition";
-import { productCardDefinition } from "@/app/easyblocks/components/ProductCard/ProductCard.definition";
-import { linkDefinition } from "@/app/easyblocks/components/Link/Link.definition";
-import { alertActionDefinition } from "@/app/easyblocks/components/AlertAction/AlertAction.definition";
-
-import starterTemplate from "./templates/starterTemplate.json";
 
 if (!process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN) {
   throw new Error("Missing NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN");

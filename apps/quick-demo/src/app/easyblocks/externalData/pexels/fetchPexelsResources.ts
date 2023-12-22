@@ -1,5 +1,5 @@
 import type { ChangedExternalData, ExternalData } from "@easyblocks/core";
-import type { ImageSrc, VideoSrc } from "@easyblocks/editable-components";
+import type { ImageSrc, VideoSrc } from "../types";
 import {
   PEXELS_IMAGE_WIDGET_ID,
   PEXELS_VIDEO_WIDGET_ID,

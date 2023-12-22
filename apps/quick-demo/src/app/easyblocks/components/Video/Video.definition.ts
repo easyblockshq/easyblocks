@@ -1,14 +1,6 @@
-import {
-  ExternalReference,
-  NoCodeComponentDefinition,
-  getExternalReferenceLocationKey,
-  getExternalValue,
-  isCompoundExternalDataValue,
-  responsiveValueFindDeviceWithDefinedValue,
-  responsiveValueForceGet,
-} from "@easyblocks/core";
-import { VideoSrc } from "@easyblocks/editable-components";
-import { assertDefined, last } from "@easyblocks/utils";
+import { NoCodeComponentDefinition } from "@easyblocks/core";
+import { last } from "@easyblocks/utils";
+import { VideoSrc } from "../../externalData/types";
 import videoStyles from "./Video.styles";
 
 const VIDEO_THUMBNAIL_URL =

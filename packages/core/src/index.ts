@@ -4,6 +4,9 @@ export { buildEntry } from "./buildEntry";
 export * from "./buildPreview";
 export * from "./checkers";
 export * from "./compiler";
+export { buildRichTextNoCodeEntry } from "./compiler/builtins/$richText/builders";
+export { resolveLocalisedValue } from "./compiler/definitions";
+export { getDevicesWidths } from "./compiler/devices";
 export { Easyblocks } from "./components/Easyblocks";
 export type {
   ComponentOverrides,
@@ -28,4 +31,3 @@ export * from "./resourcesUtils";
 export * from "./responsiveness";
 export { spacingToPx } from "./spacingToPx";
 export * from "./types";
-export { resolveLocalisedValue } from "./compiler/definitions";

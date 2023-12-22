@@ -1,14 +1,11 @@
 import {
   Devices,
+  getDevicesWidths,
   ResponsiveValue,
   responsiveValueFill,
   responsiveValueMap,
 } from "@easyblocks/core";
-import {
-  compileBox,
-  getBoxStyles,
-  getDevicesWidths,
-} from "@easyblocks/core/_internals";
+import { compileBox, getBoxStyles } from "@easyblocks/core/_internals";
 import { ReactElement } from "react";
 import { getPaddingBottomAndHeightFromAspectRatio } from "../../parseAspectRatio";
 import { CompiledNoCodeComponentProps, ImageSrc, VideoSrc } from "../../types";

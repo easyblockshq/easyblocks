@@ -1,11 +1,11 @@
 import {
   RefValue,
+  getDevicesWidths,
   ResponsiveValue,
   ThemeRefValue,
   responsiveValueFill,
   responsiveValueForceGet,
 } from "@easyblocks/core";
-import { getDevicesWidths } from "@easyblocks/core/_internals";
 import { entries } from "@easyblocks/utils";
 import React from "react";
 import { EditorContextType, useEditorContext } from "../../../EditorContext";

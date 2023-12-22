@@ -294,9 +294,6 @@ importers:
       '@easyblocks/design-system':
         specifier: workspace:*
         version: link:../../packages/design-system
-      '@easyblocks/editable-components':
-        specifier: workspace:*
-        version: link:../../packages/editable-components
       '@easyblocks/editor':
         specifier: workspace:*
         version: link:../../packages/editor

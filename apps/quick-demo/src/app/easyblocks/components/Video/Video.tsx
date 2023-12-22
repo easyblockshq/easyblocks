@@ -1,7 +1,7 @@
-import { VideoSrc } from "@easyblocks/editable-components";
 import { useForceRerender } from "@easyblocks/utils";
 import { ReactElement, useEffect } from "react";
 import { VideoRenderer } from "./VideoRenderer";
+import { VideoSrc } from "../../externalData/types";
 
 export type VideoProps = {
   image: VideoSrc | undefined;
