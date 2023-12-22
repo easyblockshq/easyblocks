@@ -204,8 +204,8 @@ export function createCompilationContext(
     richTextInlineWrapperElementEditableComponent,
     richTextPartEditableComponent,
     {
-      id: "$MissingComponent",
-      label: "Missing",
+      id: "@easyblocks/missing-component",
+      label: "Missing component",
       schema: [
         {
           prop: "error",

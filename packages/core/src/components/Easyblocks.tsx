@@ -13,6 +13,7 @@ import {
 } from "./ComponentBuilder/ComponentBuilder";
 import { EasyblocksExternalDataProvider } from "./EasyblocksExternalDataProvider";
 import { EasyblocksMetadataProvider } from "./EasyblocksMetadataProvider";
+import { MissingComponent } from "./MissingComponent";
 
 export type EasyblocksProps = {
   renderableDocument: RenderableDocument;
@@ -24,6 +25,7 @@ export type EasyblocksProps = {
 export type ComponentOverrides = Record<string, ReactElement>;
 
 const builtinComponents: ComponentBuilderProps["components"] = {
+  "@easyblocks/missing-component": MissingComponent,
   "@easyblocks/rich-text.client": RichTextClient,
   "@easyblocks/rich-text-block-element": RichTextBlockElementClient,
   "@easyblocks/rich-text-inline-wrapper-element":

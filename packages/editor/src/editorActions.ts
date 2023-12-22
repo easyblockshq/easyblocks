@@ -11,7 +11,6 @@ import {
   parsePath,
 } from "@easyblocks/core/_internals";
 import {
-  assertDefined,
   dotNotationGet,
   last,
   preOrderPathComparator,
@@ -321,14 +320,17 @@ function removeItems(
       name: fieldPath,
     });
 
-    const definition = assertDefined(
-      findComponentDefinitionById(templateId, compilationContext)
+    const definition = findComponentDefinitionById(
+      templateId,
+      compilationContext
     );
     const isAction =
-      isNoCodeComponentOfType(definition, "action") ||
-      isNoCodeComponentOfType(definition, "actionLink");
+      definition &&
+      (isNoCodeComponentOfType(definition, "action") ||
+        isNoCodeComponentOfType(definition, "actionLink"));
 
     // If we're removing item from the action field let's focus the component holding that field for better UX
+    // TODO: We shouldn't decide based on the component type but rather on the source of the removal (canvas vs sidebar)
     if (isAction) {
       return [parent.path];
     }

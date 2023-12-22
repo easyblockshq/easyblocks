@@ -47,7 +47,6 @@ import {
 import { Box } from "../Box/Box";
 import { useEasyblocksExternalData } from "../EasyblocksExternalDataProvider";
 import { useEasyblocksMetadata } from "../EasyblocksMetadataProvider";
-import { MissingComponent } from "../MissingComponent";
 
 function buildBoxes(
   compiled: any,
@@ -295,6 +294,7 @@ export type ComponentBuilderProps = {
   };
   compiled: CompiledShopstoryComponentConfig | CompiledCustomComponentConfig;
   components: {
+    "@easyblocks/missing-component": ComponentType<any>;
     "@easyblocks/rich-text.client": ComponentType<any>;
     "@easyblocks/rich-text-block-element": ComponentType<any>;
     "@easyblocks/rich-text-inline-wrapper-element": ComponentType<any>;
@@ -333,13 +333,13 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
   })!;
 
   const component = getComponent(componentDefinition, components, isEditing);
-  const isMissingComponent = compiled._template === "$MissingComponent";
+  const isMissingComponent =
+    compiled._template === "@easyblocks/missing-component";
   const isMissingInstance = component === undefined;
   const isMissing = isMissingComponent || isMissingInstance;
+  const MissingComponent = components["@easyblocks/missing-component"];
 
   if (isMissing) {
-    console.warn(`Missing "${compiled._template}"`);
-
     if (!isEditing) {
       return null;
     }
@@ -347,6 +347,8 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
     if (isMissingComponent) {
       return <MissingComponent error={true}>Missing</MissingComponent>;
     } else {
+      console.warn(`Missing "${compiled._template}"`);
+
       return (
         <MissingComponent component={componentDefinition} error={true}>
           Missing

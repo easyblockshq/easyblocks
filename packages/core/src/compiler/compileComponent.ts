@@ -124,13 +124,16 @@ export function compileComponent(
 
   if (!componentDefinition) {
     componentDefinition = assertDefined(
-      findComponentDefinitionById("$MissingComponent", compilationContext)
+      findComponentDefinitionById(
+        "@easyblocks/missing-component",
+        compilationContext
+      )
     );
 
     editableElement = {
       _template: componentDefinition.id,
       _id: uniqueId(),
-      error: `Shopstory can’t find definition for component: ${name} in your project. Please contact your developers to resolve this issue.`,
+      error: `Easyblocks can’t find definition for component "${name}" in your config. Please contact your developers to resolve this issue.`,
     };
 
     parentComponentEditingInfo = undefined;
