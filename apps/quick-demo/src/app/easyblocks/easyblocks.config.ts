@@ -1,6 +1,6 @@
+import { Config } from "@easyblocks/core";
 import { mockVideoWidget } from "@/app/easyblocks/externalData/mockMedia/mockVideoWidget";
 import { templates } from "@/app/easyblocks/templates/templates";
-import { Config } from "@easyblocks/core";
 import { solidColorComponentDefinition } from "./components/SolidColor/SolidColor.definition";
 import { buttonComponentDefinition } from "./components/Button/Button.definition";
 import { buttonGroupDefinition } from "./components/ButtonGroup/ButtonGroup.definition";

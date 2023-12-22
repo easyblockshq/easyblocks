@@ -21,7 +21,7 @@ export function Image(props: ImageProps) {
 
   const naturalAspectRatioPaddingBottom = image
     ? `${(1 / image.aspectRatio) * 100}%`
-    : undefined;
+    : "70%";
 
   return (
     <Wrapper.type {...Wrapper.props}>

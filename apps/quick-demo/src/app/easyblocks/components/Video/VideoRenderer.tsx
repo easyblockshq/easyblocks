@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { VideoProps } from "./Video.client";
+import { VideoProps } from "./Video";
 import { VideoSrc } from "@easyblocks/editable-components";
 
 type VideoRendererProps = VideoProps & {

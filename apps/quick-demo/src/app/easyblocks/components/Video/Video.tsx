@@ -22,9 +22,19 @@ export type VideoProps = {
 };
 
 function Video(props: VideoProps) {
-  const { image: video, Wrapper, AspectRatioMaker, ImageWrapper } = props;
+  const {
+    image: video,
+    Wrapper,
+    AspectRatioMaker,
+    NaturalAspectRatioMaker,
+    ImageWrapper,
+  } = props;
 
   const { forceRerender } = useForceRerender();
+
+  const naturalAspectRatioPaddingBottom = video
+    ? `${(1 / video.aspectRatio) * 100}%`
+    : "70%";
 
   useEffect(() => {
     const onResize = () => {
@@ -40,8 +50,20 @@ function Video(props: VideoProps) {
 
   return (
     <Wrapper.type {...Wrapper.props}>
-      <AspectRatioMaker.type {...AspectRatioMaker.props} />
+      <AspectRatioMaker.type
+        {...AspectRatioMaker.props}
+        style={{
+          display:
+            naturalAspectRatioPaddingBottom === undefined ? "block" : undefined,
+        }}
+      />
 
+      <NaturalAspectRatioMaker.type
+        {...NaturalAspectRatioMaker.props}
+        style={{
+          paddingBottom: naturalAspectRatioPaddingBottom,
+        }}
+      />
       <ImageWrapper.type {...ImageWrapper.props}>
         <VideoRenderer {...props} video={video} />
       </ImageWrapper.type>
