@@ -3,7 +3,6 @@ import React from "react";
 import NextImage, { ImageLoader, ImageProps } from "next/image";
 import { ImageLoaderProps, shopifyImageLoader } from "@/data/shopify/loaders";
 import { ImageObject } from "@/data/shopify/types";
-
 export const Image: React.FunctionComponent<ImageProps & ImageObject> = ({
   from,
   layout,
@@ -23,6 +22,7 @@ export const Image: React.FunctionComponent<ImageProps & ImageObject> = ({
         shopifyImageLoader({ src, width });
       break;
   }
+
   return (
     <NextImage
       src={src}

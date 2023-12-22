@@ -1,6 +1,6 @@
 import type { NoCodeComponentStylesFunction } from "@easyblocks/core";
 
-export const rootSectionStyles: NoCodeComponentStylesFunction = ({
+export const rootSectionStackStyles: NoCodeComponentStylesFunction = ({
   values,
   params,
   isEditing,

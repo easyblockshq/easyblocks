@@ -1,6 +1,6 @@
 import React, { Fragment, ReactElement } from "react";
 
-function RootSections(props: {
+export function RootSectionStack(props: {
   data: Array<ReactElement>;
   ItemWrappers: Array<ReactElement>;
 }) {
@@ -20,5 +20,3 @@ function RootSections(props: {
     </Fragment>
   );
 }
-
-export { RootSections };

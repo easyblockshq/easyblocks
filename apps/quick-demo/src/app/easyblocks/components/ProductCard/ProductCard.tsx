@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Media } from "../../../../components/Media/Media";
+import { Media } from "./Media/Media"; // legacy
 import { ShopifyProduct } from "@/data/shopify";
 import { formatPrice } from "@/data/shopify/formatPrice";
 

@@ -3,11 +3,11 @@ import {
   EditingField,
   NoCodeComponentDefinition,
 } from "@easyblocks/core";
-import { rootSectionStyles } from "./RootSections.styles";
+import { rootSectionStackStyles } from "./RootSectionStack.styles";
 
-const rootSectionsComponentDefinition: NoCodeComponentDefinition = {
-  id: "RootSections",
-  styles: rootSectionStyles,
+export const rootSectionStackDefinition: NoCodeComponentDefinition = {
+  id: "RootSectionStack",
+  styles: rootSectionStackStyles,
   editing: ({ editingInfo }) => {
     const data = editingInfo.components
       .data as Array<ChildComponentEditingInfo>;
@@ -73,5 +73,3 @@ const rootSectionsComponentDefinition: NoCodeComponentDefinition = {
     },
   ],
 };
-
-export { rootSectionsComponentDefinition };

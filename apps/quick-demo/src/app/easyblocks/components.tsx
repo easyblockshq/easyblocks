@@ -4,7 +4,7 @@ import { Image } from "./components/Image/Image";
 import { Video } from "./components/Video/Video";
 import { Stack } from "./components/Stack/Stack";
 import { ButtonGroup } from "./components/ButtonGroup/ButtonGroup";
-import { RootSections } from "./components/RootSections/RootSections";
+import { RootSectionStack } from "./components/RootSectionStack/RootSectionStack";
 import { Grid } from "./components/Grid/Grid";
 import { TwoCards } from "./components/TwoCards/TwoCards";
 import { SolidColor } from "./components/SolidColor/SolidColor";
@@ -20,7 +20,7 @@ const components = {
   ProductCard,
   Link,
   AlertAction,
-  RootSections,
+  RootSectionStack,
   ButtonGroup,
   Button,
   Image,

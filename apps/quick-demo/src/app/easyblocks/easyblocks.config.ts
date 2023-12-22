@@ -6,7 +6,7 @@ import { buttonComponentDefinition } from "./components/Button/Button.definition
 import { buttonGroupDefinition } from "./components/ButtonGroup/ButtonGroup.definition";
 import { gridComponentDefinition } from "./components/Grid/Grid.definition";
 import { imageComponentDefinition } from "./components/Image/Image.definition";
-import { rootSectionsComponentDefinition } from "./components/RootSections/RootSections.definition";
+import { rootSectionStackDefinition } from "./components/RootSectionStack/RootSectionStack.definition";
 import { stackComponentDefinition } from "./components/Stack/Stack.definition";
 import { twoCardsComponentDefinition } from "./components/TwoCards/TwoCards.definition";
 import { videoComponentDefinition } from "./components/Video/Video.definition";
@@ -45,14 +45,14 @@ export const easyblocksConfig: Config = {
     content: {
       label: "Content document template",
       entry: {
-        _template: "RootSections",
+        _template: "RootSectionStack",
         data: [],
       },
     },
     product: {
       label: "Product document template",
       entry: {
-        _template: "RootSections",
+        _template: "RootSectionStack",
         data: [],
       },
       schema: [
@@ -70,7 +70,7 @@ export const easyblocksConfig: Config = {
     },
   },
   components: [
-    rootSectionsComponentDefinition,
+    rootSectionStackDefinition,
     gridComponentDefinition,
     buttonGroupDefinition,
     imageComponentDefinition,
