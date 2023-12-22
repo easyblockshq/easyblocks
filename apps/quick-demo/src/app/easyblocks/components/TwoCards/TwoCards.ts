@@ -228,7 +228,6 @@ const twoCardsComponentDefinition: NoCodeComponentDefinition<
     };
   },
   auto: twoCardsAuto,
-  // @ts-expect-error Add proper signature for `change`
   change: twoCardsChange,
 };
 

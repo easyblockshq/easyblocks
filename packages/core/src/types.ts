@@ -523,6 +523,7 @@ export type NoCodeComponentDefinition<
   styles?: NoCodeComponentStylesFunction<Values, Params>;
   editing?: NoCodeComponentEditingFunction<Values, Params>;
   auto?: NoCodeComponentAutoFunction<Values, Params>;
+  change?: NoCodeComponentChangeFunction;
   pasteSlots?: Array<string>;
   thumbnail?: string;
   preview?: (input: {
