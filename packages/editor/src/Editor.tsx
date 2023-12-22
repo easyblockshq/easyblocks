@@ -918,24 +918,10 @@ const EditorContent = ({
           }`;
 
           actions.runChange(() => {
-            let newConfig = duplicateConfig(
+            const newConfig = duplicateConfig(
               dotNotationGet(form.values, fromPath),
               editorContext
             );
-
-            if (
-              !newConfig._itemProps[toPathParseResult.templateId]?.[
-                toPathParseResult.fieldName!
-              ]
-            ) {
-              newConfig._itemProps = {
-                [toPathParseResult.templateId]: {
-                  [toPathParseResult.fieldName!]: {},
-                },
-              };
-
-              newConfig = normalize(newConfig, editorContext);
-            }
 
             const insertionIndex = calculateInsertionIndex(
               fromPath,
