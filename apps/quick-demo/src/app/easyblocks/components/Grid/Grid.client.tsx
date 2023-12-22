@@ -1,5 +1,8 @@
 import React, { ReactElement } from "react";
-import { SectionProps } from "../utils/sectionWrapper";
+import {
+  SectionWrapper,
+  SectionProps,
+} from "../utils/sectionWrapper/SectionWrapper";
 
 export function Grid(
   props: {
@@ -18,7 +21,6 @@ export function Grid(
     itemContainers: Array<ReactElement>;
     itemInnerContainers: Array<ReactElement>;
     isEditing: boolean;
-    headerMode: "none" | "1-stack" | "2-stacks";
     _id: string;
   } & SectionProps
 ) {
@@ -35,19 +37,9 @@ export function Grid(
     RightArrowInnerWrapper,
     RightArrow,
     Root,
-    BackgroundContainer__,
-    Background__,
-    Container__,
-    ContentContainer__,
-    HeaderSecondaryStack,
-    HeaderStack,
-    HeaderStackContainer__,
-    Root__,
-    SubheaderStackContainer__,
     itemContainers,
     itemInnerContainers,
     isEditing,
-    headerMode,
   } = props;
 
   const spacerRef = React.useRef(null);
@@ -161,86 +153,66 @@ export function Grid(
   }, [isEditing]);
 
   return (
-    <Root__.type {...Root__.props} id={props._id}>
-      {Background__ && (
-        <BackgroundContainer__.type {...BackgroundContainer__.props}>
-          <Background__.type {...Background__.props} />
-        </BackgroundContainer__.type>
-      )}
-      <Container__.type {...Container__.props}>
-        {headerMode !== "none" && (
-          <HeaderStackContainer__.type {...HeaderStackContainer__.props}>
-            <HeaderStack.type {...HeaderStack.props} />
-          </HeaderStackContainer__.type>
-        )}
+    <SectionWrapper {...props}>
+      <Root.type {...Root.props}>
+        <Container.type
+          {...Container.props}
+          ref={containerRef}
+          data-easyblocks-scrollable-root
+        >
+          <InnerContainer.type
+            {...InnerContainer.props}
+            ref={innerContainerRef}
+          >
+            <SpacerLeft.type {...SpacerLeft.props} ref={spacerRef} />
+            {Cards.map((Card, index) => {
+              const ItemContainer = itemContainers[index];
+              const ItemInnerContainer = itemInnerContainers[index];
 
-        {headerMode === "2-stacks" && (
-          <SubheaderStackContainer__.type {...SubheaderStackContainer__.props}>
-            <HeaderSecondaryStack.type {...HeaderSecondaryStack.props} />
-          </SubheaderStackContainer__.type>
-        )}
-        <ContentContainer__.type {...ContentContainer__.props}>
-          <Root.type {...Root.props}>
-            <Container.type
-              {...Container.props}
-              ref={containerRef}
-              data-easyblocks-scrollable-root
-            >
-              <InnerContainer.type
-                {...InnerContainer.props}
-                ref={innerContainerRef}
-              >
-                <SpacerLeft.type {...SpacerLeft.props} ref={spacerRef} />
-                {Cards.map((Card, index) => {
-                  const ItemContainer = itemContainers[index];
-                  const ItemInnerContainer = itemInnerContainers[index];
+              return (
+                <ItemContainer.type
+                  {...ItemContainer.props}
+                  data-item
+                  key={index}
+                >
+                  <ItemInnerContainer.type {...ItemInnerContainer.props}>
+                    <Card.type {...Card.props} />
+                  </ItemInnerContainer.type>
+                </ItemContainer.type>
+              );
+            })}
+            <SpacerRight.type {...SpacerRight.props} ref={spacerRef} />
+          </InnerContainer.type>
+        </Container.type>
 
-                  return (
-                    <ItemContainer.type
-                      {...ItemContainer.props}
-                      data-item
-                      key={index}
-                    >
-                      <ItemInnerContainer.type {...ItemInnerContainer.props}>
-                        <Card.type {...Card.props} />
-                      </ItemInnerContainer.type>
-                    </ItemContainer.type>
-                  );
-                })}
-                <SpacerRight.type {...SpacerRight.props} ref={spacerRef} />
-              </InnerContainer.type>
-            </Container.type>
+        <LeftArrowWrapper.type
+          {...LeftArrowWrapper.props}
+          ref={leftArrowWrapperRef}
+        >
+          <LeftArrowInnerWrapper.type {...LeftArrowInnerWrapper.props}>
+            <LeftArrow.type
+              {...LeftArrow.props}
+              onClick={() => {
+                clickHandler(false);
+              }}
+            />
+          </LeftArrowInnerWrapper.type>
+        </LeftArrowWrapper.type>
 
-            <LeftArrowWrapper.type
-              {...LeftArrowWrapper.props}
-              ref={leftArrowWrapperRef}
-            >
-              <LeftArrowInnerWrapper.type {...LeftArrowInnerWrapper.props}>
-                <LeftArrow.type
-                  {...LeftArrow.props}
-                  onClick={() => {
-                    clickHandler(false);
-                  }}
-                />
-              </LeftArrowInnerWrapper.type>
-            </LeftArrowWrapper.type>
-
-            <RightArrowWrapper.type
-              {...RightArrowWrapper.props}
-              ref={rightArrowWrapperRef}
-            >
-              <RightArrowInnerWrapper.type {...RightArrowInnerWrapper.props}>
-                <RightArrow.type
-                  {...RightArrow.props}
-                  onClick={() => {
-                    clickHandler(true);
-                  }}
-                />
-              </RightArrowInnerWrapper.type>
-            </RightArrowWrapper.type>
-          </Root.type>
-        </ContentContainer__.type>
-      </Container__.type>
-    </Root__.type>
+        <RightArrowWrapper.type
+          {...RightArrowWrapper.props}
+          ref={rightArrowWrapperRef}
+        >
+          <RightArrowInnerWrapper.type {...RightArrowInnerWrapper.props}>
+            <RightArrow.type
+              {...RightArrow.props}
+              onClick={() => {
+                clickHandler(true);
+              }}
+            />
+          </RightArrowInnerWrapper.type>
+        </RightArrowWrapper.type>
+      </Root.type>
+    </SectionWrapper>
   );
 }

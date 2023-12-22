@@ -1,5 +1,5 @@
 import { Spacing } from "@easyblocks/core";
-import { SectionWrapperValues } from "@/app/easyblocks/components/utils/sectionWrapper";
+import { SectionWrapperValues } from "@/app/easyblocks/components/utils/sectionWrapper/SectionWrapper";
 
 export type GridCompiledValues = SectionWrapperValues & {
   Cards: any[];

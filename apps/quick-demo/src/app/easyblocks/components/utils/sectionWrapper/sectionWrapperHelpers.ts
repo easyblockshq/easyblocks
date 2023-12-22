@@ -327,7 +327,7 @@ export function sectionWrapperStyles({
   );
 
   if (values.headerMode === "1-stack") {
-    styles.grid.gridTemplateColumns = `${margin} 1fr ${margin}`;
+    styles.grid.gridTemplateColumns = `${margin.css} 1fr ${margin.css}`;
 
     styles.content.gridColumn = "1 / span 3";
     styles.content.gridRow = "2 / span 1";
@@ -352,7 +352,7 @@ export function sectionWrapperStyles({
       const [, align] = values.layout2Stacks.split("-");
       const isBelow = values.layout2Stacks.startsWith("below");
 
-      styles.grid.gridTemplateColumns = `${margin} 1fr ${margin}`;
+      styles.grid.gridTemplateColumns = `${margin.css} 1fr ${margin.css}`;
 
       styles.header.gridColumn = "2 / span 1";
       styles.header.gridRow = "1 / span 1";
@@ -391,7 +391,7 @@ export function sectionWrapperStyles({
        */
 
       if (primaryPos === "left") {
-        styles.grid.gridTemplateColumns = `${margin} 1fr 1fr ${margin}`;
+        styles.grid.gridTemplateColumns = `${margin.css} 1fr 1fr ${margin.css}`;
 
         styles.content.gridColumn = "1 / span 4";
         styles.content.gridRow = "2 / span 1";
@@ -409,7 +409,7 @@ export function sectionWrapperStyles({
         styles.HeaderSecondaryStack.passedAlign = "right";
       } else {
         // center + right
-        styles.grid.gridTemplateColumns = `${margin} 1fr 2fr 1fr ${margin}`;
+        styles.grid.gridTemplateColumns = `${margin.css} 1fr 2fr 1fr ${margin.css}`;
 
         styles.content.gridColumn = "1 / span 5";
         styles.content.gridRow = "2 / span 1";
@@ -487,18 +487,6 @@ export function sectionWrapperStyles({
     },
   };
 }
-
-export type SectionProps = {
-  Container__: ReactElement;
-  Root__: ReactElement;
-  BackgroundContainer__: ReactElement;
-  Background__: ReactElement;
-  HeaderStack: ReactElement;
-  HeaderSecondaryStack: ReactElement;
-  HeaderStackContainer__: ReactElement;
-  SubheaderStackContainer__: ReactElement;
-  ContentContainer__: ReactElement;
-};
 
 export const sectionWrapperEditing: NoCodeComponentEditingFunction = ({
   editingInfo,

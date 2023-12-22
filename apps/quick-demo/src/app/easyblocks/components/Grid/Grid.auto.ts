@@ -12,7 +12,7 @@ import {
 } from "@easyblocks/core";
 
 import { responsiveAuto } from "../utils/responsiveAuto";
-import { sectionWrapperCalculateMarginAndMaxWidth } from "@/app/easyblocks/components/utils/sectionWrapper";
+import { sectionWrapperCalculateMarginAndMaxWidth } from "@/app/easyblocks/components/utils/sectionWrapper/sectionWrapperHelpers";
 
 function calculateContainerWidth(
   config: Record<string, any>,

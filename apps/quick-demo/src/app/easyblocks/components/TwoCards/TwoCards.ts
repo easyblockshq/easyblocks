@@ -5,7 +5,7 @@ import {
   SectionWrapperValues,
   sectionWrapperEditing,
   sectionWrapperSchemaProps,
-} from "../utils/sectionWrapper";
+} from "../utils/sectionWrapper/sectionWrapperHelpers";
 import { twoCardsChange } from "./TwoCards.change";
 import { TWO_CARDS_COL_NUM } from "./twoCardsConstants";
 import { range } from "@easyblocks/utils";

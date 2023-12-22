@@ -6,7 +6,7 @@ import { spacingToPx } from "@easyblocks/core";
 import {
   sectionWrapperCalculateMarginAndMaxWidth,
   sectionWrapperStyles,
-} from "../utils/sectionWrapper";
+} from "../utils/sectionWrapper/sectionWrapperHelpers";
 import type { gridComponentDefinition } from "./Grid";
 import {
   buildItemPositions,

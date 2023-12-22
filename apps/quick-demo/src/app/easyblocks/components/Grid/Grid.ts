@@ -8,7 +8,7 @@ import { GridCompiledValues, GridParams } from "./Grid.types";
 import {
   sectionWrapperEditing,
   sectionWrapperSchemaProps,
-} from "../utils/sectionWrapper";
+} from "../utils/sectionWrapper/sectionWrapperHelpers";
 
 export const gridComponentDefinition: NoCodeComponentDefinition<
   GridCompiledValues,

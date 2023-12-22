@@ -6,7 +6,7 @@ import { spacingToPx } from "@easyblocks/core";
 import {
   sectionWrapperCalculateMarginAndMaxWidth,
   sectionWrapperStyles,
-} from "../utils/sectionWrapper";
+} from "../utils/sectionWrapper/sectionWrapperHelpers";
 import { twoCardsComponentDefinition } from "./TwoCards";
 import { TWO_CARDS_COL_NUM } from "./twoCardsConstants";
 
