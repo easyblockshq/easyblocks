@@ -2,7 +2,7 @@ import type {
   NoCodeComponentStylesFunctionInput,
   NoCodeComponentStylesFunctionResult,
 } from "@easyblocks/core";
-import { getPaddingBottomAndHeightFromAspectRatio } from "../utils/parseAspectRatio";
+import { getPaddingBottomFromAspectRatio } from "../utils/parseAspectRatio";
 
 export interface VimeoPlayerValues {
   aspectRatio: string;
@@ -16,9 +16,7 @@ export interface VimeoPlayerValues {
 export function vimeoStyles({
   values,
 }: NoCodeComponentStylesFunctionInput<VimeoPlayerValues>): NoCodeComponentStylesFunctionResult {
-  const { height, paddingBottom } = getPaddingBottomAndHeightFromAspectRatio(
-    values.aspectRatio
-  );
+  const paddingBottom = getPaddingBottomFromAspectRatio(values.aspectRatio);
 
   return {
     styled: {
@@ -46,7 +44,6 @@ export function vimeoStyles({
       AspectRatioMaker: {
         position: "relative",
         paddingBottom,
-        height,
       },
       PlayerContainer: {
         height: "100%",

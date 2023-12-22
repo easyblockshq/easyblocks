@@ -1,6 +1,5 @@
 "use client";
-import { ProductCard } from "@/components/ProductCard/ProductCard";
-import { builtinEditableComponents } from "@easyblocks/editable-components";
+import { ProductCard } from "@/app/easyblocks/components/ProductCard/ProductCard";
 import { Image } from "./components/Image/Image.client";
 import { Video } from "./components/Video/Video.client";
 import { Stack } from "./components/Stack/Stack.client";
@@ -13,39 +12,14 @@ import { Button } from "./components/Button/Button.client";
 import { CoverCard } from "./components/BannerCard/CoverCard/CoverCard";
 import { BannerCard } from "@/app/easyblocks/components/BannerCard/BannerCard";
 import { BannerSection } from "@/app/easyblocks/components/BannerSection/BannerSection";
-
-const $Link = (props: any) => {
-  const { url, shouldOpenInNewWindow, trigger: TriggerElement } = props;
-
-  return (
-    <TriggerElement.type
-      {...TriggerElement.props}
-      as={"a"}
-      href={url}
-      target={shouldOpenInNewWindow ? "_blank" : undefined}
-    />
-  );
-};
-
-const $AlertAction = (props: any) => {
-  const { text, trigger: TriggerElement } = props;
-
-  return (
-    <TriggerElement.type
-      {...TriggerElement.props}
-      as={"button"}
-      onClick={() => {
-        alert(text);
-      }}
-    />
-  );
-};
+import { VimeoPlayer } from "@/app/easyblocks/components/VimeoPlayer/VimeoPlayer.client";
+import { Link } from "@/app/easyblocks/components/Link/Link";
+import { AlertAction } from "@/app/easyblocks/components/AlertAction/AlertAction";
 
 const components = {
-  // ...builtinEditableComponents(),
   ProductCard,
-  $Link,
-  $AlertAction,
+  Link,
+  AlertAction,
   RootSections,
   Buttons,
   Button,
@@ -58,6 +32,7 @@ const components = {
   CoverCard,
   BannerCard,
   BannerSection,
+  VimeoPlayer,
 };
 
 export { components };

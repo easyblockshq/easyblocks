@@ -2,17 +2,14 @@ import type {
   NoCodeComponentStylesFunctionInput,
   NoCodeComponentStylesFunctionResult,
 } from "@easyblocks/core";
-import { getPaddingBottomAndHeightFromAspectRatio } from "../utils/parseAspectRatio";
+import { getPaddingBottomFromAspectRatio } from "../utils/parseAspectRatio";
 
 export function imageStyles({
   values,
   params,
 }: NoCodeComponentStylesFunctionInput): NoCodeComponentStylesFunctionResult {
-  const aspectRatioMakerStyles = getPaddingBottomAndHeightFromAspectRatio(
-    params.aspectRatio ?? values.aspectRatio
-  );
-
-  const isNaturalAspectRatio = values.aspectRatio === "natural";
+  const aspectRatio = params.aspectRatio ?? values.aspectRatio;
+  const isNaturalAspectRatio = aspectRatio === "natural";
 
   return {
     styled: {
@@ -32,7 +29,9 @@ export function imageStyles({
       AspectRatioMaker: {
         position: "relative",
         display: isNaturalAspectRatio ? "none" : "block",
-        ...aspectRatioMakerStyles,
+        paddingBottom: isNaturalAspectRatio
+          ? "auto"
+          : getPaddingBottomFromAspectRatio(aspectRatio),
       },
       // Right now, we don't pass external data to `styles` function so we leave setting correct `paddingBottom`
       // to the component

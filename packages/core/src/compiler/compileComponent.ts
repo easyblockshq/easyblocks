@@ -382,23 +382,6 @@ export function compileComponent(
       );
     }
 
-    // $SectionWrapper holds the hide prop, but the $RootSections component is responsible for showing/hiding sections
-    // We add `hide` value of each section to compiled values of $RootSections component
-    if (editableElement._template === "$RootSections") {
-      compiledValues.data = compiledValues.data.map(
-        (data: Record<string, any>, index: number) => {
-          return {
-            ...data,
-            hide: responsiveValueFill(
-              editableElement.data[index].hide,
-              compilationContext.devices,
-              getDevicesWidths(compilationContext.devices)
-            ),
-          };
-        }
-      );
-    }
-
     // User-defined components don't need any more work
 
     compiled = {

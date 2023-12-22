@@ -18,6 +18,10 @@ import starterTemplate from "./templates/starterTemplate.json";
 import { coverCardDefinition } from "@/app/easyblocks/components/BannerCard/CoverCard/CoverCard.definition";
 import { bannerCardDefinition } from "@/app/easyblocks/components/BannerCard/BannerCard.definition";
 import { bannerSectionDefinition } from "@/app/easyblocks/components/BannerSection/BannerSection.definition";
+import { vimeoPlayerEditableComponent } from "@/app/easyblocks/components/VimeoPlayer/VimeoPlayer";
+import { productCardDefinition } from "@/app/easyblocks/components/ProductCard/ProductCard.definition";
+import { linkDefinition } from "@/app/easyblocks/components/Link/Link.definition";
+import { alertActionDefinition } from "@/app/easyblocks/components/AlertAction/AlertAction.definition";
 
 if (!process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN) {
   throw new Error("Missing NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN");
@@ -66,78 +70,6 @@ export const easyblocksConfig: Config = {
     },
   },
   components: [
-    {
-      id: "ProductCard",
-      label: "Product Card",
-      type: "card",
-      schema: [
-        {
-          prop: "product",
-          label: "Product",
-          type: "product",
-        },
-        {
-          prop: "relatedProductsMode",
-          label: "Related products - mode",
-          type: "select",
-          params: {
-            options: [
-              {
-                label: "Off",
-                value: "disabled",
-              },
-              {
-                label: "On",
-                value: "enabled",
-              },
-              {
-                label: "On hover",
-                value: "onHover",
-              },
-            ],
-          },
-        },
-        {
-          prop: "withBackdrop",
-          label: "Backdrop",
-          type: "boolean",
-        },
-      ],
-    },
-    {
-      id: "$Link",
-      label: "Link",
-      type: "action",
-      thumbnail:
-        "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_link.png",
-      schema: [
-        {
-          prop: "url",
-          type: "string",
-          defaultValue: "https://google.com",
-        },
-        {
-          prop: "shouldOpenInNewWindow",
-          label: "Open in new window?",
-          type: "boolean",
-          defaultValue: true,
-        },
-      ],
-    },
-    {
-      id: "$AlertAction",
-      label: "Alert (demo)",
-      type: "action",
-      thumbnail:
-        "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_action.png",
-      schema: [
-        {
-          prop: "text",
-          type: "string",
-          defaultValue: "Lorem ipsum",
-        },
-      ],
-    },
     rootSectionsComponentDefinition,
     gridComponentDefinition,
     buttonsComponentDefinition,
@@ -150,6 +82,10 @@ export const easyblocksConfig: Config = {
     coverCardDefinition,
     bannerCardDefinition,
     bannerSectionDefinition,
+    vimeoPlayerEditableComponent,
+    productCardDefinition,
+    linkDefinition,
+    alertActionDefinition,
   ],
   colors: [
     {

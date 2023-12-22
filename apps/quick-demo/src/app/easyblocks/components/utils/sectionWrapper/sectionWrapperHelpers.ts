@@ -219,7 +219,7 @@ export const sectionWrapperSchemaProps: {
       label: "Outer Background",
       type: "component",
       group: "Section background",
-      accepts: ["BackgroundColor", "Image", "Video"],
+      accepts: ["SolidColor", "Image", "Video"],
       visible: true,
     },
     {

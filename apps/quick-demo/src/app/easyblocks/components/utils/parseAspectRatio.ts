@@ -1,53 +1,23 @@
-const sizeMap: { [key: string]: number } = {
-  none: 0.00001,
-  landscape: 0.7,
-  portrait: 1.32,
-  square: 1,
-  panoramic: 0.5,
-};
-
 export function parseAspectRatio(aspectRatio: string): number {
-  if (sizeMap[aspectRatio]) {
-    return sizeMap[aspectRatio];
-  }
+  const error = new Error(`wrong input to parseAspectRatio: ${aspectRatio}`);
 
   const split = aspectRatio.split(":");
+  const val1 = parseInt(split[0]);
+  const val2 = parseInt(split[1]);
 
-  if (split.length < 2) {
-    return 1;
+  if (isNaN(val1) || isNaN(val2)) {
+    throw error;
   }
 
-  const result = parseInt(split[1]) / parseInt(split[0]);
+  const result = val2 / val1;
 
   if (isNaN(result)) {
-    return 1;
+    throw error;
   }
 
   return result;
 }
 
-export function getPaddingBottomAndHeightFromAspectRatio(
-  aspectRatio: string,
-  naturalAspectRatio?: number
-) {
-  const aspectRatioFieldValue = aspectRatio || "16:9";
-
-  let paddingBottom = "100%";
-  let height = "auto";
-
-  if (aspectRatio === "100vh") {
-    height = "100vh";
-    paddingBottom = "auto";
-  } else {
-    const aspectRatio =
-      aspectRatioFieldValue === "natural"
-        ? 1 / (naturalAspectRatio || 1.5)
-        : parseAspectRatio(aspectRatioFieldValue);
-    paddingBottom = `${aspectRatio * 100}%`;
-  }
-
-  return {
-    paddingBottom,
-    height,
-  };
+export function getPaddingBottomFromAspectRatio(aspectRatio: string) {
+  return `${parseAspectRatio(aspectRatio) * 100}%`;
 }

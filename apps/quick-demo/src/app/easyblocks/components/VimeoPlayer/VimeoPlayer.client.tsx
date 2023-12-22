@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import { VimeoPlayerInternal } from "./VimeoPlayerInternal";
 
-function VimeoPlayer(props: {
+export function VimeoPlayer(props: {
   AspectRatioMaker: ReactElement;
   ContentWrapper: ReactElement;
   Wrapper: ReactElement;
@@ -18,5 +18,3 @@ function VimeoPlayer(props: {
     </Wrapper.type>
   );
 }
-
-export default VimeoPlayer;
