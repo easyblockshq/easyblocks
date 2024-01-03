@@ -31,7 +31,7 @@
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@rollup/plugin-replace": "^3.0.1",
     "@types/jest": "^26.0.20",
-    "@types/node": "^16.18.22",
+    "@types/node": "^18",
     "@types/webpack-bundle-analyzer": "^4.6.0",
     "@typescript-eslint/eslint-plugin": "^5.24.0",
     "@typescript-eslint/parser": "^5.24.0",
