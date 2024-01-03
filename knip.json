@@ -22,7 +22,7 @@
   },
   "ignore": [
     "apps/website/src/components/TwitterSection/TwitterSection.tsx",
-    "packages/editable-components/src/textModifiers/inlineCodeTextModifier.ts"
+    "packages/core/src/compiler/builtins/inlineCodeTextModifier.ts"
   ],
   "ignoreBinaries": ["supabase"],
   "ignoreDependencies": ["babel-jest"]

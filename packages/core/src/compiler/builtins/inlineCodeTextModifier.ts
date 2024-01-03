@@ -1,4 +1,4 @@
-import { InternalTextModifierDefinition } from "@easyblocks/core/_internals";
+import type { InternalTextModifierDefinition } from "../types";
 
 const inlineCodeTextModifier: InternalTextModifierDefinition = {
   id: "$InlineCodeTextModifier",

@@ -1,7 +1,6 @@
 import { Form } from "@easyblocks/app-utils";
 import { Devices, ExternalFieldCustom } from "@easyblocks/core";
 import { CompilationCache } from "@easyblocks/core/_internals";
-import { schemas } from "@easyblocks/editable-components";
 import { EditorContextType } from "../../EditorContext";
 
 const getImageFromId = (id: string) => ({

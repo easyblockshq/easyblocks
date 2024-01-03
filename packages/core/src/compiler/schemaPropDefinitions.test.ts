@@ -18,11 +18,6 @@ import {
   Theme,
   UnresolvedResource,
 } from "../types";
-import {
-  builtinEditableComponentsDefinitions,
-  schemas,
-} from "@easyblocks/editable-components";
-import { box } from "@easyblocks/editable-components/src/box";
 import { mockConsoleMethod } from "@easyblocks/test-utils";
 import { buildFullTheme } from "./buildFullTheme";
 import { compileInternal } from "./compileInternal";

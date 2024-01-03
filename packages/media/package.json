@@ -31,7 +31,6 @@
     "@babel/runtime": "^7.21.0",
     "@easyblocks/core": "^0.5.0",
     "@easyblocks/design-system": "workspace:*",
-    "@easyblocks/editable-components": "workspace:*",
     "@easyblocks/editor": "workspace:*",
     "styled-components": "^5.3.3"
   },

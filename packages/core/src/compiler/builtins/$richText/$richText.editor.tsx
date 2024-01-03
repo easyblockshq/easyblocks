@@ -26,13 +26,13 @@ import type {
   RenderPlaceholderProps,
 } from "slate-react";
 import { Editable, ReactEditor, Slate, withReact } from "slate-react";
+import { InternalNoCodeComponentProps } from "../../../components/ComponentBuilder/ComponentBuilder";
 import { getFallbackForLocale } from "../../../locales";
 import { responsiveValueFill } from "../../../responsiveness";
 import { Devices, ResponsiveValue } from "../../../types";
 import { compileBox, getBoxStyles } from "../../box";
 import { getDevicesWidths } from "../../devices";
 import { duplicateConfig } from "../../duplicateConfig";
-import { CompiledNoCodeComponentProps } from "../../types";
 import type { RichTextComponentConfig } from "./$richText";
 import {
   RICH_TEXT_CONFIG_SYNC_THROTTLE_TIMEOUT,
@@ -67,15 +67,13 @@ function mapAlignmentToFlexAlignment(align: Alignment) {
   return "flex-start";
 }
 
-interface RichTextProps {
-  path: string;
+interface RichTextProps extends InternalNoCodeComponentProps {
   elements: Array<
     React.ReactElement<{
       compiled: RichTextBlockElementCompiledComponentConfig;
     }>
   >;
   align: ResponsiveValue<Alignment>;
-  runtime: CompiledNoCodeComponentProps["runtime"];
 }
 
 function RichTextEditor(props: RichTextProps) {
@@ -91,9 +89,11 @@ function RichTextEditor(props: RichTextProps) {
   } = editorContext;
 
   const {
-    path,
+    __easyblocks: {
+      path,
+      runtime: { Box, resop, stitches, devices },
+    },
     align,
-    runtime: { Box, resop, stitches, devices },
   } = props;
 
   let richTextConfig: RichTextComponentConfig = dotNotationGet(
@@ -404,8 +404,8 @@ function RichTextEditor(props: RichTextProps) {
     const TextPartComponent = (
       <Box
         __compiled={TextPart.styled.Text}
-        devices={props.runtime.devices}
-        stitches={props.runtime.stitches}
+        devices={devices}
+        stitches={stitches}
       />
     );
 

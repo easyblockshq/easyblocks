@@ -9,7 +9,26 @@ import {
   ApiClient,
   ShopstoryAccessTokenApiAuthenticationStrategy,
 } from "@easyblocks/core";
-import type { ImageSrc, VideoSrc } from "@easyblocks/editable-components";
+
+export type ImageSrcSetEntry = {
+  w: number;
+  h: number;
+  url: string;
+};
+
+export type ImageSrc = {
+  alt: string;
+  url: string;
+  aspectRatio: number;
+  srcset: ImageSrcSetEntry[];
+  mimeType: string;
+};
+
+export type VideoSrc = {
+  alt: string;
+  url: string;
+  aspectRatio: number;
+};
 
 export const easyblocksImageWidget: Widget = {
   id: "@easyblocks/image",

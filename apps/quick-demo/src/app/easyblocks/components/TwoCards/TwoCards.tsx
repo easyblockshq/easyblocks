@@ -1,14 +1,47 @@
-import React from "react";
 import {
   SectionProps,
   SectionWrapper,
 } from "@/app/easyblocks/components/utils/sectionWrapper/SectionWrapper";
+import { NoCodeComponentProps } from "@easyblocks/core";
 
-function TwoCards(props: { _id: string } & Record<string, any> & SectionProps) {
-  const { Card1, Card2, Card1Container, Card2Container, Root } = props;
+function TwoCards(
+  props: NoCodeComponentProps & Record<string, any> & SectionProps
+) {
+  const {
+    // TwoCards styled components
+    Card1,
+    Card2,
+    Card1Container,
+    Card2Container,
+    Root,
+    // Section styled components
+    Background__,
+    BackgroundContainer__,
+    Container__,
+    ContentContainer__,
+    HeaderSecondaryStack,
+    HeaderStack,
+    HeaderStackContainer__,
+    Root__,
+    SubheaderStackContainer__,
+    headerMode,
+    __easyblocks,
+  } = props;
 
   return (
-    <SectionWrapper {...props}>
+    <SectionWrapper
+      _id={__easyblocks.id}
+      Background__={Background__}
+      BackgroundContainer__={BackgroundContainer__}
+      Container__={Container__}
+      ContentContainer__={ContentContainer__}
+      HeaderSecondaryStack={HeaderSecondaryStack}
+      HeaderStack={HeaderStack}
+      HeaderStackContainer__={HeaderStackContainer__}
+      Root__={Root__}
+      SubheaderStackContainer__={SubheaderStackContainer__}
+      headerMode={headerMode}
+    >
       <Root.type {...Root.props}>
         <Card1Container.type {...Card1Container.props}>
           <Card1.type {...Card1.props} />

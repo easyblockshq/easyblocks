@@ -509,7 +509,9 @@ export type NoCodeComponentAutoFunction<
   Values extends Record<string, any> = Record<string, any>,
   Params extends Record<string, any> = Record<string, any>
 > = (
-  input: NoCodeComponentAutoFunctionInput<Values, { $width: number } & Params>
+  input: NoCodeComponentAutoFunctionInput<Values, Params> & {
+    params: { $width: TrulyResponsiveValue<number> };
+  }
 ) => any;
 
 export type NoCodeComponentDefinition<
@@ -708,6 +710,13 @@ export type ComponentDefinitionShared<Identifier extends string = string> = {
 
   hideTemplates?: boolean;
   allowSave?: boolean;
+};
+
+export type NoCodeComponentProps = {
+  __easyblocks: {
+    id: string;
+    isEditing: boolean;
+  };
 };
 
 export type SerializedRenderableComponentDefinition =

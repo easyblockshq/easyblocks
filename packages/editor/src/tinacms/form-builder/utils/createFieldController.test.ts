@@ -11,14 +11,6 @@ import {
   normalize,
 } from "@easyblocks/core/_internals";
 import { AnyTinaField } from "@easyblocks/core";
-import {
-  actionTextModifier,
-  buildRichTextBlockElementComponentConfig,
-  buildRichTextComponentConfig,
-  buildRichTextInlineWrapperElementComponentConfig,
-  buildRichTextLineElementComponentConfig,
-  buildRichTextPartComponentConfig,
-} from "@easyblocks/editable-components";
 import { dotNotationGet } from "@easyblocks/utils";
 import { isFieldPortal } from "../../../buildTinaFields";
 import { EditorContextType } from "../../../EditorContext";

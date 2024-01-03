@@ -1,7 +1,8 @@
+import { NoCodeComponentProps } from "@easyblocks/core";
 import React, { ReactElement } from "react";
 import {
-  SectionWrapper,
   SectionProps,
+  SectionWrapper,
 } from "../utils/sectionWrapper/SectionWrapper";
 
 export function Grid(
@@ -20,11 +21,22 @@ export function Grid(
     Root: ReactElement;
     itemContainers: Array<ReactElement>;
     itemInnerContainers: Array<ReactElement>;
-    isEditing: boolean;
-    _id: string;
-  } & SectionProps
+  } & SectionProps &
+    NoCodeComponentProps
 ) {
   const {
+    // Section styled components
+    Background__,
+    BackgroundContainer__,
+    Container__,
+    ContentContainer__,
+    HeaderSecondaryStack,
+    HeaderStack,
+    HeaderStackContainer__,
+    Root__,
+    SubheaderStackContainer__,
+    headerMode,
+    // Grid styled components
     Container,
     InnerContainer,
     SpacerLeft,
@@ -39,7 +51,7 @@ export function Grid(
     Root,
     itemContainers,
     itemInnerContainers,
-    isEditing,
+    __easyblocks,
   } = props;
 
   const spacerRef = React.useRef(null);
@@ -127,7 +139,7 @@ export function Grid(
       leftArrowWrapperRef.current!.style.opacity = "1";
       rightArrowWrapperRef.current!.style.opacity = "1";
 
-      const inactiveOpacity = isEditing ? 1 : 0;
+      const inactiveOpacity = __easyblocks.isEditing ? 1 : 0;
 
       if (isAtBeginning) {
         leftArrowWrapperRef.current!.style.opacity = inactiveOpacity.toString();
@@ -150,10 +162,22 @@ export function Grid(
         );
       }
     };
-  }, [isEditing]);
+  }, [__easyblocks.isEditing]);
 
   return (
-    <SectionWrapper {...props}>
+    <SectionWrapper
+      _id={__easyblocks.id}
+      Background__={Background__}
+      BackgroundContainer__={BackgroundContainer__}
+      Container__={Container__}
+      ContentContainer__={ContentContainer__}
+      HeaderSecondaryStack={HeaderSecondaryStack}
+      HeaderStack={HeaderStack}
+      HeaderStackContainer__={HeaderStackContainer__}
+      Root__={Root__}
+      SubheaderStackContainer__={SubheaderStackContainer__}
+      headerMode={headerMode}
+    >
       <Root.type {...Root.props}>
         <Container.type
           {...Container.props}

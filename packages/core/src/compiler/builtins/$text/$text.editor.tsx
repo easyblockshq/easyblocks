@@ -1,17 +1,20 @@
 "use client";
 import { dotNotationGet } from "@easyblocks/utils";
 import React, { ReactElement } from "react";
+import { InternalNoCodeComponentProps } from "../../../components/ComponentBuilder/ComponentBuilder";
 import { InlineTextarea } from "./InlineTextarea";
 
 type TextProps = {
   value: string | undefined;
-  runtime: any;
-  path: string;
   Text: ReactElement;
-};
+} & InternalNoCodeComponentProps;
 
 function TextEditor(props: TextProps) {
-  const { Text, path, value, runtime } = props;
+  const {
+    Text,
+    value,
+    __easyblocks: { path, runtime },
+  } = props;
 
   const { form } = (window.parent as any).editorWindowAPI.editorContext;
   const valuePath = `${path}.value`;

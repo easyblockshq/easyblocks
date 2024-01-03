@@ -1,13 +1,13 @@
 import { dotNotationGet } from "@easyblocks/utils";
 import React, { useRef } from "react";
 import TextareaAutosize from "react-textarea-autosize";
-import { CompiledNoCodeComponentProps } from "../../types";
+import { InternalNoCodeComponentProps } from "../../../components/ComponentBuilder/ComponentBuilder";
 import { useTextValue } from "../useTextValue";
 
 export interface InlineTextProps {
   path: string;
   placeholder?: string;
-  stitches: CompiledNoCodeComponentProps["runtime"]["stitches"];
+  stitches: InternalNoCodeComponentProps["__easyblocks"]["runtime"]["stitches"];
 }
 
 export function InlineTextarea({

@@ -42,6 +42,7 @@ import {
   ExternalSchemaProp,
   LocalReference,
   LocalTextReference,
+  NoCodeComponentProps,
   ResponsiveValue,
 } from "../../types";
 import { Box } from "../Box/Box";
@@ -306,6 +307,13 @@ export type ComponentBuilderProps = {
   };
 };
 
+export type InternalNoCodeComponentProps = NoCodeComponentProps & {
+  __easyblocks: {
+    path: string;
+    runtime: any;
+  };
+};
+
 type ComponentBuilderComponent = React.FC<ComponentBuilderProps>;
 
 function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
@@ -436,6 +444,13 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
     locale: meta.vars.locale,
   };
 
+  const easyblocksProp: InternalNoCodeComponentProps["__easyblocks"] = {
+    id: shopstoryCompiledConfig._id,
+    isEditing,
+    path,
+    runtime,
+  };
+
   const componentProps = {
     ...restPassedProps,
     ...mapExternalProps(
@@ -445,10 +460,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
       externalData
     ),
     ...styled,
-    path,
-    isEditing,
-    runtime,
-    _id: shopstoryCompiledConfig._id,
+    __easyblocks: easyblocksProp,
   };
 
   return <Component {...componentProps} />;

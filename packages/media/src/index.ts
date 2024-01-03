@@ -6,6 +6,12 @@ export {
   fetchEasyblocksMediaResources,
 } from "./index.react-server";
 
+export type {
+  ImageSrc,
+  ImageSrcSetEntry,
+  VideoSrc,
+} from "./index.react-server";
+
 export const easyblocksImageWidgetComponent = mockMediaPicker("image");
 
 export const easyblocksVideoWidgetComponent = mockMediaPicker("video");
