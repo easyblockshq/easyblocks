@@ -6,10 +6,13 @@ import type {
   ExternalReferenceNonEmpty,
   ExternalSchemaProp,
   FetchOutputCompoundResources,
+  NonNullish,
   ResponsiveValue,
 } from "./types";
 
-export function getExternalValue(externalDataValue: ExternalData[string]) {
+export function getExternalValue(
+  externalDataValue: ExternalData[string]
+): NonNullish | undefined {
   if ("error" in externalDataValue) {
     return;
   }
@@ -67,7 +70,7 @@ export function resolveExternalValue(
   configId: string,
   schemaProp: ExternalSchemaProp,
   externalData: ExternalData
-) {
+): ResponsiveValue<NonNullish | undefined> | undefined {
   return responsiveValueMap(responsiveResource, (r, breakpointIndex) => {
     if (r.id) {
       // If resource field has `key` defined and its `id` starts with "$.", it means that it's a reference to the

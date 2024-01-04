@@ -1,7 +1,7 @@
 import type {
   CompilationMetadata,
   CompiledShopstoryComponentConfig,
-  ConfigComponent,
+  ComponentConfig,
   ExternalData,
 } from "@easyblocks/core";
 import { EditorContextType } from "@easyblocks/core/_internals";
@@ -16,11 +16,11 @@ export type InternalCompilationOutput = {
 };
 
 export type EditorCompilationOutput = InternalCompilationOutput & {
-  configAfterAuto: ConfigComponent;
+  configAfterAuto: ComponentConfig;
 };
 
 export type EditorWindowAPI = {
-  config: ConfigComponent;
+  config: ComponentConfig;
   editorContext: EditorContextType;
   compilationOutput: EditorCompilationOutput;
   onUpdate?: () => void; // this function will be called by parent window when data is changed, child should "subscribe" to this function

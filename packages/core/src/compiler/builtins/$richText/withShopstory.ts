@@ -8,7 +8,7 @@ import {
   Text,
   Transforms,
 } from "slate";
-import { ConfigComponent } from "../../../types";
+import { ComponentConfig } from "../../../types";
 import { InlineWrapperElement } from "./$richText.types";
 import { RichTextBlockElementType } from "./$richTextBlockElement/$richTextBlockElement";
 import { isElementInlineWrapperElement } from "./utils/isElementInlineWrapperElement";
@@ -446,8 +446,8 @@ function isInlineWrapperElementEqual(
   });
 }
 function compareTextModifiers(
-  textModifier1: ConfigComponent,
-  textModifier2: ConfigComponent
+  textModifier1: ComponentConfig,
+  textModifier2: ComponentConfig
 ): boolean {
   const { _id: _id1, ...comparableTextModifier1 } = textModifier1;
   const { _id: _id2, ...comparableTextModifier2 } = textModifier2;
@@ -455,7 +455,7 @@ function compareTextModifiers(
   return deepCompare(comparableTextModifier1, comparableTextModifier2);
 }
 
-function compareActions(action1: ConfigComponent, action2: ConfigComponent) {
+function compareActions(action1: ComponentConfig, action2: ComponentConfig) {
   if (action1._template !== action2._template) {
     return false;
   }

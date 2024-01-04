@@ -1,3 +1,14 @@
+import { uniqueId } from "@easyblocks/utils";
+import { getMappedToken } from "../getMappedToken";
+import { getFallbackForLocale, getFallbackLocaleForLocale } from "../locales";
+import {
+  isTrulyResponsiveValue,
+  responsiveValueAt,
+  responsiveValueFill,
+  responsiveValueFlatten,
+  responsiveValueMap,
+} from "../responsiveness";
+import { parseSpacing } from "../spacingToPx";
 import {
   BooleanSchemaProp,
   Color,
@@ -9,7 +20,6 @@ import {
   ComponentCollectionSchemaProp,
   ComponentConfig,
   ComponentSchemaProp,
-  ConfigComponent,
   Devices,
   ExternalReference,
   ExternalReferenceEmpty,
@@ -38,31 +48,20 @@ import {
   ThemeRefValue,
   TrulyResponsiveValue,
 } from "../types";
-import { uniqueId } from "@easyblocks/utils";
 import { CompilationCache } from "./CompilationCache";
-import { compileComponent } from "./compileComponent";
-import { getFallbackForLocale, getFallbackLocaleForLocale } from "../locales";
-import {
-  isTrulyResponsiveValue,
-  responsiveValueAt,
-  responsiveValueMap,
-  responsiveValueFlatten,
-  responsiveValueFill,
-} from "../responsiveness";
-import { parseSpacing } from "../spacingToPx";
 import { buildRichTextNoCodeEntry } from "./builtins/$richText/builders";
+import { compileComponent } from "./compileComponent";
 import { getDevicesWidths } from "./devices";
 import { findComponentDefinitionById } from "./findComponentDefinition";
+import { isContextEditorContext } from "./isContextEditorContext";
 import { Component$$$SchemaProp, isExternalSchemaProp } from "./schema";
 import { splitTemplateName } from "./splitTemplateName";
 import {
+  CompilationContextType,
   ContextProps,
   EditingInfoComponent,
   EditingInfoComponentCollection,
-  CompilationContextType,
 } from "./types";
-import { isContextEditorContext } from "./isContextEditorContext";
-import { getMappedToken } from "../getMappedToken";
 
 export type SchemaPropDefinition<Type, CompiledType> = {
   compile: (
@@ -141,27 +140,27 @@ export type ConfigComponentCompilationOutput = {
   compiledComponentConfig:
     | CompiledShopstoryComponentConfig
     | CompiledCustomComponentConfig;
-  configAfterAuto: ConfigComponent;
+  configAfterAuto: ComponentConfig;
 };
 
 export type ComponentSchemaPropDefinition = SchemaPropDefinition<
-  Array<ConfigComponent>,
+  Array<ComponentConfig>,
   Array<ConfigComponentCompilationOutput>
 >;
 
 export type ComponentCollectionSchemaPropDefinition = SchemaPropDefinition<
-  Array<ConfigComponent>,
+  Array<ComponentConfig>,
   Array<ConfigComponentCompilationOutput>
 >;
 
 export type ComponentCollectionLocalisedSchemaPropDefinition =
   SchemaPropDefinition<
-    { [locale: string]: ConfigComponent[] },
+    { [locale: string]: ComponentConfig[] },
     Array<ConfigComponentCompilationOutput>
   >;
 
 export type ComponentFixedSchemaPropDefinition = SchemaPropDefinition<
-  Array<ConfigComponent>,
+  Array<ComponentConfig>,
   Array<ConfigComponentCompilationOutput>
 >;
 
@@ -688,7 +687,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
 
         // FIXME: ?????
         const { configAfterAuto, compiledComponentConfig } = compileComponent(
-          arg[0] as ConfigComponent,
+          arg[0] as ComponentConfig,
           compilationContext,
           contextProps,
           serializedDefinitions || {
@@ -736,7 +735,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
       if (!Array.isArray(x)) {
         return [];
       }
-      const ret = (x || []).map((item: ConfigComponent) =>
+      const ret = (x || []).map((item: ComponentConfig) =>
         normalizeComponent(item, compilationContext)
       );
 
@@ -756,7 +755,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
       ) => {
         return arr.map((componentConfig, index) =>
           compileComponent(
-            componentConfig as ConfigComponent,
+            componentConfig as ComponentConfig,
             compilationContext,
             (contextProps.itemProps || [])[index] || {},
             serializedDefinitions,
@@ -790,7 +789,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         if (x === undefined) {
           return {};
         }
-        const normalized: { [locale: string]: ConfigComponent[] } = {};
+        const normalized: { [locale: string]: ComponentConfig[] } = {};
         for (const locale in x) {
           if (locale === "__fallback") {
             continue;
@@ -1273,11 +1272,11 @@ function externalReferenceGetHash(
 }
 
 export function normalizeComponent(
-  configComponent: Omit<ConfigComponent, "_id"> & { _id?: string },
+  configComponent: Omit<ComponentConfig, "_id"> & { _id?: string },
   compilationContext: CompilationContextType,
   isRef?: boolean
-): ConfigComponent {
-  const ret: ConfigComponent = {
+): ComponentConfig {
+  const ret: ComponentConfig = {
     _id: configComponent._id ?? uniqueId(),
     _template: configComponent._template,
     _master: configComponent._master,

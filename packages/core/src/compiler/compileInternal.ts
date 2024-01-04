@@ -1,7 +1,7 @@
 import {
   CompilationMetadata,
   CompiledShopstoryComponentConfig,
-  ConfigComponent,
+  ComponentConfig,
 } from "../types";
 import { CompilationCache } from "./CompilationCache";
 import { normalize } from "./normalize";
@@ -12,11 +12,11 @@ import { CompilationContextType, ContextProps } from "./types";
 export type CompileInternalReturnType = {
   compiled: CompiledShopstoryComponentConfig;
   meta: CompilationMetadata;
-  configAfterAuto?: ConfigComponent;
+  configAfterAuto?: ComponentConfig;
 };
 
 export function compileInternal(
-  configComponent: ConfigComponent,
+  configComponent: ComponentConfig,
   compilationContext: CompilationContextType,
   cache = new CompilationCache()
 ): CompileInternalReturnType {

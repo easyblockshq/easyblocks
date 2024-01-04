@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import { ConfigComponent } from "@easyblocks/core";
+import { ComponentConfig } from "@easyblocks/core";
 
 export const ConfigAfterAutoContext =
-  React.createContext<ConfigComponent | null>(null);
+  React.createContext<ComponentConfig | null>(null);
 
 export function useConfigAfterAuto() {
   const configAfterAutoContext = useContext(ConfigAfterAutoContext);

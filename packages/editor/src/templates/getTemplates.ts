@@ -2,7 +2,6 @@ import { configMap } from "@easyblocks/app-utils";
 import {
   buildRichTextNoCodeEntry,
   ComponentConfig,
-  ConfigComponent,
   IApiClient,
   InternalTemplate,
   Template,
@@ -84,7 +83,7 @@ function getNecessaryDefaultTemplates(
 }
 
 function normalizeTextLocales(
-  config: ConfigComponent,
+  config: ComponentConfig,
   editorContext: EditorContextType
 ) {
   return configMap(config, editorContext, ({ value, schemaProp }) => {

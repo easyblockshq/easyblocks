@@ -1,4 +1,4 @@
-import { SchemaProp, ComponentConfig, ConfigComponent } from "../types";
+import { ComponentConfig, SchemaProp } from "../types";
 import { findComponentDefinition } from "./findComponentDefinition";
 import { isSchemaPropComponent } from "./schema";
 import { CompilationContextType } from "./types";
@@ -22,7 +22,7 @@ function configTraverse(
 }
 
 function configTraverseArray(
-  array: ConfigComponent[],
+  array: ComponentConfig[],
   context: Pick<CompilationContextType, "definitions">,
   callback: ConfigTraverseCallback,
   path: string

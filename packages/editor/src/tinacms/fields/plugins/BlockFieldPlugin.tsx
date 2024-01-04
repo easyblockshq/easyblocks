@@ -2,7 +2,6 @@ import { Form, FormApi } from "@easyblocks/app-utils";
 import {
   ComponentConfig,
   ComponentSchemaProp,
-  ConfigComponent,
   ExternalData,
   ExternalReference,
   LocalTextReference,
@@ -48,7 +47,7 @@ export interface BlocksFieldDefinition extends InternalField {
 }
 
 interface BlockFieldProps
-  extends FieldRenderProps<ConfigComponent[] | FieldMixedValue> {
+  extends FieldRenderProps<ComponentConfig[] | FieldMixedValue> {
   field: BlocksFieldDefinition;
   form: FormApi;
   tinaForm: Form;
@@ -63,7 +62,7 @@ const BlockField = ({ field, input, isLabelHidden }: BlockFieldProps) => {
   const { openComponentPicker } = actions;
   const isMixed = isMixedFieldValue(input.value);
 
-  const config: ConfigComponent | null = (() => {
+  const config: ComponentConfig | null = (() => {
     if (isMixed) {
       return null;
     }

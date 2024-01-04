@@ -17,7 +17,7 @@ import { createResourcesStore, ResourcesStore } from "./createResourcesStore";
 import { syncResources } from "./syncResources";
 import {
   Config,
-  ConfigComponent,
+  ComponentConfig,
   FetchFunction,
   FetchResourcesOutput,
   LauncherPlugin,
@@ -253,7 +253,7 @@ describe("data synchronizers", () => {
   );
 
   test("with correct config", async () => {
-    const config: ConfigComponent = {
+    const config: ComponentConfig = {
       _template: "$RunMappersTestSection",
       Card: [
         {

@@ -1,7 +1,7 @@
 import { BaseEditor } from "slate";
 import { ReactEditor } from "slate-react";
 import {
-  ConfigComponent,
+  ComponentConfig,
   NoCodeComponentEditingFunctionInput,
   NoCodeComponentEditingFunctionResult,
 } from "../../../types";
@@ -50,9 +50,9 @@ export interface InlineWrapperElement {
   id: string;
   type: "inline-wrapper";
   children: Array<Text>;
-  action: [ConfigComponent] | [];
-  textModifier: [ConfigComponent] | [];
-  actionTextModifier: [ConfigComponent] | [];
+  action: [ComponentConfig] | [];
+  textModifier: [ComponentConfig] | [];
+  actionTextModifier: [ComponentConfig] | [];
 }
 
 export type BlockElement = BulletedList | NumberedList | ParagraphElement;

@@ -1,4 +1,4 @@
-import { ConfigComponent } from "@easyblocks/core";
+import { ComponentConfig } from "@easyblocks/core";
 import {
   findComponentDefinition,
   stripRichTextPartSelection,
@@ -31,7 +31,7 @@ export function SidebarFooter(props: { paths: string[] }) {
   }
 
   const path = stripRichTextPartSelection(props.paths[0]);
-  const value: ConfigComponent = dotNotationGet(form.values, path);
+  const value: ComponentConfig = dotNotationGet(form.values, path);
 
   if (!value) {
     return null;

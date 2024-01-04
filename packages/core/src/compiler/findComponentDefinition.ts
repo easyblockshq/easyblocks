@@ -1,6 +1,6 @@
 import { toArray } from "@easyblocks/utils";
 import { splitTemplateName } from "./splitTemplateName";
-import { ConfigComponent } from "../types";
+import { ComponentConfig } from "../types";
 import {
   InternalComponentDefinition,
   InternalComponentDefinitions,
@@ -24,7 +24,7 @@ function allDefs(
  */
 
 export function findComponentDefinition(
-  config: ConfigComponent | undefined | null,
+  config: ComponentConfig | undefined | null,
   context: AnyContextWithDefinitions
 ): InternalComponentDefinition | undefined {
   return $findComponentDefinition(config, context);
@@ -56,7 +56,7 @@ export function findComponentDefinitionsByComponentType(
  */
 
 function $findComponentDefinition(
-  config: ConfigComponent | undefined | null,
+  config: ComponentConfig | undefined | null,
   context?: AnyContextWithDefinitions
 ): InternalComponentDefinition | undefined {
   if (!config) {

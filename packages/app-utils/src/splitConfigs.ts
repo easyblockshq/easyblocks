@@ -1,16 +1,16 @@
 import {
-  ConfigComponent,
+  ComponentConfig,
   getFallbackForLocale,
   Locale,
 } from "@easyblocks/core";
 
-function isLocalizedText(configComponent: ConfigComponent) {
+function isLocalizedText(configComponent: ComponentConfig) {
   const LOCAL_PREFIX = "local.";
   return (configComponent?.id ?? "").startsWith(LOCAL_PREFIX);
 }
 
 function extractSingleLocaleConfigs(
-  configComponent: ConfigComponent,
+  configComponent: ComponentConfig,
   localeCode: string,
   locales: Locale[]
 ): any {
@@ -97,10 +97,10 @@ function extractSingleLocaleConfigs(
  */
 
 function splitConfigIntoSingleLocaleConfigs(
-  config: ConfigComponent,
+  config: ComponentConfig,
   locales: Locale[]
 ) {
-  const localisedConfigs: { [locale: string]: ConfigComponent } = {};
+  const localisedConfigs: { [locale: string]: ComponentConfig } = {};
 
   locales.forEach((locale) => {
     localisedConfigs[locale.code] = extractSingleLocaleConfigs(

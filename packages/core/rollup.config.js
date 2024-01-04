@@ -121,8 +121,7 @@ function createRollupConfigs({
     input: inputFile,
     output: {
       format: "cjs",
-      dir: baseOutputDir,
-      strict: false, // contentful-extension-sdk has a bug when strict mode is used
+      dir: `${baseOutputDir}/cjs`,
       banner,
       preserveModules: true,
       preserveModulesRoot: "src",

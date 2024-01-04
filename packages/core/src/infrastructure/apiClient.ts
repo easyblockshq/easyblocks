@@ -1,5 +1,5 @@
 import { getAppUrlRoot } from "@easyblocks/utils";
-import { ConfigComponent } from "../types";
+import { ComponentConfig } from "../types";
 
 type RequestSearchParams = Record<string, string | Array<string>>;
 
@@ -44,7 +44,7 @@ export type DocumentWithResolvedConfigDTO = DocumentDTO & {
 };
 
 export type ConfigDTO = {
-  config: ConfigComponent;
+  config: ComponentConfig;
   created_at: DateString;
   id: string;
   metadata: Record<string, unknown> | null;
@@ -101,7 +101,7 @@ interface IApiClient {
     }) => Promise<DocumentWithResolvedConfigDTO | null>;
     createDocument: (payload: {
       title: string;
-      config: ConfigComponent;
+      config: ComponentConfig;
       projectId: string;
       source: string;
       uniqueSourceIdentifier?: string;
@@ -112,7 +112,7 @@ interface IApiClient {
       projectId: string;
       version?: number;
       title?: string;
-      config?: ConfigComponent;
+      config?: ComponentConfig;
       uniqueSourceIdentifier?: string;
     }) => Promise<DocumentDTO>;
   };
@@ -271,7 +271,7 @@ class ApiClient implements IApiClient {
 
     createDocument: async (payload: {
       title: string;
-      config: ConfigComponent;
+      config: ComponentConfig;
       projectId: string;
       source: string;
       uniqueSourceIdentifier?: string;
@@ -307,7 +307,7 @@ class ApiClient implements IApiClient {
       projectId: string;
       version?: number;
       title?: string;
-      config?: ConfigComponent;
+      config?: ComponentConfig;
       uniqueSourceIdentifier?: string;
     }): Promise<DocumentDTO> => {
       const response = await this.put(

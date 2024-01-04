@@ -4,7 +4,6 @@ import {
   CompilationMetadata,
   ComponentConfig,
   Config,
-  ConfigComponent,
   ContextParams,
   DocumentWithResolvedConfigDTO,
   EditorLauncherProps,
@@ -375,7 +374,7 @@ function useBuiltContent(
   editorContext: EditorContextType,
   config: Config,
   contextParams: ContextParams,
-  rawContent: ConfigComponent,
+  rawContent: ComponentConfig,
   documentType: string,
   externalData: ExternalData,
   onExternalDataChange: ExternalDataChangeHandler
@@ -385,7 +384,7 @@ function useBuiltContent(
   const buildEntryResult = useRef<ReturnType<typeof buildEntry>>();
 
   // cached inputs (needed to calculated "inputChanged")
-  const inputRawContent = useRef<ConfigComponent>();
+  const inputRawContent = useRef<ComponentConfig>();
   const inputIsEditing = useRef<boolean>();
   const inputBreakpointIndex = useRef<string>();
 
@@ -1159,7 +1158,7 @@ function getDefaultInput({
   documentType: EditorLauncherProps["documentType"];
   compilationContext: CompilationContextType;
 }): {
-  config: ConfigComponent;
+  config: ComponentConfig;
   document: DocumentWithResolvedConfigDTO | null;
 } {
   const documentTypeDefaultConfig = compilationContext.documentTypes.find(
@@ -1200,7 +1199,7 @@ async function resolveDocumentId(
   apiClient: IApiClient,
   compilationContext: CompilationContextType
 ): Promise<{
-  config: ConfigComponent;
+  config: ComponentConfig;
   document: DocumentWithResolvedConfigDTO | null;
 }> {
   if (!project) {
@@ -1230,7 +1229,7 @@ async function resolveDocumentId(
 }
 
 function adaptRemoteConfig(
-  config: ConfigComponent,
+  config: ComponentConfig,
   compilationContext: CompilationContextType
 ) {
   const withoutLocalizedFlag = removeLocalizedFlag(config, compilationContext);

@@ -4,7 +4,7 @@ import {
   InternalRenderableComponentDefinition,
   splitConfigIntoSingleLocaleConfigs,
 } from "@easyblocks/app-utils";
-import { ConfigComponent } from "@easyblocks/core";
+import { ComponentConfig } from "@easyblocks/core";
 import { deepClone } from "@easyblocks/utils";
 import { testEditorContext } from "../tests";
 import { addLocalizedFlag } from "./addLocalizedFlag";
@@ -155,7 +155,7 @@ const polishCard2 = {
   someProp: "four",
 };
 
-const config: ConfigComponent = {
+const config: ComponentConfig = {
   _template: "$LanguageSection",
   _id: "section1",
   textProp: localDog,
@@ -397,12 +397,12 @@ describe("merge", () => {
 
   test.each([
     {
-      tamperConfig: (configs: { [locale: string]: ConfigComponent }) => {
+      tamperConfig: (configs: { [locale: string]: ComponentConfig }) => {
         delete configs.pl.Card1;
       },
     },
     {
-      tamperConfig: (configs: { [locale: string]: ConfigComponent }) => {
+      tamperConfig: (configs: { [locale: string]: ComponentConfig }) => {
         configs.en.otherProp = "five";
       },
     },

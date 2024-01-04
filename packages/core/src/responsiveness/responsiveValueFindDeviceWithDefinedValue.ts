@@ -2,14 +2,14 @@ import {
   getDeviceWidthPairs,
   getDeviceWidthPairsFromDevices,
 } from "../compiler/getDeviceWidthPairs";
-import { Devices, TrulyResponsiveValue } from "../types";
+import type { DeviceRange, Devices, TrulyResponsiveValue } from "../types";
 
 export function responsiveValueFindHigherDeviceWithDefinedValue<T>(
   value: TrulyResponsiveValue<T>,
   breakpoint: string,
   devices: Devices,
   widths?: TrulyResponsiveValue<number>
-) {
+): DeviceRange | undefined {
   const componentWidths = widths
     ? getDeviceWidthPairs(widths, devices)
     : getDeviceWidthPairsFromDevices(devices);
@@ -44,7 +44,7 @@ export function responsiveValueFindLowerDeviceWithDefinedValue<T>(
   breakpoint: string,
   devices: Devices,
   widths?: TrulyResponsiveValue<number>
-) {
+): DeviceRange | undefined {
   const componentWidths = widths
     ? getDeviceWidthPairs(widths, devices)
     : getDeviceWidthPairsFromDevices(devices);
@@ -72,7 +72,7 @@ export function responsiveValueFindDeviceWithDefinedValue<T>(
   breakpoint: string,
   devices: Devices,
   widths?: TrulyResponsiveValue<number>
-) {
+): DeviceRange | undefined {
   if (value[breakpoint] !== undefined) {
     return devices.find((x) => x.id === breakpoint);
   }

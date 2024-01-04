@@ -1,7 +1,7 @@
-import { CompilationContextType } from "../types";
 import { testCompilationContext } from "../test-utils";
+import { ComponentConfig } from "../types";
 import { configFindAllPaths } from "./configFindAllPaths";
-import { ConfigComponent } from "@easyblocks/core";
+import { CompilationContextType } from "./types";
 
 const compilationContext: CompilationContextType = {
   ...testCompilationContext,
@@ -35,7 +35,7 @@ const compilationContext: CompilationContextType = {
   },
 };
 
-const testConfig: ConfigComponent = {
+const testConfig: ComponentConfig = {
   _template: "$TestComponent1",
   Component: [
     {

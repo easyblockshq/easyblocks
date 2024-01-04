@@ -1,9 +1,9 @@
 import { configMap } from "@easyblocks/app-utils";
-import { ConfigComponent } from "@easyblocks/core";
+import { ComponentConfig } from "@easyblocks/core";
 import { CompilationContextType } from "@easyblocks/core/_internals";
 
 export function removeLocalizedFlag(
-  config: ConfigComponent,
+  config: ComponentConfig,
   context: CompilationContextType
 ) {
   return configMap(config, context, ({ value, schemaProp }) => {

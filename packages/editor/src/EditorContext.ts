@@ -1,7 +1,7 @@
 import { Form } from "@easyblocks/app-utils";
 import {
   CompiledComponentConfig,
-  ConfigComponent,
+  ComponentConfig,
   Resource,
   Template,
 } from "@easyblocks/core";
@@ -31,7 +31,7 @@ export type EditorContextType = Omit<BaseEditorContextType, "types"> & {
     projectId: string;
   }) => Promise<void>;
   compiledComponentConfig?: CompiledComponentConfig;
-  configAfterAuto?: ConfigComponent;
+  configAfterAuto?: ComponentConfig;
   resources: Array<Resource>;
   compilationCache: CompilationCache;
   isAdminMode: boolean;

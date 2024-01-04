@@ -2,7 +2,7 @@ import { Form } from "@easyblocks/app-utils";
 import {
   ComponentCollectionSchemaProp,
   ComponentSchemaProp,
-  ConfigComponent,
+  ComponentConfig,
   SchemaProp,
 } from "@easyblocks/core";
 import {
@@ -41,7 +41,7 @@ const insertCommand = ({
     fieldName: schema?.prop,
   });
 
-  return (path: string, index: number, item: ConfigComponent) => {
+  return (path: string, index: number, item: ComponentConfig) => {
     const itemDefinition = findComponentDefinition(item, context);
     if (!itemDefinition) {
       return null;

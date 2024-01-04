@@ -1,5 +1,5 @@
 import {
-  ConfigComponent,
+  ComponentConfig,
   UnresolvedResource,
   isTrulyResponsiveValue,
 } from "@easyblocks/core";
@@ -16,7 +16,7 @@ type ExternalValueWithPositionInConfig = {
 };
 
 export function getAllExternals(
-  config: ConfigComponent,
+  config: ComponentConfig,
   context: CompilationContextType
 ): ExternalValueWithPositionInConfig[] {
   const result: ExternalValueWithPositionInConfig[] = [];

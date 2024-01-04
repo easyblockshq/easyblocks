@@ -1,5 +1,5 @@
 import type { InternalComponentDefinitions } from "@easyblocks/app-utils";
-import { ConfigComponent } from "@easyblocks/core";
+import { ComponentConfig } from "@easyblocks/core";
 import { compileInternal } from "@easyblocks/core/_internals";
 import { EditorContextType } from "./EditorContext";
 import { buildTinaFields } from "./buildTinaFields";
@@ -91,7 +91,7 @@ test.skip('it resolves portal field of type "component"', () => {
   };
 
   const { compiled } = compileInternal(
-    editorContext.form.values as ConfigComponent,
+    editorContext.form.values as ComponentConfig,
     editorContext
   );
   editorContext.compiledComponentConfig = compiled;
@@ -253,7 +253,7 @@ test.skip('it resolves portal field of type "field"', () => {
   };
 
   const { compiled } = compileInternal(
-    editorContext.form.values as ConfigComponent,
+    editorContext.form.values as ComponentConfig,
     editorContext
   );
   editorContext.compiledComponentConfig = compiled;
@@ -398,7 +398,7 @@ test.skip('it resolves portal field of type "multi-field"', () => {
   };
 
   const { compiled } = compileInternal(
-    editorContext.form.values as ConfigComponent,
+    editorContext.form.values as ComponentConfig,
     editorContext
   );
   editorContext.compiledComponentConfig = compiled;

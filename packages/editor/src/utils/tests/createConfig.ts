@@ -1,6 +1,6 @@
-import type { ConfigComponent } from "@easyblocks/core";
+import type { ComponentConfig } from "@easyblocks/core";
 
-function createConfig(init: Partial<ConfigComponent> = {}): ConfigComponent {
+function createConfig(init: Partial<ComponentConfig> = {}): ComponentConfig {
   return { _template: "", ...init };
 }
 

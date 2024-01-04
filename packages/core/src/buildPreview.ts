@@ -1,7 +1,14 @@
 import { getAppUrlRoot, serialize } from "@easyblocks/utils";
 import { buildEntry } from "./buildEntry";
 import { compile, findExternals, validate } from "./compiler";
-import { CompilerModule, Config, ContextParams } from "./types";
+import type {
+  ChangedExternalData,
+  CompilationMetadata,
+  CompilerModule,
+  ComponentConfig,
+  Config,
+  ContextParams,
+} from "./types";
 
 export async function buildPreview(
   documentId: string,
@@ -11,7 +18,14 @@ export async function buildPreview(
   accessToken: string,
   config: Config,
   contextParams: ContextParams
-) {
+): Promise<{
+  renderableDocument: {
+    renderableContent: any;
+    meta: CompilationMetadata;
+    configAfterAuto: ComponentConfig | undefined;
+  };
+  externalData: ChangedExternalData;
+}> {
   const response = await fetch(
     `${getAppUrlRoot()}/api/projects/${projectId}/documents/${documentId}`,
     {

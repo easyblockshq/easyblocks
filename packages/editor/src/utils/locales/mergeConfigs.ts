@@ -1,6 +1,6 @@
 import { configMap } from "@easyblocks/app-utils";
 import {
-  ConfigComponent,
+  ComponentConfig,
   LocalisedConfigs,
   LocalizedText,
 } from "@easyblocks/core";
@@ -31,7 +31,7 @@ export const validateIntegrity = (
 };
 
 export function mergeSingleLocaleConfigsIntoConfig(
-  configs: { [locale: string]: ConfigComponent },
+  configs: { [locale: string]: ComponentConfig },
   compilationContext: CompilationContextType
 ) {
   if (Object.keys(configs).length === 0) {
@@ -79,7 +79,7 @@ export function mergeSingleLocaleConfigsIntoConfig(
           return undefined;
         }
 
-        const localisedCollection: { [locale: string]: ConfigComponent } = {};
+        const localisedCollection: { [locale: string]: ComponentConfig } = {};
 
         for (const locale in configs) {
           const value = dotNotationGet(configs[locale], path);

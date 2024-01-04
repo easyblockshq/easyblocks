@@ -1,7 +1,6 @@
 import {
   CompiledShopstoryComponentConfig,
   ComponentConfig,
-  ConfigComponent,
   ContextParams,
   ExternalReference,
   LocalisedConfigs,
@@ -61,7 +60,7 @@ export type DuplicateItemActionType = {
 
 export type OpenTemplateModalActionCreate = {
   mode: "create";
-  config: ConfigComponent;
+  config: ComponentConfig;
   width?: number;
   widthAuto?: boolean;
 };

@@ -1,4 +1,4 @@
-import { CompiledComponentConfig, ConfigComponent, Devices } from "../types";
+import { CompiledComponentConfig, ComponentConfig, Devices } from "../types";
 import { SetRequired } from "type-fest";
 import { CompilationCache } from "./CompilationCache";
 import { compileInternal } from "./compileInternal";
@@ -8,7 +8,7 @@ import {
   CompilationContextType,
 } from "./types";
 
-type TestComponentConfig = SetRequired<ConfigComponent, "_id">;
+type TestComponentConfig = SetRequired<ComponentConfig, "_id">;
 
 test("populates cache for given component if cache is empty", () => {
   const testComponentDefinition: InternalRenderableComponentDefinition = {

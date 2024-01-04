@@ -5,7 +5,7 @@ import {
 import {
   CompiledComponentConfigBase,
   ComponentSchemaProp,
-  ConfigComponent,
+  ComponentConfig,
   NoCodeComponentDefinition,
   NoCodeComponentStylesFunction,
 } from "../../../../types";
@@ -59,10 +59,10 @@ type RichTextInlineWrapperElementEditableComponentConfig =
   EditableComponentToComponentConfig<
     typeof richTextInlineWrapperElementEditableComponent
   > & {
-    action: [ConfigComponent] | [];
+    action: [ComponentConfig] | [];
     elements: Array<RichTextPartComponentConfig>;
-    textModifier: [] | [ConfigComponent];
-    actionTextModifier: [] | [ConfigComponent];
+    textModifier: [] | [ComponentConfig];
+    actionTextModifier: [] | [ComponentConfig];
   };
 
 type RichTextInlineWrapperElementCompiledComponentConfig =

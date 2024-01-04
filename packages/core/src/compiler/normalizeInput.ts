@@ -1,8 +1,8 @@
 import { isDocument } from "../checkers";
-import { ConfigComponent } from "../types";
+import { ComponentConfig } from "../types";
 import { isLegacyInput } from "./validation";
 
-export function normalizeInput(input: unknown): ConfigComponent {
+export function normalizeInput(input: unknown): ComponentConfig {
   if (isLegacyInput(input)) {
     return input;
   }

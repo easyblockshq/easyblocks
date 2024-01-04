@@ -1,10 +1,10 @@
-import { ConfigComponent } from "@easyblocks/core";
+import { ComponentConfig } from "@easyblocks/core";
 import { pasteManager } from "./manager";
 
 describe("pasteManager", () => {
   const createConfigComponent = (
-    init: Partial<ConfigComponent> = {}
-  ): ConfigComponent => ({
+    init: Partial<ComponentConfig> = {}
+  ): ComponentConfig => ({
     _template: "",
     ...init,
   });

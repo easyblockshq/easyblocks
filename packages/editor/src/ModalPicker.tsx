@@ -1,6 +1,6 @@
 import {
   ComponentSchemaProp,
-  ConfigComponent,
+  ComponentConfig,
   Template,
 } from "@easyblocks/core";
 import {
@@ -21,7 +21,7 @@ import { unrollAcceptsFieldIntoComponents } from "./unrollAcceptsFieldIntoCompon
 
 type ModalProps = {
   config: OpenComponentPickerConfig;
-  onClose: (config?: ConfigComponent) => void;
+  onClose: (config?: ComponentConfig) => void;
 };
 
 export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
@@ -32,7 +32,7 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
   const parentPath = split.slice(0, split.length - 1).join(".");
   const fieldName = split[split.length - 1];
 
-  const parentData: ConfigComponent = dotNotationGet(form.values, parentPath);
+  const parentData: ComponentConfig = dotNotationGet(form.values, parentPath);
   let schemaProp = findComponentDefinition(
     parentData,
     editorContext
@@ -90,7 +90,7 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
   //
   // const pickerMode = schemaProp.picker || defaultPickerMode;
 
-  const close = (config: ConfigComponent) => {
+  const close = (config: ComponentConfig) => {
     const _itemProps = {
       [parentData._template]: {
         [fieldName]: {},

@@ -1,6 +1,6 @@
 import { CompilationContextType } from "@easyblocks/core/_internals";
 import { normalize } from "@easyblocks/core/_internals";
-import { ConfigComponent } from "@easyblocks/core";
+import { ComponentConfig } from "@easyblocks/core";
 
 export function reconcile({
   context,
@@ -11,7 +11,7 @@ export function reconcile({
   templateId?: string;
   fieldName?: string;
 }) {
-  return (item: ConfigComponent) => {
+  return (item: ComponentConfig) => {
     if (!fieldName || !templateId) {
       return item;
     }

@@ -27,7 +27,7 @@ import {
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
   ComponentSchemaProp,
-  ConfigComponent,
+  ComponentConfig,
   EditingField,
   EditingInfo,
   FieldPortal,
@@ -90,11 +90,11 @@ type ComponentCompilationArtifacts = {
   compiledComponentConfig:
     | CompiledShopstoryComponentConfig
     | CompiledCustomComponentConfig;
-  configAfterAuto: ConfigComponent;
+  configAfterAuto: ComponentConfig;
 };
 
 export function compileComponent(
-  editableElement: ConfigComponent,
+  editableElement: ComponentConfig,
   compilationContext: CompilationContextType,
   contextProps: ContextProps, // contextProps are already compiled! They're result of compilation function.
   meta: any,
@@ -762,7 +762,7 @@ function createOwnComponentProps({
   refMap,
   ref,
 }: {
-  config: ConfigComponent;
+  config: ComponentConfig;
   contextProps: ContextProps;
   componentDefinition: InternalComponentDefinition;
   compilationContext: CompilationContextType;
@@ -773,7 +773,7 @@ function createOwnComponentProps({
   const values = Object.fromEntries(
     componentDefinition.schema.map((schemaProp) => {
       if (isSchemaPropComponentOrComponentCollection(schemaProp)) {
-        let configValue: Array<ConfigComponent> = config[schemaProp.prop];
+        let configValue: Array<ComponentConfig> = config[schemaProp.prop];
 
         if (configValue.length === 0) {
           return [schemaProp.prop, []];
@@ -794,7 +794,7 @@ function createOwnComponentProps({
         if (isSchemaPropComponentCollectionLocalised(schemaProp)) {
           configValue =
             resolveLocalisedValue(
-              config[schemaProp.prop] as Record<string, Array<ConfigComponent>>,
+              config[schemaProp.prop] as Record<string, Array<ComponentConfig>>,
               compilationContext
             )?.value ?? [];
         }
@@ -856,7 +856,7 @@ function createOwnComponentProps({
 }
 
 function flattenItemProps(
-  config: ConfigComponent,
+  config: ComponentConfig,
   componentDefinition: InternalComponentDefinition,
   collectionSchemaProp:
     | ComponentCollectionSchemaProp
@@ -878,7 +878,7 @@ function flattenItemProps(
 }
 
 function addComponentToSerializedComponentDefinitions(
-  component: ConfigComponent,
+  component: ComponentConfig,
   meta: CompilationMetadata,
   componentType: keyof SerializedComponentDefinitions,
   compilationContext: CompilationContextType
@@ -909,7 +909,7 @@ function addComponentToSerializedComponentDefinitions(
 }
 
 function compileSubcomponents(
-  editableElement: ConfigComponent,
+  editableElement: ComponentConfig,
   contextProps: ContextProps,
   subcomponentsContextProps: Record<string, Record<string, any>>,
   compilationContext: CompilationContextType,
@@ -918,7 +918,7 @@ function compileSubcomponents(
   editingInfoComponents: InternalEditingInfo["components"] | undefined,
   configPrefix: string,
   compiledComponentConfig: CompiledCustomComponentConfig,
-  configAfterAuto: ConfigComponent | null, // null means that we don't want auto
+  configAfterAuto: ComponentConfig | null, // null means that we don't want auto
   cache: CompilationCache
 ) {
   const componentDefinition = findComponentDefinition(
@@ -1062,7 +1062,7 @@ function calculateWidths(
 }
 
 function itemFieldsForEach(
-  config: ConfigComponent,
+  config: ComponentConfig,
   compilationContext: CompilationContextType,
   callback: (arg: {
     collectionSchemaProp:
@@ -1099,7 +1099,7 @@ function itemFieldsForEach(
         }
       }
 
-      const value: Array<ConfigComponent> = dotNotationGet(config, path) ?? [];
+      const value: Array<ComponentConfig> = dotNotationGet(config, path) ?? [];
 
       value.forEach((_, index) => {
         if (itemFields) {
@@ -1163,8 +1163,8 @@ function resolveLocalisedValue<T>(
 // }
 
 function compileTextModifier(
-  modifierValue: ConfigComponent,
-  textParts: Array<ConfigComponent>,
+  modifierValue: ComponentConfig,
+  textParts: Array<ComponentConfig>,
   compilationContext: CompilationContextType,
   configPrefix: string | undefined,
   cache: CompilationCache

@@ -4,7 +4,7 @@ import { Locale } from "./locales";
 
 export type ScalarOrCollection<T> = T | Array<T>;
 
-export type RefMap = { [key: string]: ConfigComponent };
+export type RefMap = { [key: string]: ComponentConfig };
 
 export type PlaceholderAppearance = {
   width?: number;
@@ -22,7 +22,7 @@ export interface ComponentConfigBase<Identifier extends string> {
   traceId?: string;
 }
 
-export type ConfigComponent = {
+export type ComponentConfig = {
   _template: string; // instance of the component (unique id)
   _ref?: string; // ref of the component,
   _id: string;
@@ -30,10 +30,8 @@ export type ConfigComponent = {
   [key: string]: any; // props
 };
 
-export type ComponentConfig = ConfigComponent;
-
 export type LocalisedConfigs<
-  T extends ConfigComponent | Array<ConfigComponent> = ConfigComponent
+  T extends ComponentConfig | Array<ComponentConfig> = ComponentConfig
 > = {
   [locale: string]: T;
 };
@@ -47,7 +45,7 @@ export type Document = {
    * It allows to avoid fetching the content of the document from the server when it's already available.
    * It shouldn't be used by editor. It's missing when the config was too big to be stored in the CMS.
    */
-  config?: ConfigComponent;
+  config?: ComponentConfig;
 };
 
 export type LocalisedDocument = Record<string, Document>;
@@ -351,7 +349,7 @@ export type UserDefinedTemplate = {
   label: string;
   thumbnail?: string;
   thumbnailLabel?: string;
-  entry: ConfigComponent;
+  entry: ComponentConfig;
   isUserDefined: true;
 };
 
@@ -360,39 +358,11 @@ export type InternalTemplate = {
   label?: string;
   thumbnail?: string;
   thumbnailLabel?: string;
-  entry: ConfigComponent;
+  entry: ComponentConfig;
   isUserDefined?: false;
 };
 
 export type Template = InternalTemplate | UserDefinedTemplate;
-
-//
-// export type Template = {
-//   id?: string;
-//   label?: string;
-//   thumbnail?: string;
-//
-//   config: ConfigComponent
-//
-//   isUserDefined?: boolean,
-//
-//
-//   // type?: string;
-//   // previewImage?: string;
-//   // group?: string;
-//   // isGroupEmptyTemplate?: boolean;
-//   // mapTo?: string | string[];
-//
-//   // isDefaultTextModifier?: boolean; // maybe to remove in the future. But we need to know which template is default text modifier!
-//
-//   // config: ConfigComponent;
-//   // configId?: string;
-//   // isRemoteUserDefined?: boolean;
-//   // previewSettings?: {
-//   //   width: number;
-//   //   widthAuto: boolean;
-//   // };
-// };
 
 type RuntimeConfigThemeValue<T> = {
   id: string;
@@ -911,7 +881,7 @@ export type EditorSidebarPreviewOptions = {
 export interface ConfigModel {
   id: string;
   parent_id: string | null;
-  config: ConfigComponent;
+  config: ComponentConfig;
   project_id: string;
   created_at: string;
 }

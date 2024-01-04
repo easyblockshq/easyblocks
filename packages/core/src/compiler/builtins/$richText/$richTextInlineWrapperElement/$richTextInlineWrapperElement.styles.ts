@@ -1,6 +1,6 @@
 import {
   CompiledTextModifier,
-  ConfigComponent,
+  ComponentConfig,
   NoCodeComponentStylesFunctionInput,
   NoCodeComponentStylesFunctionResult,
 } from "../../../../types";
@@ -12,7 +12,7 @@ import {
 
 export type RichTextActionElementValues = {
   elements: Array<unknown>;
-  action: [ConfigComponent] | [];
+  action: [ComponentConfig] | [];
   // textModifier: [CompiledTextModifier] | [];
   actionTextModifier: [CompiledTextModifier] | [];
 };
