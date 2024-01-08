@@ -161,7 +161,7 @@ const AuthenticationScreen = styled.div`
   ${SSFonts.bodyLarge}
 `;
 
-type EditorContainerProps = {
+type EditorProps = {
   config: Config;
   contextParams: ContextParams;
   locales: Locale[];
@@ -182,7 +182,7 @@ type EditorContainerProps = {
   widgets?: Record<string, ComponentType<WidgetComponentProps>>;
 };
 
-function EditorContainer(props: EditorContainerProps) {
+function Editor(props: EditorProps) {
   const [enabled, setEnabled] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
   const [project, setProject] = useState<
@@ -239,7 +239,7 @@ function EditorContainer(props: EditorContainerProps) {
 
   return (
     <ApiClientProvider apiClient={apiClient}>
-      <Editor
+      <EditorWrapper
         {...props}
         locales={props.locales}
         contextParams={props.contextParams}
@@ -253,7 +253,7 @@ function EditorContainer(props: EditorContainerProps) {
   );
 }
 
-export type EditorProps = {
+export type EditorWrapperProps = {
   configs?: CMSInput;
   save?: (
     localisedDocument: LocalisedDocument,
@@ -277,7 +277,7 @@ export type EditorProps = {
   widgets?: Record<string, ComponentType<WidgetComponentProps>>;
 };
 
-const Editor = memo((props: EditorProps) => {
+const EditorWrapper = memo((props: EditorWrapperProps) => {
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [resolvedInput, setResolvedInput] = useState<{
     config: ComponentConfig;
@@ -349,7 +349,7 @@ const Editor = memo((props: EditorProps) => {
   );
 });
 
-type EditorContentProps = EditorProps & {
+type EditorContentProps = EditorWrapperProps & {
   compilationContext: CompilationContextType;
   initialDocument: DocumentWithResolvedConfigDTO | null;
   initialConfig: ComponentConfig;
@@ -1086,8 +1086,7 @@ const EditorContent = ({
   );
 };
 
-export { EditorContainer as Editor, EditorContent };
-export type { EditorContentProps };
+export { Editor };
 
 function useIframeSize({
   isScalingEnabled,
@@ -1195,7 +1194,7 @@ function getDefaultInput({
 
 async function resolveDocumentId(
   documentId: string,
-  project: EditorProps["project"],
+  project: EditorWrapperProps["project"],
   apiClient: IApiClient,
   compilationContext: CompilationContextType
 ): Promise<{
