@@ -4,16 +4,12 @@ import {
   CompilationMetadata,
   ComponentConfig,
   Config,
-  ContextParams,
   DocumentWithResolvedConfigDTO,
-  EditorLauncherProps,
   ExternalData,
   ExternalDataChangeHandler,
   ExternalReference,
   FetchOutputResources,
   IApiClient,
-  Locale,
-  LocalisedDocument,
   NonEmptyRenderableContent,
   Template,
   WidgetComponentProps,
@@ -88,6 +84,7 @@ import { useDataSaver } from "./useDataSaver";
 import { useEditorHistory } from "./useEditorHistory";
 import { checkLocalesCorrectness } from "./utils/locales/checkLocalesCorrectness";
 import { removeLocalizedFlag } from "./utils/locales/removeLocalizedFlag";
+import { getDefaultLocale } from "@easyblocks/core";
 
 const ContentContainer = styled.div`
   position: relative;
@@ -163,20 +160,15 @@ const AuthenticationScreen = styled.div`
 
 type EditorProps = {
   config: Config;
-  contextParams: ContextParams;
-  locales: Locale[];
+  locale?: string;
   mode: "app" | "playground";
   documentId: string | null;
-  documentType: NonNullable<EditorLauncherProps["documentType"]>;
-  configs?: CMSInput;
+  documentType?: string;
   save?: (
     contentPiece: CMSInput,
     externals: ExternalReference[]
   ) => Promise<void>;
   onClose?: () => void;
-  container?: HTMLElement;
-  heightMode?: "viewport" | "parent";
-  canvasUrl?: string;
   externalData: FetchOutputResources;
   onExternalDataChange: ExternalDataChangeHandler;
   widgets?: Record<string, ComponentType<WidgetComponentProps>>;
@@ -241,8 +233,6 @@ function Editor(props: EditorProps) {
     <ApiClientProvider apiClient={apiClient}>
       <EditorWrapper
         {...props}
-        locales={props.locales}
-        contextParams={props.contextParams}
         documentId={props.documentId}
         isPlayground={isPlayground}
         documentType={props.documentType}
@@ -253,28 +243,10 @@ function Editor(props: EditorProps) {
   );
 }
 
-export type EditorWrapperProps = {
-  configs?: CMSInput;
-  save?: (
-    localisedDocument: LocalisedDocument,
-    externals: ExternalReference[]
-  ) => Promise<void>;
-  locales: Locale[];
-  config: Config;
-  contextParams: ContextParams;
-  onClose?: () => void;
-  documentType: NonNullable<EditorLauncherProps["documentType"]>;
-  container?: HTMLElement;
-  heightMode?: "viewport" | "parent";
-  canvasUrl?: string;
+export type EditorWrapperProps = EditorProps & {
+  isPlayground: boolean;
   isEnabled: boolean;
   project: EditorContextType["project"];
-  uniqueSourceIdentifier?: string;
-  isPlayground: boolean;
-  documentId: string | null;
-  externalData: ExternalData;
-  onExternalDataChange: ExternalDataChangeHandler;
-  widgets?: Record<string, ComponentType<WidgetComponentProps>>;
 };
 
 const EditorWrapper = memo((props: EditorWrapperProps) => {
@@ -285,9 +257,19 @@ const EditorWrapper = memo((props: EditorWrapperProps) => {
   } | null>(null);
   const apiClient = useApiClient();
 
+  // Locales
+  if (!props.config.locales) {
+    throw new Error("Required property config.locales is empty");
+  }
+
+  checkLocalesCorrectness(props.config.locales); // very important to check locales correctness, circular references etc. Other functions
+  const locale = props.locale ?? getDefaultLocale(props.config.locales).code;
+
   const compilationContext = createCompilationContext(
     props.config,
-    props.contextParams,
+    {
+      locale,
+    },
     props.documentType
   );
 
@@ -305,10 +287,7 @@ const EditorWrapper = memo((props: EditorWrapperProps) => {
               apiClient,
               compilationContext
             )
-          : getDefaultInput({
-              documentType: props.documentType,
-              compilationContext,
-            });
+          : getDefaultInput(compilationContext);
 
         setResolvedInput(resolvedInput);
       } catch (error) {
@@ -319,16 +298,7 @@ const EditorWrapper = memo((props: EditorWrapperProps) => {
         }
       }
     })();
-  }, [props.isEnabled, props.configs]);
-
-  // Validation of locales, thanks to this we're sure that locales are properly set up
-  if (!props.locales.find((l) => l.code === props.contextParams.locale)) {
-    throw new Error(
-      `Can't open editor with this locale: ${props.contextParams.locale}`
-    );
-  }
-
-  checkLocalesCorrectness(props.locales); // very important to check locales correctness, circular references etc. Other functions
+  }, [props.isEnabled]);
 
   if (fetchError) {
     return (
@@ -354,6 +324,8 @@ type EditorContentProps = EditorWrapperProps & {
   initialDocument: DocumentWithResolvedConfigDTO | null;
   initialConfig: ComponentConfig;
   isPlayground: boolean;
+  uniqueSourceIdentifier?: string;
+  heightMode?: "viewport" | "full";
 };
 
 function parseExternalDataId(externalDataId: string): {
@@ -373,9 +345,7 @@ function parseExternalDataId(externalDataId: string): {
 function useBuiltContent(
   editorContext: EditorContextType,
   config: Config,
-  contextParams: ContextParams,
   rawContent: ComponentConfig,
-  documentType: string,
   externalData: ExternalData,
   onExternalDataChange: ExternalDataChangeHandler
 ): NonEmptyRenderableContent & {
@@ -419,8 +389,8 @@ function useBuiltContent(
       entry: rawContent,
       config,
       contextParams: {
-        locale: contextParams.locale,
-        rootContainer: documentType,
+        ...editorContext.contextParams,
+        rootContainer: editorContext.documentType.id,
       },
       externalData,
       compiler: {
@@ -430,7 +400,7 @@ function useBuiltContent(
           let resultMeta: CompilationMetadata = {
             vars: {
               devices: editorContext.devices,
-              locale: contextParams.locale,
+              locale: editorContext.contextParams.locale,
               definitions: {
                 actions: [],
                 components: [],
@@ -504,7 +474,7 @@ function useBuiltContent(
     if (Object.keys(buildEntryResult.current.externalData).length > 0) {
       onExternalDataChange(
         buildEntryResult.current.externalData,
-        contextParams
+        editorContext.contextParams
       );
     }
   }
@@ -751,7 +721,6 @@ const EditorContent = ({
       });
     },
     text: undefined,
-    locales: props.locales,
     resources: [],
     compilationCache: compilationCache.current,
     project: props.project,
@@ -801,12 +770,7 @@ const EditorContent = ({
   const { configAfterAuto, renderableContent, meta } = useBuiltContent(
     editorContext,
     props.config,
-    {
-      ...props.contextParams,
-      isEditing,
-    },
     editableData,
-    documentType,
     externalData,
     props.onExternalDataChange
   );
@@ -1049,7 +1013,6 @@ const EditorContent = ({
                   width={width}
                   containerRef={iframeContainerRef}
                   margin={heightMode === "viewport" ? 0 : 100}
-                  url={props.canvasUrl}
                 />
                 {isEditing && (
                   <SelectionFrame
@@ -1150,19 +1113,12 @@ function useIframeSize({
   };
 }
 
-function getDefaultInput({
-  documentType,
-  compilationContext,
-}: {
-  documentType: EditorLauncherProps["documentType"];
-  compilationContext: CompilationContextType;
-}): {
+function getDefaultInput(compilationContext: CompilationContextType): {
   config: ComponentConfig;
   document: DocumentWithResolvedConfigDTO | null;
 } {
-  const documentTypeDefaultConfig = compilationContext.documentTypes.find(
-    (r) => r.id === documentType
-  )?.entry;
+  const documentType = compilationContext.documentType;
+  const documentTypeDefaultConfig = documentType.entry;
 
   if (!documentTypeDefaultConfig) {
     throw new Error(

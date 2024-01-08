@@ -1,12 +1,11 @@
 import { createFetchingContext } from "../createFetchingContext";
 import { responsiveValueMap } from "../responsiveness";
 import { parseSpacing } from "../spacingToPx";
+import { ContextParams } from "../types";
 import {
   Config,
   ConfigDeviceRange,
-  ContextParams,
   Devices,
-  EditorLauncherProps,
   ExternalSchemaProp,
   NoCodeComponentDefinition,
   ResponsiveValue,
@@ -28,6 +27,7 @@ import {
   themeScalarValueToResponsiveValue,
 } from "./themeValueToResponsiveValue";
 import { CompilationContextType, CompilationDocumentType } from "./types";
+import { getDefaultLocale } from "../locales";
 
 function normalizeSpace(
   space: ResponsiveValue<number | string>
@@ -73,7 +73,7 @@ function prepareDevices(configDevices: Config["devices"]): Devices {
 export function createCompilationContext(
   config: Config,
   contextParams: ContextParams,
-  documentType: NonNullable<EditorLauncherProps["documentType"]>
+  documentType?: string
 ): CompilationContextType {
   const devices = prepareDevices(config.devices);
   const mainDevice = devices.find((x) => x.isMain);
@@ -226,6 +226,20 @@ export function createCompilationContext(
     throw new Error(`Document type "${documentType}" doesn't exist.`);
   }
 
+  if (!config.locales) {
+    throw new Error(
+      `Required property config.locales doesn't exist in your config.`
+    );
+  }
+
+  if (
+    config.locales.find((l) => l.code === contextParams.locale) === undefined
+  ) {
+    throw new Error(
+      `You passed locale "${contextParams.locale}" which doesn't exist in your config.locales`
+    );
+  }
+
   if (activeDocument.schema) {
     const rootComponentDefinition = components.find(
       (c) => c.id === activeDocument.entry._template
@@ -288,7 +302,7 @@ export function createCompilationContext(
     contextParams,
     strict: fetchingContext.strict,
     locales: config.locales,
-    documentType,
+    documentType: activeDocument,
     documentTypes,
   };
 

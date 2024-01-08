@@ -3,7 +3,6 @@ import {
   ExternalDataChangeHandler,
   FetchOutputResources,
   WidgetComponentProps,
-  getDefaultLocale,
 } from "@easyblocks/core";
 import {
   SSModalContext,
@@ -18,7 +17,7 @@ import { ShouldForwardProp, StyleSheetManager } from "styled-components";
 import { Editor } from "./Editor";
 import { GlobalStyles } from "./tinacms/styles";
 
-export type LaunchEditorProps = {
+export type EasyblocksParentProps = {
   config: Config;
   externalData: FetchOutputResources;
   onExternalDataChange: ExternalDataChangeHandler;
@@ -34,16 +33,8 @@ const shouldForwardProp: ShouldForwardProp<"web"> = (propName, target) => {
   return true;
 };
 
-export function EasyblocksParent(props: LaunchEditorProps) {
-  const locales = props.config.locales ?? raiseError("Missing locales");
+export function EasyblocksParent(props: EasyblocksParentProps) {
   const editorSearchParams = parseEditorSearchParams();
-  const contextParams = {
-    locale: editorSearchParams.locale ?? getDefaultLocale(locales).code,
-  };
-  const documentType =
-    editorSearchParams.documentType ??
-    raiseError("Missing documentType search param");
-  const mode = editorSearchParams.mode ?? "playground";
 
   return (
     <StyleSheetManager
@@ -64,11 +55,10 @@ export function EasyblocksParent(props: LaunchEditorProps) {
           />
           <Editor
             config={props.config}
-            contextParams={contextParams}
-            locales={locales}
-            mode={mode}
+            locale={editorSearchParams.locale ?? undefined}
+            mode={editorSearchParams.mode ?? "playground"}
             documentId={editorSearchParams.documentId}
-            documentType={documentType}
+            documentType={editorSearchParams.documentType ?? undefined}
             externalData={props.externalData}
             onExternalDataChange={props.onExternalDataChange}
             widgets={props.widgets}

@@ -41,8 +41,8 @@ export type CompilationContextType = {
   isEditing?: boolean;
   contextParams: ContextParams;
   strict?: boolean;
-  locales?: Array<Locale>;
-  documentType: string;
+  locales: Array<Locale>;
+  documentType: CompilationDocumentType;
   documentTypes: Array<CompilationDocumentType>;
 };
 
