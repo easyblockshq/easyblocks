@@ -233,9 +233,7 @@ function Editor(props: EditorProps) {
     <ApiClientProvider apiClient={apiClient}>
       <EditorWrapper
         {...props}
-        documentId={props.documentId}
         isPlayground={isPlayground}
-        documentType={props.documentType}
         project={project}
         isEnabled={enabled}
       />
