@@ -243,17 +243,10 @@ export function useDataSaver(
     );
 
     if (!editorContext.isPlayground && remoteDocument.current !== null) {
-      if (!editorContext.project) {
-        throw new Error(
-          "Trying to fetch document without project. This is an unexpected error."
-        );
-      }
-
       const latestRemoteDocumentVersion =
         (
           await apiClient.documents.getDocumentById({
             documentId: remoteDocument.current.id,
-            projectId: editorContext.project.id,
             format: "versionOnly",
           })
         )?.version ?? -1;
@@ -261,10 +254,10 @@ export function useDataSaver(
       const isNewerDocumentVersionAvailable =
         remoteDocument.current.version < latestRemoteDocumentVersion;
 
+      // update the local config if new remote version is available and there was no change in local config
       if (isConfigTheSame && isNewerDocumentVersionAvailable) {
         const latestDocument = await apiClient.documents.getDocumentById({
           documentId: remoteDocument.current.id,
-          projectId: editorContext.project!.id,
         });
 
         if (latestDocument) {
@@ -327,18 +320,9 @@ export function useDataSaver(
 
       // When running in playground mode, don't save the config to our backend
       if (!editorContext.isPlayground) {
-        const project = editorContext.project;
-
-        if (!project) {
-          throw new Error(
-            "Trying to save data to backend without project. This is an unexpected error."
-          );
-        }
-
         if (remoteDocument.current) {
           const updatedDocument = await apiClient.documents.updateDocument({
             documentId: remoteDocument.current.id,
-            projectId: project.id,
             config: configToSaveWithLocalisedFlag,
             version: remoteDocument.current.version,
             uniqueSourceIdentifier,
@@ -356,8 +340,7 @@ export function useDataSaver(
             config: configToSaveWithLocalisedFlag,
             source,
             uniqueSourceIdentifier,
-            projectId: project.id,
-            rootContainer: editorContext.documentType,
+            rootContainer: editorContext.documentType.id,
           });
 
           remoteDocument.current = {
@@ -378,7 +361,7 @@ export function useDataSaver(
           ? 0
           : remoteDocument.current!.version,
         updatedAt: new Date().getTime(),
-        projectId: editorContext.project.id,
+        projectId: apiClient.project!.id,
         rootContainer:
           remoteDocument.current?.root_container ?? editorContext.documentType,
       };
@@ -420,11 +403,9 @@ export function useDataSaver(
           const getLatestDocument = remoteDocument.current
             ? apiClient.documents.getDocumentById({
                 documentId: remoteDocument.current.id,
-                projectId: editorContext.project!.id,
               })
             : apiClient.documents.getDocumentByUniqueSourceIdentifier({
                 uniqueSourceIdentifier: uniqueSourceIdentifier!,
-                projectId: editorContext.project!.id,
               });
 
           const latestDocument = await getLatestDocument;

@@ -1,5 +1,6 @@
 import { getAppUrlRoot } from "@easyblocks/utils";
-import { ComponentConfig } from "../types";
+import { ComponentConfig, UserDefinedTemplate } from "../types";
+import { ConfigComponent } from "../../dist";
 
 type RequestSearchParams = Record<string, string | Array<string>>;
 
@@ -71,6 +72,14 @@ export type AssetDTO = {
 );
 
 interface IApiClient {
+  project?: {
+    id: string;
+    tokens: string[];
+    name: string;
+  };
+
+  init(): Promise<void>;
+
   request(path: string, options?: ApiRequestOptions): ReturnType<typeof fetch>;
   get(path: string, options?: ApiGetRequestOptions): ReturnType<typeof fetch>;
   post(path: string, options?: ApiPostRequestOptions): ReturnType<typeof fetch>;
@@ -81,11 +90,8 @@ interface IApiClient {
   ): ReturnType<typeof fetch>;
 
   documents: {
-    getDocuments: (payload: {
-      projectId: string;
-    }) => Promise<Array<DocumentDTO>>;
+    getDocuments: () => Promise<Array<DocumentDTO>>;
     getDocumentById: <Format extends GetDocumentFormat = "full">(payload: {
-      projectId: string;
       documentId: string;
       format?: Format;
       locales?: Array<string>;
@@ -97,19 +103,16 @@ interface IApiClient {
     >;
     getDocumentByUniqueSourceIdentifier: (payload: {
       uniqueSourceIdentifier: string;
-      projectId: string;
     }) => Promise<DocumentWithResolvedConfigDTO | null>;
     createDocument: (payload: {
       title: string;
       config: ComponentConfig;
-      projectId: string;
       source: string;
       uniqueSourceIdentifier?: string;
       rootContainer: string;
     }) => Promise<DocumentDTO>;
     updateDocument: (payload: {
       documentId: string;
-      projectId: string;
       version?: number;
       title?: string;
       config?: ComponentConfig;
@@ -117,30 +120,73 @@ interface IApiClient {
     }) => Promise<DocumentDTO>;
   };
 
+  templates: {
+    getTemplates: () => Promise<UserDefinedTemplate[]>;
+    createTemplate: (payload: {
+      title: string;
+      entry: ConfigComponent;
+      width?: number;
+      widthAuto?: boolean;
+    }) => Promise<void>;
+
+    saveTemplate: (payload: { id: string; title: string }) => Promise<void>;
+
+    deleteTemplate: (payload: { id: string }) => Promise<void>;
+  };
+
   configs: {
     getConfigById: (payload: {
       configId: string;
-      projectId?: string;
       locales?: Array<string>;
     }) => Promise<ConfigDTO | null>;
   };
 
   assets: {
     getAssets(payload: {
-      projectId: string;
       type?: "image" | "video";
       ids?: Array<string>;
     }): Promise<Array<AssetDTO>>;
-    uploadAsset(payload: { projectId: string; asset: File }): Promise<void>;
-    removeAsset(payload: { projectId: string; assetId: string }): Promise<void>;
+    uploadAsset(payload: { asset: File }): Promise<void>;
+    removeAsset(payload: { assetId: string }): Promise<void>;
   };
 }
 
+type Project = {
+  id: string;
+  name: string;
+  tokens: Array<string>;
+};
+
 class ApiClient implements IApiClient {
+  project?: {
+    id: string;
+    tokens: string[];
+    name: string;
+  };
+
   constructor(
     private readonly authenticationStrategy: ApiAuthenticationStrategy
   ) {
     this.authenticationStrategy = authenticationStrategy;
+  }
+
+  async init() {
+    // Set project!
+    const response = await this.get("/projects");
+
+    if (response.ok) {
+      const projects = (await response.json()) as Array<Project>;
+
+      if (projects.length === 0) {
+        throw new Error(
+          "Authorization error. Have you provided a correct access token?"
+        );
+      }
+
+      this.project = projects[0];
+    } else {
+      throw new Error("Initialization error in ApiClient");
+    }
   }
 
   async request(path: string, options: ApiRequestOptions) {
@@ -197,11 +243,9 @@ class ApiClient implements IApiClient {
   }
 
   documents = {
-    getDocuments: async (payload: {
-      projectId: string;
-    }): Promise<Array<DocumentDTO>> => {
+    getDocuments: async (): Promise<Array<DocumentDTO>> => {
       const response = await this.get(
-        `/projects/${payload.projectId}/documents`
+        `/projects/${this.project!.id}/documents`
       );
 
       if (response.ok) {
@@ -214,7 +258,6 @@ class ApiClient implements IApiClient {
     getDocumentById: async <
       Format extends GetDocumentFormat = "full"
     >(payload: {
-      projectId: string;
       documentId: string;
       format?: GetDocumentFormat;
       locales?: Array<string>;
@@ -225,7 +268,7 @@ class ApiClient implements IApiClient {
       | null
     > => {
       const response = await this.get(
-        `/projects/${payload.projectId}/documents/${payload.documentId}`,
+        `/projects/${this.project!.id}/documents/${payload.documentId}`,
         {
           searchParams: {
             format: payload.format || "full",
@@ -247,10 +290,11 @@ class ApiClient implements IApiClient {
 
     getDocumentByUniqueSourceIdentifier: async (payload: {
       uniqueSourceIdentifier: string;
-      projectId: string;
     }): Promise<DocumentWithResolvedConfigDTO | null> => {
       const response = await this.get(
-        `/projects/${payload.projectId}/documents/${payload.uniqueSourceIdentifier}`,
+        `/projects/${this.project!.id}/documents/${
+          payload.uniqueSourceIdentifier
+        }`,
         {
           searchParams: {
             identifier_type: "unique_source_identifier",
@@ -272,13 +316,12 @@ class ApiClient implements IApiClient {
     createDocument: async (payload: {
       title: string;
       config: ComponentConfig;
-      projectId: string;
       source: string;
       uniqueSourceIdentifier?: string;
       rootContainer: string;
     }): Promise<DocumentDTO> => {
       const response = await this.post(
-        `/projects/${payload.projectId}/documents`,
+        `/projects/${this.project!.id}/documents`,
         {
           body: {
             title: payload.title,
@@ -304,14 +347,13 @@ class ApiClient implements IApiClient {
 
     updateDocument: async (payload: {
       documentId: string;
-      projectId: string;
       version?: number;
       title?: string;
       config?: ComponentConfig;
       uniqueSourceIdentifier?: string;
     }): Promise<DocumentDTO> => {
       const response = await this.put(
-        `/projects/${payload.projectId}/documents/${payload.documentId}`,
+        `/projects/${this.project!.id}/documents/${payload.documentId}`,
         {
           body: {
             version: payload.version,
@@ -335,14 +377,92 @@ class ApiClient implements IApiClient {
     },
   };
 
+  templates = {
+    getTemplates: async (): Promise<UserDefinedTemplate[]> => {
+      try {
+        const response = await this.get(
+          `/projects/${this.project!.id}/templates`
+        );
+        const data: Array<any> = await response.json();
+
+        const templates = data.map<UserDefinedTemplate>((item) => ({
+          id: item.id,
+          label: item.label,
+          entry: item.config.config,
+          isUserDefined: true,
+        }));
+
+        return templates;
+      } catch (error) {
+        console.error(error);
+        return [];
+      }
+    },
+    createTemplate: async (input: {
+      title: string;
+      entry: ConfigComponent;
+      width?: number;
+      widthAuto?: boolean;
+    }) => {
+      const payload = {
+        label: input.title,
+        config: input.entry,
+        masterTemplateIds: [],
+        width: input.width,
+        widthAuto: input.widthAuto,
+      };
+
+      const response = await this.request(
+        `/projects/${this.project!.id}/templates`,
+        {
+          method: "POST",
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (response.status !== 200) {
+        throw new Error();
+      }
+    },
+    saveTemplate: async (input: { id: string; title: string }) => {
+      const payload = {
+        label: input.title,
+        masterTemplateIds: [],
+      };
+
+      const response = await this.request(
+        `/projects/${this.project!.id}/templates/${input.id}`,
+        {
+          method: "PUT",
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (response.status !== 200) {
+        throw new Error();
+      }
+    },
+    deleteTemplate: async (input: { id: string }) => {
+      const response = await this.request(
+        `/projects/${this.project!.id}/templates/${input.id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.status !== 200) {
+        throw new Error();
+      }
+    },
+  };
+
   configs = {
     getConfigById: async (payload: {
       configId: string;
-      projectId?: string;
       locales?: Array<string>;
     }): Promise<ConfigDTO | null> => {
-      const path = payload.projectId
-        ? `/projects/${payload.projectId}/configs/${payload.configId}`
+      const path = this.project
+        ? `/projects/${this.project.id}/configs/${payload.configId}`
         : `/configs/${payload.configId}`;
 
       const options: ApiGetRequestOptions = {
@@ -352,7 +472,7 @@ class ApiClient implements IApiClient {
       const response = await this.get(path, options);
 
       if (response.ok) {
-        if (payload.projectId) {
+        if (this.project) {
           return (await response.json()) as ConfigDTO;
         }
 
@@ -375,7 +495,6 @@ class ApiClient implements IApiClient {
 
   assets = {
     getAssets: async (payload: {
-      projectId: string;
       type?: "image" | "video";
       ids?: Array<string>;
     }): Promise<Array<AssetDTO>> => {
@@ -389,7 +508,7 @@ class ApiClient implements IApiClient {
         searchParams.ids = payload.ids;
       }
 
-      const response = await this.get(`/projects/${payload.projectId}/assets`, {
+      const response = await this.get(`/projects/${this.project!.id}/assets`, {
         searchParams,
       });
 
@@ -401,31 +520,22 @@ class ApiClient implements IApiClient {
       throw new Error("Failed to get assets");
     },
 
-    uploadAsset: async (payload: {
-      projectId: string;
-      asset: File;
-    }): Promise<void> => {
+    uploadAsset: async (payload: { asset: File }): Promise<void> => {
       const formData = new FormData();
       formData.append("file", payload.asset);
 
-      const response = await this.post(
-        `/projects/${payload.projectId}/assets`,
-        {
-          body: formData,
-        }
-      );
+      const response = await this.post(`/projects/${this.project!.id}/assets`, {
+        body: formData,
+      });
 
       if (!response.ok) {
         throw new Error("Failed to upload asset");
       }
     },
 
-    removeAsset: async (payload: {
-      projectId: string;
-      assetId: string;
-    }): Promise<void> => {
+    removeAsset: async (payload: { assetId: string }): Promise<void> => {
       const response = await this.delete(
-        `/projects/${payload.projectId}/assets/${payload.assetId}`
+        `/projects/${this.project!.id}/assets/${payload.assetId}`
       );
 
       if (!response.ok) {

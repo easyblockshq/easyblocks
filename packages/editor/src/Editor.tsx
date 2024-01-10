@@ -22,6 +22,7 @@ import {
   normalizeInput,
   responsiveValueGet,
   validate,
+  ApiClient,
 } from "@easyblocks/core";
 import {
   CompilationContextType,
@@ -67,7 +68,6 @@ import {
   useApiClient,
 } from "./infrastructure/ApiClientProvider";
 import { createApiClient } from "./infrastructure/createApiClient";
-import { ProjectsApiService } from "./infrastructure/projectsApiService";
 import { destinationResolver } from "./paste/destinationResolver";
 import { pasteManager } from "./paste/manager";
 import { SelectionFrame } from "./selectionFrame/SelectionFrame";
@@ -172,35 +172,36 @@ type EditorProps = {
   externalData: FetchOutputResources;
   onExternalDataChange: ExternalDataChangeHandler;
   widgets?: Record<string, ComponentType<WidgetComponentProps>>;
+
+  // apiClient?: ApiClient
 };
 
-function Editor(props: EditorProps) {
+// function Editor(props: EditorProps) {
+//   return <EditorWrapper
+//       {...props}
+//     />
+// }
+
+export function Editor(props: EditorProps) {
+  /**
+   * Temporary creator of ApiClient which will be later coming from external source. ALL REQUESTS MUST GO THROUGH APICLIENT
+   *
+   */
   const [enabled, setEnabled] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
-  const [project, setProject] = useState<
-    EditorContextType["project"] | undefined
-  >(undefined);
   const [apiClient] = useState(() => createApiClient(props.config.accessToken));
 
   const isPlayground = props.mode === "playground";
 
   useEffect(() => {
     async function handleAccessTokenAuthorization() {
-      const projectsApiService = new ProjectsApiService(apiClient);
-      const projects = await projectsApiService.getProjects();
-
-      if (projects.length === 0) {
+      try {
+        await apiClient.init();
+      } catch (error) {
         setError(
           "Authorization error. Have you provided a correct access token?"
         );
         return;
-      }
-
-      if (projects[0].tokens.length > 0) {
-        setProject({
-          ...projects[0],
-          token: projects[0].tokens[0],
-        });
       }
 
       setEnabled(true);
@@ -221,7 +222,7 @@ function Editor(props: EditorProps) {
     handleAccessTokenAuthorization();
   }, [apiClient, enabled, isPlayground, props.config.accessToken]);
 
-  if (!enabled || !project) {
+  if (!enabled) {
     return <AuthenticationScreen>Loading...</AuthenticationScreen>;
   }
 
@@ -231,23 +232,29 @@ function Editor(props: EditorProps) {
 
   return (
     <ApiClientProvider apiClient={apiClient}>
-      <EditorWrapper
-        {...props}
-        isPlayground={isPlayground}
-        project={project}
-        isEnabled={enabled}
-      />
+      <EditorInner {...props} />
     </ApiClientProvider>
   );
 }
 
-export type EditorWrapperProps = EditorProps & {
-  isPlayground: boolean;
-  isEnabled: boolean;
-  project: EditorContextType["project"];
-};
+// function Editor(props: EditorProps) {
+//   const [enabled, setEnabled] = useState<boolean>(false);
+//   const [error, setError] = useState<string | undefined>(undefined);
+//
+//   const isPlayground = props.mode === "playground";
+//
+//   return (
+//     <ApiClientProvider apiClient={props.apiClient!}>
+//       <EditorInner
+//         {...props}
+//       />
+//     </ApiClientProvider>
+//   );
+// }
 
-const EditorWrapper = memo((props: EditorWrapperProps) => {
+export const EditorInner = memo((props: EditorProps) => {
+  const isPlayground = props.mode === "playground";
+
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [resolvedInput, setResolvedInput] = useState<{
     config: ComponentConfig;
@@ -273,15 +280,10 @@ const EditorWrapper = memo((props: EditorWrapperProps) => {
 
   useEffect(() => {
     (async () => {
-      if (!props.isEnabled) {
-        return;
-      }
-
       try {
         const resolvedInput = props.documentId
           ? await resolveDocumentId(
               props.documentId,
-              props.project,
               apiClient,
               compilationContext
             )
@@ -296,7 +298,7 @@ const EditorWrapper = memo((props: EditorWrapperProps) => {
         }
       }
     })();
-  }, [props.isEnabled]);
+  }, []);
 
   if (fetchError) {
     return (
@@ -307,9 +309,25 @@ const EditorWrapper = memo((props: EditorWrapperProps) => {
     );
   }
 
-  return resolvedInput === null || !props.isEnabled ? null : (
+  if (isPlayground) {
+    return <AuthenticationScreen>Playground</AuthenticationScreen>;
+    // return <EditorContent
+    //   {...props}
+    //   isPlayground={isPlayground}
+    //   compilationContext={compilationContext}
+    //   initialDocument={resolvedInput.document}
+    //   initialConfig={resolvedInput.config}
+    // />
+  }
+
+  if (resolvedInput === null) {
+    return <AuthenticationScreen>Loading...</AuthenticationScreen>;
+  }
+
+  return (
     <EditorContent
       {...props}
+      isPlayground={isPlayground}
       compilationContext={compilationContext}
       initialDocument={resolvedInput.document}
       initialConfig={resolvedInput.config}
@@ -317,12 +335,11 @@ const EditorWrapper = memo((props: EditorWrapperProps) => {
   );
 });
 
-type EditorContentProps = EditorWrapperProps & {
+type EditorContentProps = EditorProps & {
   compilationContext: CompilationContextType;
   initialDocument: DocumentWithResolvedConfigDTO | null;
   initialConfig: ComponentConfig;
   isPlayground: boolean;
-  uniqueSourceIdentifier?: string;
   heightMode?: "viewport" | "full";
 };
 
@@ -495,7 +512,6 @@ const EditorContent = ({
   heightMode = "viewport",
   initialDocument,
   initialConfig,
-  uniqueSourceIdentifier,
   isPlayground,
   documentType,
   externalData,
@@ -721,7 +737,7 @@ const EditorContent = ({
     text: undefined,
     resources: [],
     compilationCache: compilationCache.current,
-    project: props.project,
+    // project: props.project,
     isPlayground,
     activeDocumentType: assertDefined(
       compilationContext.documentTypes.find((r) => r.id === documentType)
@@ -918,11 +934,7 @@ const EditorContent = ({
 
   useEditorGlobalKeyboardShortcuts(editorContext);
 
-  const { saveNow } = useDataSaver(
-    initialDocument,
-    uniqueSourceIdentifier,
-    editorContext
-  );
+  const { saveNow } = useDataSaver(initialDocument, undefined, editorContext);
 
   const { height, scaleFactor, width, iframeContainerRef } = useIframeSize({
     isScalingEnabled: !isFullScreen && isEditing,
@@ -1038,6 +1050,7 @@ const EditorContent = ({
                 onClose={() => {
                   setOpenTemplateModalAction(undefined);
                 }}
+                apiClient={apiClient}
               />
             )}
           </EditorExternalDataProvider>
@@ -1046,8 +1059,6 @@ const EditorContent = ({
     </div>
   );
 };
-
-export { Editor };
 
 function useIframeSize({
   isScalingEnabled,
@@ -1148,25 +1159,21 @@ function getDefaultInput(compilationContext: CompilationContextType): {
 
 async function resolveDocumentId(
   documentId: string,
-  project: EditorWrapperProps["project"],
   apiClient: IApiClient,
   compilationContext: CompilationContextType
 ): Promise<{
   config: ComponentConfig;
   document: DocumentWithResolvedConfigDTO | null;
 }> {
-  if (!project) {
-    throw new Error("Project is required to open editor with remote document");
-  }
-
   const remoteDocument = await apiClient.documents.getDocumentById({
     documentId,
-    projectId: project.id,
   });
 
   if (!remoteDocument) {
     throw new Error(
-      `Document with given id doesn't exist for project with id: ${project.id}`
+      `Document with given id doesn't exist for project with id: ${
+        apiClient.project!.id
+      }`
     );
   }
 

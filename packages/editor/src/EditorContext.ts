@@ -35,11 +35,11 @@ export type EditorContextType = Omit<BaseEditorContextType, "types"> & {
   resources: Array<Resource>;
   compilationCache: CompilationCache;
   isAdminMode: boolean;
-  project: {
-    id: string;
-    name: string;
-    token: string;
-  };
+  // project: {
+  //   id: string;
+  //   name: string;
+  //   token: string;
+  // };
   isPlayground: boolean;
   disableCustomTemplates: boolean;
   isFullScreen: boolean;

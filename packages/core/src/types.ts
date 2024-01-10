@@ -502,6 +502,7 @@ export type NoCodeComponentDefinition<
     values: Values;
     externalData: ExternalData;
   }) => SidebarPreviewVariant | undefined;
+  allowSave?: boolean;
 };
 
 export type Config = {

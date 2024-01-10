@@ -15,10 +15,12 @@ import {
 } from "@easyblocks/design-system";
 import { useEditorContext } from "./EditorContext";
 import { useApiClient } from "./infrastructure/ApiClientProvider";
+import { IApiClient } from "@easyblocks/core";
 
 export type TemplateModalProps = {
   action: OpenTemplateModalAction;
   onClose: () => void;
+  apiClient: IApiClient;
 };
 
 export const TemplateModal: React.FC<TemplateModalProps> = (props) => {
@@ -56,8 +58,6 @@ export const TemplateModal: React.FC<TemplateModalProps> = (props) => {
     }
   );
 
-  const masters: RoleMaster[] = [];
-
   const label = template.label ?? "";
   const open = props.action !== undefined;
   const canSend = label.trim() !== "";
@@ -84,14 +84,6 @@ export const TemplateModal: React.FC<TemplateModalProps> = (props) => {
     }
   }, [open]);
 
-  if (!editorContext.project) {
-    throw new Error(
-      "Trying to access templates feature without specifying project id. This is an unexpected error state."
-    );
-  }
-
-  const projectId = editorContext.project.id;
-
   return (
     <SSModal
       title={`Template details`}
@@ -106,16 +98,6 @@ export const TemplateModal: React.FC<TemplateModalProps> = (props) => {
         onSubmit={(e) => {
           e.preventDefault();
 
-          const selectedMasterIds: string[] = [];
-
-          masters.forEach(({ id }) => {
-            const isSelected =
-              (e.target as any)["master__" + id]?.checked ?? false;
-            if (isSelected) {
-              selectedMasterIds.push(id);
-            }
-          });
-
           setError(null);
 
           if (!canSend) {
@@ -123,58 +105,74 @@ export const TemplateModal: React.FC<TemplateModalProps> = (props) => {
           }
 
           setLoadingEdit(true);
-
-          let payload: Record<string, any>;
-          let method: "POST" | "PUT";
-          let url: string;
-          let successMessage: string;
+          //
+          // let payload: Record<string, any>;
+          // let method: "POST" | "PUT";
+          // let url: string;
+          // let successMessage: string;
 
           if (mode === "create") {
             const createAction = props.action as OpenTemplateModalActionCreate;
 
-            payload = {
-              label,
-              config: createAction.config,
-              masterTemplateIds: selectedMasterIds,
-              width: createAction.width,
-              widthAuto: createAction.widthAuto,
-            };
-
-            method = "POST";
-            url = `/projects/${projectId}/templates`;
-            successMessage = "Template created";
-          } else {
-            payload = {
-              label,
-              masterTemplateIds: selectedMasterIds,
-            };
-            method = "PUT";
-            url = `/projects/${projectId}/templates/${template.id!}`;
-            successMessage = "Template edited";
-          }
-
-          apiClient
-            .request(url, {
-              method,
-              body: JSON.stringify(payload),
-            })
-            .then((response) => {
-              response.json().then(() => {
-                if (response.status !== 200) {
-                  toaster.error("Couldn't save template");
-                } else {
-                  editorContext.syncTemplates();
-                  toaster.success(successMessage);
-                  props.onClose();
-                }
+            apiClient.templates
+              .createTemplate({
+                title: label,
+                entry: createAction.config,
+                width: createAction.width,
+                widthAuto: createAction.widthAuto,
+              })
+              .then(() => {
+                editorContext.syncTemplates();
+                toaster.success("Template created!");
+                props.onClose();
+              })
+              .catch((err) => {
+                toaster.error("Couldn't save template");
+              })
+              .finally(() => {
+                setLoadingEdit(false);
               });
-            })
-            .catch((err) => {
-              toaster.error("Couldn't save template");
-            })
-            .finally(() => {
-              setLoadingEdit(false);
-            });
+          } else {
+            apiClient.templates
+              .saveTemplate({
+                title: label,
+                id: template.id!,
+              })
+              .then(() => {
+                editorContext.syncTemplates();
+                toaster.success("Template updated!");
+                props.onClose();
+              })
+              .catch((err) => {
+                toaster.error("Couldn't update template");
+              })
+              .finally(() => {
+                setLoadingEdit(false);
+              });
+          }
+          //
+          // apiClient
+          //   .request(url, {
+          //     method,
+          //     body: JSON.stringify(payload),
+          //   })
+          //   .then((response) => {
+          //     response.json().then(() => {
+          //       if (response.status !== 200) {
+          //         toaster.error("Couldn't save template");
+          //       } else {
+          //         editorContext.syncTemplates();
+          //         toaster.success(successMessage);
+          //         props.onClose();
+          //       }
+          //     });
+          //   })
+          //   .catch((err) => {
+          //     toaster.error("Couldn't save template");
+          //   })
+          //   .finally(() => {
+          //     setLoadingEdit(false);
+          //   });
         }}
       >
         {error && <div>{error}</div>}
@@ -203,34 +201,6 @@ export const TemplateModal: React.FC<TemplateModalProps> = (props) => {
             />
           </FormElement>
 
-          {masters.map(
-            ({ id, alwaysVisible, label }) =>
-              (rolesOpen || alwaysVisible) && (
-                <FormElement name={"master__" + id} label={label}>
-                  <SSToggle
-                    checked={selectedMasterTemplateIds.includes(id)}
-                    onChange={(e) => {
-                      const checked = e.target.checked;
-
-                      if (!checked) {
-                        setSelectedMasterTemplateIds(
-                          selectedMasterTemplateIds.filter((id) => id !== id)
-                        );
-                      } else if (
-                        checked &&
-                        !selectedMasterTemplateIds.includes(id)
-                      ) {
-                        setSelectedMasterTemplateIds([
-                          ...selectedMasterTemplateIds,
-                          id,
-                        ]);
-                      }
-                    }}
-                  />
-                </FormElement>
-              )
-          )}
-
           <div
             style={{
               display: "flex",
@@ -247,23 +217,12 @@ export const TemplateModal: React.FC<TemplateModalProps> = (props) => {
 
                     setLoadingDelete(true);
 
-                    apiClient
-                      .request(
-                        `/projects/${projectId}/templates/${template.id!}`,
-                        {
-                          method: "DELETE",
-                        }
-                      )
-                      .then((response) => {
-                        response.json().then(() => {
-                          if (response.status !== 200) {
-                            toaster.error("Couldn't delete template");
-                          } else {
-                            editorContext.syncTemplates();
-                            toaster.success("Template deleted");
-                            props.onClose();
-                          }
-                        });
+                    apiClient.templates
+                      .deleteTemplate({ id: template.id! })
+                      .then(() => {
+                        editorContext.syncTemplates();
+                        toaster.success("Template deleted");
+                        props.onClose();
                       })
                       .catch((err) => {
                         toaster.error("Couldn't delete template");

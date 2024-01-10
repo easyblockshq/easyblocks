@@ -429,7 +429,7 @@ export const easyblocksConfig: Config = {
       widgets: [productWidget],
     },
   },
-  disableCustomTemplates: true,
+  // disableCustomTemplates: true,
   hideCloseButton: true,
   templates,
 };
