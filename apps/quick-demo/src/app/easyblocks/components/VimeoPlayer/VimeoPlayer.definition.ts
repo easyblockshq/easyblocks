@@ -16,8 +16,7 @@ const vimeoPlayerEditableComponent: NoCodeComponentDefinition<VimeoPlayerValues>
       {
         prop: "aspectRatio",
         label: "Aspect Ratio",
-        type: "stringToken",
-        params: { tokenId: "aspectRatios" },
+        type: "aspectRatio",
       },
       {
         prop: "isAutoPlay",

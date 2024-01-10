@@ -54,8 +54,6 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
     editorContext
   );
 
-  console.log("PICKER!!!!", componentTypes, components);
-
   let templatesDictionary: TemplatesDictionary | undefined = undefined;
 
   if (editorContext.templates) {
@@ -78,8 +76,6 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
       }
     });
   }
-
-  console.log(templatesDictionary, editorContext.templates);
 
   const picker = schemaProp.picker ?? "compact";
 
@@ -131,8 +127,6 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
       />
     );
   } else if (picker === "compact") {
-    console.log("COMPACT!!!!!", templatesDictionary);
-
     return (
       <SearchableSmallPickerModal
         isOpen={true}
@@ -143,25 +137,4 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
   } else {
     throw new Error(`unknown template picker: "${picker}"`);
   }
-
-  // if (pickerMode === "small") {
-  //   modal = (
-  //     <SearchableSmallPickerModal
-  //       isOpen={true}
-  //       onClose={onModalClose}
-  //       componentTypes={componentTypes}
-  //     />
-  //   );
-  // } else {
-  //   modal = (
-  //     <SectionPickerModal
-  //       isOpen={true}
-  //       onSelect={onModalClose}
-  //       onClose={onClose}
-  //       componentTypes={componentTypes}
-  //     />
-  //   );
-  // }
-
-  // return modal;
 };

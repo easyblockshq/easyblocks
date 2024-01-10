@@ -22,6 +22,7 @@ import {
   ProductPicker,
   productWidget,
 } from "../easyblocks/externalData/product/productWidget";
+import { UrlWidget } from "../easyblocks/types/UrlWidget";
 
 const myCustomFetch = createMyCustomFetch(easyblocksConfig.accessToken);
 
@@ -59,6 +60,7 @@ export default function EeasyblocksEditorPage() {
         [productWidget.id]: ProductPicker,
         [pexelsImageWidget.id]: PexelsImagePicker,
         [pexelsVideoWidget.id]: PexelsVideoPicker,
+        url: UrlWidget,
       }}
     />
   );

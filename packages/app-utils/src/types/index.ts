@@ -6,7 +6,6 @@ import type {
 } from "@easyblocks/core";
 import { EditorContextType } from "@easyblocks/core/_internals";
 
-export * from "./ConfigComponentIdentifier";
 export * from "./ConfigModel";
 export * from "./ConfigOrConfigArray";
 

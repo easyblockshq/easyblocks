@@ -164,13 +164,10 @@ export const gridComponentDefinition: NoCodeComponentDefinition<
     {
       prop: "gridMainObjectAspectRatio",
       label: "Main object aspect ratio",
-      type: "stringToken",
-      params: {
-        tokenId: "aspectRatios",
-      },
+      type: "aspectRatio",
       group: "Grid / Slider",
       defaultValue: {
-        ref: "$gridMainObjectDefault",
+        tokenId: "$gridMainObjectDefault",
         value: "whatever", // will be normalized anyway
       },
       visible: false,

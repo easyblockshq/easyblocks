@@ -71,7 +71,7 @@ export const buttonComponentDefinition: NoCodeComponentDefinition = {
       group: "General styles",
       label: "Color",
       defaultValue: {
-        ref: "$dark",
+        tokenId: "$dark",
         value: "?",
       },
     },
@@ -114,7 +114,7 @@ export const buttonComponentDefinition: NoCodeComponentDefinition = {
         );
       },
       defaultValue: {
-        ref: "16",
+        tokenId: "16",
         value: "16px",
       },
     },
@@ -127,7 +127,7 @@ export const buttonComponentDefinition: NoCodeComponentDefinition = {
         return values.variant === "label-icon";
       },
       defaultValue: {
-        ref: "6",
+        tokenId: "6",
         value: "6px",
       },
     },
@@ -163,7 +163,7 @@ export const buttonComponentDefinition: NoCodeComponentDefinition = {
       group: "Label styles",
       label: "Style",
       defaultValue: {
-        ref: "$body2.bold",
+        tokenId: "$body2.bold",
         value: {},
       },
       visible: (values) => {
@@ -232,7 +232,7 @@ export const buttonComponentDefinition: NoCodeComponentDefinition = {
       prop: "backgroundColor",
       type: "color",
       defaultValue: {
-        ref: "$neutral",
+        tokenId: "$neutral",
         value: "grey",
       },
       visible: (values) => {
@@ -264,7 +264,7 @@ export const buttonComponentDefinition: NoCodeComponentDefinition = {
       prop: "borderColor",
       type: "color",
       defaultValue: {
-        ref: "$dark",
+        tokenId: "$dark",
         value: "black",
       },
       group: "Border and shadow",
@@ -276,12 +276,7 @@ export const buttonComponentDefinition: NoCodeComponentDefinition = {
     {
       prop: "boxShadow", // main image size
       label: "Box shadow",
-      type: "stringToken",
-      params: { tokenId: "boxShadows" },
-      defaultValue: {
-        ref: "none",
-        value: "none",
-      },
+      type: "boxShadow",
       group: "Border and shadow",
     },
   ],

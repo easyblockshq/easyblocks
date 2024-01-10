@@ -1,25 +1,25 @@
 import { PartialDeep } from "type-fest";
 import { Locale } from "../locales";
 import {
-  Devices,
-  ExternalDefinition,
-  ContextParams,
   ComponentConfig,
-  ExternalSchemaProp,
-  SchemaProp,
   ComponentConfigBase,
-  RefMap,
-  EditingInfoBase,
-  FieldPortal,
   ComponentDefinitionShared,
-  NoCodeComponentStylesFunction,
-  NoCodeComponentEditingFunction,
+  ContextParams,
+  CustomTypeDefinition,
+  Devices,
+  EditingInfoBase,
+  ExternalSchemaProp,
+  FieldPortal,
   NoCodeComponentAutoFunction,
+  NoCodeComponentEditingFunction,
+  NoCodeComponentStylesFunction,
+  RefMap,
   Resource,
+  SchemaProp,
   Template,
 } from "../types";
-import { Theme } from "./theme";
 import { InternalAnyTinaField } from "./schema";
+import { Theme } from "./theme";
 
 export type CompilationDocumentType = {
   id: string;
@@ -32,15 +32,12 @@ export type CompilationDocumentType = {
 export type CompilationContextType = {
   devices: Devices;
   theme: Theme;
-  types: {
-    [key: string]: ExternalDefinition;
-  };
+  types: Record<string, CustomTypeDefinition>;
   // FIXME
   definitions: any;
   mainBreakpointIndex: string;
   isEditing?: boolean;
   contextParams: ContextParams;
-  strict?: boolean;
   locales?: Array<Locale>;
   documentType: string;
   documentTypes: Array<CompilationDocumentType>;

@@ -1,7 +1,6 @@
 import React, { ComponentType, Fragment, ReactElement } from "react";
 import { findComponentDefinitionById } from "../../compiler/findComponentDefinition";
 import {
-  isExternalSchemaProp,
   isSchemaPropActionTextModifier,
   isSchemaPropComponent,
   isSchemaPropComponentOrComponentCollection,
@@ -23,8 +22,10 @@ import {
   resolveExternalValue,
 } from "../../resourcesUtils";
 import {
+  isTrulyResponsiveValue,
   responsiveValueGetDefinedValue,
   responsiveValueReduce,
+  responsiveValueValues,
 } from "../../responsiveness";
 import { resop } from "../../responsiveness/resop";
 import {
@@ -134,7 +135,18 @@ function getRenderabilityStatus(
 
   const requiredExternalFields = componentDefinition.schema.filter(
     (schemaProp): schemaProp is ExternalSchemaProp => {
-      return isExternalSchemaProp(schemaProp) && !schemaProp.optional;
+      const propValue = compiled.props[schemaProp.prop];
+
+      if (
+        typeof propValue === "object" &&
+        propValue !== null &&
+        "id" in propValue &&
+        "widgetId" in propValue
+      ) {
+        return "optional" in schemaProp && !schemaProp.optional;
+      }
+
+      return false;
     }
   );
 
@@ -504,10 +516,7 @@ function mapExternalProps(
       (currentSchema) => currentSchema.prop === propName
     );
 
-    if (
-      schemaProp &&
-      (isExternalSchemaProp(schemaProp) || schemaProp.type === "text")
-    ) {
+    if (schemaProp) {
       const propValue = props[propName] as ResponsiveValue<
         LocalReference | ExternalReference
       >;
@@ -520,19 +529,30 @@ function mapExternalProps(
           propValue as unknown as CompiledLocalTextReference
         ).value;
       } else if (
-        isExternalSchemaProp(schemaProp) ||
-        (schemaProp.type === "text" &&
-          !isLocalTextReference(
-            propValue as LocalReference | ExternalReference<string>,
-            "text"
+        // FIXME: this is a mess
+        (!isTrulyResponsiveValue(propValue) &&
+          typeof propValue === "object" &&
+          "id" in propValue &&
+          "widgetId" in propValue &&
+          !("value" in propValue)) ||
+        (isTrulyResponsiveValue(propValue) &&
+          responsiveValueValues(propValue).every(
+            (v) =>
+              typeof v === "object" &&
+              v &&
+              "id" in v &&
+              "widgetId" in v &&
+              !("value" in v)
           ))
       ) {
         resultsProps[propName] = resolveExternalValue(
-          propValue as ExternalReference,
+          propValue,
           configId,
           schemaProp as ExternalSchemaProp,
           externalData
         );
+      } else {
+        resultsProps[propName] = props[propName];
       }
     } else {
       resultsProps[propName] = props[propName];

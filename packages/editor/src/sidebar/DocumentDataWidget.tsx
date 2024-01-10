@@ -11,14 +11,18 @@ import {
   getBasicResourcesOfType,
 } from "../tinacms/fields/plugins/ExternalField/ExternalField";
 import type { InternalWidgetComponentProps } from "../types";
-import type { EditorWidget } from "./types";
+import { EditorContextType } from "../EditorContext";
 
-function documentDataWidgetFactory(options: { type: string }): EditorWidget {
+type Widget = NonNullable<
+  EditorContextType["types"][string]["widgets"][number]
+>;
+
+function documentDataWidgetFactory(options: { type: string }): Widget {
   const DocumentDataWidgetComponent = createDocumentDataWidgetComponent(
     options.type
   );
 
-  const documentDataWidget: EditorWidget = {
+  const documentDataWidget: Widget = {
     id: "@easyblocks/document-data",
     label: "Document data",
     component: DocumentDataWidgetComponent,

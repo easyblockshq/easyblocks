@@ -2,16 +2,22 @@ import { Form } from "@easyblocks/app-utils";
 import {
   CompiledComponentConfig,
   ComponentConfig,
+  ExternalTypeDefinition,
+  InlineTypeDefinition,
+  InlineTypeWidgetComponentProps,
   Resource,
   Template,
+  TokenTypeDefinition,
+  TokenTypeWidgetComponentProps,
+  Widget,
+  WidgetComponentProps,
 } from "@easyblocks/core";
 import {
   EditorContextType as BaseEditorContextType,
   CompilationCache,
   InternalAnyField,
 } from "@easyblocks/core/_internals";
-import React, { useContext } from "react";
-import { EditorWidget } from "./sidebar/types";
+import React, { ComponentType, useContext } from "react";
 import { ActionsType, TextSyncers } from "./types";
 
 export type EditorContextType = Omit<BaseEditorContextType, "types"> & {
@@ -43,7 +49,30 @@ export type EditorContextType = Omit<BaseEditorContextType, "types"> & {
   isPlayground: boolean;
   disableCustomTemplates: boolean;
   isFullScreen: boolean;
-  types: Record<string, { widgets: Array<EditorWidget> }>;
+  types: Record<
+    string,
+    | (Omit<ExternalTypeDefinition, "widgets"> & {
+        widgets: Array<
+          Widget & {
+            component?: ComponentType<WidgetComponentProps<any>>;
+          }
+        >;
+      })
+    | (Omit<InlineTypeDefinition, "widgets"> & {
+        widgets: Array<
+          Widget & {
+            component?: ComponentType<InlineTypeWidgetComponentProps<any>>;
+          }
+        >;
+      })
+    | (Omit<TokenTypeDefinition, "widgets"> & {
+        widgets: Array<
+          Widget & {
+            component?: ComponentType<TokenTypeWidgetComponentProps<any>>;
+          }
+        >;
+      })
+  >;
 };
 
 export const EditorContext = React.createContext<EditorContextType | null>(

@@ -39,14 +39,7 @@ export const sectionWrapperSchemaProps: {
     {
       prop: "containerMaxWidth", // main image size
       label: "Max width",
-      type: "stringToken",
-      params: {
-        tokenId: "containerWidths",
-      },
-      defaultValue: {
-        ref: "none",
-        value: "none",
-      },
+      type: "containerWidth",
       group: "Section margins",
     },
   ],
@@ -167,7 +160,7 @@ export const sectionWrapperSchemaProps: {
       },
       defaultValue: {
         value: "12px",
-        ref: "12",
+        tokenId: "12",
       },
     },
 
@@ -181,7 +174,7 @@ export const sectionWrapperSchemaProps: {
       },
       defaultValue: {
         value: "12px",
-        ref: "12",
+        tokenId: "12",
       },
     },
     {
@@ -198,7 +191,7 @@ export const sectionWrapperSchemaProps: {
       },
       defaultValue: {
         value: "12px",
-        ref: "12",
+        tokenId: "12",
       },
     },
     /**
@@ -238,7 +231,7 @@ export const sectionWrapperSchemaProps: {
       },
       defaultValue: {
         value: "24px",
-        ref: "24",
+        tokenId: "24",
       },
     },
   ],

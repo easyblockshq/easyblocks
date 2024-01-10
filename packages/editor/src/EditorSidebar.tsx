@@ -14,7 +14,7 @@ type EditorSidebarProps = {
   form: Form;
 };
 
-const Error = styled.div`
+export const Error = styled.div`
   ${SSFonts.body}
   padding: 7px 6px 7px;
   color: hsl(0deg 0% 50% / 0.8);

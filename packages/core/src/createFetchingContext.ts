@@ -1,8 +1,8 @@
-import type { Config, ExternalDefinition } from "./types";
+import type { Config, CustomTypeDefinition } from "./types";
 
 export type FetchingContext = {
   types: {
-    [key: string]: ExternalDefinition;
+    [key: string]: CustomTypeDefinition;
   };
   strict?: boolean;
 };

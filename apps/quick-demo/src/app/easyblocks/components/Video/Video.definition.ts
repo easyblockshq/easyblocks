@@ -33,10 +33,7 @@ const videoComponentDefinition: NoCodeComponentDefinition = {
     {
       prop: "aspectRatio", // main image size
       label: "Aspect Ratio",
-      type: "stringToken",
-      params: {
-        tokenId: "aspectRatios",
-      },
+      type: "aspectRatio",
       buildOnly: true,
     },
     {

@@ -131,6 +131,28 @@ function createFieldController({
           const inputValue = Array.isArray(newValue)
             ? getValue(newValue[fieldIndex])
             : getValue(newValue);
+
+          const customTypeDefinition =
+            editorContext.types[field.schemaProp.type];
+
+          if (
+            customTypeDefinition &&
+            "validate" in customTypeDefinition &&
+            customTypeDefinition.validate &&
+            "value" in inputValue &&
+            (customTypeDefinition.type === "token"
+              ? !("tokenId" in inputValue)
+              : true)
+          ) {
+            const isInputValueValid = customTypeDefinition.validate(
+              inputValue.value
+            );
+
+            if (!isInputValueValid) {
+              return;
+            }
+          }
+
           let parsedValue = parse(inputValue, path, field);
 
           // If path has locale token [locale] (component-collection-localised) then we must first replace it with correct token

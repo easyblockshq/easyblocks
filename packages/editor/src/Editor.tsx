@@ -12,10 +12,12 @@ import {
   ExternalReference,
   FetchOutputResources,
   IApiClient,
+  InlineTypeWidgetComponentProps,
   Locale,
   LocalisedDocument,
   NonEmptyRenderableContent,
   Template,
+  TokenTypeWidgetComponentProps,
   WidgetComponentProps,
   buildEntry,
   compileInternal,
@@ -39,7 +41,7 @@ import {
   traverseComponents,
 } from "@easyblocks/core/_internals";
 import { SSColors, SSFonts, useToaster } from "@easyblocks/design-system";
-import { assertDefined, dotNotationGet, raiseError } from "@easyblocks/utils";
+import { assertDefined, dotNotationGet } from "@easyblocks/utils";
 import React, {
   ComponentType,
   memo,
@@ -179,7 +181,11 @@ type EditorContainerProps = {
   canvasUrl?: string;
   externalData: FetchOutputResources;
   onExternalDataChange: ExternalDataChangeHandler;
-  widgets?: Record<string, ComponentType<WidgetComponentProps>>;
+  widgets?: Record<
+    string,
+    | ComponentType<WidgetComponentProps<any>>
+    | ComponentType<InlineTypeWidgetComponentProps<any>>
+  >;
 };
 
 function EditorContainer(props: EditorContainerProps) {
@@ -274,7 +280,12 @@ export type EditorProps = {
   documentId: string | null;
   externalData: ExternalData;
   onExternalDataChange: ExternalDataChangeHandler;
-  widgets?: Record<string, ComponentType<WidgetComponentProps>>;
+  widgets?: Record<
+    string,
+    | ComponentType<WidgetComponentProps<any>>
+    | ComponentType<InlineTypeWidgetComponentProps<any>>
+    | ComponentType<TokenTypeWidgetComponentProps<any>>
+  >;
 };
 
 const Editor = memo((props: EditorProps) => {
@@ -696,12 +707,13 @@ const EditorContent = ({
   const [isFullScreen, setFullScreen] = useState(false);
 
   const syncTemplates = () => {
-    // @ts-expect-error
-    getTemplates(editorContext, apiClient, props.config.templates ?? []).then(
-      (newTemplates) => {
-        setTemplates(newTemplates);
-      }
-    );
+    getTemplates(
+      editorContext,
+      apiClient,
+      (props.config.templates as Array<any>) ?? []
+    ).then((newTemplates) => {
+      setTemplates(newTemplates);
+    });
   };
 
   useEffect(() => {
@@ -714,12 +726,11 @@ const EditorContent = ({
         return [
           typeName,
           {
+            ...typeDefinition,
             widgets: typeDefinition.widgets.map((w) => {
               return {
                 ...w,
-                component:
-                  props.widgets?.[w.id] ??
-                  raiseError(`Missing widget component for widget "${w.id}"`),
+                component: props.widgets?.[w.id] as any,
               };
             }),
           },
@@ -764,38 +775,7 @@ const EditorContent = ({
   };
 
   if (editorContext.activeDocumentType.schema) {
-    const documentParamsTypes = editorContext.activeDocumentType.schema.map(
-      (s) => s.type
-    );
-    const types = Array.from(
-      new Set([
-        "text",
-        ...Object.keys(editorContext.types).filter(
-          (t) => !documentParamsTypes.includes(t)
-        ),
-      ])
-    );
-
-    types.forEach((builtinExternalType) => {
-      if (!editorContext.types[builtinExternalType]) {
-        editorContext.types[builtinExternalType] = {
-          widgets: [],
-        };
-      }
-
-      // Make sure to add the document data widget to custom types
-      if (
-        !editorContext.types[builtinExternalType].widgets.some(
-          (w) => w.id === "@easyblocks/document-data"
-        )
-      ) {
-        editorContext.types[builtinExternalType].widgets.push(
-          documentDataWidgetFactory({
-            type: builtinExternalType,
-          })
-        );
-      }
-    });
+    ensureDocumentDataWidgetForTypes(editorContext);
   }
 
   const { configAfterAuto, renderableContent, meta } = useBuiltContent(
@@ -1088,6 +1068,42 @@ const EditorContent = ({
 
 export { EditorContainer as Editor, EditorContent };
 export type { EditorContentProps };
+
+function ensureDocumentDataWidgetForTypes(editorContext: EditorContextType) {
+  const documentParamsTypes = editorContext.activeDocumentType.schema!.map(
+    (s) => s.type
+  );
+  const types = Array.from(
+    new Set([
+      "text",
+      ...Object.keys(editorContext.types).filter(
+        (t) => !documentParamsTypes.includes(t)
+      ),
+    ])
+  );
+
+  types.forEach((builtinExternalType) => {
+    if (!editorContext.types[builtinExternalType]) {
+      editorContext.types[builtinExternalType] = {
+        type: "external",
+        widgets: [],
+      };
+    }
+
+    // Make sure to add the document data widget to custom types
+    if (
+      !editorContext.types[builtinExternalType].widgets.some(
+        (w) => w.id === "@easyblocks/document-data"
+      )
+    ) {
+      editorContext.types[builtinExternalType].widgets.push(
+        documentDataWidgetFactory({
+          type: builtinExternalType,
+        }) as any
+      );
+    }
+  });
+}
 
 function useIframeSize({
   isScalingEnabled,

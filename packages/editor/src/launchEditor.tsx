@@ -2,6 +2,7 @@ import {
   Config,
   ExternalDataChangeHandler,
   FetchOutputResources,
+  InlineTypeWidgetComponentProps,
   WidgetComponentProps,
   getDefaultLocale,
 } from "@easyblocks/core";
@@ -16,13 +17,20 @@ import isPropValid from "@emotion/is-prop-valid";
 import React, { ComponentType } from "react";
 import { ShouldForwardProp, StyleSheetManager } from "styled-components";
 import { Editor } from "./Editor";
+import { ColorTokenWidget } from "./sidebar/ColorTokenWidget";
 import { GlobalStyles } from "./tinacms/styles";
+import { SpaceTokenWidget } from "./sidebar/SpaceTokenWidget";
+// import { FontTokenWidget } from "./sidebar/FontTokenWidget";
 
 export type LaunchEditorProps = {
   config: Config;
   externalData: FetchOutputResources;
   onExternalDataChange: ExternalDataChangeHandler;
-  widgets?: Record<string, ComponentType<WidgetComponentProps>>;
+  widgets?: Record<
+    string,
+    | ComponentType<WidgetComponentProps<any>>
+    | ComponentType<InlineTypeWidgetComponentProps<any>>
+  >;
 };
 
 const shouldForwardProp: ShouldForwardProp<"web"> = (propName, target) => {
@@ -32,6 +40,12 @@ const shouldForwardProp: ShouldForwardProp<"web"> = (propName, target) => {
   }
   // For other elements, forward all props
   return true;
+};
+
+const builtinWidgets: LaunchEditorProps["widgets"] = {
+  color: ColorTokenWidget,
+  // font: FontTokenWidget,
+  space: SpaceTokenWidget,
 };
 
 export function EasyblocksParent(props: LaunchEditorProps) {
@@ -71,7 +85,10 @@ export function EasyblocksParent(props: LaunchEditorProps) {
             documentType={documentType}
             externalData={props.externalData}
             onExternalDataChange={props.onExternalDataChange}
-            widgets={props.widgets}
+            widgets={{
+              ...builtinWidgets,
+              ...props.widgets,
+            }}
           />
         </TooltipProvider>
         <Toaster containerStyle={{ zIndex: 100100 }} />

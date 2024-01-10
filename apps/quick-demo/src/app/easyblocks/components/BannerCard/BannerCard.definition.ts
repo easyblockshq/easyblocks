@@ -28,7 +28,7 @@ function noFillPaddingSchemaProp(
     group,
     type: "space",
     defaultValue: {
-      ref: "0",
+      tokenId: "0",
       value: "0px",
     },
   };
@@ -358,8 +358,6 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
 
     const fillColor = getField("fillColor");
 
-    console.log("left", paddingModes.left);
-
     setPaddingFieldVisibilityBasedOnMode(
       paddingLeft,
       noFillPaddingLeft,
@@ -501,7 +499,7 @@ export function paddingSchemaProp(
     group,
     type: "space",
     defaultValue: {
-      ref: "16",
+      tokenId: "16",
       value: "16px",
     },
   };

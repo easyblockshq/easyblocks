@@ -1,16 +1,15 @@
 import {
-  responsiveValueNormalize,
   responsiveValueForceGet,
+  responsiveValueNormalize,
 } from "../responsiveness";
 import {
   Devices,
-  SchemaProp,
-  TrulyResponsiveValue,
   NoCodeComponentStylesFunctionResult,
   ResponsiveValue,
+  SchemaProp,
+  TrulyResponsiveValue,
 } from "../types";
 import {
-  isExternalSchemaProp,
   isSchemaPropActionTextModifier,
   isSchemaPropCollection,
   isSchemaPropComponent,
@@ -191,10 +190,8 @@ function scalarizeNonComponentProp(
       throw new Error("unreachable");
     }
 
-    // External values and text value should not be scalarized
-    // At least we introduce `responsive` property for external definition
-    // TODO: recheck after introducing `responsive` property
-    if (isExternalSchemaProp(schemaProp) || schemaProp.type === "text") {
+    // Text values aren't responsive
+    if (schemaProp.type === "text") {
       return value;
     }
 

@@ -13,8 +13,7 @@ export const linkDefinition: NoCodeComponentDefinition = {
   schema: [
     {
       prop: "url",
-      type: "string",
-      defaultValue: "https://google.com",
+      type: "url",
     },
     {
       prop: "shouldOpenInNewWindow",

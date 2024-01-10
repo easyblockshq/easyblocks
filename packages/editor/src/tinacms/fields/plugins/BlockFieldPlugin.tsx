@@ -285,7 +285,7 @@ function getSidebarPreview(
         editorContext.breakpointIndex
       );
 
-      if (isExternalSchemaProp(s)) {
+      if (isExternalSchemaProp(s, editorContext.types)) {
         const externalDataValue = resolveExternalValue(
           value as ExternalReference,
           entryAfterAuto._id,

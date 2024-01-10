@@ -12,7 +12,7 @@ import {
   getExternalReferenceLocationKey,
   TextSchemaProp,
 } from "@easyblocks/core";
-import { Select, SelectItem, Typography } from "@easyblocks/design-system";
+import { Select, SelectItem } from "@easyblocks/design-system";
 import { dotNotationGet, toArray } from "@easyblocks/utils";
 import React, { ComponentType, useLayoutEffect } from "react";
 import { useEditorContext } from "../../../../EditorContext";
@@ -24,6 +24,7 @@ import {
 import { FieldRenderProps } from "../../../form-builder";
 import { isMixedFieldValue } from "../../components/isMixedFieldValue";
 import { FieldMetaWrapper } from "../wrapFieldWithMeta";
+import { MissingWidget } from "../MissingWidget";
 
 interface ExternalField
   extends Field<AnyField, ExternalSchemaProp | TextSchemaProp> {
@@ -204,8 +205,4 @@ export function CompoundResourceValueSelect(props: {
       })}
     </Select>
   );
-}
-
-function MissingWidget(props: { type: string }) {
-  return <Typography>Missing widget for type "{props.type}".</Typography>;
 }

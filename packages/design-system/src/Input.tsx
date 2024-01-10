@@ -49,7 +49,8 @@ const InputBase = forwardRef<
 
 export const SSInput = forwardRef<HTMLInputElement, SSInputProps>(
   (props, ref) => {
-    const { iconBlack, controlSize, iconOnly, ...inputProps } = props;
+    const { iconBlack, controlSize, iconOnly, onBlur, value, ...inputProps } =
+      props;
 
     return (
       <ControlContainer
@@ -58,7 +59,7 @@ export const SSInput = forwardRef<HTMLInputElement, SSInputProps>(
         iconOnly={iconOnly}
         {...inputProps}
       >
-        <InputBase {...inputProps} ref={ref} />
+        <InputBase {...inputProps} value={value} onBlur={onBlur} ref={ref} />
       </ControlContainer>
     );
   }

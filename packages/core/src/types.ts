@@ -12,14 +12,10 @@ export type PlaceholderAppearance = {
   aspectRatio?: number;
   label?: string;
 };
-export interface ConfigComponentIdentifier {
-  id: string;
-}
 
 export interface ComponentConfigBase<Identifier extends string> {
   _template: Identifier;
   _id: string;
-  traceId?: string;
 }
 
 export type ComponentConfig = {
@@ -80,11 +76,11 @@ export type ResponsiveValue<T> = T | TrulyResponsiveValue<T>;
 
 export type ThemeSpaceScalar = number | string;
 
-export type ThemeSpace = ThemeSpaceScalar | { [key: string]: ThemeSpaceScalar };
+export type ThemeSpace = ResponsiveValue<ThemeSpaceScalar>;
 
-export type ThemeColor = Color | { [key: string]: Color };
+export type ThemeColor = ResponsiveValue<Color>;
 
-export type ThemeFont = { [key: string]: any };
+export type ThemeFont = ResponsiveValue<{ [key: string]: any }>;
 
 export type ButtonCustomComponent = CustomComponentShared & {
   builtinProps?: {
@@ -260,6 +256,21 @@ export type ExternalSchemaProp = ValueSchemaProp<
   optional?: boolean;
 };
 
+export type LocalSchemaProp = ValueSchemaProp<
+  string & Record<never, never>,
+  any,
+  "optional"
+>;
+
+export type TokenSchemaProp = ValueSchemaProp<
+  string & Record<never, never>,
+  any,
+  "forced"
+> &
+  SchemaPropParams<{
+    extraValues: Array<any | { value: any; label: string }>;
+  }>;
+
 export type SchemaProp =
   | StringSchemaProp
   | NumberSchemaProp
@@ -276,7 +287,9 @@ export type SchemaProp =
   | ComponentCollectionSchemaProp
   | ComponentCollectionLocalisedSchemaProp
   | PositionSchemaProp
-  | ExternalSchemaProp;
+  | ExternalSchemaProp
+  | LocalSchemaProp
+  | TokenSchemaProp;
 
 export type AnyValueSchemaProp =
   | StringSchemaProp
@@ -388,6 +401,17 @@ export type WidgetComponentProps<Identifier extends NonNullish = NonNullish> = {
   id: ExternalReference<Identifier>["id"];
   onChange: (newId: ExternalReference<Identifier>["id"]) => void;
 };
+
+export type InlineTypeWidgetComponentProps<
+  Type extends NonNullish = NonNullish
+> = {
+  value: Type;
+  onChange: (newValue: Type) => void;
+};
+
+export type TokenTypeWidgetComponentProps<
+  Type extends NonNullish = NonNullish
+> = InlineTypeWidgetComponentProps<Type>;
 
 export type Widget = {
   id: string;
@@ -504,18 +528,55 @@ export type NoCodeComponentDefinition<
   }) => SidebarPreviewVariant | undefined;
 };
 
+/**
+ * @internal
+ */
+type ConfigTokens = {
+  aspectRatios: string;
+  boxShadows: string;
+  containerWidths: number;
+  colors: ThemeColor;
+  fonts: ThemeFont;
+  icons: string;
+  space: ThemeSpace;
+};
+
+type BaseTypeDefinition = {
+  widgets: Array<Widget>;
+  responsive?: boolean;
+};
+
+export type InlineTypeDefinition<Value extends NonNullish = any> =
+  BaseTypeDefinition & {
+    type: "inline";
+    defaultValue: Value;
+    validate?: (value: any) => boolean;
+  };
+
+export type ExternalTypeDefinition = BaseTypeDefinition & {
+  type: "external";
+};
+
+export type TokenTypeDefinition<Value extends NonNullish = any> =
+  BaseTypeDefinition & {
+    type: "token";
+    token: keyof ConfigTokens;
+    defaultValue: Value;
+    extraValues?: Array<Value | { value: Value; label: string }>;
+    allowCustom?: boolean;
+    validate?: (value: any) => boolean;
+  };
+
+export type CustomTypeDefinition =
+  | InlineTypeDefinition
+  | ExternalTypeDefinition
+  | TokenTypeDefinition;
+
 export type Config = {
   accessToken: string;
   projectId?: string;
-  types?: Record<string, ExternalDefinition>;
+  types?: Record<string, CustomTypeDefinition>;
   text?: ExternalDefinition;
-  space?: RuntimeConfigThemeValue<ThemeSpace>[];
-  colors?: RuntimeConfigThemeValue<ThemeColor>[];
-  fonts?: RuntimeConfigThemeValue<ThemeFont>[];
-  icons?: RuntimeConfigThemeValue<string>[];
-  aspectRatios?: RuntimeConfigThemeValue<string>[];
-  boxShadows?: RuntimeConfigThemeValue<string>[];
-  containerWidths?: RuntimeConfigThemeValue<number>[];
   buttons?: ButtonCustomComponent[];
   components?: Array<NoCodeComponentDefinition<any, any>>;
   devices?: ConfigDevices;
@@ -527,6 +588,10 @@ export type Config = {
   disableCustomTemplates?: boolean;
   hideCloseButton?: boolean;
   templates?: Template[];
+} & {
+  [key in keyof ConfigTokens]?: Array<
+    RuntimeConfigThemeValue<ConfigTokens[key]>
+  >;
 };
 
 type EditorProps = {
@@ -1075,3 +1140,12 @@ export type ExternalReferenceNonEmpty<
 export type ExternalReference<Identifier extends NonNullish = NonNullish> =
   | ExternalReferenceEmpty
   | ExternalReferenceNonEmpty<Identifier>;
+
+export type LocalValue<T = any> = {
+  value: T;
+  widgetId: string;
+};
+
+export type TokenValue<T = any> = LocalValue<T> & {
+  tokenId?: string;
+};

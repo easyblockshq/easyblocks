@@ -554,7 +554,10 @@ export function compileComponent(
         return;
       }
 
-      if (isExternalSchemaProp(schemaProp) || schemaProp.type === "text") {
+      if (
+        isExternalSchemaProp(schemaProp, compilationContext.types) ||
+        schemaProp.type === "text"
+      ) {
         // We simply copy ONLY the breakpoints which are defined in the raw data
         compiled.props[schemaProp.prop] = Object.fromEntries(
           Object.keys(editableElement[schemaProp.prop]).map((deviceId) => {
@@ -839,7 +842,7 @@ function createOwnComponentProps({
     const refs = Object.fromEntries(
       componentDefinition.schema
         .filter((schemaProp) => {
-          return !isExternalSchemaProp(schemaProp);
+          return !isExternalSchemaProp(schemaProp, compilationContext.types);
         })
         .map((schemaProp) => {
           return [schemaProp.prop, refMap[ref][schemaProp.prop]];
@@ -1582,7 +1585,7 @@ function createFieldName(
   /**
    * This condition is kind of "ancient". It's ref mechanism (shared properties) that is not in use anymore. But it's necessary for backward compatibility.
    */
-  if (ref && !isExternalSchemaProp(schemaProp)) {
+  if (ref && !isExternalSchemaProp(schemaProp, editorContext.types)) {
     // local ref
     if (!isRefLocal) {
       throw new Error("global refs not enabled");
@@ -2032,6 +2035,8 @@ export function isSchemaPropTokenized(schemaProp: SchemaProp) {
     schemaProp.type === "color" ||
     schemaProp.type === "space" ||
     schemaProp.type === "font" ||
-    schemaProp.type === "stringToken"
+    schemaProp.type === "aspectRatio" ||
+    schemaProp.type === "boxShadow" ||
+    schemaProp.type === "containerWidth"
   );
 }

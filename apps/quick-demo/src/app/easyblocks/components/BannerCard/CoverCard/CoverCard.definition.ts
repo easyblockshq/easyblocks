@@ -23,12 +23,11 @@ export const coverCardDefinition: NoCodeComponentDefinition = {
     {
       prop: "aspectRatio", // main image size
       label: "Aspect Ratio",
-      type: "stringToken",
+      type: "aspectRatio",
       params: {
-        tokenId: "aspectRatios",
-        extraValues: ["natural"],
+        extraValues: [{ value: "natural", label: "Natural" }],
       },
-      defaultValue: { value: "natural" },
+      defaultValue: "natural",
     },
     ...borderSchemaProps,
     ...cornerSchemaProps,

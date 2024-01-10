@@ -6,6 +6,7 @@ import {
   EmptyRenderableContent,
   Document,
   ComponentConfig,
+  LocalValue,
 } from "./types";
 
 function isRenderableContent(input: unknown): input is RenderableContent {
@@ -56,7 +57,7 @@ function isDocument(value: unknown): value is Document {
   return documentSchema.safeParse(value).success;
 }
 
-export function isComponentConfig(value: any): value is ComponentConfig {
+function isComponentConfig(value: any): value is ComponentConfig {
   return (
     typeof value === "object" &&
     typeof value?._template === "string" &&
@@ -64,9 +65,20 @@ export function isComponentConfig(value: any): value is ComponentConfig {
   );
 }
 
+const localValueSchema = z.object({
+  value: z.any(),
+  widgetId: z.string(),
+});
+
+function isLocalValue(value: any): value is LocalValue {
+  return localValueSchema.safeParse(value).success;
+}
+
 export {
   isRenderableContent,
   isNonEmptyRenderableContent,
   isEmptyRenderableContent,
   isDocument,
+  isComponentConfig,
+  isLocalValue,
 };

@@ -32,11 +32,8 @@ const imageComponentDefinition: NoCodeComponentDefinition = {
     {
       prop: "aspectRatio", // main image size
       label: "Aspect Ratio",
-      type: "stringToken",
-      params: {
-        tokenId: "aspectRatios",
-        extraValues: ["natural"],
-      },
+      type: "aspectRatio",
+      params: { extraValues: ["natural"] },
       buildOnly: true,
     },
   ],

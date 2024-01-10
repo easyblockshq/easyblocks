@@ -15,7 +15,6 @@ export function applyAutoUsingResponsiveTokens<T>(
   input: RefValue<ResponsiveValue<T>>,
   compilationContext: CompilationContextType
 ): RefValue<ResponsiveValue<T>>;
-
 export function applyAutoUsingResponsiveTokens<T>(
   input: ResponsiveValue<RefValue<ResponsiveValue<T>>>,
   compilationContext: CompilationContextType

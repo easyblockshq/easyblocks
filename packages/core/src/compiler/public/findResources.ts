@@ -42,7 +42,8 @@ export const findExternals: CompilerModule["findExternals"] = (
       // treat "text" that's actually external as non external.
       if (
         (schemaProp.type === "text" && isLocalTextReference(value, "text")) ||
-        (schemaProp.type !== "text" && !isExternalSchemaProp(schemaProp))
+        (schemaProp.type !== "text" &&
+          !isExternalSchemaProp(schemaProp, compilationContext.types))
       ) {
         return;
       }

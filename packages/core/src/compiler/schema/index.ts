@@ -7,8 +7,9 @@ import {
   Field,
   SchemaProp as CoreSchemaProp,
   SchemaPropShared,
+  LocalSchemaProp,
 } from "../../types";
-import { InternalComponentDefinition } from "../types";
+import { EditorContextType, InternalComponentDefinition } from "../types";
 
 type SchemaProp = CoreSchemaProp | Component$$$SchemaProp;
 
@@ -92,7 +93,6 @@ const internalTypes = new Set<SchemaProp["type"]>([
   "color",
   "space",
   "font",
-  "stringToken",
   "icon",
   "text",
   "component",
@@ -100,21 +100,22 @@ const internalTypes = new Set<SchemaProp["type"]>([
   "position",
   "component$$$",
   "component-collection-localised",
+  "aspectRatio",
+  "containerWidth",
+  "boxShadow",
 ]);
 
-export function isExternalSchemaProp(
+export function isCustomSchemaProp(
   schemaProp: SchemaProp
-): schemaProp is ExternalSchemaProp {
+): schemaProp is ExternalSchemaProp | LocalSchemaProp {
   return !internalTypes.has(schemaProp.type);
 }
 
-export function isSchemaPropTokenized(schemaProp: SchemaProp) {
-  return (
-    schemaProp.type === "color" ||
-    schemaProp.type === "space" ||
-    schemaProp.type === "font" ||
-    schemaProp.type === "stringToken"
-  );
+export function isExternalSchemaProp(
+  schemaProp: SchemaProp,
+  types: EditorContextType["types"]
+): schemaProp is ExternalSchemaProp {
+  return types[schemaProp.type] && types[schemaProp.type].type === "external";
 }
 
 type TextModifierSchemaPropOptions = Omit<

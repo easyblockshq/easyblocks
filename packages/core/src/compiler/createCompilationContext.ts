@@ -1,4 +1,3 @@
-import { createFetchingContext } from "../createFetchingContext";
 import { responsiveValueMap } from "../responsiveness";
 import { parseSpacing } from "../spacingToPx";
 import {
@@ -6,11 +5,11 @@ import {
   ConfigDeviceRange,
   ContextParams,
   Devices,
+  DocumentType,
   EditorLauncherProps,
   ExternalSchemaProp,
   NoCodeComponentDefinition,
   ResponsiveValue,
-  DocumentType,
   Spacing,
 } from "../types";
 import { buildFullTheme } from "./buildFullTheme";
@@ -28,6 +27,7 @@ import {
   themeScalarValueToResponsiveValue,
 } from "./themeValueToResponsiveValue";
 import { CompilationContextType, CompilationDocumentType } from "./types";
+import { validateColor } from "./validate-color";
 
 function normalizeSpace(
   space: ResponsiveValue<number | string>
@@ -104,7 +104,7 @@ export function createCompilationContext(
       // Responsive token automatically "fills" all the breakpoints.
       // If someone does 10vw it is responsive in nature, it's NEVER a scalar.
       if (typeof val === "string" && parseSpacing(val).unit === "vw") {
-        val = { [`@${mainDevice.id}`]: val };
+        val = { $res: true, [mainDevice.id]: val };
       }
 
       const { id, ...rest } = space;
@@ -193,7 +193,6 @@ export function createCompilationContext(
     });
   }
 
-  const fetchingContext = createFetchingContext(config);
   const documentTypes = buildDocumentTypes(config.documentTypes, devices);
 
   const components: Array<NoCodeComponentDefinition<any, any>> = [
@@ -283,10 +282,74 @@ export function createCompilationContext(
       links: [],
       textModifiers,
     },
-    types: fetchingContext.types,
+    types: {
+      ...config.types,
+      aspectRatio: {
+        type: "token",
+        token: "aspectRatios",
+        widgets: [{ id: "@easyblocks/aspectRatio", label: "Aspect ratio" }],
+        defaultValue: "1:1",
+        allowCustom: true,
+        validate(value) {
+          return (
+            typeof value === "string" &&
+            (!!value.match(/[0-9]+:[0-9]+/) || value === "natural")
+          );
+        },
+      },
+      boxShadow: {
+        type: "token",
+        token: "boxShadows",
+        widgets: [{ id: "@easyblocks/boxShadow", label: "Box shadow" }],
+        defaultValue: "none",
+      },
+      color: {
+        type: "token",
+        token: "colors",
+        defaultValue: "#000000",
+        widgets: [{ id: "@easyblocks/color", label: "Color" }],
+        allowCustom: true,
+        validate(value) {
+          return typeof value === "string" && validateColor(value);
+        },
+      },
+      containerWidth: {
+        type: "token",
+        token: "containerWidths",
+        defaultValue: "none",
+        widgets: [
+          { id: "@easyblocks/containerWidth", label: "Container width" },
+        ],
+      },
+      font: {
+        type: "token",
+        token: "fonts",
+        defaultValue: { fontFamily: "sans-serif", fontSize: "16px" },
+        widgets: [{ id: "@easyblocks/font", label: "Font" }],
+      },
+      space: {
+        type: "token",
+        token: "space",
+        defaultValue: { tokenId: "0", value: "0px", widgetId: "space" },
+        widgets: [{ id: "@easyblocks/space", label: "Space" }],
+        allowCustom: true,
+        validate(value) {
+          return typeof value === "string" && !!parseSpacing(value);
+        },
+      },
+      icon: {
+        type: "token",
+        token: "icons",
+        defaultValue: `<svg viewBox="0 -960 960 960"><path fill="currentColor" d="m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z"/></svg>`,
+        widgets: [{ id: "@easyblocks/icon", label: "Icon" }],
+        allowCustom: true,
+        validate(value) {
+          return typeof value === "string" && value.trim().startsWith("<svg");
+        },
+      },
+    },
     mainBreakpointIndex: mainDevice.id,
     contextParams,
-    strict: fetchingContext.strict,
     locales: config.locales,
     documentType,
     documentTypes,

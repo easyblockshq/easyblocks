@@ -3,7 +3,6 @@ export * from "./SelectFieldPlugin";
 export * from "./RadioGroupFieldPlugin";
 export * from "./TextFieldPlugin";
 export * from "./ToggleFieldPlugin";
-export * from "./FontTokenFieldPlugin";
 export * from "./TokenField/TokenFieldPlugin";
 export * from "./IdentityFieldPlugin";
 export { BlockFieldPlugin } from "./BlockFieldPlugin";

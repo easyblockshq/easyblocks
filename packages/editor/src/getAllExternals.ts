@@ -22,7 +22,7 @@ export function getAllExternals(
   const result: ExternalValueWithPositionInConfig[] = [];
 
   configTraverse(config, context, ({ schemaProp, path, value }) => {
-    if (isExternalSchemaProp(schemaProp)) {
+    if (isExternalSchemaProp(schemaProp, context.types)) {
       if (isTrulyResponsiveValue(value)) {
         for (const key in value) {
           if (key === "$res") {

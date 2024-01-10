@@ -38,3 +38,6 @@ packages/cli/forestry/.env
 
 # jest
 **/coverage/
+
+# Nx
+.nx/

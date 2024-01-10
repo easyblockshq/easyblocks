@@ -1,6 +1,6 @@
 import { Form } from "@easyblocks/app-utils";
 import { InternalField } from "@easyblocks/core/_internals";
-import { SSColors, SSFonts } from "@easyblocks/design-system";
+import { SSColors, SSFonts, Typography } from "@easyblocks/design-system";
 import { toArray } from "@easyblocks/utils";
 import React from "react";
 import styled, { css } from "styled-components";
@@ -8,7 +8,7 @@ import { useEditorContext } from "../../EditorContext";
 import {
   BlockFieldPlugin,
   ExternalFieldPlugin,
-  FontTokenFieldPlugin,
+  FieldMetaWrapper,
   IdentityFieldPlugin,
   NumberFieldPlugin,
   RadioGroupFieldPlugin,
@@ -20,6 +20,7 @@ import {
   ToggleFieldPlugin,
   TokenFieldPlugin,
 } from "../fields";
+import { LocalFieldPlugin } from "../fields/plugins/LocalFIeld";
 import { PositionFieldPlugin } from "../fields/plugins/PositionFieldPlugin";
 import { FieldPlugin } from "./field-plugin";
 import { createFieldController } from "./utils/createFieldController";
@@ -31,7 +32,7 @@ export interface FieldBuilderProps {
   isLabelHidden?: boolean;
 }
 
-function shouldFieldBeDisplayed(form: Form, field: InternalField): boolean {
+function shouldFieldBeDisplayed(field: InternalField): boolean {
   if (field.component === null) return false;
 
   if (Array.isArray(field.name)) {
@@ -59,7 +60,7 @@ const FIELD_COMPONENTS: Array<FieldPlugin> = [
   ExternalFieldPlugin,
   TokenFieldPlugin,
   IdentityFieldPlugin,
-  FontTokenFieldPlugin,
+  LocalFieldPlugin,
 ];
 
 export function FieldBuilder({
@@ -70,7 +71,7 @@ export function FieldBuilder({
 }: FieldBuilderProps) {
   const editorContext = useEditorContext();
 
-  if (!shouldFieldBeDisplayed(form, field)) {
+  if (!shouldFieldBeDisplayed(field)) {
     return null;
   }
 
@@ -110,6 +111,8 @@ export function FieldBuilder({
   }
 
   if (typeof field.component !== "string" && field.component !== null) {
+    console.log("not a string");
+
     return (
       <field.component
         input={{
@@ -126,7 +129,18 @@ export function FieldBuilder({
     );
   }
 
-  return <p>Unrecognized field type</p>;
+  return (
+    <FieldMetaWrapper
+      input={{
+        value: getValue(),
+        onChange,
+      }}
+      field={field}
+      layout="column"
+    >
+      <Typography>Unrecognized field type</Typography>
+    </FieldMetaWrapper>
+  );
 }
 
 export interface FieldsBuilderProps {
@@ -139,7 +153,7 @@ export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
   const ungrouped: Array<InternalField> = [];
 
   fields.forEach((field) => {
-    if (!shouldFieldBeDisplayed(form, field)) {
+    if (!shouldFieldBeDisplayed(field)) {
       return;
     }
 
@@ -223,7 +237,6 @@ export const FieldsGroupLabel = styled.div`
   display: flex;
   align-items: center;
 
-  //min-height: 48px;
   padding: 20px 16px 10px 16px;
 
   ${SSFonts.label};

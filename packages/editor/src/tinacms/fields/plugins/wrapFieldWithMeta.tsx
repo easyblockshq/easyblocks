@@ -135,7 +135,7 @@ export function FieldMetaWrapper<
   const label = field.label || input.name;
   const { schemaProp } = field;
   const isExternalField =
-    isExternalSchemaProp(schemaProp) ||
+    isExternalSchemaProp(schemaProp, editorContext.types) ||
     (schemaProp.type === "text" && !input.value.id?.startsWith("local."));
   const componentPaths = fieldNames.map((fieldName) =>
     fieldName[0].split(".").slice(0, -1).join(".")
@@ -213,7 +213,8 @@ export function FieldMetaWrapper<
           )}
 
           {layout === "column" &&
-            (isExternalSchemaProp(schemaProp) || schemaProp.type === "text") &&
+            (isExternalSchemaProp(schemaProp, editorContext.types) ||
+              schemaProp.type === "text") &&
             !isMixedValue && (
               <WidgetsSelect
                 schemaProp={schemaProp}

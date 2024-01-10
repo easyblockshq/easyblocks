@@ -232,12 +232,19 @@ export const easyblocksConfig: Config = {
       id: "heading1",
       label: "Heading 1",
       value: {
-        fontFamily: "test-national-2",
-        fontSize: 48,
-        lineHeight: 1.2,
-        fontWeight: 700,
-        "@sm": {
-          fontSize: 36, // responsiveness is easy
+        // responsiveness is easy
+        $res: true,
+        sm: {
+          fontSize: 36,
+          fontFamily: "test-national-2",
+          lineHeight: 1.2,
+          fontWeight: 700,
+        },
+        md: {
+          fontSize: 48,
+          fontFamily: "test-national-2",
+          lineHeight: 1.2,
+          fontWeight: 700,
         },
       },
     },
@@ -245,12 +252,18 @@ export const easyblocksConfig: Config = {
       id: "heading2",
       label: "Heading 2",
       value: {
-        fontFamily: "test-national-2",
-        fontSize: 36,
-        lineHeight: 1.2,
-        fontWeight: 700,
-        "@sm": {
-          fontSize: 24, // responsiveness is easy
+        $res: true,
+        sm: {
+          fontFamily: "test-national-2",
+          fontSize: 24,
+          lineHeight: 1.2,
+          fontWeight: 700,
+        },
+        md: {
+          fontFamily: "test-national-2",
+          fontSize: 36,
+          lineHeight: 1.2,
+          fontWeight: 700,
         },
       },
     },
@@ -347,11 +360,6 @@ export const easyblocksConfig: Config = {
       label: "Square (1:1)",
       value: "1:1",
     },
-    {
-      id: "panoramic",
-      label: "Panoramic (2:1)",
-      value: "2:1",
-    },
   ],
   boxShadows: [
     {
@@ -387,17 +395,19 @@ export const easyblocksConfig: Config = {
       id: "containerMargin.default",
       label: "Standard",
       value: {
-        "@md": "5vw",
-        "@lg": "8vw",
+        $res: true,
+        md: "5vw",
+        lg: "8vw",
       },
     },
     {
       id: "containerMargin.large",
       label: "Large",
       value: {
-        "@xs": "5vw",
-        "@md": "8vw",
-        "@lg": "12vw",
+        $res: true,
+        xs: "5vw",
+        md: "8vw",
+        lg: "12vw",
       },
     },
   ],
@@ -420,16 +430,35 @@ export const easyblocksConfig: Config = {
   ],
   types: {
     "@easyblocks/image": {
+      type: "external",
       widgets: [mockImageWidget, pexelsImageWidget],
     },
     "@easyblocks/video": {
+      type: "external",
       widgets: [mockVideoWidget],
     },
     product: {
+      type: "external",
       widgets: [productWidget],
+    },
+    url: {
+      type: "inline",
+      widgets: [
+        {
+          id: "url",
+          label: "URL",
+        },
+      ],
+      defaultValue: "https://google.com",
+      validate(value) {
+        return (
+          typeof value === "string" &&
+          (value.startsWith("http://") || value.startsWith("https://"))
+        );
+      },
     },
   },
   disableCustomTemplates: true,
   hideCloseButton: true,
-  templates,
+  // templates,
 };

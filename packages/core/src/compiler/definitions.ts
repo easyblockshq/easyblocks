@@ -1,5 +1,5 @@
 import { uniqueId } from "@easyblocks/utils";
-import { getMappedToken } from "../getMappedToken";
+import { isLocalValue } from "..";
 import { getFallbackForLocale, getFallbackLocaleForLocale } from "../locales";
 import {
   isTrulyResponsiveValue,
@@ -8,11 +8,8 @@ import {
   responsiveValueFlatten,
   responsiveValueMap,
 } from "../responsiveness";
-import { parseSpacing } from "../spacingToPx";
 import {
   BooleanSchemaProp,
-  Color,
-  ColorSchemaProp,
   CompiledCustomComponentConfig,
   CompiledLocalTextReference,
   CompiledShopstoryComponentConfig,
@@ -25,10 +22,9 @@ import {
   ExternalReferenceEmpty,
   ExternalReferenceNonEmpty,
   ExternalSchemaProp,
-  Font,
-  FontSchemaProp,
-  IconSchemaProp,
+  LocalSchemaProp,
   LocalTextReference,
+  LocalValue,
   NumberSchemaProp,
   Option,
   Position,
@@ -40,12 +36,11 @@ import {
   SchemaProp,
   SelectSchemaProp,
   SerializedComponentDefinitions,
-  SpaceSchemaProp,
-  Spacing,
   StringSchemaProp,
-  StringTokenSchemaProp,
   TextSchemaProp,
   ThemeRefValue,
+  TokenSchemaProp,
+  TokenValue,
   TrulyResponsiveValue,
 } from "../types";
 import { CompilationCache } from "./CompilationCache";
@@ -63,7 +58,7 @@ import {
   EditingInfoComponentCollection,
 } from "./types";
 
-export type SchemaPropDefinition<Type, CompiledType> = {
+export type SchemaPropDefinition<Type, CompiledType = Type> = {
   compile: (
     value: Type,
     contextProps: ContextProps,
@@ -111,31 +106,6 @@ export type RadioGroupSchemaPropDefinition = SchemaPropDefinition<
   ResponsiveValue<string>
 >;
 
-export type ColorSchemaPropDefinition = SchemaPropDefinition<
-  /*explained above*/ ResponsiveValue<RefValue<ResponsiveValue<Color>>>,
-  ResponsiveValue<Color>
->;
-
-export type StringTokenSchemaPropDefinition = SchemaPropDefinition<
-  /*explained above*/ ResponsiveValue<RefValue<ResponsiveValue<string>>>,
-  ResponsiveValue<string>
->;
-
-export type SpaceSchemaPropDefinition = SchemaPropDefinition<
-  /*explained above*/ ResponsiveValue<RefValue<ResponsiveValue<Spacing>>>,
-  ResponsiveValue<Spacing>
->;
-
-export type FontSchemaPropDefinition = SchemaPropDefinition<
-  /*explained above*/ ResponsiveValue<RefValue<ResponsiveValue<Font>>>,
-  ResponsiveValue<Font>
->;
-
-export type IconSchemaPropDefinition = SchemaPropDefinition<
-  RefValue<string>,
-  string
->;
-
 export type ConfigComponentCompilationOutput = {
   compiledComponentConfig:
     | CompiledShopstoryComponentConfig
@@ -158,11 +128,6 @@ export type ComponentCollectionLocalisedSchemaPropDefinition =
     { [locale: string]: ComponentConfig[] },
     Array<ConfigComponentCompilationOutput>
   >;
-
-export type ComponentFixedSchemaPropDefinition = SchemaPropDefinition<
-  Array<ComponentConfig>,
-  Array<ConfigComponentCompilationOutput>
->;
 
 type ExternalSchemaPropDefinition = SchemaPropDefinition<
   ResponsiveValue<ExternalReference>,
@@ -199,26 +164,6 @@ export type SchemaPropDefinitionProviders = {
     schemaProp: RadioGroupSchemaProp,
     compilationContext: CompilationContextType
   ) => RadioGroupSchemaPropDefinition;
-  color: (
-    schemaProp: ColorSchemaProp,
-    compilationContext: CompilationContextType
-  ) => ColorSchemaPropDefinition;
-  stringToken: (
-    schemaProp: StringTokenSchemaProp,
-    compilationContext: CompilationContextType
-  ) => StringTokenSchemaPropDefinition;
-  space: (
-    schemaProp: SpaceSchemaProp,
-    compilationContext: CompilationContextType
-  ) => SpaceSchemaPropDefinition;
-  font: (
-    schemaProp: FontSchemaProp,
-    compilationContext: CompilationContextType
-  ) => FontSchemaPropDefinition;
-  icon: (
-    schemaProp: IconSchemaProp,
-    compilationContext: CompilationContextType
-  ) => IconSchemaPropDefinition;
   component: (
     schemaProp: ComponentSchemaProp,
     compilationContext: CompilationContextType
@@ -235,16 +180,23 @@ export type SchemaPropDefinitionProviders = {
     schemaProp: Component$$$SchemaProp,
     compilationContext: CompilationContextType
   ) => Component$$$SchemaPropDefinition;
-  external: (
-    schemaProp: ExternalSchemaProp,
-    compilationContext: CompilationContextType
-  ) => ExternalSchemaPropDefinition;
+  // external: (
+  //   schemaProp: ExternalSchemaProp,
+  //   compilationContext: CompilationContextType
+  // ) => ExternalSchemaPropDefinition;
   position: (
     schemaProp: PositionSchemaProp,
     compilationContext: CompilationContextType
   ) => SchemaPropDefinition<
     ResponsiveValue<Position>,
     ResponsiveValue<Position>
+  >;
+  custom: (
+    schemaProp: ExternalSchemaProp | LocalSchemaProp | TokenSchemaProp,
+    compilationContext: CompilationContextType
+  ) => SchemaPropDefinition<
+    ResponsiveValue<ExternalReference | LocalValue | TokenValue>,
+    ExternalReference | string
   >;
 };
 
@@ -424,228 +376,6 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
   select: getSelectSchemaPropDefinition(),
 
   "radio-group": getSelectSchemaPropDefinition(),
-
-  color: (schemaProp, compilationContext): ColorSchemaPropDefinition => {
-    // @ts-ignore
-    return {
-      ...buildThemeDefinition(
-        compilationContext.theme.colors,
-        { value: "#000000" },
-        schemaProp,
-        compilationContext,
-        (x: any) => {
-          if (typeof x !== "string") {
-            return;
-          }
-
-          // right now we assume that user gives correct CSS color!
-          return x;
-        }
-      ),
-      getHash: (value, breakpointIndex) => {
-        if (isTrulyResponsiveValue(value)) {
-          const breakpointValue = responsiveValueAt(value, breakpointIndex);
-          return breakpointValue ? getRef(breakpointValue) : undefined;
-        }
-
-        return getRef(value);
-      },
-    };
-  },
-
-  stringToken: (
-    schemaProp,
-    compilationContext
-  ): StringTokenSchemaPropDefinition => {
-    const { tokenId } = schemaProp.params;
-    const themeValues = compilationContext.theme[tokenId];
-    if (!themeValues) {
-      throw new Error(
-        `string token with ID "${tokenId}" doesn't have any values.`
-      );
-    }
-
-    let defaultKey: string | RefValue<string>;
-
-    if (tokenId === "numberOfItemsInRow") {
-      defaultKey = "4";
-    } else if (tokenId === "aspectRatios") {
-      defaultKey = { value: "1:1" }; //$landscape";
-    } else if (tokenId === "containerWidths") {
-      defaultKey = "none";
-    } else if (tokenId === "boxShadows") {
-      defaultKey = "none";
-    } else {
-      throw new Error("unknown token Id: " + tokenId);
-    }
-
-    // @ts-ignore
-    return {
-      ...buildThemeDefinition(
-        themeValues,
-        defaultKey,
-        schemaProp,
-        compilationContext,
-        (x: any) => {
-          if (typeof x !== "string") {
-            return;
-          }
-
-          // right now we assume that user gives correct CSS color!
-          return x;
-        }
-      ),
-      getHash: (value, breakpointIndex) => {
-        if (isTrulyResponsiveValue(value)) {
-          const breakpointValue = responsiveValueAt(value, breakpointIndex);
-
-          if (!breakpointValue) {
-            return breakpointValue;
-          }
-
-          if (breakpointValue.ref) {
-            return breakpointValue.ref;
-          }
-
-          if (isTrulyResponsiveValue(breakpointValue.value)) {
-            const nestedBreakpointValue = responsiveValueAt(
-              breakpointValue.value,
-              breakpointIndex
-            );
-            return nestedBreakpointValue;
-          }
-
-          return breakpointValue.value;
-        }
-
-        if (value.ref) {
-          return value.ref;
-        }
-
-        if (isTrulyResponsiveValue(value.value)) {
-          const breakpointValue = responsiveValueAt(
-            value.value,
-            breakpointIndex
-          );
-
-          return breakpointValue;
-        }
-
-        return value.value;
-      },
-    };
-  },
-
-  // @ts-ignore TODO: temporary, we need to fix those types
-  font: (schemaProp, compilationContext): FontSchemaPropDefinition => {
-    // @ts-ignore
-    return {
-      ...buildThemeDefinition(
-        compilationContext.theme.fonts,
-        { value: { fontFamily: "sans-serif", fontSize: "16px" } },
-        schemaProp,
-        compilationContext,
-        (x: any) => {
-          if (typeof x !== "object" || x === null) {
-            return;
-          }
-
-          return x;
-        }
-      ),
-      getHash: (value, breakpointIndex) => {
-        if (isTrulyResponsiveValue(value)) {
-          const breakpointValue = responsiveValueAt(value, breakpointIndex);
-          return breakpointValue ? getRef(breakpointValue) : undefined;
-        }
-
-        return getRef(value);
-      },
-    };
-  },
-
-  // @ts-ignore TODO: temporary, we need to fix those types
-  space: (schemaProp, compilationContext): SpaceSchemaPropDefinition => {
-    // @ts-ignore
-    return {
-      ...buildThemeDefinition(
-        compilationContext.theme.space,
-        {
-          value: "10vw",
-        },
-        schemaProp,
-        compilationContext,
-        (x: any) => {
-          if (typeof x === "number") {
-            return `${x}px`;
-          }
-
-          if (typeof x !== "string") {
-            return;
-          }
-
-          try {
-            parseSpacing(x);
-            return x;
-          } catch (error) {
-            return;
-          }
-        }
-      ),
-      getHash: (value, breakpointIndex) => {
-        if (isTrulyResponsiveValue(value)) {
-          const breakpointValue = responsiveValueAt(value, breakpointIndex);
-          return breakpointValue ? getRef(breakpointValue) : undefined;
-        }
-
-        return getRef(value);
-      },
-    };
-  },
-
-  icon: (schemaProp, compilationContext): IconSchemaPropDefinition => {
-    const ultimateDefaultValue = {
-      value: `<svg viewBox="0 -960 960 960"><path fill="currentColor" d="m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z"/></svg>`,
-    };
-
-    const scalarValueNormalize = (x: any) => {
-      if (typeof x === "string" && x.trim().startsWith("<svg")) {
-        return x;
-      }
-      return;
-    };
-
-    const defaultValue =
-      normalizeTokenValue<string>(
-        schemaProp.defaultValue,
-        compilationContext.theme.icons,
-        ultimateDefaultValue,
-        scalarValueNormalize
-      ) || ultimateDefaultValue;
-
-    return {
-      normalize: (x: any) => {
-        const normalized = normalizeTokenValue<string>(
-          x,
-          compilationContext.theme.icons,
-          defaultValue,
-          scalarValueNormalize
-        );
-
-        if (!normalized) {
-          return defaultValue;
-        }
-
-        return normalized;
-      },
-      compile: (x) => {
-        return x.value;
-      },
-      getHash: (x) => {
-        return getRef(x);
-      },
-    };
-  },
 
   component: (
     schemaProp,
@@ -847,58 +577,58 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
     };
   },
 
-  external: (schemaProp, compilationContext) => {
-    if (schemaProp.responsive) {
-      const defaultValue: ExternalReferenceEmpty = {
-        id: null,
-        widgetId: compilationContext.isEditing
-          ? compilationContext.types[schemaProp.type]?.widgets[0]?.id
-          : "",
-      };
+  // external: (schemaProp, compilationContext) => {
+  //   if (schemaProp.responsive) {
+  //     const defaultValue: ExternalReferenceEmpty = {
+  //       id: null,
+  //       widgetId: compilationContext.isEditing
+  //         ? compilationContext.types[schemaProp.type]?.widgets[0]?.id
+  //         : "",
+  //     };
 
-      const normalize = getResponsiveNormalize<ExternalReference>(
-        compilationContext,
-        defaultValue,
-        defaultValue,
-        externalNormalize(schemaProp.type)
-      );
+  //     const normalize = getResponsiveNormalize<ExternalReference>(
+  //       compilationContext,
+  //       defaultValue,
+  //       defaultValue,
+  //       externalNormalize(schemaProp.type)
+  //     );
 
-      return {
-        normalize,
-        compile: (x) => x,
-        getHash: externalReferenceGetHash,
-      };
-    }
+  //     return {
+  //       normalize,
+  //       compile: (x) => x,
+  //       getHash: externalReferenceGetHash,
+  //     };
+  //   }
 
-    return {
-      normalize: (value) => {
-        const normalized = externalNormalize(schemaProp.type)(
-          value,
-          compilationContext
-        );
+  //   return {
+  //     normalize: (value) => {
+  //       const normalized = externalNormalize(schemaProp.type)(
+  //         value,
+  //         compilationContext
+  //       );
 
-        if (!normalized) {
-          return {
-            id: null,
-            widgetId: compilationContext.types[schemaProp.type]?.widgets[0]?.id,
-          };
-        }
+  //       if (!normalized) {
+  //         return {
+  //           id: null,
+  //           widgetId: compilationContext.types[schemaProp.type]?.widgets[0]?.id,
+  //         };
+  //       }
 
-        return normalized;
-      },
-      compile: (value) => {
-        return value;
-      },
-      getHash: (value) => {
-        if (value.id === null) {
-          return `${schemaProp.type}.${schemaProp.type}`;
-        }
+  //       return normalized;
+  //     },
+  //     compile: (value) => {
+  //       return value;
+  //     },
+  //     getHash: (value) => {
+  //       if (value.id === null) {
+  //         return `${schemaProp.type}.${value.widgetId}`;
+  //       }
 
-        return `${schemaProp.type}.${schemaProp.type}.${value.id}`;
-      },
-    };
-  },
-  position: function (schemaProp, compilationContext) {
+  //       return `${schemaProp.type}.${value.widgetId}.${value.id}`;
+  //     },
+  //   };
+  // },
+  position: (schemaProp, compilationContext) => {
     return {
       normalize: getResponsiveNormalize<Position>(
         compilationContext,
@@ -916,6 +646,208 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         }
 
         return value;
+      },
+    };
+  },
+  custom: (schemaProp, compilationContext) => {
+    const customTypeDefinition = compilationContext.types[schemaProp.type];
+
+    // if (customTypeDefinition.type === "external") {
+    //   return schemaPropDefinitions.external(schemaProp, compilationContext);
+    // }
+
+    return {
+      normalize: (value) => {
+        if (customTypeDefinition.type === "inline") {
+          const defaultValue =
+            schemaProp.defaultValue ?? customTypeDefinition.defaultValue;
+
+          if (isLocalValue(value)) {
+            const resultValue =
+              customTypeDefinition.type === "inline"
+                ? (customTypeDefinition.validate?.(value.value)
+                    ? value.value
+                    : defaultValue) ?? value.value
+                : value.value;
+
+            return {
+              value: resultValue,
+              widgetId: value.widgetId,
+            };
+          }
+
+          const defaultLocalValue = {
+            value: schemaProp.defaultValue ?? customTypeDefinition.defaultValue,
+            widgetId: customTypeDefinition.widgets[0]?.id,
+          };
+
+          return defaultLocalValue;
+        }
+
+        if (customTypeDefinition.type === "token") {
+          const themeValues =
+            compilationContext.theme[customTypeDefinition.token];
+          const defaultValue =
+            schemaProp.defaultValue ?? customTypeDefinition.defaultValue;
+          const defaultWidgetId = customTypeDefinition.widgets[0]?.id;
+
+          const createTokenNormalizer = (normalizeScalar?: (x: any) => any) => {
+            return getResponsiveNormalize(
+              compilationContext,
+              schemaProp.defaultValue,
+              customTypeDefinition.defaultValue,
+              (x: any) => {
+                return normalizeTokenValue(
+                  x,
+                  themeValues as ResponsiveValue<any>,
+                  defaultValue,
+                  defaultWidgetId,
+                  normalizeScalar ?? ((x) => x)
+                );
+              }
+            );
+          };
+
+          if (customTypeDefinition.token === "space") {
+            const normalizeSpace = createTokenNormalizer((x) => {
+              if (typeof x === "number") {
+                return `${x}px`;
+              }
+
+              const isValidSpacing = customTypeDefinition.validate?.(x) ?? true;
+
+              if (!isValidSpacing) {
+                return;
+              }
+
+              return x;
+            });
+
+            return normalizeSpace(value);
+          }
+
+          if (customTypeDefinition.token === "icons") {
+            const scalarValueNormalize = (x: any) => {
+              if (typeof x === "string" && x.trim().startsWith("<svg")) {
+                return x;
+              }
+              return;
+            };
+
+            const iconDefaultValue =
+              normalizeTokenValue<string>(
+                schemaProp.defaultValue,
+                themeValues as Record<string, ThemeRefValue<string>>,
+                customTypeDefinition.defaultValue,
+                defaultWidgetId,
+                scalarValueNormalize
+              ) ?? customTypeDefinition.defaultValue;
+
+            return (
+              normalizeTokenValue<string>(
+                value,
+                themeValues as Record<string, ThemeRefValue<string>>,
+                iconDefaultValue,
+                defaultWidgetId,
+                scalarValueNormalize
+              ) ?? iconDefaultValue
+            );
+          }
+
+          const defaultTokenNormalizer = createTokenNormalizer();
+
+          return defaultTokenNormalizer(value);
+        }
+
+        if (customTypeDefinition.type === "external") {
+          if (schemaProp.responsive) {
+            const defaultValue: ExternalReferenceEmpty = {
+              id: null,
+              widgetId: compilationContext.isEditing
+                ? compilationContext.types[schemaProp.type]?.widgets[0]?.id
+                : "",
+            };
+
+            const normalize = getResponsiveNormalize<ExternalReference>(
+              compilationContext,
+              defaultValue,
+              defaultValue,
+              externalNormalize(schemaProp.type)
+            );
+
+            return normalize(value);
+          }
+
+          const normalized = externalNormalize(schemaProp.type)(
+            value,
+            compilationContext
+          );
+
+          if (!normalized) {
+            return {
+              id: null,
+              widgetId:
+                compilationContext.types[schemaProp.type]?.widgets[0]?.id,
+            };
+          }
+
+          return normalized;
+        }
+      },
+      compile: (x) => {
+        const val = responsiveValueMap(x, (y) => {
+          if ("value" in y) {
+            return y.value;
+          }
+
+          return y;
+        });
+
+        const flattened = responsiveValueFlatten(
+          val,
+          compilationContext.devices
+        );
+
+        return responsiveValueFill(
+          flattened,
+          compilationContext.devices,
+          getDevicesWidths(compilationContext.devices)
+        );
+      },
+      getHash: (value, breakpointIndex) => {
+        function getTokenValue(value: TokenValue) {
+          return getRef({ value: value.value, ref: value.tokenId });
+        }
+
+        if (customTypeDefinition.type === "external") {
+          return externalReferenceGetHash(
+            value as ResponsiveValue<ExternalReference>,
+            breakpointIndex
+          );
+        }
+
+        if (isTrulyResponsiveValue(value)) {
+          const breakpointValue = responsiveValueAt(
+            value as TrulyResponsiveValue<LocalValue | TokenValue>,
+            breakpointIndex
+          );
+
+          if (!breakpointValue) {
+            return;
+          }
+
+          if ("tokenId" in breakpointValue) {
+            return getTokenValue(breakpointValue);
+          }
+
+          return breakpointValue.value;
+        }
+
+        if ("tokenId" in value) {
+          return getTokenValue(value);
+        }
+
+        return (value as LocalValue).value;
       },
     };
   },
@@ -1061,85 +993,14 @@ function getFirstOptionValue(
   return firstOptionValue;
 }
 
-function buildThemeDefinition<T>(
-  themeValues: { [key: string]: ThemeRefValue<ResponsiveValue<T>> },
-  defaultValue: any, // we must make sure that defaultKey is always correct
-  schemaProp:
-    | ColorSchemaProp
-    | SpaceSchemaProp
-    | FontSchemaProp
-    | StringTokenSchemaProp,
-  compilationContext: CompilationContextType,
-  scalarValueNormalize: (x: any) => T | undefined = (x) => undefined // normalizes scalar value
-  // shouldLinearize?: boolean
-) {
-  // Create default value
-  // const defaultValue = Object.values(themeValues)[0];
-
-  /**
-   * TODO:
-   * - getResponsiveNormalize and helpers take into account recursion now!
-   * - only thing we need to do is to write compile properly
-   */
-
-  const normalize = getResponsiveNormalize(
-    compilationContext,
-    schemaProp.defaultValue,
-    defaultValue,
-    (x: any) => {
-      return normalizeTokenValue(
-        x,
-        themeValues,
-        defaultValue,
-        scalarValueNormalize
-      );
-    }
-  );
-
-  return {
-    normalize,
-
-    // FIXME: input of compile should be output of normalize.
-    compile: (x: ReturnType<typeof normalize>) => {
-      // /**
-      //  * We need to run this normalization here. Why?
-      //  *
-      //  * Although compiled config is promised to be normalized, but in case of theme can change under the hood.
-      //  * And this will cause Tina state to be invalid (ref not conformant with value). That's why we normalize here.
-      //  *
-      //  * That could probably go from here.
-      //  */
-      //
-      // // x = normalize(x);
-
-      const val = responsiveValueMap(x, (y) => {
-        return y?.value;
-      });
-
-      const flattened = responsiveValueFlatten(val, compilationContext.devices);
-      return responsiveValueFill(
-        flattened,
-        compilationContext.devices,
-        getDevicesWidths(compilationContext.devices)
-      );
-    },
-  };
-}
-
 function normalizeTokenValue<T>(
   x: any,
   themeValues: { [key: string]: ThemeRefValue<T> },
   defaultValue: RefValue<T>,
+  defaultWidgetId: string,
   scalarValueNormalize: (x: any) => T | undefined = (x) => undefined
-) {
-  // Mapping of legacy value of string (now not possible)
-  if (typeof x === "string" && themeValues[x]) {
-    // If string value exist as a theme key
-    x = {
-      value: themeValues[x].value,
-      ref: x,
-    };
-  }
+): TokenValue | undefined {
+  let input = x;
 
   // Mapping of legacy value of type object which could be a font (now not possible)
   // The test below is shitty but this code should stay.
@@ -1152,52 +1013,62 @@ function normalizeTokenValue<T>(
       ) /* this is primitive test if this is ThemeRef value (either ref or value defined). It can also be object for Font! */
     )
   ) {
-    x = {
+    input = {
       value: x,
     };
   }
 
-  if (typeof x.ref === "string") {
-    // Mapping
-    x = getMappedToken(x.ref, themeValues) ?? x;
+  const widgetId = input.widgetId ?? defaultWidgetId;
 
+  /*if (typeof input.ref === "string") {
     // If ref is defined
     const val = themeValues[x.ref];
 
     // If ref exists in a theme we just take ref value
     if (val) {
       return {
-        value: val.value,
-        ref: x.ref,
+        value: val.value as any,
+        tokenId: x.ref,
+        widgetId,
       };
     }
 
     // If ref is defined but doesn't exist in a theme it means that it was probably removed
     // In that case we simply pass the non-existent ref name (it can be later brought back).
     // The value is scalar-normalized! We'll never get incorrect value after normalization.
-
     const normalizedVal = scalarValueNormalize(x.value);
 
-    if (normalizedVal === undefined) {
+    return {
+      value: normalizedVal ?? (defaultValue.value as string),
+      tokenId: x.ref,
+      widgetId,
+    };
+  } else*/ if ("tokenId" in input && typeof input.tokenId === "string") {
+    const val = themeValues[input.tokenId];
+
+    if (val) {
       return {
-        value: defaultValue.value, // if value was incorrect, we apply default value
-        ref: x.ref,
-      };
-    } else {
-      return {
-        value: normalizedVal, // if value was correct, it stays
-        ref: x.ref,
+        value: val.value as any,
+        tokenId: input.tokenId,
+        widgetId,
       };
     }
-  }
-  // If ref is not defined
-  else {
-    const normalizedVal = scalarValueNormalize(x.value);
+
+    const normalizedVal = scalarValueNormalize(input.value);
+
+    return {
+      value: normalizedVal ?? (defaultValue.value as string),
+      tokenId: input.tokenId,
+      widgetId,
+    };
+  } else {
+    const normalizedVal = scalarValueNormalize(input.value);
     if (normalizedVal === undefined) {
       return;
     } else {
       return {
         value: normalizedVal,
+        widgetId,
       };
     }
   }
@@ -1333,12 +1204,12 @@ export function normalizeComponent(
     if (!isRef) {
       const { ref } = splitTemplateName(configComponent._template);
       if (ref) {
-        if (!isExternalSchemaProp(schemaProp)) {
+        if (!isExternalSchemaProp(schemaProp, compilationContext.types)) {
           return;
         }
       }
     } else {
-      if (isExternalSchemaProp(schemaProp)) {
+      if (isExternalSchemaProp(schemaProp, compilationContext.types)) {
         return;
       }
     }
@@ -1387,9 +1258,10 @@ export function getSchemaDefinition<
   schemaProp: T,
   compilationContext: CompilationContextType
 ): ReturnType<SchemaPropDefinitionProvider> {
-  const provider = isExternalSchemaProp(schemaProp)
-    ? schemaPropDefinitions.external
-    : schemaPropDefinitions[schemaProp.type];
+  const provider = compilationContext.types[schemaProp.type]
+    ? schemaPropDefinitions.custom
+    : // @ts-expect-error
+      schemaPropDefinitions[schemaProp.type];
 
   return provider(schemaProp as any, compilationContext);
 }
