@@ -219,24 +219,11 @@ export function EditorBackendInitializer(props: EditorProps) {
     );
   }
 
-  return <EditorWrapper {...props} document={document} isPlayground={false} />;
+  return <EditorWrapper {...props} document={document} />;
 }
 
-export const EditorWrapper = memo(
-  (
-    props: EditorProps & { document: Document | null; isPlayground: boolean }
-  ) => {
-    if (props.isPlayground) {
-      return <AuthenticationScreen>Playground</AuthenticationScreen>;
-      // return <EditorContent
-      //   {...props}
-      //   isPlayground={isPlayground}
-      //   compilationContext={compilationContext}
-      //   initialDocument={resolvedInput.document}
-      //   initialEntry={resolvedInput.config}
-      // />
-    }
-
+const EditorWrapper = memo(
+  (props: EditorProps & { document: Document | null }) => {
     // Find document type
     const documentType = getDocumentType(
       {
@@ -266,13 +253,9 @@ export const EditorWrapper = memo(
       ? adaptRemoteConfig(props.document.entry, compilationContext)
       : getDefaultEntry(compilationContext);
 
-    console.log("initial doc", props.document);
-    console.log("initial entry", initialEntry);
-
     return (
       <EditorContent
         {...props}
-        isPlayground={props.isPlayground}
         compilationContext={compilationContext}
         initialDocument={props.document}
         initialEntry={initialEntry}
@@ -285,7 +268,6 @@ type EditorContentProps = EditorProps & {
   compilationContext: CompilationContextType;
   initialDocument: Document | null;
   initialEntry: ComponentConfig;
-  isPlayground: boolean;
   heightMode?: "viewport" | "full";
 };
 
@@ -458,7 +440,6 @@ const EditorContent = ({
   heightMode = "viewport",
   initialDocument,
   initialEntry,
-  isPlayground,
   documentType,
   externalData,
   ...props
@@ -683,7 +664,7 @@ const EditorContent = ({
     resources: [],
     compilationCache: compilationCache.current,
     // project: props.project,
-    isPlayground,
+    isPlayground: props.mode === "playground",
     disableCustomTemplates: props.config.disableCustomTemplates ?? false,
     isFullScreen,
   };

@@ -40,7 +40,7 @@ export async function getTemplates(
   configTemplates: InternalTemplate[] = []
 ): Promise<Template[]> {
   const remoteUserDefinedTemplates: UserDefinedTemplate[] =
-    !editorContext.isPlayground && !editorContext.disableCustomTemplates
+    !editorContext.disableCustomTemplates
       ? await editorContext.backend.templates.getAll()
       : [];
 

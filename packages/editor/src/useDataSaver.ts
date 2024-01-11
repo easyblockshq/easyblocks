@@ -28,13 +28,14 @@ export function useDataSaver(
   const onTickRef = useRef<() => Promise<void>>(() => Promise.resolve());
 
   const onTick = async () => {
-    // Playground mode is a special case, we don't want to save anything
-    if (editorContext.isPlayground) {
-      return;
-    }
-
     console.log("---");
     console.log("tick");
+
+    // Playground mode is a special case, we don't want to save anything
+    if (editorContext.isPlayground) {
+      console.log("playground mode -> bye");
+      return;
+    }
 
     const localConfig = editorContext.form.values;
     const localConfigSnapshot = getConfigSnapshot(localConfig);
