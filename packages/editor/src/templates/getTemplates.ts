@@ -45,7 +45,7 @@ export async function getTemplates(
     apiClient &&
     !editorContext.isPlayground &&
     !editorContext.disableCustomTemplates
-      ? await apiClient.templates.getTemplates()
+      ? await apiClient.templates.getAll()
       : [];
 
   return getTemplatesInternal(

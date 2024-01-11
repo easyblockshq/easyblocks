@@ -73,8 +73,6 @@ export function EasyblocksParent(props: EasyblocksParentProps) {
 type EditorSearchParams = {
   mode: "app" | "playground" | null;
   documentId: string | null;
-  source: string | null;
-  uniqueSourceIdentifier: string | null;
   documentType: string | null;
   locale: string | null;
 };
@@ -94,8 +92,6 @@ function parseEditorSearchParams() {
     ? (modeSearchParam as "app" | "playground")
     : null;
   const documentId = searchParams.get("documentId");
-  const source = searchParams.get("source");
-  const uniqueSourceIdentifier = searchParams.get("uniqueSourceIdentifier");
   const documentType = searchParams.get("documentType");
   const locale = searchParams.get("locale");
 
@@ -103,8 +99,6 @@ function parseEditorSearchParams() {
     mode,
     documentId,
     documentType,
-    source,
-    uniqueSourceIdentifier,
     locale,
   };
 

@@ -90,48 +90,34 @@ interface IApiClient {
   ): ReturnType<typeof fetch>;
 
   documents: {
-    getDocuments: () => Promise<Array<DocumentDTO>>;
-    getDocumentById: <Format extends GetDocumentFormat = "full">(payload: {
-      documentId: string;
-      format?: Format;
-      locales?: Array<string>;
-    }) => Promise<
-      | (Format extends "versionOnly"
-          ? Pick<DocumentWithResolvedConfigDTO, "version">
-          : DocumentWithResolvedConfigDTO)
-      | null
-    >;
-    getDocumentByUniqueSourceIdentifier: (payload: {
-      uniqueSourceIdentifier: string;
+    get: (payload: {
+      id: string;
+      includeEntry?: boolean;
+      locales?: string[];
     }) => Promise<DocumentWithResolvedConfigDTO | null>;
-    createDocument: (payload: {
-      title: string;
-      config: ComponentConfig;
-      source: string;
-      uniqueSourceIdentifier?: string;
+    create: (payload: {
+      entry: ComponentConfig;
       rootContainer: string;
     }) => Promise<DocumentDTO>;
-    updateDocument: (payload: {
-      documentId: string;
+    update: (payload: {
+      id: string;
       version?: number;
-      title?: string;
-      config?: ComponentConfig;
-      uniqueSourceIdentifier?: string;
+      entry?: ComponentConfig;
     }) => Promise<DocumentDTO>;
   };
 
   templates: {
-    getTemplates: () => Promise<UserDefinedTemplate[]>;
-    createTemplate: (payload: {
+    getAll: () => Promise<UserDefinedTemplate[]>;
+    create: (payload: {
       title: string;
       entry: ConfigComponent;
       width?: number;
       widthAuto?: boolean;
     }) => Promise<void>;
 
-    saveTemplate: (payload: { id: string; title: string }) => Promise<void>;
+    update: (payload: { id: string; title: string }) => Promise<void>;
 
-    deleteTemplate: (payload: { id: string }) => Promise<void>;
+    delete: (payload: { id: string }) => Promise<void>;
   };
 
   configs: {
@@ -243,35 +229,28 @@ class ApiClient implements IApiClient {
   }
 
   documents = {
-    getDocuments: async (): Promise<Array<DocumentDTO>> => {
-      const response = await this.get(
-        `/projects/${this.project!.id}/documents`
-      );
+    // getAll: async (): Promise<Array<DocumentDTO>> => {
+    //   const response = await this.get(
+    //     `/projects/${this.project!.id}/documents`
+    //   );
+    //
+    //   if (response.ok) {
+    //     return (await response.json()) as Array<DocumentDTO>;
+    //   }
+    //
+    //   throw new Error("Failed to get documents");
+    // },
 
-      if (response.ok) {
-        return (await response.json()) as Array<DocumentDTO>;
-      }
-
-      throw new Error("Failed to get documents");
-    },
-
-    getDocumentById: async <
-      Format extends GetDocumentFormat = "full"
-    >(payload: {
-      documentId: string;
-      format?: GetDocumentFormat;
+    get: async (payload: {
+      id: string;
+      includeEntry?: boolean;
       locales?: Array<string>;
-    }): Promise<
-      | (Format extends "versionOnly"
-          ? Pick<DocumentWithResolvedConfigDTO, "version">
-          : DocumentWithResolvedConfigDTO)
-      | null
-    > => {
+    }): Promise<DocumentWithResolvedConfigDTO | null> => {
       const response = await this.get(
-        `/projects/${this.project!.id}/documents/${payload.documentId}`,
+        `/projects/${this.project!.id}/documents/${payload.id}`,
         {
           searchParams: {
-            format: payload.format || "full",
+            format: payload.includeEntry ? "full" : "versionOnly",
             ...(payload.locales && { locale: payload.locales }),
           },
         }
@@ -288,46 +267,16 @@ class ApiClient implements IApiClient {
       throw new Error("Failed to get document");
     },
 
-    getDocumentByUniqueSourceIdentifier: async (payload: {
-      uniqueSourceIdentifier: string;
-    }): Promise<DocumentWithResolvedConfigDTO | null> => {
-      const response = await this.get(
-        `/projects/${this.project!.id}/documents/${
-          payload.uniqueSourceIdentifier
-        }`,
-        {
-          searchParams: {
-            identifier_type: "unique_source_identifier",
-          },
-        }
-      );
-
-      if (response.ok) {
-        return (await response.json()) as DocumentWithResolvedConfigDTO;
-      }
-
-      if (response.status === 400) {
-        return null;
-      }
-
-      throw new Error("Failed to get document");
-    },
-
-    createDocument: async (payload: {
-      title: string;
-      config: ComponentConfig;
-      source: string;
-      uniqueSourceIdentifier?: string;
+    create: async (payload: {
+      entry: ComponentConfig;
       rootContainer: string;
     }): Promise<DocumentDTO> => {
       const response = await this.post(
         `/projects/${this.project!.id}/documents`,
         {
           body: {
-            title: payload.title,
-            config: payload.config,
-            source: payload.source,
-            unique_source_identifier: payload.uniqueSourceIdentifier,
+            title: "Untitled",
+            config: payload.entry,
             rootContainer: payload.rootContainer,
           },
         }
@@ -345,21 +294,17 @@ class ApiClient implements IApiClient {
       throw new Error("Failed to save document");
     },
 
-    updateDocument: async (payload: {
-      documentId: string;
+    update: async (payload: {
+      id: string;
       version?: number;
-      title?: string;
-      config?: ComponentConfig;
-      uniqueSourceIdentifier?: string;
+      entry?: ComponentConfig;
     }): Promise<DocumentDTO> => {
       const response = await this.put(
-        `/projects/${this.project!.id}/documents/${payload.documentId}`,
+        `/projects/${this.project!.id}/documents/${payload.id}`,
         {
           body: {
             version: payload.version,
-            title: payload.title,
-            config: payload.config,
-            unique_source_identifier: payload.uniqueSourceIdentifier,
+            config: payload.entry,
           },
         }
       );
@@ -378,7 +323,7 @@ class ApiClient implements IApiClient {
   };
 
   templates = {
-    getTemplates: async (): Promise<UserDefinedTemplate[]> => {
+    getAll: async (): Promise<UserDefinedTemplate[]> => {
       try {
         const response = await this.get(
           `/projects/${this.project!.id}/templates`
@@ -398,7 +343,7 @@ class ApiClient implements IApiClient {
         return [];
       }
     },
-    createTemplate: async (input: {
+    create: async (input: {
       title: string;
       entry: ConfigComponent;
       width?: number;
@@ -424,7 +369,7 @@ class ApiClient implements IApiClient {
         throw new Error();
       }
     },
-    saveTemplate: async (input: { id: string; title: string }) => {
+    update: async (input: { id: string; title: string }) => {
       const payload = {
         label: input.title,
         masterTemplateIds: [],
@@ -442,7 +387,7 @@ class ApiClient implements IApiClient {
         throw new Error();
       }
     },
-    deleteTemplate: async (input: { id: string }) => {
+    delete: async (input: { id: string }) => {
       const response = await this.request(
         `/projects/${this.project!.id}/templates/${input.id}`,
         {

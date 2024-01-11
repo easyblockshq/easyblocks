@@ -9,7 +9,6 @@ import {
   ExternalDataChangeHandler,
   ExternalReference,
   FetchOutputResources,
-  IApiClient,
   NonEmptyRenderableContent,
   Template,
   WidgetComponentProps,
@@ -22,7 +21,6 @@ import {
   normalizeInput,
   responsiveValueGet,
   validate,
-  ApiClient,
 } from "@easyblocks/core";
 import {
   CompilationContextType,
@@ -36,7 +34,7 @@ import {
   traverseComponents,
 } from "@easyblocks/core/_internals";
 import { SSColors, SSFonts, useToaster } from "@easyblocks/design-system";
-import { assertDefined, dotNotationGet, raiseError } from "@easyblocks/utils";
+import { dotNotationGet, raiseError } from "@easyblocks/utils";
 import React, {
   ComponentType,
   memo,
@@ -237,59 +235,34 @@ export function Editor(props: EditorProps) {
   );
 }
 
-// function Editor(props: EditorProps) {
-//   const [enabled, setEnabled] = useState<boolean>(false);
-//   const [error, setError] = useState<string | undefined>(undefined);
-//
-//   const isPlayground = props.mode === "playground";
-//
-//   return (
-//     <ApiClientProvider apiClient={props.apiClient!}>
-//       <EditorInner
-//         {...props}
-//       />
-//     </ApiClientProvider>
-//   );
-// }
-
 export const EditorInner = memo((props: EditorProps) => {
   const isPlayground = props.mode === "playground";
 
   const [fetchError, setFetchError] = useState<string | null>(null);
-  const [resolvedInput, setResolvedInput] = useState<{
-    config: ComponentConfig;
-    document: DocumentWithResolvedConfigDTO | null;
-  } | null>(null);
+  const [document, setDocument] = useState<
+    DocumentWithResolvedConfigDTO | undefined | null
+  >(undefined);
   const apiClient = useApiClient();
-
-  // Locales
-  if (!props.config.locales) {
-    throw new Error("Required property config.locales is empty");
-  }
-
-  checkLocalesCorrectness(props.config.locales); // very important to check locales correctness, circular references etc. Other functions
-  const locale = props.locale ?? getDefaultLocale(props.config.locales).code;
-
-  const compilationContext = createCompilationContext(
-    props.config,
-    {
-      locale,
-    },
-    props.documentType
-  );
 
   useEffect(() => {
     (async () => {
       try {
-        const resolvedInput = props.documentId
-          ? await resolveDocumentId(
-              props.documentId,
-              apiClient,
-              compilationContext
-            )
-          : getDefaultInput(compilationContext);
+        if (props.documentId) {
+          const remoteDocument = await apiClient.documents.get({
+            id: props.documentId,
+            includeEntry: true,
+          });
 
-        setResolvedInput(resolvedInput);
+          if (!remoteDocument) {
+            throw new Error(
+              `Can't fetch document with id: ${props.documentId}`
+            );
+          }
+
+          setDocument(remoteDocument);
+        } else {
+          setDocument(null);
+        }
       } catch (error) {
         console.error(error);
 
@@ -320,17 +293,46 @@ export const EditorInner = memo((props: EditorProps) => {
     // />
   }
 
-  if (resolvedInput === null) {
+  if (document === undefined) {
     return <AuthenticationScreen>Loading...</AuthenticationScreen>;
   }
+
+  // Find document type
+  const documentType = getDocumentType(
+    {
+      fromParams: props.documentType,
+      fromDocument: document?.root_container ?? undefined,
+    },
+    Object.keys(props.config.documentTypes ?? {})
+  );
+
+  // Locales
+  if (!props.config.locales) {
+    throw new Error("Required property config.locales is empty");
+  }
+
+  checkLocalesCorrectness(props.config.locales); // very important to check locales correctness, circular references etc. Other functions
+  const locale = props.locale ?? getDefaultLocale(props.config.locales).code;
+
+  const compilationContext = createCompilationContext(
+    props.config,
+    {
+      locale,
+    },
+    documentType
+  );
 
   return (
     <EditorContent
       {...props}
       isPlayground={isPlayground}
       compilationContext={compilationContext}
-      initialDocument={resolvedInput.document}
-      initialConfig={resolvedInput.config}
+      initialDocument={document}
+      initialConfig={
+        document
+          ? adaptRemoteConfig(document.config.config, compilationContext)
+          : getDefaultEntry(compilationContext)
+      }
     />
   );
 });
@@ -405,7 +407,7 @@ function useBuiltContent(
       config,
       contextParams: {
         ...editorContext.contextParams,
-        rootContainer: editorContext.documentType.id,
+        rootContainer: editorContext.activeDocumentType.id,
       },
       externalData,
       compiler: {
@@ -739,9 +741,6 @@ const EditorContent = ({
     compilationCache: compilationCache.current,
     // project: props.project,
     isPlayground,
-    activeDocumentType: assertDefined(
-      compilationContext.documentTypes.find((r) => r.id === documentType)
-    ),
     disableCustomTemplates: props.config.disableCustomTemplates ?? false,
     isFullScreen,
   };
@@ -934,7 +933,7 @@ const EditorContent = ({
 
   useEditorGlobalKeyboardShortcuts(editorContext);
 
-  const { saveNow } = useDataSaver(initialDocument, undefined, editorContext);
+  const { saveNow } = useDataSaver(initialDocument, editorContext);
 
   const { height, scaleFactor, width, iframeContainerRef } = useIframeSize({
     isScalingEnabled: !isFullScreen && isEditing,
@@ -1122,11 +1121,10 @@ function useIframeSize({
   };
 }
 
-function getDefaultInput(compilationContext: CompilationContextType): {
-  config: ComponentConfig;
-  document: DocumentWithResolvedConfigDTO | null;
-} {
-  const documentType = compilationContext.documentType;
+function getDefaultEntry(
+  compilationContext: CompilationContextType
+): ComponentConfig {
+  const documentType = compilationContext.activeDocumentType;
   const documentTypeDefaultConfig = documentType.entry;
 
   if (!documentTypeDefaultConfig) {
@@ -1151,41 +1149,7 @@ function getDefaultInput(compilationContext: CompilationContextType): {
     compilationContext
   );
 
-  return {
-    config: defaultConfig,
-    document: null,
-  };
-}
-
-async function resolveDocumentId(
-  documentId: string,
-  apiClient: IApiClient,
-  compilationContext: CompilationContextType
-): Promise<{
-  config: ComponentConfig;
-  document: DocumentWithResolvedConfigDTO | null;
-}> {
-  const remoteDocument = await apiClient.documents.getDocumentById({
-    documentId,
-  });
-
-  if (!remoteDocument) {
-    throw new Error(
-      `Document with given id doesn't exist for project with id: ${
-        apiClient.project!.id
-      }`
-    );
-  }
-
-  remoteDocument.config.config = adaptRemoteConfig(
-    remoteDocument.config.config,
-    compilationContext
-  );
-
-  return {
-    config: remoteDocument.config.config,
-    document: remoteDocument,
-  };
+  return defaultConfig;
 }
 
 function adaptRemoteConfig(
@@ -1286,4 +1250,56 @@ export function findConfigById(
   });
 
   return foundConfig;
+}
+
+function getDocumentType(
+  documentTypeIds: { fromDocument?: string; fromParams?: string },
+  allDocumentTypeIds: string[]
+): string {
+  let documentTypeFromDocument: string | undefined = undefined;
+
+  if (documentTypeIds.fromDocument) {
+    documentTypeFromDocument = allDocumentTypeIds.find(
+      (key) => key === documentTypeIds.fromDocument
+    );
+    if (!documentTypeFromDocument) {
+      throw new Error(
+        `Opened document type "${documentTypeIds.fromDocument}" doesn't exist in config.documentTypes`
+      );
+    }
+  }
+
+  let documentTypeFromParams: string | undefined = undefined;
+
+  if (documentTypeIds.fromParams) {
+    documentTypeFromParams = allDocumentTypeIds.find(
+      (key) => key === documentTypeIds.fromParams
+    );
+    if (!documentTypeFromParams) {
+      throw new Error(
+        `documentType param "${documentTypeIds.fromParams}" doesn't exist in config.documentTypes`
+      );
+    }
+  }
+
+  let activeDocumentType: string | undefined = undefined;
+
+  if (documentTypeFromDocument && documentTypeFromParams) {
+    if (documentTypeFromDocument !== documentTypeFromParams) {
+      console.warn(
+        `The type of the opened document "${documentTypeFromDocument}" is different from documentType param "${documentTypeFromParams}" passed to the editor.`
+      );
+    }
+    activeDocumentType = documentTypeFromDocument;
+  } else if (documentTypeFromDocument && !documentTypeFromParams) {
+    activeDocumentType = documentTypeFromDocument;
+  } else if (!documentTypeFromDocument && documentTypeFromParams) {
+    activeDocumentType = documentTypeFromParams;
+  } else {
+    throw new Error(
+      `When you create a new document you must pass documentType parameter to the editor`
+    );
+  }
+
+  return activeDocumentType;
 }

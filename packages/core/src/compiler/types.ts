@@ -42,7 +42,7 @@ export type CompilationContextType = {
   contextParams: ContextParams;
   strict?: boolean;
   locales: Array<Locale>;
-  documentType: CompilationDocumentType;
+  activeDocumentType: CompilationDocumentType;
   documentTypes: Array<CompilationDocumentType>;
 };
 

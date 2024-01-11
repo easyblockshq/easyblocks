@@ -2,7 +2,6 @@ import React, { MouseEvent, useEffect, useState } from "react";
 import {
   OpenTemplateModalAction,
   OpenTemplateModalActionCreate,
-  RoleMaster,
 } from "./types";
 import {
   FormElement,
@@ -10,7 +9,6 @@ import {
   SSButtonPrimary,
   SSInput,
   SSModal,
-  SSToggle,
   useToaster,
 } from "@easyblocks/design-system";
 import { useEditorContext } from "./EditorContext";
@@ -115,7 +113,7 @@ export const TemplateModal: React.FC<TemplateModalProps> = (props) => {
             const createAction = props.action as OpenTemplateModalActionCreate;
 
             apiClient.templates
-              .createTemplate({
+              .create({
                 title: label,
                 entry: createAction.config,
                 width: createAction.width,
@@ -126,7 +124,7 @@ export const TemplateModal: React.FC<TemplateModalProps> = (props) => {
                 toaster.success("Template created!");
                 props.onClose();
               })
-              .catch((err) => {
+              .catch(() => {
                 toaster.error("Couldn't save template");
               })
               .finally(() => {
@@ -134,7 +132,7 @@ export const TemplateModal: React.FC<TemplateModalProps> = (props) => {
               });
           } else {
             apiClient.templates
-              .saveTemplate({
+              .update({
                 title: label,
                 id: template.id!,
               })
@@ -143,7 +141,7 @@ export const TemplateModal: React.FC<TemplateModalProps> = (props) => {
                 toaster.success("Template updated!");
                 props.onClose();
               })
-              .catch((err) => {
+              .catch(() => {
                 toaster.error("Couldn't update template");
               })
               .finally(() => {
@@ -218,13 +216,13 @@ export const TemplateModal: React.FC<TemplateModalProps> = (props) => {
                     setLoadingDelete(true);
 
                     apiClient.templates
-                      .deleteTemplate({ id: template.id! })
+                      .delete({ id: template.id! })
                       .then(() => {
                         editorContext.syncTemplates();
                         toaster.success("Template deleted");
                         props.onClose();
                       })
-                      .catch((err) => {
+                      .catch(() => {
                         toaster.error("Couldn't delete template");
                       })
                       .finally(() => {

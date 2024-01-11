@@ -73,7 +73,7 @@ function prepareDevices(configDevices: Config["devices"]): Devices {
 export function createCompilationContext(
   config: Config,
   contextParams: ContextParams,
-  documentType?: string
+  documentType: string
 ): CompilationContextType {
   const devices = prepareDevices(config.devices);
   const mainDevice = devices.find((x) => x.isMain);
@@ -220,10 +220,12 @@ export function createCompilationContext(
     components.push(...config.components);
   }
 
-  const activeDocument = documentTypes.find((r) => r.id === documentType);
+  const activeDocumentType = documentTypes.find((r) => r.id === documentType);
 
-  if (!activeDocument) {
-    throw new Error(`Document type "${documentType}" doesn't exist.`);
+  if (!activeDocumentType) {
+    throw new Error(
+      `Document type "${documentType}" doesn't exist in config.documentTypes.`
+    );
   }
 
   if (!config.locales) {
@@ -240,18 +242,18 @@ export function createCompilationContext(
     );
   }
 
-  if (activeDocument.schema) {
+  if (activeDocumentType.schema) {
     const rootComponentDefinition = components.find(
-      (c) => c.id === activeDocument.entry._template
+      (c) => c.id === activeDocumentType.entry._template
     );
 
     if (!rootComponentDefinition) {
       throw new Error(
-        `Missing definition for component "${activeDocument.entry._template}".`
+        `Missing definition for component "${activeDocumentType.entry._template}".`
       );
     }
 
-    activeDocument.schema.forEach((schemaProp) => {
+    activeDocumentType.schema.forEach((schemaProp) => {
       if (
         !rootComponentDefinition.schema.some((s) => s.prop === schemaProp.prop)
       ) {
@@ -302,7 +304,7 @@ export function createCompilationContext(
     contextParams,
     strict: fetchingContext.strict,
     locales: config.locales,
-    documentType: activeDocument,
+    activeDocumentType,
     documentTypes,
   };
 
