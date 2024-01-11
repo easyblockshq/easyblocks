@@ -119,22 +119,6 @@ interface IApiClient {
 
     delete: (payload: { id: string }) => Promise<void>;
   };
-
-  configs: {
-    getConfigById: (payload: {
-      configId: string;
-      locales?: Array<string>;
-    }) => Promise<ConfigDTO | null>;
-  };
-
-  assets: {
-    getAssets(payload: {
-      type?: "image" | "video";
-      ids?: Array<string>;
-    }): Promise<Array<AssetDTO>>;
-    uploadAsset(payload: { asset: File }): Promise<void>;
-    removeAsset(payload: { assetId: string }): Promise<void>;
-  };
 }
 
 type Project = {
@@ -229,18 +213,6 @@ class ApiClient implements IApiClient {
   }
 
   documents = {
-    // getAll: async (): Promise<Array<DocumentDTO>> => {
-    //   const response = await this.get(
-    //     `/projects/${this.project!.id}/documents`
-    //   );
-    //
-    //   if (response.ok) {
-    //     return (await response.json()) as Array<DocumentDTO>;
-    //   }
-    //
-    //   throw new Error("Failed to get documents");
-    // },
-
     get: async (payload: {
       id: string;
       includeEntry?: boolean;
@@ -397,94 +369,6 @@ class ApiClient implements IApiClient {
 
       if (response.status !== 200) {
         throw new Error();
-      }
-    },
-  };
-
-  configs = {
-    getConfigById: async (payload: {
-      configId: string;
-      locales?: Array<string>;
-    }): Promise<ConfigDTO | null> => {
-      const path = this.project
-        ? `/projects/${this.project.id}/configs/${payload.configId}`
-        : `/configs/${payload.configId}`;
-
-      const options: ApiGetRequestOptions = {
-        ...(payload.locales && { searchParams: { locale: payload.locales } }),
-      };
-
-      const response = await this.get(path, options);
-
-      if (response.ok) {
-        if (this.project) {
-          return (await response.json()) as ConfigDTO;
-        }
-
-        const getConfigData = await response.json();
-
-        if (getConfigData === null) {
-          return null;
-        }
-
-        return getConfigData as ConfigDTO;
-      }
-
-      if (response.status === 400) {
-        return null;
-      }
-
-      throw new Error("Failed to get config");
-    },
-  };
-
-  assets = {
-    getAssets: async (payload: {
-      type?: "image" | "video";
-      ids?: Array<string>;
-    }): Promise<Array<AssetDTO>> => {
-      const searchParams: RequestSearchParams = {};
-
-      if (payload.type) {
-        searchParams.type = payload.type;
-      }
-
-      if (payload.ids) {
-        searchParams.ids = payload.ids;
-      }
-
-      const response = await this.get(`/projects/${this.project!.id}/assets`, {
-        searchParams,
-      });
-
-      if (response.ok) {
-        const assets = await response.json();
-        return assets as Array<AssetDTO>;
-      }
-
-      throw new Error("Failed to get assets");
-    },
-
-    uploadAsset: async (payload: { asset: File }): Promise<void> => {
-      const formData = new FormData();
-      formData.append("file", payload.asset);
-
-      const response = await this.post(`/projects/${this.project!.id}/assets`, {
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to upload asset");
-      }
-    },
-
-    removeAsset: async (payload: { assetId: string }): Promise<void> => {
-      const response = await this.delete(
-        `/projects/${this.project!.id}/assets/${payload.assetId}`
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to remove asset");
       }
     },
   };
