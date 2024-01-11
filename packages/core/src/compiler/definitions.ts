@@ -652,32 +652,60 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
   custom: (schemaProp, compilationContext) => {
     const customTypeDefinition = compilationContext.types[schemaProp.type];
 
-    // if (customTypeDefinition.type === "external") {
-    //   return schemaPropDefinitions.external(schemaProp, compilationContext);
-    // }
-
     return {
       normalize: (value) => {
         if (customTypeDefinition.type === "inline") {
           const defaultValue =
             schemaProp.defaultValue ?? customTypeDefinition.defaultValue;
 
-          if (isLocalValue(value)) {
-            const resultValue =
-              customTypeDefinition.type === "inline"
-                ? (customTypeDefinition.validate?.(value.value)
-                    ? value.value
-                    : defaultValue) ?? value.value
-                : value.value;
+          const normalizeScalar = (v: any) => {
+            if (isLocalValue(v)) {
+              const resultValue =
+                customTypeDefinition.type === "inline"
+                  ? (customTypeDefinition.validate?.(v.value)
+                      ? v.value
+                      : defaultValue) ?? v.value
+                  : v.value;
 
-            return {
-              value: resultValue,
-              widgetId: value.widgetId,
-            };
+              return {
+                value: resultValue,
+                widgetId: v.widgetId,
+              };
+            }
+          };
+
+          if (
+            (customTypeDefinition.responsiveness === "optional" &&
+              schemaProp.responsive) ||
+            customTypeDefinition.responsiveness === "always"
+          ) {
+            const normalize = getResponsiveNormalize(
+              compilationContext,
+              defaultValue,
+              defaultValue,
+              normalizeScalar
+            );
+
+            return normalize(value);
           }
 
-          const defaultLocalValue = {
-            value: schemaProp.defaultValue ?? customTypeDefinition.defaultValue,
+          if (
+            customTypeDefinition.responsiveness === "never" &&
+            schemaProp.responsive
+          ) {
+            console.warn(
+              `Custom type "${schemaProp.type}" is marked as "never" responsive, but schema prop is marked as responsive. This is not supported and the value for this field is going to stay not responsive. Please change custom type definition or schema prop definition.`
+            );
+          }
+
+          const result = normalizeScalar(value);
+
+          if (result) {
+            return result;
+          }
+
+          const defaultLocalValue: LocalValue = {
+            value: defaultValue,
             widgetId: customTypeDefinition.widgets[0]?.id,
           };
 
@@ -1020,30 +1048,7 @@ function normalizeTokenValue<T>(
 
   const widgetId = input.widgetId ?? defaultWidgetId;
 
-  /*if (typeof input.ref === "string") {
-    // If ref is defined
-    const val = themeValues[x.ref];
-
-    // If ref exists in a theme we just take ref value
-    if (val) {
-      return {
-        value: val.value as any,
-        tokenId: x.ref,
-        widgetId,
-      };
-    }
-
-    // If ref is defined but doesn't exist in a theme it means that it was probably removed
-    // In that case we simply pass the non-existent ref name (it can be later brought back).
-    // The value is scalar-normalized! We'll never get incorrect value after normalization.
-    const normalizedVal = scalarValueNormalize(x.value);
-
-    return {
-      value: normalizedVal ?? (defaultValue.value as string),
-      tokenId: x.ref,
-      widgetId,
-    };
-  } else*/ if ("tokenId" in input && typeof input.tokenId === "string") {
+  if ("tokenId" in input && typeof input.tokenId === "string") {
     const val = themeValues[input.tokenId];
 
     if (val) {

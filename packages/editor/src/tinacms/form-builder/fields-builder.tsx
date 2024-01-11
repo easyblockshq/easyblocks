@@ -2,7 +2,7 @@ import { Form } from "@easyblocks/app-utils";
 import { InternalField } from "@easyblocks/core/_internals";
 import { SSColors, SSFonts, Typography } from "@easyblocks/design-system";
 import { toArray } from "@easyblocks/utils";
-import React from "react";
+import React, { useContext } from "react";
 import styled, { css } from "styled-components";
 import { useEditorContext } from "../../EditorContext";
 import {
@@ -24,6 +24,7 @@ import { LocalFieldPlugin } from "../fields/plugins/LocalFIeld";
 import { PositionFieldPlugin } from "../fields/plugins/PositionFieldPlugin";
 import { FieldPlugin } from "./field-plugin";
 import { createFieldController } from "./utils/createFieldController";
+import { PanelContext } from "../fields/plugins/BlockFieldPlugin";
 
 export interface FieldBuilderProps {
   form: Form;
@@ -149,6 +150,8 @@ export interface FieldsBuilderProps {
 }
 
 export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
+  const editorContext = useEditorContext();
+  const panelContext = useContext(PanelContext);
   const grouped: Record<string, Array<InternalField>> = {};
   const ungrouped: Array<InternalField> = [];
 
@@ -181,6 +184,12 @@ export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
 
   const identityField = fields.find((field) => field.component === "identity");
 
+  // If nested panel is opened within the sidebar, we need to force rerender fields, but keep the panel open for better UX
+  // to do that we also add breakpointIndex to the key of the each nested field
+  const breakpointIndex = panelContext
+    ? editorContext.breakpointIndex
+    : undefined;
+
   return (
     <FieldsGroup>
       {identityField !== undefined && (
@@ -194,7 +203,7 @@ export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
           <FieldsGroupLabel>{groupName}</FieldsGroupLabel>
           {grouped[groupName].map((field, index, fields) => (
             <div
-              key={generateFieldKey(field)}
+              key={generateFieldKey(field, breakpointIndex)}
               css={css`
                 margin-bottom: ${index === fields.length - 1 ? "8px" : 0};
               `}
@@ -211,7 +220,7 @@ export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
       ))}
       {ungrouped.map((field, index, fields) => (
         <div
-          key={generateFieldKey(field)}
+          key={generateFieldKey(field, breakpointIndex)}
           css={css`
             margin-bottom: ${index === fields.length - 1 ? "8px" : 0};
           `}
@@ -228,8 +237,13 @@ export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
   );
 }
 
-function generateFieldKey(field: InternalField) {
-  const key = `${toArray(field.name).join("_")}_${field.schemaProp.type}`;
+function generateFieldKey(
+  field: InternalField,
+  breakpointIndex: string | undefined
+) {
+  const key = `${toArray(field.name).join("_")}_${field.schemaProp.type}${
+    breakpointIndex ? `_${breakpointIndex}` : ""
+  }`;
   return key;
 }
 

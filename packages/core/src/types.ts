@@ -543,7 +543,7 @@ type ConfigTokens = {
 
 type BaseTypeDefinition = {
   widgets: Array<Widget>;
-  responsive?: boolean;
+  responsiveness?: "always" | "optional" | "never";
 };
 
 export type InlineTypeDefinition<Value extends NonNullish = any> =

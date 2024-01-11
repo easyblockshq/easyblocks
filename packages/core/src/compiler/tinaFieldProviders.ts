@@ -297,7 +297,16 @@ const tinaFieldProviders: TinaFieldProviders = {
 
     return {
       ...getCommonFieldProps(schemaProp),
-      component: "local",
+      ...(customTypeDefinition.responsiveness === "always" ||
+      (customTypeDefinition.responsiveness === "optional" &&
+        schemaProp.responsive)
+        ? {
+            component: "responsive2",
+            subComponent: "local",
+          }
+        : {
+            component: "local",
+          }),
     };
   },
 };

@@ -172,8 +172,6 @@ function TokenFieldComponent<TokenValue extends NonNullish>({
       ) as string
     );
 
-  console.log("🚀 ~ isExtraValueSelected:", isExtraValueSelected);
-
   const shouldShowCustomValueInput =
     !isMixedFieldValue(input.value) &&
     !(input.value.tokenId || isExtraValueSelected);
