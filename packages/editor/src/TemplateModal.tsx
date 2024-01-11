@@ -12,19 +12,18 @@ import {
   useToaster,
 } from "@easyblocks/design-system";
 import { useEditorContext } from "./EditorContext";
-import { useApiClient } from "./infrastructure/ApiClientProvider";
-import { IApiClient } from "@easyblocks/core";
+import { Backend } from "@easyblocks/core";
 
 export type TemplateModalProps = {
   action: OpenTemplateModalAction;
   onClose: () => void;
-  apiClient: IApiClient;
+  backend: Backend;
 };
 
 export const TemplateModal: React.FC<TemplateModalProps> = (props) => {
   const [error, setError] = useState<null | string>(null);
-  const apiClient = useApiClient();
   const mode = props.action.mode;
+  const backend = props.backend;
 
   const editorContext = useEditorContext();
   const [isLoadingEdit, setLoadingEdit] = useState(false);
@@ -41,40 +40,11 @@ export const TemplateModal: React.FC<TemplateModalProps> = (props) => {
       };
     }
   });
-  const [rolesOpen, setRolesOpen] = useState(false);
-
-  const [selectedMasterTemplateIds, setSelectedMasterTemplateIds] = useState(
-    () => {
-      if (props.action.mode === "edit") {
-        const mapTo = props.action.template.mapTo ?? [];
-        if (Array.isArray(mapTo)) {
-          return mapTo;
-        }
-        return [mapTo];
-      }
-      return [];
-    }
-  );
 
   const label = template.label ?? "";
   const open = props.action !== undefined;
   const canSend = label.trim() !== "";
   const ctaLabel = "Save";
-
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "m" && e.shiftKey && e.metaKey) {
-        e.preventDefault();
-        setRolesOpen(true);
-      }
-    };
-
-    document.addEventListener("keydown", handler);
-
-    return () => {
-      document.removeEventListener("keydown", handler);
-    };
-  }, []);
 
   useEffect(() => {
     if (open) {
@@ -103,18 +73,13 @@ export const TemplateModal: React.FC<TemplateModalProps> = (props) => {
           }
 
           setLoadingEdit(true);
-          //
-          // let payload: Record<string, any>;
-          // let method: "POST" | "PUT";
-          // let url: string;
-          // let successMessage: string;
 
           if (mode === "create") {
             const createAction = props.action as OpenTemplateModalActionCreate;
 
-            apiClient.templates
+            backend.templates
               .create({
-                title: label,
+                label,
                 entry: createAction.config,
                 width: createAction.width,
                 widthAuto: createAction.widthAuto,
@@ -131,9 +96,9 @@ export const TemplateModal: React.FC<TemplateModalProps> = (props) => {
                 setLoadingEdit(false);
               });
           } else {
-            apiClient.templates
+            backend.templates
               .update({
-                title: label,
+                label,
                 id: template.id!,
               })
               .then(() => {
@@ -148,29 +113,6 @@ export const TemplateModal: React.FC<TemplateModalProps> = (props) => {
                 setLoadingEdit(false);
               });
           }
-          //
-          // apiClient
-          //   .request(url, {
-          //     method,
-          //     body: JSON.stringify(payload),
-          //   })
-          //   .then((response) => {
-          //     response.json().then(() => {
-          //       if (response.status !== 200) {
-          //         toaster.error("Couldn't save template");
-          //       } else {
-          //         editorContext.syncTemplates();
-          //         toaster.success(successMessage);
-          //         props.onClose();
-          //       }
-          //     });
-          //   })
-          //   .catch((err) => {
-          //     toaster.error("Couldn't save template");
-          //   })
-          //   .finally(() => {
-          //     setLoadingEdit(false);
-          //   });
         }}
       >
         {error && <div>{error}</div>}
@@ -215,7 +157,7 @@ export const TemplateModal: React.FC<TemplateModalProps> = (props) => {
 
                     setLoadingDelete(true);
 
-                    apiClient.templates
+                    backend.templates
                       .delete({ id: template.id! })
                       .then(() => {
                         editorContext.syncTemplates();

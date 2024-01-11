@@ -20,15 +20,16 @@ import { videoComponentDefinition } from "./components/Video/Video.definition";
 import { mockImageWidget } from "./externalData/mockMedia/mockImageWidget";
 import { pexelsImageWidget } from "./externalData/pexels/pexelsImageWidget";
 import { productWidget } from "./externalData/product/productWidget";
+import { EasyblocksBackend } from "@easyblocks/core";
 
 if (!process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN) {
   throw new Error("Missing NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN");
 }
 
-const easyblocksAccessToken = process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN;
-
 export const easyblocksConfig: Config = {
-  accessToken: easyblocksAccessToken,
+  backend: new EasyblocksBackend({
+    accessToken: process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN,
+  }),
   locales: [
     {
       code: "en-US",

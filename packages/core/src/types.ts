@@ -1,6 +1,12 @@
 import { ComponentType, ReactElement } from "react";
 import { PartialDeep } from "type-fest";
 import { Locale } from "./locales";
+import { ConfigComponent } from "../dist";
+import {
+  ApiRequestOptions,
+  DocumentDTO,
+  DocumentWithResolvedConfigDTO,
+} from "./infrastructure/apiClient";
 
 export type ScalarOrCollection<T> = T | Array<T>;
 
@@ -29,26 +35,6 @@ export type ComponentConfig = {
   $$$refs?: RefMap;
   [key: string]: any; // props
 };
-
-export type LocalisedConfigs<
-  T extends ComponentConfig | Array<ComponentConfig> = ComponentConfig
-> = {
-  [locale: string]: T;
-};
-
-export type Document = {
-  documentId: string;
-  projectId: string;
-  rootContainer: string;
-  /**
-   * This field serves as a cache of document's content when used by `ShopstoryClient`.
-   * It allows to avoid fetching the content of the document from the server when it's already available.
-   * It shouldn't be used by editor. It's missing when the config was too big to be stored in the CMS.
-   */
-  config?: ComponentConfig;
-};
-
-export type LocalisedDocument = Record<string, Document>;
 
 export type RefValue<T> = {
   value: T;
@@ -505,8 +491,46 @@ export type NoCodeComponentDefinition<
   allowSave?: boolean;
 };
 
+/**
+ * Backend types
+ */
+
+export type Document = {
+  id: string;
+  version: number;
+  type: string;
+  entry: ConfigComponent;
+};
+
+export type Backend = {
+  init?: () => Promise<void>;
+  documents: {
+    get: (payload: { id: string; locales?: string[] }) => Promise<Document>;
+    create: (payload: Omit<Document, "id" | "version">) => Promise<Document>;
+    update: (payload: Document) => Promise<Document>;
+  };
+  templates: {
+    getAll: () => Promise<UserDefinedTemplate[]>;
+    create: (payload: {
+      label: string;
+      entry: ConfigComponent;
+      width?: number;
+      widthAuto?: boolean;
+    }) => Promise<UserDefinedTemplate>;
+    update: (payload: {
+      id: string;
+      label: string;
+    }) => Promise<UserDefinedTemplate>;
+    delete: (payload: { id: string }) => Promise<void>;
+  };
+};
+
+/**
+ * Config
+ */
+
 export type Config = {
-  accessToken: string;
+  backend: Backend;
   projectId?: string;
   types?: Record<string, ExternalDefinition>;
   text?: ExternalDefinition;
@@ -531,20 +555,12 @@ export type Config = {
 };
 
 type EditorProps = {
-  configs?: LocalisedConfigs | LocalisedDocument;
-  uniqueSourceIdentifier?: string;
-  save: (
-    documents: LocalisedDocument,
-    externals: ExternalReference[]
-  ) => Promise<void>;
+  save: (document: Document) => Promise<void>;
   locales: Locale[];
   config: Config;
   contextParams: ContextParams;
   onClose: () => void;
   documentType: string;
-  container?: HTMLElement;
-  heightMode?: "viewport" | "parent";
-  canvasUrl?: string;
 };
 
 export type EditorLauncherProps = Omit<EditorProps, "config">;

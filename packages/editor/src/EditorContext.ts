@@ -4,6 +4,8 @@ import {
   ComponentConfig,
   Resource,
   Template,
+  Document,
+  Backend,
 } from "@easyblocks/core";
 import {
   EditorContextType as BaseEditorContextType,
@@ -15,6 +17,7 @@ import { EditorWidget } from "./sidebar/types";
 import { ActionsType, TextSyncers } from "./types";
 
 export type EditorContextType = Omit<BaseEditorContextType, "types"> & {
+  backend: Backend;
   templates?: Template[];
   syncTemplates: () => void;
   focussedField: Array<string>;
@@ -24,12 +27,7 @@ export type EditorContextType = Omit<BaseEditorContextType, "types"> & {
   isEditing?: boolean;
   actions: ActionsType;
   text?: TextSyncers;
-  save: (document: {
-    id: string;
-    version: number;
-    updatedAt: number;
-    projectId: string;
-  }) => Promise<void>;
+  save: (document: Document) => Promise<void>;
   compiledComponentConfig?: CompiledComponentConfig;
   configAfterAuto?: ComponentConfig;
   resources: Array<Resource>;

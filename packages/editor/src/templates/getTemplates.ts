@@ -2,7 +2,6 @@ import { configMap } from "@easyblocks/app-utils";
 import {
   buildRichTextNoCodeEntry,
   ComponentConfig,
-  IApiClient,
   InternalTemplate,
   Template,
   UserDefinedTemplate,
@@ -38,14 +37,11 @@ function getDefaultTemplateForDefinition(
 
 export async function getTemplates(
   editorContext: EditorContextType,
-  apiClient: IApiClient | null,
   configTemplates: InternalTemplate[] = []
 ): Promise<Template[]> {
   const remoteUserDefinedTemplates: UserDefinedTemplate[] =
-    apiClient &&
-    !editorContext.isPlayground &&
-    !editorContext.disableCustomTemplates
-      ? await apiClient.templates.getAll()
+    !editorContext.isPlayground && !editorContext.disableCustomTemplates
+      ? await editorContext.backend.templates.getAll()
       : [];
 
   return getTemplatesInternal(

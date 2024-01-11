@@ -4,7 +4,7 @@ import {
   CompilationMetadata,
   ComponentConfig,
   Config,
-  DocumentWithResolvedConfigDTO,
+  Document,
   ExternalData,
   ExternalDataChangeHandler,
   ExternalReference,
@@ -61,11 +61,6 @@ import {
   removeItems,
   replaceItems,
 } from "./editorActions";
-import {
-  ApiClientProvider,
-  useApiClient,
-} from "./infrastructure/ApiClientProvider";
-import { createApiClient } from "./infrastructure/createApiClient";
 import { destinationResolver } from "./paste/destinationResolver";
 import { pasteManager } from "./paste/manager";
 import { SelectionFrame } from "./selectionFrame/SelectionFrame";
@@ -170,34 +165,37 @@ type EditorProps = {
   externalData: FetchOutputResources;
   onExternalDataChange: ExternalDataChangeHandler;
   widgets?: Record<string, ComponentType<WidgetComponentProps>>;
-
-  // apiClient?: ApiClient
 };
 
-// function Editor(props: EditorProps) {
-//   return <EditorWrapper
-//       {...props}
-//     />
-// }
+export const Editor = EditorBackendInitializer;
 
-export function Editor(props: EditorProps) {
-  /**
-   * Temporary creator of ApiClient which will be later coming from external source. ALL REQUESTS MUST GO THROUGH APICLIENT
-   *
-   */
+export function EditorBackendInitializer(props: EditorProps) {
   const [enabled, setEnabled] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
-  const [apiClient] = useState(() => createApiClient(props.config.accessToken));
-
-  const isPlayground = props.mode === "playground";
+  const [document, setDocument] = useState<Document | null>(null);
 
   useEffect(() => {
-    async function handleAccessTokenAuthorization() {
+    async function run() {
       try {
-        await apiClient.init();
+        await props.config.backend.init?.();
+
+        if (props.documentId) {
+          const document = await props.config.backend.documents.get({
+            id: props.documentId,
+          });
+
+          if (!document) {
+            throw new Error(
+              `Can't fetch document with id: ${props.documentId}`
+            );
+          }
+
+          setDocument(document);
+        }
       } catch (error) {
+        console.error(error);
         setError(
-          "Authorization error. Have you provided a correct access token?"
+          `Backend initialization error, check out console for more details.`
         );
         return;
       }
@@ -205,142 +203,88 @@ export function Editor(props: EditorProps) {
       setEnabled(true);
     }
 
-    if (enabled) {
-      return;
-    }
-
-    if (isPlayground) {
-      console.debug(`Opening Easyblocks in playground mode.`);
-    } else {
-      console.debug(
-        `Opening Easyblocks with access token: ${props.config.accessToken}`
-      );
-    }
-
-    handleAccessTokenAuthorization();
-  }, [apiClient, enabled, isPlayground, props.config.accessToken]);
+    run();
+  }, []);
 
   if (!enabled) {
     return <AuthenticationScreen>Loading...</AuthenticationScreen>;
   }
 
   if (error) {
-    return <AuthenticationScreen>{error}</AuthenticationScreen>;
-  }
-
-  return (
-    <ApiClientProvider apiClient={apiClient}>
-      <EditorInner {...props} />
-    </ApiClientProvider>
-  );
-}
-
-export const EditorInner = memo((props: EditorProps) => {
-  const isPlayground = props.mode === "playground";
-
-  const [fetchError, setFetchError] = useState<string | null>(null);
-  const [document, setDocument] = useState<
-    DocumentWithResolvedConfigDTO | undefined | null
-  >(undefined);
-  const apiClient = useApiClient();
-
-  useEffect(() => {
-    (async () => {
-      try {
-        if (props.documentId) {
-          const remoteDocument = await apiClient.documents.get({
-            id: props.documentId,
-            includeEntry: true,
-          });
-
-          if (!remoteDocument) {
-            throw new Error(
-              `Can't fetch document with id: ${props.documentId}`
-            );
-          }
-
-          setDocument(remoteDocument);
-        } else {
-          setDocument(null);
-        }
-      } catch (error) {
-        console.error(error);
-
-        if (error instanceof Error) {
-          setFetchError(error.message);
-        }
-      }
-    })();
-  }, []);
-
-  if (fetchError) {
     return (
       <DataSaverRoot>
         <DataSaverOverlay></DataSaverOverlay>
-        <DataSaverModal>{fetchError}</DataSaverModal>
+        <DataSaverModal>{error}</DataSaverModal>
       </DataSaverRoot>
     );
   }
 
-  if (isPlayground) {
-    return <AuthenticationScreen>Playground</AuthenticationScreen>;
-    // return <EditorContent
-    //   {...props}
-    //   isPlayground={isPlayground}
-    //   compilationContext={compilationContext}
-    //   initialDocument={resolvedInput.document}
-    //   initialConfig={resolvedInput.config}
-    // />
+  return <EditorWrapper {...props} document={document} isPlayground={false} />;
+}
+
+export const EditorWrapper = memo(
+  (
+    props: EditorProps & { document: Document | null; isPlayground: boolean }
+  ) => {
+    if (props.isPlayground) {
+      return <AuthenticationScreen>Playground</AuthenticationScreen>;
+      // return <EditorContent
+      //   {...props}
+      //   isPlayground={isPlayground}
+      //   compilationContext={compilationContext}
+      //   initialDocument={resolvedInput.document}
+      //   initialEntry={resolvedInput.config}
+      // />
+    }
+
+    // Find document type
+    const documentType = getDocumentType(
+      {
+        fromParams: props.documentType,
+        fromDocument: props.document?.type ?? undefined,
+      },
+      Object.keys(props.config.documentTypes ?? {})
+    );
+
+    // Locales
+    if (!props.config.locales) {
+      throw new Error("Required property config.locales is empty");
+    }
+
+    checkLocalesCorrectness(props.config.locales); // very important to check locales correctness, circular references etc. Other functions
+    const locale = props.locale ?? getDefaultLocale(props.config.locales).code;
+
+    const compilationContext = createCompilationContext(
+      props.config,
+      {
+        locale,
+      },
+      documentType
+    );
+
+    const initialEntry = props.document
+      ? adaptRemoteConfig(props.document.entry, compilationContext)
+      : getDefaultEntry(compilationContext);
+
+    console.log("initial doc", props.document);
+    console.log("initial entry", initialEntry);
+
+    return (
+      <EditorContent
+        {...props}
+        isPlayground={props.isPlayground}
+        compilationContext={compilationContext}
+        initialDocument={props.document}
+        initialEntry={initialEntry}
+      />
+    );
   }
-
-  if (document === undefined) {
-    return <AuthenticationScreen>Loading...</AuthenticationScreen>;
-  }
-
-  // Find document type
-  const documentType = getDocumentType(
-    {
-      fromParams: props.documentType,
-      fromDocument: document?.root_container ?? undefined,
-    },
-    Object.keys(props.config.documentTypes ?? {})
-  );
-
-  // Locales
-  if (!props.config.locales) {
-    throw new Error("Required property config.locales is empty");
-  }
-
-  checkLocalesCorrectness(props.config.locales); // very important to check locales correctness, circular references etc. Other functions
-  const locale = props.locale ?? getDefaultLocale(props.config.locales).code;
-
-  const compilationContext = createCompilationContext(
-    props.config,
-    {
-      locale,
-    },
-    documentType
-  );
-
-  return (
-    <EditorContent
-      {...props}
-      isPlayground={isPlayground}
-      compilationContext={compilationContext}
-      initialDocument={document}
-      initialConfig={
-        document
-          ? adaptRemoteConfig(document.config.config, compilationContext)
-          : getDefaultEntry(compilationContext)
-      }
-    />
-  );
-});
+);
 
 type EditorContentProps = EditorProps & {
   compilationContext: CompilationContextType;
-  initialDocument: DocumentWithResolvedConfigDTO | null;
-  initialConfig: ComponentConfig;
+  initialDocument: Document | null;
+  initialEntry: ComponentConfig;
   isPlayground: boolean;
   heightMode?: "viewport" | "full";
 };
@@ -513,14 +457,12 @@ const EditorContent = ({
   compilationContext,
   heightMode = "viewport",
   initialDocument,
-  initialConfig,
+  initialEntry,
   isPlayground,
   documentType,
   externalData,
   ...props
 }: EditorContentProps) => {
-  const apiClient = useApiClient();
-
   const [breakpointIndex, setBreakpointIndex] = useState(
     compilationContext.mainBreakpointIndex
   );
@@ -562,7 +504,7 @@ const EditorContent = ({
     id: "easyblocks-editor",
     label: "Edit entry",
     fields: [],
-    initialValues: initialConfig,
+    initialValues: initialEntry,
     onSubmit: async () => {},
   });
 
@@ -683,7 +625,7 @@ const EditorContent = ({
 
   const syncTemplates = () => {
     // @ts-expect-error
-    getTemplates(editorContext, apiClient, props.config.templates ?? []).then(
+    getTemplates(editorContext, props.config.templates ?? []).then(
       (newTemplates) => {
         setTemplates(newTemplates);
       }
@@ -716,6 +658,7 @@ const EditorContent = ({
 
   const editorContext: EditorContextType = {
     ...compilationContext,
+    backend: props.config.backend,
     types: editorTypes,
     isAdminMode,
     templates,
@@ -808,7 +751,7 @@ const EditorContent = ({
 
   useEffect(() => {
     push({
-      config: initialConfig,
+      config: initialEntry,
       focussedField: [],
     });
   }, []);
@@ -1049,7 +992,7 @@ const EditorContent = ({
                 onClose={() => {
                   setOpenTemplateModalAction(undefined);
                 }}
-                apiClient={apiClient}
+                backend={editorContext.backend}
               />
             )}
           </EditorExternalDataProvider>

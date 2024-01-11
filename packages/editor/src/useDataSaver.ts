@@ -1,11 +1,7 @@
-import {
-  ComponentConfig,
-  DocumentWithResolvedConfigDTO,
-} from "@easyblocks/core";
+import { ComponentConfig, Document } from "@easyblocks/core";
 import { deepClone, deepCompare, sleep } from "@easyblocks/utils";
 import { useEffect, useRef, useState } from "react";
 import { EditorContextType } from "./EditorContext";
-import { useApiClient } from "./infrastructure/ApiClientProvider";
 import { getConfigSnapshot } from "./utils/config/getConfigSnapshot";
 import { addLocalizedFlag } from "./utils/locales/addLocalizedFlag";
 import { removeLocalizedFlag } from "./utils/locales/removeLocalizedFlag";
@@ -17,12 +13,10 @@ import { removeLocalizedFlag } from "./utils/locales/removeLocalizedFlag";
  * Data saver will perform first save when any local change is detected.
  */
 export function useDataSaver(
-  initialDocument: DocumentWithResolvedConfigDTO | null,
+  initialDocument: Document | null,
   editorContext: EditorContextType
 ) {
-  const remoteDocument = useRef<DocumentWithResolvedConfigDTO | null>(
-    initialDocument
-  );
+  const remoteDocument = useRef<Document | null>(initialDocument);
 
   /**
    * This state variable is going to be used ONLY for comparison with local config in case of missing document.
@@ -32,7 +26,6 @@ export function useDataSaver(
     deepClone(editorContext.form.values)
   );
   const onTickRef = useRef<() => Promise<void>>(() => Promise.resolve());
-  const apiClient = useApiClient();
 
   const onTick = async () => {
     // Playground mode is a special case, we don't want to save anything
@@ -45,8 +38,9 @@ export function useDataSaver(
 
     const localConfig = editorContext.form.values;
     const localConfigSnapshot = getConfigSnapshot(localConfig);
+
     const previousConfig = remoteDocument.current
-      ? remoteDocument.current.config.config
+      ? remoteDocument.current.entry
       : initialConfigInCaseOfMissingDocument;
     const previousConfigSnapshot = getConfigSnapshot(previousConfig);
 
@@ -61,15 +55,7 @@ export function useDataSaver(
     );
 
     async function runSaveCallback() {
-      await editorContext.save({
-        id: remoteDocument.current!.id,
-        version: remoteDocument.current!.version,
-        updatedAt: new Date().getTime(),
-        projectId: apiClient.project!.id,
-        rootContainer:
-          remoteDocument.current?.root_container ??
-          editorContext.activeDocumentType.id,
-      });
+      await editorContext.save(remoteDocument.current!);
     }
 
     // New document
@@ -84,9 +70,9 @@ export function useDataSaver(
 
       console.log("change detected! -> save");
 
-      const newDocument = await apiClient.documents.create({
+      const newDocument = await editorContext.backend.documents.create({
         entry: configToSaveWithLocalisedFlag,
-        rootContainer: editorContext.activeDocumentType.id,
+        type: editorContext.activeDocumentType.id,
       });
 
       remoteDocument.current = {
@@ -103,13 +89,11 @@ export function useDataSaver(
     else {
       console.log("Existing document");
 
-      const latestRemoteDocumentVersion =
-        (
-          await apiClient.documents.get({
-            id: remoteDocument.current.id,
-            includeEntry: false, // in order to check version we don't need to transfer entire entry
-          })
-        )?.version ?? -1;
+      const latestDocument = await editorContext.backend.documents.get({
+        id: remoteDocument.current.id,
+      });
+
+      const latestRemoteDocumentVersion = latestDocument.version ?? -1;
 
       const isNewerDocumentVersionAvailable =
         remoteDocument.current.version < latestRemoteDocumentVersion;
@@ -118,17 +102,12 @@ export function useDataSaver(
       if (isNewerDocumentVersionAvailable) {
         console.log("new remote version detected, updating");
 
-        const latestDocument = await apiClient.documents.get({
-          id: remoteDocument.current.id,
-          includeEntry: true,
-        });
-
         if (!latestDocument) {
           throw new Error("unexpected error");
         }
 
         const latestConfig = removeLocalizedFlag(
-          latestDocument.config.config,
+          latestDocument.entry,
           editorContext
         );
 
@@ -158,13 +137,13 @@ export function useDataSaver(
         } else {
           console.log("updating the document");
 
-          const updatedDocument = await apiClient.documents.update({
+          const updatedDocument = await editorContext.backend.documents.update({
             id: remoteDocument.current.id,
             entry: configToSaveWithLocalisedFlag,
             version: remoteDocument.current.version,
           });
 
-          remoteDocument.current.config.config = localConfigSnapshot;
+          remoteDocument.current.entry = localConfigSnapshot;
           remoteDocument.current.version = updatedDocument.version;
 
           await runSaveCallback();
