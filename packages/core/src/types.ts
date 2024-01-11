@@ -2,11 +2,6 @@ import { ComponentType, ReactElement } from "react";
 import { PartialDeep } from "type-fest";
 import { Locale } from "./locales";
 import { ConfigComponent } from "../dist";
-import {
-  ApiRequestOptions,
-  DocumentDTO,
-  DocumentWithResolvedConfigDTO,
-} from "./infrastructure/apiClient";
 
 export type ScalarOrCollection<T> = T | Array<T>;
 
@@ -520,7 +515,7 @@ export type Backend = {
     update: (payload: {
       id: string;
       label: string;
-    }) => Promise<UserDefinedTemplate>;
+    }) => Promise<Omit<UserDefinedTemplate, "entry">>;
     delete: (payload: { id: string }) => Promise<void>;
   };
 };

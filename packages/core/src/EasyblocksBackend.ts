@@ -5,7 +5,6 @@ import {
   UserDefinedTemplate,
   Document,
 } from "./types";
-import { ShopstoryAccessTokenApiAuthenticationStrategy } from "./infrastructure/ShopstoryAccessTokenApiAuthenticationStrategy";
 import { ConfigComponent } from "../dist";
 
 type RequestSearchParams = Record<string, string | Array<string>>;
@@ -24,11 +23,6 @@ type ApiPostRequestOptions = Omit<ApiRequestOptions, "method">;
 type ApiPutRequestOptions = Omit<ApiRequestOptions, "method">;
 
 type ApiDeleteRequestOptions = Omit<ApiRequestOptions, "method" | "body">;
-
-export interface ApiAuthenticationStrategy {
-  readonly headerName: string;
-  getAccessToken(): Promise<string>;
-}
 
 type DateString = string;
 
@@ -60,8 +54,6 @@ export type ConfigDTO = {
   updated_at: DateString;
 };
 
-type GetDocumentFormat = "full" | "versionOnly";
-
 type Project = {
   id: string;
   name: string;
@@ -83,6 +75,8 @@ export type AssetDTO = {
     }
 );
 
+const AUTH_HEADER = "x-shopstory-access-token";
+
 export class EasyblocksBackend implements Backend {
   private project?: {
     id: string;
@@ -90,17 +84,18 @@ export class EasyblocksBackend implements Backend {
     name: string;
   };
 
-  private authenticationStrategy: ApiAuthenticationStrategy;
-
   private accessToken: string;
 
   constructor(args: { accessToken: string }) {
     this.accessToken = args.accessToken;
-    this.authenticationStrategy =
-      new ShopstoryAccessTokenApiAuthenticationStrategy(args.accessToken);
   }
 
   async init() {
+    // don't reinitialize
+    if (this.project) {
+      return;
+    }
+
     // Set project!
     const response = await this.get("/projects");
 
@@ -139,8 +134,7 @@ export class EasyblocksBackend implements Backend {
         ? {}
         : { "Content-Type": "application/json" }),
       ...options.headers,
-      [this.authenticationStrategy.headerName]:
-        await this.authenticationStrategy.getAccessToken(),
+      [AUTH_HEADER]: this.accessToken,
     };
 
     const body = options.body
@@ -278,7 +272,7 @@ export class EasyblocksBackend implements Backend {
       entry: ConfigComponent;
       width?: number;
       widthAuto?: boolean;
-    }): UserDefinedTemplate => {
+    }): Promise<UserDefinedTemplate> => {
       const payload = {
         label: input.label,
         config: input.entry,
@@ -295,18 +289,23 @@ export class EasyblocksBackend implements Backend {
         }
       );
 
+      if (response.status !== 200) {
+        throw new Error("couldn't create template");
+      }
+
       const json = await response.json();
 
-      console.log("create template json", json);
-
-      if (response.status !== 200) {
-        throw new Error();
-      }
+      return {
+        id: json.id,
+        label: json.label,
+        entry: input.entry,
+        isUserDefined: true,
+      };
     },
     update: async (input: {
       id: string;
       label: string;
-    }): UserDefinedTemplate => {
+    }): Promise<Omit<UserDefinedTemplate, "entry">> => {
       const payload = {
         label: input.label,
         masterTemplateIds: [],
@@ -327,6 +326,12 @@ export class EasyblocksBackend implements Backend {
       if (response.status !== 200) {
         throw new Error();
       }
+
+      return {
+        id: json.id,
+        label: json.label,
+        isUserDefined: true,
+      };
     },
     delete: async (input: { id: string }) => {
       const response = await this.request(
