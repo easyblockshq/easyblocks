@@ -26,19 +26,13 @@ export type EditorContextType = Omit<BaseEditorContextType, "types"> & {
   isMaster?: boolean;
   isEditing?: boolean;
   actions: ActionsType;
-  text?: TextSyncers;
   save: (document: Document) => Promise<void>;
   compiledComponentConfig?: CompiledComponentConfig;
   configAfterAuto?: ComponentConfig;
   resources: Array<Resource>;
   compilationCache: CompilationCache;
   isAdminMode: boolean;
-  // project: {
-  //   id: string;
-  //   name: string;
-  //   token: string;
-  // };
-  isPlayground: boolean;
+  readOnly: boolean;
   disableCustomTemplates: boolean;
   isFullScreen: boolean;
   types: Record<string, { widgets: Array<EditorWidget> }>;

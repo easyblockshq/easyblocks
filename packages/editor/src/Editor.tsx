@@ -154,7 +154,7 @@ const AuthenticationScreen = styled.div`
 type EditorProps = {
   config: Config;
   locale?: string;
-  mode: "app" | "playground";
+  readOnly: boolean;
   documentId: string | null;
   documentType?: string;
   save?: (
@@ -660,11 +660,10 @@ const EditorContent = ({
         document: documentData,
       });
     },
-    text: undefined,
     resources: [],
     compilationCache: compilationCache.current,
     // project: props.project,
-    isPlayground: props.mode === "playground",
+    readOnly: props.readOnly,
     disableCustomTemplates: props.config.disableCustomTemplates ?? false,
     isFullScreen,
   };
@@ -929,6 +928,7 @@ const EditorContent = ({
                 setAdminMode(val);
               }}
               hideCloseButton={props.config.hideCloseButton ?? false}
+              readOnly={editorContext.readOnly}
             />
             <SidebarAndContentContainer height={appHeight}>
               <ContentContainer

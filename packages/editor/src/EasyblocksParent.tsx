@@ -10,7 +10,6 @@ import {
   Toaster,
   TooltipProvider,
 } from "@easyblocks/design-system";
-import { raiseError } from "@easyblocks/utils";
 import isPropValid from "@emotion/is-prop-valid";
 import React, { ComponentType } from "react";
 import { ShouldForwardProp, StyleSheetManager } from "styled-components";
@@ -56,7 +55,7 @@ export function EasyblocksParent(props: EasyblocksParentProps) {
           <Editor
             config={props.config}
             locale={editorSearchParams.locale ?? undefined}
-            mode={editorSearchParams.mode ?? "playground"}
+            readOnly={editorSearchParams.readOnly ?? true}
             documentId={editorSearchParams.documentId}
             documentType={editorSearchParams.documentType ?? undefined}
             externalData={props.externalData}
@@ -71,7 +70,7 @@ export function EasyblocksParent(props: EasyblocksParentProps) {
 }
 
 type EditorSearchParams = {
-  mode: "app" | "playground" | null;
+  readOnly: boolean | null;
   documentId: string | null;
   documentType: string | null;
   locale: string | null;
@@ -80,23 +79,18 @@ type EditorSearchParams = {
 function parseEditorSearchParams() {
   const searchParams = new URLSearchParams(window.location.search);
 
-  const modeSearchParam = searchParams.get("mode");
-
-  if (modeSearchParam && !["app", "playground"].includes(modeSearchParam)) {
-    raiseError(
-      `Invalid "mode" value in search params. Valid values are "app" and "playground".`
-    );
-  }
-
-  const mode = modeSearchParam
-    ? (modeSearchParam as "app" | "playground")
-    : null;
+  const readOnly =
+    searchParams.get("readOnly") === "true"
+      ? true
+      : searchParams.get("readOnly") === "false"
+      ? false
+      : null;
   const documentId = searchParams.get("documentId");
   const documentType = searchParams.get("documentType");
   const locale = searchParams.get("locale");
 
   const editorSearchParams: EditorSearchParams = {
-    mode,
+    readOnly,
     documentId,
     documentType,
     locale,

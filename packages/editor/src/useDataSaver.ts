@@ -32,8 +32,8 @@ export function useDataSaver(
     console.log("tick");
 
     // Playground mode is a special case, we don't want to save anything
-    if (editorContext.isPlayground) {
-      console.log("playground mode -> bye");
+    if (editorContext.readOnly) {
+      console.log("read only -> bye");
       return;
     }
 
