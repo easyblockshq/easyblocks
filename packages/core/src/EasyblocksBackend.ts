@@ -167,16 +167,12 @@ export class EasyblocksBackend implements Backend {
   }
 
   documents = {
-    get: async (payload: {
-      id: string;
-      locales?: Array<string>;
-    }): Promise<Document> => {
+    get: async (payload: { id: string }): Promise<Document> => {
       const response = await this.get(
         `/projects/${this.project!.id}/documents/${payload.id}`,
         {
           searchParams: {
             format: "full",
-            ...(payload.locales && { locale: payload.locales }),
           },
         }
       );

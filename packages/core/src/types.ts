@@ -568,7 +568,7 @@ export type Document = {
 export type Backend = {
   init?: () => Promise<void>;
   documents: {
-    get: (payload: { id: string; locales?: string[] }) => Promise<Document>;
+    get: (payload: { id: string; locale?: string }) => Promise<Document>;
     create: (payload: Omit<Document, "id" | "version">) => Promise<Document>;
     update: (payload: Document) => Promise<Document>;
   };

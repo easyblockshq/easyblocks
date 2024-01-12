@@ -85,6 +85,7 @@ import {
   InternalEditingInfo,
   InternalRenderableComponentDefinition,
 } from "./types";
+import { getFallbackLocaleForLocale } from "../locales";
 
 type ComponentCompilationArtifacts = {
   compiledComponentConfig:
@@ -1137,33 +1138,20 @@ function resolveLocalisedValue<T>(
     };
   }
 
-  if (compilationContext.isEditing) {
-    //   const editorContext = compilationContext as EditorContextType;
-    //   const fallbackLocale = getFallbackLocaleForLocale(
-    //     locale,
-    //     editorContext.locales
-    //   );
-    //   if (!fallbackLocale) {
-    //     return;
-    //   }
-    //   return {
-    //     value: localisedValue[fallbackLocale],
-    //     locale: fallbackLocale,
-    //   };
-  } else {
+  const fallbackLocale = getFallbackLocaleForLocale(
+    locale,
+    compilationContext.locales
+  );
+
+  if (!fallbackLocale) {
     return;
   }
-}
 
-// function tracingType(tags: string[], overwrite?: EventSourceType) {
-//   if (overwrite) {
-//     return overwrite;
-//   }
-//
-//   const types: EventSourceType[] = ["section", "card", "button", "item"];
-//
-//   return types.find((t) => tags.includes(t)) ?? "item";
-// }
+  return {
+    value: localisedValue[fallbackLocale],
+    locale: fallbackLocale,
+  };
+}
 
 function compileTextModifier(
   modifierValue: ComponentConfig,

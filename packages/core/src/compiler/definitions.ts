@@ -1291,19 +1291,15 @@ export function resolveLocalisedValue<T>(
     };
   }
 
-  if (isContextEditorContext(compilationContext)) {
-    const fallbackLocale = getFallbackLocaleForLocale(
-      locale,
-      compilationContext.locales
-    );
-    if (!fallbackLocale) {
-      return;
-    }
-    return {
-      value: localisedValue[fallbackLocale],
-      locale: fallbackLocale,
-    };
-  } else {
+  const fallbackLocale = getFallbackLocaleForLocale(
+    locale,
+    compilationContext.locales
+  );
+  if (!fallbackLocale) {
     return;
   }
+  return {
+    value: localisedValue[fallbackLocale],
+    locale: fallbackLocale,
+  };
 }
