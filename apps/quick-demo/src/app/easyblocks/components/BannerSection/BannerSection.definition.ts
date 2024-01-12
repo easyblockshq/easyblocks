@@ -39,6 +39,10 @@ export const bannerSectionDefinition: NoCodeComponentDefinition<
   label: "Banner Section",
   type: "section",
   schema: [
+    {
+      prop: "TEST urlResponsive",
+      type: "urlResponsive",
+    },
     ...sectionWrapperSchemaProps.margins,
     {
       prop: "escapeMargin",

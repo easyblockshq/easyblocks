@@ -457,6 +457,23 @@ export const easyblocksConfig: Config = {
         );
       },
     },
+    urlResponsive: {
+      type: "inline",
+      widgets: [
+        {
+          id: "url",
+          label: "URL",
+        },
+      ],
+      responsiveness: "always",
+      defaultValue: "https://google.com",
+      validate(value) {
+        return (
+          typeof value === "string" &&
+          (value.startsWith("http://") || value.startsWith("https://"))
+        );
+      },
+    },
   },
   disableCustomTemplates: true,
   hideCloseButton: true,
