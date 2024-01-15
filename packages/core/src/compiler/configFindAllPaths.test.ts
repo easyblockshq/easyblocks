@@ -1,4 +1,4 @@
-import { testCompilationContext } from "../test-utils";
+import { testCompilationContext } from "../testUtils";
 import { ComponentConfig } from "../types";
 import { configFindAllPaths } from "./configFindAllPaths";
 import { CompilationContextType } from "./types";
@@ -36,6 +36,7 @@ const compilationContext: CompilationContextType = {
 };
 
 const testConfig: ComponentConfig = {
+  _id: "",
   _template: "$TestComponent1",
   Component: [
     {
@@ -60,7 +61,7 @@ test("finds all paths for $TestComponent2", () => {
     configFindAllPaths(
       testConfig,
       compilationContext,
-      (config): config is { _template: "$TestComponent2" } => {
+      (config): config is ComponentConfig => {
         return config._template === "$TestComponent2";
       }
     )

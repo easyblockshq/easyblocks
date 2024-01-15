@@ -258,8 +258,6 @@ describe("merge", () => {
           },
         ],
       },
-    ];
-    ctx.definitions.links = [
       {
         id: "link",
         label: "Link",

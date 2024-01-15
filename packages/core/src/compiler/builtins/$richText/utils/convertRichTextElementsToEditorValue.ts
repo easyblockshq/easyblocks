@@ -135,12 +135,14 @@ function getPlaceholderRichTextElements(): Array<BlockElement> {
             {
               id: uniqueId(),
               color: {
-                ref: "black",
+                tokenId: "black",
                 value: "black",
+                widgetId: "@easyblocks/color",
               },
               font: {
-                ref: "$body",
+                tokenId: "$body",
                 value: "",
+                widgetId: "@easyblocks/font",
               },
               text: "",
             },

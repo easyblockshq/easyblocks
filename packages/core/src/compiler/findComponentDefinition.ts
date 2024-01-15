@@ -13,8 +13,6 @@ function allDefs(
 ): InternalComponentDefinition[] {
   return [
     ...(context?.definitions.components || []),
-    ...(context?.definitions.links || []),
-    ...(context?.definitions.actions || []),
     ...(context?.definitions.textModifiers ?? []),
   ];
 }

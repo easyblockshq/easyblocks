@@ -116,4 +116,7 @@ export type Theme = {
   boxShadows: {
     [key: string]: ThemeRefValue<ResponsiveValue<string>>;
   };
+  [key: string]: {
+    [key: string]: ThemeRefValue<any>;
+  };
 };

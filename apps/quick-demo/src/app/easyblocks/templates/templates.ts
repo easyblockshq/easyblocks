@@ -230,8 +230,9 @@ export const templates: Template[] = [
       gap: {
         $res: true,
         xl: {
-          ref: "12",
+          tokenId: "12",
           value: "12px",
+          widgetId: "@easyblocks/space",
         },
       },
     },

@@ -1,4 +1,8 @@
-import { ColorSchemaProp, ComponentConfigBase } from "../../types";
+import {
+  ComponentConfigBase,
+  TokenValue,
+  TrulyResponsiveValue,
+} from "../../types";
 
 const TRANSITION_TIMING_FUNCTION = "cubic-bezier(0.4, 0, 0.2, 1)";
 
@@ -237,10 +241,10 @@ const actionTextModifier = {
 type StandardActionStylesConfig =
   ComponentConfigBase<"$StandardActionStyles"> & {
     isColorOverwriteEnabled: boolean;
-    color: NonNullable<ColorSchemaProp["defaultValue"]>;
+    color: TrulyResponsiveValue<TokenValue>;
     underline: "enabled" | "none" | "showOnHover" | "hideOnHover";
     isHoverColorEnabled: boolean;
-    hoverColor: NonNullable<ColorSchemaProp["defaultValue"]>;
+    hoverColor: TrulyResponsiveValue<TokenValue>;
     opacity: string;
     hoverOpacity: string;
     hoverOpacityAnimationDuration: `${0 | 50 | 100 | 150 | 200}ms`;
@@ -258,13 +262,15 @@ function getDefaultActionTextModifier({
       $res: true,
       [breakpointIndex]: {
         value: "#0166cc",
+        widgetId: "@easyblocks/color",
       },
     },
     hoverColor: {
       $res: true,
       [breakpointIndex]: {
-        ref: "black",
+        tokenId: "black",
         value: "black",
+        widgetId: "@easyblocks/color",
       },
     },
     isHoverColorEnabled: false,

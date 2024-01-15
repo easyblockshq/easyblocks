@@ -8,6 +8,7 @@ import type {
 import type { RichTextInlineWrapperElementEditableComponentConfig } from "./$richTextInlineWrapperElement/$richTextInlineWrapperElement";
 import type { RichTextLineElementComponentConfig } from "./$richTextLineElement/$richTextLineElement";
 import type { RichTextPartComponentConfig } from "./$richTextPart/$richTextPart";
+import { TokenValue } from "../../..";
 
 interface Identity {
   id: string;
@@ -22,18 +23,26 @@ function buildRichTextNoCodeEntry(options?: {
 }) {
   const { accessibilityRole, font, color, text, locale = "en" } = options ?? {};
 
-  const colorRefValue = {
-    ref: color,
+  const colorTokenValue: TokenValue = {
     value: "#000000",
+    widgetId: "@easyblocks/color",
   };
 
-  const fontRefValue = {
-    ref: font,
+  if (color) {
+    colorTokenValue.tokenId = color;
+  }
+
+  const fontTokenValue: TokenValue = {
     value: {
       fontFamily: "sans-serif",
       fontSize: "16px",
     },
+    widgetId: "@easyblocks/font",
   };
+
+  if (font) {
+    fontTokenValue.tokenId = font;
+  }
 
   return {
     _id: uniqueId(),
@@ -45,8 +54,8 @@ function buildRichTextNoCodeEntry(options?: {
           buildRichTextLineElementComponentConfig({
             elements: [
               buildRichTextPartComponentConfig({
-                color: colorRefValue,
-                font: fontRefValue,
+                color: colorTokenValue,
+                font: fontTokenValue,
                 value: text ?? "Lorem ipsum",
               }),
             ],
@@ -55,8 +64,8 @@ function buildRichTextNoCodeEntry(options?: {
       ],
     },
     isListStyleAuto: true,
-    mainColor: colorRefValue,
-    mainFont: fontRefValue,
+    mainColor: colorTokenValue,
+    mainFont: fontTokenValue,
   };
 }
 

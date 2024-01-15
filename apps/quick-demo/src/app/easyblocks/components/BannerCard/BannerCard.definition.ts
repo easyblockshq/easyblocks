@@ -29,7 +29,6 @@ function noFillPaddingSchemaProp(
     type: "space",
     defaultValue: {
       tokenId: "0",
-      value: "0px",
     },
   };
 }
@@ -500,7 +499,6 @@ export function paddingSchemaProp(
     type: "space",
     defaultValue: {
       tokenId: "16",
-      value: "16px",
     },
   };
 }

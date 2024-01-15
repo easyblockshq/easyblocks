@@ -20,7 +20,6 @@ import {
   responsiveValueMap,
   Devices,
 } from "@easyblocks/core";
-import { ReactElement } from "react";
 
 export const sectionWrapperSchemaProps: {
   margins: SchemaProp[];
@@ -34,6 +33,9 @@ export const sectionWrapperSchemaProps: {
       group: "Section margins",
       params: {
         prefix: "containerMargin",
+      },
+      defaultValue: {
+        tokenId: "containerMargin.default",
       },
     },
     {
@@ -159,7 +161,6 @@ export const sectionWrapperSchemaProps: {
         );
       },
       defaultValue: {
-        value: "12px",
         tokenId: "12",
       },
     },
@@ -173,7 +174,6 @@ export const sectionWrapperSchemaProps: {
         return values.headerMode !== "none";
       },
       defaultValue: {
-        value: "12px",
         tokenId: "12",
       },
     },
@@ -190,7 +190,6 @@ export const sectionWrapperSchemaProps: {
         );
       },
       defaultValue: {
-        value: "12px",
         tokenId: "12",
       },
     },
@@ -230,7 +229,6 @@ export const sectionWrapperSchemaProps: {
         return values.Background__ && values.Background__.length > 0;
       },
       defaultValue: {
-        value: "24px",
         tokenId: "24",
       },
     },

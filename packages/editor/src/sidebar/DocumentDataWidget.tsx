@@ -13,16 +13,19 @@ import {
 import type { InternalWidgetComponentProps } from "../types";
 import { EditorContextType } from "../EditorContext";
 
-type Widget = NonNullable<
-  EditorContextType["types"][string]["widgets"][number]
+type ExternalWidget = NonNullable<
+  Extract<
+    EditorContextType["types"][string],
+    { type: "external" }
+  >["widgets"][number]
 >;
 
-function documentDataWidgetFactory(options: { type: string }): Widget {
+function documentDataWidgetFactory(options: { type: string }): ExternalWidget {
   const DocumentDataWidgetComponent = createDocumentDataWidgetComponent(
     options.type
   );
 
-  const documentDataWidget: Widget = {
+  const documentDataWidget: ExternalWidget = {
     id: "@easyblocks/document-data",
     label: "Document data",
     component: DocumentDataWidgetComponent,

@@ -83,6 +83,17 @@ export function createCompilationContext(
     throw new Error(`Missing main device in devices config.`);
   }
 
+  const {
+    aspectRatios,
+    boxShadows,
+    colors,
+    containerWidths,
+    fonts,
+    icons,
+    space,
+    ...customTokens
+  } = config.tokens ?? {};
+
   const theme: Theme = {
     colors: {},
     fonts: {},
@@ -96,8 +107,8 @@ export function createCompilationContext(
 
   // TODO: allow for custom breakpoints!!! What happens with old ones when the new ones show up?
 
-  if (config.space) {
-    config.space.forEach((space) => {
+  if (space) {
+    space.forEach((space) => {
       let val = space.value;
 
       // If value is "vw" and is not responsive then we should responsify it.
@@ -118,8 +129,8 @@ export function createCompilationContext(
     });
   }
 
-  if (config.colors) {
-    config.colors.forEach((color) => {
+  if (colors) {
+    colors.forEach((color) => {
       const { id, ...rest } = color;
 
       theme.colors[id] = {
@@ -130,9 +141,9 @@ export function createCompilationContext(
     });
   }
 
-  if (config.fonts) {
+  if (fonts) {
     // fonts are a bit more complex because they're objects
-    config.fonts.forEach((font) => {
+    fonts.forEach((font) => {
       const { id, ...rest } = font;
 
       theme.fonts[id] = {
@@ -143,8 +154,8 @@ export function createCompilationContext(
     });
   }
 
-  if (config.aspectRatios) {
-    config.aspectRatios.forEach((aspectRatio) => {
+  if (aspectRatios) {
+    aspectRatios.forEach((aspectRatio) => {
       const { id, ...rest } = aspectRatio;
 
       theme.aspectRatios[id] = {
@@ -155,8 +166,8 @@ export function createCompilationContext(
     });
   }
 
-  if (config.boxShadows) {
-    config.boxShadows.forEach((boxShadow) => {
+  if (boxShadows) {
+    boxShadows.forEach((boxShadow) => {
       const { id, ...rest } = boxShadow;
 
       theme.boxShadows[id] = {
@@ -167,8 +178,8 @@ export function createCompilationContext(
     });
   }
 
-  if (config.containerWidths) {
-    config.containerWidths.forEach((containerWidth) => {
+  if (containerWidths) {
+    containerWidths.forEach((containerWidth) => {
       const { id, ...rest } = containerWidth;
 
       theme.containerWidths[id] = {
@@ -182,8 +193,8 @@ export function createCompilationContext(
     });
   }
 
-  if (config.icons) {
-    config.icons.forEach((icon) => {
+  if (icons) {
+    icons.forEach((icon) => {
       const { id, ...rest } = icon;
 
       theme.icons[id] = {
@@ -193,6 +204,21 @@ export function createCompilationContext(
       };
     });
   }
+
+  Object.entries(customTokens).forEach(([id, tokens]) => {
+    theme[id] = Object.fromEntries(
+      tokens.map((token) => {
+        return [
+          token.id,
+          {
+            type: "dev",
+            label: token.label,
+            value: token.value,
+          },
+        ];
+      })
+    );
+  });
 
   const documentTypes = buildDocumentTypes(config.documentTypes, devices);
 
@@ -279,81 +305,11 @@ export function createCompilationContext(
     theme: buildFullTheme(theme),
     definitions: {
       components,
-      actions: [],
-      links: [],
       textModifiers,
     },
     types: {
       ...createCustomTypes(config.types),
-      aspectRatio: {
-        type: "token",
-        token: "aspectRatios",
-        responsiveness: "always",
-        widgets: [{ id: "@easyblocks/aspectRatio", label: "Aspect ratio" }],
-        defaultValue: "1:1",
-        allowCustom: true,
-        validate(value) {
-          return (
-            typeof value === "string" &&
-            (!!value.match(/[0-9]+:[0-9]+/) || value === "natural")
-          );
-        },
-      },
-      boxShadow: {
-        type: "token",
-        token: "boxShadows",
-        responsiveness: "always",
-        widgets: [{ id: "@easyblocks/boxShadow", label: "Box shadow" }],
-        defaultValue: "none",
-      },
-      color: {
-        type: "token",
-        responsiveness: "always",
-        token: "colors",
-        defaultValue: "#000000",
-        widgets: [{ id: "@easyblocks/color", label: "Color" }],
-        allowCustom: true,
-        validate(value) {
-          return typeof value === "string" && validateColor(value);
-        },
-      },
-      containerWidth: {
-        type: "token",
-        responsiveness: "always",
-        token: "containerWidths",
-        defaultValue: "none",
-        widgets: [
-          { id: "@easyblocks/containerWidth", label: "Container width" },
-        ],
-      },
-      font: {
-        type: "token",
-        token: "fonts",
-        defaultValue: { fontFamily: "sans-serif", fontSize: "16px" },
-        widgets: [{ id: "@easyblocks/font", label: "Font" }],
-      },
-      space: {
-        type: "token",
-        responsiveness: "always",
-        token: "space",
-        defaultValue: { tokenId: "0", value: "0px", widgetId: "space" },
-        widgets: [{ id: "@easyblocks/space", label: "Space" }],
-        allowCustom: true,
-        validate(value) {
-          return typeof value === "string" && !!parseSpacing(value);
-        },
-      },
-      icon: {
-        type: "token",
-        responsiveness: "always",
-        token: "icons",
-        defaultValue: `<svg viewBox="0 -960 960 960"><path fill="currentColor" d="m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z"/></svg>`,
-        widgets: [{ id: "@easyblocks/icon", label: "Icon" }],
-        allowCustom: true,
-        validate(value) {
-          return typeof value === "string" && value.trim().startsWith("<svg");
-        },
-      },
+      ...createBuiltinTypes(),
     },
     mainBreakpointIndex: mainDevice.id,
     contextParams,
@@ -398,7 +354,7 @@ function buildDocumentTypesWidths(
   if (documentType.widths) {
     if (documentType.widths.length !== devices.length) {
       throw new Error(
-        `Invalid number of widths for root container "${id}". Expected ${devices.length} widths, got ${documentType.widths.length}.`
+        `Invalid number of widths for document type "${id}". Expected ${devices.length} widths, got ${documentType.widths.length}.`
       );
     }
 
@@ -432,4 +388,77 @@ function createCustomTypes(
       ];
     })
   );
+}
+function createBuiltinTypes(): Record<string, CustomTypeDefinition> {
+  return {
+    aspectRatio: {
+      type: "token",
+      token: "aspectRatios",
+      responsiveness: "always",
+      widget: { id: "@easyblocks/aspectRatio", label: "Aspect ratio" },
+      defaultValue: { value: "1:1" },
+      allowCustom: true,
+      validate(value) {
+        return (
+          typeof value === "string" &&
+          (!!value.match(/[0-9]+:[0-9]+/) || value === "natural")
+        );
+      },
+    },
+    boxShadow: {
+      type: "token",
+      token: "boxShadows",
+      responsiveness: "always",
+      widget: { id: "@easyblocks/boxShadow", label: "Box shadow" },
+      defaultValue: { tokenId: "none" },
+    },
+    color: {
+      type: "token",
+      responsiveness: "always",
+      token: "colors",
+      defaultValue: { value: "#000000" },
+      widget: { id: "@easyblocks/color", label: "Color" },
+      allowCustom: true,
+      validate(value) {
+        return typeof value === "string" && validateColor(value);
+      },
+    },
+    containerWidth: {
+      type: "token",
+      responsiveness: "always",
+      token: "containerWidths",
+      defaultValue: { tokenId: "none" },
+      widget: { id: "@easyblocks/containerWidth", label: "Container width" },
+    },
+    font: {
+      type: "token",
+      token: "fonts",
+      defaultValue: { value: { fontFamily: "sans-serif", fontSize: "16px" } },
+      widget: { id: "@easyblocks/font", label: "Font" },
+    },
+    space: {
+      type: "token",
+      responsiveness: "always",
+      token: "space",
+      defaultValue: { tokenId: "0" },
+      widget: { id: "@easyblocks/space", label: "Space" },
+      allowCustom: true,
+      validate(value) {
+        return typeof value === "string" && !!parseSpacing(value);
+      },
+    },
+    icon: {
+      type: "token",
+      responsiveness: "never",
+      token: "icons",
+      defaultValue: {
+        value: `<svg viewBox="0 -960 960 960"><path fill="currentColor" d="m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z"/></svg>`,
+      },
+      widget: { id: "@easyblocks/icon", label: "Icon" },
+      allowCustom: true,
+      validate(value) {
+        return typeof value === "string" && value.trim().startsWith("<svg");
+      },
+    },
+  };
 }

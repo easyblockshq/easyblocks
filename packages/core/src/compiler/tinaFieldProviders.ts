@@ -8,6 +8,7 @@ import {
   ComponentConfig,
   ComponentSchemaProp,
   ExternalSchemaProp,
+  ExternalTypeDefinition,
   LocalSchemaProp,
   LocalTextReference,
   NumberSchemaProp,
@@ -76,7 +77,9 @@ export type TinaFieldProviders = {
 const tinaFieldProviders: TinaFieldProviders = {
   text: (schemaProp, editorContext, value) => {
     if (!isValueLocalTextReference(value) && typeof value !== "string") {
-      const resourceDefinition = editorContext.types["text"];
+      const resourceDefinition = editorContext.types[
+        "text"
+      ] as ExternalTypeDefinition;
 
       const fieldWidget = resourceDefinition.widgets.find(
         (w) => w.id === value.widgetId
@@ -200,7 +203,9 @@ const tinaFieldProviders: TinaFieldProviders = {
     };
   },
   external: (schemaProp, editorContext, value) => {
-    const externalTypeDefinition = editorContext.types[schemaProp.type];
+    const externalTypeDefinition = editorContext.types[schemaProp.type] as
+      | ExternalTypeDefinition
+      | undefined;
 
     if (!externalTypeDefinition) {
       throw new Error(`Can't find definition for type "${schemaProp.type}"`);

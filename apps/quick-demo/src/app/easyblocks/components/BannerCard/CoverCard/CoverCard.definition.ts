@@ -27,7 +27,7 @@ export const coverCardDefinition: NoCodeComponentDefinition = {
       params: {
         extraValues: [{ value: "natural", label: "Natural" }],
       },
-      defaultValue: "natural",
+      defaultValue: { value: "natural" },
     },
     ...borderSchemaProps,
     ...cornerSchemaProps,

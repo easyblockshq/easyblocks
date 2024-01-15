@@ -72,7 +72,6 @@ export const buttonComponentDefinition: NoCodeComponentDefinition = {
       label: "Color",
       defaultValue: {
         tokenId: "$dark",
-        value: "?",
       },
     },
     {
@@ -115,7 +114,6 @@ export const buttonComponentDefinition: NoCodeComponentDefinition = {
       },
       defaultValue: {
         tokenId: "16",
-        value: "16px",
       },
     },
     {
@@ -128,7 +126,6 @@ export const buttonComponentDefinition: NoCodeComponentDefinition = {
       },
       defaultValue: {
         tokenId: "6",
-        value: "6px",
       },
     },
     {
@@ -164,7 +161,6 @@ export const buttonComponentDefinition: NoCodeComponentDefinition = {
       label: "Style",
       defaultValue: {
         tokenId: "$body2.bold",
-        value: {},
       },
       visible: (values) => {
         return values.variant !== "icon";
@@ -233,7 +229,6 @@ export const buttonComponentDefinition: NoCodeComponentDefinition = {
       type: "color",
       defaultValue: {
         tokenId: "$neutral",
-        value: "grey",
       },
       visible: (values) => {
         return !!values.hasBackground;
@@ -265,7 +260,6 @@ export const buttonComponentDefinition: NoCodeComponentDefinition = {
       type: "color",
       defaultValue: {
         tokenId: "$dark",
-        value: "black",
       },
       group: "Border and shadow",
       label: "Border color",

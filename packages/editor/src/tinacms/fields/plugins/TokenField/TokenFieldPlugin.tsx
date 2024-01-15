@@ -4,7 +4,6 @@ import {
   NonNullish,
   ThemeFont,
   ThemeRefValue,
-  TokenTypeDefinition,
   TokenTypeWidgetComponentProps,
   getDevicesWidths,
   isTrulyResponsiveValue,
@@ -29,7 +28,6 @@ import React, {
 } from "react";
 import { FieldRenderProps } from "react-final-form";
 import styled from "styled-components";
-import { Simplify } from "type-fest";
 import { EditorContextType, useEditorContext } from "../../../../EditorContext";
 import { FieldMixedValue } from "../../../../types";
 import { MIXED_VALUE } from "../../components/constants";
@@ -72,17 +70,21 @@ export function extraValuesIncludes(
   return false;
 }
 
-function useTokenTypes(): Record<
+type TokenTypesResult = Record<
   string,
-  Simplify<Extract<EditorContextType["types"][string], { type: "token" }>>
-> {
+  Extract<EditorContextType["types"][string], { type: "token" }>
+>;
+
+function useTokenTypes(): TokenTypesResult {
   const editorContext = useEditorContext();
 
   const tokenTypes = Object.fromEntries(
-    Object.entries(editorContext.types).filter<[string, TokenTypeDefinition]>(
+    Object.entries(editorContext.types).filter<
+      [string, TokenTypesResult[string]]
+    >(
       (
         typeDefinitionEntry
-      ): typeDefinitionEntry is [string, TokenTypeDefinition] => {
+      ): typeDefinitionEntry is [string, TokenTypesResult[string]] => {
         return typeDefinitionEntry[1].type === "token";
       }
     )
@@ -145,7 +147,7 @@ function TokenFieldComponent<TokenValue extends NonNullish>({
     });
   }
 
-  // If ref exist but is removed from a theme -> let's add special option for this
+  // If token exist but is removed from a theme -> let's add special option for this
   if (
     !isMixedFieldValue(input.value) &&
     typeof input.value.tokenId === "string" &&
@@ -188,7 +190,7 @@ function TokenFieldComponent<TokenValue extends NonNullish>({
       if (isMixedFieldValue(input.value)) {
         input.onChange({
           value: "",
-          widgetId: tokenTypeDefinition.widgets[0].id,
+          widgetId: tokenTypeDefinition.widget.id,
         });
         setInputValue("");
         return;
@@ -222,7 +224,7 @@ function TokenFieldComponent<TokenValue extends NonNullish>({
       input.onChange({
         value: selectedValue,
         widgetId: isMixedFieldValue(input.value)
-          ? tokenTypeDefinition.widgets[0].id
+          ? tokenTypeDefinition.widget.id
           : input.value.widgetId,
       });
     } else {
@@ -230,15 +232,13 @@ function TokenFieldComponent<TokenValue extends NonNullish>({
         tokenId: selectedValue,
         value: field.tokens[selectedValue].value,
         widgetId: isMixedFieldValue(input.value)
-          ? tokenTypeDefinition.widgets[0].id
+          ? tokenTypeDefinition.widget.id
           : input.value.widgetId,
       });
     }
   };
 
-  // FIXME: Remove "?" after editorContext.types[field.schemaProp.type] when all types will be implemented
-  const CustomInputWidgetComponent = tokenTypeDefinition?.widgets?.[0]
-    ?.component as
+  const CustomInputWidgetComponent = tokenTypeDefinition?.widget?.component as
     | ComponentType<TokenTypeWidgetComponentProps<string>>
     | undefined;
 
@@ -252,7 +252,7 @@ function TokenFieldComponent<TokenValue extends NonNullish>({
             input.onChange({
               value,
               widgetId: isMixedFieldValue(input.value)
-                ? tokenTypeDefinition.widgets[0].id
+                ? tokenTypeDefinition.widget.id
                 : input.value.widgetId,
             });
           }}

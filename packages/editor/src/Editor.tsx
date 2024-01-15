@@ -10,6 +10,7 @@ import {
   ExternalData,
   ExternalDataChangeHandler,
   ExternalReference,
+  ExternalTypeDefinition,
   FetchOutputResources,
   IApiClient,
   InlineTypeWidgetComponentProps,
@@ -727,12 +728,21 @@ const EditorContent = ({
           typeName,
           {
             ...typeDefinition,
-            widgets: typeDefinition.widgets.map((w) => {
-              return {
-                ...w,
-                component: props.widgets?.[w.id] as any,
-              };
-            }),
+            ...(typeDefinition.type === "external"
+              ? {
+                  widgets: typeDefinition.widgets.map((w) => {
+                    return {
+                      ...w,
+                      component: props.widgets?.[w.id] as any,
+                    };
+                  }),
+                }
+              : {
+                  widget: {
+                    ...typeDefinition.widget,
+                    component: props.widgets?.[typeDefinition.widget.id] as any,
+                  },
+                }),
           },
         ];
       }
@@ -1090,13 +1100,17 @@ function ensureDocumentDataWidgetForTypes(editorContext: EditorContextType) {
       };
     }
 
+    const externalTypeDefinition = editorContext.types[
+      builtinExternalType
+    ] as ExternalTypeDefinition;
+
     // Make sure to add the document data widget to custom types
     if (
-      !editorContext.types[builtinExternalType].widgets.some(
+      !externalTypeDefinition.widgets.some(
         (w) => w.id === "@easyblocks/document-data"
       )
     ) {
-      editorContext.types[builtinExternalType].widgets.push(
+      externalTypeDefinition.widgets.push(
         documentDataWidgetFactory({
           type: builtinExternalType,
         }) as any

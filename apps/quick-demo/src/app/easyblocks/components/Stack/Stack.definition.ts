@@ -98,8 +98,7 @@ const stackComponentDefinition: NoCodeComponentDefinition<
           type: "space",
           group: "Margins",
           defaultValue: {
-            ref: "0",
-            value: "0px",
+            tokenId: "0",
           },
         },
         {

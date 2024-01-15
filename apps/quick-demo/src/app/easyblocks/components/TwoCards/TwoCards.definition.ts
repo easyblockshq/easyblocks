@@ -119,8 +119,7 @@ const twoCardsComponentDefinition: NoCodeComponentDefinition<
       label: "Gap",
       type: "space",
       defaultValue: {
-        value: "32px",
-        ref: "32",
+        tokenId: "32",
       },
       group: "Layout",
     },
@@ -129,8 +128,7 @@ const twoCardsComponentDefinition: NoCodeComponentDefinition<
       label: "Gap",
       type: "space",
       defaultValue: {
-        value: "24px",
-        ref: "24",
+        tokenId: "24",
       },
       group: "Layout",
     },

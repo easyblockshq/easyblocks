@@ -22,6 +22,7 @@ import {
   ExternalReferenceEmpty,
   ExternalReferenceNonEmpty,
   ExternalSchemaProp,
+  ExternalTypeDefinition,
   LocalSchemaProp,
   LocalTextReference,
   LocalValue,
@@ -672,6 +673,11 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
                 widgetId: v.widgetId,
               };
             }
+
+            return {
+              value: v ?? defaultValue,
+              widgetId: customTypeDefinition.widget.id,
+            };
           };
 
           if (
@@ -706,7 +712,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
 
           const defaultLocalValue: LocalValue = {
             value: defaultValue,
-            widgetId: customTypeDefinition.widgets[0]?.id,
+            widgetId: customTypeDefinition.widget.id,
           };
 
           return defaultLocalValue;
@@ -717,10 +723,10 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
             compilationContext.theme[customTypeDefinition.token];
           const defaultValue =
             schemaProp.defaultValue ?? customTypeDefinition.defaultValue;
-          const defaultWidgetId = customTypeDefinition.widgets[0]?.id;
+          const defaultWidgetId = customTypeDefinition.widget.id;
 
           const createTokenNormalizer = (normalizeScalar?: (x: any) => any) => {
-            return getResponsiveNormalize(
+            return getResponsiveNormalize<any>(
               compilationContext,
               schemaProp.defaultValue,
               customTypeDefinition.defaultValue,
@@ -778,7 +784,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
                 iconDefaultValue,
                 defaultWidgetId,
                 scalarValueNormalize
-              ) ?? iconDefaultValue
+              ) ?? value
             );
           }
 
@@ -792,7 +798,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
             const defaultValue: ExternalReferenceEmpty = {
               id: null,
               widgetId: compilationContext.isEditing
-                ? compilationContext.types[schemaProp.type]?.widgets[0]?.id
+                ? customTypeDefinition.widgets[0]?.id
                 : "",
             };
 
@@ -814,13 +820,14 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
           if (!normalized) {
             return {
               id: null,
-              widgetId:
-                compilationContext.types[schemaProp.type]?.widgets[0]?.id,
+              widgetId: customTypeDefinition.widgets[0]?.id,
             };
           }
 
           return normalized;
         }
+
+        throw new Error("Unknown type definition");
       },
       compile: (x) => {
         const val = responsiveValueMap(x, (y) => {
@@ -1024,28 +1031,11 @@ function getFirstOptionValue(
 function normalizeTokenValue<T>(
   x: any,
   themeValues: { [key: string]: ThemeRefValue<T> },
-  defaultValue: RefValue<T>,
+  defaultValue: { tokenId: string } | { value: any },
   defaultWidgetId: string,
   scalarValueNormalize: (x: any) => T | undefined = (x) => undefined
-): TokenValue | undefined {
-  let input = x;
-
-  // Mapping of legacy value of type object which could be a font (now not possible)
-  // The test below is shitty but this code should stay.
-  if (
-    !(
-      (
-        typeof x === "object" &&
-        x !== null &&
-        (x.value !== undefined || typeof x.ref === "string")
-      ) /* this is primitive test if this is ThemeRef value (either ref or value defined). It can also be object for Font! */
-    )
-  ) {
-    input = {
-      value: x,
-    };
-  }
-
+): TokenValue<T> | undefined {
+  const input = x ?? defaultValue;
   const widgetId = input.widgetId ?? defaultWidgetId;
 
   if ("tokenId" in input && typeof input.tokenId === "string") {
@@ -1053,30 +1043,25 @@ function normalizeTokenValue<T>(
 
     if (val) {
       return {
-        value: val.value as any,
+        value: val.value,
         tokenId: input.tokenId,
         widgetId,
       };
     }
+  }
 
+  if ("value" in input) {
     const normalizedVal = scalarValueNormalize(input.value);
 
-    return {
-      value: normalizedVal ?? (defaultValue.value as string),
-      tokenId: input.tokenId,
-      widgetId,
-    };
-  } else {
-    const normalizedVal = scalarValueNormalize(input.value);
-    if (normalizedVal === undefined) {
-      return;
-    } else {
+    if (normalizedVal) {
       return {
         value: normalizedVal,
         widgetId,
       };
     }
   }
+
+  return;
 }
 
 function getRef<T>(value: RefValue<T>): string {
@@ -1120,7 +1105,11 @@ function externalNormalize(
         widgetId:
           typeof x.widgetId === "string"
             ? x.widgetId
-            : compilationContext.types[externalType]?.widgets[0]?.id,
+            : (
+                compilationContext.types[externalType] as
+                  | ExternalTypeDefinition
+                  | undefined
+              )?.widgets[0]?.id,
       };
 
       return normalized;

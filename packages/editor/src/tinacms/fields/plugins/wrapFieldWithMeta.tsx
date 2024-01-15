@@ -29,7 +29,10 @@ import { dotNotationGet, toArray, uniqueId } from "@easyblocks/utils";
 import React, { ReactNode, useState } from "react";
 import styled, { css } from "styled-components";
 import { useConfigAfterAuto } from "../../../ConfigAfterAutoContext";
-import { useEditorContext } from "../../../EditorContext";
+import {
+  EditorExternalTypeDefinition,
+  useEditorContext,
+} from "../../../EditorContext";
 import { useEditorExternalData } from "../../../EditorExternalDataProvider";
 import { FieldRenderProps } from "../../form-builder";
 import { COMPONENTS_SUPPORTING_MIXED_VALUES } from "../components/constants";
@@ -284,7 +287,11 @@ function WidgetsSelect({
   );
 
   const availableWidgets = [
-    ...(editorContext.types[schemaProp.type]?.widgets ?? []),
+    ...((
+      editorContext.types[schemaProp.type] as
+        | EditorExternalTypeDefinition
+        | undefined
+    )?.widgets ?? []),
   ];
 
   if (schemaProp.type === "text") {

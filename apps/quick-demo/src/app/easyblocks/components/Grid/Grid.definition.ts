@@ -112,8 +112,7 @@ export const gridComponentDefinition: NoCodeComponentDefinition<
       type: "space",
       group: "Grid / Slider",
       defaultValue: {
-        ref: "16",
-        value: "16px",
+        tokenId: "16",
       },
       params: {
         autoConstant: 16,
@@ -126,8 +125,7 @@ export const gridComponentDefinition: NoCodeComponentDefinition<
       visible: (values) => values.variant === "grid",
       group: "Grid / Slider",
       defaultValue: {
-        ref: "16",
-        value: "16px",
+        tokenId: "16",
       },
       params: {
         autoConstant: 16,
@@ -168,7 +166,6 @@ export const gridComponentDefinition: NoCodeComponentDefinition<
       group: "Grid / Slider",
       defaultValue: {
         tokenId: "$gridMainObjectDefault",
-        value: "whatever", // will be normalized anyway
       },
       visible: false,
     },
@@ -177,8 +174,7 @@ export const gridComponentDefinition: NoCodeComponentDefinition<
       label: "Top",
       type: "space",
       defaultValue: {
-        ref: "0",
-        value: "0px",
+        tokenId: "0",
       },
       visible: (x) => !!x.borderEnabled && x.borderTop !== "0",
       group: "Padding",
@@ -188,8 +184,7 @@ export const gridComponentDefinition: NoCodeComponentDefinition<
       label: "Bottom",
       type: "space",
       defaultValue: {
-        ref: "0",
-        value: "0px",
+        tokenId: "0",
       },
       visible: (x) => !!x.borderEnabled && x.borderBottom !== "0",
       group: "Padding",
@@ -199,8 +194,7 @@ export const gridComponentDefinition: NoCodeComponentDefinition<
       label: "Left",
       type: "space",
       defaultValue: {
-        ref: "0",
-        value: "0px",
+        tokenId: "0",
       },
       visible: (x) =>
         !!x.borderEnabled &&
@@ -212,8 +206,7 @@ export const gridComponentDefinition: NoCodeComponentDefinition<
       label: "Right",
       type: "space",
       defaultValue: {
-        ref: "0",
-        value: "0px",
+        tokenId: "0",
       },
       visible: (x) =>
         !!x.borderEnabled &&

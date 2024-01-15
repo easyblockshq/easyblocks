@@ -541,31 +541,30 @@ type ConfigTokens = {
   space: ThemeSpace;
 };
 
-type BaseTypeDefinition = {
-  widgets: Array<Widget>;
+export type InlineTypeDefinition<Value extends NonNullish = any> = {
+  widget: Widget;
   responsiveness?: "always" | "optional" | "never";
+  type: "inline";
+  defaultValue: Value;
+  validate?: (value: any) => boolean;
 };
 
-export type InlineTypeDefinition<Value extends NonNullish = any> =
-  BaseTypeDefinition & {
-    type: "inline";
-    defaultValue: Value;
-    validate?: (value: any) => boolean;
-  };
-
-export type ExternalTypeDefinition = BaseTypeDefinition & {
+export type ExternalTypeDefinition = {
+  widgets: Array<Widget>;
+  responsiveness?: "always" | "optional" | "never";
   type: "external";
 };
 
-export type TokenTypeDefinition<Value extends NonNullish = any> =
-  BaseTypeDefinition & {
-    type: "token";
-    token: keyof ConfigTokens;
-    defaultValue: Value;
-    extraValues?: Array<Value | { value: Value; label: string }>;
-    allowCustom?: boolean;
-    validate?: (value: any) => boolean;
-  };
+export type TokenTypeDefinition<Value extends NonNullish = any> = {
+  widget: Widget;
+  responsiveness?: "always" | "optional" | "never";
+  type: "token";
+  token: keyof ConfigTokens | (string & Record<never, never>);
+  defaultValue: { value: Value } | { tokenId: string };
+  extraValues?: Array<Value | { value: Value; label: string }>;
+  allowCustom?: boolean;
+  validate?: (value: any) => boolean;
+};
 
 export type CustomTypeDefinition =
   | InlineTypeDefinition
@@ -588,10 +587,13 @@ export type Config = {
   disableCustomTemplates?: boolean;
   hideCloseButton?: boolean;
   templates?: Template[];
-} & {
-  [key in keyof ConfigTokens]?: Array<
-    RuntimeConfigThemeValue<ConfigTokens[key]>
-  >;
+  tokens?: {
+    [key in keyof ConfigTokens]?: Array<
+      RuntimeConfigThemeValue<ConfigTokens[key]>
+    >;
+  } & {
+    [key: string & Record<never, never>]: Array<RuntimeConfigThemeValue<any>>;
+  };
 };
 
 type EditorProps = {

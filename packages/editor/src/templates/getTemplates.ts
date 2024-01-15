@@ -125,14 +125,6 @@ export function getTemplatesInternal(
       configTemplates
     ),
     ...getNecessaryDefaultTemplates(
-      editorContext.definitions.links,
-      configTemplates
-    ),
-    ...getNecessaryDefaultTemplates(
-      editorContext.definitions.actions,
-      configTemplates
-    ),
-    ...getNecessaryDefaultTemplates(
       editorContext.definitions.textModifiers,
       configTemplates
     ),

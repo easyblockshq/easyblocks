@@ -4,7 +4,6 @@ import { CompilationContextType } from "./types";
 
 const basicConfig: Config = {
   accessToken: "",
-  types: {},
 };
 
 const defaults = {
@@ -58,7 +57,16 @@ const defaults = {
 describe("breakpoints", () => {
   test("no devices outputs default", () => {
     const result = createCompilationContext(
-      { ...basicConfig },
+      {
+        ...basicConfig,
+        documentTypes: {
+          content: {
+            entry: {
+              _template: "$TestComponent",
+            },
+          },
+        },
+      },
       { locale: "en-US" },
       "content"
     );
@@ -75,6 +83,13 @@ describe("breakpoints", () => {
     const result = createCompilationContext(
       {
         ...basicConfig,
+        documentTypes: {
+          content: {
+            entry: {
+              _template: "$TestComponent",
+            },
+          },
+        },
         devices: {
           xs: {
             w: 300,
@@ -119,7 +134,19 @@ describe("breakpoints", () => {
 describe("max widths", () => {
   test("no devices outputs default", () => {
     const result = createCompilationContext(
-      { ...basicConfig, containerWidths: [{ id: "small", value: 800 }] },
+      {
+        ...basicConfig,
+        documentTypes: {
+          content: {
+            entry: {
+              _template: "$TestComponent",
+            },
+          },
+        },
+        tokens: {
+          containerWidths: [{ id: "small", value: 800 }],
+        },
+      },
       { locale: "en-US" },
       "content"
     );
@@ -132,16 +159,6 @@ describe("max widths", () => {
 });
 
 describe("document types", () => {
-  test('returns empty document types when "documentTypes" is not defined in config', () => {
-    const context = createCompilationContext(
-      basicConfig,
-      { locale: "en-US" },
-      "content"
-    );
-
-    expect(context.documentTypes).toEqual([]);
-  });
-
   test('returns document types when "documentTypes" is defined in config', () => {
     const context = createCompilationContext(
       {
@@ -156,7 +173,7 @@ describe("document types", () => {
         },
       },
       { locale: "en-US" },
-      "content"
+      "documentType1"
     );
 
     expect(context.documentTypes).toEqual<
@@ -172,7 +189,7 @@ describe("document types", () => {
           xl: 500,
           "2xl": 600,
         },
-        defaultConfig: {
+        entry: {
           _template: "$TestComponent",
         },
       },
@@ -194,7 +211,7 @@ describe("document types", () => {
           },
         },
         { locale: "en-US" },
-        "content"
+        "documentType1"
       );
     }).toThrowErrorMatchingInlineSnapshot(
       `"Invalid number of widths for document type \\"documentType1\\". Expected 6 widths, got 5."`

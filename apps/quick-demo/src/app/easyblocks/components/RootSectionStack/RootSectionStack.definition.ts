@@ -48,8 +48,7 @@ export const rootSectionStackDefinition: NoCodeComponentDefinition = {
           type: "space",
           group: "Section margins",
           defaultValue: {
-            value: "0px",
-            ref: "0",
+            tokenId: "0",
           },
           params: {
             autoConstant: 24,
@@ -62,8 +61,7 @@ export const rootSectionStackDefinition: NoCodeComponentDefinition = {
           type: "space",
           group: "Section margins",
           defaultValue: {
-            value: "32px",
-            ref: "32",
+            tokenId: "32",
           },
           params: {
             autoConstant: 24,

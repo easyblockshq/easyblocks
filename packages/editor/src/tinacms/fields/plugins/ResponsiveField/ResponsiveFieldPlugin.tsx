@@ -175,8 +175,8 @@ function getAutoLabelButtonLabel(value: any): string {
    * This piece of code is crap
    */
   if (typeof value === "object") {
-    if (value.ref !== undefined && value.value !== undefined) {
-      const refNameParts = value.ref.split(".");
+    if (value.tokenId !== undefined && value.value !== undefined) {
+      const refNameParts = value.tokenId.split(".");
       return `auto: ${refNameParts[refNameParts.length - 1]}`;
     } else if (value.value !== undefined && value.id === undefined) {
       // just value field -> token

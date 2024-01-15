@@ -20,6 +20,32 @@ import {
 import React, { ComponentType, useContext } from "react";
 import { ActionsType, TextSyncers } from "./types";
 
+export type EditorExternalTypeDefinition = Omit<
+  ExternalTypeDefinition,
+  "widgets"
+> & {
+  widgets: Array<
+    Widget & {
+      component?: ComponentType<WidgetComponentProps<any>>;
+    }
+  >;
+};
+
+export type EditorInlineTypeDefinition = Omit<
+  InlineTypeDefinition,
+  "widgets"
+> & {
+  widget: Widget & {
+    component?: ComponentType<InlineTypeWidgetComponentProps<any>>;
+  };
+};
+
+export type EditorTokenTypeDefinition = Omit<TokenTypeDefinition, "widgets"> & {
+  widget: Widget & {
+    component?: ComponentType<TokenTypeWidgetComponentProps<any>>;
+  };
+};
+
 export type EditorContextType = Omit<BaseEditorContextType, "types"> & {
   templates?: Template[];
   syncTemplates: () => void;
@@ -51,27 +77,9 @@ export type EditorContextType = Omit<BaseEditorContextType, "types"> & {
   isFullScreen: boolean;
   types: Record<
     string,
-    | (Omit<ExternalTypeDefinition, "widgets"> & {
-        widgets: Array<
-          Widget & {
-            component?: ComponentType<WidgetComponentProps<any>>;
-          }
-        >;
-      })
-    | (Omit<InlineTypeDefinition, "widgets"> & {
-        widgets: Array<
-          Widget & {
-            component?: ComponentType<InlineTypeWidgetComponentProps<any>>;
-          }
-        >;
-      })
-    | (Omit<TokenTypeDefinition, "widgets"> & {
-        widgets: Array<
-          Widget & {
-            component?: ComponentType<TokenTypeWidgetComponentProps<any>>;
-          }
-        >;
-      })
+    | EditorExternalTypeDefinition
+    | EditorInlineTypeDefinition
+    | EditorTokenTypeDefinition
   >;
 };
 

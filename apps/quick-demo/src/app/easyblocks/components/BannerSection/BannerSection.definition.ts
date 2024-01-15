@@ -43,6 +43,10 @@ export const bannerSectionDefinition: NoCodeComponentDefinition<
       prop: "TEST urlResponsive",
       type: "urlResponsive",
     },
+    {
+      prop: "animal",
+      type: "animal",
+    },
     ...sectionWrapperSchemaProps.margins,
     {
       prop: "escapeMargin",

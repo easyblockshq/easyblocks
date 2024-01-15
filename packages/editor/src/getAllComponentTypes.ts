@@ -6,24 +6,11 @@ export function getAllComponentTypes(editorContext: EditorContextType) {
   const componentTypes = getComponentTypesFromDefinitions(
     editorContext.definitions.components
   );
-  const actionTypes = getComponentTypesFromDefinitions(
-    editorContext.definitions.actions
-  );
-  const linkTypes = getComponentTypesFromDefinitions(
-    editorContext.definitions.links
-  );
   const textModifierTypes = getComponentTypesFromDefinitions(
     editorContext.definitions.textModifiers
   );
 
-  return Array.from(
-    new Set([
-      ...componentTypes,
-      ...actionTypes,
-      ...linkTypes,
-      ...textModifierTypes,
-    ])
-  );
+  return Array.from(new Set([...componentTypes, ...textModifierTypes]));
 }
 
 function getComponentTypesFromDefinitions(

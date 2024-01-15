@@ -1,4 +1,4 @@
-import { testDevices } from "./test-utils";
+import { testDevices } from "../testUtils";
 import { getBoxStyles } from "./box";
 
 test("corrects order of non responsive and breakpoint properties (from highest breakpoint, to lowest)", () => {

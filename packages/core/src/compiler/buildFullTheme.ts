@@ -8,6 +8,7 @@ export function buildFullTheme(theme: Theme): Theme {
 
   // We spread values from default theme because we want to prevent overriding master tokens by our users
   return {
+    ...theme,
     space: {
       ...theme.space,
       ...defaultTheme.space,

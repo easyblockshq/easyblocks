@@ -11,6 +11,7 @@ import {
   RefValue,
   ResponsiveValue,
   Spacing,
+  TokenValue,
   TrulyResponsiveValue,
 } from "../types";
 import { applyAutoUsingResponsiveTokens } from "./applyAutoUsingResponsiveTokens";
@@ -133,7 +134,7 @@ function snapValueToToken(
   spaces: CompilationContextType["theme"]["space"],
   constant: number
 ) {
-  let currentToken: RefValue<Spacing> | undefined = undefined;
+  let currentToken: TokenValue<Spacing> | undefined = undefined;
   let minDelta = Number.MAX_VALUE;
 
   for (const tokenId in spaces) {
@@ -188,8 +189,9 @@ function snapValueToToken(
     ) {
       minDelta = delta;
       currentToken = {
-        ref: tokenId,
+        tokenId,
         value: tokenValue,
+        widgetId: "@easyblocks/space",
       };
     }
   }

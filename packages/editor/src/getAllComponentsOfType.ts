@@ -15,14 +15,6 @@ export function getAllComponentsOfType(
     ),
     ...getAllComponentsOfTypeFromDefinitionsArray(
       type,
-      editorContext.definitions.links
-    ),
-    ...getAllComponentsOfTypeFromDefinitionsArray(
-      type,
-      editorContext.definitions.actions
-    ),
-    ...getAllComponentsOfTypeFromDefinitionsArray(
-      type,
       editorContext.definitions.textModifiers
     ),
   ];
