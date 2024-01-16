@@ -135,6 +135,10 @@ function getRenderabilityStatus(
 
   const requiredExternalFields = componentDefinition.schema.filter(
     (schemaProp): schemaProp is ExternalSchemaProp => {
+      if (schemaProp.type === "text") {
+        return false;
+      }
+
       const propValue = compiled.props[schemaProp.prop];
 
       if (
@@ -143,7 +147,7 @@ function getRenderabilityStatus(
         "id" in propValue &&
         "widgetId" in propValue
       ) {
-        return "optional" in schemaProp && !schemaProp.optional;
+        return ("optional" in schemaProp && !schemaProp.optional) || true;
       }
 
       return false;

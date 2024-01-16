@@ -726,20 +726,37 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
           const defaultWidgetId = customTypeDefinition.widget.id;
 
           const createTokenNormalizer = (normalizeScalar?: (x: any) => any) => {
-            return getResponsiveNormalize<any>(
-              compilationContext,
-              schemaProp.defaultValue,
-              customTypeDefinition.defaultValue,
-              (x: any) => {
-                return normalizeTokenValue(
-                  x,
-                  themeValues as ResponsiveValue<any>,
-                  defaultValue,
-                  defaultWidgetId,
-                  normalizeScalar ?? ((x) => x)
+            return customTypeDefinition.responsiveness === "always" ||
+              (customTypeDefinition.responsiveness === "optional" &&
+                schemaProp.responsive)
+              ? getResponsiveNormalize<any>(
+                  compilationContext,
+                  schemaProp.defaultValue,
+                  customTypeDefinition.defaultValue,
+                  (x: any) => {
+                    return normalizeTokenValue(
+                      x,
+                      themeValues as ResponsiveValue<any>,
+                      defaultValue,
+                      defaultWidgetId,
+                      normalizeScalar ?? ((x) => x)
+                    );
+                  }
+                )
+              : getNormalize(
+                  compilationContext,
+                  schemaProp.defaultValue,
+                  customTypeDefinition.defaultValue,
+                  (x: any) => {
+                    return normalizeTokenValue(
+                      x,
+                      themeValues as ResponsiveValue<any>,
+                      defaultValue,
+                      defaultWidgetId,
+                      normalizeScalar ?? ((x) => x)
+                    );
+                  }
                 );
-              }
-            );
           };
 
           if (customTypeDefinition.token === "space") {
