@@ -145,11 +145,13 @@ function getRenderabilityStatus(
         typeof propValue === "object" &&
         propValue !== null &&
         "id" in propValue &&
-        propValue.id === null &&
-        "widgetId" in propValue &&
-        typeof propValue.widgetId === "string"
+        "widgetId" in propValue
       ) {
-        return "optional" in schemaProp && !schemaProp.optional;
+        if ("optional" in schemaProp) {
+          return !schemaProp.optional;
+        }
+
+        return true;
       }
 
       return false;
