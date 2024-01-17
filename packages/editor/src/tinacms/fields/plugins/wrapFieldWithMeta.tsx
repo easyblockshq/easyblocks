@@ -254,6 +254,9 @@ export function FieldMetaWrapper<
                     input.onChange(newFieldValue);
                   }
                 }}
+                isRootComponent={fieldNames.some(
+                  (f) => f.split(".").length === 1
+                )}
               />
             )}
         </FieldLabelWrapper>
@@ -275,24 +278,24 @@ function WidgetsSelect({
   value,
   onChange,
   schemaProp,
+  isRootComponent,
 }: {
   value: LocalTextReference | ExternalReference;
   onChange: (widgetId: string) => void;
   schemaProp: ExternalSchemaProp | TextSchemaProp;
+  isRootComponent: boolean;
 }) {
   const editorContext = useEditorContext();
+  const [selectedWidgetId, setSelectedWidgetId] = useState(value.widgetId);
 
-  const [selectedWidgetId, setSelectedWidgetId] = useState<string>(
-    () => value.widgetId
-  );
-
-  const availableWidgets = [
-    ...((
-      editorContext.types[schemaProp.type] as
-        | EditorExternalTypeDefinition
-        | undefined
-    )?.widgets ?? []),
-  ];
+  const widgets = (
+    editorContext.types[schemaProp.type] as EditorExternalTypeDefinition
+  ).widgets;
+  const availableWidgets = isRootComponent
+    ? widgets.filter((w) => {
+        return w.id !== "@easyblocks/document-data";
+      })
+    : [...widgets];
 
   if (schemaProp.type === "text") {
     availableWidgets.unshift({
