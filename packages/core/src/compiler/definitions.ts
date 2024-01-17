@@ -1269,10 +1269,11 @@ export function getSchemaDefinition<
   schemaProp: T,
   compilationContext: CompilationContextType
 ): ReturnType<SchemaPropDefinitionProvider> {
-  const provider = compilationContext.types[schemaProp.type]
-    ? schemaPropDefinitions.custom
-    : // @ts-expect-error
-      schemaPropDefinitions[schemaProp.type];
+  const provider =
+    compilationContext.types[schemaProp.type] && schemaProp.type !== "text"
+      ? schemaPropDefinitions.custom
+      : // @ts-expect-error
+        schemaPropDefinitions[schemaProp.type];
 
   return provider(schemaProp as any, compilationContext);
 }
