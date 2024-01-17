@@ -48,8 +48,38 @@ async function fetchProductResources(
         };
       } else {
         result[fieldId] = {
-          type: "product",
-          value: product,
+          type: "object",
+          value: {
+            self: {
+              type: "product",
+              value: product,
+            },
+            productTitle: {
+              type: "text",
+              value: product.title,
+            },
+            ...(product.primaryImage &&
+              product.primaryImage.mediaType === "image" && {
+                productPrimaryImage: {
+                  type: "@easyblocks/image",
+                  value: {
+                    url: product.primaryImage.mediaObject.src,
+                    alt: product.primaryImage.mediaObject.alt,
+                    aspectRatio:
+                      product.primaryImage.mediaObject.width /
+                      product.primaryImage.mediaObject.height,
+                    mimeType: product.primaryImage.mediaObject.format,
+                    srcset: [
+                      {
+                        w: product.primaryImage.mediaObject.width,
+                        h: product.primaryImage.mediaObject.height,
+                        url: product.primaryImage.mediaObject.src,
+                      },
+                    ],
+                  },
+                },
+              }),
+          },
         };
       }
     });
