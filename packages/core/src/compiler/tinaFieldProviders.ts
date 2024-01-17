@@ -321,9 +321,10 @@ export function getTinaField<T extends SchemaProp>(
   editorContext: EditorContextType,
   value: any
 ) {
-  const fieldProvider = editorContext.types[schemaProp.type]
-    ? tinaFieldProviders.custom
-    : (tinaFieldProviders as any)[schemaProp.type];
+  const fieldProvider =
+    editorContext.types[schemaProp.type] && schemaProp.type !== "text"
+      ? tinaFieldProviders.custom
+      : (tinaFieldProviders as any)[schemaProp.type];
   return fieldProvider(schemaProp, editorContext, value);
 }
 
