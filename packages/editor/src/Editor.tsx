@@ -970,16 +970,11 @@ const EditorContent = ({
 };
 
 function ensureDocumentDataWidgetForTypes(editorContext: EditorContextType) {
-  const documentParamsTypes = editorContext.activeDocumentType.schema!.map(
-    (s) => s.type
-  );
   const types = Array.from(
     new Set([
       "text",
       ...Object.keys(editorContext.types).filter(
-        (t) =>
-          !documentParamsTypes.includes(t) &&
-          editorContext.types[t].type === "external"
+        (t) => editorContext.types[t].type === "external"
       ),
     ])
   );
