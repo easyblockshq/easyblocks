@@ -18,6 +18,7 @@ import { Editor } from "./Editor";
 import { ColorTokenWidget } from "./sidebar/ColorTokenWidget";
 import { GlobalStyles } from "./tinacms/styles";
 import { SpaceTokenWidget } from "./sidebar/SpaceTokenWidget";
+import { parseQueryParams } from "./parseQueryParams";
 // import { FontTokenWidget } from "./sidebar/FontTokenWidget";
 
 export type EasyblocksParentProps = {
@@ -46,9 +47,8 @@ const builtinWidgets: EasyblocksParentProps["widgets"] = {
   space: SpaceTokenWidget,
 };
 
-
 export function EasyblocksParent(props: EasyblocksParentProps) {
-  const editorSearchParams = parseEditorSearchParams();
+  const editorSearchParams = parseQueryParams();
 
   return (
     <StyleSheetManager
@@ -85,34 +85,4 @@ export function EasyblocksParent(props: EasyblocksParentProps) {
       </SSModalContext.Provider>
     </StyleSheetManager>
   );
-}
-
-type EditorSearchParams = {
-  readOnly: boolean | null;
-  documentId: string | null;
-  documentType: string | null;
-  locale: string | null;
-};
-
-function parseEditorSearchParams() {
-  const searchParams = new URLSearchParams(window.location.search);
-
-  const readOnly =
-    searchParams.get("readOnly") === "true"
-      ? true
-      : searchParams.get("readOnly") === "false"
-      ? false
-      : null;
-  const documentId = searchParams.get("documentId");
-  const documentType = searchParams.get("documentType");
-  const locale = searchParams.get("locale");
-
-  const editorSearchParams: EditorSearchParams = {
-    readOnly,
-    documentId,
-    documentType,
-    locale,
-  };
-
-  return editorSearchParams;
 }

@@ -1,42 +1,33 @@
-import type { ContextParams } from "@easyblocks/core";
-
-export function parseQueryParams(): {
-  documentId: undefined | string;
-  projectId: undefined | string;
-  accessToken: undefined | string;
-  mode: "playground" | "app";
-  widthAuto: boolean;
-  width: number | undefined;
-  contextParams: ContextParams | undefined;
+type EditorSearchParams = {
+  readOnly: boolean | null;
+  documentId: string | null;
+  documentType: string | null;
+  locale: string | null;
   preview: boolean;
-} {
-  const urlSearchParams = new URLSearchParams(window.location.search);
-  const queryParams = Object.fromEntries(urlSearchParams.entries());
-  const contextParams = parseContextParams(queryParams.contextParams);
+};
 
-  return {
-    documentId: queryParams.documentId,
-    projectId: queryParams.projectId,
-    /**
-     * We need shopstoryAccessToken for non-cloud versions - they rely on this query param.
-     * It can be removed only when all clients move to cloud based version and 1.0.0 SDK.
-     */
-    accessToken: queryParams.shopstoryAccessToken ?? queryParams.accessToken,
-    mode: queryParams.mode === "app" ? "app" : "playground",
-    widthAuto: queryParams.widthAuto === "true" ? true : false,
-    width: queryParams.width ? parseInt(queryParams.width) : undefined,
-    contextParams,
-    preview: queryParams.preview === "true",
+export function parseQueryParams() {
+  const searchParams = new URLSearchParams(window.location.search);
+
+  const readOnly =
+    searchParams.get("readOnly") === "true"
+      ? true
+      : searchParams.get("readOnly") === "false"
+      ? false
+      : null;
+  const documentId = searchParams.get("documentId");
+  const documentType = searchParams.get("documentType");
+  const locale = searchParams.get("locale");
+
+  const preview = searchParams.get("preview") === "true";
+
+  const editorSearchParams: EditorSearchParams = {
+    readOnly,
+    documentId,
+    documentType,
+    locale,
+    preview,
   };
-}
 
-function parseContextParams(contextParamsQueryParameter: string) {
-  try {
-    const contextParams = JSON.parse(
-      decodeURIComponent(contextParamsQueryParameter)
-    );
-    return contextParams as ContextParams;
-  } catch {
-    return undefined;
-  }
+  return editorSearchParams;
 }
