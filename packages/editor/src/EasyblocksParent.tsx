@@ -4,7 +4,6 @@ import {
   FetchOutputResources,
   InlineTypeWidgetComponentProps,
   WidgetComponentProps,
-  getDefaultLocale,
 } from "@easyblocks/core";
 import {
   SSModalContext,
@@ -12,7 +11,6 @@ import {
   Toaster,
   TooltipProvider,
 } from "@easyblocks/design-system";
-import { raiseError } from "@easyblocks/utils";
 import isPropValid from "@emotion/is-prop-valid";
 import React, { ComponentType } from "react";
 import { ShouldForwardProp, StyleSheetManager } from "styled-components";
@@ -22,7 +20,7 @@ import { GlobalStyles } from "./tinacms/styles";
 import { SpaceTokenWidget } from "./sidebar/SpaceTokenWidget";
 // import { FontTokenWidget } from "./sidebar/FontTokenWidget";
 
-export type LaunchEditorProps = {
+export type EasyblocksParentProps = {
   config: Config;
   externalData: FetchOutputResources;
   onExternalDataChange: ExternalDataChangeHandler;
@@ -42,22 +40,15 @@ const shouldForwardProp: ShouldForwardProp<"web"> = (propName, target) => {
   return true;
 };
 
-const builtinWidgets: LaunchEditorProps["widgets"] = {
+const builtinWidgets: EasyblocksParentProps["widgets"] = {
   color: ColorTokenWidget,
   // font: FontTokenWidget,
   space: SpaceTokenWidget,
 };
 
-export function EasyblocksParent(props: LaunchEditorProps) {
-  const locales = props.config.locales ?? raiseError("Missing locales");
+
+export function EasyblocksParent(props: EasyblocksParentProps) {
   const editorSearchParams = parseEditorSearchParams();
-  const contextParams = {
-    locale: editorSearchParams.locale ?? getDefaultLocale(locales).code,
-  };
-  const documentType =
-    editorSearchParams.documentType ??
-    raiseError("Missing documentType search param");
-  const mode = editorSearchParams.mode ?? "playground";
 
   return (
     <StyleSheetManager
@@ -78,11 +69,10 @@ export function EasyblocksParent(props: LaunchEditorProps) {
           />
           <Editor
             config={props.config}
-            contextParams={contextParams}
-            locales={locales}
-            mode={mode}
+            locale={editorSearchParams.locale ?? undefined}
+            readOnly={editorSearchParams.readOnly ?? true}
             documentId={editorSearchParams.documentId}
-            documentType={documentType}
+            documentType={editorSearchParams.documentType ?? undefined}
             externalData={props.externalData}
             onExternalDataChange={props.onExternalDataChange}
             widgets={{
@@ -98,10 +88,8 @@ export function EasyblocksParent(props: LaunchEditorProps) {
 }
 
 type EditorSearchParams = {
-  mode: "app" | "playground" | null;
+  readOnly: boolean | null;
   documentId: string | null;
-  source: string | null;
-  uniqueSourceIdentifier: string | null;
   documentType: string | null;
   locale: string | null;
 };
@@ -109,29 +97,20 @@ type EditorSearchParams = {
 function parseEditorSearchParams() {
   const searchParams = new URLSearchParams(window.location.search);
 
-  const modeSearchParam = searchParams.get("mode");
-
-  if (modeSearchParam && !["app", "playground"].includes(modeSearchParam)) {
-    raiseError(
-      `Invalid "mode" value in search params. Valid values are "app" and "playground".`
-    );
-  }
-
-  const mode = modeSearchParam
-    ? (modeSearchParam as "app" | "playground")
-    : null;
+  const readOnly =
+    searchParams.get("readOnly") === "true"
+      ? true
+      : searchParams.get("readOnly") === "false"
+      ? false
+      : null;
   const documentId = searchParams.get("documentId");
-  const source = searchParams.get("source");
-  const uniqueSourceIdentifier = searchParams.get("uniqueSourceIdentifier");
   const documentType = searchParams.get("documentType");
   const locale = searchParams.get("locale");
 
   const editorSearchParams: EditorSearchParams = {
-    mode,
+    readOnly,
     documentId,
     documentType,
-    source,
-    uniqueSourceIdentifier,
     locale,
   };
 

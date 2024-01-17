@@ -2,6 +2,7 @@ import { Devices, Locale } from "@easyblocks/core";
 import {
   SSButtonGhost,
   SSColors,
+  SSFonts,
   SSIcons,
   SSToggle,
   ToggleGroup,
@@ -28,6 +29,19 @@ const TopBar = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+`;
+
+const Label = styled.div`
+  background: ${SSColors.purple};
+  height: 24px;
+  ${SSFonts.label}
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 12px;
+  padding-right: 12px;
+  border-radius: 12px;
+  color: white;
 `;
 
 const TopBarLeft = styled.div`
@@ -76,6 +90,7 @@ export const EditorTopBar: React.FC<{
   setFullScreen: (x: boolean) => void;
   onAdminModeChange: (x: boolean) => void;
   hideCloseButton: boolean;
+  readOnly: boolean;
 }> = ({
   onClose,
   onBreakpointChange,
@@ -89,6 +104,7 @@ export const EditorTopBar: React.FC<{
   setFullScreen,
   onAdminModeChange,
   hideCloseButton,
+  readOnly,
 }) => {
   const headingRef = useRef<HTMLDivElement>(null);
 
@@ -136,6 +152,7 @@ export const EditorTopBar: React.FC<{
         >
           Redo
         </SSButtonGhost>
+        {readOnly && <Label>Read-Only</Label>}
       </TopBarLeft>
 
       <TopBarCenter>

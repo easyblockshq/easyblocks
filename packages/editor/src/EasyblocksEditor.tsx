@@ -9,7 +9,7 @@ import type {
 import React, { ComponentType, useEffect, useState } from "react";
 import { EasyblocksCanvas } from "./EditorChildWindow";
 import { PreviewRenderer } from "./PreviewRenderer";
-import { EasyblocksParent } from "./launchEditor";
+import { EasyblocksParent } from "./EasyblocksParent";
 import { parseQueryParams } from "./parseQueryParams";
 
 export type ExternalDataChangeHandler = (

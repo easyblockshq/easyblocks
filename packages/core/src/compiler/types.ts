@@ -38,8 +38,9 @@ export type CompilationContextType = {
   mainBreakpointIndex: string;
   isEditing?: boolean;
   contextParams: ContextParams;
-  locales?: Array<Locale>;
-  documentType: string;
+  strict?: boolean;
+  locales: Array<Locale>;
+  activeDocumentType: CompilationDocumentType;
   documentTypes: Array<CompilationDocumentType>;
 };
 

@@ -5,9 +5,8 @@ import {
   ConfigDeviceRange,
   ContextParams,
   CustomTypeDefinition,
-  Devices,
   DocumentType,
-  EditorLauncherProps,
+  Devices,
   ExternalSchemaProp,
   NoCodeComponentDefinition,
   ResponsiveValue,
@@ -74,7 +73,7 @@ function prepareDevices(configDevices: Config["devices"]): Devices {
 export function createCompilationContext(
   config: Config,
   contextParams: ContextParams,
-  documentType: NonNullable<EditorLauncherProps["documentType"]>
+  documentType: string
 ): CompilationContextType {
   const devices = prepareDevices(config.devices);
   const mainDevice = devices.find((x) => x.isMain);
@@ -246,24 +245,40 @@ export function createCompilationContext(
     components.push(...config.components);
   }
 
-  const activeDocument = documentTypes.find((r) => r.id === documentType);
+  const activeDocumentType = documentTypes.find((r) => r.id === documentType);
 
-  if (!activeDocument) {
-    throw new Error(`Document type "${documentType}" doesn't exist.`);
+  if (!activeDocumentType) {
+    throw new Error(
+      `Document type "${documentType}" doesn't exist in config.documentTypes.`
+    );
   }
 
-  if (activeDocument.schema) {
+  if (!config.locales) {
+    throw new Error(
+      `Required property config.locales doesn't exist in your config.`
+    );
+  }
+
+  if (
+    config.locales.find((l) => l.code === contextParams.locale) === undefined
+  ) {
+    throw new Error(
+      `You passed locale "${contextParams.locale}" which doesn't exist in your config.locales`
+    );
+  }
+
+  if (activeDocumentType.schema) {
     const rootComponentDefinition = components.find(
-      (c) => c.id === activeDocument.entry._template
+      (c) => c.id === activeDocumentType.entry._template
     );
 
     if (!rootComponentDefinition) {
       throw new Error(
-        `Missing definition for component "${activeDocument.entry._template}".`
+        `Missing definition for component "${activeDocumentType.entry._template}".`
       );
     }
 
-    activeDocument.schema.forEach((schemaProp) => {
+    activeDocumentType.schema.forEach((schemaProp) => {
       if (
         !rootComponentDefinition.schema.some((s) => s.prop === schemaProp.prop)
       ) {
@@ -314,7 +329,7 @@ export function createCompilationContext(
     mainBreakpointIndex: mainDevice.id,
     contextParams,
     locales: config.locales,
-    documentType,
+    activeDocumentType,
     documentTypes,
   };
 

@@ -11,6 +11,8 @@ import {
   TokenTypeWidgetComponentProps,
   Widget,
   WidgetComponentProps,
+  Document,
+  Backend,
 } from "@easyblocks/core";
 import {
   EditorContextType as BaseEditorContextType,
@@ -18,7 +20,7 @@ import {
   InternalAnyField,
 } from "@easyblocks/core/_internals";
 import React, { ComponentType, useContext } from "react";
-import { ActionsType, TextSyncers } from "./types";
+import { ActionsType } from "./types";
 
 export type EditorExternalTypeDefinition = Omit<
   ExternalTypeDefinition,
@@ -47,6 +49,7 @@ export type EditorTokenTypeDefinition = Omit<TokenTypeDefinition, "widgets"> & {
 };
 
 export type EditorContextType = Omit<BaseEditorContextType, "types"> & {
+  backend: Backend;
   templates?: Template[];
   syncTemplates: () => void;
   focussedField: Array<string>;
@@ -55,24 +58,13 @@ export type EditorContextType = Omit<BaseEditorContextType, "types"> & {
   isMaster?: boolean;
   isEditing?: boolean;
   actions: ActionsType;
-  text?: TextSyncers;
-  save: (document: {
-    id: string;
-    version: number;
-    updatedAt: number;
-    projectId: string;
-  }) => Promise<void>;
+  save: (document: Document) => Promise<void>;
   compiledComponentConfig?: CompiledComponentConfig;
   configAfterAuto?: ComponentConfig;
   resources: Array<Resource>;
   compilationCache: CompilationCache;
   isAdminMode: boolean;
-  project: {
-    id: string;
-    name: string;
-    token: string;
-  };
-  isPlayground: boolean;
+  readOnly: boolean;
   disableCustomTemplates: boolean;
   isFullScreen: boolean;
   types: Record<

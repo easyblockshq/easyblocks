@@ -2,7 +2,6 @@ import { configMap } from "@easyblocks/app-utils";
 import {
   buildRichTextNoCodeEntry,
   ComponentConfig,
-  IApiClient,
   InternalTemplate,
   Template,
   UserDefinedTemplate,
@@ -15,7 +14,6 @@ import {
 } from "@easyblocks/core/_internals";
 import { uniqueId } from "@easyblocks/utils";
 import { EditorContextType } from "../EditorContext";
-import { getRemoteUserTemplates } from "./getRemoteUserTemplates";
 
 function getDefaultTemplateForDefinition(
   def: InternalComponentDefinition
@@ -39,23 +37,12 @@ function getDefaultTemplateForDefinition(
 
 export async function getTemplates(
   editorContext: EditorContextType,
-  apiClient: IApiClient,
   configTemplates: InternalTemplate[] = []
 ): Promise<Template[]> {
-  let remoteUserDefinedTemplates: UserDefinedTemplate[] = [];
-
-  if (!editorContext.isPlayground && !editorContext.disableCustomTemplates) {
-    const project = editorContext.project;
-    if (!project) {
-      throw new Error(
-        "Trying to access templates API without project id. This is an unexpected error state."
-      );
-    }
-    remoteUserDefinedTemplates = await getRemoteUserTemplates(
-      apiClient,
-      project.id
-    );
-  }
+  const remoteUserDefinedTemplates: UserDefinedTemplate[] =
+    !editorContext.disableCustomTemplates
+      ? await editorContext.backend.templates.getAll()
+      : [];
 
   return getTemplatesInternal(
     editorContext,

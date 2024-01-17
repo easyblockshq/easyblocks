@@ -4,18 +4,13 @@ import {
   CompilationMetadata,
   ComponentConfig,
   Config,
-  ContextParams,
-  DocumentWithResolvedConfigDTO,
-  EditorLauncherProps,
+  Document,
   ExternalData,
   ExternalDataChangeHandler,
   ExternalReference,
   ExternalTypeDefinition,
   FetchOutputResources,
-  IApiClient,
   InlineTypeWidgetComponentProps,
-  Locale,
-  LocalisedDocument,
   NonEmptyRenderableContent,
   Template,
   TokenTypeWidgetComponentProps,
@@ -42,7 +37,8 @@ import {
   traverseComponents,
 } from "@easyblocks/core/_internals";
 import { SSColors, SSFonts, useToaster } from "@easyblocks/design-system";
-import { assertDefined, dotNotationGet } from "@easyblocks/utils";
+import { dotNotationGet } from "@easyblocks/utils";
+
 import React, {
   ComponentType,
   memo,
@@ -69,12 +65,6 @@ import {
   removeItems,
   replaceItems,
 } from "./editorActions";
-import {
-  ApiClientProvider,
-  useApiClient,
-} from "./infrastructure/ApiClientProvider";
-import { createApiClient } from "./infrastructure/createApiClient";
-import { ProjectsApiService } from "./infrastructure/projectsApiService";
 import { destinationResolver } from "./paste/destinationResolver";
 import { pasteManager } from "./paste/manager";
 import { SelectionFrame } from "./selectionFrame/SelectionFrame";
@@ -91,6 +81,7 @@ import { useDataSaver } from "./useDataSaver";
 import { useEditorHistory } from "./useEditorHistory";
 import { checkLocalesCorrectness } from "./utils/locales/checkLocalesCorrectness";
 import { removeLocalizedFlag } from "./utils/locales/removeLocalizedFlag";
+import { getDefaultLocale } from "@easyblocks/core";
 
 const ContentContainer = styled.div`
   position: relative;
@@ -164,122 +155,18 @@ const AuthenticationScreen = styled.div`
   ${SSFonts.bodyLarge}
 `;
 
-type EditorContainerProps = {
+type EditorProps = {
   config: Config;
-  contextParams: ContextParams;
-  locales: Locale[];
-  mode: "app" | "playground";
+  locale?: string;
+  readOnly: boolean;
   documentId: string | null;
-  documentType: NonNullable<EditorLauncherProps["documentType"]>;
-  configs?: CMSInput;
+  documentType?: string;
   save?: (
     contentPiece: CMSInput,
     externals: ExternalReference[]
   ) => Promise<void>;
   onClose?: () => void;
-  container?: HTMLElement;
-  heightMode?: "viewport" | "parent";
-  canvasUrl?: string;
   externalData: FetchOutputResources;
-  onExternalDataChange: ExternalDataChangeHandler;
-  widgets?: Record<
-    string,
-    | ComponentType<WidgetComponentProps<any>>
-    | ComponentType<InlineTypeWidgetComponentProps<any>>
-  >;
-};
-
-function EditorContainer(props: EditorContainerProps) {
-  const [enabled, setEnabled] = useState<boolean>(false);
-  const [error, setError] = useState<string | undefined>(undefined);
-  const [project, setProject] = useState<
-    EditorContextType["project"] | undefined
-  >(undefined);
-  const [apiClient] = useState(() => createApiClient(props.config.accessToken));
-
-  const isPlayground = props.mode === "playground";
-
-  useEffect(() => {
-    async function handleAccessTokenAuthorization() {
-      const projectsApiService = new ProjectsApiService(apiClient);
-      const projects = await projectsApiService.getProjects();
-
-      if (projects.length === 0) {
-        setError(
-          "Authorization error. Have you provided a correct access token?"
-        );
-        return;
-      }
-
-      if (projects[0].tokens.length > 0) {
-        setProject({
-          ...projects[0],
-          token: projects[0].tokens[0],
-        });
-      }
-
-      setEnabled(true);
-    }
-
-    if (enabled) {
-      return;
-    }
-
-    if (isPlayground) {
-      console.debug(`Opening Easyblocks in playground mode.`);
-    } else {
-      console.debug(
-        `Opening Easyblocks with access token: ${props.config.accessToken}`
-      );
-    }
-
-    handleAccessTokenAuthorization();
-  }, [apiClient, enabled, isPlayground, props.config.accessToken]);
-
-  if (!enabled || !project) {
-    return <AuthenticationScreen>Loading...</AuthenticationScreen>;
-  }
-
-  if (error) {
-    return <AuthenticationScreen>{error}</AuthenticationScreen>;
-  }
-
-  return (
-    <ApiClientProvider apiClient={apiClient}>
-      <Editor
-        {...props}
-        locales={props.locales}
-        contextParams={props.contextParams}
-        documentId={props.documentId}
-        isPlayground={isPlayground}
-        documentType={props.documentType}
-        project={project}
-        isEnabled={enabled}
-      />
-    </ApiClientProvider>
-  );
-}
-
-export type EditorProps = {
-  configs?: CMSInput;
-  save?: (
-    localisedDocument: LocalisedDocument,
-    externals: ExternalReference[]
-  ) => Promise<void>;
-  locales: Locale[];
-  config: Config;
-  contextParams: ContextParams;
-  onClose?: () => void;
-  documentType: NonNullable<EditorLauncherProps["documentType"]>;
-  container?: HTMLElement;
-  heightMode?: "viewport" | "parent";
-  canvasUrl?: string;
-  isEnabled: boolean;
-  project: EditorContextType["project"];
-  uniqueSourceIdentifier?: string;
-  isPlayground: boolean;
-  documentId: string | null;
-  externalData: ExternalData;
   onExternalDataChange: ExternalDataChangeHandler;
   widgets?: Record<
     string,
@@ -289,83 +176,108 @@ export type EditorProps = {
   >;
 };
 
-const Editor = memo((props: EditorProps) => {
-  const [fetchError, setFetchError] = useState<string | null>(null);
-  const [resolvedInput, setResolvedInput] = useState<{
-    config: ComponentConfig;
-    document: DocumentWithResolvedConfigDTO | null;
-  } | null>(null);
-  const apiClient = useApiClient();
+export const Editor = EditorBackendInitializer;
 
-  const compilationContext = createCompilationContext(
-    props.config,
-    props.contextParams,
-    props.documentType
-  );
+export function EditorBackendInitializer(props: EditorProps) {
+  const [enabled, setEnabled] = useState<boolean>(false);
+  const [error, setError] = useState<string | undefined>(undefined);
+  const [document, setDocument] = useState<Document | null>(null);
 
   useEffect(() => {
-    (async () => {
-      if (!props.isEnabled) {
+    async function run() {
+      try {
+        await props.config.backend.init?.();
+
+        if (props.documentId) {
+          const document = await props.config.backend.documents.get({
+            id: props.documentId,
+          });
+
+          if (!document) {
+            throw new Error(
+              `Can't fetch document with id: ${props.documentId}`
+            );
+          }
+
+          setDocument(document);
+        }
+      } catch (error) {
+        console.error(error);
+        setError(
+          `Backend initialization error, check out console for more details.`
+        );
         return;
       }
 
-      try {
-        const resolvedInput = props.documentId
-          ? await resolveDocumentId(
-              props.documentId,
-              props.project,
-              apiClient,
-              compilationContext
-            )
-          : getDefaultInput({
-              documentType: props.documentType,
-              compilationContext,
-            });
+      setEnabled(true);
+    }
 
-        setResolvedInput(resolvedInput);
-      } catch (error) {
-        console.error(error);
+    run();
+  }, []);
 
-        if (error instanceof Error) {
-          setFetchError(error.message);
-        }
-      }
-    })();
-  }, [props.isEnabled, props.configs]);
-
-  // Validation of locales, thanks to this we're sure that locales are properly set up
-  if (!props.locales.find((l) => l.code === props.contextParams.locale)) {
-    throw new Error(
-      `Can't open editor with this locale: ${props.contextParams.locale}`
-    );
+  if (!enabled) {
+    return <AuthenticationScreen>Loading...</AuthenticationScreen>;
   }
 
-  checkLocalesCorrectness(props.locales); // very important to check locales correctness, circular references etc. Other functions
-
-  if (fetchError) {
+  if (error) {
     return (
       <DataSaverRoot>
         <DataSaverOverlay></DataSaverOverlay>
-        <DataSaverModal>{fetchError}</DataSaverModal>
+        <DataSaverModal>{error}</DataSaverModal>
       </DataSaverRoot>
     );
   }
 
-  return resolvedInput === null || !props.isEnabled ? null : (
-    <EditorContent
-      {...props}
-      compilationContext={compilationContext}
-      initialDocument={resolvedInput.document}
-      initialConfig={resolvedInput.config}
-    />
-  );
-});
+  return <EditorWrapper {...props} document={document} />;
+}
+
+const EditorWrapper = memo(
+  (props: EditorProps & { document: Document | null }) => {
+    // Find document type
+    const documentType = getDocumentType(
+      {
+        fromParams: props.documentType,
+        fromDocument: props.document?.type ?? undefined,
+      },
+      Object.keys(props.config.documentTypes ?? {})
+    );
+
+    // Locales
+    if (!props.config.locales) {
+      throw new Error("Required property config.locales is empty");
+    }
+
+    checkLocalesCorrectness(props.config.locales); // very important to check locales correctness, circular references etc. Other functions
+    const locale = props.locale ?? getDefaultLocale(props.config.locales).code;
+
+    const compilationContext = createCompilationContext(
+      props.config,
+      {
+        locale,
+      },
+      documentType
+    );
+
+    const initialEntry = props.document
+      ? adaptRemoteConfig(props.document.entry, compilationContext)
+      : getDefaultEntry(compilationContext);
+
+    return (
+      <EditorContent
+        {...props}
+        compilationContext={compilationContext}
+        initialDocument={props.document}
+        initialEntry={initialEntry}
+      />
+    );
+  }
+);
 
 type EditorContentProps = EditorProps & {
   compilationContext: CompilationContextType;
-  initialDocument: DocumentWithResolvedConfigDTO | null;
-  initialConfig: ComponentConfig;
-  isPlayground: boolean;
+  initialDocument: Document | null;
+  initialEntry: ComponentConfig;
+  heightMode?: "viewport" | "full";
 };
 
 function parseExternalDataId(externalDataId: string): {
@@ -385,9 +297,7 @@ function parseExternalDataId(externalDataId: string): {
 function useBuiltContent(
   editorContext: EditorContextType,
   config: Config,
-  contextParams: ContextParams,
   rawContent: ComponentConfig,
-  documentType: string,
   externalData: ExternalData,
   onExternalDataChange: ExternalDataChangeHandler
 ): NonEmptyRenderableContent & {
@@ -431,8 +341,8 @@ function useBuiltContent(
       entry: rawContent,
       config,
       contextParams: {
-        locale: contextParams.locale,
-        rootContainer: documentType,
+        ...editorContext.contextParams,
+        rootContainer: editorContext.activeDocumentType.id,
       },
       externalData,
       compiler: {
@@ -442,7 +352,7 @@ function useBuiltContent(
           let resultMeta: CompilationMetadata = {
             vars: {
               devices: editorContext.devices,
-              locale: contextParams.locale,
+              locale: editorContext.contextParams.locale,
               definitions: {
                 actions: [],
                 components: [],
@@ -516,7 +426,7 @@ function useBuiltContent(
     if (Object.keys(buildEntryResult.current.externalData).length > 0) {
       onExternalDataChange(
         buildEntryResult.current.externalData,
-        contextParams
+        editorContext.contextParams
       );
     }
   }
@@ -538,15 +448,11 @@ const EditorContent = ({
   compilationContext,
   heightMode = "viewport",
   initialDocument,
-  initialConfig,
-  uniqueSourceIdentifier,
-  isPlayground,
+  initialEntry,
   documentType,
   externalData,
   ...props
 }: EditorContentProps) => {
-  const apiClient = useApiClient();
-
   const [breakpointIndex, setBreakpointIndex] = useState(
     compilationContext.mainBreakpointIndex
   );
@@ -588,7 +494,7 @@ const EditorContent = ({
     id: "easyblocks-editor",
     label: "Edit entry",
     fields: [],
-    initialValues: initialConfig,
+    initialValues: initialEntry,
     onSubmit: async () => {},
   });
 
@@ -708,13 +614,12 @@ const EditorContent = ({
   const [isFullScreen, setFullScreen] = useState(false);
 
   const syncTemplates = () => {
-    getTemplates(
-      editorContext,
-      apiClient,
-      (props.config.templates as Array<any>) ?? []
-    ).then((newTemplates) => {
-      setTemplates(newTemplates);
-    });
+    // @ts-expect-error
+    getTemplates(editorContext, props.config.templates ?? []).then(
+      (newTemplates) => {
+        setTemplates(newTemplates);
+      }
+    );
   };
 
   useEffect(() => {
@@ -751,6 +656,7 @@ const EditorContent = ({
 
   const editorContext: EditorContextType = {
     ...compilationContext,
+    backend: props.config.backend,
     types: editorTypes,
     isAdminMode,
     templates,
@@ -771,15 +677,10 @@ const EditorContent = ({
         document: documentData,
       });
     },
-    text: undefined,
-    locales: props.locales,
     resources: [],
     compilationCache: compilationCache.current,
-    project: props.project,
-    isPlayground,
-    activeDocumentType: assertDefined(
-      compilationContext.documentTypes.find((r) => r.id === documentType)
-    ),
+    // project: props.project,
+    readOnly: props.readOnly,
     disableCustomTemplates: props.config.disableCustomTemplates ?? false,
     isFullScreen,
   };
@@ -791,12 +692,7 @@ const EditorContent = ({
   const { configAfterAuto, renderableContent, meta } = useBuiltContent(
     editorContext,
     props.config,
-    {
-      ...props.contextParams,
-      isEditing,
-    },
     editableData,
-    documentType,
     externalData,
     props.onExternalDataChange
   );
@@ -821,7 +717,7 @@ const EditorContent = ({
 
   useEffect(() => {
     push({
-      config: initialConfig,
+      config: initialEntry,
       focussedField: [],
     });
   }, []);
@@ -946,11 +842,7 @@ const EditorContent = ({
 
   useEditorGlobalKeyboardShortcuts(editorContext);
 
-  const { saveNow } = useDataSaver(
-    initialDocument,
-    uniqueSourceIdentifier,
-    editorContext
-  );
+  const { saveNow } = useDataSaver(initialDocument, editorContext);
 
   const { height, scaleFactor, width, iframeContainerRef } = useIframeSize({
     isScalingEnabled: !isFullScreen && isEditing,
@@ -1022,6 +914,7 @@ const EditorContent = ({
                 setAdminMode(val);
               }}
               hideCloseButton={props.config.hideCloseButton ?? false}
+              readOnly={editorContext.readOnly}
             />
             <SidebarAndContentContainer height={appHeight}>
               <ContentContainer
@@ -1039,7 +932,6 @@ const EditorContent = ({
                   width={width}
                   containerRef={iframeContainerRef}
                   margin={heightMode === "viewport" ? 0 : 100}
-                  url={props.canvasUrl}
                 />
                 {isEditing && (
                   <SelectionFrame
@@ -1067,6 +959,7 @@ const EditorContent = ({
                 onClose={() => {
                   setOpenTemplateModalAction(undefined);
                 }}
+                backend={editorContext.backend}
               />
             )}
           </EditorExternalDataProvider>
@@ -1075,9 +968,6 @@ const EditorContent = ({
     </div>
   );
 };
-
-export { EditorContainer as Editor, EditorContent };
-export type { EditorContentProps };
 
 function ensureDocumentDataWidgetForTypes(editorContext: EditorContextType) {
   const documentParamsTypes = editorContext.activeDocumentType.schema!.map(
@@ -1183,19 +1073,11 @@ function useIframeSize({
   };
 }
 
-function getDefaultInput({
-  documentType,
-  compilationContext,
-}: {
-  documentType: EditorLauncherProps["documentType"];
-  compilationContext: CompilationContextType;
-}): {
-  config: ComponentConfig;
-  document: DocumentWithResolvedConfigDTO | null;
-} {
-  const documentTypeDefaultConfig = compilationContext.documentTypes.find(
-    (r) => r.id === documentType
-  )?.entry;
+function getDefaultEntry(
+  compilationContext: CompilationContextType
+): ComponentConfig {
+  const documentType = compilationContext.activeDocumentType;
+  const documentTypeDefaultConfig = documentType.entry;
 
   if (!documentTypeDefaultConfig) {
     throw new Error(
@@ -1219,45 +1101,7 @@ function getDefaultInput({
     compilationContext
   );
 
-  return {
-    config: defaultConfig,
-    document: null,
-  };
-}
-
-async function resolveDocumentId(
-  documentId: string,
-  project: EditorProps["project"],
-  apiClient: IApiClient,
-  compilationContext: CompilationContextType
-): Promise<{
-  config: ComponentConfig;
-  document: DocumentWithResolvedConfigDTO | null;
-}> {
-  if (!project) {
-    throw new Error("Project is required to open editor with remote document");
-  }
-
-  const remoteDocument = await apiClient.documents.getDocumentById({
-    documentId,
-    projectId: project.id,
-  });
-
-  if (!remoteDocument) {
-    throw new Error(
-      `Document with given id doesn't exist for project with id: ${project.id}`
-    );
-  }
-
-  remoteDocument.config.config = adaptRemoteConfig(
-    remoteDocument.config.config,
-    compilationContext
-  );
-
-  return {
-    config: remoteDocument.config.config,
-    document: remoteDocument,
-  };
+  return defaultConfig;
 }
 
 function adaptRemoteConfig(
@@ -1358,4 +1202,56 @@ export function findConfigById(
   });
 
   return foundConfig;
+}
+
+function getDocumentType(
+  documentTypeIds: { fromDocument?: string; fromParams?: string },
+  allDocumentTypeIds: string[]
+): string {
+  let documentTypeFromDocument: string | undefined = undefined;
+
+  if (documentTypeIds.fromDocument) {
+    documentTypeFromDocument = allDocumentTypeIds.find(
+      (key) => key === documentTypeIds.fromDocument
+    );
+    if (!documentTypeFromDocument) {
+      throw new Error(
+        `Opened document type "${documentTypeIds.fromDocument}" doesn't exist in config.documentTypes`
+      );
+    }
+  }
+
+  let documentTypeFromParams: string | undefined = undefined;
+
+  if (documentTypeIds.fromParams) {
+    documentTypeFromParams = allDocumentTypeIds.find(
+      (key) => key === documentTypeIds.fromParams
+    );
+    if (!documentTypeFromParams) {
+      throw new Error(
+        `documentType param "${documentTypeIds.fromParams}" doesn't exist in config.documentTypes`
+      );
+    }
+  }
+
+  let activeDocumentType: string | undefined = undefined;
+
+  if (documentTypeFromDocument && documentTypeFromParams) {
+    if (documentTypeFromDocument !== documentTypeFromParams) {
+      console.warn(
+        `The type of the opened document "${documentTypeFromDocument}" is different from documentType param "${documentTypeFromParams}" passed to the editor.`
+      );
+    }
+    activeDocumentType = documentTypeFromDocument;
+  } else if (documentTypeFromDocument && !documentTypeFromParams) {
+    activeDocumentType = documentTypeFromDocument;
+  } else if (!documentTypeFromDocument && documentTypeFromParams) {
+    activeDocumentType = documentTypeFromParams;
+  } else {
+    throw new Error(
+      `When you create a new document you must pass documentType parameter to the editor`
+    );
+  }
+
+  return activeDocumentType;
 }

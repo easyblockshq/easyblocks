@@ -14,7 +14,6 @@ interface EditorIframeWrapperProps {
   isFullScreen: boolean;
   isEditing: boolean;
   margin: number;
-  url?: string;
 }
 
 const EditorIframe = forwardRef<HTMLIFrameElement, EditorIframeWrapperProps>(
@@ -29,7 +28,6 @@ const EditorIframe = forwardRef<HTMLIFrameElement, EditorIframeWrapperProps>(
       isEditing,
       containerRef,
       margin,
-      url,
     },
     ref
   ) => {
@@ -72,7 +70,7 @@ const EditorIframe = forwardRef<HTMLIFrameElement, EditorIframeWrapperProps>(
               width={isFullScreenModeEnabled ? "100%" : `${width}px`}
               height={isFullScreenModeEnabled ? "100%" : `${height}px`}
               scaleFactor={scaleFactor}
-              src={url ?? window.location.href}
+              src={window.location.href}
               margin={margin}
             />
           </IframeInnerContainer>

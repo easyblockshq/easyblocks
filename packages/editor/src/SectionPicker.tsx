@@ -204,7 +204,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
 
         <div></div>
 
-        {template.isUserDefined && (
+        {template.isUserDefined && !editorContext.readOnly && (
           <SSButtonGhostColor
             className={"editButton"}
             onClick={() => {

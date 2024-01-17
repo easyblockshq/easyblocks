@@ -1710,7 +1710,7 @@ describe("useDataSaver", () => {
         ],
       });
 
-      editorContext.isPlayground = true;
+      editorContext.readOnly = true;
 
       renderUseDataSaverHook({
         editorContext,

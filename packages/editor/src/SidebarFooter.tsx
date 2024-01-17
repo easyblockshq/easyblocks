@@ -52,7 +52,7 @@ export function SidebarFooter(props: { paths: string[] }) {
 
   const showSaveAsTemplate =
     isSaveable &&
-    !editorContext.isPlayground &&
+    !editorContext.readOnly &&
     !editorContext.disableCustomTemplates;
 
   return (

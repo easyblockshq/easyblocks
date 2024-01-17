@@ -38,6 +38,7 @@ export const bannerSectionDefinition: NoCodeComponentDefinition<
   id: "BannerSection",
   label: "Banner Section",
   type: "section",
+  allowSave: true,
   schema: [
     {
       prop: "TEST urlResponsive",
