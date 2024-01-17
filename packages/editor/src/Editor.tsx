@@ -1087,7 +1087,9 @@ function ensureDocumentDataWidgetForTypes(editorContext: EditorContextType) {
     new Set([
       "text",
       ...Object.keys(editorContext.types).filter(
-        (t) => !documentParamsTypes.includes(t)
+        (t) =>
+          !documentParamsTypes.includes(t) &&
+          editorContext.types[t].type === "external"
       ),
     ])
   );
