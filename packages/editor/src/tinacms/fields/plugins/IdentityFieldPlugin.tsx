@@ -44,7 +44,6 @@ function IdentityField({ input, field }: IdentityFieldProps) {
   const parentSchemaProp = parentComponentDefinition?.schema.find(
     (schemaProp) => schemaProp.prop === parent!.fieldName
   );
-  const rootComponentId = editorContext.activeDocumentType.entry._template;
 
   const isNonRemovable =
     (componentDefinition?.id.startsWith("@easyblocks/rich-text") &&
@@ -56,7 +55,7 @@ function IdentityField({ input, field }: IdentityFieldProps) {
 
   const isNonChangable =
     componentDefinition?.id === "@easyblocks/rich-text-part" ||
-    componentDefinition?.id === rootComponentId;
+    componentDefinition?.id === editorContext.rootComponent.id;
 
   function handleChangeComponentType() {
     if (isNonChangable) {
@@ -134,11 +133,7 @@ function IdentityField({ input, field }: IdentityFieldProps) {
           font-weight: 700;
         `}
       >
-        {componentDefinition?.id === rootComponentId &&
-        editorContext.activeDocumentType
-          ? editorContext.activeDocumentType.label ??
-            `${editorContext.activeDocumentType.id} document template`
-          : componentDefinition?.label ?? componentDefinition?.id}
+        {componentDefinition?.label ?? componentDefinition?.id}
       </Typography>
       {!isNonChangable && <SSIcons.ChevronDown size={16} />}
     </div>

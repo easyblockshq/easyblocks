@@ -12,19 +12,21 @@ function CanvasRoot(props: CanvasRootProps) {
 
   useEditorGlobalKeyboardShortcuts(editorContext);
 
-  const documentType: CompilationDocumentType | undefined =
-    editorContext.documentTypes.find(
-      (container: CompilationDocumentType) =>
-        container.id === editorContext.documentType
-    );
+  // const documentType: CompilationDocumentType | undefined =
+  //   editorContext.documentTypes.find(
+  //     (container: CompilationDocumentType) =>
+  //       container.id === editorContext.documentType
+  //   );
+  //
+  // const rootInlineStyle =
+  //   !editorContext.isFullScreen && documentType?.widths
+  //     ? {
+  //         maxWidth: documentType.widths[editorContext.breakpointIndex],
+  //         margin: "0 auto",
+  //       }
+  //     : undefined;
 
-  const rootInlineStyle =
-    !editorContext.isFullScreen && documentType?.widths
-      ? {
-          maxWidth: documentType.widths[editorContext.breakpointIndex],
-          margin: "0 auto",
-        }
-      : undefined;
+  const rootInlineStyle = {};
 
   return (
     <div

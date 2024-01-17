@@ -195,7 +195,7 @@ export class EasyblocksBackend implements Backend {
           body: {
             title: "Untitled",
             config: payload.entry,
-            rootContainer: payload.type,
+            rootContainer: payload.entry._template,
           },
         }
       );
@@ -355,7 +355,7 @@ function documentDTOToDocument(
   return {
     id: documentDTO.id,
     version: documentDTO.version,
-    type: documentDTO.root_container!,
+
     entry,
   };
 }

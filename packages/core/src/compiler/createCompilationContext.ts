@@ -7,10 +7,10 @@ import {
   CustomTypeDefinition,
   DocumentType,
   Devices,
-  ExternalSchemaProp,
   NoCodeComponentDefinition,
   ResponsiveValue,
   Spacing,
+  SchemaProp,
 } from "../types";
 import { buildFullTheme } from "./buildFullTheme";
 import { richTextEditableComponent } from "./builtins/$richText/$richText";
@@ -26,7 +26,7 @@ import {
   themeObjectValueToResponsiveValue,
   themeScalarValueToResponsiveValue,
 } from "./themeValueToResponsiveValue";
-import { CompilationContextType, CompilationDocumentType } from "./types";
+import { CompilationContextType } from "./types";
 import { validateColor } from "./validate-color";
 
 function normalizeSpace(
@@ -73,7 +73,7 @@ function prepareDevices(configDevices: Config["devices"]): Devices {
 export function createCompilationContext(
   config: Config,
   contextParams: ContextParams,
-  documentType: string
+  rootComponentId?: string
 ): CompilationContextType {
   const devices = prepareDevices(config.devices);
   const mainDevice = devices.find((x) => x.isMain);
@@ -219,8 +219,6 @@ export function createCompilationContext(
     );
   });
 
-  const documentTypes = buildDocumentTypes(config.documentTypes, devices);
-
   const components: Array<NoCodeComponentDefinition<any, any>> = [
     textEditableComponent,
     richTextEditableComponent,
@@ -241,15 +239,53 @@ export function createCompilationContext(
     },
   ];
 
-  if (config.components) {
-    components.push(...config.components);
+  const rootComponent = (config.components ?? []).find(
+    (component) => component.id === rootComponentId
+  );
+
+  if (!rootComponent) {
+    throw new Error(
+      `createCompilationContext: rootComponentId "${rootComponentId}" doesn't exist in config.components`
+    );
   }
 
-  const activeDocumentType = documentTypes.find((r) => r.id === documentType);
+  const types = {
+    ...createCustomTypes(config.types),
+    ...createBuiltinTypes(),
+  };
 
-  if (!activeDocumentType) {
-    throw new Error(
-      `Document type "${documentType}" doesn't exist in config.documentTypes.`
+  if (config.components) {
+    components.push(
+      ...(config.components ?? []).map((component) => {
+        // For root component with rootParams we should create special param types and move params to schema props
+        if (component.id === rootComponent.id && rootComponent.rootParams) {
+          const paramSchemaProps: SchemaProp[] = [];
+
+          rootComponent.rootParams.forEach((param) => {
+            const typeName = "param__" + param.prop;
+
+            types[typeName] = {
+              type: "external",
+              widgets: param.widgets,
+            };
+
+            paramSchemaProps.push({
+              prop: param.prop,
+              label: param.label,
+              type: typeName,
+              group: "Parameters",
+              optional: true,
+            });
+          });
+
+          return {
+            ...component,
+            schema: [...paramSchemaProps, ...component.schema],
+          };
+        }
+
+        return component;
+      })
     );
   }
 
@@ -265,32 +301,6 @@ export function createCompilationContext(
     throw new Error(
       `You passed locale "${contextParams.locale}" which doesn't exist in your config.locales`
     );
-  }
-
-  if (activeDocumentType.schema) {
-    const rootComponentDefinition = components.find(
-      (c) => c.id === activeDocumentType.entry._template
-    );
-
-    if (!rootComponentDefinition) {
-      throw new Error(
-        `Missing definition for component "${activeDocumentType.entry._template}".`
-      );
-    }
-
-    activeDocumentType.schema.forEach((schemaProp) => {
-      if (
-        !rootComponentDefinition.schema.some((s) => s.prop === schemaProp.prop)
-      ) {
-        const rootExternalSchemaProp: ExternalSchemaProp = {
-          ...schemaProp,
-          group: "Preview data",
-          optional: true,
-        };
-
-        rootComponentDefinition.schema.push(rootExternalSchemaProp);
-      }
-    });
   }
 
   // FIXME
@@ -322,69 +332,16 @@ export function createCompilationContext(
       components,
       textModifiers,
     },
-    types: {
-      ...createCustomTypes(config.types),
-      ...createBuiltinTypes(),
-    },
+    types,
     mainBreakpointIndex: mainDevice.id,
     contextParams,
     locales: config.locales,
-    activeDocumentType,
-    documentTypes,
+    rootComponent,
   };
 
   return compilationContext;
 }
 
-function buildDocumentTypes(
-  documentTypes: Config["documentTypes"],
-  devices: Devices
-): CompilationContextType["documentTypes"] {
-  const resultDocumentTypes: CompilationContextType["documentTypes"] = [];
-
-  if (documentTypes) {
-    for (const [id, documentType] of Object.entries(documentTypes)) {
-      const resultDocumentType: CompilationDocumentType = {
-        id,
-        label: documentType.label,
-        entry: documentType.entry,
-        schema: documentType.schema,
-        widths: buildDocumentTypesWidths(id, documentType, devices),
-      };
-
-      resultDocumentTypes.push(resultDocumentType);
-    }
-  }
-
-  return resultDocumentTypes;
-}
-
-function buildDocumentTypesWidths(
-  id: string,
-  documentType: DocumentType,
-  devices: Devices
-) {
-  let widths: CompilationDocumentType["widths"];
-
-  if (documentType.widths) {
-    if (documentType.widths.length !== devices.length) {
-      throw new Error(
-        `Invalid number of widths for document type "${id}". Expected ${devices.length} widths, got ${documentType.widths.length}.`
-      );
-    }
-
-    widths = Object.fromEntries(
-      documentType.widths.map((containerWidth, index) => {
-        const currentDevice = devices[index];
-        return [currentDevice.id, Math.min(containerWidth, currentDevice.w)];
-      })
-    );
-  } else {
-    widths = Object.fromEntries(devices.map((device) => [device.id, device.w]));
-  }
-
-  return widths;
-}
 function createCustomTypes(
   types: Record<string, CustomTypeDefinition> | undefined
 ): Record<string, CustomTypeDefinition> {

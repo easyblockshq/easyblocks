@@ -29,7 +29,7 @@ export const findExternals: CompilerModule["findExternals"] = (
   const compilationContext = createCompilationContext(
     config,
     contextParams,
-    contextParams.rootContainer
+    input._template
   );
   const normalizedConfig = normalize(inputConfigComponent, compilationContext);
 

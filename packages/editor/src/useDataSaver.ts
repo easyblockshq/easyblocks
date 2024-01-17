@@ -69,11 +69,10 @@ export function useDataSaver(
         return;
       }
 
-      console.log("change detected! -> save");
+      console.log("change detected! -> create");
 
       const newDocument = await editorContext.backend.documents.create({
         entry: configToSaveWithLocalisedFlag,
-        type: editorContext.activeDocumentType.id,
       });
 
       remoteDocument.current = {
@@ -136,7 +135,7 @@ export function useDataSaver(
           console.log("no local changes -> bye");
           // Let's do nothing, no remote and local change
         } else {
-          console.log("updating the document");
+          console.log("updating the document", remoteDocument.current.id);
 
           const updatedDocument = await editorContext.backend.documents.update({
             id: remoteDocument.current.id,

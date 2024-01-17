@@ -12,7 +12,10 @@ import { buttonComponentDefinition } from "./components/Button/Button.definition
 import { buttonGroupDefinition } from "./components/ButtonGroup/ButtonGroup.definition";
 import { gridComponentDefinition } from "./components/Grid/Grid.definition";
 import { imageComponentDefinition } from "./components/Image/Image.definition";
-import { rootSectionStackDefinition } from "./components/RootSectionStack/RootSectionStack.definition";
+import {
+  productPageDefinition,
+  standardPageDefinition,
+} from "./components/RootSectionStack/RootSectionStack.definition";
 import { solidColorComponentDefinition } from "./components/SolidColor/SolidColor.definition";
 import { stackComponentDefinition } from "./components/Stack/Stack.definition";
 import { twoCardsComponentDefinition } from "./components/TwoCards/TwoCards.definition";
@@ -40,36 +43,9 @@ export const easyblocksConfig: Config = {
       fallback: "en-US",
     },
   ],
-  documentTypes: {
-    content: {
-      label: "Content document template",
-      entry: {
-        _template: "RootSectionStack",
-        data: [],
-      },
-    },
-    product: {
-      label: "Product document template",
-      entry: {
-        _template: "RootSectionStack",
-        data: [],
-      },
-      schema: [
-        {
-          prop: "product",
-          label: "Product",
-          type: "product",
-        },
-        {
-          prop: "fallbackProduct",
-          label: "Fallback product",
-          type: "product",
-        },
-      ],
-    },
-  },
   components: [
-    rootSectionStackDefinition,
+    productPageDefinition,
+    standardPageDefinition,
     gridComponentDefinition,
     buttonGroupDefinition,
     imageComponentDefinition,

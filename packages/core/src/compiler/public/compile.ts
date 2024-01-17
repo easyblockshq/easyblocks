@@ -2,7 +2,6 @@ import { mergeCompilationMeta } from "../mergeCompilationMeta";
 import { CompilationMetadata, CompilerModule } from "../../types";
 import { compileInternal } from "../compileInternal";
 import { createCompilationContext } from "../createCompilationContext";
-import { getRootContainer } from "../getRootContainer";
 import { normalizeInput } from "../normalizeInput";
 
 export const compile: CompilerModule["compile"] = (
@@ -16,18 +15,11 @@ export const compile: CompilerModule["compile"] = (
     code: {},
   };
 
-  const documentType = getRootContainer(content, contextParams);
   const compilationContext = createCompilationContext(
     config,
     contextParams,
-    documentType
+    content._template
   );
-
-  if (!content) {
-    content = compilationContext.documentTypes.find(
-      (c) => c.id === documentType
-    )?.entry;
-  }
 
   const inputConfigComponent = normalizeInput(content);
 

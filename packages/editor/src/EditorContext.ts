@@ -18,6 +18,7 @@ import {
   EditorContextType as BaseEditorContextType,
   CompilationCache,
   InternalAnyField,
+  InternalComponentDefinition,
 } from "@easyblocks/core/_internals";
 import React, { ComponentType, useContext } from "react";
 import { ActionsType } from "./types";

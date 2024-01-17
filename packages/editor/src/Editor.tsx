@@ -37,7 +37,7 @@ import {
   traverseComponents,
 } from "@easyblocks/core/_internals";
 import { SSColors, SSFonts, useToaster } from "@easyblocks/design-system";
-import { dotNotationGet } from "@easyblocks/utils";
+import { dotNotationGet, uniqueId } from "@easyblocks/utils";
 
 import React, {
   ComponentType,
@@ -160,7 +160,7 @@ type EditorProps = {
   locale?: string;
   readOnly: boolean;
   documentId: string | null;
-  documentType?: string;
+  rootComponentId?: string;
   save?: (
     contentPiece: CMSInput,
     externals: ExternalReference[]
@@ -233,14 +233,23 @@ export function EditorBackendInitializer(props: EditorProps) {
 
 const EditorWrapper = memo(
   (props: EditorProps & { document: Document | null }) => {
-    // Find document type
-    const documentType = getDocumentType(
-      {
-        fromParams: props.documentType,
-        fromDocument: props.document?.type ?? undefined,
-      },
-      Object.keys(props.config.documentTypes ?? {})
-    );
+    if (!props.document) {
+      if (props.rootComponentId === null) {
+        throw new Error(
+          "When you create a new document you must pass a 'rootContainer' parameter to the editor"
+        );
+      }
+
+      if (
+        !props.config.components?.find(
+          (component) => component.id === props.rootComponentId
+        )
+      ) {
+        throw new Error(
+          `The component given in rootContainer ("${props.rootComponentId}") doesn't exist in Config.components`
+        );
+      }
+    }
 
     // Locales
     if (!props.config.locales) {
@@ -250,17 +259,24 @@ const EditorWrapper = memo(
     checkLocalesCorrectness(props.config.locales); // very important to check locales correctness, circular references etc. Other functions
     const locale = props.locale ?? getDefaultLocale(props.config.locales).code;
 
+    const rootComponentId = props.document
+      ? props.document.entry._template
+      : props.rootComponentId;
+
     const compilationContext = createCompilationContext(
       props.config,
       {
         locale,
       },
-      documentType
+      rootComponentId
     );
 
     const initialEntry = props.document
       ? adaptRemoteConfig(props.document.entry, compilationContext)
-      : getDefaultEntry(compilationContext);
+      : normalize(
+          { _id: uniqueId(), _template: props.rootComponentId! },
+          compilationContext
+        );
 
     return (
       <EditorContent
@@ -342,7 +358,6 @@ function useBuiltContent(
       config,
       contextParams: {
         ...editorContext.contextParams,
-        rootContainer: editorContext.activeDocumentType.id,
       },
       externalData,
       compiler: {
@@ -449,7 +464,6 @@ const EditorContent = ({
   heightMode = "viewport",
   initialDocument,
   initialEntry,
-  documentType,
   externalData,
   ...props
 }: EditorContentProps) => {
@@ -679,13 +693,16 @@ const EditorContent = ({
     },
     resources: [],
     compilationCache: compilationCache.current,
-    // project: props.project,
     readOnly: props.readOnly,
     disableCustomTemplates: props.config.disableCustomTemplates ?? false,
     isFullScreen,
+    rootComponent: findComponentDefinitionById(
+      initialEntry._template,
+      compilationContext
+    )!,
   };
 
-  if (editorContext.activeDocumentType.schema) {
+  if (editorContext.rootComponent.rootParams?.length > 0) {
     ensureDocumentDataWidgetForTypes(editorContext);
   }
 
@@ -1068,37 +1085,6 @@ function useIframeSize({
   };
 }
 
-function getDefaultEntry(
-  compilationContext: CompilationContextType
-): ComponentConfig {
-  const documentType = compilationContext.activeDocumentType;
-  const documentTypeDefaultConfig = documentType.entry;
-
-  if (!documentTypeDefaultConfig) {
-    throw new Error(
-      `Missing default config for document type "${documentType}"`
-    );
-  }
-
-  if (
-    !findComponentDefinitionById(
-      documentTypeDefaultConfig._template,
-      compilationContext
-    )
-  ) {
-    throw new Error(
-      `Missing definition for document type component "${documentTypeDefaultConfig._template}"`
-    );
-  }
-
-  const defaultConfig = normalize(
-    documentTypeDefaultConfig,
-    compilationContext
-  );
-
-  return defaultConfig;
-}
-
 function adaptRemoteConfig(
   config: ComponentConfig,
   compilationContext: CompilationContextType
@@ -1197,56 +1183,4 @@ export function findConfigById(
   });
 
   return foundConfig;
-}
-
-function getDocumentType(
-  documentTypeIds: { fromDocument?: string; fromParams?: string },
-  allDocumentTypeIds: string[]
-): string {
-  let documentTypeFromDocument: string | undefined = undefined;
-
-  if (documentTypeIds.fromDocument) {
-    documentTypeFromDocument = allDocumentTypeIds.find(
-      (key) => key === documentTypeIds.fromDocument
-    );
-    if (!documentTypeFromDocument) {
-      throw new Error(
-        `Opened document type "${documentTypeIds.fromDocument}" doesn't exist in config.documentTypes`
-      );
-    }
-  }
-
-  let documentTypeFromParams: string | undefined = undefined;
-
-  if (documentTypeIds.fromParams) {
-    documentTypeFromParams = allDocumentTypeIds.find(
-      (key) => key === documentTypeIds.fromParams
-    );
-    if (!documentTypeFromParams) {
-      throw new Error(
-        `documentType param "${documentTypeIds.fromParams}" doesn't exist in config.documentTypes`
-      );
-    }
-  }
-
-  let activeDocumentType: string | undefined = undefined;
-
-  if (documentTypeFromDocument && documentTypeFromParams) {
-    if (documentTypeFromDocument !== documentTypeFromParams) {
-      console.warn(
-        `The type of the opened document "${documentTypeFromDocument}" is different from documentType param "${documentTypeFromParams}" passed to the editor.`
-      );
-    }
-    activeDocumentType = documentTypeFromDocument;
-  } else if (documentTypeFromDocument && !documentTypeFromParams) {
-    activeDocumentType = documentTypeFromDocument;
-  } else if (!documentTypeFromDocument && documentTypeFromParams) {
-    activeDocumentType = documentTypeFromParams;
-  } else {
-    throw new Error(
-      `When you create a new document you must pass documentType parameter to the editor`
-    );
-  }
-
-  return activeDocumentType;
 }

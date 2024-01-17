@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export type Document = { id: string; rootContainer: string; updatedAt: number };
+export type Document = { id: string; updatedAt: number };
 
 export const DocumenWidgetInline: React.FC<{
   document?: Document | null;
@@ -25,6 +25,7 @@ export const DocumenWidgetInline: React.FC<{
       }
 
       if (event.data.type === "@easyblocks/content-saved") {
+        console.log("ON SAVE", event.data.document);
         onSave(event.data.document);
       }
     }
@@ -41,12 +42,10 @@ export const DocumenWidgetInline: React.FC<{
 
   // canvas URL must be calculated once
   const [canvasUrl] = useState(() => {
-    const rootContainer = document?.rootContainer ?? "content";
-
-    let canvasUrl = `${window.location.origin}/easyblocks-editor?documentType=${rootContainer}&readOnly=false`;
+    let canvasUrl = `${window.location.origin}/easyblocks-editor?rootComponent=StandardPage&readOnly=false`;
 
     if (document) {
-      canvasUrl += `&documentId=${document.id}`;
+      canvasUrl += `&document=${document.id}`;
     }
 
     return canvasUrl;

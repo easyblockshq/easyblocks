@@ -72,7 +72,7 @@ export function EasyblocksParent(props: EasyblocksParentProps) {
             locale={editorSearchParams.locale ?? undefined}
             readOnly={editorSearchParams.readOnly ?? true}
             documentId={editorSearchParams.documentId}
-            documentType={editorSearchParams.documentType ?? undefined}
+            rootComponentId={editorSearchParams.rootComponentId ?? undefined}
             externalData={props.externalData}
             onExternalDataChange={props.onExternalDataChange}
             widgets={{

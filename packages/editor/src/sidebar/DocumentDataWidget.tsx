@@ -58,9 +58,11 @@ function createDocumentDataWidgetComponent(type: string) {
 
     const { editorContext, externalData } = window.editorWindowAPI;
 
-    const documentExternalLocationKeys = assertDefined(
-      editorContext.activeDocumentType.schema
-    ).map((s) => getExternalReferenceLocationKey("$", s.prop));
+    const schema = editorContext.rootComponent.rootParams;
+
+    const documentExternalLocationKeys = assertDefined(schema).map((s) =>
+      getExternalReferenceLocationKey("$", s.prop)
+    );
 
     const documentCompoundResources = Object.entries(externalData).filter<
       [string, ExternalDataCompoundResourceResolvedResult]
@@ -76,9 +78,7 @@ function createDocumentDataWidgetComponent(type: string) {
       ([externalId, externalDataValue]) =>
         getBasicResourcesOfType(externalDataValue.value, type).map((r) => {
           const resourceSchemaProp = assertDefined(
-            editorContext.activeDocumentType.schema?.find(
-              (s) => s.prop === externalId.split(".")[1]
-            )
+            schema?.find((s) => s.prop === externalId.split(".")[1])
           );
 
           return {

@@ -2,10 +2,12 @@ import {
   ChildComponentEditingInfo,
   EditingField,
   NoCodeComponentDefinition,
+  Config,
 } from "@easyblocks/core";
 import { rootSectionStackStyles } from "./RootSectionStack.styles";
+import { productWidget } from "@/app/easyblocks/externalData/product/productWidget";
 
-export const rootSectionStackDefinition: NoCodeComponentDefinition = {
+const rootSectionStackDefinitionBase: NoCodeComponentDefinition = {
   id: "RootSectionStack",
   styles: rootSectionStackStyles,
   editing: ({ editingInfo }) => {
@@ -71,3 +73,40 @@ export const rootSectionStackDefinition: NoCodeComponentDefinition = {
     },
   ],
 };
+
+function rootSectionStackDefinition(args: {
+  id: string;
+  label?: string;
+  rootParams?: NoCodeComponentDefinition["rootParams"];
+}): NoCodeComponentDefinition {
+  const { id, label, rootParams } = args;
+
+  return {
+    ...rootSectionStackDefinitionBase,
+    id,
+    label,
+    rootParams,
+  };
+}
+
+export const productPageDefinition = rootSectionStackDefinition({
+  id: "ProductPage",
+  label: "Product Page",
+  rootParams: [
+    {
+      prop: "product",
+      label: "Product",
+      widgets: [productWidget],
+    },
+    {
+      prop: "fallbackProduct",
+      label: "Second Product",
+      widgets: [productWidget],
+    },
+  ],
+});
+
+export const standardPageDefinition = rootSectionStackDefinition({
+  id: "StandardPage",
+  label: "Page",
+});

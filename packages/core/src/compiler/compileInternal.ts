@@ -40,15 +40,15 @@ export function compileInternal(
     },
   };
 
-  const activeDocumentType = compilationContext.documentTypes.find(
-    (container) => container.id === compilationContext.documentType
-  );
+  // const activeDocumentType = compilationContext.documentTypes.find(
+  //   (container) => container.id === compilationContext.documentType
+  // );
   const contextProps: ContextProps = {};
 
-  if (activeDocumentType?.widths) {
-    contextProps.$width = activeDocumentType.widths;
-    contextProps.$widthAuto = false;
-  }
+  // if (activeDocumentType?.widths) {
+  //   contextProps.$width = activeDocumentType.widths;
+  //   contextProps.$widthAuto = false;
+  // }
 
   const compilationArtifacts = compileComponent(
     normalizedConfig,

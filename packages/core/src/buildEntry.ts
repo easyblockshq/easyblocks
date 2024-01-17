@@ -17,7 +17,7 @@ import type {
 type BuildEntryOptions = {
   entry: ComponentConfig;
   config: Config;
-  contextParams: { locale: Locale["code"]; rootContainer: string };
+  contextParams: { locale: Locale["code"] };
   compiler: CompilerModule;
   externalData: ExternalData;
   isExternalDataChanged?: (
@@ -55,6 +55,7 @@ function buildEntry({
     config,
     contextParams
   );
+
   const pendingExternalData = findChangedExternalData(
     resourcesWithSchemaProps,
     externalData,

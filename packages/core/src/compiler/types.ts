@@ -11,6 +11,7 @@ import {
   ExternalSchemaProp,
   FieldPortal,
   NoCodeComponentAutoFunction,
+  NoCodeComponentDefinition,
   NoCodeComponentEditingFunction,
   NoCodeComponentStylesFunction,
   RefMap,
@@ -40,8 +41,7 @@ export type CompilationContextType = {
   contextParams: ContextParams;
   strict?: boolean;
   locales: Array<Locale>;
-  activeDocumentType: CompilationDocumentType;
-  documentTypes: Array<CompilationDocumentType>;
+  rootComponent: InternalComponentDefinition;
 };
 
 export type EditableComponentToComponentConfig<
@@ -111,6 +111,7 @@ export type InternalRenderableComponentDefinition<
   styles?: NoCodeComponentStylesFunction<Values, Params>;
   editing?: NoCodeComponentEditingFunction<Values, Params>;
   auto?: NoCodeComponentAutoFunction<Values, Params>;
+  rootParams?: NoCodeComponentDefinition["rootParams"];
 };
 export type InternalActionComponentDefinition = ComponentDefinitionShared;
 
@@ -168,7 +169,6 @@ export type EditorContextType = CompilationContextType & {
   focussedField: Array<string>;
   setFocussedField: (focusedFields: string | Array<string>) => void;
   actions: EditorActions;
-  activeDocumentType: CompilationDocumentType;
   templates?: Template[];
   isFullScreen: boolean;
 };

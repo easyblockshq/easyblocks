@@ -407,16 +407,6 @@ export type LocalizedText = {
   [locale: string]: string;
 };
 
-export type DocumentType = {
-  label?: string;
-  entry: Omit<ComponentConfig, "_id">;
-  widths?: Array<number>;
-  resource?: {
-    type: string;
-  };
-  schema?: Array<ExternalSchemaProp>;
-};
-
 export type NoCodeComponentStylesFunctionInput<
   Values extends Record<string, any> = Record<string, any>,
   Params extends Record<string, any> = Record<string, any>
@@ -489,6 +479,12 @@ export type NoCodeComponentAutoFunction<
   }
 ) => any;
 
+export type RootParameter = {
+  prop: string;
+  label: string;
+  widgets: Array<Widget>;
+};
+
 export type NoCodeComponentDefinition<
   Values extends Record<string, any> = Record<string, any>,
   Params extends Record<string, any> = Record<string, any>
@@ -508,6 +504,7 @@ export type NoCodeComponentDefinition<
     externalData: ExternalData;
   }) => SidebarPreviewVariant | undefined;
   allowSave?: boolean;
+  rootParams?: RootParameter[];
 };
 
 /**
@@ -553,7 +550,6 @@ export type CustomTypeDefinition =
   | ExternalTypeDefinition
   | TokenTypeDefinition;
 
-
 /**
  * Backend types
  */
@@ -561,7 +557,6 @@ export type CustomTypeDefinition =
 export type Document = {
   id: string;
   version: number;
-  type: string;
   entry: ConfigComponent;
 };
 
@@ -604,7 +599,6 @@ export type Config = {
   __masterEnvironment?: boolean;
   strict?: boolean;
   locales?: Array<Locale>;
-  documentTypes?: Record<string, DocumentType>;
   disableCustomTemplates?: boolean;
   hideCloseButton?: boolean;
   templates?: Template[];
@@ -623,7 +617,6 @@ type EditorProps = {
   config: Config;
   contextParams: ContextParams;
   onClose: () => void;
-  documentType: string;
 };
 
 export type EditorLauncherProps = Omit<EditorProps, "config">;
