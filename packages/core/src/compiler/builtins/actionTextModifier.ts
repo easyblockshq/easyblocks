@@ -140,7 +140,7 @@ const actionTextModifier = {
     hoverOpacity,
     hoverOpacityAnimationDuration,
   }: any) => {
-    const styles: Record<string, any> = {
+    let styles: Record<string, any> = {
       textDecoration: "none",
       color: "inherit",
       opacity,
@@ -148,7 +148,8 @@ const actionTextModifier = {
     };
 
     if (underline === "enabled") {
-      const childStyles: Record<string, any> = {
+      styles = {
+        ...styles,
         textDecoration: "underline",
         textDecorationColor: isColorOverwriteEnabled ? color : "currentColor",
         transition: `text-decoration-color ${hoverOpacityAnimationDuration} ${TRANSITION_TIMING_FUNCTION},
@@ -163,21 +164,17 @@ const actionTextModifier = {
 
       const interactiveStyles: Record<string, any> = {
         opacity: hoverOpacity,
-        "& span": {
-          textDecorationColor: interactiveColor,
-        },
       };
 
       if (isColorOverwriteEnabled) {
-        childStyles.color = color;
-        interactiveStyles["& span"].color = interactiveColor;
+        styles.color = color;
       }
 
-      styles["& span"] = childStyles;
-      styles["&:hover"] = interactiveStyles;
+      styles["&:hover"] = interactiveColor;
       styles["&:focus"] = interactiveStyles;
     } else if (underline === "showOnHover") {
-      const childStyles: Record<string, any> = {
+      styles = {
+        ...styles,
         textDecoration: "underline",
         textDecorationColor: "transparent",
         transition: `text-decoration-color ${hoverOpacityAnimationDuration} ${TRANSITION_TIMING_FUNCTION},
@@ -185,27 +182,31 @@ const actionTextModifier = {
       };
 
       if (isColorOverwriteEnabled) {
-        childStyles.color = color;
+        styles.color = color;
       }
 
-      const interactiveStyles: Record<string, any> = {
+      let interactiveStyles: Record<string, any> = {
         opacity: hoverOpacity,
       };
 
       if (isColorOverwriteEnabled || isHoverColorEnabled) {
-        interactiveStyles["& span"] = {
+        interactiveStyles = {
+          ...interactiveStyles,
           color: isHoverColorEnabled ? hoverColor : color,
           textDecorationColor: isHoverColorEnabled ? hoverColor : color,
         };
       } else {
-        interactiveStyles["& span"] = { textDecorationColor: "currentColor" };
+        interactiveStyles = {
+          ...interactiveStyles,
+          textDecorationColor: "currentColor",
+        };
       }
 
-      styles["& span"] = childStyles;
       styles["&:hover"] = interactiveStyles;
       styles["&:focus"] = interactiveStyles;
     } else if (underline === "hideOnHover") {
-      const childStyles: Record<string, any> = {
+      styles = {
+        ...styles,
         textDecoration: "underline",
         textDecorationColor: "currentColor",
         transition: `text-decoration-color ${hoverOpacityAnimationDuration} ${TRANSITION_TIMING_FUNCTION},
@@ -213,22 +214,19 @@ const actionTextModifier = {
       };
 
       if (isColorOverwriteEnabled) {
-        childStyles.color = color;
-        childStyles.textDecorationColor = color;
+        styles.color = color;
+        styles.textDecorationColor = color;
       }
 
       const interactiveStyles: Record<string, any> = {
         opacity: hoverOpacity,
-        "& span": {
-          textDecorationColor: "transparent",
-        },
+        textDecorationColor: "transparent",
       };
 
       if (isHoverColorEnabled) {
-        interactiveStyles["& span"].color = hoverColor;
+        interactiveStyles.color = hoverColor;
       }
 
-      styles["& span"] = childStyles;
       styles["&:hover"] = interactiveStyles;
       styles["&:focus"] = interactiveStyles;
     }
@@ -250,36 +248,5 @@ type StandardActionStylesConfig =
     hoverOpacityAnimationDuration: `${0 | 50 | 100 | 150 | 200}ms`;
   };
 
-function getDefaultActionTextModifier({
-  breakpointIndex,
-}: {
-  breakpointIndex: string;
-}): Omit<StandardActionStylesConfig, "_id"> {
-  return {
-    _template: "$StandardActionStyles",
-    isColorOverwriteEnabled: true,
-    color: {
-      $res: true,
-      [breakpointIndex]: {
-        value: "#0166cc",
-        widgetId: "@easyblocks/color",
-      },
-    },
-    hoverColor: {
-      $res: true,
-      [breakpointIndex]: {
-        tokenId: "black",
-        value: "black",
-        widgetId: "@easyblocks/color",
-      },
-    },
-    isHoverColorEnabled: false,
-    underline: "enabled",
-    opacity: "1",
-    hoverOpacity: "1",
-    hoverOpacityAnimationDuration: "100ms",
-  };
-}
-
-export { actionTextModifier, getDefaultActionTextModifier };
+export { actionTextModifier };
 export type { StandardActionStylesConfig };

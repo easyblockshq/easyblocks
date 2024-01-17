@@ -11,9 +11,11 @@ export interface Text {
   text: string;
   id: string;
   isHighlighted?: boolean;
-  highlightType?: "text" | "wrapper";
+  highlightType?: "text" | "action";
   color: Record<string, any>;
   font: Record<string, any>;
+  action: [ComponentConfig] | [];
+  actionTextModifier: [ComponentConfig] | [];
 }
 
 export interface ParagraphElement {
@@ -25,7 +27,7 @@ export interface ParagraphElement {
 export interface TextLineElement {
   id: string;
   type: "text-line";
-  children: Array<Text | InlineWrapperElement>;
+  children: Array<Text>;
 }
 
 export interface BulletedList {
@@ -43,18 +45,8 @@ export interface NumberedList {
 export interface ListItemElement {
   id: string;
   type: "list-item";
-  children: Array<Text | InlineWrapperElement>;
-}
-
-export interface InlineWrapperElement {
-  id: string;
-  type: "inline-wrapper";
   children: Array<Text>;
-  action: [ComponentConfig] | [];
-  textModifier: [ComponentConfig] | [];
-  actionTextModifier: [ComponentConfig] | [];
 }
-
 export type BlockElement = BulletedList | NumberedList | ParagraphElement;
 
 declare module "slate" {
@@ -65,8 +57,7 @@ declare module "slate" {
       | ListItemElement
       | NumberedList
       | ParagraphElement
-      | TextLineElement
-      | InlineWrapperElement;
+      | TextLineElement;
     Text: Text;
   }
 }

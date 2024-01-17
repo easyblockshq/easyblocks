@@ -41,7 +41,7 @@ export type CompilationContextType = {
   contextParams: ContextParams;
   strict?: boolean;
   locales: Array<Locale>;
-  rootComponent: InternalComponentDefinition;
+  rootComponent: NoCodeComponentDefinition;
 };
 
 export type EditableComponentToComponentConfig<

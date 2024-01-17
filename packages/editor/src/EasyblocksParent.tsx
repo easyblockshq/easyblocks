@@ -30,6 +30,7 @@ export type EasyblocksParentProps = {
     | ComponentType<WidgetComponentProps<any>>
     | ComponentType<InlineTypeWidgetComponentProps<any>>
   >;
+  components?: Record<string, ComponentType<any>>;
 };
 
 const shouldForwardProp: ShouldForwardProp<"web"> = (propName, target) => {
@@ -79,6 +80,7 @@ export function EasyblocksParent(props: EasyblocksParentProps) {
               ...builtinWidgets,
               ...props.widgets,
             }}
+            components={props.components}
           />
         </TooltipProvider>
         <Toaster containerStyle={{ zIndex: 100100 }} />

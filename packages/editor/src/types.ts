@@ -3,8 +3,6 @@ import {
   ComponentConfig,
   ContextParams,
   ExternalReference,
-  LocalisedConfigs,
-  LocalisedDocument,
   LocalizedText,
   Metadata,
   WidgetComponentProps,
@@ -154,8 +152,6 @@ export type EditorWindowAPI = {
   meta: Metadata;
   compiled: CompiledShopstoryComponentConfig;
 };
-
-export type CMSInput = LocalisedDocument | LocalisedConfigs;
 
 export type InternalWidgetComponentProps = Omit<
   WidgetComponentProps,

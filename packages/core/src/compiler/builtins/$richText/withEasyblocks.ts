@@ -1,4 +1,4 @@
-import { deepCompare, keys, last, uniqueId } from "@easyblocks/utils";
+import { deepCompare, keys, uniqueId } from "@easyblocks/utils";
 import {
   Editor,
   NodeEntry,
@@ -8,10 +8,7 @@ import {
   Text,
   Transforms,
 } from "slate";
-import { ComponentConfig } from "../../../types";
-import { InlineWrapperElement } from "./$richText.types";
 import { RichTextBlockElementType } from "./$richTextBlockElement/$richTextBlockElement";
-import { isElementInlineWrapperElement } from "./utils/isElementInlineWrapperElement";
 
 type ComparableText = Pick<Text, "color" | "font">;
 
@@ -26,11 +23,7 @@ const USED_IDS = new Set<string>();
  */
 export const NORMALIZED_IDS_TO_IDS = new Map<string, string>();
 
-function isInline(node: SlateElement): node is InlineWrapperElement {
-  return node.type === "inline-wrapper";
-}
-
-function withShopstory(editor: Editor): Editor {
+function withEasyblocks(editor: Editor): Editor {
   const { insertText, normalizeNode } = editor;
 
   editor.insertText = (text) => {
@@ -45,7 +38,7 @@ function withShopstory(editor: Editor): Editor {
       if (selectedNodeParent) {
         const [parentNode, parentNodePath] = selectedNodeParent;
 
-        if (SlateElement.isElement(parentNode) && isInline(parentNode)) {
+        if (SlateElement.isElement(parentNode) && editor.isInline(parentNode)) {
           const isCursorSetAtTheEnd = Editor.isEnd(
             editor,
             editor.selection.focus,
@@ -70,8 +63,6 @@ function withShopstory(editor: Editor): Editor {
     insertText(text);
   };
 
-  editor.isInline = isInline;
-
   editor.normalizeNode = (entry) => {
     // When copying text content from content editable element, Slate wraps pasted content into top most element.
     // We need to unwrap each block element that is nested within another block element.
@@ -79,19 +70,55 @@ function withShopstory(editor: Editor): Editor {
       return;
     }
 
+    // if (
+    //   (() => {
+    //     const [node, path] = entry;
+
+    //     if (
+    //       SlateElement.isElement(node) &&
+    //       (node.type === "text-line" || node.type === "list-item")
+    //     ) {
+    //       let currentTextChildWithAction: Text | null = null;
+
+    //       for (const [childNode] of SlateNode.texts(editor, {
+    //         from: path,
+    //         to: path,
+    //       })) {
+    //         if (childNode.action.length > 0 && !currentTextChildWithAction) {
+    //           if (currentTextChildWithAction === null) {
+    //             currentTextChildWithAction = childNode;
+    //             continue;
+    //           }
+    //         }
+
+    //         if (childNode.action.length > 0 && currentTextChildWithAction) {
+    //           Transforms.setNodes(editor, {
+    //             color: currentTextChildWithAction.color,
+    //             font: currentTextChildWithAction.font,
+    //           });
+
+    //           return true;
+    //         } else {
+    //           currentTextChildWithAction = null;
+    //         }
+    //       }
+    //     }
+
+    //     return false;
+    //   })()
+    // ) {
+    //   return;
+    // }
+
     // Slate by default compares text elements and merges them, but to compare them it uses strict equality comparison algorithm.
     // We need to compare them using our own algorithm.
     if (mergeVisuallyTheSameOrEmptyTextNodes(editor, entry)) {
       return;
     }
 
-    if (removeEmptyInlineWrappers(editor, entry)) {
-      return;
-    }
-
-    if (normalizeEmptyTextNodesAfterInlineElements(editor, entry)) {
-      return;
-    }
+    // if (normalizeEmptyTextNodesAfterInlineElements(editor, entry)) {
+    //   return;
+    // }
 
     // Rich text and its elements contains collections. Each item of collection should have unique id.
     if (updateNonUniqueIds(editor, entry)) {
@@ -109,7 +136,7 @@ function withShopstory(editor: Editor): Editor {
   return editor;
 }
 
-export { withShopstory };
+export { withEasyblocks };
 
 function unwrapBlockElementsNestedWithinBlockElement(
   editor: Editor,
@@ -188,9 +215,7 @@ function mergeVisuallyTheSameOrEmptyTextNodes(
 
   if (
     SlateElement.isElement(node) &&
-    (node.type === "text-line" ||
-      node.type === "list-item" ||
-      node.type === "inline-wrapper")
+    (node.type === "text-line" || node.type === "list-item")
   ) {
     const textLineChildren = Array.from(SlateNode.children(editor, path));
 
@@ -241,148 +266,65 @@ function mergeVisuallyTheSameOrEmptyTextNodes(
   return false;
 }
 
+// This function might be useful in the future, but right now it's not needed.
+
 // Slate normalization rules states that an inline element cannot be first or last child of block element.
 // Slate during its own normalization will add empty Text nodes before or/and after inline element.
 // Those Text nodes will be missing properties we add during constructing Slate value based on Shopstory config
 // thus it will make compilation error because of missing schema prop values.
-function normalizeEmptyTextNodesAfterInlineElements(
-  editor: Editor,
-  entry: NodeEntry<SlateNode>
-): boolean {
-  const [node, path] = entry;
+// function normalizeEmptyTextNodesAfterInlineElements(
+//   editor: Editor,
+//   entry: NodeEntry<SlateNode>
+// ): boolean {
+//   const [node, path] = entry;
 
-  if (
-    SlateElement.isElement(node) &&
-    (node.type === "text-line" || node.type === "list-item")
-  ) {
-    for (let index = 0; index < node.children.length; index++) {
-      const childNode = node.children[index];
-      const previousNode = node.children[index - 1];
-      const nextNode = node.children[index + 1];
+//   if (
+//     SlateElement.isElement(node) &&
+//     (node.type === "text-line" || node.type === "list-item")
+//   ) {
+//     for (let index = 0; index < node.children.length; index++) {
+//       const childNode = node.children[index];
+//       const previousNode = node.children[index - 1];
+//       const nextNode = node.children[index + 1];
 
-      if (
-        previousNode &&
-        nextNode &&
-        isElementInlineWrapperElement(previousNode) &&
-        isElementInlineWrapperElement(nextNode) &&
-        isInlineWrapperElementEqual(previousNode, nextNode)
-      ) {
-        if (Text.isText(childNode) && childNode.text === "") {
-          Transforms.removeNodes(editor, {
-            at: [...path, index],
-          });
-          return true;
-        }
-      }
+//       if (
+//         previousNode &&
+//         nextNode &&
+//         isElementInlineWrapperElement(previousNode) &&
+//         isElementInlineWrapperElement(nextNode)
+//       ) {
+//         if (Text.isText(childNode) && childNode.text === "") {
+//           Transforms.removeNodes(editor, {
+//             at: [...path, index],
+//           });
+//           return true;
+//         }
+//       }
 
-      if (
-        childNode &&
-        nextNode &&
-        isElementInlineWrapperElement(childNode) &&
-        isElementInlineWrapperElement(nextNode) &&
-        isInlineWrapperElementEqual(childNode, nextNode)
-      ) {
-        const nextNodePath = [...path, index + 1];
+//       if (
+//         childNode &&
+//         nextNode &&
+//         isElementInlineWrapperElement(childNode) &&
+//         isElementInlineWrapperElement(nextNode)
+//       ) {
+//         const nextNodePath = [...path, index + 1];
 
-        Transforms.mergeNodes(editor, {
-          at: nextNodePath,
-        });
+//         Transforms.mergeNodes(editor, {
+//           at: nextNodePath,
+//         });
 
-        return true;
-      }
+//         return true;
+//       }
+//     }
+//   }
 
-      if (isElementInlineWrapperElement(childNode)) {
-        if (previousNode) {
-          const firstWrapperChildTextNode = childNode.children[0];
-
-          if (
-            isEmptyPlainText(previousNode) ||
-            (Text.isText(previousNode) &&
-              previousNode.text === "" &&
-              !deepCompare(previousNode.font, firstWrapperChildTextNode.font))
-          ) {
-            Transforms.setNodes(
-              editor,
-              {
-                id: uniqueId(),
-                action: [],
-                color: firstWrapperChildTextNode.color,
-                font: firstWrapperChildTextNode.font,
-              },
-              {
-                at: [...path, index - 1],
-                match: (node) => Text.isText(node),
-              }
-            );
-
-            return true;
-          }
-        }
-
-        if (nextNode) {
-          const lastWrapperChildTextNode = last(childNode.children);
-
-          if (
-            isEmptyPlainText(nextNode) ||
-            (Text.isText(nextNode) &&
-              nextNode.text === "" &&
-              !deepCompare(nextNode.font, lastWrapperChildTextNode.font))
-          ) {
-            Transforms.setNodes(
-              editor,
-              {
-                id: uniqueId(),
-                action: [],
-                color: lastWrapperChildTextNode.color,
-                font: lastWrapperChildTextNode.font,
-              },
-              {
-                at: [...path, index + 1],
-                match: (node) => Text.isText(node),
-              }
-            );
-
-            return true;
-          }
-        }
-      }
-    }
-  }
-
-  return false;
-}
-
-function removeEmptyInlineWrappers(
-  editor: Editor,
-  entry: NodeEntry<SlateNode>
-) {
-  const [node, path] = entry;
-
-  if (
-    isElementInlineWrapperElement(node) &&
-    node.children.length === 1 &&
-    node.children[0].text === ""
-  ) {
-    Transforms.removeNodes(editor, {
-      at: path,
-      match: isElementInlineWrapperElement,
-    });
-    return true;
-  }
-}
-
-// In Slate's terminology Text node is an object containing `text` string property.
-// In our terminology Text node contains also other properties like color or font.
-function isEmptyPlainText(node: SlateNode): node is Text {
-  return (
-    Text.isText(node) && node.color === undefined && node.font === undefined
-  );
-}
+//   return false;
+// }
 
 function filterNonComparableProperties(obj: Text): ComparableText {
   return keys(obj)
     .filter<keyof ComparableText>((key): key is keyof ComparableText =>
-      ["color", "font", "textModifier"].includes(key)
+      ["color", "font", "textModifier", "action"].includes(key)
     )
     .reduce((filteredObject, currentKey) => {
       filteredObject[currentKey] = obj[currentKey];
@@ -413,70 +355,4 @@ function compareText(text1: Text, text2: Text): boolean {
   }
 
   return areEqual;
-}
-
-const COMPARABLE_INLINE_WRAPPER_PROPERTIES: Array<
-  keyof Pick<
-    InlineWrapperElement,
-    "action" | "actionTextModifier" | "textModifier"
-  >
-> = ["action", "actionTextModifier", "textModifier"];
-
-function isInlineWrapperElementEqual(
-  wrapper1: InlineWrapperElement,
-  wrapper2: InlineWrapperElement
-): boolean {
-  return COMPARABLE_INLINE_WRAPPER_PROPERTIES.every((property) => {
-    if (
-      (property === "textModifier" || property === "actionTextModifier") &&
-      wrapper1[property][0] &&
-      wrapper2[property][0]
-    ) {
-      return compareTextModifiers(
-        wrapper1[property][0]!,
-        wrapper2[property][0]!
-      );
-    }
-
-    if (property === "action" && wrapper1.action[0] && wrapper2.action[0]) {
-      return compareActions(wrapper1.action[0], wrapper2.action[0]);
-    }
-
-    return wrapper1[property][0]?._id === wrapper2[property][0]?._id;
-  });
-}
-function compareTextModifiers(
-  textModifier1: ComponentConfig,
-  textModifier2: ComponentConfig
-): boolean {
-  const { _id: _id1, ...comparableTextModifier1 } = textModifier1;
-  const { _id: _id2, ...comparableTextModifier2 } = textModifier2;
-
-  return deepCompare(comparableTextModifier1, comparableTextModifier2);
-}
-
-function compareActions(action1: ComponentConfig, action2: ComponentConfig) {
-  if (action1._template !== action2._template) {
-    return false;
-  }
-
-  const { _id: id1, ...comparableAction1Properties } = action1;
-  const { _id: id2, ...comparableAction2Properties } = action1;
-
-  if (action1._template === "$StandardLink") {
-    const { url: url1, ...restAction1Properties } = comparableAction1Properties;
-    const { url: url2, ...restAction2Properties } = comparableAction2Properties;
-
-    if (!deepCompare(restAction1Properties, restAction2Properties)) {
-      return false;
-    }
-
-    if (!deepCompare(url1.value, url2.value)) {
-      return false;
-    }
-
-    return true;
-  }
-
-  return deepCompare(comparableAction1Properties, comparableAction2Properties);
 }

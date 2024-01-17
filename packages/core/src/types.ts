@@ -1,7 +1,6 @@
 import { ComponentType, ReactElement } from "react";
 import { PartialDeep } from "type-fest";
 import { Locale } from "./locales";
-import { ConfigComponent } from "../dist";
 
 export type ScalarOrCollection<T> = T | Array<T>;
 
@@ -557,7 +556,7 @@ export type CustomTypeDefinition =
 export type Document = {
   id: string;
   version: number;
-  entry: ConfigComponent;
+  entry: ComponentConfig;
 };
 
 export type Backend = {
@@ -565,13 +564,13 @@ export type Backend = {
   documents: {
     get: (payload: { id: string; locale?: string }) => Promise<Document>;
     create: (payload: Omit<Document, "id" | "version">) => Promise<Document>;
-    update: (payload: Document) => Promise<Document>;
+    update: (payload: Omit<Document, "type">) => Promise<Document>;
   };
   templates: {
     getAll: () => Promise<UserDefinedTemplate[]>;
     create: (payload: {
       label: string;
-      entry: ConfigComponent;
+      entry: ComponentConfig;
       width?: number;
       widthAuto?: boolean;
     }) => Promise<UserDefinedTemplate>;
@@ -885,11 +884,7 @@ export type CompiledCustomComponentConfig = CompiledComponentConfigBase & {
     [key: string]: CompiledActionComponentConfig[];
   };
   components: {
-    [key: string]: (
-      | CompiledShopstoryComponentConfig
-      | CompiledCustomComponentConfig
-      | ReactElement
-    )[];
+    [key: string]: (CompiledComponentConfig | ReactElement)[];
   };
   textModifiers: Record<string, [CompiledTextModifier]>;
   __editing?: EditingInfoBase & {
@@ -913,10 +908,7 @@ export type CompiledShopstoryComponentConfig = CompiledCustomComponentConfig & {
   };
 };
 
-export type CompiledComponentConfig =
-  | CompiledActionComponentConfig
-  | CompiledShopstoryComponentConfig
-  | CompiledCustomComponentConfig;
+export type CompiledComponentConfig = CompiledShopstoryComponentConfig;
 
 export type ComponentPlaceholder = {
   width: number;

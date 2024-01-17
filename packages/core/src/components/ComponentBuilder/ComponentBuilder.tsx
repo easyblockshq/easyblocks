@@ -31,7 +31,6 @@ import { resop } from "../../responsiveness/resop";
 import {
   CompilationMetadata,
   CompiledComponentConfig,
-  CompiledCustomComponentConfig,
   CompiledLocalTextReference,
   CompiledShopstoryComponentConfig,
   ComponentCollectionLocalisedSchemaProp,
@@ -189,11 +188,7 @@ function getRenderabilityStatus(
 
 function getCompiledSubcomponents(
   id: string,
-  compiledArray: (
-    | CompiledShopstoryComponentConfig
-    | CompiledCustomComponentConfig
-    | ReactElement
-  )[],
+  compiledArray: (CompiledComponentConfig | ReactElement)[],
   contextProps: ContextProps,
   schemaProp:
     | ComponentSchemaProp
@@ -313,12 +308,11 @@ export type ComponentBuilderProps = {
   passedProps?: {
     [key: string]: any; // any extra props passed in components
   };
-  compiled: CompiledShopstoryComponentConfig | CompiledCustomComponentConfig;
+  compiled: CompiledComponentConfig;
   components: {
     "@easyblocks/missing-component": ComponentType<any>;
     "@easyblocks/rich-text.client": ComponentType<any>;
     "@easyblocks/rich-text-block-element": ComponentType<any>;
-    "@easyblocks/rich-text-inline-wrapper-element": ComponentType<any>;
     "@easyblocks/rich-text-line-element": ComponentType<any>;
     "@easyblocks/rich-text-part": ComponentType<any>;
     "@easyblocks/text.client": ComponentType<any>;

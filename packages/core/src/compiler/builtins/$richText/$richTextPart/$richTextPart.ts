@@ -1,10 +1,14 @@
 import { RichTextEditingFunction } from "../$richText.types";
 import {
   AnyEditingField,
+  CompiledComponentConfig,
   CompiledComponentConfigBase,
+  ComponentConfig,
   NoCodeComponentDefinition,
+  NoCodeComponentStylesFunction,
 } from "../../../../types";
 import { findPathOfFirstAncestorOfType } from "../../../parsePath";
+import { textModifierSchemaProp } from "../../../schema";
 import { EditableComponentToComponentConfig } from "../../../types";
 import { RichTextPartValues, richTextPartStyles } from "./$richTextPart.styles";
 
@@ -69,49 +73,6 @@ const editing: RichTextEditingFunction = ({
     }
   );
 
-  try {
-    // We add fields from inline-wrapper to show current values of filtered fields and any additional field within
-    // sidebar when text is selected.
-    const inlineWrapperPath = findPathOfFirstAncestorOfType(
-      pathPrefix,
-      "@easyblocks/rich-text-inline-wrapper-element",
-      editorContext.form
-    );
-
-    resultFields.push({ type: "fields", path: inlineWrapperPath });
-  } catch (error) {
-    // When $richTextPart is outside of wrapper element, we add field for displaying action schema prop to allow
-    // to add action to selected text without putting it into schemas of $richTextPart.
-    resultFields.push({
-      type: "field",
-      path: `$action`,
-    });
-
-    // if (
-    //   process.env.NEXT_PUBLIC_SHOPSTORY_FEATURE_RICH_TEXT_TEXT_MODIFIERS ===
-    //   "enabled"
-    // ) {
-    //   const textModifierField = getTinaField(
-    //     {
-    //       ...optionalTextModifierSchemaProp,
-    //       prop: "$textModifier",
-    //       definition: findComponentDefinitionById(
-    //         "@easyblocks/rich-text-inline-wrapper-element",
-    //         editorContext
-    //       )!,
-    //       defaultValue: [],
-    //       visible: true,
-    //     },
-    //     editorContext
-    //   );
-
-    //   resultFields.push({
-    //     ...textModifierField,
-    //     name: `${pathPrefix}.$textModifier`,
-    //   });
-    // }
-  }
-
   return {
     fields: resultFields,
   };
@@ -140,9 +101,26 @@ const richTextPartEditableComponent: NoCodeComponentDefinition<RichTextPartValue
         type: "color",
         group: "Text",
       },
+      {
+        prop: "action",
+        label: "Action",
+        type: "component",
+        noInline: true,
+        accepts: ["action"],
+        visible: true,
+        group: "Action",
+        isLabelHidden: true,
+      },
+      textModifierSchemaProp({
+        prop: "actionTextModifier",
+        accepts: ["actionTextModifier"],
+        label: "Link styles",
+        group: "Action",
+        visible: ({ action }) => action.length === 1,
+      }),
     ],
     editing,
-    styles: richTextPartStyles,
+    styles: richTextPartStyles as NoCodeComponentStylesFunction,
   };
 
 type RichTextPartComponentConfig = EditableComponentToComponentConfig<
@@ -151,6 +129,8 @@ type RichTextPartComponentConfig = EditableComponentToComponentConfig<
   value: string;
   color: Record<string, any>;
   font: Record<string, any>;
+  action: [ComponentConfig] | [];
+  actionTextModifier: [ComponentConfig] | [];
 };
 
 type RichTextPartCompiledComponentConfig = CompiledComponentConfigBase<
@@ -164,6 +144,7 @@ type RichTextPartCompiledComponentConfig = CompiledComponentConfigBase<
   styled: NonNullable<ReturnType<typeof richTextPartStyles>["styled"]>;
   components: {
     Text: Record<string, any>;
+    action: Array<CompiledComponentConfig>;
   };
 };
 

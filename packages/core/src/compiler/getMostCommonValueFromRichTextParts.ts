@@ -1,19 +1,21 @@
 import { entries } from "@easyblocks/utils";
+import { getFallbackForLocale } from "../locales";
+import { DeviceRange } from "../types";
 import { CompilationCache } from "./CompilationCache";
-import { compileComponentValues } from "./compileComponentValues";
-import { RichTextPartComponentConfig } from "./builtins/$richText/$richTextPart/$richTextPart";
 import { RichTextComponentConfig } from "./builtins/$richText/$richText";
+import { RichTextBlockElementComponentConfig } from "./builtins/$richText/$richTextBlockElement/$richTextBlockElement";
+import {
+  RichTextPartComponentConfig,
+  richTextPartEditableComponent,
+} from "./builtins/$richText/$richTextPart/$richTextPart";
+import { compileComponentValues } from "./compileComponentValues";
+import { findComponentDefinitionById } from "./findComponentDefinition";
+import { isContextEditorContext } from "./isContextEditorContext";
 import {
   CompilationContextType,
   EditorContextType,
   InternalComponentDefinition,
 } from "./types";
-import { RichTextBlockElementComponentConfig } from "./builtins/$richText/$richTextBlockElement/$richTextBlockElement";
-import { getFallbackForLocale } from "../locales";
-import { RichTextInlineWrapperElementEditableComponentConfig } from "./builtins/$richText/$richTextInlineWrapperElement/$richTextInlineWrapperElement";
-import { findComponentDefinitionById } from "./findComponentDefinition";
-import { DeviceRange } from "../types";
-import { isContextEditorContext } from "./isContextEditorContext";
 
 /**
  * Returns the most common value for given `prop` parameter among all @easyblocks/rich-text-part components from `richTextComponentConfig`.
@@ -48,24 +50,12 @@ function getMostCommonValueFromRichTextParts<
 
   const richTextParts = richTextBlockElements.flatMap((blockElement) => {
     return blockElement.elements.flatMap((lineElement) => {
-      return lineElement.elements.flatMap<RichTextPartComponentConfig>(
-        (child) => {
-          if (
-            child._template === "@easyblocks/rich-text-inline-wrapper-element"
-          ) {
-            return (
-              child as RichTextInlineWrapperElementEditableComponentConfig
-            ).elements;
-          }
-
-          return child as RichTextPartComponentConfig;
-        }
-      );
+      return lineElement.elements;
     });
   });
 
   const richTextPartComponentDefinition = findComponentDefinitionById(
-    "@easyblocks/rich-text-part",
+    richTextPartEditableComponent.id,
     compilationContext
   )!;
 

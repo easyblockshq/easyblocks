@@ -1,19 +1,24 @@
 import type { ReactNode } from "react";
 import React from "react";
 
-interface RichTextPartProps {
-  _id: string;
-  _template: "@easyblocks/rich-text-part";
-  color: string;
-  font: Record<string, any>;
+type RichTextPartProps = {
+  action: React.ReactElement<{ trigger: React.ReactElement }> | undefined;
   value: string;
-  Text: React.ReactElement<{ children: ReactNode }>;
-}
+  Text: React.ReactElement<{ children: ReactNode; style: Record<string, any> }>;
+};
 
 export function RichTextPartClient(props: RichTextPartProps) {
-  const { value, Text } = props;
+  const { value, Text, action: Action } = props;
 
-  return <Text.type {...Text.props}>{value || "\uFEFF"}</Text.type>;
+  const textElement = (
+    <Text.type {...Text.props}>{value || "\uFEFF"}</Text.type>
+  );
+
+  if (Action) {
+    return <Action.type {...Action.props} trigger={textElement} />;
+  }
+
+  return textElement;
 }
 
 export type { RichTextPartProps };

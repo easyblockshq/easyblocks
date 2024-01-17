@@ -26,7 +26,10 @@ import type {
   RenderPlaceholderProps,
 } from "slate-react";
 import { Editable, ReactEditor, Slate, withReact } from "slate-react";
-import { InternalNoCodeComponentProps } from "../../../components/ComponentBuilder/ComponentBuilder";
+import {
+  ComponentBuilder,
+  InternalNoCodeComponentProps,
+} from "../../../components/ComponentBuilder/ComponentBuilder";
 import { getFallbackForLocale } from "../../../locales";
 import { responsiveValueFill } from "../../../responsiveness";
 import { Devices, ResponsiveValue } from "../../../types";
@@ -52,8 +55,9 @@ import { getEditorSelectionFromFocusedFields } from "./utils/getEditorSelectionF
 import { getFocusedFieldsFromSlateSelection } from "./utils/getFocusedFieldsFromSlateSelection";
 import { getFocusedRichTextPartsConfigPaths } from "./utils/getFocusedRichTextPartsConfigPaths";
 import { getRichTextComponentConfigFragment } from "./utils/getRichTextComponentConfigFragment";
-import { isElementInlineWrapperElement } from "./utils/isElementInlineWrapperElement";
-import { NORMALIZED_IDS_TO_IDS, withShopstory } from "./withShopstory";
+import { NORMALIZED_IDS_TO_IDS, withEasyblocks } from "./withEasyblocks";
+import { RichTextPartClient } from "./$richTextPart/$richTextPart.client";
+import { Box } from "../../../components/Box/Box";
 
 function mapAlignmentToFlexAlignment(align: Alignment) {
   if (align === "center") {
@@ -91,7 +95,7 @@ function RichTextEditor(props: RichTextProps) {
   const {
     __easyblocks: {
       path,
-      runtime: { Box, resop, stitches, devices },
+      runtime: { resop, stitches, devices },
     },
     align,
   } = props;
@@ -101,7 +105,7 @@ function RichTextEditor(props: RichTextProps) {
     path
   );
 
-  const [editor] = useState(() => withShopstory(withReact(createEditor())));
+  const [editor] = useState(() => withEasyblocks(withReact(createEditor())));
 
   const localizedRichTextElements =
     richTextConfig.elements[contextParams.locale];
@@ -262,7 +266,6 @@ function RichTextEditor(props: RichTextProps) {
           temporaryEditor,
           editorContext,
           payload.prop,
-          payload.schemaProp,
           ...payload.values
         );
 
@@ -350,10 +353,6 @@ function RichTextEditor(props: RichTextProps) {
         } else if (element.type === "list-item") {
           return Element.styled.ListItem;
         }
-      } else if (
-        Element._template === "@easyblocks/rich-text-inline-wrapper-element"
-      ) {
-        return Element.styled.Link;
       }
     })();
 
@@ -401,14 +400,6 @@ function RichTextEditor(props: RichTextProps) {
       throw new Error("Missing part");
     }
 
-    const TextPartComponent = (
-      <Box
-        __compiled={TextPart.styled.Text}
-        devices={devices}
-        stitches={stitches}
-      />
-    );
-
     const style: CSSProperties = {
       // Fixes bug in Chrome and Edge (Chromium based) where user cannot place selection on text node
       // if the inline element is at the end of line.
@@ -421,19 +412,31 @@ function RichTextEditor(props: RichTextProps) {
         leaf.highlightType === "text" ? "#B4D5FE" : "#ffff56";
     }
 
-    return cloneElement(
-      TextPartComponent,
-      {
-        ...attributes,
-        style,
-        // Element annotation for easier debugging
-        ...(process.env.NODE_ENV === "development" && {
-          "data-shopstory-element-type": "text",
-          "data-shopstory-id": leaf.id,
-        }),
-      },
-      children
+    const TextPartComponent = (
+      <RichTextPartClient
+        value={children}
+        Text={
+          <Box
+            __compiled={TextPart.styled.Text}
+            devices={devices}
+            stitches={stitches}
+            style={style}
+            {...attributes}
+          />
+        }
+        action={
+          TextPart.components.action[0] ? (
+            <ComponentBuilder
+              compiled={TextPart.components.action[0]}
+              path={path}
+              components={editorContext.components}
+            />
+          ) : undefined
+        }
+      />
     );
+
+    return TextPartComponent;
   }
 
   // Setting `display: flex` for element's aligning on `Editable` component makes default styles
@@ -850,21 +853,19 @@ function createTextSelectionDecorator(
     }
 
     if (
-      isElementInlineWrapperElement(node) &&
-      node.action.length > 0 &&
+      SlateText.isText(node) &&
       editor.selection !== null &&
+      node.action.length > 0 &&
       Range.isCollapsed(editor.selection)
     ) {
-      const intersection = Range.intersection(
-        editor.selection,
-        Editor.range(editor, path)
-      );
+      const textRange = Editor.range(editor, path);
+      const intersection = Range.intersection(editor.selection, textRange);
 
       if (intersection !== null) {
         const range = {
           isHighlighted: true,
-          highlightType: "wrapper",
-          ...Editor.range(editor, path),
+          highlightType: "action",
+          ...textRange,
         };
 
         decorations.push(range);

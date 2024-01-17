@@ -1,14 +1,12 @@
 import {
-  ComponentSchemaProp,
   ComponentConfig,
+  ComponentSchemaProp,
   Template,
 } from "@easyblocks/core";
 import {
   duplicateConfig,
   findComponentDefinition,
   normalize,
-  optionalTextModifierSchemaProp,
-  richTextInlineWrapperActionSchemaProp,
 } from "@easyblocks/core/_internals";
 import { dotNotationGet } from "@easyblocks/utils";
 import React, { FC } from "react";
@@ -33,20 +31,10 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
   const fieldName = split[split.length - 1];
 
   const parentData: ComponentConfig = dotNotationGet(form.values, parentPath);
-  let schemaProp = findComponentDefinition(
+  const schemaProp = findComponentDefinition(
     parentData,
     editorContext
   )!.schema.find((x) => x.prop === fieldName) as ComponentSchemaProp;
-
-  if (!schemaProp && parentData._template === "@easyblocks/rich-text-part") {
-    if (fieldName === "$action") {
-      schemaProp = richTextInlineWrapperActionSchemaProp;
-    }
-
-    if (fieldName === "$textModifier") {
-      schemaProp = optionalTextModifierSchemaProp;
-    }
-  }
 
   const componentTypes = config.componentTypes ?? schemaProp.accepts;
   const components = unrollAcceptsFieldIntoComponents(

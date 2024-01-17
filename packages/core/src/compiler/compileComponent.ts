@@ -48,7 +48,6 @@ import type {
 import { applyAutoUsingResponsiveTokens } from "./applyAutoUsingResponsiveTokens";
 import { compileBox } from "./box";
 import { RichTextComponentConfig } from "./builtins/$richText/$richText";
-import { richTextInlineWrapperActionSchemaProp } from "./builtins/$richText/$richTextInlineWrapperElement/richTextInlineWrapperActionSchemaProp";
 import { compileComponentValues } from "./compileComponentValues";
 import { compileFromSchema } from "./compileFromSchema";
 import { ConfigComponentCompilationOutput } from "./definitions";
@@ -348,7 +347,7 @@ export function compileComponent(
         compiledValues[schemaProp.prop] = [
           compileTextModifier(
             modifierValue,
-            editableElement.elements,
+            [editableElement],
             compilationContext,
             `${configPrefix}${configPrefix === "" ? "" : "."}${
               schemaProp.prop
@@ -510,8 +509,7 @@ export function compileComponent(
           },
           isEditing: !!compilationContext.isEditing,
           device,
-          ...(componentDefinition!.id ===
-          "@easyblocks/rich-text-inline-wrapper-element"
+          ...(componentDefinition!.id === "@easyblocks/rich-text-part"
             ? { __COMPILATION_CONTEXT__: compilationContext }
             : {}),
         };
@@ -1856,30 +1854,6 @@ function convertEditingFieldToInternalEditingField(
         portal: "field",
         source,
         fieldName,
-      };
-    }
-
-    if (field.path === "$action") {
-      // When @easyblocks/rich-text-part is outside of wrapper element, we add field for displaying action schema prop to allow
-      // to add action to selected text without putting it into schemas of @easyblocks/rich-text-part.
-      const actionField = getTinaField(
-        {
-          ...richTextInlineWrapperActionSchemaProp,
-          prop: "$action",
-          definition: findComponentDefinitionById(
-            "@easyblocks/rich-text-inline-wrapper-element",
-            editorContext
-          )!,
-          defaultValue: [],
-        },
-        editorContext,
-        []
-      );
-
-      return {
-        ...actionField,
-        name: `${configPrefix}.$action`,
-        hidden: false,
       };
     }
   }

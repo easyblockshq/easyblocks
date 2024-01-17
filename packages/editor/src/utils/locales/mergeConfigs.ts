@@ -1,14 +1,10 @@
 import { configMap } from "@easyblocks/app-utils";
-import {
-  ComponentConfig,
-  LocalisedConfigs,
-  LocalizedText,
-} from "@easyblocks/core";
+import { ComponentConfig, Locale, LocalizedText } from "@easyblocks/core";
 import { CompilationContextType } from "@easyblocks/core/_internals";
 import { dotNotationGet } from "@easyblocks/utils";
 
 export const validateIntegrity = (
-  configs: LocalisedConfigs,
+  configs: Record<Locale["code"], ComponentConfig>,
   compilationContext: CompilationContextType
 ) => {
   const stripped = Object.values(configs).map((config) => {

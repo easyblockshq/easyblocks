@@ -1,14 +1,13 @@
 import { uniqueId } from "@easyblocks/utils";
-import { CompilationContextType } from "../../types";
+import type { TokenValue } from "../../../types";
+import type { CompilationContextType } from "../../types";
 import type { RichTextComponentConfig } from "./$richText";
 import type {
   RichTextBlockElementComponentConfig,
   RichTextBlockElementType,
 } from "./$richTextBlockElement/$richTextBlockElement";
-import type { RichTextInlineWrapperElementEditableComponentConfig } from "./$richTextInlineWrapperElement/$richTextInlineWrapperElement";
 import type { RichTextLineElementComponentConfig } from "./$richTextLineElement/$richTextLineElement";
 import type { RichTextPartComponentConfig } from "./$richTextPart/$richTextPart";
-import { TokenValue } from "../../..";
 
 interface Identity {
   id: string;
@@ -57,6 +56,8 @@ function buildRichTextNoCodeEntry(options?: {
                 color: colorTokenValue,
                 font: fontTokenValue,
                 value: text ?? "Lorem ipsum",
+                action: [],
+                actionTextModifier: [],
               }),
             ],
           }),
@@ -149,36 +150,14 @@ function buildRichTextLineElementComponentConfig({
   };
 }
 
-function buildRichTextInlineWrapperElementComponentConfig({
-  id,
-  elements,
-  action,
-  textModifier,
-  actionTextModifier,
-}: Pick<RichTextInlineWrapperElementEditableComponentConfig, "elements"> &
-  Partial<
-    Identity &
-      Pick<
-        RichTextInlineWrapperElementEditableComponentConfig,
-        "textModifier" | "actionTextModifier" | "action"
-      >
-  >): RichTextInlineWrapperElementEditableComponentConfig {
-  return {
-    _id: id ?? uniqueId(),
-    _template: "@easyblocks/rich-text-inline-wrapper-element",
-    elements,
-    action: action ?? [],
-    textModifier: textModifier ?? [],
-    actionTextModifier: actionTextModifier ?? [],
-  };
-}
-
 function buildRichTextPartComponentConfig({
   color,
   font,
   value,
   id,
-}: Pick<RichTextPartComponentConfig, "color" | "font" | "value"> &
+  action,
+  actionTextModifier,
+}: Omit<RichTextPartComponentConfig, "$$$refs" | "_id" | "_template"> &
   Partial<Identity>): RichTextPartComponentConfig {
   return {
     _id: id ?? uniqueId(),
@@ -186,16 +165,17 @@ function buildRichTextPartComponentConfig({
     color,
     font,
     value,
+    action: action ?? [],
+    actionTextModifier: actionTextModifier ?? [],
   };
 }
 
 export {
-  buildRichTextNoCodeEntry,
-  buildRichTextComponentConfig,
   buildRichTextBlockElementComponentConfig,
   buildRichTextBulletedListBlockElementComponentConfig,
-  buildRichTextParagraphBlockElementComponentConfig,
+  buildRichTextComponentConfig,
   buildRichTextLineElementComponentConfig,
-  buildRichTextInlineWrapperElementComponentConfig,
+  buildRichTextNoCodeEntry,
+  buildRichTextParagraphBlockElementComponentConfig,
   buildRichTextPartComponentConfig,
 };

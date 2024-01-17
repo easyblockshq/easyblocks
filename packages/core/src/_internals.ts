@@ -2,8 +2,6 @@ export { CompilationCache } from "./compiler/CompilationCache";
 export type { CompilationCacheItemValue } from "./compiler/CompilationCache";
 export { compileBox, getBoxStyles } from "./compiler/box";
 export { RichTextEditor } from "./compiler/builtins/$richText/$richText.editor";
-export { optionalTextModifierSchemaProp } from "./compiler/builtins/$richText/$richTextInlineWrapperElement/$richTextInlineWrapperElement";
-export { richTextInlineWrapperActionSchemaProp } from "./compiler/builtins/$richText/$richTextInlineWrapperElement/richTextInlineWrapperActionSchemaProp";
 export { TextEditor } from "./compiler/builtins/$text/$text.editor";
 export { buildText } from "./compiler/builtins/$text/buildText";
 export { useTextValue } from "./compiler/builtins/useTextValue";

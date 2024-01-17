@@ -15,7 +15,6 @@ import {
 import { buildFullTheme } from "./buildFullTheme";
 import { richTextEditableComponent } from "./builtins/$richText/$richText";
 import { richTextBlockElementEditableComponent } from "./builtins/$richText/$richTextBlockElement/$richTextBlockElement";
-import { richTextInlineWrapperElementEditableComponent } from "./builtins/$richText/$richTextInlineWrapperElement/$richTextInlineWrapperElement";
 import { richTextLineElementEditableComponent } from "./builtins/$richText/$richTextLineElement/$richTextLineElement";
 import { richTextPartEditableComponent } from "./builtins/$richText/$richTextPart/$richTextPart";
 import { textEditableComponent } from "./builtins/$text/$text";
@@ -224,7 +223,6 @@ export function createCompilationContext(
     richTextEditableComponent,
     richTextBlockElementEditableComponent,
     richTextLineElementEditableComponent,
-    richTextInlineWrapperElementEditableComponent,
     richTextPartEditableComponent,
     {
       id: "@easyblocks/missing-component",

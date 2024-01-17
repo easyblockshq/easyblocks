@@ -7,7 +7,6 @@ import { isCompiledComponentConfig } from "./isCompiledComponentConfig";
 
 export * from "./configMap";
 export {
-  getComponentMainType,
   isCompiledComponentConfig,
   isEmptyRenderableContent,
   isNonEmptyRenderableContent,
@@ -49,38 +48,3 @@ function isEmptyRenderableContent(
     (input as { renderableContent: unknown }).renderableContent === null
   );
 }
-
-const getComponentMainType = (componentTypes: string[]) => {
-  let type;
-
-  if (
-    componentTypes.includes("action") ||
-    componentTypes.includes("actionLink")
-  ) {
-    type = "action";
-  } else if (componentTypes.includes("card")) {
-    type = "card";
-  } else if (componentTypes.includes("symbol")) {
-    type = "icon";
-  } else if (componentTypes.includes("button")) {
-    type = "button";
-  } else if (
-    componentTypes.includes("section") ||
-    componentTypes.includes("token")
-  ) {
-    type = "section";
-  } else if (componentTypes.includes("item")) {
-    type = "item";
-  } else if (
-    componentTypes.includes("image") ||
-    componentTypes.includes("$image")
-  ) {
-    type = "image";
-  } else if (componentTypes.includes("actionTextModifier")) {
-    type = "actionTextModifier";
-  } else {
-    type = "item";
-  }
-
-  return type;
-};

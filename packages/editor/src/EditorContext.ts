@@ -74,6 +74,7 @@ export type EditorContextType = Omit<BaseEditorContextType, "types"> & {
     | EditorInlineTypeDefinition
     | EditorTokenTypeDefinition
   >;
+  components: Record<string, ComponentType<any>>;
 };
 
 export const EditorContext = React.createContext<EditorContextType | null>(

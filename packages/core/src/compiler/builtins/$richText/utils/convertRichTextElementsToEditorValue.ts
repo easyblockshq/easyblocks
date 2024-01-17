@@ -4,7 +4,6 @@ import { RichTextComponentConfig } from "../$richText";
 import type { BlockElement } from "../$richText.types";
 import { RichTextBlockElementComponentConfig } from "../$richTextBlockElement/$richTextBlockElement";
 import { RichTextPartComponentConfig } from "../$richTextPart/$richTextPart";
-import { isRichTextInlineWrapperElementNoCodeEntry } from "./checkers";
 
 function convertRichTextElementsToEditorValue(
   richTextElements: RichTextComponentConfig["elements"][string] | undefined
@@ -30,6 +29,8 @@ function convertRichTextPartComponentConfigToEditorText(
     font: richTextPartComponentConfig.font,
     id: richTextPartComponentConfig._id,
     text: richTextPartComponentConfig.value,
+    action: richTextPartComponentConfig.action,
+    actionTextModifier: richTextPartComponentConfig.actionTextModifier,
   };
 }
 
@@ -50,27 +51,6 @@ function convertRichTextBlockElementComponentConfigToEditorElement(
             id: lineElementComponentConfig._id,
             children: lineElementComponentConfig.elements.map(
               (childComponentConfig) => {
-                if (
-                  isRichTextInlineWrapperElementNoCodeEntry(
-                    childComponentConfig
-                  )
-                ) {
-                  return {
-                    id: childComponentConfig._id,
-                    type: "inline-wrapper",
-                    children: childComponentConfig.elements.map(
-                      (textPartComponentConfig) => {
-                        return convertRichTextPartComponentConfigToEditorText(
-                          textPartComponentConfig
-                        );
-                      }
-                    ),
-                    action: childComponentConfig.action,
-                    actionTextModifier: childComponentConfig.actionTextModifier,
-                    textModifier: childComponentConfig.textModifier,
-                  };
-                }
-
                 return convertRichTextPartComponentConfigToEditorText(
                   childComponentConfig
                 );
@@ -92,25 +72,6 @@ function convertRichTextBlockElementComponentConfigToEditorElement(
           id: lineElementComponentConfig._id,
           children: lineElementComponentConfig.elements.map(
             (childComponentConfig) => {
-              if (
-                isRichTextInlineWrapperElementNoCodeEntry(childComponentConfig)
-              ) {
-                return {
-                  id: childComponentConfig._id,
-                  type: "inline-wrapper",
-                  children: childComponentConfig.elements.map(
-                    (textPartComponentConfig) => {
-                      return convertRichTextPartComponentConfigToEditorText(
-                        textPartComponentConfig
-                      );
-                    }
-                  ),
-                  action: childComponentConfig.action,
-                  actionTextModifier: childComponentConfig.actionTextModifier,
-                  textModifier: childComponentConfig.textModifier,
-                };
-              }
-
               return convertRichTextPartComponentConfigToEditorText(
                 childComponentConfig
               );
@@ -145,6 +106,8 @@ function getPlaceholderRichTextElements(): Array<BlockElement> {
                 widgetId: "@easyblocks/font",
               },
               text: "",
+              action: [],
+              actionTextModifier: [],
             },
           ],
         },

@@ -2,7 +2,6 @@
 import React, { ReactElement, useEffect } from "react";
 import { RichTextClient } from "../compiler/builtins/$richText/$richText.client";
 import { RichTextBlockElementClient } from "../compiler/builtins/$richText/$richTextBlockElement/$richTextBlockElement.client";
-import { RichTextInlineWrapperElementClient } from "../compiler/builtins/$richText/$richTextInlineWrapperElement/$richTextInlineWrapperElement.client";
 import { RichTextLineElementClient } from "../compiler/builtins/$richText/$richTextLineElement/$richTextLineElement.client";
 import { RichTextPartClient } from "../compiler/builtins/$richText/$richTextPart/$richTextPart.client";
 import { TextClient } from "../compiler/builtins/$text/$text.client";
@@ -28,8 +27,6 @@ const builtinComponents: ComponentBuilderProps["components"] = {
   "@easyblocks/missing-component": MissingComponent,
   "@easyblocks/rich-text.client": RichTextClient,
   "@easyblocks/rich-text-block-element": RichTextBlockElementClient,
-  "@easyblocks/rich-text-inline-wrapper-element":
-    RichTextInlineWrapperElementClient,
   "@easyblocks/rich-text-line-element": RichTextLineElementClient,
   "@easyblocks/rich-text-part": RichTextPartClient,
   "@easyblocks/text.client": TextClient,

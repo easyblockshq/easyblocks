@@ -176,7 +176,8 @@ function TokenFieldComponent<TokenValue extends NonNullish>({
 
   const shouldShowCustomValueInput =
     !isMixedFieldValue(input.value) &&
-    !(input.value.tokenId || isExtraValueSelected);
+    !(input.value.tokenId || isExtraValueSelected) &&
+    allowCustom;
 
   const selectValue = isMixedFieldValue(input.value)
     ? MIXED_VALUE
@@ -342,6 +343,15 @@ function TokenFieldComponent<TokenValue extends NonNullish>({
           <>
             <SelectItem value={MIXED_VALUE} isDisabled>
               Mixed
+            </SelectItem>
+            <SelectSeparator />
+          </>
+        )}
+
+        {selectValue === CUSTOM_OPTION_VALUE && !allowCustom && (
+          <>
+            <SelectItem value={CUSTOM_OPTION_VALUE} isDisabled>
+              Custom
             </SelectItem>
             <SelectSeparator />
           </>

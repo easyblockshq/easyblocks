@@ -7,7 +7,6 @@ import {
   Document,
   ExternalData,
   ExternalDataChangeHandler,
-  ExternalReference,
   ExternalTypeDefinition,
   FetchOutputResources,
   InlineTypeWidgetComponentProps,
@@ -73,7 +72,6 @@ import { getTemplates } from "./templates/getTemplates";
 import { useForm } from "./tinacms/react-core";
 import {
   ActionsType,
-  CMSInput,
   OpenComponentPickerConfig,
   OpenTemplateModalAction,
 } from "./types";
@@ -161,10 +159,8 @@ type EditorProps = {
   readOnly: boolean;
   documentId: string | null;
   rootComponentId?: string;
-  save?: (
-    contentPiece: CMSInput,
-    externals: ExternalReference[]
-  ) => Promise<void>;
+  documentType?: string;
+  save?: (document: Document) => Promise<void>;
   onClose?: () => void;
   externalData: FetchOutputResources;
   onExternalDataChange: ExternalDataChangeHandler;
@@ -174,6 +170,7 @@ type EditorProps = {
     | ComponentType<InlineTypeWidgetComponentProps<any>>
     | ComponentType<TokenTypeWidgetComponentProps<any>>
   >;
+  components?: Record<string, ComponentType<any>>;
 };
 
 export const Editor = EditorBackendInitializer;
@@ -700,9 +697,13 @@ const EditorContent = ({
       initialEntry._template,
       compilationContext
     )!,
+    components: props.components ?? {},
   };
 
-  if (editorContext.rootComponent.rootParams?.length > 0) {
+  if (
+    editorContext.rootComponent.rootParams &&
+    editorContext.rootComponent.rootParams.length > 0
+  ) {
     ensureDocumentDataWidgetForTypes(editorContext);
   }
 

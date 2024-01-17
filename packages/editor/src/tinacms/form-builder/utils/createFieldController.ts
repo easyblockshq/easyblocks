@@ -74,15 +74,10 @@ function createFieldController({
 
         invalidateCache(normalizedFieldName[0], editorContext);
 
-        if (
-          templateId === "@easyblocks/rich-text-part" ||
-          templateId === "@easyblocks/rich-text-inline-wrapper-element"
-        ) {
-          let schemaPropNameToUpdate = last(normalizedFieldName[0].split("."));
-
-          if (schemaPropNameToUpdate.startsWith("$")) {
-            schemaPropNameToUpdate = schemaPropNameToUpdate.slice(1);
-          }
+        if (templateId === "@easyblocks/rich-text-part") {
+          const schemaPropNameToUpdate = last(
+            normalizedFieldName[0].split(".")
+          );
 
           const canvasIframe = document.getElementById(
             "shopstory-canvas"

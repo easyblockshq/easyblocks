@@ -1,7 +1,6 @@
 import { dotNotationGet, nonNullable, range } from "@easyblocks/utils";
-import { getFallbackLocaleForLocale } from "../../../locales";
+import { Locale, getFallbackLocaleForLocale } from "../../../locales";
 import {
-  LocalisedConfigs,
   NoCodeComponentDefinition,
   RefValue,
   ResponsiveValue,
@@ -260,7 +259,7 @@ type RichTextComponentConfig = EditableComponentToComponentConfig<
 > & {
   accessibilityRole: RichTextAccessibilityRole;
   isListStyleAuto: boolean;
-  elements: LocalisedConfigs<Array<RichTextBlockElementComponentConfig>>;
+  elements: Record<Locale["code"], Array<RichTextBlockElementComponentConfig>>;
   mainFont: ResponsiveValue<Record<string, any>>;
   mainColor: ResponsiveValue<RefValue<ResponsiveValue<string>>>;
 };
