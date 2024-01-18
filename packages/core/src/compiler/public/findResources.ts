@@ -1,4 +1,3 @@
-import { assertDefined } from "@easyblocks/utils";
 import {
   getExternalReferenceLocationKey,
   isLocalTextReference,
@@ -12,6 +11,7 @@ import {
   ExternalReference,
   ExternalSchemaProp,
   ExternalWithSchemaProp,
+  NoCodeComponentDefinition,
 } from "../../types";
 import { configTraverse } from "../configTraverse";
 import { createCompilationContext } from "../createCompilationContext";
@@ -48,10 +48,16 @@ export const findExternals: CompilerModule["findExternals"] = (
         return;
       }
 
+      const hasInputComponentRootParams =
+        compilationContext.definitions.components.some(
+          (c: NoCodeComponentDefinition) =>
+            c.id === normalizedConfig._template && c.rootParams !== undefined
+        );
+
       const configId =
-        assertDefined(normalizedConfig._id) === assertDefined(config._id)
+        normalizedConfig._id === config._id && hasInputComponentRootParams
           ? "$"
-          : assertDefined(config._id);
+          : config._id;
 
       if (isTrulyResponsiveValue(value)) {
         responsiveValueEntries(value).forEach(([breakpoint, currentValue]) => {
