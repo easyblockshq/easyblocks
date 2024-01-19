@@ -11,19 +11,13 @@ export function EasyblocksEditor(props: EasyblocksEditorProps) {
     "parent" | "child" | "preview" | null
   >(null);
 
-  const params = parseQueryParams();
-
-  if (params.debug) {
-    props = addDebugToEditorProps(props);
-  }
-
   const setSelectedWindowToParent = () => {
     window.isShopstoryEditor = true;
     setSelectedWindow("parent");
   };
 
   useEffect(() => {
-    if (params.preview) {
+    if (parseQueryParams().preview) {
       setSelectedWindow("preview");
       return;
     }
@@ -50,6 +44,14 @@ export function EasyblocksEditor(props: EasyblocksEditorProps) {
       }
     }
   }, []);
+
+  if (!selectedWindow) {
+    return null;
+  }
+
+  if (parseQueryParams().debug) {
+    props = addDebugToEditorProps(props);
+  }
 
   return (
     <>
