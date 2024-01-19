@@ -40,14 +40,6 @@ export const bannerSectionDefinition: NoCodeComponentDefinition<
   type: "section",
   allowSave: true,
   schema: [
-    {
-      prop: "TEST urlResponsive",
-      type: "urlResponsive",
-    },
-    {
-      prop: "animal",
-      type: "animal",
-    },
     ...sectionWrapperSchemaProps.margins,
     {
       prop: "escapeMargin",

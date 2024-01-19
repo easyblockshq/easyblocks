@@ -447,27 +447,6 @@ export const easyblocksConfig: Config = {
         );
       },
     },
-    urlResponsive: {
-      type: "inline",
-      widget: {
-        id: "url",
-        label: "URL",
-      },
-      responsiveness: "always",
-      defaultValue: "https://google.com",
-      validate(value) {
-        return (
-          typeof value === "string" &&
-          (value.startsWith("http://") || value.startsWith("https://"))
-        );
-      },
-    },
-    animal: {
-      type: "token",
-      token: "animals",
-      defaultValue: { tokenId: "cat" },
-      widget: { id: "animal", label: "Animal" },
-    },
   },
   // disableCustomTemplates: true,
   hideCloseButton: true,
