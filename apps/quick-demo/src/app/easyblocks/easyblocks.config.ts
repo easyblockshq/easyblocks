@@ -407,18 +407,6 @@ export const easyblocksConfig: Config = {
         value: 768,
       },
     ],
-    animals: [
-      {
-        id: "cat",
-        label: "Cat",
-        value: "cat",
-      },
-      {
-        id: "dog",
-        label: "Dog",
-        value: "dog",
-      },
-    ],
   },
   types: {
     "@easyblocks/image": {
