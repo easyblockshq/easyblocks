@@ -661,15 +661,21 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
 
           const normalizeScalar = (v: any) => {
             if (isLocalValue(v)) {
-              const resultValue =
-                customTypeDefinition.type === "inline"
-                  ? (customTypeDefinition.validate?.(v.value)
-                      ? v.value
-                      : defaultValue) ?? v.value
-                  : v.value;
+              if (customTypeDefinition.validate) {
+                const isValueValid = customTypeDefinition.validate(v.value);
+
+                if (isValueValid) {
+                  return v;
+                }
+
+                return {
+                  value: defaultValue,
+                  widgetId: v.widgetId,
+                };
+              }
 
               return {
-                value: resultValue,
+                value: v.value ?? defaultValue,
                 widgetId: v.widgetId,
               };
             }
