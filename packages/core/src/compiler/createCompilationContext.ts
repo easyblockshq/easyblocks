@@ -5,7 +5,6 @@ import {
   ConfigDeviceRange,
   ContextParams,
   CustomTypeDefinition,
-  DocumentType,
   Devices,
   NoCodeComponentDefinition,
   ResponsiveValue,
@@ -18,6 +17,7 @@ import { richTextBlockElementEditableComponent } from "./builtins/$richText/$ric
 import { richTextLineElementEditableComponent } from "./builtins/$richText/$richTextLineElement/$richTextLineElement";
 import { richTextPartEditableComponent } from "./builtins/$richText/$richTextPart/$richTextPart";
 import { textEditableComponent } from "./builtins/$text/$text";
+import { typesDebugSectionDefinition } from "./builtins/TypesDebugSection/TypesDebugSection.definition";
 import { actionTextModifier } from "./builtins/actionTextModifier";
 import { DEFAULT_DEVICES } from "./devices";
 import { Theme } from "./theme";
@@ -72,7 +72,7 @@ function prepareDevices(configDevices: Config["devices"]): Devices {
 export function createCompilationContext(
   config: Config,
   contextParams: ContextParams,
-  rootComponentId?: string
+  rootComponentId: string
 ): CompilationContextType {
   const devices = prepareDevices(config.devices);
   const mainDevice = devices.find((x) => x.isMain);
@@ -336,6 +336,81 @@ export function createCompilationContext(
     locales: config.locales,
     rootComponent,
   };
+
+  if (process.env.NODE_ENV === "development") {
+    compilationContext.definitions.components.push(typesDebugSectionDefinition);
+
+    compilationContext.types["url_inline_never"] = {
+      type: "inline",
+      defaultValue: "https://google.com",
+      responsiveness: "never",
+      widget: { id: "url", label: "URL" },
+    };
+    compilationContext.types["url_inline_optional"] = {
+      type: "inline",
+      defaultValue: "https://google.com",
+      responsiveness: "optional",
+      widget: { id: "url", label: "URL" },
+    };
+    compilationContext.types["url_inline_always"] = {
+      type: "inline",
+      defaultValue: "https://google.com",
+      responsiveness: "always",
+      widget: { id: "url", label: "URL" },
+    };
+
+    compilationContext.theme["urls"] = {
+      google: {
+        type: "dev",
+        value: "https://google.com",
+      },
+      bing: {
+        type: "dev",
+        value: "https://bing.com",
+      },
+    };
+
+    compilationContext.types["url_token_never"] = {
+      type: "token",
+      token: "urls",
+      responsiveness: "never",
+      defaultValue: { tokenId: "google" },
+      widget: { id: "url", label: "URL" },
+      allowCustom: false,
+    };
+    compilationContext.types["url_token_optional_no_custom"] = {
+      type: "token",
+      token: "urls",
+      responsiveness: "optional",
+      defaultValue: { tokenId: "google" },
+      widget: { id: "url", label: "URL" },
+      allowCustom: false,
+    };
+    compilationContext.types["url_token_optional_custom"] = {
+      type: "token",
+      token: "urls",
+      responsiveness: "optional",
+      defaultValue: { tokenId: "google" },
+      widget: { id: "url", label: "URL" },
+      allowCustom: true,
+    };
+    compilationContext.types["url_token_always_no_custom"] = {
+      type: "token",
+      token: "urls",
+      responsiveness: "always",
+      defaultValue: { tokenId: "google" },
+      widget: { id: "url", label: "URL" },
+      allowCustom: false,
+    };
+    compilationContext.types["url_token_always_custom"] = {
+      type: "token",
+      token: "urls",
+      responsiveness: "always",
+      defaultValue: { tokenId: "google" },
+      widget: { id: "url", label: "URL" },
+      allowCustom: true,
+    };
+  }
 
   return compilationContext;
 }

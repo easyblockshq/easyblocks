@@ -49,10 +49,6 @@ const LocalFieldPlugin = {
       <WidgetComponent
         value={input.value.value}
         onChange={(value) => {
-          if (value === input.value.value) {
-            return;
-          }
-
           input.onChange({
             value,
             widgetId: input.value.widgetId,
