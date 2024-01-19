@@ -23,4 +23,6 @@ export type EasyblocksEditorProps = {
     | ComponentType<WidgetComponentProps<any>>
     | ComponentType<InlineTypeWidgetComponentProps<any>>
   >;
+
+  __debug?: boolean;
 };

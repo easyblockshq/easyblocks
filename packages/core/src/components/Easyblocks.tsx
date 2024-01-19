@@ -13,8 +13,6 @@ import {
 import { EasyblocksExternalDataProvider } from "./EasyblocksExternalDataProvider";
 import { EasyblocksMetadataProvider } from "./EasyblocksMetadataProvider";
 import { MissingComponent } from "./MissingComponent";
-import { typesDebugSectionDefinition } from "../compiler/builtins/TypesDebugSection/TypesDebugSection.definition";
-import { TypesDebugSection } from "../compiler/builtins/TypesDebugSection/TypesDebugSection";
 
 export type EasyblocksProps = {
   renderableDocument: RenderableDocument;
@@ -34,10 +32,6 @@ const builtinComponents: ComponentBuilderProps["components"] = {
   "@easyblocks/text.client": TextClient,
   "EditableComponentBuilder.client": ComponentBuilder,
 };
-
-if (process.env.NODE_ENV === "development") {
-  builtinComponents[typesDebugSectionDefinition.id] = TypesDebugSection;
-}
 
 function Easyblocks({
   renderableDocument,

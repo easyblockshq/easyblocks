@@ -4,11 +4,18 @@ import { PreviewRenderer } from "./PreviewRenderer";
 import { EasyblocksParent } from "./EasyblocksParent";
 import { parseQueryParams } from "./parseQueryParams";
 import { EasyblocksEditorProps } from "./EasyblocksEditorProps";
+import { addDebugToEditorProps } from "./debug/addDebugToEditorProps";
 
 export function EasyblocksEditor(props: EasyblocksEditorProps) {
   const [selectedWindow, setSelectedWindow] = useState<
     "parent" | "child" | "preview" | null
   >(null);
+
+  const params = parseQueryParams();
+
+  if (params.debug) {
+    props = addDebugToEditorProps(props);
+  }
 
   const setSelectedWindowToParent = () => {
     window.isShopstoryEditor = true;
@@ -16,7 +23,7 @@ export function EasyblocksEditor(props: EasyblocksEditorProps) {
   };
 
   useEffect(() => {
-    if (parseQueryParams().preview) {
+    if (params.preview) {
       setSelectedWindow("preview");
       return;
     }

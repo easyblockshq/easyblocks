@@ -30,6 +30,7 @@
     "@babel/plugin-transform-runtime": "^7.15.0",
     "@easyblocks/build-tools": "^0.1.0",
     "@easyblocks/reduce-css-calc": "workspace:*",
+    "@easyblocks/core": "workspace:*",
     "@easyblocks/test-utils": "^0.1.0",
     "@easyblocks/utils": "link:../utils",
     "@jest/types": "^26.6.2",

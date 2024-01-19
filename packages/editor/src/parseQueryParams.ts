@@ -5,6 +5,7 @@ type EditorSearchParams = {
   rootComponentId: string | null;
   locale: string | null;
   preview: boolean;
+  debug: boolean;
 };
 
 export function parseQueryParams() {
@@ -20,6 +21,7 @@ export function parseQueryParams() {
   const templateId = searchParams.get("template");
   const rootComponentId = searchParams.get("rootComponent");
   const locale = searchParams.get("locale");
+  const debug = searchParams.get("debug") === "true";
 
   const preview = searchParams.get("preview") === "true";
 
@@ -30,6 +32,7 @@ export function parseQueryParams() {
     rootComponentId,
     locale,
     preview,
+    debug,
   };
 
   return editorSearchParams;

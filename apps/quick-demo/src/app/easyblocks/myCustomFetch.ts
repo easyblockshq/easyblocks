@@ -4,23 +4,22 @@ import { fetchProductResources } from "./externalData/product/fetchProductResour
 import { fetchMockImages } from "./externalData/mockMedia/fetchMockImages";
 import { fetchMockVideos } from "./externalData/mockMedia/fetchMockVideos";
 
-const createMyCustomFetch: (
-  accessToken: string
-) => (resources: ChangedExternalData) => Promise<ExternalData> =
-  (accessToken) => async (resources) => {
-    const [mockImages, mockVideos, pexelsImages, products] = await Promise.all([
-      fetchMockImages(resources),
-      fetchMockVideos(resources),
-      fetchPexelsResources(resources),
-      fetchProductResources(resources),
-    ]);
+const createMyCustomFetch: () => (
+  resources: ChangedExternalData
+) => Promise<ExternalData> = () => async (resources) => {
+  const [mockImages, mockVideos, pexelsImages, products] = await Promise.all([
+    fetchMockImages(resources),
+    fetchMockVideos(resources),
+    fetchPexelsResources(resources),
+    fetchProductResources(resources),
+  ]);
 
-    return {
-      ...mockImages,
-      ...mockVideos,
-      ...pexelsImages,
-      ...products,
-    };
+  return {
+    ...mockImages,
+    ...mockVideos,
+    ...pexelsImages,
+    ...products,
   };
+};
 
 export { createMyCustomFetch };

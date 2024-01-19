@@ -24,7 +24,7 @@ import {
 } from "../easyblocks/externalData/product/productWidget";
 import { UrlWidget } from "../easyblocks/types/UrlWidget";
 
-const myCustomFetch = createMyCustomFetch(easyblocksConfig.accessToken);
+const myCustomFetch = createMyCustomFetch();
 
 export default function EeasyblocksEditorPage() {
   const [externalData, setExternalData] = useState<ExternalData>({});
@@ -62,6 +62,7 @@ export default function EeasyblocksEditorPage() {
         [pexelsVideoWidget.id]: PexelsVideoPicker,
         url: UrlWidget,
       }}
+      __debug={true}
     />
   );
 }

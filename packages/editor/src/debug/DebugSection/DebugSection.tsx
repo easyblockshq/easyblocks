@@ -1,6 +1,6 @@
 import React from "react";
 
-function TypesDebugSection({
+function DebugSection({
   inline_never,
   inline_optional_disabled,
   inline_optional_enabled,
@@ -38,4 +38,4 @@ function TypesDebugSection({
   );
 }
 
-export { TypesDebugSection };
+export { DebugSection };
