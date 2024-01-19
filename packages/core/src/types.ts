@@ -344,6 +344,8 @@ export type UserDefinedTemplate = {
   thumbnailLabel?: string;
   entry: ComponentConfig;
   isUserDefined: true;
+  width?: number;
+  widthAuto?: boolean;
 };
 
 export type InternalTemplate = {
@@ -353,6 +355,8 @@ export type InternalTemplate = {
   thumbnailLabel?: string;
   entry: ComponentConfig;
   isUserDefined?: false;
+  width?: number;
+  widthAuto?: boolean;
 };
 
 export type Template = InternalTemplate | UserDefinedTemplate;
@@ -567,6 +571,7 @@ export type Backend = {
     update: (payload: Omit<Document, "type">) => Promise<Document>;
   };
   templates: {
+    get(payload: { id: string }): Promise<UserDefinedTemplate>;
     getAll: () => Promise<UserDefinedTemplate[]>;
     create: (payload: {
       label: string;

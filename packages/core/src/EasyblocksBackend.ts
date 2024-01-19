@@ -243,6 +243,19 @@ export class EasyblocksBackend implements Backend {
   };
 
   templates = {
+    get: async (payload: { id: string }): Promise<UserDefinedTemplate> => {
+      // dummy inefficient implementation
+      const allTemplates = await this.templates.getAll();
+      const template = allTemplates.find(
+        (template) => template.id === payload.id
+      );
+
+      if (!template) {
+        throw new Error("Template not found");
+      }
+
+      return template;
+    },
     getAll: async (): Promise<UserDefinedTemplate[]> => {
       try {
         const response = await this.get(
@@ -255,6 +268,8 @@ export class EasyblocksBackend implements Backend {
           label: item.label,
           entry: item.config.config,
           isUserDefined: true,
+          width: item.width,
+          widthAuto: item.widthAuto,
         }));
 
         return templates;

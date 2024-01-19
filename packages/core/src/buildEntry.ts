@@ -1,4 +1,3 @@
-import { Locale } from "./locales";
 import { isLocalTextReference } from "./resourcesUtils";
 import type {
   ChangedExternalData,
@@ -13,13 +12,14 @@ import type {
   ExternalSchemaProp,
   ExternalWithSchemaProp,
 } from "./types";
+import { compile, findExternals, validate } from "./compiler";
 
 type BuildEntryOptions = {
   entry: ComponentConfig;
   config: Config;
-  contextParams: { locale: Locale["code"] };
-  compiler: CompilerModule;
-  externalData: ExternalData;
+  locale: string;
+  compiler?: CompilerModule;
+  externalData?: ExternalData;
   isExternalDataChanged?: (
     externalData: {
       id: string;
@@ -32,12 +32,18 @@ type BuildEntryOptions = {
   ) => boolean;
 };
 
+const defaultCompiler: CompilerModule = {
+  compile,
+  findExternals,
+  validate,
+};
+
 function buildEntry({
   entry,
   config,
-  contextParams,
-  compiler,
-  externalData,
+  locale,
+  compiler = defaultCompiler,
+  externalData = {},
   isExternalDataChanged,
 }: BuildEntryOptions): {
   renderableContent: CompiledShopstoryComponentConfig;
@@ -49,6 +55,7 @@ function buildEntry({
     throw new Error("Invalid entry");
   }
 
+  const contextParams = { locale };
   const compilationResult = compiler.compile(entry, config, contextParams);
   const resourcesWithSchemaProps = compiler.findExternals(
     entry,

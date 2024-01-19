@@ -1,7 +1,6 @@
 export { box } from "./box";
 export { buildDocument } from "./buildDocument";
 export { buildEntry } from "./buildEntry";
-export * from "./buildPreview";
 export * from "./checkers";
 export * from "./compiler";
 export { buildRichTextNoCodeEntry } from "./compiler/builtins/$richText/builders";

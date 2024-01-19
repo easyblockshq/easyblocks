@@ -8,6 +8,7 @@ export const productCardDefinition: NoCodeComponentDefinition = {
   id: "ProductCard",
   label: "Product Card",
   type: "card",
+  allowSave: true,
   schema: [
     {
       prop: "product",

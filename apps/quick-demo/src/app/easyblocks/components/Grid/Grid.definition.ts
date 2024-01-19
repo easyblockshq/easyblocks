@@ -17,6 +17,7 @@ export const gridComponentDefinition: NoCodeComponentDefinition<
   id: "Grid",
   label: "Collection",
   type: "section",
+  allowSave: true,
   schema: [
     ...sectionWrapperSchemaProps.margins,
     {

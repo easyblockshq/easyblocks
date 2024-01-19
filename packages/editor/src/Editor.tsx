@@ -353,9 +353,7 @@ function useBuiltContent(
     buildEntryResult.current = buildEntry({
       entry: rawContent,
       config,
-      contextParams: {
-        ...editorContext.contextParams,
-      },
+      locale: editorContext.contextParams.locale,
       externalData,
       compiler: {
         findExternals,
@@ -628,6 +626,7 @@ const EditorContent = ({
     // @ts-expect-error
     getTemplates(editorContext, props.config.templates ?? []).then(
       (newTemplates) => {
+        console.log(newTemplates);
         setTemplates(newTemplates);
       }
     );

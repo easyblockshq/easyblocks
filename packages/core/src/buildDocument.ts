@@ -2,12 +2,10 @@ import { serialize } from "@easyblocks/utils";
 import { buildEntry } from "./buildEntry";
 import type {
   ChangedExternalData,
-  CompilerModule,
   Document,
   Config,
   RenderableDocument,
 } from "./types";
-import { compile, findExternals, validate } from "./compiler";
 
 async function buildDocument({
   documentId,
@@ -21,28 +19,17 @@ async function buildDocument({
   renderableDocument: RenderableDocument;
   externalData: ChangedExternalData;
 }> {
-  const { entry, type } = await resolveEntryForDocument({
+  const { entry } = await resolveEntryForDocument({
     documentId,
     config,
     locale,
   });
 
-  const compiler: CompilerModule = {
-    compile,
-    findExternals,
-    validate,
-  };
-
   const { meta, externalData, renderableContent, configAfterAuto } = buildEntry(
     {
       entry,
       config,
-      contextParams: {
-        locale,
-        rootContainer: type,
-      },
-      compiler,
-      externalData: {},
+      locale,
     }
   );
 

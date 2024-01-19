@@ -1,6 +1,7 @@
 type EditorSearchParams = {
   readOnly: boolean | null;
   documentId: string | null;
+  templateId: string | null;
   rootComponentId: string | null;
   locale: string | null;
   preview: boolean;
@@ -16,6 +17,7 @@ export function parseQueryParams() {
       ? false
       : null;
   const documentId = searchParams.get("document");
+  const templateId = searchParams.get("template");
   const rootComponentId = searchParams.get("rootComponent");
   const locale = searchParams.get("locale");
 
@@ -24,6 +26,7 @@ export function parseQueryParams() {
   const editorSearchParams: EditorSearchParams = {
     readOnly,
     documentId,
+    templateId,
     rootComponentId,
     locale,
     preview,

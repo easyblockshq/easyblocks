@@ -1,33 +1,9 @@
-import type {
-  ChangedExternalData,
-  Config,
-  ContextParams,
-  ExternalData,
-  InlineTypeWidgetComponentProps,
-  WidgetComponentProps,
-} from "@easyblocks/core";
-import React, { ComponentType, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { EasyblocksCanvas } from "./EditorChildWindow";
 import { PreviewRenderer } from "./PreviewRenderer";
 import { EasyblocksParent } from "./EasyblocksParent";
 import { parseQueryParams } from "./parseQueryParams";
-
-export type ExternalDataChangeHandler = (
-  externalData: ChangedExternalData,
-  contextParams: ContextParams
-) => void;
-
-export type EasyblocksEditorProps = {
-  config: Config;
-  externalData: ExternalData;
-  onExternalDataChange: ExternalDataChangeHandler;
-  components?: Record<string, React.ComponentType<any>>;
-  widgets?: Record<
-    string,
-    | ComponentType<WidgetComponentProps<any>>
-    | ComponentType<InlineTypeWidgetComponentProps<any>>
-  >;
-};
+import { EasyblocksEditorProps } from "./EasyblocksEditorProps";
 
 export function EasyblocksEditor(props: EasyblocksEditorProps) {
   const [selectedWindow, setSelectedWindow] = useState<
@@ -84,9 +60,7 @@ export function EasyblocksEditor(props: EasyblocksEditorProps) {
         <EasyblocksCanvas components={props.components} />
       )}
 
-      {selectedWindow === "preview" && (
-        <PreviewRenderer config={props.config} />
-      )}
+      {selectedWindow === "preview" && <PreviewRenderer {...props} />}
     </>
   );
 }
