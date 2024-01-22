@@ -15,6 +15,7 @@ const OPACITY_OPTIONS = Array.from({ length: 10 }, (_, index) => {
 const textLinkDefinition: NoCodeComponentDefinition = {
   id: "TextLink",
   label: "Text link",
+  type: "@easyblocks/text-wrapper",
   schema: [
     ...linkDefinition.schema,
     {
@@ -126,7 +127,6 @@ const textLinkDefinition: NoCodeComponentDefinition = {
       defaultValue: "100ms",
     },
   ],
-  type: ["@easyblocks/text-wrapper"],
   styles({
     values: {
       isColorOverwriteEnabled,
