@@ -1,11 +1,11 @@
-import { ChangedExternalData, ExternalData, Widget } from "@easyblocks/core";
+import { RequestedExternalData, ExternalData, Widget } from "@easyblocks/core";
 
 import { fetchProductsByIds } from "@/data/shopify";
 
 import { PRODUCT_WIDGET_ID } from "./productShared";
 
 async function fetchProductResources(
-  externalData: ChangedExternalData
+  externalData: RequestedExternalData
 ): Promise<ExternalData> {
   const allResources = Object.entries(externalData).filter(
     ([, resource]) => resource.widgetId === PRODUCT_WIDGET_ID

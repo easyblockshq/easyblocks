@@ -1094,14 +1094,14 @@ export type FetchOutputResources = Record<
   (FetchOutputBasicResources | FetchOutputCompoundResources)[string]
 >;
 
-export type ChangedExternalDataValue = {
+export type RequestedExternalDataValue = {
   id: ExternalReference["id"];
   type: string;
   widgetId: string;
   fetchParams?: ExternalParams;
 };
 
-export type ChangedExternalData = Record<string, ChangedExternalDataValue>;
+export type RequestedExternalData = Record<string, RequestedExternalDataValue>;
 
 export type ExternalData = Record<
   string,
@@ -1109,7 +1109,7 @@ export type ExternalData = Record<
 >;
 
 export type ExternalDataChangeHandler = (
-  resources: ChangedExternalData,
+  resources: RequestedExternalData,
   contextParams: ContextParams
 ) => void;
 

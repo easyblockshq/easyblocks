@@ -1,5 +1,5 @@
 import {
-  ChangedExternalData,
+  RequestedExternalData,
   Config,
   ContextParams,
   ExternalData,
@@ -9,7 +9,7 @@ import {
 import React, { ComponentType } from "react";
 
 export type ExternalDataChangeHandler = (
-  externalData: ChangedExternalData,
+  externalData: RequestedExternalData,
   contextParams: ContextParams
 ) => void;
 

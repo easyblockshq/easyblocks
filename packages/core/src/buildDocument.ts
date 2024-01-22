@@ -1,7 +1,7 @@
 import { serialize } from "@easyblocks/utils";
 import { buildEntry } from "./buildEntry";
 import type {
-  ChangedExternalData,
+  RequestedExternalData,
   Document,
   Config,
   RenderableDocument,
@@ -17,7 +17,7 @@ async function buildDocument({
   locale: string;
 }): Promise<{
   renderableDocument: RenderableDocument;
-  externalData: ChangedExternalData;
+  externalData: RequestedExternalData;
 }> {
   const { entry } = await resolveEntryForDocument({
     documentId,

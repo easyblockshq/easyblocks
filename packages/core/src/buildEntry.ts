@@ -1,6 +1,6 @@
 import { isLocalTextReference } from "./resourcesUtils";
 import type {
-  ChangedExternalData,
+  RequestedExternalData,
   CompilationMetadata,
   CompiledShopstoryComponentConfig,
   CompilerModule,
@@ -48,7 +48,7 @@ function buildEntry({
 }: BuildEntryOptions): {
   renderableContent: CompiledShopstoryComponentConfig;
   meta: CompilationMetadata;
-  externalData: ChangedExternalData;
+  externalData: RequestedExternalData;
   configAfterAuto?: ComponentConfig;
 } {
   if (!compiler.validate(entry)) {
@@ -84,7 +84,7 @@ function findChangedExternalData(
   externalData: ExternalData,
   isExternalDataPending: BuildEntryOptions["isExternalDataChanged"]
 ) {
-  const changedExternalData: ChangedExternalData = {};
+  const changedExternalData: RequestedExternalData = {};
 
   function defaultIsExternalDataPending(
     id: string,

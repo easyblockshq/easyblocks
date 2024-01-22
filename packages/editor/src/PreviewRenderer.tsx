@@ -1,5 +1,5 @@
 import {
-  ChangedExternalData,
+  RequestedExternalData,
   Easyblocks,
   getDefaultLocale,
   type RenderableDocument,
@@ -14,7 +14,7 @@ export const PreviewRenderer: React.FC<EasyblocksEditorProps> = (props) => {
 
   const [data, setData] = useState<{
     renderableDocument: RenderableDocument;
-    externalData: ChangedExternalData;
+    externalData: RequestedExternalData;
   } | null>(null);
 
   const [width, setWidth] = useState<number>(-1);

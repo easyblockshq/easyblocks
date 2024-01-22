@@ -1,4 +1,4 @@
-import type { ChangedExternalData, ExternalData } from "@easyblocks/core";
+import type { RequestedExternalData, ExternalData } from "@easyblocks/core";
 import type { ImageSrc, VideoSrc } from "../types";
 import {
   PEXELS_IMAGE_WIDGET_ID,
@@ -7,7 +7,7 @@ import {
 } from "./pexelsShared";
 
 export async function fetchPexelsResources(
-  externalData: ChangedExternalData
+  externalData: RequestedExternalData
 ): Promise<ExternalData> {
   const pexelsPhotoResources = Object.entries(externalData).filter(
     ([, resource]) => {

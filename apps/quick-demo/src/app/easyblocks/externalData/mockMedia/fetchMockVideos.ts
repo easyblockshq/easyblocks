@@ -1,8 +1,8 @@
-import { ChangedExternalData, ExternalData } from "@easyblocks/core";
+import { RequestedExternalData, ExternalData } from "@easyblocks/core";
 import { MOCK_ASSETS } from "./mockAssets";
 
 export async function fetchMockVideos(
-  externalData: ChangedExternalData
+  externalData: RequestedExternalData
 ): Promise<ExternalData> {
   const allResources = Object.entries(externalData).filter(
     ([, resource]) => resource.widgetId === "mockVideo"
