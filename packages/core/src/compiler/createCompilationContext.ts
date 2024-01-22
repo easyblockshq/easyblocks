@@ -11,7 +11,6 @@ import {
   Spacing,
   SchemaProp,
 } from "../types";
-import { buildFullTheme } from "./buildFullTheme";
 import { richTextEditableComponent } from "./builtins/$richText/$richText";
 import { richTextBlockElementEditableComponent } from "./builtins/$richText/$richTextBlockElement/$richTextBlockElement";
 import { richTextLineElementEditableComponent } from "./builtins/$richText/$richTextLineElement/$richTextLineElement";
@@ -19,12 +18,8 @@ import { richTextPartEditableComponent } from "./builtins/$richText/$richTextPar
 import { textEditableComponent } from "./builtins/$text/$text";
 import { actionTextModifier } from "./builtins/actionTextModifier";
 import { DEFAULT_DEVICES } from "./devices";
-import { Theme } from "./theme";
-import {
-  themeObjectValueToResponsiveValue,
-  themeScalarValueToResponsiveValue,
-} from "./themeValueToResponsiveValue";
-import { CompilationContextType } from "./types";
+import { themeScalarValueToResponsiveValue } from "./themeValueToResponsiveValue";
+import { CompilationContextType, Theme } from "./types";
 import { validateColor } from "./validate-color";
 
 function normalizeSpace(
@@ -80,26 +75,10 @@ export function createCompilationContext(
     throw new Error(`Missing main device in devices config.`);
   }
 
-  const {
-    aspectRatios,
-    boxShadows,
-    colors,
-    containerWidths,
-    fonts,
-    icons,
-    space,
-    ...customTokens
-  } = config.tokens ?? {};
+  const { space, ...customTokens } = config.tokens ?? {};
 
   const theme: Theme = {
-    colors: {},
-    fonts: {},
     space: {},
-    numberOfItemsInRow: {},
-    aspectRatios: {},
-    icons: {},
-    containerWidths: {},
-    boxShadows: {},
   };
 
   // TODO: allow for custom breakpoints!!! What happens with old ones when the new ones show up?
@@ -122,82 +101,6 @@ export function createCompilationContext(
         ...rest,
         type: "dev",
         value: normalizeSpace(themeScalarValueToResponsiveValue(val, devices)),
-      };
-    });
-  }
-
-  if (colors) {
-    colors.forEach((color) => {
-      const { id, ...rest } = color;
-
-      theme.colors[id] = {
-        ...rest,
-        type: "dev",
-        value: themeScalarValueToResponsiveValue(color.value, devices),
-      };
-    });
-  }
-
-  if (fonts) {
-    // fonts are a bit more complex because they're objects
-    fonts.forEach((font) => {
-      const { id, ...rest } = font;
-
-      theme.fonts[id] = {
-        ...rest,
-        type: "dev",
-        value: themeObjectValueToResponsiveValue(font.value, devices),
-      };
-    });
-  }
-
-  if (aspectRatios) {
-    aspectRatios.forEach((aspectRatio) => {
-      const { id, ...rest } = aspectRatio;
-
-      theme.aspectRatios[id] = {
-        ...rest,
-        type: "dev",
-        value: themeScalarValueToResponsiveValue(aspectRatio.value, devices),
-      };
-    });
-  }
-
-  if (boxShadows) {
-    boxShadows.forEach((boxShadow) => {
-      const { id, ...rest } = boxShadow;
-
-      theme.boxShadows[id] = {
-        ...rest,
-        type: "dev",
-        value: themeScalarValueToResponsiveValue(boxShadow.value, devices),
-      };
-    });
-  }
-
-  if (containerWidths) {
-    containerWidths.forEach((containerWidth) => {
-      const { id, ...rest } = containerWidth;
-
-      theme.containerWidths[id] = {
-        ...rest,
-        type: "dev",
-        value: themeScalarValueToResponsiveValue(
-          containerWidth.value.toString(),
-          devices
-        ),
-      };
-    });
-  }
-
-  if (icons) {
-    icons.forEach((icon) => {
-      const { id, ...rest } = icon;
-
-      theme.icons[id] = {
-        ...rest,
-        type: "dev",
-        value: icon.value,
       };
     });
   }
@@ -324,7 +227,7 @@ export function createCompilationContext(
 
   const compilationContext: CompilationContextType = {
     devices,
-    theme: buildFullTheme(theme),
+    theme,
     definitions: {
       components,
       textModifiers,
@@ -360,6 +263,33 @@ function createCustomTypes(
 }
 function createBuiltinTypes(): Record<string, CustomTypeDefinition> {
   return {
+    space: {
+      type: "token",
+      responsiveness: "always",
+      token: "space",
+      defaultValue: { value: "0px" },
+      widget: { id: "@easyblocks/space", label: "Space" },
+      allowCustom: true,
+      validate(value) {
+        return typeof value === "string" && !!parseSpacing(value);
+      },
+    },
+    color: {
+      type: "token",
+      responsiveness: "always",
+      token: "colors",
+      defaultValue: { value: "#000000" },
+      widget: { id: "@easyblocks/color", label: "Color" },
+      allowCustom: true,
+      validate(value) {
+        return typeof value === "string" && validateColor(value);
+      },
+    },
+    font: {
+      type: "token",
+      token: "fonts",
+      defaultValue: { value: { fontFamily: "sans-serif", fontSize: "16px" } },
+    },
     aspectRatio: {
       type: "token",
       token: "aspectRatios",
@@ -378,40 +308,9 @@ function createBuiltinTypes(): Record<string, CustomTypeDefinition> {
       type: "token",
       token: "boxShadows",
       responsiveness: "always",
-      defaultValue: { tokenId: "none" },
-    },
-    color: {
-      type: "token",
-      responsiveness: "always",
-      token: "colors",
-      defaultValue: { value: "#000000" },
-      widget: { id: "@easyblocks/color", label: "Color" },
-      allowCustom: true,
-      validate(value) {
-        return typeof value === "string" && validateColor(value);
-      },
-    },
-    containerWidth: {
-      type: "token",
-      responsiveness: "always",
-      token: "containerWidths",
-      defaultValue: { tokenId: "none" },
-    },
-    font: {
-      type: "token",
-      token: "fonts",
-      responsiveness: "always",
-      defaultValue: { value: { fontFamily: "sans-serif", fontSize: "16px" } },
-    },
-    space: {
-      type: "token",
-      responsiveness: "always",
-      token: "space",
-      defaultValue: { tokenId: "0" },
-      widget: { id: "@easyblocks/space", label: "Space" },
-      allowCustom: true,
-      validate(value) {
-        return typeof value === "string" && !!parseSpacing(value);
+      defaultValue: {
+        value:
+          "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
       },
     },
     icon: {

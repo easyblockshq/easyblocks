@@ -16,11 +16,22 @@ import {
   NoCodeComponentStylesFunction,
   RefMap,
   Resource,
+  ResponsiveValue,
   SchemaProp,
+  Spacing,
   Template,
+  ThemeRefValue,
 } from "../types";
 import { InternalAnyTinaField } from "./schema";
-import { Theme } from "./theme";
+
+export type Theme = {
+  space: {
+    [key: string]: ThemeRefValue<ResponsiveValue<Spacing>>;
+  };
+  [key: string]: {
+    [key: string]: ThemeRefValue<any>;
+  };
+};
 
 export type CompilationDocumentType = {
   id: string;

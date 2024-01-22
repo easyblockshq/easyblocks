@@ -18,6 +18,6 @@ export { isNoCodeComponentOfType } from "./isNoCodeComponentOfType";
 export * from "./locales";
 export * from "./resourcesUtils";
 export * from "./responsiveness";
-export { spacingToPx } from "./spacingToPx";
+export { spacingToPx, parseSpacing } from "./spacingToPx";
 export * from "./types";
 export * from "./EasyblocksBackend";

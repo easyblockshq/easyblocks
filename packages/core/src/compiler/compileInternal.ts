@@ -5,9 +5,9 @@ import {
 } from "../types";
 import { CompilationCache } from "./CompilationCache";
 import { normalize } from "./normalize";
-import { buildFullTheme } from "./buildFullTheme";
 import { compileComponent } from "./compileComponent";
 import { CompilationContextType, ContextProps } from "./types";
+import { getDevicesWidths } from "./devices";
 
 export type CompileInternalReturnType = {
   compiled: CompiledShopstoryComponentConfig;
@@ -22,11 +22,6 @@ export function compileInternal(
 ): CompileInternalReturnType {
   const normalizedConfig = normalize(configComponent, compilationContext);
 
-  const compilationContextWithFullTheme: CompilationContextType = {
-    ...compilationContext,
-    theme: buildFullTheme(compilationContext.theme),
-  };
-
   const meta: CompilationMetadata = {
     vars: {
       definitions: {
@@ -35,15 +30,25 @@ export function compileInternal(
         components: [],
         textModifiers: [],
       },
-      devices: compilationContextWithFullTheme.devices,
-      locale: compilationContextWithFullTheme.contextParams.locale,
+      devices: compilationContext.devices,
+      locale: compilationContext.contextParams.locale,
     },
   };
 
   // const activeDocumentType = compilationContext.documentTypes.find(
   //   (container) => container.id === compilationContext.documentType
   // );
-  const contextProps: ContextProps = {};
+  const contextProps: ContextProps = {
+    $width: getDevicesWidths(compilationContext.devices),
+    $widthAuto: {
+      $res: true,
+      xs: false,
+      md: false,
+      lg: false,
+      xl: false,
+      "2xl": false,
+    },
+  };
 
   // if (activeDocumentType?.widths) {
   //   contextProps.$width = activeDocumentType.widths;
@@ -52,7 +57,7 @@ export function compileInternal(
 
   const compilationArtifacts = compileComponent(
     normalizedConfig,
-    compilationContextWithFullTheme,
+    compilationContext,
     contextProps,
     meta,
     {},

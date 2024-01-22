@@ -114,6 +114,12 @@ export function compileComponent(
     throw new Error("[compile] wrong input for compileComponent");
   }
 
+  if (contextProps.$width === undefined || contextProps.$width === -1) {
+    throw new Error(
+      `assertion failed: incorrect $width in compileComponent: ${contextProps.$width}, component: ${editableElement._id}, ${editableElement._template}`
+    );
+  }
+
   const cachedResult = cache.get(editableElement._id);
   const { name, ref } = splitTemplateName(editableElement._template);
 

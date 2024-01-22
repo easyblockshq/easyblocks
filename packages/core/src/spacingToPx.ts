@@ -51,5 +51,7 @@ export function spacingToPx(spacing: Spacing, width: number): number {
     return parsed.value;
   }
 
-  throw new Error("unreachable");
+  throw new Error(
+    `Error while running spacingToPx for spacing: ${spacing} and width: ${width}`
+  );
 }

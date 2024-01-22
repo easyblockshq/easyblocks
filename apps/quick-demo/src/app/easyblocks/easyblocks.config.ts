@@ -24,6 +24,7 @@ import { mockImageWidget } from "./externalData/mockMedia/mockImageWidget";
 import { pexelsImageWidget } from "./externalData/pexels/pexelsImageWidget";
 import { productWidget } from "./externalData/product/productWidget";
 import { EasyblocksBackend } from "@easyblocks/core";
+import { parseSpacing } from "@easyblocks/core";
 
 if (!process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN) {
   throw new Error("Missing NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN");
@@ -341,6 +342,11 @@ export const easyblocksConfig: Config = {
     ],
     boxShadows: [
       {
+        id: "none",
+        label: "None",
+        value: "none",
+      },
+      {
         id: "sm",
         label: "sm",
         value: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
@@ -369,9 +375,106 @@ export const easyblocksConfig: Config = {
         value: "0 25px 50px -12px rgb(0 0 0 / 0.25)",
       },
     ],
+    containerWidths: [
+      {
+        id: "none",
+        label: "None",
+        value: -1,
+      },
+      {
+        id: "lg",
+        label: "Large",
+        value: 1280,
+      },
+      {
+        id: "md",
+        label: "Medium",
+        value: 1024,
+      },
+      {
+        id: "sm",
+        label: "Small",
+        value: 768,
+      },
+    ],
     space: [
       {
-        id: "containerMargin.default",
+        id: "0",
+        label: "0",
+        value: "0px",
+      },
+      {
+        id: "1",
+        label: "1",
+        value: "1px",
+      },
+      {
+        id: "2",
+        label: "2",
+        value: "2px",
+      },
+      {
+        id: "4",
+        label: "4",
+        value: "4px",
+      },
+      {
+        id: "6",
+        label: "6",
+        value: "6px",
+      },
+      {
+        id: "8",
+        label: "8",
+        value: "8px",
+      },
+      {
+        id: "12",
+        label: "12",
+        value: "12px",
+      },
+      {
+        id: "16",
+        label: "16",
+        value: "16px",
+      },
+      {
+        id: "24",
+        label: "24",
+        value: "24px",
+      },
+      {
+        id: "32",
+        label: "32",
+        value: "32px",
+      },
+      {
+        id: "48",
+        label: "48",
+        value: "48px",
+      },
+      {
+        id: "64",
+        label: "64",
+        value: "64px",
+      },
+      {
+        id: "96",
+        label: "96",
+        value: "96px",
+      },
+      {
+        id: "128",
+        label: "128",
+        value: "128px",
+      },
+      {
+        id: "160",
+        label: "160",
+        value: "160px",
+      },
+      {
+        id: "containerMargin.standard",
         label: "Standard",
         value: {
           $res: true,
@@ -388,23 +491,6 @@ export const easyblocksConfig: Config = {
           md: "8vw",
           lg: "12vw",
         },
-      },
-    ],
-    containerWidths: [
-      {
-        id: "lg",
-        label: "Large",
-        value: 1280,
-      },
-      {
-        id: "md",
-        label: "Medium",
-        value: 1024,
-      },
-      {
-        id: "sm",
-        label: "Small",
-        value: 768,
       },
     ],
   },
@@ -434,6 +520,12 @@ export const easyblocksConfig: Config = {
           (value.startsWith("http://") || value.startsWith("https://"))
         );
       },
+    },
+    containerWidth: {
+      type: "token",
+      responsiveness: "always",
+      token: "containerWidths",
+      defaultValue: { tokenId: "none" },
     },
   },
   // disableCustomTemplates: true,

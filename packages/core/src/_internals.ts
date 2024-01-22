@@ -20,7 +20,6 @@ export { scalarizeConfig } from "./compiler/resop";
 export * from "./compiler/schema";
 export * from "./compiler/schema/buttonSchemaProps";
 export { splitTemplateName } from "./compiler/splitTemplateName";
-export { defaultTheme } from "./compiler/theme";
 export { traverseComponents } from "./compiler/traverseComponents";
 export type {
   CompilationContextType,

@@ -35,7 +35,7 @@ export const sectionWrapperSchemaProps: {
         prefix: "containerMargin",
       },
       defaultValue: {
-        tokenId: "containerMargin.default",
+        tokenId: "containerMargin.standard",
       },
     },
     {
@@ -237,7 +237,7 @@ export const sectionWrapperSchemaProps: {
 
 export type SectionWrapperValues = {
   containerMargin: Spacing;
-  containerMaxWidth: string;
+  containerMaxWidth: number;
   hide: boolean;
   headerMode: string;
   layout1Stack: string;
@@ -256,13 +256,10 @@ export type SectionWrapperValues = {
 
 export function sectionWrapperCalculateMarginAndMaxWidth(
   containerMargin: string,
-  containerMaxWidth: string,
+  containerMaxWidth: number,
   device: DeviceRange
 ) {
-  const maxWidth =
-    containerMaxWidth === "none" || isNaN(parseInt(containerMaxWidth))
-      ? null
-      : parseInt(containerMaxWidth);
+  const maxWidth = containerMaxWidth === -1 ? null : containerMaxWidth;
 
   const getCssAbsoluteMargin = (margin: string) => {
     return maxWidth !== null
