@@ -40,6 +40,7 @@ import {
   SerializedRenderableComponentDefinition,
   SpaceSchemaProp,
   TrulyResponsiveValue,
+  CompiledComponentConfig,
 } from "../types";
 import type {
   CompilationCache,
@@ -87,9 +88,7 @@ import {
 import { getFallbackLocaleForLocale } from "../locales";
 
 type ComponentCompilationArtifacts = {
-  compiledComponentConfig:
-    | CompiledShopstoryComponentConfig
-    | CompiledCustomComponentConfig;
+  compiledComponentConfig: CompiledComponentConfig;
   configAfterAuto: ComponentConfig;
 };
 
@@ -162,15 +161,12 @@ export function compileComponent(
     values: { _id: string; _template: string } & Record<string, any>;
     params: Record<string, any>;
   };
-  let compiled:
-    | CompiledCustomComponentConfig
-    | CompiledShopstoryComponentConfig = {
+  let compiled: CompiledComponentConfig = {
     _template: editableElement._template,
     _id: editableElement._id,
     props: {},
-    actions: {},
     components: {},
-    textModifiers: {},
+    styled: {},
   };
   let configAfterAuto: any;
   let editingInfo: InternalEditingInfo | undefined;
@@ -337,35 +333,6 @@ export function compileComponent(
         ] = compiledValue;
       }
     );
-
-    componentDefinition.schema.forEach((schemaProp: SchemaProp) => {
-      if (
-        isSchemaPropActionTextModifier(schemaProp) ||
-        isSchemaPropTextModifier(schemaProp)
-      ) {
-        const modifierValue = editableElement[schemaProp.prop][0];
-
-        if (!modifierValue) {
-          compiledValues[schemaProp.prop] = [];
-          return;
-        }
-
-        compiledValues[schemaProp.prop] = [
-          compileTextModifier(
-            modifierValue,
-            [editableElement],
-            compilationContext,
-            `${configPrefix}${configPrefix === "" ? "" : "."}${
-              schemaProp.prop
-            }.0`,
-            cache
-          ),
-        ];
-
-        compiled.textModifiers[schemaProp.prop] =
-          compiledValues[schemaProp.prop];
-      }
-    });
 
     // We want to style block element based on the most common values from all text parts within all lines.
     // Only for this component, we compile nested @easyblocks/rich-text-part components values.

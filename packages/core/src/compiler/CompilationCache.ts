@@ -1,7 +1,4 @@
-import {
-  CompiledCustomComponentConfig,
-  CompiledShopstoryComponentConfig,
-} from "../types";
+import { CompiledComponentConfig } from "../types";
 import { InternalEditingInfo } from "./types";
 
 type CompilationCacheItemValue = {
@@ -17,9 +14,7 @@ type CompilationCacheItemValue = {
     params: Record<string, any>;
   };
   compiledValues: Record<string, any>;
-  compiledConfig:
-    | CompiledShopstoryComponentConfig
-    | CompiledCustomComponentConfig;
+  compiledConfig: CompiledComponentConfig;
   contextProps: { [componentName in string]: Record<string, any> };
   // TODO: editor only????
   editingContextProps?: InternalEditingInfo["components"];

@@ -1,72 +1,27 @@
+import { EasyblocksBackend } from "../EasyblocksBackend";
+import { createCompilationContext } from "./createCompilationContext";
 import { schemaPropDefinitions } from "./definitions";
-import { CompilationContextType } from "./types";
 
-const testCompilationContext: CompilationContextType = {
-  devices: [],
-  theme: {
-    space: {
-      "0": {
-        type: "dev",
-        value: "0px",
+const testCompilationContext = createCompilationContext(
+  {
+    backend: new EasyblocksBackend({ accessToken: "" }),
+    locales: [{ code: "en-US", isDefault: true }],
+    types: {
+      custom: {
+        type: "external",
+        widgets: [],
       },
     },
-    fonts: {
-      $body: {
-        type: "dev",
-        value: {
-          $res: true,
-        },
+    components: [
+      {
+        id: "RootComponent",
+        schema: [],
       },
-    },
-    aspectRatios: {
-      $landscape: {
-        type: "dev",
-        value: "4:3",
-      },
-    },
-    containerWidths: {},
-    colors: {
-      $dark: {
-        type: "dev",
-        value: "black",
-      },
-    },
-    icons: {
-      $sliderLeft: {
-        type: "dev",
-        value: "<svg></svg>",
-      },
-    },
-    numberOfItemsInRow: {},
-    boxShadows: {},
+    ],
   },
-  contextParams: {
-    locale: "en",
-  },
-  image: {
-    resourceType: "",
-    transform: jest.fn(),
-  },
-  mainBreakpointIndex: "",
-  text: {
-    fetch: jest.fn(),
-  },
-  types: {},
-  video: {
-    resourceType: "",
-    transform: jest.fn(),
-  },
-  definitions: {
-    links: [],
-    actions: [],
-    components: [],
-    textModifiers: [],
-  },
-  imageVariants: [],
-  videoVariants: [],
-  documentTypes: [],
-  documentType: "content",
-};
+  { locale: "en-US" },
+  "RootComponent"
+);
 
 type SchemaPropTestCaseArray<
   SchemaName extends keyof typeof schemaPropDefinitions
@@ -102,7 +57,7 @@ describe("boolean schema", () => {
 });
 
 describe("boolean$ schema", () => {
-  const boolean$SchemaTestCases: Array<SchemaPropTestCaseArray<"boolean$">> = [
+  const boolean$SchemaTestCases: Array<SchemaPropTestCaseArray<"boolean">> = [
     [true, "true"],
     [false, "false"],
     [{ $res: true, xl: true }, "true"],
@@ -115,10 +70,10 @@ describe("boolean$ schema", () => {
     (value, expected) => {
       expect(
         schemaPropDefinitions
-          .boolean$(
+          .boolean(
             {
               prop: "testProp",
-              type: "boolean$",
+              type: "boolean",
             },
             testCompilationContext
           )
@@ -129,7 +84,7 @@ describe("boolean$ schema", () => {
 });
 
 describe("color schema", () => {
-  const colorSchema = schemaPropDefinitions.color(
+  const colorSchema = schemaPropDefinitions.custom(
     {
       prop: "testProp",
       type: "color",
@@ -137,11 +92,14 @@ describe("color schema", () => {
     testCompilationContext
   );
 
-  const colorSchemaTestCases: Array<SchemaPropTestCaseArray<"color">> = [
-    [{ ref: "white", value: "#fff" }, "white"],
-    [{ $res: true, xl: { ref: "white", value: "#fff" } }, "white"],
+  const colorSchemaTestCases: Array<SchemaPropTestCaseArray<"custom">> = [
+    [{ tokenId: "white", value: "#fff", widgetId: "" }, "white"],
+    [
+      { $res: true, xl: { tokenId: "white", value: "#fff", widgetId: "" } },
+      "white",
+    ],
     [{ $res: true }, undefined],
-    [{ $res: true, xl: { value: "#fff" } }, "#fff"],
+    [{ $res: true, xl: { value: "#fff", widgetId: "" } }, "#fff"],
   ];
 
   test.each(colorSchemaTestCases)('for %j returns "%s"', (value, expected) => {
@@ -153,9 +111,12 @@ describe("component schema", () => {
   const componentSchemaTestCases: Array<SchemaPropTestCaseArray<"component">> =
     [
       [[], "__BLOCK_EMPTY__"],
-      [[{ _template: "test template" }], "test template"],
+      [[{ _template: "test template", _id: "" }], "test template"],
       [
-        [{ _template: "test template1" }, { _template: "test template2" }],
+        [
+          { _template: "test template1", _id: "" },
+          { _template: "test template2", _id: "" },
+        ],
         "test template1",
       ],
     ];
@@ -184,9 +145,12 @@ describe("component-collection schema", () => {
     SchemaPropTestCaseArray<"component-collection">
   > = [
     [[], ""],
-    [[{ _template: "test template" }], "test template"],
+    [[{ _template: "test template", _id: "" }], "test template"],
     [
-      [{ _template: "test template1" }, { _template: "test template2" }],
+      [
+        { _template: "test template1", _id: "" },
+        { _template: "test template2", _id: "" },
+      ],
       "test template1;test template2",
     ],
   ];
@@ -210,28 +174,30 @@ describe("component-collection schema", () => {
 
 describe("custom schema", () => {
   const customSchemaTestCases: Array<SchemaPropTestCaseArray<"custom">> = [
-    [{ id: "testId" }, "testId"],
-    [{ id: "testId" }, "testId"],
+    [{ id: "testId", widgetId: "custom" }, "testId.custom"],
+    [{ id: "testId", widgetId: "custom" }, "testId.custom"],
   ];
 
   test.each(customSchemaTestCases)(
     'for %s returns "%s""',
     (value, expected) => {
       expect(
-        schemaPropDefinitions["external"](
-          {
-            prop: "testProp",
-            type: "custom",
-          },
-          testCompilationContext
-        ).getHash(value, "xl", [])
+        schemaPropDefinitions
+          .custom(
+            {
+              prop: "testProp",
+              type: "custom",
+            },
+            testCompilationContext
+          )
+          .getHash(value, "xl", [])
       ).toBe(expected);
     }
   );
 });
 
 describe("font schema", () => {
-  const fontSchema = schemaPropDefinitions.font(
+  const fontSchema = schemaPropDefinitions.custom(
     {
       prop: "testProp",
       type: "font",
@@ -239,15 +205,16 @@ describe("font schema", () => {
     testCompilationContext
   );
 
-  const fontSchemaTestCases: Array<SchemaPropTestCaseArray<"font">> = [
+  const fontSchemaTestCases: Array<SchemaPropTestCaseArray<"custom">> = [
     [
       {
         $res: true,
         xl: {
-          ref: "font",
+          tokenId: "font",
           value: {
             ref: "font",
           },
+          widgetId: "",
         },
       },
       "font",
@@ -260,10 +227,11 @@ describe("font schema", () => {
     ],
     [
       {
-        ref: "font",
+        tokenId: "font",
         value: {
           ref: "font",
         },
+        widgetId: "",
       },
       "font",
     ],
@@ -274,6 +242,7 @@ describe("font schema", () => {
           value: {
             fontFamily: "serif",
           },
+          widgetId: "",
         },
       },
       `{"fontFamily":"serif"}`,
@@ -286,7 +255,7 @@ describe("font schema", () => {
 });
 
 describe("icon schema", () => {
-  const iconSchema = schemaPropDefinitions.icon(
+  const iconSchema = schemaPropDefinitions.custom(
     {
       prop: "testProp",
       type: "icon",
@@ -294,49 +263,13 @@ describe("icon schema", () => {
     testCompilationContext
   );
 
-  const iconSchemaTestCases: Array<SchemaPropTestCaseArray<"icon">> = [
-    [{ ref: "icon", value: "" }, "icon"],
-    [{ value: "blabla" }, "blabla"],
+  const iconSchemaTestCases: Array<SchemaPropTestCaseArray<"custom">> = [
+    [{ tokenId: "icon", value: "", widgetId: "" }, "icon"],
+    [{ value: "blabla", widgetId: "" }, "blabla"],
   ];
 
   test.each(iconSchemaTestCases)('for %j returns "%s"', (value, expected) => {
     expect(iconSchema.getHash(value, "xl", [])).toBe(expected);
-  });
-});
-
-describe("image schema", () => {
-  const imageSchema = schemaPropDefinitions.image(
-    {
-      prop: "testProp",
-      type: "image",
-    },
-    testCompilationContext
-  );
-
-  const imageSchemaTestCases: Array<SchemaPropTestCaseArray<"image">> = [
-    [{ id: "testImageId" }, "testImageId"],
-    [{ $res: true }, undefined],
-    [
-      {
-        $res: true,
-        xl: {
-          id: "testImageId",
-        },
-      },
-      "testImageId",
-    ],
-    [{ $res: true, xl: { id: null } }, undefined],
-    [{ id: "testImageId", variant: "testVariant" }, "testImageId.testVariant"],
-    [
-      { $res: true, xl: { id: "testImageId", variant: "testVariant" } },
-      "testImageId.testVariant",
-    ],
-    [{ id: null, variant: "testVariant" }, "testVariant"],
-    [{ $res: true, xl: { id: null, variant: "testVariant" } }, "testVariant"],
-  ];
-
-  test.each(imageSchemaTestCases)('for %j returns "%s"', (value, expected) => {
-    expect(imageSchema.getHash(value, "xl", [])).toBe(expected);
   });
 });
 
@@ -365,7 +298,9 @@ describe("radio-group schema", () => {
     {
       prop: "testProp",
       type: "radio-group",
-      options: ["option1", "option2"],
+      params: {
+        options: ["option1", "option2"],
+      },
     },
     testCompilationContext
   );
@@ -375,6 +310,9 @@ describe("radio-group schema", () => {
   > = [
     ["", ""],
     ["value", "value"],
+    [{ $res: true }, undefined],
+    [{ $res: true, xl: "" }, ""],
+    [{ $res: true, xl: "testValue" }, "testValue"],
   ];
 
   test.each(radioGroupSchemaTestCases)(
@@ -385,40 +323,14 @@ describe("radio-group schema", () => {
   );
 });
 
-describe("radio-group$ schema", () => {
-  const radioGroup$Schema = schemaPropDefinitions["radio-group$"](
-    {
-      prop: "testProp",
-      type: "radio-group$",
-      options: ["option1", "option2"],
-    },
-    testCompilationContext
-  );
-
-  const radioGroup$SchemaTestCases: Array<
-    SchemaPropTestCaseArray<"radio-group$">
-  > = [
-    ["", ""],
-    ["value", "value"],
-    [{ $res: true }, undefined],
-    [{ $res: true, xl: "" }, ""],
-    [{ $res: true, xl: "testValue" }, "testValue"],
-  ];
-
-  test.each(radioGroup$SchemaTestCases)(
-    'for "%s" returns "%s"',
-    (value, expected) => {
-      expect(radioGroup$Schema.getHash(value, "xl", [])).toBe(expected);
-    }
-  );
-});
-
 describe("select schema", () => {
   const selectSchema = schemaPropDefinitions.select(
     {
       prop: "testProp",
       type: "select",
-      options: ["option1", "option2"],
+      params: {
+        options: ["option1", "option2"],
+      },
     },
     testCompilationContext
   );
@@ -426,6 +338,9 @@ describe("select schema", () => {
   const selectSchemaTestCases: Array<SchemaPropTestCaseArray<"select">> = [
     ["", ""],
     ["value", "value"],
+    [{ $res: true }, undefined],
+    [{ $res: true, xl: "" }, ""],
+    [{ $res: true, xl: "testValue" }, "testValue"],
   ];
 
   test.each(selectSchemaTestCases)(
@@ -436,34 +351,8 @@ describe("select schema", () => {
   );
 });
 
-describe("select$ schema", () => {
-  const select$Schema = schemaPropDefinitions.select$(
-    {
-      prop: "testProp",
-      type: "select$",
-      options: ["option1", "option2"],
-    },
-    testCompilationContext
-  );
-
-  const select$SchemaTestCases: Array<SchemaPropTestCaseArray<"select$">> = [
-    ["", ""],
-    ["value", "value"],
-    [{ $res: true }, undefined],
-    [{ $res: true, xl: "" }, ""],
-    [{ $res: true, xl: "testValue" }, "testValue"],
-  ];
-
-  test.each(select$SchemaTestCases)(
-    'for "%s" returns "%s"',
-    (value, expected) => {
-      expect(select$Schema.getHash(value, "xl", [])).toBe(expected);
-    }
-  );
-});
-
 describe("space schema", () => {
-  const spaceSchema = schemaPropDefinitions.space(
+  const spaceSchema = schemaPropDefinitions.custom(
     {
       prop: "testProp",
       type: "space",
@@ -471,26 +360,27 @@ describe("space schema", () => {
     testCompilationContext
   );
 
-  const spaceSchemaTestCases: Array<SchemaPropTestCaseArray<"space">> = [
-    [{ ref: "s-3", value: "8px" }, "s-3"],
-    [{ ref: "s-3", value: { $res: true } }, "s-3"],
-    [{ ref: "s-3", value: { $res: true, xl: "8px" } }, "s-3"],
+  const spaceSchemaTestCases: Array<SchemaPropTestCaseArray<"custom">> = [
+    [{ tokenId: "s-3", value: "8px", widgetId: "" }, "s-3"],
+    [{ tokenId: "s-3", value: { $res: true }, widgetId: "" }, "s-3"],
+    [{ tokenId: "s-3", value: { $res: true, xl: "8px" }, widgetId: "" }, "s-3"],
     [{ $res: true }, undefined],
-    [{ $res: true, xl: { ref: "s-3", value: "8px" } }, "s-3"],
+    [{ $res: true, xl: { tokenId: "s-3", value: "8px", widgetId: "" } }, "s-3"],
     [
       {
         $res: true,
         xl: {
-          ref: "s-3",
+          tokenId: "s-3",
           value: {
             $res: true,
             xl: "8px",
           },
+          widgetId: "",
         },
       },
       "s-3",
     ],
-    [{ $res: true, xl: { value: "8px" } }, "8px"],
+    [{ $res: true, xl: { value: "8px", widgetId: "" } }, "8px"],
   ];
 
   test.each(spaceSchemaTestCases)(
@@ -523,41 +413,36 @@ describe("string schema", () => {
   );
 });
 
-describe("stringToken schema", () => {
-  const stringTokenSchema = schemaPropDefinitions.stringToken(
+describe("aspectRatio schema", () => {
+  const stringTokenSchema = schemaPropDefinitions.custom(
     {
       prop: "testProp",
-      type: "stringToken",
-      tokenId: "aspectRatios",
+      type: "aspectRatio",
     },
     testCompilationContext
   );
 
-  const stringTokenSchemaTestCases: Array<
-    SchemaPropTestCaseArray<"stringToken">
-  > = [
+  const stringTokenSchemaTestCases: Array<SchemaPropTestCaseArray<"custom">> = [
     [{ $res: true }, undefined],
     [
-      { $res: true, xl: { ref: "testAspectRatio", value: "4:3" } },
+      {
+        $res: true,
+        xl: { tokenId: "testAspectRatio", value: "4:3", widgetId: "" },
+      },
       "testAspectRatio",
     ],
     [
       {
         $res: true,
-        xl: { value: { $res: true, xl: "4:3" } },
+        xl: { value: "4:3", widgetId: "" },
       },
       "4:3",
     ],
     [
-      {
-        $res: true,
-        xl: { value: "4:3" },
-      },
-      "4:3",
+      { tokenId: "testAspectRatio", value: "4:3", widgetId: "" },
+      "testAspectRatio",
     ],
-    [{ ref: "testAspectRatio", value: "4:3" }, "testAspectRatio"],
-    [{ value: { $res: true, xl: "4:3" } }, "4:3"],
-    [{ value: "4:3" }, "4:3"],
+    [{ value: "4:3", widgetId: "" }, "4:3"],
   ];
 
   test.each(stringTokenSchemaTestCases)(
@@ -578,55 +463,13 @@ describe("text schema", () => {
   );
 
   const textSchemaTestCases: Array<SchemaPropTestCaseArray<"text">> = [
-    [{ id: "test" }, "test"],
-    [{ id: "testId" }, "testId"],
-    [{ id: "testId" }, "testId"],
-    [{ id: null }, undefined],
+    [{ id: "test", widgetId: "" }, "test"],
+    [{ id: "testId", widgetId: "" }, "testId"],
+    [{ id: "testId", widgetId: "" }, "testId"],
+    [{ id: null, widgetId: "" }, undefined],
   ];
 
   test.each(textSchemaTestCases)('for %j returns "%s"', (value, expected) => {
     expect(textSchema.getHash(value, "xl", [])).toBe(expected);
   });
-});
-
-describe("video schema", () => {
-  const videoSchema = schemaPropDefinitions.video(
-    {
-      prop: "testProp",
-      type: "video",
-    },
-    testCompilationContext
-  );
-
-  const videoSchemaTestCases: Array<SchemaPropTestCaseArray<"video">> = [
-    [{ id: "test" }, "test"],
-    [{ id: null }, undefined],
-  ];
-
-  test.each(videoSchemaTestCases)('for %j returns "%s"', (value, expected) => {
-    expect(videoSchema.getHash(value, "xl", [])).toBe(expected);
-  });
-});
-
-describe("resource schema", () => {
-  const resourceSchema = schemaPropDefinitions.resource(
-    {
-      prop: "testProp",
-      type: "resource",
-      resourceType: "customResource",
-    },
-    testCompilationContext
-  );
-
-  const resourceSchemaTestCases: Array<SchemaPropTestCaseArray<"resource">> = [
-    [{ id: "test" }, "resource.customResource.test"],
-    [{ id: null }, "resource.customResource"],
-  ];
-
-  test.each(resourceSchemaTestCases)(
-    'for %j returns "%s"',
-    (value, expected) => {
-      expect(resourceSchema.getHash(value, "xl", [])).toBe(expected);
-    }
-  );
 });

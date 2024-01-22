@@ -1,3 +1,4 @@
+import { EasyblocksBackend } from "../EasyblocksBackend";
 import { parseSpacing } from "../spacingToPx";
 import {
   RefValue,
@@ -12,8 +13,7 @@ import { CompilationContextType } from "./types";
 
 const testCompilationContext = createCompilationContext(
   {
-    accessToken: "",
-    documentTypes: { content: { entry: { _template: "TestComponent" } } },
+    backend: new EasyblocksBackend({ accessToken: "" }),
   },
   { locale: "en" },
   "content"

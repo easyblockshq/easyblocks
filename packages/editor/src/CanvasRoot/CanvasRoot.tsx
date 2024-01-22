@@ -1,37 +1,17 @@
-import { useEditorGlobalKeyboardShortcuts } from "@easyblocks/app-utils";
-import { CompilationDocumentType } from "@easyblocks/core/_internals";
-import React, { ReactNode, useRef } from "react";
+import React, { ReactNode } from "react";
+import { useEditorGlobalKeyboardShortcuts } from "../useEditorGlobalKeyboardShortcuts";
 
 type CanvasRootProps = {
   children: ReactNode;
 };
 
 function CanvasRoot(props: CanvasRootProps) {
-  const rootNodeRef = useRef<HTMLDivElement | null>(null);
   const { editorContext } = window.parent.editorWindowAPI;
 
   useEditorGlobalKeyboardShortcuts(editorContext);
 
-  // const documentType: CompilationDocumentType | undefined =
-  //   editorContext.documentTypes.find(
-  //     (container: CompilationDocumentType) =>
-  //       container.id === editorContext.documentType
-  //   );
-  //
-  // const rootInlineStyle =
-  //   !editorContext.isFullScreen && documentType?.widths
-  //     ? {
-  //         maxWidth: documentType.widths[editorContext.breakpointIndex],
-  //         margin: "0 auto",
-  //       }
-  //     : undefined;
-
-  const rootInlineStyle = {};
-
   return (
     <div
-      style={rootInlineStyle}
-      ref={rootNodeRef}
       onClick={() => {
         if (editorContext.isEditing) {
           editorContext.setFocussedField([]);

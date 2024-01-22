@@ -1,9 +1,9 @@
+import { EasyblocksBackend } from "../EasyblocksBackend";
 import { Config } from "../types";
 import { createCompilationContext } from "./createCompilationContext";
-import { CompilationContextType } from "./types";
 
 const basicConfig: Config = {
-  accessToken: "",
+  backend: new EasyblocksBackend({ accessToken: "" }),
 };
 
 const defaults = {
@@ -57,16 +57,7 @@ const defaults = {
 describe("breakpoints", () => {
   test("no devices outputs default", () => {
     const result = createCompilationContext(
-      {
-        ...basicConfig,
-        documentTypes: {
-          content: {
-            entry: {
-              _template: "$TestComponent",
-            },
-          },
-        },
-      },
+      basicConfig,
       { locale: "en-US" },
       "content"
     );
@@ -83,13 +74,6 @@ describe("breakpoints", () => {
     const result = createCompilationContext(
       {
         ...basicConfig,
-        documentTypes: {
-          content: {
-            entry: {
-              _template: "$TestComponent",
-            },
-          },
-        },
         devices: {
           xs: {
             w: 300,
@@ -136,13 +120,6 @@ describe("max widths", () => {
     const result = createCompilationContext(
       {
         ...basicConfig,
-        documentTypes: {
-          content: {
-            entry: {
-              _template: "$TestComponent",
-            },
-          },
-        },
         tokens: {
           containerWidths: [{ id: "small", value: 800 }],
         },
@@ -155,66 +132,5 @@ describe("max widths", () => {
       type: "dev",
       value: "800",
     });
-  });
-});
-
-describe("document types", () => {
-  test('returns document types when "documentTypes" is defined in config', () => {
-    const context = createCompilationContext(
-      {
-        ...basicConfig,
-        documentTypes: {
-          documentType1: {
-            widths: [100, 200, 300, 400, 500, 600],
-            entry: {
-              _template: "$TestComponent",
-            },
-          },
-        },
-      },
-      { locale: "en-US" },
-      "documentType1"
-    );
-
-    expect(context.documentTypes).toEqual<
-      CompilationContextType["documentTypes"]
-    >([
-      {
-        id: "documentType1",
-        widths: {
-          xs: 100,
-          sm: 200,
-          md: 300,
-          lg: 400,
-          xl: 500,
-          "2xl": 600,
-        },
-        entry: {
-          _template: "$TestComponent",
-        },
-      },
-    ]);
-  });
-
-  test("throws an error when number of widths of given document type is less than number of devices", () => {
-    expect(() => {
-      createCompilationContext(
-        {
-          ...basicConfig,
-          documentTypes: {
-            documentType1: {
-              widths: [100, 200, 300, 400, 500],
-              entry: {
-                _template: "$TestComponent",
-              },
-            },
-          },
-        },
-        { locale: "en-US" },
-        "documentType1"
-      );
-    }).toThrowErrorMatchingInlineSnapshot(
-      `"Invalid number of widths for document type \\"documentType1\\". Expected 6 widths, got 5."`
-    );
   });
 });

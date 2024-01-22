@@ -1,30 +1,25 @@
-import * as utils from "@easyblocks/app-utils";
+import { mockConsoleMethod } from "@easyblocks/test-utils";
+import { box } from "../box";
+import { isTrulyResponsiveValue, responsiveValueFill } from "../responsiveness";
 import {
-  defaultTheme,
-  Form,
-  getDevicesWidths,
-  getTinaField,
-  InternalAnyField,
-  InternalRenderableComponentDefinition,
-  isTrulyResponsiveValue,
-  responsiveValueFill,
-} from "@easyblocks/app-utils";
-import {
+  CompiledComponentConfig,
   Devices,
-  ExternalFieldCustom,
-  PickerAPI,
   ResponsiveValue,
   SchemaProp,
-  Theme,
   UnresolvedResource,
 } from "../types";
-import { mockConsoleMethod } from "@easyblocks/test-utils";
 import { buildFullTheme } from "./buildFullTheme";
 import { compileInternal } from "./compileInternal";
 import { getSchemaDefinition, normalizeComponent } from "./definitions";
+import { getDevicesWidths } from "./devices";
 import { normalize } from "./normalize";
-import { traceIdSchemaProp } from "./tracing";
-import { EditorContextType } from "@easyblocks/app-utils";
+import { InternalAnyField } from "./schema";
+import { Theme, defaultTheme } from "./theme";
+import { getTinaField } from "./tinaFieldProviders";
+import {
+  EditorContextType,
+  InternalRenderableComponentDefinition,
+} from "./types";
 
 jest.mock("@easyblocks/app-utils", () => {
   const originalModule = jest.requireActual("@easyblocks/app-utils");
@@ -44,100 +39,6 @@ export const arrowRightIcon: Theme["icons"]["key"] = {
   type: "dev",
   // label: "Arrow right",
   value: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"/></svg>`,
-};
-
-const getImageFromId = (id: string) => ({
-  alt: id,
-  url: id,
-  aspectRatio: 1,
-  srcset: [
-    {
-      w: 100,
-      h: 100,
-      url: id,
-    },
-  ],
-  mimeType: "image/jpeg",
-});
-
-export const testEmptyWidget: ExternalFieldCustom = {
-  type: "custom",
-  component: () => {},
-};
-
-export const testTypes: EditorContextType["types"] = {
-  image: {
-    defaultFetch: async (resources) => {
-      return resources.map((resource) => {
-        return {
-          ...resource,
-          value: getImageFromId(resource.id),
-        };
-      });
-    },
-    widget: testEmptyWidget,
-  },
-  video: {
-    defaultFetch: async (resources) => {
-      return resources.map((resource) => {
-        return {
-          ...resource,
-          value: {
-            alt: resource.id,
-            url: resource.id,
-            aspectRatio: 1,
-          },
-        };
-      });
-    },
-    widget: testEmptyWidget,
-  },
-  product: {
-    fetch: async (resources) => {
-      return resources.map((resource) => {
-        return {
-          ...resource,
-          value: { id: resource.id, sku: resource.id },
-        };
-      });
-    },
-    widget: testEmptyWidget,
-  },
-};
-
-export const testImage: EditorContextType["image"] = {
-  resourceType: "image",
-  params: {
-    mimetypeGroups: ["image"],
-  },
-  transform: (x) => x,
-};
-
-export const testVideo: EditorContextType["video"] = {
-  resourceType: "video",
-  params: {
-    mimetypeGroups: ["video"],
-  },
-  transform: (x) => x,
-};
-
-export const testText: EditorContextType["text"] = {
-  fetch: async (resources) => {
-    return resources.map((resource) => {
-      if (resource.id === "incorrect") {
-        return {
-          ...resource,
-          value: undefined,
-          error: new Error("Incorrect text!"),
-        };
-      }
-
-      return {
-        ...resource,
-        value: { en: `!${resource.id}` },
-      };
-    });
-  },
 };
 
 export const testDevices: Devices = [
@@ -411,7 +312,6 @@ const coreComponents: InternalRenderableComponentDefinition[] = [
           },
         ],
       },
-      traceIdSchemaProp(),
     ],
   },
   {
@@ -1043,19 +943,6 @@ describe("text", () => {
     expect(x.field.name).toBe("blabla");
     expect(x.field.component).toBe("text");
 
-    const tmpId = expect.stringContaining("local.");
-
-    // // wrong input value
-    // simpleTest(x, null, { value: "Hello world", id: tmpId }, true);
-    //
-    // simpleTest(x, undefined, { value: "Hello world", id: tmpId });
-    // simpleTest(x, 100, { value: "Hello world", id: tmpId });
-    // simpleTest(x, {}, { value: "Hello world", id: tmpId });
-    // simpleTest(x, { xxx: "xxx" }, { value: "Hello world", id: tmpId });
-    //
-    // // string input value
-    // simpleTest(x, "test", { value: "test", id: tmpId });
-
     const localValue = { id: "local.123", value: { en: "test" } };
     superTest(x, localValue, localValue, localValue, {
       id: "local.123",
@@ -1067,17 +954,6 @@ describe("text", () => {
       id: "123",
       value: "test",
     });
-
-    // // only value defined
-    // simpleTest(x, { value: "test", id: tmpId }, { value: "test", id: tmpId });
-    //
-    // // id defined
-    // simpleTest(x, { id: "test" }, { id: "test" });
-    // simpleTest(
-    //   x,
-    //   { id: "test", value: "blabla" },
-    //   { id: "test", value: "blabla" }
-    // );
   });
 
   test("returns empty string when value for given locale is not defined and is editing", () => {
@@ -2575,28 +2451,6 @@ describe("component normalize with context props", () => {
 
     expect(true).toBe(true);
   });
-
-  test.each`
-    tempalte          | traceId                | generated                     | expetcedTraceId
-    ${"$TestSection"} | ${"Card-With-Product"} | ${"WHATEVET_NOT_USED_ANYWAY"} | ${"Card-With-Product"}
-    ${"$TestSection"} | ${undefined}           | ${"IBM_701"}                  | ${"IBM_701"}
-    ${"$TestSection"} | ${undefined}           | ${"PDP11"}                    | ${"PDP11"}
-  `(
-    "generates traceId if undefined",
-    ({ tempalte, traceId, generated, expetcedTraceId }) => {
-      jest.spyOn(utils, "generateDefaultTraceId").mockReturnValue(generated);
-
-      const normalized = normalize(
-        {
-          _template: tempalte,
-          traceId,
-        },
-        editorContext
-      );
-
-      expect(normalized.traceId).toEqual(expetcedTraceId);
-    }
-  );
 });
 
 describe("[component field] no parent context", () => {
@@ -2822,8 +2676,6 @@ test("[component] works with empty subcomponents", () => {
 
   expect(typeof item.styled.Item1).toBe("object"); // for now we're not testing boxes themselves, they're gonna change
 
-  expect(ret.meta.code.$TestSection).toBe("code of $TestSection;");
-
   expect(
     // @ts-ignore this is old, to refactor at some point
     ret.meta.vars.definitions.components.find((c) => c.id === "$TestCard")
@@ -2909,22 +2761,42 @@ test("[component] works with nesting", () => {
   expect(item._template).toBe("$TestSection");
 
   expect(item.__editing!.components.Card1).toEqual({});
-  expect(item.components.Card1[0].__editing!.direction).toBeUndefined();
-  expect(item.components.Card1[0].__editing!.noInline).toBeUndefined();
+  expect(
+    (item.components.Card1[0] as CompiledComponentConfig).__editing!.direction
+  ).toBeUndefined();
+  expect(
+    (item.components.Card1[0] as CompiledComponentConfig).__editing!.noInline
+  ).toBeUndefined();
 
   expect(item.__editing!.components.Card2).toMatchObject({
     noInline: true,
   });
-  expect(item.components.Card2[0].__editing!.direction).toBe("vertical");
-  expect(item.components.Card2[0].__editing!.noInline).toBe(true);
+  expect(
+    (item.components.Card2[0] as CompiledComponentConfig).__editing!.direction
+  ).toBe("vertical");
+  expect(
+    (item.components.Card2[0] as CompiledComponentConfig).__editing!.noInline
+  ).toBe(true);
 
   expect(item.__editing!.components.Cards).toEqual({});
-  expect(item.components.Cards[0].__editing!.direction).toBe("vertical");
-  expect(item.components.Cards[0].__editing!.noInline).toBeUndefined();
-  expect(item.components.Cards[1].__editing!.direction).toBe("vertical");
-  expect(item.components.Cards[1].__editing!.noInline).toBeUndefined();
-  expect(item.components.Cards[2].__editing!.direction).toBe("vertical");
-  expect(item.components.Cards[2].__editing!.noInline).toBeUndefined();
+  expect(
+    (item.components.Cards[0] as CompiledComponentConfig).__editing!.direction
+  ).toBe("vertical");
+  expect(
+    (item.components.Cards[0] as CompiledComponentConfig).__editing!.noInline
+  ).toBeUndefined();
+  expect(
+    (item.components.Cards[1] as CompiledComponentConfig).__editing!.direction
+  ).toBe("vertical");
+  expect(
+    (item.components.Cards[1] as CompiledComponentConfig).__editing!.noInline
+  ).toBeUndefined();
+  expect(
+    (item.components.Cards[2] as CompiledComponentConfig).__editing!.direction
+  ).toBe("vertical");
+  expect(
+    (item.components.Cards[2] as CompiledComponentConfig).__editing!.noInline
+  ).toBeUndefined();
 
   expect(item.props.isHorizontal).toBe(false);
   expect(item.props.margin).toEqual("1px");
@@ -2950,9 +2822,6 @@ test("[component] works with nesting", () => {
 
   expectCorrectTestCard(card5, item.components.Cards[2]);
   expect(item.components.Cards[2].props.contextProp).toBe("v");
-
-  expect(ret.meta.code.$TestSection).toBe("code of $TestSection;");
-  expect(ret.meta.code.$TestCard).toBe("code of $TestCard;");
 });
 
 describe("[component] with local refs", () => {
@@ -3058,8 +2927,14 @@ describe("[component] with local refs", () => {
 
       if (isEditing) {
         expect(item.__editing!.components.Card1).toEqual({});
-        expect(item.components.Card1[0].__editing!.direction).toBeUndefined();
-        expect(item.components.Card1[0].__editing!.noInline).toBeUndefined();
+        expect(
+          (item.components.Card1[0] as CompiledComponentConfig).__editing!
+            .direction
+        ).toBeUndefined();
+        expect(
+          (item.components.Card1[0] as CompiledComponentConfig).__editing!
+            .noInline
+        ).toBeUndefined();
 
         expect(item.__editing!.components.Card2).toMatchObject({
           noInline: true,
@@ -3068,12 +2943,30 @@ describe("[component] with local refs", () => {
         expect(item.components.Card2[0].__editing!.noInline).toBe(true);
 
         expect(item.__editing!.components.Cards).toEqual({});
-        expect(item.components.Cards[0].__editing!.direction).toBe("vertical");
-        expect(item.components.Cards[0].__editing!.noInline).toBeUndefined();
-        expect(item.components.Cards[1].__editing!.direction).toBe("vertical");
-        expect(item.components.Cards[1].__editing!.noInline).toBeUndefined();
-        expect(item.components.Cards[2].__editing!.direction).toBe("vertical");
-        expect(item.components.Cards[2].__editing!.noInline).toBeUndefined();
+        expect(
+          (item.components.Cards[0] as CompiledComponentConfig).__editing!
+            .direction
+        ).toBe("vertical");
+        expect(
+          (item.components.Cards[0] as CompiledComponentConfig).__editing!
+            .noInline
+        ).toBeUndefined();
+        expect(
+          (item.components.Cards[1] as CompiledComponentConfig).__editing!
+            .direction
+        ).toBe("vertical");
+        expect(
+          (item.components.Cards[1] as CompiledComponentConfig).__editing!
+            .noInline
+        ).toBeUndefined();
+        expect(
+          (item.components.Cards[2] as CompiledComponentConfig).__editing!
+            .direction
+        ).toBe("vertical");
+        expect(
+          (item.components.Cards[2] as CompiledComponentConfig).__editing!
+            .noInline
+        ).toBeUndefined();
 
         expect((compiled as any).configAfterAuto).toBeDefined();
       } else {

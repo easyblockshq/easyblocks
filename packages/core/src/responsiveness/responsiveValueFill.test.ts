@@ -1,5 +1,5 @@
-import { Devices, TrulyResponsiveValue } from "@easyblocks/core";
 import { getDevicesWidths } from "../compiler/devices";
+import { Devices, TrulyResponsiveValue } from "../types";
 import { responsiveValueFill } from "./responsiveValueFill";
 
 const devices: Devices = [

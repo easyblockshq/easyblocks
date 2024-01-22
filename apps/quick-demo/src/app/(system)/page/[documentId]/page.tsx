@@ -4,9 +4,7 @@ import { components } from "@/app/easyblocks/components";
 import { buildDocument } from "@easyblocks/core";
 import { EasyblocksContent } from "./EasyblocksContent";
 
-const fetch = createMyCustomFetch(
-  process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN!
-);
+const fetch = createMyCustomFetch();
 
 export default async function Page({
   params,

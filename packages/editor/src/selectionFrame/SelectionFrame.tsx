@@ -76,7 +76,8 @@ function SelectionFrame({ width, height, scaleFactor }: SelectionFrameProps) {
       }
 
       if (
-        event.data.type === "@shopstory-editor/selection-frame-position-changed"
+        event.data.type ===
+        "@easyblocks-editor/selection-frame-position-changed"
       ) {
         updateAddButtons(
           direction,

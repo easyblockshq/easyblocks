@@ -245,7 +245,7 @@ function RichTextEditor(props: RichTextProps) {
         return;
       }
 
-      if (event.data.type === "@shopstory-editor/rich-text-changed") {
+      if (event.data.type === "@easyblocks-editor/rich-text-changed") {
         const { payload } = event.data;
         const { editorContext } = (window.parent as any).editorWindowAPI;
 

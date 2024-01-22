@@ -1,11 +1,10 @@
-import { getAppUrlRoot } from "@easyblocks/utils";
+import { getAppUrlRoot } from "./getAppRootUrl";
 import {
   Backend,
   ComponentConfig,
   UserDefinedTemplate,
   Document,
 } from "./types";
-import { ConfigComponent } from "../dist";
 
 type RequestSearchParams = Record<string, string | Array<string>>;
 
@@ -280,7 +279,7 @@ export class EasyblocksBackend implements Backend {
     },
     create: async (input: {
       label: string;
-      entry: ConfigComponent;
+      entry: ComponentConfig;
       width?: number;
       widthAuto?: boolean;
     }): Promise<UserDefinedTemplate> => {
@@ -361,7 +360,7 @@ export class EasyblocksBackend implements Backend {
 
 function documentDTOToDocument(
   documentDTO: DocumentDTO,
-  entry: ConfigComponent
+  entry: ComponentConfig
 ): Document {
   if (!documentDTO.root_container) {
     throw new Error("unexpected server error");

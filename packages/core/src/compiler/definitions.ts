@@ -10,9 +10,8 @@ import {
 } from "../responsiveness";
 import {
   BooleanSchemaProp,
-  CompiledCustomComponentConfig,
+  CompiledComponentConfig,
   CompiledLocalTextReference,
-  CompiledShopstoryComponentConfig,
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
   ComponentConfig,
@@ -108,9 +107,7 @@ export type RadioGroupSchemaPropDefinition = SchemaPropDefinition<
 >;
 
 export type ConfigComponentCompilationOutput = {
-  compiledComponentConfig:
-    | CompiledShopstoryComponentConfig
-    | CompiledCustomComponentConfig;
+  compiledComponentConfig: CompiledComponentConfig;
   configAfterAuto: ComponentConfig;
 };
 
@@ -129,11 +126,6 @@ export type ComponentCollectionLocalisedSchemaPropDefinition =
     { [locale: string]: ComponentConfig[] },
     Array<ConfigComponentCompilationOutput>
   >;
-
-type ExternalSchemaPropDefinition = SchemaPropDefinition<
-  ResponsiveValue<ExternalReference>,
-  ResponsiveValue<ExternalReference>
->;
 
 export type Component$$$SchemaPropDefinition = SchemaPropDefinition<
   ComponentConfig,

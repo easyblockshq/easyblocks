@@ -1,8 +1,7 @@
 import type { RichTextProps } from "../$richText.editor";
-import { RichTextBlockElementCompiledComponentConfig } from "../$richTextBlockElement/$richTextBlockElement";
-import { RichTextInlineWrapperElementCompiledComponentConfig } from "../$richTextInlineWrapperElement/$richTextInlineWrapperElement";
-import { RichTextLineElementCompiledComponentConfig } from "../$richTextLineElement/$richTextLineElement";
-import { RichTextPartCompiledComponentConfig } from "../$richTextPart/$richTextPart";
+import type { RichTextBlockElementCompiledComponentConfig } from "../$richTextBlockElement/$richTextBlockElement";
+import type { RichTextLineElementCompiledComponentConfig } from "../$richTextLineElement/$richTextLineElement";
+import type { RichTextPartCompiledComponentConfig } from "../$richTextPart/$richTextPart";
 
 function traverseCompiledRichTextComponentConfig(
   config: RichTextProps,
@@ -11,7 +10,6 @@ function traverseCompiledRichTextComponentConfig(
       | RichTextBlockElementCompiledComponentConfig
       | RichTextLineElementCompiledComponentConfig
       | RichTextPartCompiledComponentConfig
-      | RichTextInlineWrapperElementCompiledComponentConfig
   ) => void
 ): void {
   config.elements.forEach((reactElement) => {

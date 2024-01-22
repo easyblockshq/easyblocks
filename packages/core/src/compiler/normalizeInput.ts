@@ -7,10 +7,8 @@ export function normalizeInput(input: unknown): ComponentConfig {
     return input;
   }
 
-  if (isDocument(input) && input.config) {
-    if (input.config) {
-      return input.config;
-    }
+  if (isDocument(input) && input.entry) {
+    return input.entry;
   }
 
   throw new Error("Internal error: Can't obtain config from remote document.");

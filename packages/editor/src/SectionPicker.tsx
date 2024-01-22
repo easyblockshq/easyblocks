@@ -123,11 +123,6 @@ function getTemplatePreviewImage(
     return template.thumbnail;
   }
 
-  // TODO: not only access token is important here but also information if user is authorised (access token correct)
-  if (!editorContext.project) {
-    return;
-  }
-
   return;
 
   // if (template.configId) {

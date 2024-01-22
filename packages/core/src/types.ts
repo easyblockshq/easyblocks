@@ -875,13 +875,9 @@ export type WidthInfo = {
 };
 
 export type CompiledCustomComponentConfig = CompiledComponentConfigBase & {
-  actions: {
-    [key: string]: CompiledActionComponentConfig[];
-  };
   components: {
     [key: string]: (CompiledComponentConfig | ReactElement)[];
   };
-  textModifiers: Record<string, [CompiledTextModifier]>;
   __editing?: EditingInfoBase & {
     widthInfo?: WidthInfo;
     fields: Array<AnyField | FieldPortal>;
@@ -967,7 +963,7 @@ export type Metadata = CompilationMetadata & {
 
 export type CompilerModule = {
   compile: (
-    content: unknown,
+    content: ComponentConfig,
     config: Config,
     contextParams: ContextParams
   ) => {

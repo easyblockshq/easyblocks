@@ -269,7 +269,7 @@ function getCompiledSubcomponents(
             event: ComponentPickerClosedEvent
           ) {
             if (
-              event.data.type === "@shopstory-editor/component-picker-closed"
+              event.data.type === "@easyblocks-editor/component-picker-closed"
             ) {
               window.removeEventListener(
                 "message",

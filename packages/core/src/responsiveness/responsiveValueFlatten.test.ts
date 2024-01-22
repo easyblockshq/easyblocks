@@ -1,4 +1,4 @@
-import { Devices } from "@easyblocks/core";
+import { Devices } from "../types";
 import { responsiveValueFlatten } from "./responsiveValueFlatten";
 
 const devices: Devices = [

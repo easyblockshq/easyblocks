@@ -1,4 +1,4 @@
-import { Form, useEditorGlobalKeyboardShortcuts } from "@easyblocks/app-utils";
+import { Form } from "@easyblocks/app-utils";
 import {
   CompilationCache,
   CompilationMetadata,
@@ -80,6 +80,7 @@ import { useEditorHistory } from "./useEditorHistory";
 import { checkLocalesCorrectness } from "./utils/locales/checkLocalesCorrectness";
 import { removeLocalizedFlag } from "./utils/locales/removeLocalizedFlag";
 import { getDefaultLocale } from "@easyblocks/core";
+import { useEditorGlobalKeyboardShortcuts } from "./useEditorGlobalKeyboardShortcuts";
 
 const ContentContainer = styled.div`
   position: relative;
@@ -158,8 +159,7 @@ type EditorProps = {
   locale?: string;
   readOnly: boolean;
   documentId: string | null;
-  rootComponentId: string;
-  documentType?: string;
+  rootComponentId: string | null;
   save?: (document: Document) => Promise<void>;
   onClose?: () => void;
   externalData: FetchOutputResources;
@@ -265,7 +265,7 @@ const EditorWrapper = memo(
       {
         locale,
       },
-      rootComponentId
+      rootComponentId!
     );
 
     const initialEntry = props.document
@@ -758,7 +758,7 @@ const EditorContent = ({
     function handleEditorEvents(
       event: ComponentPickerOpenedEvent | ItemInsertedEvent | ItemMovedEvent
     ) {
-      if (event.data.type === "@shopstory-editor/component-picker-opened") {
+      if (event.data.type === "@easyblocks-editor/component-picker-opened") {
         actions
           .openComponentPicker({ path: event.data.payload.path })
           .then((config) => {
@@ -772,11 +772,11 @@ const EditorContent = ({
           });
       }
 
-      if (event.data.type === "@shopstory-editor/item-inserted") {
+      if (event.data.type === "@easyblocks-editor/item-inserted") {
         actions.insertItem(event.data.payload);
       }
 
-      if (event.data.type === "@shopstory-editor/item-moved") {
+      if (event.data.type === "@easyblocks-editor/item-moved") {
         const { fromPath, toPath, placement } = event.data.payload;
 
         const fromPathParseResult = parsePath(fromPath, editorContext.form);

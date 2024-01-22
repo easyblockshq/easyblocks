@@ -1,4 +1,4 @@
-import { Devices } from "@easyblocks/core";
+import { Devices } from "../types";
 import { responsiveValueGetHighestDefinedDevice } from "./responsiveValueGetHighestDefinedDevice";
 
 const b1Device = {
