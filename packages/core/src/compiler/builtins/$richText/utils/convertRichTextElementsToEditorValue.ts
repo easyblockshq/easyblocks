@@ -29,8 +29,7 @@ function convertRichTextPartComponentConfigToEditorText(
     font: richTextPartComponentConfig.font,
     id: richTextPartComponentConfig._id,
     text: richTextPartComponentConfig.value,
-    action: richTextPartComponentConfig.action,
-    actionTextModifier: richTextPartComponentConfig.actionTextModifier,
+    TextWrapper: richTextPartComponentConfig.TextWrapper,
   };
 }
 
@@ -106,8 +105,7 @@ function getPlaceholderRichTextElements(): Array<BlockElement> {
                 widgetId: "@easyblocks/font",
               },
               text: "",
-              action: [],
-              actionTextModifier: [],
+              TextWrapper: [],
             },
           ],
         },

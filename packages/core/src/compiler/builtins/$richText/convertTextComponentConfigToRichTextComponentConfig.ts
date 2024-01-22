@@ -38,6 +38,7 @@ function convertTextComponentConfigToRichTextComponentConfig(
                 color: textComponentConfig.color,
                 font: textComponentConfig.font,
                 value,
+                TextWrapper: [],
               }),
             ],
           });

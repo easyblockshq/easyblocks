@@ -54,8 +54,7 @@ function convertEditorElementToRichTextLineElement(
         color: child.color,
         font: child.font,
         id: child.id,
-        action: child.action,
-        actionTextModifier: child.actionTextModifier,
+        TextWrapper: child.TextWrapper,
       });
     }),
   });

@@ -1,11 +1,10 @@
-import { ComponentSchemaProp, ComponentConfig, Field } from "@easyblocks/core";
+import { ComponentConfig, ComponentSchemaProp, Field } from "@easyblocks/core";
 import {
   findComponentDefinitionById,
   parsePath,
-  richTextChangedEvent,
 } from "@easyblocks/core/_internals";
 import { SSButtonGhost, SSIcons, Typography } from "@easyblocks/design-system";
-import { assertDefined, toArray } from "@easyblocks/utils";
+import { toArray } from "@easyblocks/utils";
 import React, { useContext } from "react";
 import type { FieldRenderProps } from "react-final-form";
 import { css } from "styled-components";
@@ -81,38 +80,6 @@ function IdentityField({ input, field }: IdentityFieldProps) {
 
   function handleRemove() {
     if (isNonRemovable) {
-      return;
-    }
-
-    const componentType = toArray(componentDefinition?.type ?? []);
-
-    if (
-      componentType.includes("action") &&
-      parentComponentDefinition?.id ===
-        "@easyblocks/rich-text-inline-wrapper-element"
-    ) {
-      // When component we're about to remove is an action and it's parent is a rich text inline wrapper element
-      // we handle the removal by dispatching rich text changed event and let the rich text editor handle the removal
-      const canvasIframe = document.getElementById(
-        "shopstory-canvas"
-      ) as HTMLIFrameElement | null;
-
-      const actionProp = assertDefined(
-        parentComponentDefinition.schema.find<ComponentSchemaProp>(
-          (s): s is ComponentSchemaProp =>
-            s.type === "component" &&
-            (s as ComponentSchemaProp).accepts.includes("action")
-        )
-      );
-
-      canvasIframe?.contentWindow?.postMessage(
-        richTextChangedEvent({
-          prop: actionProp.prop,
-          schemaProp: actionProp,
-          values: [[]],
-        })
-      );
-
       return;
     }
 

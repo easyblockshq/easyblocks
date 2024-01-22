@@ -1976,7 +1976,7 @@ function isFieldPathAbsolutePath(
     pathFragments[currentPathFragmentIndex]
   );
 
-  while (currentValue) {
+  while (currentValue !== undefined) {
     if (pathFragments.length - 1 === currentPathFragmentIndex) {
       return true;
     }

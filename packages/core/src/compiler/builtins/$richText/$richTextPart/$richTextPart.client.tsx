@@ -1,24 +1,26 @@
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 import React from "react";
 
 type RichTextPartProps = {
-  action: React.ReactElement<{ trigger: React.ReactElement }> | undefined;
-  value: string;
+  TextWrapper: React.ReactElement<{ trigger: React.ReactElement }> | undefined;
+  // ReactElement when editing, string when not
+  value: string | ReactElement;
   Text: React.ReactElement<{ children: ReactNode; style: Record<string, any> }>;
 };
 
 export function RichTextPartClient(props: RichTextPartProps) {
-  const { value, Text, action: Action } = props;
+  const { value, Text, TextWrapper } = props;
+  const textValue = value || "\uFEFF";
 
-  const textElement = (
-    <Text.type {...Text.props}>{value || "\uFEFF"}</Text.type>
-  );
-
-  if (Action) {
-    return <Action.type {...Action.props} trigger={textElement} />;
+  if (TextWrapper) {
+    return (
+      <Text.type {...Text.props}>
+        <TextWrapper.type {...TextWrapper.props}>{textValue}</TextWrapper.type>
+      </Text.type>
+    );
   }
 
-  return textElement;
+  return <Text.type {...Text.props}>{textValue}</Text.type>;
 }
 
 export type { RichTextPartProps };

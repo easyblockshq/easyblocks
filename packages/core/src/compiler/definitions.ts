@@ -898,14 +898,18 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
             return getTokenValue(breakpointValue);
           }
 
-          return breakpointValue.value;
+          return typeof breakpointValue.value === "object"
+            ? JSON.stringify(breakpointValue.value)
+            : breakpointValue.value;
         }
 
         if ("tokenId" in value) {
           return getTokenValue(value);
         }
 
-        return (value as LocalValue).value;
+        return typeof (value as LocalValue).value === "object"
+          ? JSON.stringify((value as LocalValue).value)
+          : (value as LocalValue).value;
       },
     };
   },

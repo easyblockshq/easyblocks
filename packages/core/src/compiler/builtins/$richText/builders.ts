@@ -56,8 +56,7 @@ function buildRichTextNoCodeEntry(options?: {
                 color: colorTokenValue,
                 font: fontTokenValue,
                 value: text ?? "Lorem ipsum",
-                action: [],
-                actionTextModifier: [],
+                TextWrapper: [],
               }),
             ],
           }),
@@ -155,8 +154,7 @@ function buildRichTextPartComponentConfig({
   font,
   value,
   id,
-  action,
-  actionTextModifier,
+  TextWrapper,
 }: Omit<RichTextPartComponentConfig, "$$$refs" | "_id" | "_template"> &
   Partial<Identity>): RichTextPartComponentConfig {
   return {
@@ -165,8 +163,7 @@ function buildRichTextPartComponentConfig({
     color,
     font,
     value,
-    action: action ?? [],
-    actionTextModifier: actionTextModifier ?? [],
+    TextWrapper: TextWrapper ?? [],
   };
 }
 

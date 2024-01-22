@@ -313,14 +313,6 @@ export type CustomAction = CustomComponentShared;
 
 export type CustomLink = CustomComponentShared;
 
-type TextModifierType = "text" | "link" | "action";
-
-export type CustomTextModifier = ComponentDefinitionShared & {
-  type: TextModifierType;
-  apply: (props: Record<string, any>) => Record<string, any>;
-  childApply?: (props: Record<string, any>) => Record<string, any>;
-};
-
 export type ConfigDeviceRange = {
   startsFrom?: number;
   w?: number;
@@ -599,7 +591,6 @@ export type Config = {
   buttons?: ButtonCustomComponent[];
   components?: Array<NoCodeComponentDefinition<any, any>>;
   devices?: ConfigDevices;
-  textModifiers?: Array<CustomTextModifier>;
   __masterEnvironment?: boolean;
   strict?: boolean;
   locales?: Array<Locale>;
@@ -768,7 +759,6 @@ export type NoCodeComponentProps = {
 
 export type SerializedRenderableComponentDefinition =
   ComponentDefinitionShared & {
-    componentCode?: string; // optional because it might be also an action or built-in component
     pasteSlots?: Array<string>;
   };
 

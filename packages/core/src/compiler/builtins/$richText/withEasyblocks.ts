@@ -70,46 +70,6 @@ function withEasyblocks(editor: Editor): Editor {
       return;
     }
 
-    // if (
-    //   (() => {
-    //     const [node, path] = entry;
-
-    //     if (
-    //       SlateElement.isElement(node) &&
-    //       (node.type === "text-line" || node.type === "list-item")
-    //     ) {
-    //       let currentTextChildWithAction: Text | null = null;
-
-    //       for (const [childNode] of SlateNode.texts(editor, {
-    //         from: path,
-    //         to: path,
-    //       })) {
-    //         if (childNode.action.length > 0 && !currentTextChildWithAction) {
-    //           if (currentTextChildWithAction === null) {
-    //             currentTextChildWithAction = childNode;
-    //             continue;
-    //           }
-    //         }
-
-    //         if (childNode.action.length > 0 && currentTextChildWithAction) {
-    //           Transforms.setNodes(editor, {
-    //             color: currentTextChildWithAction.color,
-    //             font: currentTextChildWithAction.font,
-    //           });
-
-    //           return true;
-    //         } else {
-    //           currentTextChildWithAction = null;
-    //         }
-    //       }
-    //     }
-
-    //     return false;
-    //   })()
-    // ) {
-    //   return;
-    // }
-
     // Slate by default compares text elements and merges them, but to compare them it uses strict equality comparison algorithm.
     // We need to compare them using our own algorithm.
     if (mergeVisuallyTheSameOrEmptyTextNodes(editor, entry)) {
@@ -324,7 +284,7 @@ function mergeVisuallyTheSameOrEmptyTextNodes(
 function filterNonComparableProperties(obj: Text): ComparableText {
   return keys(obj)
     .filter<keyof ComparableText>((key): key is keyof ComparableText =>
-      ["color", "font", "textModifier", "action"].includes(key)
+      ["color", "font", "TextWrapper"].includes(key)
     )
     .reduce((filteredObject, currentKey) => {
       filteredObject[currentKey] = obj[currentKey];

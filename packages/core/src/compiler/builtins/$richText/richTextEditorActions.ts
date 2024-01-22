@@ -1,9 +1,7 @@
 import { nonNullable } from "@easyblocks/utils";
 import { BaseRange, Editor, Node, Range, Text, Transforms } from "slate";
 import { SetNonNullable } from "type-fest";
-import { findComponentDefinition } from "../../findComponentDefinition";
 import { EditorContextType } from "../../types";
-import { StandardActionStylesConfig } from "../actionTextModifier";
 import { RichTextComponentConfig } from "./$richText";
 import { BlockElement } from "./$richText.types";
 import { RichTextPartComponentConfig } from "./$richTextPart/$richTextPart";
@@ -39,40 +37,15 @@ function updateSelection<
   const isSelectionCollapsed = Range.isCollapsed(editor.selection);
 
   if (values.length === 1) {
-    if (
-      (key === "action" || key === "actionTextModifier") &&
-      isSelectionCollapsed
-    ) {
-      // If the current selection is collapsed and
+    if (key === "TextWrapper" && isSelectionCollapsed) {
       expandCurrentSelectionToWholeTextPart(editor);
     }
 
     // If `values` contains one element, we want to apply this value to all text nodes.
     Editor.addMark(editor, key, values[0]);
 
-    if (key === "action") {
-      const defaultActionTextModifier: StandardActionStylesConfig | undefined =
-        editorContext.templates?.find((template) => {
-          const component = findComponentDefinition(
-            template.entry,
-            editorContext
-          )!;
-
-          if (
-            component.type &&
-            (component.type === "actionTextModifier" ||
-              component.type.includes("component.type"))
-          ) {
-            return true;
-          }
-          return false;
-        })?.entry as StandardActionStylesConfig | undefined;
-
+    if (key === "TextWrapper") {
       if (values[0].length > 0) {
-        Editor.addMark(editor, "actionTextModifier", [
-          defaultActionTextModifier,
-        ]);
-
         const firstSelectedNodeEntry = Node.first(
           editor,
           editor.selection.anchor.path
@@ -100,8 +73,6 @@ function updateSelection<
             );
           }
         }
-      } else {
-        Editor.removeMark(editor, "actionTextModifier");
       }
     }
   } else {

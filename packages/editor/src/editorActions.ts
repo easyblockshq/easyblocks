@@ -324,14 +324,13 @@ function removeItems(
       templateId,
       compilationContext
     );
-    const isAction =
+    const isTextWrapper =
       definition &&
-      (isNoCodeComponentOfType(definition, "action") ||
-        isNoCodeComponentOfType(definition, "actionLink"));
+      isNoCodeComponentOfType(definition, "@easyblocks/text-wrapper");
 
-    // If we're removing item from the action field let's focus the component holding that field for better UX
+    // If we're removing item from the text wrapper field let's focus the component holding that field for better UX
     // TODO: We shouldn't decide based on the component type but rather on the source of the removal (canvas vs sidebar)
-    if (isAction) {
+    if (isTextWrapper) {
       return [parent.path];
     }
 

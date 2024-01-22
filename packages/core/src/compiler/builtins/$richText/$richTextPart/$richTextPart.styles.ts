@@ -3,11 +3,6 @@ import type {
   NoCodeComponentStylesFunctionInput,
   NoCodeComponentStylesFunctionResult,
 } from "../../../../types";
-import { findComponentDefinitionById } from "../../../findComponentDefinition";
-import type {
-  CompilationContextType,
-  InternalTextModifierDefinition,
-} from "../../../types";
 
 const DEFAULT_FONT_VALUES = {
   fontWeight: "initial",
@@ -18,67 +13,44 @@ export interface RichTextPartValues {
   color: string;
   font: Record<string, any>;
   value: string;
-  action: [ComponentConfig] | [];
-  actionTextModifier: [ComponentConfig] | [];
+  TextWrapper: [ComponentConfig] | [];
 }
 
 export function richTextPartStyles({
-  values: { color, font, action, actionTextModifier },
-  __COMPILATION_CONTEXT__,
-}: NoCodeComponentStylesFunctionInput<RichTextPartValues> & {
-  __COMPILATION_CONTEXT__: any;
-}): NoCodeComponentStylesFunctionResult {
-  const { modifierStyles } = getTextModifierStyles(
-    actionTextModifier,
-    __COMPILATION_CONTEXT__
-  );
-
+  values: { color, font, TextWrapper },
+  isEditing,
+}: NoCodeComponentStylesFunctionInput<RichTextPartValues>): NoCodeComponentStylesFunctionResult {
   const fontWithDefaults = {
     ...DEFAULT_FONT_VALUES,
     ...font,
   };
 
-  return {
-    styled: {
-      Text: {
-        __as: "span",
-        color,
-        ...fontWithDefaults,
-        ...modifierStyles,
-        ...(action.length > 0 &&
-          !__COMPILATION_CONTEXT__.isEditing && { pointerEvents: "auto" }),
-        "& *": {
-          fontFamily: "inherit",
-          fontStyle: "inherit",
-          color: "inherit",
-          ...modifierStyles,
-        },
-      },
-    },
+  const hasTextWrapper = TextWrapper.length > 0;
+
+  const textStyles: Record<string, any> = {
+    __as: "span",
+    color,
+    ...fontWithDefaults,
   };
-}
 
-function getTextModifierStyles(
-  modifier: [ComponentConfig] | [],
-  compilationContext: CompilationContextType
-) {
-  let modifierStyles: Record<string, unknown> = {};
-  let childStyles: Record<string, unknown> | undefined;
+  if (hasTextWrapper && !isEditing) {
+    // Force pointer events to be enabled on the text when text wrapper is attached and we're not editing
+    textStyles.pointerEvents = "auto";
+  }
 
-  if (modifier.length === 1) {
-    const modifierDefinition = findComponentDefinitionById(
-      modifier[0]._template,
-      compilationContext
-    ) as InternalTextModifierDefinition | undefined;
-
-    if (modifierDefinition) {
-      modifierStyles = modifierDefinition.apply(modifier[0]);
-      childStyles = modifierDefinition.childApply?.(modifier[0]);
-    }
+  if (isEditing) {
+    // When editing, we're going to have nested spans rendered by Slate so we need to make sure they inherit the font
+    // styles defined on Text component
+    textStyles["& *"] = {
+      fontFamily: "inherit",
+      fontStyle: "inherit",
+      color: "inherit",
+    };
   }
 
   return {
-    modifierStyles,
-    childStyles,
+    styled: {
+      Text: textStyles,
+    },
   };
 }

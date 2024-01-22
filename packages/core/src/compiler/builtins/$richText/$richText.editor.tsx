@@ -424,10 +424,10 @@ function RichTextEditor(props: RichTextProps) {
             {...attributes}
           />
         }
-        action={
-          TextPart.components.action[0] ? (
+        TextWrapper={
+          TextPart.components.TextWrapper[0] ? (
             <ComponentBuilder
-              compiled={TextPart.components.action[0]}
+              compiled={TextPart.components.TextWrapper[0]}
               path={path}
               components={editorContext.components}
             />
@@ -855,7 +855,7 @@ function createTextSelectionDecorator(
     if (
       SlateText.isText(node) &&
       editor.selection !== null &&
-      node.action.length > 0 &&
+      node.TextWrapper.length > 0 &&
       Range.isCollapsed(editor.selection)
     ) {
       const textRange = Editor.range(editor, path);
@@ -864,7 +864,7 @@ function createTextSelectionDecorator(
       if (intersection !== null) {
         const range = {
           isHighlighted: true,
-          highlightType: "action",
+          highlightType: "textWrapper",
           ...textRange,
         };
 

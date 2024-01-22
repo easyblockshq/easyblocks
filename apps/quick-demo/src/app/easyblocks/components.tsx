@@ -13,6 +13,7 @@ import { Image } from "./components/Image/Image";
 import { RootSectionStack } from "./components/RootSectionStack/RootSectionStack";
 import { SolidColor } from "./components/SolidColor/SolidColor";
 import { Stack } from "./components/Stack/Stack";
+import { TextLink } from "./components/TextLink/TextLink";
 import { TwoCards } from "./components/TwoCards/TwoCards";
 import { Video } from "./components/Video/Video";
 
@@ -34,6 +35,7 @@ const components = {
   BannerCard,
   BannerSection,
   VimeoPlayer,
+  TextLink,
 };
 
 export { components };

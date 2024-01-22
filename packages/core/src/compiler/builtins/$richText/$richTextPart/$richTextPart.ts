@@ -5,10 +5,8 @@ import {
   CompiledComponentConfigBase,
   ComponentConfig,
   NoCodeComponentDefinition,
-  NoCodeComponentStylesFunction,
 } from "../../../../types";
 import { findPathOfFirstAncestorOfType } from "../../../parsePath";
-import { textModifierSchemaProp } from "../../../schema";
 import { EditableComponentToComponentConfig } from "../../../types";
 import { RichTextPartValues, richTextPartStyles } from "./$richTextPart.styles";
 
@@ -102,25 +100,18 @@ const richTextPartEditableComponent: NoCodeComponentDefinition<RichTextPartValue
         group: "Text",
       },
       {
-        prop: "action",
-        label: "Action",
+        prop: "TextWrapper",
+        label: "Text Wrapper",
         type: "component",
         noInline: true,
-        accepts: ["action"],
+        accepts: ["@easyblocks/text-wrapper"],
         visible: true,
-        group: "Action",
+        group: "Text Wrapper",
         isLabelHidden: true,
       },
-      textModifierSchemaProp({
-        prop: "actionTextModifier",
-        accepts: ["actionTextModifier"],
-        label: "Link styles",
-        group: "Action",
-        visible: ({ action }) => action.length === 1,
-      }),
     ],
     editing,
-    styles: richTextPartStyles as NoCodeComponentStylesFunction,
+    styles: richTextPartStyles,
   };
 
 type RichTextPartComponentConfig = EditableComponentToComponentConfig<
@@ -129,8 +120,7 @@ type RichTextPartComponentConfig = EditableComponentToComponentConfig<
   value: string;
   color: Record<string, any>;
   font: Record<string, any>;
-  action: [ComponentConfig] | [];
-  actionTextModifier: [ComponentConfig] | [];
+  TextWrapper: [ComponentConfig] | [];
 };
 
 type RichTextPartCompiledComponentConfig = CompiledComponentConfigBase<
@@ -144,7 +134,7 @@ type RichTextPartCompiledComponentConfig = CompiledComponentConfigBase<
   styled: NonNullable<ReturnType<typeof richTextPartStyles>["styled"]>;
   components: {
     Text: Record<string, any>;
-    action: Array<CompiledComponentConfig>;
+    TextWrapper: Array<CompiledComponentConfig>;
   };
 };
 

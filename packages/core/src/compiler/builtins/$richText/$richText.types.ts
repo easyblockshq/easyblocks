@@ -11,11 +11,10 @@ export interface Text {
   text: string;
   id: string;
   isHighlighted?: boolean;
-  highlightType?: "text" | "action";
+  highlightType?: "text" | "textWrapper";
   color: Record<string, any>;
   font: Record<string, any>;
-  action: [ComponentConfig] | [];
-  actionTextModifier: [ComponentConfig] | [];
+  TextWrapper: [ComponentConfig] | [];
 }
 
 export interface ParagraphElement {

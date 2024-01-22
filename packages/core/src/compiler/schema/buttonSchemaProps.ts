@@ -1,27 +1,4 @@
-import { ComponentSchemaProp, TextSchemaProp } from "../../types";
-
-export const buttonActionSchemaProp: ComponentSchemaProp = {
-  prop: "action",
-  label: "Action",
-  type: "component", // for now actions are components
-  accepts: ["action"],
-  visible: true,
-  group: "Action",
-  isLabelHidden: true,
-};
-
-export const buttonLabelSchemaProp: TextSchemaProp = {
-  prop: "label",
-  type: "text",
-  label: "Label",
-  group: "Properties",
-  normalize: (x) => {
-    if (x.trim() === "") {
-      return null;
-    }
-    return x;
-  },
-};
+import { ComponentSchemaProp } from "../../types";
 
 export const buttonOptionalIconSchemaProp: ComponentSchemaProp = {
   prop: "symbol",

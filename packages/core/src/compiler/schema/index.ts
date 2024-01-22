@@ -63,13 +63,6 @@ export function isSchemaPropComponentOrComponentCollection(
   );
 }
 
-export function isSchemaPropAction(schemaProp: SchemaProp) {
-  return (
-    schemaProp.type === "component" &&
-    (schemaProp as ComponentSchemaProp).accepts?.includes("action")
-  );
-}
-
 export function isSchemaPropActionTextModifier(schemaProp: SchemaProp) {
   return (
     schemaProp.type === "component" &&
