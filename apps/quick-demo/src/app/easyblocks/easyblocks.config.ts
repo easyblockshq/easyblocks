@@ -62,6 +62,43 @@ export const easyblocksConfig: Config = {
     linkDefinition,
     alertActionDefinition,
   ],
+  types: {
+    "@easyblocks/image": {
+      type: "external",
+      widgets: [mockImageWidget, pexelsImageWidget],
+    },
+    "@easyblocks/video": {
+      type: "external",
+      widgets: [mockVideoWidget],
+    },
+    product: {
+      type: "external",
+      widgets: [productWidget],
+    },
+    url: {
+      type: "inline",
+      widget: {
+        id: "url",
+        label: "URL",
+      },
+      defaultValue: "https://google.com",
+      validate(value) {
+        return (
+          typeof value === "string" &&
+          (value.startsWith("http://") || value.startsWith("https://"))
+        );
+      },
+    },
+    containerWidth: {
+      type: "token",
+      responsiveness: "always",
+      token: "containerWidths",
+      defaultValue: { tokenId: "none" },
+    },
+  },
+  // disableCustomTemplates: true,
+  hideCloseButton: true,
+  // templates,
   tokens: {
     colors: [
       {
@@ -210,7 +247,6 @@ export const easyblocksConfig: Config = {
         id: "heading1",
         label: "Heading 1",
         value: {
-          // responsiveness is easy
           $res: true,
           sm: {
             fontSize: 36,
@@ -493,41 +529,4 @@ export const easyblocksConfig: Config = {
       },
     ],
   },
-  types: {
-    "@easyblocks/image": {
-      type: "external",
-      widgets: [mockImageWidget, pexelsImageWidget],
-    },
-    "@easyblocks/video": {
-      type: "external",
-      widgets: [mockVideoWidget],
-    },
-    product: {
-      type: "external",
-      widgets: [productWidget],
-    },
-    url: {
-      type: "inline",
-      widget: {
-        id: "url",
-        label: "URL",
-      },
-      defaultValue: "https://google.com",
-      validate(value) {
-        return (
-          typeof value === "string" &&
-          (value.startsWith("http://") || value.startsWith("https://"))
-        );
-      },
-    },
-    containerWidth: {
-      type: "token",
-      responsiveness: "always",
-      token: "containerWidths",
-      defaultValue: { tokenId: "none" },
-    },
-  },
-  // disableCustomTemplates: true,
-  hideCloseButton: true,
-  // templates,
 };

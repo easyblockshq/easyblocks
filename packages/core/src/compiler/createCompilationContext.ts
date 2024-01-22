@@ -10,6 +10,25 @@ import {
   ResponsiveValue,
   Spacing,
   SchemaProp,
+  StringSchemaProp,
+  NumberSchemaProp,
+  BooleanSchemaProp,
+  SelectSchemaProp,
+  RadioGroupSchemaProp,
+  ColorSchemaProp,
+  SpaceSchemaProp,
+  FontSchemaProp,
+  StringTokenSchemaProp,
+  IconSchemaProp,
+  TextSchemaProp,
+  ComponentSchemaProp,
+  ComponentCollectionSchemaProp,
+  ComponentCollectionLocalisedSchemaProp,
+  PositionSchemaProp,
+  ExternalSchemaProp,
+  LocalSchemaProp,
+  TokenSchemaProp,
+  TokenTypeDefinition,
 } from "../types";
 import { richTextEditableComponent } from "./builtins/$richText/$richText";
 import { richTextBlockElementEditableComponent } from "./builtins/$richText/$richTextBlockElement/$richTextBlockElement";
@@ -105,9 +124,34 @@ export function createCompilationContext(
     });
   }
 
+  const types = {
+    ...createCustomTypes(config.types),
+    ...createBuiltinTypes(),
+  };
+
+  const allTypeIds = Object.keys(types);
+
   Object.entries(customTokens).forEach(([id, tokens]) => {
+    const type = Object.values(types).find(
+      (type) => type.type === "token" && type.token === id
+    ) as TokenTypeDefinition;
+
+    if (!type) {
+      throw new Error(
+        `Can't find a matching type for a token "${id}" (found in Config.tokens)`
+      );
+    }
+
     theme[id] = Object.fromEntries(
       tokens.map((token) => {
+        if (type.validate) {
+          if (type.validate(token.value) !== true) {
+            throw new Error(
+              `The value for token "${id}.${token.id}" (${token.value}) is incorrect. The validation function for its corresponding type must return 'true'. `
+            );
+          }
+        }
+
         return [
           token.id,
           {
@@ -149,10 +193,37 @@ export function createCompilationContext(
     );
   }
 
-  const types = {
-    ...createCustomTypes(config.types),
-    ...createBuiltinTypes(),
-  };
+  const builtinTypes = [
+    "string",
+    "number",
+    "boolean",
+    "select",
+    "radio-group",
+    "text",
+    "component",
+    "component-collection",
+    "component-collection-localised",
+    "position",
+  ];
+
+  // Validate if components have correct types
+  if (config.components) {
+    config.components.forEach((component) => {
+      if (component.schema) {
+        component.schema.forEach((prop) => {
+          if (builtinTypes.includes(prop.type)) {
+            return;
+          }
+
+          if (!allTypeIds.includes(prop.type)) {
+            throw new Error(
+              `The field "${component.id}.${prop.prop}" has an unrecognized type: "${prop.type}". Custom types can be added in Config.types object`
+            );
+          }
+        });
+      }
+    });
+  }
 
   if (config.components) {
     components.push(
