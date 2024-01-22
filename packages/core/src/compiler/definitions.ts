@@ -729,7 +729,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
             compilationContext.theme[customTypeDefinition.token];
           const defaultValue =
             schemaProp.defaultValue ?? customTypeDefinition.defaultValue;
-          const defaultWidgetId = customTypeDefinition.widget.id;
+          const defaultWidgetId = customTypeDefinition.widget?.id;
 
           const createTokenNormalizer = (normalizeScalar?: (x: any) => any) => {
             return customTypeDefinition.responsiveness === "always" ||
@@ -1055,7 +1055,7 @@ function normalizeTokenValue<T>(
   x: any,
   themeValues: { [key: string]: ThemeRefValue<T> },
   defaultValue: { tokenId: string } | { value: any },
-  defaultWidgetId: string,
+  defaultWidgetId: string | undefined,
   scalarValueNormalize: (x: any) => T | undefined = (x) => undefined
 ): TokenValue<T> | undefined {
   const input = x ?? defaultValue;

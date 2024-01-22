@@ -538,7 +538,7 @@ export type ExternalTypeDefinition = {
 };
 
 export type TokenTypeDefinition<Value extends NonNullish = any> = {
-  widget: Widget;
+  widget?: Widget;
   responsiveness?: "always" | "optional" | "never";
   type: "token";
   token: keyof ConfigTokens | (string & Record<never, never>);
@@ -1151,6 +1151,8 @@ export type LocalValue<T = any> = {
   widgetId: string;
 };
 
-export type TokenValue<T = any> = LocalValue<T> & {
+export type TokenValue<T = any> = {
+  value: T;
   tokenId?: string;
+  widgetId?: string;
 };

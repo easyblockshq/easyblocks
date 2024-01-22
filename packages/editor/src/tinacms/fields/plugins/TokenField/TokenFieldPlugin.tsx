@@ -191,7 +191,7 @@ function TokenFieldComponent<TokenValue extends NonNullish>({
       if (isMixedFieldValue(input.value)) {
         input.onChange({
           value: "",
-          widgetId: tokenTypeDefinition.widget.id,
+          widgetId: tokenTypeDefinition.widget?.id,
         });
         setInputValue("");
         return;
@@ -224,17 +224,13 @@ function TokenFieldComponent<TokenValue extends NonNullish>({
     } else if (extraValuesIncludes(extraValues, selectedValue)) {
       input.onChange({
         value: selectedValue,
-        widgetId: isMixedFieldValue(input.value)
-          ? tokenTypeDefinition.widget.id
-          : input.value.widgetId,
+        widgetId: tokenTypeDefinition.widget?.id,
       });
     } else {
       input.onChange({
         tokenId: selectedValue,
         value: field.tokens[selectedValue].value,
-        widgetId: isMixedFieldValue(input.value)
-          ? tokenTypeDefinition.widget.id
-          : input.value.widgetId,
+        widgetId: tokenTypeDefinition.widget?.id,
       });
     }
   };
@@ -252,9 +248,7 @@ function TokenFieldComponent<TokenValue extends NonNullish>({
           onChange={(value) => {
             input.onChange({
               value,
-              widgetId: isMixedFieldValue(input.value)
-                ? tokenTypeDefinition.widget.id
-                : input.value.widgetId,
+              widgetId: tokenTypeDefinition.widget?.id,
             });
           }}
         />

@@ -18,7 +18,6 @@ import {
   EditorContextType as BaseEditorContextType,
   CompilationCache,
   InternalAnyField,
-  InternalComponentDefinition,
 } from "@easyblocks/core/_internals";
 import React, { ComponentType, useContext } from "react";
 import { ActionsType } from "./types";
@@ -44,7 +43,7 @@ export type EditorInlineTypeDefinition = Omit<
 };
 
 export type EditorTokenTypeDefinition = Omit<TokenTypeDefinition, "widgets"> & {
-  widget: Widget & {
+  widget?: Widget & {
     component?: ComponentType<TokenTypeWidgetComponentProps<any>>;
   };
 };

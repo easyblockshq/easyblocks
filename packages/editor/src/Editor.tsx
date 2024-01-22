@@ -158,7 +158,7 @@ type EditorProps = {
   locale?: string;
   readOnly: boolean;
   documentId: string | null;
-  rootComponentId?: string;
+  rootComponentId: string;
   documentType?: string;
   save?: (document: Document) => Promise<void>;
   onClose?: () => void;
@@ -652,12 +652,14 @@ const EditorContent = ({
                     };
                   }),
                 }
-              : {
+              : typeDefinition.widget
+              ? {
                   widget: {
                     ...typeDefinition.widget,
                     component: props.widgets?.[typeDefinition.widget.id] as any,
                   },
-                }),
+                }
+              : {}),
           },
         ];
       }

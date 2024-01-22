@@ -378,7 +378,6 @@ function createBuiltinTypes(): Record<string, CustomTypeDefinition> {
       type: "token",
       token: "boxShadows",
       responsiveness: "always",
-      widget: { id: "@easyblocks/boxShadow", label: "Box shadow" },
       defaultValue: { tokenId: "none" },
     },
     color: {
@@ -397,13 +396,12 @@ function createBuiltinTypes(): Record<string, CustomTypeDefinition> {
       responsiveness: "always",
       token: "containerWidths",
       defaultValue: { tokenId: "none" },
-      widget: { id: "@easyblocks/containerWidth", label: "Container width" },
     },
     font: {
       type: "token",
       token: "fonts",
+      responsiveness: "always",
       defaultValue: { value: { fontFamily: "sans-serif", fontSize: "16px" } },
-      widget: { id: "@easyblocks/font", label: "Font" },
     },
     space: {
       type: "token",
