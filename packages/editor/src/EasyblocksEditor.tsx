@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { EasyblocksEditorProps } from "./EasyblocksEditorProps";
+import { EasyblocksParent } from "./EasyblocksParent";
 import { EasyblocksCanvas } from "./EditorChildWindow";
 import { PreviewRenderer } from "./PreviewRenderer";
-import { EasyblocksParent } from "./EasyblocksParent";
-import { parseQueryParams } from "./parseQueryParams";
-import { EasyblocksEditorProps } from "./EasyblocksEditorProps";
 import { addDebugToEditorProps } from "./debug/addDebugToEditorProps";
+import { parseQueryParams } from "./parseQueryParams";
 
 export function EasyblocksEditor(props: EasyblocksEditorProps) {
   const [selectedWindow, setSelectedWindow] = useState<

@@ -1,4 +1,3 @@
-import { Form } from "@easyblocks/app-utils";
 import {
   isTrulyResponsiveValue,
   responsiveValueForceGet,
@@ -6,6 +5,7 @@ import {
 import { InternalField } from "@easyblocks/core/_internals";
 import { dotNotationGet, toArray } from "@easyblocks/utils";
 import { EditorContextType } from "../../../../EditorContext";
+import { Form } from "../../../../form";
 
 export type ResponsiveFieldDefinition = Omit<InternalField, "component"> & {
   component: "responsive2";

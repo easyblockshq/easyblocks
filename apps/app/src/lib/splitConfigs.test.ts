@@ -1,5 +1,5 @@
 import { ComponentConfig } from "@easyblocks/core";
-import { splitConfigIntoSingleLocaleConfigs } from "..";
+import { splitConfigIntoSingleLocaleConfigs } from "./splitConfigs";
 
 const locales = [
   {

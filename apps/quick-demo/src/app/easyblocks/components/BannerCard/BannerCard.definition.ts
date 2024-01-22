@@ -487,7 +487,7 @@ function calculatePadding(
   }
 }
 
-export function paddingSchemaProp(
+function paddingSchemaProp(
   prop: string,
   label: string,
   group: string

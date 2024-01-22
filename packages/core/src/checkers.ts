@@ -7,6 +7,10 @@ import {
   Document,
   ComponentConfig,
   LocalValue,
+  ExternalData,
+  ExternalDataCompoundResourceResolvedResult,
+  ExternalReference,
+  ExternalReferenceEmpty,
 } from "./types";
 
 function isRenderableContent(input: unknown): input is RenderableContent {
@@ -72,6 +76,24 @@ const localValueSchema = z.object({
 
 function isLocalValue(value: any): value is LocalValue {
   return localValueSchema.safeParse(value).success;
+}
+
+export function isResolvedCompoundExternalDataValue(
+  value: ExternalData[string]
+): value is ExternalDataCompoundResourceResolvedResult {
+  return "type" in value && value.type === "object" && "value" in value;
+}
+
+export function isIdReferenceToDocumentExternalValue(
+  id: NonNullable<ExternalReference["id"]>
+) {
+  return typeof id === "string" && id.startsWith("$.");
+}
+
+export function isEmptyExternalReference(
+  externalDataConfigEntry: ExternalReference
+): externalDataConfigEntry is ExternalReferenceEmpty {
+  return externalDataConfigEntry.id === null;
 }
 
 export {

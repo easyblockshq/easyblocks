@@ -1,8 +1,7 @@
-import { Form } from "@easyblocks/app-utils";
 import {
   ComponentCollectionSchemaProp,
-  ComponentSchemaProp,
   ComponentConfig,
+  ComponentSchemaProp,
   SchemaProp,
 } from "@easyblocks/core";
 import {
@@ -11,6 +10,7 @@ import {
   findComponentDefinition,
 } from "@easyblocks/core/_internals";
 import { includesAny } from "@easyblocks/utils";
+import { Form } from "../form";
 import { normalizeToStringArray } from "../normalizeToStringArray";
 import { reconcile } from "./reconcile";
 

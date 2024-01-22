@@ -1,16 +1,14 @@
 import {
-  isEmptyExternalReference,
-  isIdReferenceToDocumentExternalValue,
-  isResolvedCompoundExternalDataValue,
-} from "@easyblocks/app-utils";
-import {
   AnyField,
   ExternalReference,
   ExternalSchemaProp,
   FetchCompoundResourceResultValues,
   Field,
-  getExternalReferenceLocationKey,
   TextSchemaProp,
+  getExternalReferenceLocationKey,
+  isEmptyExternalReference,
+  isIdReferenceToDocumentExternalValue,
+  isResolvedCompoundExternalDataValue,
 } from "@easyblocks/core";
 import { Select, SelectItem } from "@easyblocks/design-system";
 import { dotNotationGet, toArray } from "@easyblocks/utils";
@@ -23,8 +21,8 @@ import {
 } from "../../../../types";
 import { FieldRenderProps } from "../../../form-builder";
 import { isMixedFieldValue } from "../../components/isMixedFieldValue";
-import { FieldMetaWrapper } from "../wrapFieldWithMeta";
 import { MissingWidget } from "../MissingWidget";
+import { FieldMetaWrapper } from "../wrapFieldWithMeta";
 
 interface ExternalField
   extends Field<AnyField, ExternalSchemaProp | TextSchemaProp> {

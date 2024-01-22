@@ -1,4 +1,4 @@
-import { Form } from "@easyblocks/app-utils";
+import { Form } from "../../form";
 
 function createForm(initialValues: Record<string, any> = {}) {
   return new Form({

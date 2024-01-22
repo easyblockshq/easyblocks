@@ -1,4 +1,4 @@
-export function parseAspectRatio(aspectRatio: string): number {
+function parseAspectRatio(aspectRatio: string): number {
   const error = new Error(`wrong input to parseAspectRatio: ${aspectRatio}`);
 
   const split = aspectRatio.split(":");

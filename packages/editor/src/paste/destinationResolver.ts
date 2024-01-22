@@ -1,4 +1,3 @@
-import { Form } from "@easyblocks/app-utils";
 import { SchemaProp } from "@easyblocks/core";
 import {
   CompilationContextType,
@@ -8,6 +7,7 @@ import {
   parsePath,
 } from "@easyblocks/core/_internals";
 import { dotNotationGet } from "@easyblocks/utils";
+import { Form } from "../form";
 import { insertCommand } from "./insert";
 
 export interface Destination {

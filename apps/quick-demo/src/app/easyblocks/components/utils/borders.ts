@@ -2,7 +2,7 @@ import { EditingInfo, SchemaProp } from "@easyblocks/core";
 import { pxValueNormalize } from "@/app/easyblocks/components/utils/pxValueNormalize";
 import { getFieldProvider } from "@/app/easyblocks/components/utils/getFieldProvider";
 
-export function borderSchemaProp(
+function borderSchemaProp(
   prop: string,
   label: string,
   group: string

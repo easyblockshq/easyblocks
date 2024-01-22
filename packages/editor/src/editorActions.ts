@@ -1,7 +1,6 @@
-import { Form } from "@easyblocks/app-utils";
 import {
-  ComponentSchemaProp,
   ComponentConfig,
+  ComponentSchemaProp,
   isNoCodeComponentOfType,
 } from "@easyblocks/core";
 import {
@@ -16,6 +15,7 @@ import {
   preOrderPathComparator,
 } from "@easyblocks/utils";
 import { EditorContextType } from "./EditorContext";
+import { Form } from "./form";
 import { ResolveDestination } from "./paste/destinationResolver";
 import { PasteCommand } from "./paste/manager";
 import {

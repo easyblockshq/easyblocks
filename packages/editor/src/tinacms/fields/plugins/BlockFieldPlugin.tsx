@@ -1,4 +1,3 @@
-import { Form, FormApi } from "@easyblocks/app-utils";
 import {
   ComponentConfig,
   ComponentSchemaProp,
@@ -40,6 +39,8 @@ import { isConfigPathRichTextPart } from "../../../utils/isConfigPathRichTextPar
 import { FieldRenderProps, FieldsBuilder } from "../../form-builder";
 import { mergeCommonFields } from "../../form-builder/utils/mergeCommonFields";
 import { isMixedFieldValue } from "../components/isMixedFieldValue";
+import { Form } from "../../../form";
+import { FormApi } from "final-form";
 
 export interface BlocksFieldDefinition extends InternalField {
   component: "ss-block";

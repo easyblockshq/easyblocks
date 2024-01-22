@@ -2,7 +2,6 @@ import { InternalAnyField, InternalField } from "@easyblocks/core/_internals";
 import { dotNotationGet } from "@easyblocks/utils";
 import { Config, FORM_ERROR, FormApi, FormState, createForm } from "final-form";
 import arrayMutators from "final-form-arrays";
-import { Plugin } from "../core";
 
 export interface FormOptions<S, F extends InternalField = InternalAnyField>
   extends Config<S> {
@@ -23,8 +22,7 @@ export interface FormOptions<S, F extends InternalField = InternalAnyField>
 export class Form<
   S extends Record<string, any> = any,
   F extends InternalField = InternalAnyField
-> implements Plugin
-{
+> {
   private _reset?(): void;
 
   __type: string;

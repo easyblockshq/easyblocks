@@ -45,7 +45,6 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@easyblocks/app-utils": "workspace:*",
     "@easyblocks/build-tools": "workspace:*",
     "@easyblocks/test-utils": "workspace:*",
     "@easyblocks/utils": "workspace:*",

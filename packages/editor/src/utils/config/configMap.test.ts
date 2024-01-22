@@ -1,6 +1,4 @@
 import { ComponentConfig } from "@easyblocks/core";
-import { testCompilationContext } from "../test-utils";
-import type { CompilationContextType } from "../types";
 import { configMap } from "./configMap";
 
 function createCard(color: string) {

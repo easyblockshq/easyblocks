@@ -12,7 +12,6 @@
     "supabase:generate-ts-types": "supabase gen types typescript --local > ./src/infrastructure/supabaseSchema.ts"
   },
   "dependencies": {
-    "@easyblocks/app-utils": "workspace:*",
     "@easyblocks/core": "workspace:*",
     "@easyblocks/design-system": "workspace:*",
     "@easyblocks/utils": "workspace:*",

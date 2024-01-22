@@ -79,7 +79,7 @@ export function buildRows(
   return rows;
 }
 
-export function fillRowsWithUnplacedCardsWith1x1Size(
+function fillRowsWithUnplacedCardsWith1x1Size(
   cardStyles: any[],
   numberOfItems: number,
   inputRows: Rows

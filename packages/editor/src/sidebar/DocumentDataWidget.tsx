@@ -1,17 +1,17 @@
-import { isResolvedCompoundExternalDataValue } from "@easyblocks/app-utils";
 import {
   getExternalReferenceLocationKey,
+  isResolvedCompoundExternalDataValue,
   type ExternalDataCompoundResourceResolvedResult,
 } from "@easyblocks/core";
 import { Typography } from "@easyblocks/design-system";
 import { assertDefined } from "@easyblocks/utils";
 import React from "react";
+import { EditorContextType } from "../EditorContext";
 import {
   CompoundResourceValueSelect,
   getBasicResourcesOfType,
 } from "../tinacms/fields/plugins/ExternalField/ExternalField";
 import type { InternalWidgetComponentProps } from "../types";
-import { EditorContextType } from "../EditorContext";
 
 type ExternalWidget = NonNullable<
   Extract<

@@ -15,7 +15,6 @@ import {
   NoCodeComponentEditingFunction,
   NoCodeComponentStylesFunction,
   RefMap,
-  Resource,
   ResponsiveValue,
   SchemaProp,
   Spacing,
@@ -175,7 +174,6 @@ export type EditorContextType = CompilationContextType & {
   breakpointIndex: string;
   locales: Locale[];
   setBreakpointIndex: (breakpoint: string) => void;
-  resources: Array<Resource>;
   form: any;
   focussedField: Array<string>;
   setFocussedField: (focusedFields: string | Array<string>) => void;

@@ -1,10 +1,10 @@
-import { Form } from "@easyblocks/app-utils";
 import { InternalField } from "@easyblocks/core/_internals";
 import { SSColors, SSFonts, Typography } from "@easyblocks/design-system";
 import { toArray } from "@easyblocks/utils";
 import React, { useContext } from "react";
 import styled, { css } from "styled-components";
 import { useEditorContext } from "../../EditorContext";
+import { Form } from "../../form";
 import {
   BlockFieldPlugin,
   ExternalFieldPlugin,
@@ -20,11 +20,11 @@ import {
   ToggleFieldPlugin,
   TokenFieldPlugin,
 } from "../fields";
+import { PanelContext } from "../fields/plugins/BlockFieldPlugin";
 import { LocalFieldPlugin } from "../fields/plugins/LocalFIeld";
 import { PositionFieldPlugin } from "../fields/plugins/PositionFieldPlugin";
 import { FieldPlugin } from "./field-plugin";
 import { createFieldController } from "./utils/createFieldController";
-import { PanelContext } from "../fields/plugins/BlockFieldPlugin";
 
 export interface FieldBuilderProps {
   form: Form;

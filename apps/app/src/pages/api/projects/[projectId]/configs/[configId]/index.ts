@@ -1,14 +1,14 @@
-import { splitConfigIntoSingleLocaleConfigs } from "@easyblocks/app-utils";
-import { ComponentConfig, Locale } from "@easyblocks/core";
+import { ComponentConfig } from "@easyblocks/core";
 import { toArray } from "@easyblocks/utils";
 import { z } from "zod";
+import { createSupabaseClient } from "../../../../../../createSupabaseClient";
 import { buildLocales } from "../../../../../../helpers/buildLocales";
 import {
   AuthenticatedNextApiHandler,
   withAccessToken,
 } from "../../../../../../helpers/withAccessToken";
 import { withCors } from "../../../../../../helpers/withCors";
-import { createSupabaseClient } from "../../../../../../createSupabaseClient";
+import { splitConfigIntoSingleLocaleConfigs } from "../../../../../../lib/splitConfigs";
 
 const handlerQuerySchema = z.object({
   projectId: z.string(),

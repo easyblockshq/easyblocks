@@ -1,14 +1,14 @@
-import { splitConfigIntoSingleLocaleConfigs } from "@easyblocks/app-utils";
 import { toArray } from "@easyblocks/utils";
+import { createNewConfig } from "../../../../../createNewConfig";
+import { createSupabaseClient } from "../../../../../createSupabaseClient";
 import { buildLocales } from "../../../../../helpers/buildLocales";
 import {
   AuthenticatedNextApiHandler,
   withAccessToken,
 } from "../../../../../helpers/withAccessToken";
 import { withCors } from "../../../../../helpers/withCors";
-import { createNewConfig } from "../../../../../createNewConfig";
-import { createSupabaseClient } from "../../../../../createSupabaseClient";
 import type { TableUpdateRecord } from "../../../../../infrastructure/types";
+import { splitConfigIntoSingleLocaleConfigs } from "../../../../../lib/splitConfigs";
 
 const DEFAULT_CONFIG_UPDATE_THRESHOLD = 1000 * 60 * 10; // 10 minutes
 

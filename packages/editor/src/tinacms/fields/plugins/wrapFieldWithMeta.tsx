@@ -1,15 +1,12 @@
 import {
-  FormApi,
-  isEmptyExternalReference,
-  isIdReferenceToDocumentExternalValue,
-} from "@easyblocks/app-utils";
-import {
   ExternalReference,
   ExternalSchemaProp,
   LocalTextReference,
   TextSchemaProp,
   TrulyResponsiveValue,
   getExternalReferenceLocationKey,
+  isEmptyExternalReference,
+  isIdReferenceToDocumentExternalValue,
   isTrulyResponsiveValue,
   responsiveValueFindDeviceWithDefinedValue,
   responsiveValueForceGet,
@@ -40,6 +37,7 @@ import { isMixedFieldValue } from "../components/isMixedFieldValue";
 import type { ResponsiveFieldDefinition } from "./ResponsiveField/responsiveFieldController";
 import { Tooltip, TooltipArrow, TooltipBody } from "./Tooltip";
 import { useTooltip } from "./useTooltip";
+import { Form } from "../../../form";
 
 type ExtraFieldMetaWrapperFields = {
   layout?: "column" | "row";
@@ -50,7 +48,7 @@ type ExtraFieldMetaWrapperFields = {
 export interface FieldProps<InputProps extends Record<string, unknown>>
   extends FieldRenderProps<any, HTMLElement> {
   field: InternalField;
-  form: FormApi;
+  form: Form;
 }
 
 type InputFieldType<

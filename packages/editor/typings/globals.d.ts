@@ -1,4 +1,4 @@
-import type { EditorWindowAPI } from "@easyblocks/app-utils";
+import { EditorWindowAPI } from "../src";
 
 declare global {
   interface Window {

@@ -1,4 +1,3 @@
-import { Form } from "@easyblocks/app-utils";
 import {
   CompilationCache,
   CompilationMetadata,
@@ -81,6 +80,7 @@ import { checkLocalesCorrectness } from "./utils/locales/checkLocalesCorrectness
 import { removeLocalizedFlag } from "./utils/locales/removeLocalizedFlag";
 import { getDefaultLocale } from "@easyblocks/core";
 import { useEditorGlobalKeyboardShortcuts } from "./useEditorGlobalKeyboardShortcuts";
+import { Form } from "./form";
 
 const ContentContainer = styled.div`
   position: relative;
@@ -175,7 +175,7 @@ type EditorProps = {
 
 export const Editor = EditorBackendInitializer;
 
-export function EditorBackendInitializer(props: EditorProps) {
+function EditorBackendInitializer(props: EditorProps) {
   const [enabled, setEnabled] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
   const [document, setDocument] = useState<Document | null>(null);
@@ -689,7 +689,6 @@ const EditorContent = ({
         document: documentData,
       });
     },
-    resources: [],
     compilationCache: compilationCache.current,
     readOnly: props.readOnly,
     disableCustomTemplates: props.config.disableCustomTemplates ?? false,
@@ -1167,7 +1166,7 @@ function getMostCommonSubPath(path1: string, path2: string) {
   return mostCommonPathParts?.join(".");
 }
 
-export function findConfigById(
+function findConfigById(
   config: ComponentConfig,
   context: CompilationContextType,
   configId: string

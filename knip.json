@@ -17,7 +17,7 @@
       "ignoreDependencies": ["@babel/runtime", "postcss-value-parser"]
     },
     "packages/editor": {
-      "ignoreDependencies": ["@babel/runtime", "final-form-arrays"]
+      "ignoreDependencies": ["@babel/runtime"]
     }
   },
   "ignore": [

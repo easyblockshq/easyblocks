@@ -1,4 +1,3 @@
-import { splitConfigIntoSingleLocaleConfigs } from "@easyblocks/app-utils";
 import { ComponentConfig, Locale } from "@easyblocks/core";
 import { toArray } from "@easyblocks/utils";
 import { buildLocales } from "../../../helpers/buildLocales";
@@ -8,6 +7,7 @@ import {
 } from "../../../helpers/withAccessToken";
 import { withCors } from "../../../helpers/withCors";
 import { createSupabaseClient } from "../../../createSupabaseClient";
+import { splitConfigIntoSingleLocaleConfigs } from "../../../lib/splitConfigs";
 
 /**
  * This endpoint is for now use ONLY by:

@@ -28,7 +28,7 @@ const nextConfig = {
       },
     ];
   },
-  transpilePackages: ["@easyblocks/app-utils", "@easyblocks/utils"],
+  transpilePackages: ["@easyblocks/utils"],
   typescript: {
     ignoreBuildErrors: true,
   },

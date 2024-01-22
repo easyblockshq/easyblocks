@@ -1,7 +1,7 @@
-import { Form } from "@easyblocks/app-utils";
 import { Devices, ExternalFieldCustom } from "@easyblocks/core";
 import { CompilationCache } from "@easyblocks/core/_internals";
 import { EditorContextType } from "../../EditorContext";
+import { Form } from "../../form";
 
 const getImageFromId = (id: string) => ({
   alt: id,
@@ -181,7 +181,6 @@ export const testEditorContext: EditorContextType = {
       fallback: "en",
     },
   ],
-  resources: [],
   compilationCache: new CompilationCache(),
   imageVariants: [],
   imageVariantsDisplay: [],

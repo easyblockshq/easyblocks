@@ -81,11 +81,7 @@ type RichTextBlockElementCompiledComponentConfig = CompiledComponentConfigBase<
   };
 };
 
-export {
-  RICH_TEXT_BLOCK_ELEMENT_TYPES,
-  RICH_TEXT_BLOCK_ELEMENT_TYPE_OPTIONS,
-  richTextBlockElementEditableComponent,
-};
+export { RICH_TEXT_BLOCK_ELEMENT_TYPES, richTextBlockElementEditableComponent };
 export type {
   RichTextBlockElementCompiledComponentConfig,
   RichTextBlockElementComponentConfig,

@@ -1,4 +1,3 @@
-import { configMap } from "@easyblocks/app-utils";
 import {
   buildRichTextNoCodeEntry,
   ComponentConfig,
@@ -14,6 +13,7 @@ import {
 } from "@easyblocks/core/_internals";
 import { uniqueId } from "@easyblocks/utils";
 import { EditorContextType } from "../EditorContext";
+import { configMap } from "../utils/config/configMap";
 
 function getDefaultTemplateForDefinition(
   def: InternalComponentDefinition

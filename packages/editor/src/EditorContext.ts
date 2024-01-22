@@ -1,11 +1,9 @@
-import { Form } from "@easyblocks/app-utils";
 import {
   CompiledComponentConfig,
   ComponentConfig,
   ExternalTypeDefinition,
   InlineTypeDefinition,
   InlineTypeWidgetComponentProps,
-  Resource,
   Template,
   TokenTypeDefinition,
   TokenTypeWidgetComponentProps,
@@ -21,6 +19,7 @@ import {
 } from "@easyblocks/core/_internals";
 import React, { ComponentType, useContext } from "react";
 import { ActionsType } from "./types";
+import { Form } from "./form";
 
 export type EditorExternalTypeDefinition = Omit<
   ExternalTypeDefinition,
@@ -61,7 +60,6 @@ export type EditorContextType = Omit<BaseEditorContextType, "types"> & {
   save: (document: Document) => Promise<void>;
   compiledComponentConfig?: CompiledComponentConfig;
   configAfterAuto?: ComponentConfig;
-  resources: Array<Resource>;
   compilationCache: CompilationCache;
   isAdminMode: boolean;
   readOnly: boolean;

@@ -1,4 +1,3 @@
-import { Form } from "@easyblocks/app-utils";
 import { CompiledComponentConfig } from "@easyblocks/core";
 import { SSFonts } from "@easyblocks/design-system";
 import { dotNotationGet } from "@easyblocks/utils";
@@ -8,6 +7,7 @@ import { buildTinaFields } from "./buildTinaFields";
 import { useEditorContext } from "./EditorContext";
 import { InlineSettings } from "./inline-settings";
 import { mergeCommonFields } from "./tinacms/form-builder/utils/mergeCommonFields";
+import { Form } from "./form";
 
 type EditorSidebarProps = {
   focussedField: Array<string>;
