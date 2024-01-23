@@ -1,4 +1,4 @@
-import { SSColors } from "@easyblocks/design-system";
+import { Colors } from "@easyblocks/design-system";
 import React, { forwardRef, useState } from "react";
 import styled, { css } from "styled-components";
 import { TOP_BAR_HEIGHT } from "./EditorTopBar";
@@ -85,7 +85,7 @@ export { EditorIframe };
 const IframeContainer = styled.div`
   position: relative;
   flex: 1 1 auto;
-  background: ${SSColors.black100};
+  background: ${Colors.black100};
 `;
 
 type IframeInnerContainerProps = {

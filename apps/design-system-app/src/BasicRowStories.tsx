@@ -1,4 +1,4 @@
-import { SSBasicRow, Typography } from "@easyblocks/design-system";
+import { BasicRow, Typography } from "@easyblocks/design-system";
 
 const THUMBNAIL_IMAGE =
   "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_button.png";
@@ -14,23 +14,23 @@ export function BasicRowStories() {
       <br />
 
       <div style={{ maxWidth: 350 }}>
-        <SSBasicRow onClick={clickHandler} title={"Only title"} />
+        <BasicRow onClick={clickHandler} title={"Only title"} />
         <br />
-        <SSBasicRow
+        <BasicRow
           onClick={clickHandler}
           title={"Title, thumbnail and desc"}
           description={"Lorem ipsum dolor sit amet"}
           image={THUMBNAIL_IMAGE}
         />
         <br />
-        <SSBasicRow
+        <BasicRow
           onClick={clickHandler}
           onEdit={() => alert("edit")}
           title={"Component"}
           image={THUMBNAIL_IMAGE}
         />
         <br />
-        <SSBasicRow
+        <BasicRow
           onClick={clickHandler}
           onEdit={() => alert("edit")}
           image={THUMBNAIL_IMAGE}
@@ -38,7 +38,7 @@ export function BasicRowStories() {
           customTitle={true}
         />
         <br />
-        <SSBasicRow
+        <BasicRow
           onClick={clickHandler}
           onEdit={() => alert("edit")}
           image={THUMBNAIL_IMAGE}
@@ -47,7 +47,7 @@ export function BasicRowStories() {
           tinyDescription={true}
         />
         <br />
-        <SSBasicRow
+        <BasicRow
           onClick={clickHandler}
           onEdit={() => alert("edit")}
           image={THUMBNAIL_IMAGE}

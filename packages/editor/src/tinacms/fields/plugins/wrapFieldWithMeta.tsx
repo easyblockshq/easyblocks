@@ -17,7 +17,7 @@ import {
 } from "@easyblocks/core/_internals";
 import {
   Loader,
-  SSFonts,
+  Fonts,
   Select,
   SelectItem,
   Typography,
@@ -414,7 +414,7 @@ type FieldLabelProps = {
 
 export const FieldLabel = styled.label<FieldLabelProps>`
   all: unset;
-  ${SSFonts.body};
+  ${Fonts.body};
   color: ${({ isError }) => (isError ? "red" : "#000")};
   text-overflow: ellipsis;
   overflow: hidden;

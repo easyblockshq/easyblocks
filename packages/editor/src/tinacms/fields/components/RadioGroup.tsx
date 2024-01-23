@@ -1,10 +1,6 @@
 import { Option } from "@easyblocks/core";
 import { InternalField } from "@easyblocks/core/_internals";
-import {
-  SSIcons,
-  SSSelectInline,
-  SSToggleButton,
-} from "@easyblocks/design-system";
+import { Icons, SelectInline, ToggleButton } from "@easyblocks/design-system";
 import React from "react";
 import { FieldMixedValue } from "../../../types";
 import { FieldRenderProps } from "../../form-builder";
@@ -42,13 +38,13 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
 
   return (
     radioOptionsMapped && (
-      <SSSelectInline {...input} value={toggleButtonValue}>
+      <SelectInline {...input} value={toggleButtonValue}>
         {radioOptionsMapped.map((option) => {
           let Icon: Exclude<Exclude<Option, string>["icon"], string> =
             undefined;
 
-          if (typeof option.icon === "string" && option.icon in SSIcons) {
-            Icon = SSIcons[option.icon as keyof typeof SSIcons];
+          if (typeof option.icon === "string" && option.icon in Icons) {
+            Icon = Icons[option.icon as keyof typeof Icons];
           }
 
           if (typeof option.icon === "function") {
@@ -56,17 +52,17 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
           }
 
           return (
-            <SSToggleButton
+            <ToggleButton
               key={option.value}
               icon={Icon}
               value={option.value}
               hideLabel={option.hideLabel}
             >
               {option.label ?? option.value}
-            </SSToggleButton>
+            </ToggleButton>
           );
         })}
-      </SSSelectInline>
+      </SelectInline>
     )
   );
 };

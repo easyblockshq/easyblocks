@@ -1,16 +1,13 @@
-import { SSInput, Typography } from "@easyblocks/design-system";
+import { Input, Typography } from "@easyblocks/design-system";
 
 export function InputStories() {
   return (
     <div>
       <Typography variant={"label"}>Input</Typography>
       <br />
-      <SSInput
-        placeholder={"Put some text here..."}
-        name={"some-name"}
-      ></SSInput>
+      <Input placeholder={"Put some text here..."} name={"some-name"}></Input>
       <br />
-      <SSInput value={"Disabled input"} disabled={true}></SSInput>
+      <Input value={"Disabled input"} disabled={true}></Input>
     </div>
   );
 }

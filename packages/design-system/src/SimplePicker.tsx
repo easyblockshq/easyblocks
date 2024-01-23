@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { SSButtonGhost } from "./buttons";
-import { SSBasicRow } from "./rows/BasicRow";
-import { SSModal } from "./modals/Modal";
-import { SSColors } from "./colors";
-import { SSIcons } from "./icons";
-import { SSFonts } from "./fonts";
+import { ButtonGhost } from "./buttons";
+import { BasicRow } from "./rows/BasicRow";
+import { Modal } from "./modals/Modal";
+import { Colors } from "./colors";
+import { Icons } from "./icons";
+import { Fonts } from "./fonts";
 import styled, { css, keyframes } from "styled-components";
 import debounce from "lodash/debounce";
 import { ThumbnailButton } from "./ThumbnailButton";
@@ -140,15 +140,15 @@ const ProductPicker: React.FC<ProductPickerProps> = ({
         />
 
         {product && (
-          <SSButtonGhost
-            icon={SSIcons.Remove}
+          <ButtonGhost
+            icon={Icons.Remove}
             hideLabel
             onClick={() => {
               onChange(null);
             }}
           >
             Clear
-          </SSButtonGhost>
+          </ButtonGhost>
         )}
 
         <ItemPickerModal
@@ -172,7 +172,7 @@ type ProductType = {
   thumbnail?: string;
 };
 
-interface SSProductPickerAPI {
+interface ProductPickerAPI {
   products: (query: string) => Promise<ProductType[]>;
   product: (id: string) => Promise<ProductType>;
   placeholder?: string;
@@ -181,12 +181,12 @@ interface SSProductPickerAPI {
 type ProductPickerProps = {
   value: string | null;
   onChange: (id: string | null) => void;
-  api: SSProductPickerAPI;
+  api: ProductPickerAPI;
 };
 
 function getProductFromId(
   id: string,
-  api: SSProductPickerAPI
+  api: ProductPickerAPI
 ): Promise<ProductType> {
   return new Promise<ProductType>((resolve, reject) => {
     const cached = getProductFromCache(id);
@@ -234,7 +234,7 @@ type ProductApiRequestState =
 
 interface ProductPickerModalProps {
   isOpen: boolean;
-  getItems: SSProductPickerAPI["products"];
+  getItems: ProductPickerAPI["products"];
   onClose: () => void;
   onItemPick: (item: ProductType) => void;
 }
@@ -317,7 +317,7 @@ function ItemPickerModal({
   }, [query]);
 
   return isOpen ? (
-    <SSModal
+    <Modal
       mode={"center-small"}
       isOpen
       onRequestClose={() => {
@@ -337,7 +337,7 @@ function ItemPickerModal({
         <LoadingContainer isEmpty={!getProductsRequest.data?.length}>
           <ProductsContainer>
             {getProductsRequest.data?.map((product) => (
-              <SSBasicRow
+              <BasicRow
                 title={product.title}
                 onClick={() => {
                   onItemPick(product);
@@ -357,7 +357,7 @@ function ItemPickerModal({
       {getProductsRequest.status === "success" &&
         (getProductsRequest.data.length > 0 ? (
           getProductsRequest.data.map((product) => (
-            <SSBasicRow
+            <BasicRow
               key={product.id}
               title={product.title}
               onClick={() => {
@@ -376,7 +376,7 @@ function ItemPickerModal({
           Couldn't fetch data for query "{previousQuery.current}"
         </NoResults>
       )}
-    </SSModal>
+    </Modal>
   ) : null;
 }
 
@@ -384,8 +384,8 @@ const ErrorMessage = styled.div`
   word-break: break-all;
   white-space: normal;
   margin-left: 4px;
-  ${SSFonts.body}
-  color: ${SSColors.black40};
+  ${Fonts.body}
+  color: ${Colors.black40};
 `;
 
 interface LoadingIndicatorProps {
@@ -463,7 +463,7 @@ const NoResults = styled.div`
   height: 48px;
   padding: 12px;
 
-  ${SSFonts.body};
+  ${Fonts.body};
 `;
 
 const loadingIcon = (

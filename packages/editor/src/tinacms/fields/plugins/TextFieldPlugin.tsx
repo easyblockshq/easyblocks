@@ -1,6 +1,6 @@
 import { LocalTextReference, ResponsiveValue } from "@easyblocks/core";
 import { InternalField, useTextValue } from "@easyblocks/core/_internals";
-import { SSInput } from "@easyblocks/design-system";
+import { Input } from "@easyblocks/design-system";
 import React from "react";
 import { FieldRenderProps } from "react-final-form";
 import { useEditorContext } from "../../../EditorContext";
@@ -38,7 +38,7 @@ export function TextField({ input, field, noWrap }: TextFieldProps) {
       layout={isTextSchemaProp ? "column" : "row"}
       noWrap={noWrap}
     >
-      <SSInput
+      <Input
         {...restInputProperties}
         {...inputProps}
         controlSize="full-width"

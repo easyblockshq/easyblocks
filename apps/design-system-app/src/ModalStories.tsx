@@ -1,8 +1,8 @@
 import { useState } from "react";
 import {
-  SSButtonPrimary,
-  SSButtonSecondary,
-  SSModal,
+  ButtonPrimary,
+  ButtonSecondary,
+  Modal,
   Typography,
 } from "@easyblocks/design-system";
 
@@ -11,14 +11,14 @@ function Modal1() {
 
   return (
     <div>
-      <SSButtonPrimary
+      <ButtonPrimary
         onClick={() => {
           setOpen(true);
         }}
       >
         Open modal small
-      </SSButtonPrimary>
-      <SSModal
+      </ButtonPrimary>
+      <Modal
         isOpen={open}
         mode={"center-small"}
         onRequestClose={() => setOpen(false)}
@@ -38,10 +38,10 @@ function Modal1() {
             justifyContent: "flex-end",
           }}
         >
-          <SSButtonSecondary>Cancel</SSButtonSecondary>
-          <SSButtonPrimary>Delete</SSButtonPrimary>
+          <ButtonSecondary>Cancel</ButtonSecondary>
+          <ButtonPrimary>Delete</ButtonPrimary>
         </div>
-      </SSModal>
+      </Modal>
     </div>
   );
 }
@@ -51,14 +51,14 @@ function ModalNoPadding() {
 
   return (
     <div>
-      <SSButtonPrimary
+      <ButtonPrimary
         onClick={() => {
           setOpen(true);
         }}
       >
         Open modal small (no padding)
-      </SSButtonPrimary>
-      <SSModal
+      </ButtonPrimary>
+      <Modal
         isOpen={open}
         mode={"center-small"}
         onRequestClose={() => setOpen(false)}
@@ -69,7 +69,7 @@ function ModalNoPadding() {
         <div style={{ background: "lightgreen" }}>
           <Typography variant={"body"}>Some text blah blah blah</Typography>
         </div>
-      </SSModal>
+      </Modal>
     </div>
   );
 }
@@ -79,14 +79,14 @@ function Modal2() {
 
   return (
     <div>
-      <SSButtonPrimary
+      <ButtonPrimary
         onClick={() => {
           setOpen(true);
         }}
       >
         Huge modal (inline modal)
-      </SSButtonPrimary>
-      <SSModal
+      </ButtonPrimary>
+      <Modal
         isOpen={open}
         mode={"center-huge"}
         onRequestClose={() => setOpen(false)}
@@ -96,7 +96,7 @@ function Modal2() {
         <Typography variant={"body"}>Huge</Typography>
         <br />
         <Modal1 />
-      </SSModal>
+      </Modal>
     </div>
   );
 }

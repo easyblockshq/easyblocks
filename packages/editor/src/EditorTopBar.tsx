@@ -1,10 +1,10 @@
 import { Devices, Locale } from "@easyblocks/core";
 import {
-  SSButtonGhost,
-  SSColors,
-  SSFonts,
-  SSIcons,
-  SSToggle,
+  ButtonGhost,
+  Colors,
+  Fonts,
+  Icons,
+  Toggle,
   ToggleGroup,
   ToggleGroupItem,
   Tooltip,
@@ -32,9 +32,9 @@ const TopBar = styled.div`
 `;
 
 const Label = styled.div`
-  background: ${SSColors.purple};
+  background: ${Colors.purple};
   height: 24px;
-  ${SSFonts.label}
+  ${Fonts.label}
   display: flex;
   justify-content: center;
   align-items: center;
@@ -117,8 +117,8 @@ export const EditorTopBar: React.FC<{
       <TopBarLeft>
         {!hideCloseButton && (
           <>
-            <SSButtonGhost
-              icon={SSIcons.Close}
+            <ButtonGhost
+              icon={Icons.Close}
               hideLabel
               onClick={() => {
                 if (onClose) {
@@ -127,31 +127,31 @@ export const EditorTopBar: React.FC<{
               }}
             >
               Close
-            </SSButtonGhost>
+            </ButtonGhost>
 
             <div
-              style={{ height: "100%", background: SSColors.black10, width: 1 }}
+              style={{ height: "100%", background: Colors.black10, width: 1 }}
             />
           </>
         )}
-        <SSButtonGhost
-          icon={SSIcons.Undo}
+        <ButtonGhost
+          icon={Icons.Undo}
           hideLabel
           onClick={() => {
             onUndo();
           }}
         >
           Undo
-        </SSButtonGhost>
-        <SSButtonGhost
-          icon={SSIcons.Redo}
+        </ButtonGhost>
+        <ButtonGhost
+          icon={Icons.Redo}
           hideLabel
           onClick={() => {
             onRedo();
           }}
         >
           Redo
-        </SSButtonGhost>
+        </ButtonGhost>
         {readOnly && <Label>Read-Only</Label>}
       </TopBarLeft>
 
@@ -188,7 +188,7 @@ export const EditorTopBar: React.FC<{
           >
             Edit mode
           </Typography>{" "}
-          <SSToggle
+          <Toggle
             name="easyblocks-edit-mode-button"
             checked={isEditing}
             onChange={() => {

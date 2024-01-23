@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { InlineTypeWidgetComponentProps } from "@easyblocks/core";
-import { SSInput } from "@easyblocks/design-system";
+import { Input } from "@easyblocks/design-system";
 import { useState } from "react";
 
 function UrlWidget(props: InlineTypeWidgetComponentProps<string>) {
@@ -14,7 +14,7 @@ function UrlWidget(props: InlineTypeWidgetComponentProps<string>) {
   });
 
   return (
-    <SSInput
+    <Input
       value={value}
       onChange={(event) => {
         setActive(true);

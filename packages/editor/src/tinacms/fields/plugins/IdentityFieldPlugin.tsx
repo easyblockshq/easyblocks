@@ -3,7 +3,7 @@ import {
   findComponentDefinitionById,
   parsePath,
 } from "@easyblocks/core/_internals";
-import { SSButtonGhost, SSIcons, Typography } from "@easyblocks/design-system";
+import { ButtonGhost, Icons, Typography } from "@easyblocks/design-system";
 import { toArray } from "@easyblocks/utils";
 import React, { useContext } from "react";
 import type { FieldRenderProps } from "react-final-form";
@@ -102,7 +102,7 @@ function IdentityField({ input, field }: IdentityFieldProps) {
       >
         {componentDefinition?.label ?? componentDefinition?.id}
       </Typography>
-      {!isNonChangable && <SSIcons.ChevronDown size={16} />}
+      {!isNonChangable && <Icons.ChevronDown size={16} />}
     </div>
   );
 
@@ -123,8 +123,8 @@ function IdentityField({ input, field }: IdentityFieldProps) {
         `}
       >
         {isWithinNestedPanel && (
-          <SSButtonGhost
-            icon={SSIcons.ChevronLeft}
+          <ButtonGhost
+            icon={Icons.ChevronLeft}
             onClick={() => {
               panelContext.onClose();
             }}
@@ -138,14 +138,14 @@ function IdentityField({ input, field }: IdentityFieldProps) {
           <div style={{ padding: "7px 6px" }}>{titleContent}</div>
         )}
         {!isNonChangable && (
-          <SSButtonGhost onClick={handleChangeComponentType}>
+          <ButtonGhost onClick={handleChangeComponentType}>
             {titleContent}
-          </SSButtonGhost>
+          </ButtonGhost>
         )}
 
-        <SSButtonGhost
+        <ButtonGhost
           aria-label="Remove component"
-          icon={SSIcons.Remove}
+          icon={Icons.Remove}
           onClick={handleRemove}
           css={css`
             margin-left: auto;

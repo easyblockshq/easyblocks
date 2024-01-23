@@ -1,4 +1,4 @@
-import { SSRangeSlider } from "@easyblocks/design-system";
+import { RangeSlider } from "@easyblocks/design-system";
 import React from "react";
 import { wrapFieldsWithMeta } from "./wrapFieldWithMeta";
 
@@ -10,12 +10,7 @@ type SliderProps = {
 
 const Slider = wrapFieldsWithMeta<any, SliderProps>(({ input, field }) => {
   return (
-    <SSRangeSlider
-      {...input}
-      max={field.max}
-      min={field.min}
-      step={field.step}
-    />
+    <RangeSlider {...input} max={field.max} min={field.min} step={field.step} />
   );
 });
 

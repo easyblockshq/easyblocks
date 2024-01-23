@@ -34,7 +34,7 @@ import {
   parsePath,
   traverseComponents,
 } from "@easyblocks/core/_internals";
-import { SSColors, SSFonts, useToaster } from "@easyblocks/design-system";
+import { Colors, Fonts, useToaster } from "@easyblocks/design-system";
 import { dotNotationGet, uniqueId } from "@easyblocks/utils";
 
 import React, {
@@ -100,8 +100,8 @@ const SidebarAndContentContainer = styled.div<{ height: "100vh" | "100%" }>`
 
 const SidebarContainer = styled.div`
   flex: 0 0 240px;
-  background: ${SSColors.white};
-  border-left: 1px solid ${SSColors.black100};
+  background: ${Colors.white};
+  border-left: 1px solid ${Colors.black100};
   box-sizing: border-box;
 
   > * {
@@ -138,7 +138,7 @@ const DataSaverModal = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  ${SSFonts.body}
+  ${Fonts.body}
   font-size: 16px;
 `;
 
@@ -151,7 +151,7 @@ const AuthenticationScreen = styled.div`
   align-items: center;
   gap: 24px;
   text-align: center;
-  ${SSFonts.bodyLarge}
+  ${Fonts.bodyLarge}
 `;
 
 type EditorProps = {

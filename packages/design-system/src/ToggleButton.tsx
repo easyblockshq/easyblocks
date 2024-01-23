@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components";
-import { SSColors } from "./colors";
+import { Colors } from "./colors";
 import {
   ControlContainer,
   ControlProps,
@@ -11,14 +11,14 @@ import {
  * TODO: this toggle button doesn't make much sense from semantic perspective
  */
 
-export type SSToggleButtonProps = ControlProps & {
+export type ToggleButtonProps = ControlProps & {
   value?: string;
   selected?: boolean;
   hideLabel?: boolean;
   onChange?: (val: boolean) => void;
 };
 
-const StyledButton = styled.button<SSToggleButtonProps>`
+const StyledButton = styled.button<ToggleButtonProps>`
   all: unset;
   box-sizing: border-box;
 
@@ -31,11 +31,11 @@ const StyledButton = styled.button<SSToggleButtonProps>`
   ${(p) => (p.hideLabel ? "padding-right: 0;" : "")}
   
   border-radius: 2px;
-  background-color: ${(p) => (p.selected ? SSColors.black10 : "transparent")};
+  background-color: ${(p) => (p.selected ? Colors.black10 : "transparent")};
 `;
 
-export const SSToggleButton = (
-  props: SSToggleButtonProps & {
+export const ToggleButton = (
+  props: ToggleButtonProps & {
     children: string /* children must be a string */;
   }
 ) => {
@@ -56,7 +56,7 @@ export const SSToggleButton = (
   );
 };
 
-export type SSSelectInlineProps = {
+export type SelectInlineProps = {
   children: ReactNode;
   value: string | null | undefined;
   onChange: (value: string) => void;
@@ -69,7 +69,7 @@ const SelectInlineRoot = styled.div`
   flex-wrap: nowrap;
 `;
 
-export const SSSelectInline: React.FC<SSSelectInlineProps> = (props) => {
+export const SelectInline: React.FC<SelectInlineProps> = (props) => {
   const buttons = React.Children.toArray(
     props.children
   ) as React.ReactElement[];

@@ -1,12 +1,12 @@
 import type { TokenTypeWidgetComponentProps } from "@easyblocks/core";
-import { SSInput } from "@easyblocks/design-system";
+import { Input } from "@easyblocks/design-system";
 import React, { useState } from "react";
 
 function SpaceTokenWidget(props: TokenTypeWidgetComponentProps<string>) {
   const [inputValue, setInputValue] = useState(props.value);
 
   return (
-    <SSInput
+    <Input
       value={inputValue}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);

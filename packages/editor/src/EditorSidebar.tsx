@@ -1,5 +1,5 @@
 import { CompiledComponentConfig } from "@easyblocks/core";
-import { SSFonts } from "@easyblocks/design-system";
+import { Fonts } from "@easyblocks/design-system";
 import { dotNotationGet } from "@easyblocks/utils";
 import React from "react";
 import styled from "styled-components";
@@ -15,7 +15,7 @@ type EditorSidebarProps = {
 };
 
 export const Error = styled.div`
-  ${SSFonts.body}
+  ${Fonts.body}
   padding: 7px 6px 7px;
   color: hsl(0deg 0% 50% / 0.8);
   white-space: normal;

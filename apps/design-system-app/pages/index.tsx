@@ -1,4 +1,4 @@
-import { SSColors } from "@easyblocks/design-system";
+import { Colors } from "@easyblocks/design-system";
 import React, { useEffect, useState } from "react";
 import { TypographyStories } from "../src/TypographyStories";
 import { ColorStories } from "../src/ColorStories";
@@ -21,7 +21,7 @@ function Separator() {
       style={{
         width: "100%",
         height: "1px",
-        background: SSColors.black20,
+        background: Colors.black20,
         marginTop: "32px",
         marginBottom: "16px",
       }}

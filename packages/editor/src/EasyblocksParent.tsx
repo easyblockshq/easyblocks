@@ -6,8 +6,8 @@ import {
   WidgetComponentProps,
 } from "@easyblocks/core";
 import {
-  SSModalContext,
-  SSModalStyles,
+  ModalContext,
+  GlobalModalStyles,
   Toaster,
   TooltipProvider,
 } from "@easyblocks/design-system";
@@ -54,13 +54,13 @@ export function EasyblocksParent(props: EasyblocksParentProps) {
       shouldForwardProp={shouldForwardProp}
       enableVendorPrefixes
     >
-      <SSModalContext.Provider
+      <ModalContext.Provider
         value={() => {
           return document.querySelector("#modalContainer");
         }}
       >
         <GlobalStyles />
-        <SSModalStyles />
+        <GlobalModalStyles />
         <TooltipProvider>
           <div
             id={"modalContainer"}
@@ -82,7 +82,7 @@ export function EasyblocksParent(props: EasyblocksParentProps) {
           />
         </TooltipProvider>
         <Toaster containerStyle={{ zIndex: 100100 }} />
-      </SSModalContext.Provider>
+      </ModalContext.Provider>
     </StyleSheetManager>
   );
 }

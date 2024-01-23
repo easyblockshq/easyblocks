@@ -1,4 +1,4 @@
-import { SSBasicRow, SSModal } from "@easyblocks/design-system";
+import { BasicRow, Modal } from "@easyblocks/design-system";
 import React, { ChangeEvent, useState } from "react";
 import { useEditorContext } from "./EditorContext";
 import { Template } from "./types";
@@ -60,7 +60,7 @@ export const SearchableSmallPickerModal: TemplatePicker = ({
   };
 
   return (
-    <SSModal
+    <Modal
       mode={"center-small"}
       isOpen={isOpen}
       onRequestClose={() => {
@@ -92,7 +92,7 @@ export const SearchableSmallPickerModal: TemplatePicker = ({
               const description = isOnlyOne ? undefined : componentLabel;
 
               return (
-                <SSBasicRow
+                <BasicRow
                   key={template.id!}
                   title={title}
                   description={description}
@@ -116,6 +116,6 @@ export const SearchableSmallPickerModal: TemplatePicker = ({
             });
           }
         )}
-    </SSModal>
+    </Modal>
   );
 };

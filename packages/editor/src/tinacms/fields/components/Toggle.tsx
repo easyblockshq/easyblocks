@@ -1,5 +1,5 @@
 import { InternalField } from "@easyblocks/core/_internals";
-import { SSToggle } from "@easyblocks/design-system";
+import { Toggle as DesignSystemToggle } from "@easyblocks/design-system";
 import React, { FC } from "react";
 import styled from "styled-components";
 
@@ -38,7 +38,7 @@ export const Toggle: FC<ToggleProps> = ({
   };
   return (
     <ToggleFieldWrapper>
-      <SSToggle {...toggleProps} />
+      <DesignSystemToggle {...toggleProps} />
     </ToggleFieldWrapper>
   );
 };

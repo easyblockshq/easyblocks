@@ -1,9 +1,9 @@
 import React, { MouseEvent } from "react";
 import styled from "styled-components";
-import { SSColors } from "../colors";
-import { SSFonts } from "../fonts";
+import { Colors } from "../colors";
+import { Fonts } from "../fonts";
 import { CustomComponentSymbol } from "../CustomComponentSymbol";
-import { SSButtonGhost } from "../buttons";
+import { ButtonGhost } from "../buttons";
 
 type BasicRowProps = {
   image?: string;
@@ -24,7 +24,7 @@ const Root = styled.div`
   padding: 12px;
 
   &:hover {
-    background-color: ${SSColors.black5};
+    background-color: ${Colors.black5};
   }
 
   display: flex;
@@ -44,7 +44,7 @@ const Root = styled.div`
 const ImageContainer = styled.div<BasicRowProps>`
   position: relative;
   box-sizing: border-box;
-  background: ${SSColors.black10};
+  background: ${Colors.black10};
   width: 52px;
   height: 52px;
   pointer-events: none;
@@ -80,13 +80,13 @@ const DescriptionContainer = styled.div`
 `;
 
 const Title = styled.div<{ custom?: boolean }>`
-  ${SSFonts.label};
-  color: ${(p) => (p.custom ? SSColors.purple : "black")};
+  ${Fonts.label};
+  color: ${(p) => (p.custom ? Colors.purple : "black")};
 `;
 
 const Description = styled.div<{ tinyDescription?: boolean; custom?: boolean }>`
-  ${(p) => (p.tinyDescription ? SSFonts.body4 : SSFonts.body)};
-  color: ${(p) => (p.custom ? SSColors.purple : SSColors.black40)};
+  ${(p) => (p.tinyDescription ? Fonts.body4 : Fonts.body)};
+  color: ${(p) => (p.custom ? Colors.purple : Colors.black40)};
   line-height: 1;
 `;
 
@@ -95,7 +95,7 @@ const EditContainer = styled.div`
   visibility: hidden;
 `;
 
-export const SSBasicRow: React.FC<BasicRowProps> = (props) => {
+export const BasicRow: React.FC<BasicRowProps> = (props) => {
   return (
     <Root onClick={props.onClick}>
       <ImageContainer {...props}>
@@ -122,7 +122,7 @@ export const SSBasicRow: React.FC<BasicRowProps> = (props) => {
       </TextContainer>
       {props.onEdit && (
         <EditContainer className={"EditContainer"}>
-          <SSButtonGhost
+          <ButtonGhost
             onClick={(e: MouseEvent) => {
               e.preventDefault();
               e.stopPropagation();
@@ -131,7 +131,7 @@ export const SSBasicRow: React.FC<BasicRowProps> = (props) => {
             }}
           >
             Edit
-          </SSButtonGhost>
+          </ButtonGhost>
         </EditContainer>
       )}
     </Root>

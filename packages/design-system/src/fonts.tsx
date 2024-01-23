@@ -1,7 +1,7 @@
 const mainFont = "system-ui";
 const fontVariationSettings = `'opsz' 21`;
 
-const SSFonts = {
+const Fonts = {
   bodyLarge: {
     fontFamily: mainFont,
     fontVariationSettings,
@@ -47,4 +47,4 @@ const SSFonts = {
   },
 };
 
-export { SSFonts };
+export { Fonts };

@@ -1,6 +1,6 @@
 import type { useSortable } from "@dnd-kit/sortable";
 import { selectionFramePositionChanged } from "@easyblocks/core/_internals";
-import { SSColors } from "@easyblocks/design-system";
+import { Colors } from "@easyblocks/design-system";
 import React, { MouseEvent, ReactNode, useEffect, useState } from "react";
 
 type SelectionFrameControllerProps = {
@@ -94,7 +94,7 @@ function SelectionFrameController({
 
       display: "block",
       content: "''",
-      backgroundColor: SSColors.blue50,
+      backgroundColor: Colors.blue50,
       zIndex: 9999999,
     },
 

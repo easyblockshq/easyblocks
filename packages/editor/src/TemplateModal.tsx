@@ -5,10 +5,10 @@ import {
 } from "./types";
 import {
   FormElement,
-  SSButtonDanger,
-  SSButtonPrimary,
-  SSInput,
-  SSModal,
+  ButtonDanger,
+  ButtonPrimary,
+  Input,
+  Modal,
   useToaster,
 } from "@easyblocks/design-system";
 import { useEditorContext } from "./EditorContext";
@@ -53,7 +53,7 @@ export const TemplateModal: React.FC<TemplateModalProps> = (props) => {
   }, [open]);
 
   return (
-    <SSModal
+    <Modal
       title={`Template details`}
       isOpen={true}
       onRequestClose={() => {
@@ -126,7 +126,7 @@ export const TemplateModal: React.FC<TemplateModalProps> = (props) => {
           }}
         >
           <FormElement name={"label"} label={"Template name"}>
-            <SSInput
+            <Input
               placeholder={"My template name"}
               required={true}
               value={label}
@@ -151,7 +151,7 @@ export const TemplateModal: React.FC<TemplateModalProps> = (props) => {
           >
             <div>
               {mode === "edit" && (
-                <SSButtonDanger
+                <ButtonDanger
                   onClick={(e: MouseEvent) => {
                     e.preventDefault();
 
@@ -174,20 +174,20 @@ export const TemplateModal: React.FC<TemplateModalProps> = (props) => {
                   isLoading={isLoadingDelete}
                 >
                   Delete
-                </SSButtonDanger>
+                </ButtonDanger>
               )}
             </div>
 
-            <SSButtonPrimary
+            <ButtonPrimary
               type={"submit"}
               disabled={!canSend}
               isLoading={isLoadingEdit}
             >
               {ctaLabel}
-            </SSButtonPrimary>
+            </ButtonPrimary>
           </div>
         </div>
       </form>
-    </SSModal>
+    </Modal>
   );
 };

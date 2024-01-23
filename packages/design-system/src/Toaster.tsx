@@ -1,12 +1,12 @@
 import toast, { Toaster } from "react-hot-toast";
-import { SSFonts } from "./fonts";
+import { Fonts } from "./fonts";
 
 export { Toaster };
 
 export function useToaster() {
   const style = {
     borderRadius: "4px",
-    ...SSFonts.body,
+    ...Fonts.body,
   };
 
   return {

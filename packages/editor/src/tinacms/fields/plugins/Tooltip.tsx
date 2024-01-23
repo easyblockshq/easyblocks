@@ -1,4 +1,4 @@
-import { SSFonts } from "@easyblocks/design-system";
+import { Fonts } from "@easyblocks/design-system";
 import React, { CSSProperties, forwardRef, ReactNode } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
@@ -35,7 +35,7 @@ const TooltipBody = styled.div`
   background: #333333;
   border-radius: 2px;
 
-  ${SSFonts.body}
+  ${Fonts.body}
   color: #fff;
 `;
 

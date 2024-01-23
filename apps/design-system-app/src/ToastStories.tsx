@@ -1,5 +1,5 @@
 import {
-  SSButtonPrimary,
+  ButtonPrimary,
   Toaster,
   Typography,
   useToaster,
@@ -14,37 +14,37 @@ export function ToastStories() {
       <Typography variant={"label"}>Toast</Typography>
       <br />
       <Toaster />
-      <SSButtonPrimary
+      <ButtonPrimary
         onClick={() => {
           toaster.notify(text);
         }}
       >
         Notify
-      </SSButtonPrimary>
+      </ButtonPrimary>
       <br />
-      <SSButtonPrimary
+      <ButtonPrimary
         onClick={() => {
           toaster.notify("Lorem ipsum");
         }}
       >
         Notify short text
-      </SSButtonPrimary>
+      </ButtonPrimary>
       <br />
-      <SSButtonPrimary
+      <ButtonPrimary
         onClick={() => {
           toaster.success(text);
         }}
       >
         Success
-      </SSButtonPrimary>
+      </ButtonPrimary>
       <br />
-      <SSButtonPrimary
+      <ButtonPrimary
         onClick={() => {
           toaster.error(text);
         }}
       >
         Error
-      </SSButtonPrimary>
+      </ButtonPrimary>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { responsiveValueForceGet } from "@easyblocks/core";
-import { SSColors, SSFonts, SSIcons } from "@easyblocks/design-system";
+import { Colors, Fonts, Icons } from "@easyblocks/design-system";
 import { dotNotationGet, toArray } from "@easyblocks/utils";
 import React from "react";
 import styled from "styled-components";
@@ -95,7 +95,7 @@ const ResponsiveField = (props: ResponsivePluginProps) => {
         isValueDifferentFromMainBreakpoint
           ? ({ label }) => (
               <ResetButton aria-label="Revert to auto" {...triggerProps}>
-                <SSIcons.Reset />
+                <Icons.Reset />
                 <ResetButtonLabel>{label}</ResetButtonLabel>
                 {isOpen && (
                   <Tooltip {...tooltipProps}>
@@ -136,8 +136,8 @@ export const ResponsiveFieldPlugin = {
 };
 
 const AutoLabel = styled.div<{ align: "left" | "right" }>`
-  ${SSFonts.body};
-  color: ${SSColors.black40};
+  ${Fonts.body};
+  color: ${Colors.black40};
   text-align: ${(props) => props.align};
 
   &:hover {
@@ -156,13 +156,13 @@ const ResetButton = styled.button`
   border: 0;
   padding: 0;
 
-  color: ${SSColors.purple};
+  color: ${Colors.purple};
 
   cursor: pointer;
 `;
 
 const ResetButtonLabel = styled.span`
-  ${SSFonts.body};
+  ${Fonts.body};
   line-height: 16px;
 `;
 

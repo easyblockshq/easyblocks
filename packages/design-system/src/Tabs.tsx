@@ -1,6 +1,6 @@
 import { Root, List, Trigger, TabsContent } from "@radix-ui/react-tabs";
 import React from "react";
-import { SSColors } from "./colors";
+import { Colors } from "./colors";
 import { Typography } from "./Typography";
 
 function Tabs(props: {
@@ -68,7 +68,7 @@ function Tab(props: { children: React.ReactNode; value: string }) {
         }
 
         &[data-state="inactive"] {
-          color: ${SSColors.black500};
+          color: ${Colors.black500};
         }
       `}
     >

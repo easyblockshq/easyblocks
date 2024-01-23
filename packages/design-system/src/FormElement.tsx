@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { SSFonts } from "./fonts";
-import { SSColors } from "./colors";
+import { Fonts } from "./fonts";
+import { Colors } from "./colors";
 
 export type FormElementProps = {
   name: string;
@@ -24,7 +24,7 @@ const Layout = styled.div`
 `;
 
 const Label = styled.label`
-  ${SSFonts.body}
+  ${Fonts.body}
   color: black;
   flex: 0 0 120px;
   min-width: 0;
@@ -38,8 +38,8 @@ const ControlWrapper = styled.div`
 
 const ErrorWrapper = styled.div`
   margin-top: 6px;
-  ${SSFonts.body}
-  color: ${SSColors.red};
+  ${Fonts.body}
+  color: ${Colors.red};
 `;
 export const FormElement = (props: FormElementProps) => {
   return (

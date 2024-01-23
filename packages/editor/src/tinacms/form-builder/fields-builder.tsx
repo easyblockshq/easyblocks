@@ -1,5 +1,5 @@
 import { InternalField } from "@easyblocks/core/_internals";
-import { SSColors, SSFonts, Typography } from "@easyblocks/design-system";
+import { Colors, Fonts, Typography } from "@easyblocks/design-system";
 import { toArray } from "@easyblocks/utils";
 import React, { useContext } from "react";
 import styled, { css } from "styled-components";
@@ -177,7 +177,7 @@ export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
       css={css`
         height: 1px;
         margin-top: -1px;
-        background-color: ${SSColors.black10};
+        background-color: ${Colors.black10};
       `}
     />
   );
@@ -253,7 +253,7 @@ export const FieldsGroupLabel = styled.div`
 
   padding: 20px 16px 10px 16px;
 
-  ${SSFonts.label};
+  ${Fonts.label};
   color: #000;
 `;
 

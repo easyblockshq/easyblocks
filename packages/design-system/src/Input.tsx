@@ -1,6 +1,6 @@
 import React, { forwardRef } from "react";
 import styled from "styled-components";
-import { SSFonts } from "./fonts";
+import { Fonts } from "./fonts";
 
 import {
   ControlContainer,
@@ -8,7 +8,7 @@ import {
   ControlProps,
 } from "./ControlContainer";
 
-export type SSInputProps = React.InputHTMLAttributes<HTMLInputElement> &
+export type InputProps = React.InputHTMLAttributes<HTMLInputElement> &
   ControlProps & {
     placeholder?: string;
     type?: string;
@@ -16,7 +16,7 @@ export type SSInputProps = React.InputHTMLAttributes<HTMLInputElement> &
     align?: "left" | "right";
   };
 
-const StyledInput = styled.input<SSInputProps & { isRaw?: boolean }>`
+const StyledInput = styled.input<InputProps & { isRaw?: boolean }>`
   all: unset;
   box-sizing: border-box;
 
@@ -35,37 +35,35 @@ const StyledInput = styled.input<SSInputProps & { isRaw?: boolean }>`
 
   ${(p) => !p.isRaw && getControlPadding()}
 
-  ${SSFonts.body};
+  ${Fonts.body};
 
   text-align: ${(p) => (p.align === "right" ? "right" : "left")};
 `;
 
 const InputBase = forwardRef<
   HTMLInputElement,
-  SSInputProps & { isRaw?: boolean }
+  InputProps & { isRaw?: boolean }
 >((props, ref) => {
   return <StyledInput {...props} ref={ref} />;
 });
 
-export const SSInput = forwardRef<HTMLInputElement, SSInputProps>(
-  (props, ref) => {
-    const { iconBlack, controlSize, iconOnly, onBlur, value, ...inputProps } =
-      props;
+export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+  const { iconBlack, controlSize, iconOnly, onBlur, value, ...inputProps } =
+    props;
 
-    return (
-      <ControlContainer
-        iconBlack={iconBlack}
-        controlSize={controlSize}
-        iconOnly={iconOnly}
-        {...inputProps}
-      >
-        <InputBase {...inputProps} value={value} onBlur={onBlur} ref={ref} />
-      </ControlContainer>
-    );
-  }
-);
+  return (
+    <ControlContainer
+      iconBlack={iconBlack}
+      controlSize={controlSize}
+      iconOnly={iconOnly}
+      {...inputProps}
+    >
+      <InputBase {...inputProps} value={value} onBlur={onBlur} ref={ref} />
+    </ControlContainer>
+  );
+});
 
-export const SSInputRaw = forwardRef<HTMLInputElement, SSInputProps>(
+export const InputRaw = forwardRef<HTMLInputElement, InputProps>(
   (props, ref) => {
     return <InputBase {...props} ref={ref} isRaw={true} />;
   }

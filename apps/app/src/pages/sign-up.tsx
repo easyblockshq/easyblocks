@@ -1,4 +1,4 @@
-import { SSColors, Stack } from "@easyblocks/design-system";
+import { Colors, Stack } from "@easyblocks/design-system";
 import { Button, TextFieldInput } from "@radix-ui/themes";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Link from "next/link";
@@ -273,7 +273,7 @@ function FormError(props: { error: string }) {
   return (
     <div
       css={`
-        color: ${SSColors.red};
+        color: ${Colors.red};
       `}
     >
       {props.error}

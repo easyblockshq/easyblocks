@@ -1,7 +1,7 @@
 import React from "react";
 import { InlineTypeWidgetComponentProps } from "@easyblocks/core";
 import { useEffect, useState } from "react";
-import { SSInput } from "@easyblocks/design-system";
+import { Input } from "@easyblocks/design-system";
 
 export function DebugUrlWidget(props: InlineTypeWidgetComponentProps<string>) {
   const [active, setActive] = useState(false);
@@ -14,7 +14,7 @@ export function DebugUrlWidget(props: InlineTypeWidgetComponentProps<string>) {
   });
 
   return (
-    <SSInput
+    <Input
       value={value}
       onChange={(event) => {
         setActive(true);

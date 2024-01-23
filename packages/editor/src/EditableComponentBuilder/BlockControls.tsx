@@ -11,7 +11,7 @@ import {
   SerializedRenderableComponentDefinition,
 } from "@easyblocks/core";
 import { parsePath, useEasyblocksMetadata } from "@easyblocks/core/_internals";
-import { SSColors } from "@easyblocks/design-system";
+import { Colors } from "@easyblocks/design-system";
 import { toArray } from "@easyblocks/utils";
 import React, { Fragment } from "react";
 import { SelectionFrameController } from "./SelectionFrameController";
@@ -299,7 +299,7 @@ function DroppablePlaceholder({
     "&::before": {
       display: "block",
       content: "''",
-      backgroundColor: SSColors.blue50,
+      backgroundColor: Colors.blue50,
       zIndex: 9999999,
       position: "absolute",
       opacity: 0,

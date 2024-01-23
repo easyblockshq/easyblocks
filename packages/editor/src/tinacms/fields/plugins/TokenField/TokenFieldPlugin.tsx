@@ -12,8 +12,8 @@ import {
   responsiveValueGetDefinedValue,
 } from "@easyblocks/core";
 import {
-  SSColors,
-  SSInput,
+  Colors,
+  Input,
   Select,
   SelectItem,
   SelectSeparator,
@@ -253,7 +253,7 @@ function TokenFieldComponent<TokenValue extends NonNullish>({
           }}
         />
       ) : (
-        <SSInput
+        <Input
           value={inputValue}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setInputValue(e.target.value);
@@ -463,7 +463,7 @@ export const SelectColorTokenItem = forwardRef<
             cy="8.00024"
             r="6.78931"
             fill={props.previewColor ?? "#fff"}
-            stroke={SSColors.black100}
+            stroke={Colors.black100}
           />
         </svg>
         <span>{props.children}</span>

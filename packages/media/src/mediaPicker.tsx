@@ -6,15 +6,15 @@ import {
   MenuContent,
   MenuItem,
   MenuTrigger,
-  SSButtonDanger,
-  SSButtonGhost,
-  SSButtonPrimary,
-  SSButtonSecondary,
-  SSColors,
-  SSFonts,
-  SSIcons,
-  SSModal,
-  SSModalContext,
+  ButtonDanger,
+  ButtonGhost,
+  ButtonPrimary,
+  ButtonSecondary,
+  Colors,
+  Fonts,
+  Icons,
+  Modal,
+  ModalContext,
   Stack,
   ThumbnailButton,
   Typography,
@@ -49,7 +49,7 @@ const GridRoot = styled.div`
 `;
 
 const CardTitle = styled.div`
-  ${SSFonts.body};
+  ${Fonts.body};
   word-break: break-word;
 `;
 
@@ -83,7 +83,7 @@ export type MediaFetcher = () => Promise<Media[]>;
 
 const Card = styled.div`
   &:hover {
-    outline: 1px solid ${SSColors.black40};
+    outline: 1px solid ${Colors.black40};
   }
   outline-offset: 4px;
   cursor: pointer;
@@ -164,11 +164,11 @@ function CardsGroup(props: {
               <CardTitle>{item.title}</CardTitle>
               <Menu>
                 <MenuTrigger>
-                  <SSButtonGhost
+                  <ButtonGhost
                     css={`
                       flex-shrink: 0;
                     `}
-                    icon={SSIcons.ThreeDotsHorizontal}
+                    icon={Icons.ThreeDotsHorizontal}
                     hideLabel
                   />
                 </MenuTrigger>
@@ -318,7 +318,7 @@ const Component = (
         />
       )}
 
-      <SSModal
+      <Modal
         title="Media"
         isOpen={isOpen}
         onRequestClose={() => {
@@ -376,14 +376,14 @@ const Component = (
             `}
           >
             {items !== null && items.length > 0 && (
-              <SSButtonPrimary
+              <ButtonPrimary
                 component="label"
-                icon={SSIcons.Add}
+                icon={Icons.Add}
                 isLoading={isUploading}
               >
                 Upload asset
                 {inputFileElement}
-              </SSButtonPrimary>
+              </ButtonPrimary>
             )}
           </div>
 
@@ -437,7 +437,7 @@ const Component = (
                     align-items: center;
                   `}
                 >
-                  <IconButtonPrimary icon={SSIcons.Add} variant="large" />
+                  <IconButtonPrimary icon={Icons.Add} variant="large" />
                   <Typography color="blue50">
                     Upload your first asset
                   </Typography>
@@ -447,13 +447,13 @@ const Component = (
             </div>
           )}
 
-          <SSModalContext.Provider
+          <ModalContext.Provider
             value={() => {
               return document.querySelector("#modalContainer");
             }}
           >
             {assetToRemove !== null && (
-              <SSModal
+              <Modal
                 isOpen
                 mode="center-small"
                 title="Remove asset"
@@ -494,18 +494,18 @@ const Component = (
                       This will permanently delete the asset{" "}
                       {assetToRemove.title}
                     </Typography>
-                    <SSButtonDanger
+                    <ButtonDanger
                       type="submit"
                       variant="large"
                       isLoading={isRemoving}
                     >
                       Delete asset
-                    </SSButtonDanger>
+                    </ButtonDanger>
                   </Stack>
                 </form>
-              </SSModal>
+              </Modal>
             )}
-          </SSModalContext.Provider>
+          </ModalContext.Provider>
         </ModalRoot>
 
         {isDraggingOver && (
@@ -520,7 +520,7 @@ const Component = (
             </Typography>
           </Cover>
         )}
-      </SSModal>
+      </Modal>
 
       {id !== null && (
         <div
@@ -531,13 +531,13 @@ const Component = (
             gap: "8px",
           }}
         >
-          <SSButtonSecondary
+          <ButtonSecondary
             onClick={() => {
               props.onChange(null);
             }}
           >
             Clear
-          </SSButtonSecondary>
+          </ButtonSecondary>
         </div>
       )}
     </div>

@@ -1,9 +1,9 @@
 import React, { forwardRef, ReactNode } from "react";
 import styled, { css } from "styled-components";
 
-import { SSColors } from "./colors";
-import { SSFonts } from "./fonts";
-import { SSIcon } from "./icons";
+import { Colors } from "./colors";
+import { Fonts } from "./fonts";
+import { Icon } from "./icons";
 import { Loader } from "./Loader";
 
 type CustomButtonProps = {
@@ -12,7 +12,7 @@ type CustomButtonProps = {
   className?: string;
   onClick?: any;
   hideLabel?: boolean;
-  icon?: SSIcon;
+  icon?: Icon;
   enhancer?: React.ReactElement;
   variant?: "standard" | "large" | "tiny";
   height?: string;
@@ -29,7 +29,7 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
   CustomButtonProps;
 
 const sharedCSS = (p: ButtonPropsInternal) => css`
-  ${SSFonts.body};
+  ${Fonts.body};
   border: none;
   outline: none;
   height: ${p.height !== undefined
@@ -64,7 +64,7 @@ const sharedCSS = (p: ButtonPropsInternal) => css`
 const PrimaryButton = styled.button<ButtonPropsInternal>`
   ${(p) => sharedCSS(p)}
 
-  background-color: ${SSColors.blue50};
+  background-color: ${Colors.blue50};
   color: white;
   min-width: 60px;
 
@@ -75,15 +75,15 @@ const PrimaryButton = styled.button<ButtonPropsInternal>`
   `
       : `
     &:hover {
-      background-color: ${SSColors.blue60};
+      background-color: ${Colors.blue60};
     }
   
     &:focus-visible {
-      box-shadow: 0 0 0 2px ${SSColors.blue60};
+      box-shadow: 0 0 0 2px ${Colors.blue60};
     }
   
     &:active {
-      background-color: ${SSColors.blue70};
+      background-color: ${Colors.blue70};
     }
     
   `}
@@ -92,7 +92,7 @@ const PrimaryButton = styled.button<ButtonPropsInternal>`
 const DangerButton = styled.button<ButtonPropsInternal>`
   ${(p) => sharedCSS(p)}
 
-  background-color: ${SSColors.red};
+  background-color: ${Colors.red};
   color: white;
   min-width: 60px;
 
@@ -107,11 +107,11 @@ const DangerButton = styled.button<ButtonPropsInternal>`
     }
   
     &:focus-visible {
-      box-shadow: 0 0 0 2px ${SSColors.blue60};
+      box-shadow: 0 0 0 2px ${Colors.blue60};
     }
   
     &:active {
-      background-color: ${SSColors.blue70};
+      background-color: ${Colors.blue70};
     }
     
   `}
@@ -120,7 +120,7 @@ const DangerButton = styled.button<ButtonPropsInternal>`
 const SecondaryButton = styled.button<ButtonPropsInternal>`
   ${(p) => sharedCSS(p)}
 
-  background-color: ${SSColors.black5};
+  background-color: ${Colors.black5};
   color: black;
   min-width: 60px;
 
@@ -131,15 +131,15 @@ const SecondaryButton = styled.button<ButtonPropsInternal>`
   `
       : `
       &:hover {
-        background-color: ${SSColors.black10};
+        background-color: ${Colors.black10};
       }
     
       &:focus-visible {
-        box-shadow: 0 0 0 2px ${SSColors.blue50};
+        box-shadow: 0 0 0 2px ${Colors.blue50};
       }
     
       &:active {
-        background-color: ${SSColors.black40};
+        background-color: ${Colors.black40};
       }
     
   `}
@@ -158,11 +158,11 @@ const GhostButton = styled.button<ButtonPropsInternal>`
   }
 
   &:focus-visible {
-    box-shadow: 0 0 0 2px ${SSColors.blue50};
+    box-shadow: 0 0 0 2px ${Colors.blue50};
   }
 
   &:active {
-    background-color: ${SSColors.black20};
+    background-color: ${Colors.black20};
   }
 `;
 
@@ -170,18 +170,18 @@ const GhostColorButton = styled.button<ButtonPropsInternal>`
   ${(p) => sharedCSS(p)}
 
   background-color: transparent;
-  color: ${SSColors.blue50};
+  color: ${Colors.blue50};
 
   &:hover {
-    background-color: ${SSColors.blue10};
+    background-color: ${Colors.blue10};
   }
 
   &:focus-visible {
-    box-shadow: 0 0 0 2px ${SSColors.blue50};
+    box-shadow: 0 0 0 2px ${Colors.blue50};
   }
 
   &:active {
-    background-color: ${SSColors.black20};
+    background-color: ${Colors.black20};
   }
 `;
 
@@ -193,7 +193,7 @@ const EnhancerContainer = styled.div<Pick<CustomButtonProps, "variant">>`
   flex-shrink: 0;
 `;
 
-const SSButton = forwardRef<HTMLButtonElement, ButtonPropsInternal>(
+const Button = forwardRef<HTMLButtonElement, ButtonPropsInternal>(
   ({ component, Button, ...props }, ref) => {
     let enhancer: React.ReactElement | null = null;
     if (props.isLoading) {
@@ -218,23 +218,23 @@ const SSButton = forwardRef<HTMLButtonElement, ButtonPropsInternal>(
   }
 );
 
-export const SSButtonPrimary: React.FC<ButtonProps> = (props) => (
-  <SSButton {...props} Button={PrimaryButton} />
+export const ButtonPrimary: React.FC<ButtonProps> = (props) => (
+  <Button {...props} Button={PrimaryButton} />
 );
 
-export const SSButtonDanger: React.FC<ButtonProps> = (props) => (
-  <SSButton {...props} Button={DangerButton} />
+export const ButtonDanger: React.FC<ButtonProps> = (props) => (
+  <Button {...props} Button={DangerButton} />
 );
 
-export const SSButtonSecondary = forwardRef<HTMLButtonElement, ButtonProps>(
-  (props, ref) => <SSButton {...props} Button={SecondaryButton} ref={ref} />
+export const ButtonSecondary = forwardRef<HTMLButtonElement, ButtonProps>(
+  (props, ref) => <Button {...props} Button={SecondaryButton} ref={ref} />
 );
 
 export type GhostButtonProps = ButtonProps & { noPadding?: boolean };
 
-export const SSButtonGhost = forwardRef<HTMLButtonElement, GhostButtonProps>(
+export const ButtonGhost = forwardRef<HTMLButtonElement, GhostButtonProps>(
   (props, ref) => (
-    <SSButton
+    <Button
       {...props}
       Button={GhostButton}
       isGhost={true}
@@ -243,8 +243,8 @@ export const SSButtonGhost = forwardRef<HTMLButtonElement, GhostButtonProps>(
     />
   )
 );
-export const SSButtonGhostColor: React.FC<GhostButtonProps> = (props) => (
-  <SSButton
+export const ButtonGhostColor: React.FC<GhostButtonProps> = (props) => (
+  <Button
     {...props}
     Button={GhostColorButton}
     isGhost={true}
@@ -252,7 +252,7 @@ export const SSButtonGhostColor: React.FC<GhostButtonProps> = (props) => (
   />
 );
 
-const IconButtonPrimaryStyled = styled(SSButton)`
+const IconButtonPrimaryStyled = styled(Button)`
   min-width: 0;
   border-radius: 50%;
 `;

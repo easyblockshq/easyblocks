@@ -1,7 +1,7 @@
 import {
-  SSColors,
-  SSFonts,
-  SSModal,
+  Colors,
+  Fonts,
+  Modal,
   ThumbnailButton,
 } from "@easyblocks/design-system";
 import React, { useState } from "react";
@@ -25,7 +25,7 @@ const GridRoot = styled.div`
 `;
 
 const CardTitle = styled.div`
-  ${SSFonts.body};
+  ${Fonts.body};
   word-break: break-word;
 `;
 
@@ -46,7 +46,7 @@ const Cover = styled.div`
 
 const Card = styled.div`
   &:hover {
-    outline: 1px solid ${SSColors.black40};
+    outline: 1px solid ${Colors.black40};
   }
   outline-offset: 4px;
   cursor: pointer;
@@ -160,7 +160,7 @@ export const MediaPicker: React.FC<{
         }
       />
 
-      <SSModal
+      <Modal
         title="Media"
         isOpen={isOpen}
         onRequestClose={() => {
@@ -181,7 +181,7 @@ export const MediaPicker: React.FC<{
             mediaType={mediaType}
           />
         </ModalRoot>
-      </SSModal>
+      </Modal>
     </div>
   );
 };

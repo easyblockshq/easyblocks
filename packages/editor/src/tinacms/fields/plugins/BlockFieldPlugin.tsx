@@ -17,10 +17,10 @@ import {
   isExternalSchemaProp,
 } from "@easyblocks/core/_internals";
 import {
-  SSButtonGhost,
-  SSColors,
-  SSFonts,
-  SSIcons,
+  ButtonGhost,
+  Colors,
+  Fonts,
+  Icons,
   ThumbnailButton,
   ThumbnailType,
   Typography,
@@ -115,7 +115,7 @@ const BlockField = ({ field, input, isLabelHidden }: BlockFieldProps) => {
             </div>
             {!field.schemaProp.required && (
               <div style={{ flex: "0 0 auto", minWidth: 0 }}>
-                <SSButtonGhost
+                <ButtonGhost
                   onClick={() => {
                     if (
                       editorContext.focussedField.some(isConfigPathRichTextPart)
@@ -125,7 +125,7 @@ const BlockField = ({ field, input, isLabelHidden }: BlockFieldProps) => {
                       actions.removeItems(paths);
                     }
                   }}
-                  icon={SSIcons.Remove}
+                  icon={Icons.Remove}
                   aria-label="Remove"
                 />
               </div>
@@ -170,7 +170,7 @@ interface AddButtonProps {
 
 function AddButton({ onAdd }: AddButtonProps) {
   return (
-    <SSButtonGhost
+    <ButtonGhost
       css={css`
         width: 100%;
         padding-left: 0;
@@ -194,15 +194,15 @@ function AddButton({ onAdd }: AddButtonProps) {
             width: 32px;
             height: 32px;
             margin-left: -1px;
-            border: 1px dashed ${SSColors.black20};
+            border: 1px dashed ${Colors.black20};
             border-radius: 2px;
           `}
         >
-          <SSIcons.Add size={16} />
+          <Icons.Add size={16} />
         </div>
         Add
       </div>
-    </SSButtonGhost>
+    </ButtonGhost>
   );
 }
 
@@ -314,7 +314,7 @@ function getSidebarPreview(
 }
 
 const Error = styled.div`
-  ${SSFonts.body}
+  ${Fonts.body}
   padding: 7px 6px 7px;
   color: hsl(0deg 0% 50% / 0.8);
   white-space: normal;
