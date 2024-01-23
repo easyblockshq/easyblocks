@@ -46,11 +46,9 @@ function HomePage({
 
   return (
     <Root>
-      <div className="mb-5 font-sans text-2xl font-semibold">
-        Hello {user.email}!
-      </div>
+      <div className="mb-5 text-2xl font-semibold">Hello {user.email}!</div>
 
-      <p className="max-w-lg text-sm text-slate-500">
+      <p className="max-w-lg text-sm text-slate-500 ">
         Welcome to Easyblocks. In this panel you can manage your projects, each
         project is a storage and version control for your documents. Easyblocks
         is open-source so you can build your own backend if you want, however,
@@ -58,7 +56,7 @@ function HomePage({
       </p>
 
       <div className="mt-12 mb-6 flex flex-row gap-2 items-center justify-between">
-        <div className=" font-sans text-2xl font-semibold">Your projects</div>
+        <div className="text-2xl font-semibold">Your projects</div>
 
         <AlertDialog.Root>
           <AlertDialog.Trigger>

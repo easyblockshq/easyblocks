@@ -4,6 +4,7 @@
 
 body {
   -webkit-font-smoothing: antialiased;
+  font-family: "Inter", sans-serif;
 }
 
 @font-face {
