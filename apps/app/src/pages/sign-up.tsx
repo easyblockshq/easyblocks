@@ -1,13 +1,16 @@
-import { SSColors, Stack } from "@easyblocks/design-system";
-import { Button, TextFieldInput } from "@radix-ui/themes";
+import { Button, TextFieldInput, Link } from "@radix-ui/themes";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import Link from "next/link";
 import { Fragment, useState } from "react";
-import styled from "styled-components";
 import { AuthPageLayout } from "../lib/AuthPageLayout";
 import { GoogleSignInButton } from "../lib/GoogleSignInButton";
-import { GmailIcon, OutlookIcon } from "../lib/icons";
 import { useAuthFormStatus } from "../lib/useAuthFormStatus";
+import {
+  EmailAddressField,
+  FormContainer,
+  FormError,
+  OrSeparator,
+  PasswordField,
+} from "@/components/LoginComponents";
 
 function SignUpPage() {
   const supabaseClient = createClientComponentClient();
@@ -15,8 +18,14 @@ function SignUpPage() {
   const [email, setEmail] = useState("");
 
   return (
-    <AuthPageLayout>
-      <Form
+    <AuthPageLayout
+      title={
+        formStatus.status === "success"
+          ? "Check your inbox"
+          : "Sign up to Easyblocks"
+      }
+    >
+      <form
         onSubmit={(event) => {
           event.preventDefault();
 
@@ -57,9 +66,7 @@ function SignUpPage() {
       >
         {formStatus.status !== "success" && (
           <Fragment>
-            <FormTitle>Create your Easyblocks account</FormTitle>
-
-            <FormBody>
+            <FormContainer>
               <GoogleSignInButton
                 supabaseClient={supabaseClient}
                 onSignInError={(error) => {
@@ -70,7 +77,7 @@ function SignUpPage() {
                 }}
               />
 
-              <SocialAndEmailProvidersSeparator />
+              <OrSeparator />
 
               <EmailAddressField />
 
@@ -79,9 +86,7 @@ function SignUpPage() {
               {formStatus.status === "error" && (
                 <FormError error={formStatus.error.message} />
               )}
-            </FormBody>
 
-            <Stack gap={24}>
               <Button
                 size="3"
                 type="submit"
@@ -89,209 +94,41 @@ function SignUpPage() {
               >
                 Create account
               </Button>
+            </FormContainer>
 
-              <div
-                css={`
-                  font-size: 12px;
-                  line-height: 1.4;
-                  color: #999999;
-                  text-align: center;
-
-                  & a {
-                    color: #333333;
-                    text-underline: none;
-
-                    &:visited {
-                      color: #333333;
-                    }
-                  }
-                `}
+            <div className="text-xs text-center mt-2">
+              By joining, you agree to our{" "}
+              <Link
+                href="https://www.shopstory.app/terms-of-service"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                By joining, you agree to our{" "}
-                <a
-                  href="https://www.shopstory.app/terms-of-service"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Terms of Service
-                </a>{" "}
-                and{" "}
-                <a
-                  href="https://www.shopstory.app/privacy-policy"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Privacy Policy
-                </a>
-              </div>
-            </Stack>
+                Terms of Service
+              </Link>{" "}
+              and{" "}
+              <Link
+                href="https://www.shopstory.app/privacy-policy"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Privacy Policy
+              </Link>
+            </div>
 
-            <FormSecondaryActions>
-              <div>
-                Already have an account?{" "}
-                <FormLink href="/sign-in">Login</FormLink>
-              </div>
-            </FormSecondaryActions>
+            <div className="text-center mt-5">
+              Already have an account? <Link href="/sign-in">Log in</Link>
+            </div>
           </Fragment>
         )}
 
         {formStatus.status === "success" && (
-          <Fragment>
-            <Stack gap={24}>
-              <FormTitle>Check your inbox</FormTitle>
-
-              <div
-                css={`
-                  text-align: center;
-                `}
-              >
-                Click on the link we sent to{" "}
-                <span
-                  css={`
-                    font-weight: 700;
-                  `}
-                >
-                  {email}
-                </span>{" "}
-                to finish your account setup.
-              </div>
-            </Stack>
-
-            <Stack gap={24}>
-              <Button
-                variant="outline"
-                size="3"
-                type="button"
-                style={{ width: "100%" }}
-                asChild
-              >
-                <a
-                  href="https://mail.google.com/mail/u/0/"
-                  target="_blank"
-                  rel="noopener nofollow noreferrer"
-                >
-                  <GmailIcon />
-                  Open Gmail
-                </a>
-              </Button>
-
-              <Button
-                variant="outline"
-                size="3"
-                type="button"
-                style={{ width: "100%" }}
-                asChild
-              >
-                <a
-                  href="https://outlook.live.com/mail/0/inbox"
-                  target="_blank"
-                  rel="noopener nofollow noreferrer"
-                >
-                  <OutlookIcon />
-                  Open Outlook
-                </a>
-              </Button>
-            </Stack>
-
-            <div>Can&apos;t find your email? Check your spam folder!</div>
-          </Fragment>
+          <div className="text-md text-center mb-8">
+            Click on the link we sent to to finish your account setup.
+          </div>
         )}
-      </Form>
+      </form>
     </AuthPageLayout>
   );
 }
 
 export default SignUpPage;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 44px;
-`;
-
-const FormTitle = styled.h2`
-  font-size: 24px;
-  line-height: 1.16;
-  color: #000;
-  text-align: center;
-`;
-
-const FormBody = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-`;
-
-const FormSecondaryActions = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-`;
-
-const FormLink = styled(Link)`
-  color: #0b75f0;
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
-  }
-
-  &:visited {
-    color: #0b75f0;
-  }
-`;
-
-function EmailAddressField() {
-  return (
-    <TextFieldInput
-      size="3"
-      name="email"
-      autoComplete="email"
-      placeholder="Email"
-      aria-label="Email"
-    />
-  );
-}
-
-function PasswordField(props: {
-  autoComplete: "current-password" | "new-password";
-}) {
-  return (
-    <TextFieldInput
-      size="3"
-      name="password"
-      autoComplete={props.autoComplete}
-      type="password"
-      placeholder="Password"
-      aria-label="Password"
-    />
-  );
-}
-
-function FormError(props: { error: string }) {
-  return (
-    <div
-      css={`
-        color: ${SSColors.red};
-      `}
-    >
-      {props.error}
-    </div>
-  );
-}
-
-function SocialAndEmailProvidersSeparator() {
-  return (
-    <div
-      css={`
-        font-size: 16;
-        line-height: 1.16;
-        text-align: center;
-        color: #999;
-      `}
-    >
-      or
-    </div>
-  );
-}

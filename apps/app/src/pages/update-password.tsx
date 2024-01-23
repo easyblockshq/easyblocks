@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import styled from "styled-components";
 import { AuthPageLayout } from "../lib/AuthPageLayout";
 import { useAuthFormStatus } from "../lib/useAuthFormStatus";
+import { FormContainer, PasswordField } from "@/components/LoginComponents";
 
 function PasswordUpdatePage({
   email,
@@ -15,7 +16,7 @@ function PasswordUpdatePage({
   const router = useRouter();
 
   return (
-    <AuthPageLayout>
+    <AuthPageLayout title="Enter new password">
       <Form
         onSubmit={(event) => {
           event.preventDefault();
@@ -50,9 +51,7 @@ function PasswordUpdatePage({
             });
         }}
       >
-        <FormTitle>Enter your new password</FormTitle>
-
-        <Flex direction={"column"} gap="6">
+        <FormContainer>
           <input
             type="text"
             name="email"
@@ -62,22 +61,16 @@ function PasswordUpdatePage({
             readOnly
           />
 
-          <TextFieldInput
-            name="password"
-            autoComplete="new-password"
-            type="password"
-            placeholder="Password"
-            aria-label="Password"
-          />
+          <PasswordField autoComplete="new-password" />
 
           {formStatus.status === "error" && (
             <FormError error={formStatus.error.message} />
           )}
-        </Flex>
 
-        <Button variant="solid" size="3" type="submit">
-          Change password
-        </Button>
+          <Button variant="solid" size="3" type="submit">
+            Change password
+          </Button>
+        </FormContainer>
       </Form>
     </AuthPageLayout>
   );
