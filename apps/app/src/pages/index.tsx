@@ -20,7 +20,6 @@ import {
 } from "@supabase/auth-helpers-nextjs";
 import { AuthSession } from "@supabase/supabase-js";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import NextLink from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Database } from "../infrastructure/supabaseSchema";
@@ -48,14 +47,14 @@ function HomePage({
   return (
     <Root>
       <div className="mb-5 font-sans text-2xl font-semibold">
-        Hello {user.email}
+        Hello {user.email}!
       </div>
 
       <p className="max-w-lg text-sm text-slate-500">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat.
+        Welcome to Easyblocks. In this panel you can manage your projects, each
+        project is a storage and version control for your documents. Easyblocks
+        is open-source so you can build your own backend if you want, however,
+        it's the simplest way to start. Enjoy!
       </p>
 
       <div className="mt-12 mb-6 flex flex-row gap-2 items-center justify-between">
