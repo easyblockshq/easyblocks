@@ -1,12 +1,18 @@
-import { FileTextIcon, LockClosedIcon } from "@radix-ui/react-icons";
 import {
+  FileTextIcon,
+  LockClosedIcon,
+  PlusIcon,
+  ExitIcon,
+} from "@radix-ui/react-icons";
+import {
+  AlertDialog,
+  Box,
   Button,
-  Card,
-  Container,
   Flex,
   Grid,
   Heading,
   Text,
+  Link,
 } from "@radix-ui/themes";
 import {
   createClientComponentClient,
@@ -16,14 +22,16 @@ import { AuthSession } from "@supabase/supabase-js";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import NextLink from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Database } from "../infrastructure/supabaseSchema";
+import { Container } from "@/components/Container";
+import { ProjectCard } from "@/components/Card";
+import { Root } from "@/components/Root";
 
 function HomePage({
   user,
   projects,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const supabaseClient = createClientComponentClient();
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -38,65 +46,62 @@ function HomePage({
   }, [code, router]);
 
   return (
-    <Container>
-      <Flex justify="between" align="center" mb="5">
-        <Heading as="h1" size="8">
-          Hi {user.email}
-        </Heading>
-        <Button
-          variant="ghost"
-          onClick={() => {
-            supabaseClient.auth.signOut().then(() => {
-              router.push("/sign-in");
-            });
-          }}
-        >
-          Logout
-        </Button>
-      </Flex>
-      <Heading as="h2" size="5" mb={"3"}>
-        Your projects
-      </Heading>
-      <Grid columns={"3"} gap="3">
-        {projects.map((p) => {
-          return (
-            <Card key={p.id} size="2" asChild>
-              <NextLink href={`/projects/${p.id}`}>
-                <Heading as="h3" size="4" mb="2">
-                  {p.name}
-                </Heading>
-                <Flex gap="2">
-                  <Text size="2" color="gray">
-                    <Flex align={"center"} gap="1">
-                      <FileTextIcon />
-                      {p.documentsCount} document
-                      {p.documentsCount > 1 || p.documentsCount === 0
-                        ? "s"
-                        : ""}
-                    </Flex>
-                  </Text>
-                  <Text size="2" color="gray">
-                    <Flex align={"center"} gap="1">
-                      <LockClosedIcon />
-                      {p.tokensCount} token
-                      {p.tokensCount > 1 || p.tokensCount === 0 ? "s" : ""}
-                    </Flex>
-                  </Text>
-                </Flex>
-              </NextLink>
-            </Card>
-          );
-        })}
-        <Card size="2">
-          <Flex justify={"center"} align={"center"} height={"100%"}>
-            <Text align={"center"}>
-              To add more projects, <br />
-              please contact us.
-            </Text>
-          </Flex>
-        </Card>
-      </Grid>
-    </Container>
+    <Root>
+      <div className="mb-5 font-sans text-2xl font-semibold">
+        Hello {user.email}
+      </div>
+
+      <p className="max-w-lg text-sm text-slate-500">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+        commodo consequat.
+      </p>
+
+      <div className="mt-12 mb-6 flex flex-row gap-2 items-center justify-between">
+        <div className=" font-sans text-2xl font-semibold">Your projects</div>
+
+        <AlertDialog.Root>
+          <AlertDialog.Trigger>
+            <Button size={"2"} onClick={() => {}}>
+              <PlusIcon />
+              New project
+            </Button>
+          </AlertDialog.Trigger>
+
+          <AlertDialog.Content style={{ maxWidth: 450 }}>
+            <AlertDialog.Title>Upsss, sorry!</AlertDialog.Title>
+            <AlertDialog.Description size="2">
+              This is an early version of Easyblocks panel and adding new
+              projects is not yet supported. If you want more projects, contact
+              us via email, we'll handle it:{" "}
+              <Link href="mailto:andrzej@easyblocks.io">
+                andrzej@easyblocks.io
+              </Link>
+            </AlertDialog.Description>
+
+            <Flex gap="3" mt="4" justify="end">
+              <AlertDialog.Cancel>
+                <Button variant="soft" color="gray">
+                  Cancel
+                </Button>
+              </AlertDialog.Cancel>
+            </Flex>
+          </AlertDialog.Content>
+        </AlertDialog.Root>
+      </div>
+
+      <div className="grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+        {projects.map((p) => (
+          <ProjectCard
+            link={`/projects/${p.id}`}
+            title={p.name}
+            documentsCount={p.documentsCount}
+            key={p.id}
+          />
+        ))}
+      </div>
+    </Root>
   );
 }
 

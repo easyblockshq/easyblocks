@@ -35,7 +35,8 @@ const handler: AuthenticatedNextApiHandler = async (req, res, accessToken) => {
     const newToken = TokenService.getAccessToken(projectId);
 
     await projectsRepository.update(projectId, {
-      tokens: [...project.tokens, newToken],
+      // tokens: [...project.tokens, newToken],
+      tokens: [newToken], // regenerate!
     });
 
     return res.json({ token: newToken });

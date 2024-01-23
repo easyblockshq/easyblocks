@@ -1,8 +1,11 @@
+import { Root } from "@/components/Root";
 import { Database } from "@/infrastructure/supabaseSchema";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   CopyIcon,
+  ArrowLeftIcon,
+  ReloadIcon,
 } from "@radix-ui/react-icons";
 import {
   Button,
@@ -18,6 +21,7 @@ import {
   TableRow,
   TableRowHeaderCell,
   Text,
+  Tooltip,
 } from "@radix-ui/themes";
 import { createPagesServerClient } from "@supabase/auth-helpers-nextjs";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
@@ -39,63 +43,41 @@ function ProjectPage({
   const maxPageNumber = Math.floor(project.documents.length / pageSize);
 
   return (
-    <Container>
-      <Flex gap="2" align="baseline" mb="2">
-        <Heading as="h1">{project.name}&nbsp;</Heading>
-        <Button variant="ghost" asChild>
-          <Link href="/">Back</Link>
+    <Root>
+      <div className="mb-5 flex flex-col items-start gap-1">
+        <Button variant="ghost">
+          <ArrowLeftIcon />
+          <Link href="/">All Projects</Link>
         </Button>
-      </Flex>
-      <Flex gap="2" align="center" mb="6">
-        <Text size="1" color="gray">
-          {project.id}&nbsp;
-        </Text>
-        <CopyTextToClipboardButton text={project.id} />
-      </Flex>
+        <div className="font-sans text-2xl font-semibold">{project.name}</div>
+      </div>
+
+      <div className="max-w-lg text-sm flex flex-col gap-2">
+        <div className="flex flex-row">
+          <div className="basis-32 text-black">Identifier</div>
+          <div className="text-slate-500">{project.id}</div>
+        </div>
+
+        <div className="flex flex-row">
+          <div className="basis-32 text-black">Access Token</div>
+          <div className="text-slate-500 flex flex-row justify-start items-center gap-2">
+            {maskToken(project.tokens[0])}
+            <CopyTextToClipboardButton text={project.tokens[0]} />
+            <RegenerateTokenButton projectId={project.id} />
+          </div>
+        </div>
+      </div>
+
+      <div className="font-sans text-2xl font-semibold mt-14 mb-5">
+        Documents
+      </div>
 
       <Flex
         direction={"column"}
         align={"start"}
         mb="8"
-        style={{ maxWidth: 768, width: "100%" }}
+        // style={{ maxWidth: 768, width: "100%" }}
       >
-        <Heading as="h2" mb="1">
-          Tokens
-        </Heading>
-        <TableRoot style={{ width: "100%" }} mb="3">
-          <TableHeader>
-            <TableRow>
-              <TableRowHeaderCell>Key</TableRowHeaderCell>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {project.tokens.map((token) => {
-              return (
-                <TableRow key={token}>
-                  <TableCell>
-                    <Flex gap="2" align={"center"}>
-                      {maskToken(token)}
-                      <CopyTextToClipboardButton text={token} />
-                    </Flex>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </TableRoot>
-        <GenerateAccessTokenButton projectId={project.id} />
-      </Flex>
-
-      <Flex
-        direction={"column"}
-        align={"start"}
-        mb="8"
-        style={{ maxWidth: 768, width: "100%" }}
-      >
-        <Heading as="h2" mb="2">
-          Documents
-        </Heading>
-
         <TableRoot style={{ width: "100%" }} mb="3">
           <TableHeader>
             <TableRow>
@@ -193,7 +175,7 @@ function ProjectPage({
           </IconButton>
         </Flex>
       </Flex>
-    </Container>
+    </Root>
   );
 }
 
@@ -326,5 +308,29 @@ function GenerateAccessTokenButton({ projectId }: { projectId: string }) {
     >
       Generate new access token
     </Button>
+  );
+}
+
+function RegenerateTokenButton({ projectId }: { projectId: string }) {
+  const router = useRouter();
+
+  return (
+    <Tooltip content="Regenerate token">
+      <IconButton
+        variant="ghost"
+        onClick={() => {
+          fetch(`/api/projects/${projectId}/tokens`, {
+            method: "POST",
+          }).then((res) => {
+            if (res.ok) {
+              router.reload();
+            }
+          });
+        }}
+        aria-label="Regenerate token"
+      >
+        <ReloadIcon />
+      </IconButton>
+    </Tooltip>
   );
 }
