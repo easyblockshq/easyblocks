@@ -329,8 +329,7 @@ importers:
         specifier: 5.1.6
         version: 5.1.6
 
-<<<<<<< HEAD
-=======
+
   packages/app-utils:
     dependencies:
       '@easyblocks/core':
@@ -359,7 +358,6 @@ importers:
         specifier: ^18.2.20
         version: 18.2.42
 
->>>>>>> a2ff214 (Backend styling)
   packages/build-tools: {}
 
   packages/core:
