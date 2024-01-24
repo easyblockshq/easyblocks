@@ -935,7 +935,9 @@ function compileSubcomponents(
             compilationContext
           );
           if (!resolvedValue) {
-            throw new Error("can't resolve localised value");
+            throw new Error(
+              `Can't resolve localised value for prop "${schemaProp.prop}" of component ${editableElement._template}`
+            );
           }
           value = resolvedValue.value as any[];
         }
@@ -1122,79 +1124,6 @@ function resolveLocalisedValue<T>(
     value: localisedValue[fallbackLocale],
     locale: fallbackLocale,
   };
-}
-
-function compileTextModifier(
-  modifierValue: ComponentConfig,
-  textParts: Array<ComponentConfig>,
-  compilationContext: CompilationContextType,
-  configPrefix: string | undefined,
-  cache: CompilationCache
-): CompiledTextModifier {
-  const modifierDefinition = findComponentDefinitionById(
-    modifierValue._template,
-    compilationContext
-  );
-
-  if (!modifierDefinition) {
-    return {
-      _template: "$MissingTextModifier",
-      _id: uniqueId(),
-      elements: [],
-    };
-  }
-
-  const compiledModifierValues = compileComponentValues(
-    modifierValue,
-    modifierDefinition,
-    compilationContext,
-    cache
-  );
-
-  const textPartDefinition = findComponentDefinitionById(
-    "@easyblocks/rich-text-part",
-    compilationContext
-  );
-
-  if (!textPartDefinition) {
-    throw new Error(
-      `[compile] Couldn't find a modifier definition for "@easyblocks/rich-text-part". `
-    );
-  }
-
-  const compiledTextPartsValues = textParts.map((textPartConfig) => {
-    return compileComponentValues(
-      textPartConfig,
-      textPartDefinition,
-      compilationContext,
-      cache
-    );
-  });
-
-  const compiledModifier: CompiledTextModifier = {
-    _template: modifierValue._template,
-    _id: modifierValue._id!,
-    ...compiledModifierValues,
-    elements: compiledTextPartsValues,
-  };
-
-  if (compilationContext.isEditing) {
-    const editorContext = compilationContext as EditorContextType;
-
-    const editingInfo = buildDefaultEditingInfo(
-      modifierDefinition,
-      configPrefix!,
-      editorContext,
-      compiledModifierValues,
-      modifierValue._template
-    );
-
-    compiledModifier.__editing = {
-      fields: editingInfo.fields,
-    };
-  }
-
-  return compiledModifier;
 }
 
 function buildDefaultEditingInfo(

@@ -1057,10 +1057,25 @@ function normalizeTokenValue<T>(
   const input = x ?? defaultValue;
   const widgetId = input.widgetId ?? defaultWidgetId;
 
-  if ("tokenId" in input && typeof input.tokenId === "string") {
+  // if (typeof input !== "object" && "value" in defaultValue) {
+  //   const normalizedVal = scalarValueNormalize(defaultValue.value);
+
+  //   if (normalizedVal !== undefined) {
+  //     return {
+  //       value: normalizedVal,
+  //       widgetId,
+  //     };
+  //   }
+
+  //   return;
+  // }
+
+  const hasTokenId = "tokenId" in input && typeof input.tokenId === "string";
+
+  if (hasTokenId) {
     const val = themeValues[input.tokenId];
 
-    if (val) {
+    if (val !== undefined) {
       return {
         value: val.value,
         tokenId: input.tokenId,
@@ -1072,8 +1087,9 @@ function normalizeTokenValue<T>(
   if ("value" in input) {
     const normalizedVal = scalarValueNormalize(input.value);
 
-    if (normalizedVal) {
+    if (normalizedVal !== undefined) {
       return {
+        tokenId: hasTokenId ? input.tokenId : undefined,
         value: normalizedVal,
         widgetId,
       };
@@ -1109,7 +1125,7 @@ function externalNormalize(
 ) => ExternalReference | undefined {
   return (x, compilationContext) => {
     if (typeof x === "object" && x !== null) {
-      if (x.id !== null) {
+      if ("id" in x && x.id !== null) {
         const normalized: ExternalReferenceNonEmpty = {
           id: x.id,
           widgetId: x.widgetId,

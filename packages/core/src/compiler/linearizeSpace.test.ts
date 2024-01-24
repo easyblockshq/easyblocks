@@ -1,5 +1,6 @@
 import { EasyblocksBackend } from "../EasyblocksBackend";
 import { parseSpacing } from "../spacingToPx";
+import { testDevices } from "../testUtils";
 import {
   RefValue,
   ResponsiveValue,
@@ -14,10 +15,19 @@ import { CompilationContextType } from "./types";
 const testCompilationContext = createCompilationContext(
   {
     backend: new EasyblocksBackend({ accessToken: "" }),
+    components: [
+      {
+        id: "TestComponent",
+        schema: [],
+      },
+    ],
+    locales: [{ code: "en", isDefault: true }],
   },
   { locale: "en" },
-  "content"
+  "TestComponent"
 );
+
+testCompilationContext.devices = testDevices;
 
 const devicesWidths = getDevicesWidths(testCompilationContext.devices);
 
@@ -516,8 +526,16 @@ describe("custom widths (reversed)", () => {
 
 describe("snapping", () => {
   test("snapping to token works, rounding up", () => {
-    const b1Val = { ref: "xxx", value: "10px" };
-    const b5Val = { ref: "yyy", value: "50px" };
+    const b1Val = {
+      tokenId: "xxx",
+      value: "10px",
+      widgetId: "@easyblocks/space",
+    };
+    const b5Val = {
+      tokenId: "yyy",
+      value: "50px",
+      widgetId: "@easyblocks/space",
+    };
 
     const result: any = linearizeSpace(
       { b1: b1Val, b5: b5Val, $res: true },
@@ -527,9 +545,9 @@ describe("snapping", () => {
 
     expect(result).toEqual({
       b1: b1Val,
-      b2: { ref: "24", value: "24px" },
-      b3: { ref: "32", value: "32px" },
-      b4: { ref: "48", value: "48px" },
+      b2: { tokenId: "24", value: "24px", widgetId: "@easyblocks/space" },
+      b3: { tokenId: "32", value: "32px", widgetId: "@easyblocks/space" },
+      b4: { tokenId: "48", value: "48px", widgetId: "@easyblocks/space" },
       b5: b5Val,
       $res: true,
     });
@@ -559,7 +577,7 @@ describe("snapping", () => {
   });
 
   test("0 should be always 0", () => {
-    const b3Val = { ref: "yyy", value: "0px" };
+    const b3Val = { tokenId: "yyy", value: "0px" };
 
     const result: any = linearizeSpace(
       { b3: b3Val, $res: true },

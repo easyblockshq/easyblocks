@@ -264,7 +264,6 @@ function RichTextEditor(props: RichTextProps) {
 
         const updateSelectionResult = updateSelection(
           temporaryEditor,
-          editorContext,
           payload.prop,
           ...payload.values
         );

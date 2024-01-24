@@ -1,7 +1,6 @@
 import { nonNullable } from "@easyblocks/utils";
 import { BaseRange, Editor, Node, Range, Text, Transforms } from "slate";
 import { SetNonNullable } from "type-fest";
-import { EditorContextType } from "../../types";
 import { RichTextComponentConfig } from "./$richText";
 import { BlockElement } from "./$richText.types";
 import { RichTextPartComponentConfig } from "./$richTextPart/$richTextPart";
@@ -21,7 +20,6 @@ function updateSelection<
   >
 >(
   editor: Editor,
-  editorContext: EditorContextType,
   key: T,
   ...values: Array<RichTextPartComponentConfig[T]>
 ):

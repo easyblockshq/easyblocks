@@ -2,8 +2,8 @@ import { dotNotationGet, nonNullable, range } from "@easyblocks/utils";
 import { Locale, getFallbackLocaleForLocale } from "../../../locales";
 import {
   NoCodeComponentDefinition,
-  RefValue,
   ResponsiveValue,
+  TokenValue,
 } from "../../../types";
 import { configFindAllPaths } from "../../configFindAllPaths";
 import { EditableComponentToComponentConfig } from "../../types";
@@ -260,8 +260,8 @@ type RichTextComponentConfig = EditableComponentToComponentConfig<
   accessibilityRole: RichTextAccessibilityRole;
   isListStyleAuto: boolean;
   elements: Record<Locale["code"], Array<RichTextBlockElementComponentConfig>>;
-  mainFont: ResponsiveValue<Record<string, any>>;
-  mainColor: ResponsiveValue<RefValue<ResponsiveValue<string>>>;
+  mainFont: ResponsiveValue<TokenValue<Record<string, any>>>;
+  mainColor: ResponsiveValue<TokenValue<ResponsiveValue<string>>>;
 };
 
 export { richTextEditableComponent };

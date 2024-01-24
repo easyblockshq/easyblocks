@@ -1,6 +1,6 @@
 import { uniqueId } from "@easyblocks/utils";
+import { SetOptional } from "type-fest";
 import type { TokenValue } from "../../../types";
-import type { CompilationContextType } from "../../types";
 import type { RichTextComponentConfig } from "./$richText";
 import type {
   RichTextBlockElementComponentConfig,
@@ -36,7 +36,6 @@ function buildRichTextNoCodeEntry(options?: {
       fontFamily: "sans-serif",
       fontSize: "16px",
     },
-    widgetId: "@easyblocks/font",
   };
 
   if (font) {
@@ -71,7 +70,7 @@ function buildRichTextNoCodeEntry(options?: {
 
 function buildRichTextComponentConfig({
   accessibilityRole,
-  compilationContext,
+  locale,
   elements,
   isListStyleAuto,
   mainColor,
@@ -80,7 +79,7 @@ function buildRichTextComponentConfig({
   Partial<
     Pick<RichTextComponentConfig, "accessibilityRole" | "isListStyleAuto">
   > & {
-    compilationContext: CompilationContextType;
+    locale: string;
     elements: RichTextComponentConfig["elements"][string];
   }): RichTextComponentConfig {
   return {
@@ -88,7 +87,7 @@ function buildRichTextComponentConfig({
     _template: "@easyblocks/rich-text",
     accessibilityRole: accessibilityRole ?? "div",
     elements: {
-      [compilationContext.contextParams.locale]: elements,
+      [locale]: elements,
     },
     isListStyleAuto: isListStyleAuto ?? true,
     mainColor,
@@ -155,8 +154,11 @@ function buildRichTextPartComponentConfig({
   value,
   id,
   TextWrapper,
-}: Omit<RichTextPartComponentConfig, "$$$refs" | "_id" | "_template"> &
-  Partial<Identity>): RichTextPartComponentConfig {
+}: SetOptional<
+  Omit<RichTextPartComponentConfig, "$$$refs" | "_id" | "_template"> &
+    Partial<Identity>,
+  "TextWrapper"
+>): RichTextPartComponentConfig {
   return {
     _id: id ?? uniqueId(),
     _template: "@easyblocks/rich-text-part",

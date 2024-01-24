@@ -1,6 +1,7 @@
 import { Devices } from "@easyblocks/core";
 import { resop2 } from "./resop";
 import { InternalRenderableComponentDefinition } from "./types";
+import { ScalarOrCollection } from "../types";
 
 const devices: Devices = [
   {
@@ -45,13 +46,15 @@ describe("resop2", () => {
       },
       {
         prop: "schemaVal1",
-        type: "select$",
-        options: ["a", "b", "c", "d", "e", "f", "g", "h"],
+        type: "select",
+        responsive: true,
+        params: { options: ["a", "b", "c", "d", "e", "f", "g", "h"] },
       },
       {
         prop: "schemaVal2",
-        type: "select$",
-        options: ["a", "b", "c", "d", "e", "f", "g", "h"],
+        type: "select",
+        responsive: true,
+        params: { options: ["a", "b", "c", "d", "e", "f", "g", "h"] },
       },
       {
         prop: "schemaValSpace",
@@ -69,81 +72,96 @@ describe("resop2", () => {
         itemFields: [
           {
             prop: "schemaItemProp",
-            type: "select$",
-            options: ["a", "b", "c"],
+            type: "select",
+            responsive: true,
+            params: {
+              options: ["a", "b", "c"],
+            },
           },
         ],
       },
       {
         prop: "schemaCustomTypeProp",
-        type: "resource",
-        resourceType: "customType",
+        type: "customType",
       },
     ],
-    tags: [],
   };
 
   const callback: (val: { [key: string]: any }) => { [key: string]: any } = (
     vals
   ) => {
     return {
-      Box1: {
-        cssVal: `${vals.schemaVal1} ${vals.schemaVal2} ${vals.justArray.join(
-          ""
-        )}`,
-        ":hover": {
-          hoverCssVal: `${vals.schemaVal1}-${vals.schemaVal2}`,
+      styled: {
+        Box1: {
+          cssVal: `${vals.values.schemaVal1} ${
+            vals.values.schemaVal2
+          } ${vals.values.justArray.join("")}`,
+          ":hover": {
+            hoverCssVal: `${vals.values.schemaVal1}-${vals.values.schemaVal2}`,
+          },
+          justArray: vals.values.justArray,
+          justValue: "xxx",
+          spaceVal: vals.values.schemaValSpace * 3,
+          array: Array(vals.values.schemaValSpace).fill(
+            `${vals.values.schemaVal1} ${vals.values.schemaVal2}`
+          ),
         },
-        justArray: vals.justArray,
-        justValue: "xxx",
-        spaceVal: vals.schemaValSpace * 3,
-        array: Array(vals.schemaValSpace).fill(
-          `${vals.schemaVal1} ${vals.schemaVal2}`
-        ),
+        Box2: {
+          cssVal2: vals.values.schemaVal1.repeat(vals.values.justArray.length),
+        },
       },
-      Box2: {
-        cssVal2: vals.schemaVal1.repeat(vals.justArray.length),
-      },
-      Card: {
-        contextVal: `${vals.schemaVal1}-${vals.schemaVal2}`,
+      components: {
+        Card: {
+          contextVal: `${vals.values.schemaVal1}-${vals.values.schemaVal2}`,
+        },
       },
     };
   };
 
+  // This type only narrows result of `styles.styled` property
+  function scalar<T>(
+    value: ScalarOrCollection<T>
+  ): Exclude<ScalarOrCollection<T>, Array<T>> {
+    return value as Exclude<ScalarOrCollection<T>, Array<T>>;
+  }
+
   describe("when output data has all output values for all breakpoints", () => {
     const input = {
-      scalarVal: "test",
-      schemaVal1: {
-        b1: "a",
-        b2: "b",
-        b3: "b",
-        b4: "b",
-        b5: "b",
-        $res: true,
+      values: {
+        scalarVal: "test",
+        schemaVal1: {
+          b1: "a",
+          b2: "b",
+          b3: "b",
+          b4: "b",
+          b5: "b",
+          $res: true,
+        },
+        schemaVal2: {
+          b1: "a",
+          b2: "b",
+          b3: "c",
+          b4: "d",
+          b5: "e",
+          $res: true,
+        },
+        schemaValSpace: {
+          b1: 10,
+          b2: 20,
+          b3: 20,
+          b4: 20,
+          b5: 20,
+          $res: true,
+        },
+        justArray: ["a", "b", "c"],
       },
-      schemaVal2: {
-        b1: "a",
-        b2: "b",
-        b3: "c",
-        b4: "d",
-        b5: "e",
-        $res: true,
-      },
-      schemaValSpace: {
-        b1: 10,
-        b2: 20,
-        b3: 20,
-        b4: 20,
-        b5: 20,
-        $res: true,
-      },
-      justArray: ["a", "b", "c"],
+      params: {},
     };
 
     const result = resop2(input, callback, devices, testComponentDefinition);
 
     test("properly calculates values with all output values different", () => {
-      expect(result.Box1.cssVal).toEqual({
+      expect(scalar(result.styled.Box1).cssVal).toEqual({
         b1: "a a abc",
         b2: "b b abc",
         b3: "b c abc",
@@ -154,11 +172,11 @@ describe("resop2", () => {
     });
 
     test("identical values across breakpoints are not array, just a value", () => {
-      expect(result.Box1.justValue).toEqual("xxx");
+      expect(scalar(result.styled.Box1).justValue).toEqual("xxx");
     });
 
     test("nesting works", () => {
-      expect(result.Box1[":hover"].hoverCssVal).toEqual({
+      expect(result.styled.Box1[":hover"].hoverCssVal).toEqual({
         b1: "a-a",
         b2: "b-b",
         b3: "b-c",
@@ -169,15 +187,19 @@ describe("resop2", () => {
     });
 
     test("identical arrays across breakpoints keeps being an array (not array of arrays)", () => {
-      expect(result.Box1.justArray).toEqual(["a", "b", "c"]);
+      expect(scalar(result.styled.Box1).justArray).toEqual(["a", "b", "c"]);
     });
 
     test("properly calculates values with some of output values different (but not al - normalization!) ", () => {
-      expect(result.Box2.cssVal2).toEqual({ b1: "aaa", b2: "bbb", $res: true });
+      expect(scalar(result.styled.Box2).cssVal2).toEqual({
+        b1: "aaa",
+        b2: "bbb",
+        $res: true,
+      });
     });
 
     test("properly calculates props for non-Boxes", () => {
-      expect(result.Card.contextVal).toEqual({
+      expect(result.components.Card.contextVal).toEqual({
         b1: "a-a",
         b2: "b-b",
         b3: "b-c",
@@ -188,20 +210,27 @@ describe("resop2", () => {
     });
 
     test("properly calculates space values", () => {
-      expect(result.Box1.spaceVal).toEqual({ b1: 30, b2: 60, $res: true });
+      expect(scalar(result.styled.Box1).spaceVal).toEqual({
+        b1: 30,
+        b2: 60,
+        $res: true,
+      });
     });
   });
 
   const input2 = {
-    val1: {
-      b1: "a",
-      b2: "b",
-      b3: "c",
-      b4: "d",
-      b5: "d",
-      $res: true,
+    values: {
+      val1: {
+        b1: "a",
+        b2: "b",
+        b3: "c",
+        b4: "d",
+        b5: "d",
+        $res: true,
+      },
     },
-  } as const;
+    params: {},
+  };
 
   describe("when output is undefined for all breakpoints", () => {
     test("output value is undefined scalar", () => {
@@ -209,13 +238,15 @@ describe("resop2", () => {
         input2,
         (vals) => {
           return {
-            output: undefined,
+            styled: {
+              output: undefined as any,
+            },
           };
         },
         devices
       );
 
-      expect(result.output).toBe("unset");
+      expect(result.styled.output).toBe("unset");
     });
   });
 
@@ -225,13 +256,15 @@ describe("resop2", () => {
         input2,
         () => {
           return {
-            output: null,
+            styled: {
+              output: null as any,
+            },
           };
         },
         devices
       );
 
-      expect(result.output).toBe("unset");
+      expect(result.styled.output).toBe("unset");
     });
   });
 
@@ -240,25 +273,29 @@ describe("resop2", () => {
       const result = resop2(
         input2,
         (vals) => {
-          if (vals.val1 > "b") {
+          if (vals.values.val1 > "b") {
             return {
-              output1: "greater-than-b",
+              styled: {
+                output1: "greater-than-b",
+              } as any,
             };
           } else {
             return {
-              output2: "lower-than-b",
+              styled: {
+                output2: "lower-than-b" as any,
+              },
             };
           }
         },
         devices
       );
 
-      expect(result.output1).toEqual({
+      expect(result.styled.output1).toEqual({
         b2: "unset",
         b3: "greater-than-b",
         $res: true,
       });
-      expect(result.output2).toEqual({
+      expect(result.styled.output2).toEqual({
         b2: "lower-than-b",
         b3: "unset",
         $res: true,
@@ -272,13 +309,19 @@ describe("resop2", () => {
         input2,
         (vals) => {
           return {
-            output: vals.val1 > "b" ? 100 : undefined,
+            styled: {
+              output: vals.values.val1 > "b" ? 100 : (undefined as any),
+            },
           };
         },
         devices
       );
 
-      expect(result.output).toEqual({ b2: "unset", b3: 100, $res: true });
+      expect(result.styled.output).toEqual({
+        b2: "unset",
+        b3: 100,
+        $res: true,
+      });
     });
   });
 
@@ -287,19 +330,23 @@ describe("resop2", () => {
       const result = resop2(
         input2,
         (vals) => {
-          if (vals.val1 > "b") {
+          if (vals.values.val1 > "b") {
             return {
-              Nested: {
-                Output: {
-                  output1: "greater-than-b",
+              styled: {
+                Nested: {
+                  Output: {
+                    output1: "greater-than-b",
+                  },
                 },
               },
             };
           } else {
             return {
-              Nested: {
-                Output: {
-                  output2: "lower-than-b",
+              styled: {
+                Nested: {
+                  Output: {
+                    output2: "lower-than-b",
+                  },
                 },
               },
             };
@@ -308,12 +355,12 @@ describe("resop2", () => {
         devices
       );
 
-      expect(result.Nested.Output.output1).toEqual({
+      expect(scalar(result.styled.Nested).Output.output1).toEqual({
         b2: "unset",
         b3: "greater-than-b",
         $res: true,
       });
-      expect(result.Nested.Output.output2).toEqual({
+      expect(scalar(result.styled.Nested).Output.output2).toEqual({
         b2: "lower-than-b",
         b3: "unset",
         $res: true,
@@ -327,9 +374,11 @@ describe("resop2", () => {
         input2,
         (vals) => {
           return {
-            Nested: {
-              Output: {
-                output: vals.val1 > "b" ? 100 : undefined,
+            styled: {
+              Nested: {
+                Output: {
+                  output: vals.values.val1 > "b" ? 100 : undefined,
+                },
               },
             },
           };
@@ -337,7 +386,7 @@ describe("resop2", () => {
         devices
       );
 
-      expect(result.Nested.Output.output).toEqual({
+      expect(scalar(result.styled.Nested).Output.output).toEqual({
         b2: "unset",
         b3: 100,
         $res: true,
@@ -349,10 +398,12 @@ describe("resop2", () => {
     const result = resop2(
       input2,
       (vals) => {
-        if (vals.val1 > "b") {
+        if (vals.values.val1 > "b") {
           return {
-            Nested: {
-              output: vals.val1,
+            styled: {
+              Nested: {
+                output: vals.values.val1,
+              },
             },
           };
         }
@@ -363,7 +414,7 @@ describe("resop2", () => {
     );
 
     test("works", () => {
-      expect(result.Nested?.output).toMatchObject({
+      expect(scalar(result.styled.Nested).output).toMatchObject({
         $res: true,
         b2: "unset",
         b3: "c",
@@ -385,7 +436,6 @@ describe("resop2", () => {
           type: "font",
         },
       ],
-      tags: [],
     };
 
     const b1Font = {
@@ -403,24 +453,29 @@ describe("resop2", () => {
     };
 
     const input = {
-      val: "test",
-      fontVal: {
-        b1: b1Font,
-        b2: b4Font,
-        b3: b4Font,
-        b4: b4Font,
-        b5: b4Font,
-        $res: true,
+      values: {
+        val: "test",
+        fontVal: {
+          b1: b1Font,
+          b2: b4Font,
+          b3: b4Font,
+          b4: b4Font,
+          b5: b4Font,
+          $res: true,
+        },
       },
+      params: {},
     };
 
     const result = resop2(
       input,
       (vals) => {
         return {
-          Box1: {
-            xfont: vals.fontVal,
-            standard: vals.fontVal,
+          styled: {
+            Box1: {
+              xfont: vals.values.fontVal,
+              standard: vals.values.fontVal,
+            },
           },
         };
       },
@@ -428,7 +483,7 @@ describe("resop2", () => {
       ComponentWithFontDefinition
     );
 
-    expect(result.Box1.xfont).toMatchObject({
+    expect(scalar(result.styled.Box1).xfont).toMatchObject({
       $res: true,
       b1: {
         fontSize: 12,
@@ -444,7 +499,7 @@ describe("resop2", () => {
       },
     });
 
-    expect(result.Box1.standard).toMatchObject({
+    expect(scalar(result.styled.Box1).standard).toMatchObject({
       fontSize: {
         $res: true,
         b1: 12,
@@ -476,19 +531,22 @@ describe("resop2", () => {
 
     resop2(
       {
-        Card: [
-          {
-            _template: "$SomeCard",
-            someProp: responsiveValue,
-          },
-        ],
-        Cards: [
-          {
-            _template: "$SomeCard",
-            someProp: responsiveValue,
-            schemaItemProp: responsiveValue,
-          },
-        ],
+        values: {
+          Card: [
+            {
+              _template: "$SomeCard",
+              someProp: responsiveValue,
+            },
+          ],
+          Cards: [
+            {
+              _template: "$SomeCard",
+              someProp: responsiveValue,
+              schemaItemProp: responsiveValue,
+            },
+          ],
+        },
+        params: {},
       },
       callback,
       devices,
@@ -497,36 +555,46 @@ describe("resop2", () => {
 
     expect(callback).toBeCalledTimes(5);
 
-    expect(callback.mock.calls[0][0].Card[0].someProp).toEqual(responsiveValue);
-    expect(callback.mock.calls[0][0].Cards[0].someProp).toEqual(10);
-    expect(callback.mock.calls[0][0].Cards[0].schemaItemProp).toBe(10);
+    expect(callback.mock.calls[0][0].values.Card[0].someProp).toEqual(
+      responsiveValue
+    );
+    expect(callback.mock.calls[0][0].values.Cards[0].someProp).toEqual(10);
+    expect(callback.mock.calls[0][0].values.Cards[0].schemaItemProp).toBe(10);
 
-    expect(callback.mock.calls[1][0].Card[0].someProp).toEqual(responsiveValue);
-    expect(callback.mock.calls[1][0].Cards[0].someProp).toEqual(40);
-    expect(callback.mock.calls[1][0].Cards[0].schemaItemProp).toBe(40);
+    expect(callback.mock.calls[1][0].values.Card[0].someProp).toEqual(
+      responsiveValue
+    );
+    expect(callback.mock.calls[1][0].values.Cards[0].someProp).toEqual(40);
+    expect(callback.mock.calls[1][0].values.Cards[0].schemaItemProp).toBe(40);
 
-    expect(callback.mock.calls[2][0].Card[0].someProp).toEqual(responsiveValue);
-    expect(callback.mock.calls[2][0].Cards[0].someProp).toEqual(40);
-    expect(callback.mock.calls[2][0].Cards[0].schemaItemProp).toBe(40);
+    expect(callback.mock.calls[2][0].values.Card[0].someProp).toEqual(
+      responsiveValue
+    );
+    expect(callback.mock.calls[2][0].values.Cards[0].someProp).toEqual(40);
+    expect(callback.mock.calls[2][0].values.Cards[0].schemaItemProp).toBe(40);
 
-    expect(callback.mock.calls[3][0].Card[0].someProp).toEqual(responsiveValue);
-    expect(callback.mock.calls[3][0].Cards[0].someProp).toEqual(40);
-    expect(callback.mock.calls[3][0].Cards[0].schemaItemProp).toBe(40);
+    expect(callback.mock.calls[3][0].values.Card[0].someProp).toEqual(
+      responsiveValue
+    );
+    expect(callback.mock.calls[3][0].values.Cards[0].someProp).toEqual(40);
+    expect(callback.mock.calls[3][0].values.Cards[0].schemaItemProp).toBe(40);
 
-    expect(callback.mock.calls[4][0].Card[0].someProp).toEqual(responsiveValue);
-    expect(callback.mock.calls[4][0].Cards[0].someProp).toEqual(40);
-    expect(callback.mock.calls[4][0].Cards[0].schemaItemProp).toBe(40);
+    expect(callback.mock.calls[4][0].values.Card[0].someProp).toEqual(
+      responsiveValue
+    );
+    expect(callback.mock.calls[4][0].values.Cards[0].someProp).toEqual(40);
+    expect(callback.mock.calls[4][0].values.Cards[0].schemaItemProp).toBe(40);
   });
 
-  describe("__props, subcomponents", () => {
-    describe("__props", () => {
-      test("incorrect __props should throw", () => {
+  describe("props, subcomponents", () => {
+    describe("props", () => {
+      test("incorrect props should throw", () => {
         expect(() =>
           resop2(
             input2,
             () => {
               return {
-                __props: "xxx",
+                props: "xxx" as any,
               };
             },
             devices,
@@ -542,7 +610,7 @@ describe("resop2", () => {
           input2,
           () => {
             return {
-              __props: {
+              props: {
                 myProp: undefined,
               },
             };
@@ -551,7 +619,7 @@ describe("resop2", () => {
           testComponentDefinition
         );
 
-        expect(result.__props.myProp).toBeUndefined();
+        expect(result.props.myProp).toBeUndefined();
       });
 
       test("if prop is defined for some breakpoints and not for others, throw", () => {
@@ -560,7 +628,7 @@ describe("resop2", () => {
             input2,
             (values, breakpointIndex) => {
               return {
-                __props: {
+                props: {
                   myProp: breakpointIndex === "b1" ? undefined : "xxx",
                 },
               };
@@ -578,7 +646,7 @@ describe("resop2", () => {
           input2,
           (values, breakpointIndex) => {
             return {
-              __props: {
+              props: {
                 myProp: breakpointIndex === "b1" ? "yyy" : "xxx",
               },
             };
@@ -586,7 +654,7 @@ describe("resop2", () => {
           devices,
           testComponentDefinition
         );
-        expect(result.__props.myProp).toEqual({
+        expect(result.props.myProp).toEqual({
           $res: true,
           b1: "yyy",
           b2: "xxx",
@@ -601,7 +669,9 @@ describe("resop2", () => {
             input2,
             () => {
               return {
-                Card: "xxx",
+                components: {
+                  Card: "xxx" as any,
+                },
               };
             },
             devices,
@@ -617,8 +687,10 @@ describe("resop2", () => {
           input2,
           () => {
             return {
-              Card: {
-                myProp: undefined,
+              components: {
+                Card: {
+                  myProp: undefined,
+                },
               },
             };
           },
@@ -626,7 +698,7 @@ describe("resop2", () => {
           testComponentDefinition
         );
 
-        expect(result.Card.myProp).toBeUndefined();
+        expect(result.components.Card.myProp).toBeUndefined();
       });
 
       test("if component prop is defined for some breakpoints and not for others, throw", () => {
@@ -635,8 +707,10 @@ describe("resop2", () => {
             input2,
             (values, breakpointIndex) => {
               return {
-                Card: {
-                  myProp: breakpointIndex === "b1" ? undefined : "xxx",
+                components: {
+                  Card: {
+                    myProp: breakpointIndex === "b1" ? undefined : "xxx",
+                  },
                 },
               };
             },
@@ -653,15 +727,17 @@ describe("resop2", () => {
           input2,
           (values, breakpointIndex) => {
             return {
-              Card: {
-                myProp: breakpointIndex === "b1" ? "yyy" : "xxx",
+              components: {
+                Card: {
+                  myProp: breakpointIndex === "b1" ? "yyy" : "xxx",
+                },
               },
             };
           },
           devices,
           testComponentDefinition
         );
-        expect(result.Card.myProp).toEqual({
+        expect(result.components.Card.myProp).toEqual({
           $res: true,
           b1: "yyy",
           b2: "xxx",
@@ -674,11 +750,14 @@ describe("resop2", () => {
 
     describe("item props", () => {
       const input = {
-        Cards: [
-          { _template: "$Test" },
-          { _template: "$Test" },
-          { _template: "$Test" },
-        ],
+        values: {
+          Cards: [
+            { _template: "$Test" },
+            { _template: "$Test" },
+            { _template: "$Test" },
+          ],
+        },
+        params: {},
       };
 
       test("non-array item props should throw", () => {
@@ -687,7 +766,9 @@ describe("resop2", () => {
             input,
             () => {
               return {
-                Cards: { itemProps: "incorrect value" },
+                components: {
+                  Cards: { itemProps: "incorrect value" } as any,
+                },
               };
             },
             devices,
@@ -705,8 +786,10 @@ describe("resop2", () => {
               input,
               (values, breakpointIndex) => {
                 return {
-                  Cards: {
-                    itemProps: breakpointIndex === "b1" ? [{}, {}] : [{}],
+                  components: {
+                    Cards: {
+                      itemProps: breakpointIndex === "b1" ? [{}, {}] : [{}],
+                    },
                   },
                 };
               },
@@ -724,7 +807,9 @@ describe("resop2", () => {
               input,
               (values, breakpointIndex) => {
                 return {
-                  Cards: { itemProps: [{}, {}, {}, {}] },
+                  components: {
+                    Cards: { itemProps: [{}, {}, {}, {}] },
+                  },
                 };
               },
               devices,
@@ -737,17 +822,19 @@ describe("resop2", () => {
 
         test("if item props array is empty, then item props array should have one element", () => {
           const result: any = resop2(
-            { Cards: [] },
+            { values: { Cards: [] }, params: {} },
             (values, breakpointIndex) => {
               return {
-                Cards: { itemProps: [{ test: "xxx" }] },
+                components: {
+                  Cards: { itemProps: [{ test: "xxx" }] },
+                },
               };
             },
             devices,
             testComponentDefinition
           );
 
-          expect(result.Cards.itemProps[0].test).toEqual({
+          expect(result.components.Cards.itemProps[0].test).toEqual({
             $res: true,
             b1: "xxx",
             b2: "xxx",
@@ -762,14 +849,16 @@ describe("resop2", () => {
             input,
             (values, breakpointIndex) => {
               return {
-                Cards: {},
+                components: {
+                  Cards: {},
+                },
               };
             },
             devices,
             testComponentDefinition
           );
 
-          expect(result.Cards.itemProps).toEqual([]);
+          expect(result.components.Cards.itemProps).toEqual([]);
         });
       });
 
@@ -779,7 +868,9 @@ describe("resop2", () => {
             input,
             () => {
               return {
-                Cards: { itemProps: ["xxx", {}, {}] },
+                components: {
+                  Cards: { itemProps: ["xxx", {}, {}] },
+                },
               };
             },
             devices,
@@ -795,12 +886,14 @@ describe("resop2", () => {
           input,
           () => {
             return {
-              Cards: {
-                itemProps: [
-                  { xxx: undefined },
-                  { xxx: undefined },
-                  { xxx: undefined },
-                ],
+              components: {
+                Cards: {
+                  itemProps: [
+                    { xxx: undefined },
+                    { xxx: undefined },
+                    { xxx: undefined },
+                  ],
+                },
               },
             };
           },
@@ -808,7 +901,7 @@ describe("resop2", () => {
           testComponentDefinition
         );
 
-        expect(result.Cards.itemProps).toEqual([{}, {}, {}]);
+        expect(result.components.Cards.itemProps).toEqual([{}, {}, {}]);
       });
 
       test("if item prop is defined for some breakpoints and not for others, throw", () => {
@@ -821,8 +914,10 @@ describe("resop2", () => {
               };
 
               return {
-                Cards: {
-                  itemProps: [item, item, item],
+                components: {
+                  Cards: {
+                    itemProps: [item, item, item],
+                  },
                 },
               };
             },
@@ -854,8 +949,10 @@ describe("resop2", () => {
             };
 
             return {
-              Cards: {
-                itemProps: [item, item, item],
+              components: {
+                Cards: {
+                  itemProps: [item, item, item],
+                },
               },
             };
           },
@@ -863,7 +960,7 @@ describe("resop2", () => {
           testComponentDefinition
         );
 
-        expect(result.Cards.itemProps).toEqual([
+        expect(result.components.Cards.itemProps).toEqual([
           resultItem,
           resultItem,
           resultItem,
@@ -873,50 +970,6 @@ describe("resop2", () => {
   });
 
   describe("external values shouldn't be modified", () => {
-    test("potential 'responsive structures' inside of external data are ignored by resop", () => {
-      const callback = jest.fn((vals) => {
-        return {};
-      });
-
-      // This value is external value, but on purpose it is responsive to check whether resop will ignore it anyway!
-      const customTypeValue = {
-        $res: true,
-        b1: {
-          src: "image-mobile",
-        },
-        b4: {
-          src: "image-desktop",
-        },
-      };
-
-      resop2(
-        {
-          ...input2,
-          schemaCustomTypeProp: customTypeValue,
-        },
-        callback,
-        devices,
-        testComponentDefinition
-      );
-
-      expect(callback).toBeCalledTimes(5);
-      expect(callback.mock.calls[0][0].schemaCustomTypeProp).toEqual(
-        customTypeValue
-      );
-      expect(callback.mock.calls[1][0].schemaCustomTypeProp).toEqual(
-        customTypeValue
-      );
-      expect(callback.mock.calls[2][0].schemaCustomTypeProp).toEqual(
-        customTypeValue
-      );
-      expect(callback.mock.calls[3][0].schemaCustomTypeProp).toEqual(
-        customTypeValue
-      );
-      expect(callback.mock.calls[4][0].schemaCustomTypeProp).toEqual(
-        customTypeValue
-      );
-    });
-
     test("external values that have internal cycles don't fall into infinite recursion", () => {
       const callback = jest.fn((vals) => {
         return {};
@@ -928,7 +981,10 @@ describe("resop2", () => {
       resop2(
         {
           ...input2,
-          customTypeProp: customTypeValue,
+          values: {
+            ...input2.values,
+            schemaCustomTypeProp: customTypeValue,
+          },
         },
         callback,
         devices,

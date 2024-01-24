@@ -1,4 +1,6 @@
-import { CompilationContextType } from "./compiler/types";
+import { dotNotationSet } from "@easyblocks/utils";
+import { EasyblocksBackend } from "./EasyblocksBackend";
+import { createCompilationContext } from "./compiler/createCompilationContext";
 import { Devices } from "./types";
 
 export const testDevices: Devices = [
@@ -34,29 +36,33 @@ export const testDevices: Devices = [
   },
 ];
 
-export const testCompilationContext: CompilationContextType = {
-  definitions: {
-    components: [],
-    links: [],
-    actions: [],
-    textModifiers: [],
-  },
-  devices: testDevices,
-  contextParams: {
-    locale: "en",
-  },
-  theme: {
-    colors: {},
-    fonts: {},
-    space: {},
-    numberOfItemsInRow: {},
-    aspectRatios: {},
-    icons: {},
-    containerWidths: {},
-    boxShadows: {},
-  },
-  mainBreakpointIndex: "b4",
-  types: {},
-  documentTypes: [],
-  documentType: "content",
-};
+function createFormMock(initialValues: Record<PropertyKey, any> = {}) {
+  return {
+    reset() {
+      this.values = initialValues;
+    },
+    values: initialValues,
+    change(path: string, value: any) {
+      if (path === "") {
+        this.values = value;
+        return;
+      }
+
+      dotNotationSet(this.values, path, value);
+    },
+  };
+}
+
+function createTestCompilationContext() {
+  return createCompilationContext(
+    {
+      backend: new EasyblocksBackend({ accessToken: "" }),
+      locales: [{ code: "en", isDefault: true }],
+      components: [{ id: "TestComponent", schema: [] }],
+    },
+    { locale: "en" },
+    "TestComponent"
+  );
+}
+
+export { createFormMock, createTestCompilationContext };

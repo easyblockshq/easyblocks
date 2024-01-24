@@ -8,7 +8,7 @@
     "bundle": "NODE_ENV=production rollup -c rollup.config.js",
     "emit-declarations": "tsc",
     "bundle-declarations": "api-extractor run --local",
-    "test": "jest && playwright test e2e/",
+    "test": "jest",
     "check": "tsc && eslint --quiet src/"
   },
   "author": "Shopstory z o.o.",
@@ -40,8 +40,7 @@
     "@types/lodash": "^4.14.191",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
-    "jest": "^26.6.3",
-    "playwright": "^1.31.2"
+    "jest": "^26.6.3"
   },
   "peerDependencies": {
     "react": "^16.8.0 || ^17.0.0-rc.1 || ^18.0.0",

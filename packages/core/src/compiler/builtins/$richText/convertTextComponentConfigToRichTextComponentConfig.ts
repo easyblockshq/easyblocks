@@ -45,8 +45,7 @@ function convertTextComponentConfigToRichTextComponentConfig(
         }),
       }),
     ],
-    // @ts-ignore
-    compilationContext: { contextParams: { locale } },
+    locale,
     mainColor: textComponentConfig.color,
     mainFont: textComponentConfig.font,
   });

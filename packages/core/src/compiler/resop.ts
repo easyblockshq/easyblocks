@@ -10,11 +10,9 @@ import {
   TrulyResponsiveValue,
 } from "../types";
 import {
-  isSchemaPropActionTextModifier,
   isSchemaPropCollection,
   isSchemaPropComponent,
   isSchemaPropComponentOrComponentCollection,
-  isSchemaPropTextModifier,
 } from "./schema";
 import type { InternalComponentDefinition } from "./types";
 
@@ -266,49 +264,7 @@ export function scalarizeConfig(
     if (schemaProp) {
       // subcomponents don't get scalarized
       if (isSchemaPropComponent(schemaProp)) {
-        // Text modifiers are components for now and in contrast to real components, we need to compile its values.
-        if (
-          isSchemaPropActionTextModifier(schemaProp) ||
-          isSchemaPropTextModifier(schemaProp)
-        ) {
-          const modifierConfig = config[prop][0];
-
-          if (modifierConfig) {
-            const scalarModifierValues: Record<string, any> = {};
-
-            for (const modifierKey in modifierConfig) {
-              if (Array.isArray(modifierConfig[modifierKey])) {
-                scalarModifierValues[modifierKey] = [];
-
-                modifierConfig[modifierKey].forEach(
-                  (values: Record<string, any>, index: number) => {
-                    scalarModifierValues[modifierKey][index] = {};
-
-                    for (const nestedModifierKey in values) {
-                      scalarModifierValues[modifierKey][index][
-                        nestedModifierKey
-                      ] = scalarizeNonComponentProp(
-                        modifierConfig[modifierKey][index][nestedModifierKey],
-                        breakpoint
-                      );
-                    }
-                  }
-                );
-              } else {
-                scalarModifierValues[modifierKey] = scalarizeNonComponentProp(
-                  modifierConfig[modifierKey],
-                  breakpoint
-                );
-              }
-            }
-
-            ret[prop] = [scalarModifierValues];
-          } else {
-            ret[prop] = config[prop];
-          }
-        } else {
-          ret[prop] = config[prop];
-        }
+        ret[prop] = config[prop];
       }
       // component collection should have item props scalarized. We know the types of item props!
       // component collection localised is already dealing with value that is NON-LOCALISED (it was flattened earlier)
@@ -360,13 +316,13 @@ type Resop2Result = Required<NoCodeComponentStylesFunctionResult>;
 
 export function resop2(
   input: {
-    values: Record<string, ResponsiveValue<unknown>>;
-    params: Record<string, ResponsiveValue<unknown>>;
+    values: Record<string, ResponsiveValue<any>>;
+    params: Record<string, ResponsiveValue<any>>;
   },
   callback: (
     scalarInput: {
-      values: Record<string, unknown>;
-      params: Record<string, unknown>;
+      values: Record<string, any>;
+      params: Record<string, any>;
     },
     breakpointIndex: string
   ) => NoCodeComponentStylesFunctionResult,

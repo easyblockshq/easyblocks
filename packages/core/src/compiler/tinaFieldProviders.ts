@@ -284,11 +284,7 @@ const tinaFieldProviders: TinaFieldProviders = {
         }
       }
 
-      return {
-        ...getCommonFieldProps(schemaProp),
-        // Token fields are always responsive
-        component: "responsive2",
-        subComponent: "token",
+      const commonTokenFieldProps = {
         tokens,
         allowCustom: !!customTypeDefinition.allowCustom,
         extraValues:
@@ -297,6 +293,22 @@ const tinaFieldProviders: TinaFieldProviders = {
           "extraValues" in schemaProp.params
             ? schemaProp.params.extraValues
             : undefined,
+      };
+
+      if (customTypeDefinition.responsiveness === "never") {
+        return {
+          ...getCommonFieldProps(schemaProp),
+          component: "token",
+          ...commonTokenFieldProps,
+        };
+      }
+
+      return {
+        ...getCommonFieldProps(schemaProp),
+        // Token fields are always responsive
+        component: "responsive2",
+        subComponent: "token",
+        ...commonTokenFieldProps,
       };
     }
 
@@ -325,6 +337,7 @@ export function getTinaField<T extends SchemaProp>(
     editorContext.types[schemaProp.type] && schemaProp.type !== "text"
       ? tinaFieldProviders.custom
       : (tinaFieldProviders as any)[schemaProp.type];
+
   return fieldProvider(schemaProp, editorContext, value);
 }
 

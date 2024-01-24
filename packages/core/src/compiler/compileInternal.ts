@@ -42,11 +42,9 @@ export function compileInternal(
     $width: getDevicesWidths(compilationContext.devices),
     $widthAuto: {
       $res: true,
-      xs: false,
-      md: false,
-      lg: false,
-      xl: false,
-      "2xl": false,
+      ...Object.fromEntries(
+        compilationContext.devices.map((d) => [d.id, false])
+      ),
     },
   };
 

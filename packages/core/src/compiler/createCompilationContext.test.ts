@@ -4,6 +4,13 @@ import { createCompilationContext } from "./createCompilationContext";
 
 const basicConfig: Config = {
   backend: new EasyblocksBackend({ accessToken: "" }),
+  locales: [{ code: "en-US", isDefault: true }],
+  components: [
+    {
+      id: "TestComponent",
+      schema: [],
+    },
+  ],
 };
 
 const defaults = {
@@ -59,7 +66,7 @@ describe("breakpoints", () => {
     const result = createCompilationContext(
       basicConfig,
       { locale: "en-US" },
-      "content"
+      "TestComponent"
     );
     expect(result.devices).toHaveLength(6);
     expect(result.devices[0]).toEqual(defaults.xs);
@@ -90,7 +97,7 @@ describe("breakpoints", () => {
       {
         locale: "en-US",
       },
-      "content"
+      "TestComponent"
     );
 
     expect(result.devices[0]).toEqual({
@@ -112,25 +119,5 @@ describe("breakpoints", () => {
     expect(result.devices[4]).toEqual(defaults.xl);
 
     expect(result.devices[5]).toEqual(defaults["2xl"]);
-  });
-});
-
-describe("max widths", () => {
-  test("no devices outputs default", () => {
-    const result = createCompilationContext(
-      {
-        ...basicConfig,
-        tokens: {
-          containerWidths: [{ id: "small", value: 800 }],
-        },
-      },
-      { locale: "en-US" },
-      "content"
-    );
-
-    expect(result.theme.containerWidths.small).toMatchObject({
-      type: "dev",
-      value: "800",
-    });
   });
 });

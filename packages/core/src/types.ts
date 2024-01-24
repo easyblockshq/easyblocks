@@ -418,18 +418,18 @@ export type InferNoCodeComponentStylesFunctionInput<T> =
     : never;
 
 export type NoCodeComponentStylesFunctionResult = {
-  props?: Record<string, unknown>;
+  props?: Record<string, any>;
   components?: Record<
     string,
     {
       /**
        * `itemProps` can only be set if component prop is a collection.
        */
-      itemProps?: Array<Record<string, unknown>>;
-      [key: string]: unknown;
+      itemProps?: Array<Record<string, any>>;
+      [key: string]: any;
     }
   >;
-  styled?: Record<string, ScalarOrCollection<Record<string, unknown>>>;
+  styled?: Record<string, ScalarOrCollection<Record<string, any>>>;
 };
 
 export type NoCodeComponentStylesFunction<

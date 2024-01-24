@@ -4,7 +4,6 @@ import { CompilationCache } from "./CompilationCache";
 import { compileInternal } from "./compileInternal";
 import {
   InternalRenderableComponentDefinition,
-  InternalActionComponentDefinition,
   CompilationContextType,
 } from "./types";
 
@@ -45,7 +44,16 @@ test("populates cache for given component if cache is empty", () => {
         _id: "xxx",
         prop1: "Test",
       },
-      params: {},
+      params: {
+        $width: {
+          $res: true,
+          d1: 1024,
+        },
+        $widthAuto: {
+          $res: true,
+          d1: false,
+        },
+      },
     },
     compiledConfig: result.compiled,
     compiledValues: {
@@ -59,7 +67,16 @@ test("populates cache for given component if cache is empty", () => {
         _id: "xxx",
         prop1: "Test",
       },
-      params: {},
+      params: {
+        $width: {
+          $res: true,
+          d1: 1024,
+        },
+        $widthAuto: {
+          $res: true,
+          d1: false,
+        },
+      },
     },
     contextProps: {},
   });
@@ -96,17 +113,24 @@ test("reuses cache if it contains cached result for given component", () => {
             _template: testConfig._template,
             prop1: "Test",
           },
-          params: {},
+          params: {
+            $width: {
+              $res: true,
+              d1: 1024,
+            },
+            $widthAuto: {
+              $res: true,
+              d1: false,
+            },
+          },
         },
         contextProps: {},
         compiledConfig: {
           _id: testConfig._id,
           _template: testConfig._template,
-          actions: {},
           components: {},
           props: {},
           styled: {},
-          textModifiers: {},
         },
         compiledValues: {
           _id: testConfig._id,
@@ -119,7 +143,16 @@ test("reuses cache if it contains cached result for given component", () => {
             _template: testConfig._template,
             prop1: "Test",
           },
-          params: {},
+          params: {
+            $width: {
+              $res: true,
+              d1: 1024,
+            },
+            $widthAuto: {
+              $res: true,
+              d1: false,
+            },
+          },
         },
       },
     ],
@@ -234,7 +267,16 @@ test("change of schema prop value of nested component triggers only recompilatio
         _id: "zzz",
         prop1: "Another test",
       },
-      params: {},
+      params: {
+        $width: {
+          $res: true,
+          d1: 1024,
+        },
+        $widthAuto: {
+          $res: true,
+          d1: false,
+        },
+      },
     },
     compiledValues: {
       _template: "$TestComponent1",
@@ -248,7 +290,16 @@ test("change of schema prop value of nested component triggers only recompilatio
         _id: "zzz",
         prop1: "Another test",
       },
-      params: {},
+      params: {
+        $width: {
+          $res: true,
+          d1: 1024,
+        },
+        $widthAuto: {
+          $res: true,
+          d1: false,
+        },
+      },
     },
   });
 });
@@ -310,7 +361,16 @@ test("change of _itemProps triggers recompilation of the component that owns the
 
   expect(cache.count).toBe(2);
   expect(cache.get("xxx")?.values).toEqual({
-    params: {},
+    params: {
+      $width: {
+        $res: true,
+        d1: 1024,
+      },
+      $widthAuto: {
+        $res: true,
+        d1: false,
+      },
+    },
     values: {
       _id: "xxx",
       Components: [
@@ -332,7 +392,16 @@ test("change of _itemProps triggers recompilation of the component that owns the
       _id: "yyy",
       prop1: "Test",
     },
-    params: {},
+    params: {
+      $width: {
+        $res: true,
+        d1: 1024,
+      },
+      $widthAuto: {
+        $res: true,
+        d1: false,
+      },
+    },
   });
 
   const testConfig2: TestComponentConfig = {
@@ -369,7 +438,16 @@ test("change of _itemProps triggers recompilation of the component that owns the
         },
       ],
     },
-    params: {},
+    params: {
+      $width: {
+        $res: true,
+        d1: 1024,
+      },
+      $widthAuto: {
+        $res: true,
+        d1: false,
+      },
+    },
   });
   expect(cache.get("yyy")).toEqual(cacheEntryComponent1);
 });
@@ -443,7 +521,16 @@ test("change of context props triggers recompilation of component consuming them
         },
       ],
     },
-    params: {},
+    params: {
+      $width: {
+        $res: true,
+        d1: 1024,
+      },
+      $widthAuto: {
+        $res: true,
+        d1: false,
+      },
+    },
   });
   expect(cache.get("yyy")?.values).toEqual({
     values: {
@@ -456,12 +543,19 @@ test("change of context props triggers recompilation of component consuming them
         $res: true,
         d1: true,
       },
+      $width: {
+        $res: true,
+        d1: 1024,
+      },
+      $widthAuto: {
+        $res: true,
+        d1: false,
+      },
     },
   });
 });
 
 function createTestCompilationContext({
-  actions = [],
   components = [],
   devices = [
     {
@@ -473,7 +567,6 @@ function createTestCompilationContext({
     },
   ],
 }: {
-  actions?: Array<InternalActionComponentDefinition>;
   components?: Array<InternalRenderableComponentDefinition>;
   devices?: Devices;
 }): CompilationContextType {
@@ -482,10 +575,7 @@ function createTestCompilationContext({
       locale: "en",
     },
     definitions: {
-      actions,
       components,
-      links: [],
-      textModifiers: [],
     },
     devices,
     mainBreakpointIndex: "",

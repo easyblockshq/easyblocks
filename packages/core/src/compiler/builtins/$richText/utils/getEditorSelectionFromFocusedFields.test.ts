@@ -1,4 +1,4 @@
-import { Form } from "@easyblocks/app-utils";
+import { createFormMock } from "../../../../testUtils";
 import {
   buildRichTextComponentConfig,
   buildRichTextLineElementComponentConfig,
@@ -7,56 +7,50 @@ import {
 } from "../builders";
 import { getEditorSelectionFromFocusedFields } from "./getEditorSelectionFromFocusedFields";
 
-const testForm = new Form({
-  id: "test",
-  label: "Test",
-  onSubmit: () => {},
-  initialValues: {
-    richText: buildRichTextComponentConfig({
-      // @ts-expect-error We only care about locale here
-      compilationContext: { contextParams: { locale: "en" } },
-      elements: [
-        buildRichTextParagraphBlockElementComponentConfig({
-          elements: [
-            buildRichTextLineElementComponentConfig({
-              elements: [
-                buildRichTextPartComponentConfig({
-                  color: {},
-                  font: {},
-                  value: "Lorem ipsum",
-                }),
-                buildRichTextPartComponentConfig({
-                  color: {},
-                  font: {},
-                  value: "dolor sit amet",
-                }),
-              ],
-            }),
-            buildRichTextLineElementComponentConfig({
-              elements: [
-                buildRichTextPartComponentConfig({
-                  color: {},
-                  font: {},
-                  value: "Lorem ipsum",
-                }),
-                buildRichTextPartComponentConfig({
-                  color: {},
-                  font: {},
-                  value: "dolor sit amet",
-                }),
-              ],
-            }),
-          ],
-        }),
-      ],
-      mainColor: {
-        $res: true,
-      },
-      mainFont: {
-        $res: true,
-      },
-    }),
-  },
+const testForm = createFormMock({
+  richText: buildRichTextComponentConfig({
+    locale: "en",
+    elements: [
+      buildRichTextParagraphBlockElementComponentConfig({
+        elements: [
+          buildRichTextLineElementComponentConfig({
+            elements: [
+              buildRichTextPartComponentConfig({
+                color: {},
+                font: {},
+                value: "Lorem ipsum",
+              }),
+              buildRichTextPartComponentConfig({
+                color: {},
+                font: {},
+                value: "dolor sit amet",
+              }),
+            ],
+          }),
+          buildRichTextLineElementComponentConfig({
+            elements: [
+              buildRichTextPartComponentConfig({
+                color: {},
+                font: {},
+                value: "Lorem ipsum",
+              }),
+              buildRichTextPartComponentConfig({
+                color: {},
+                font: {},
+                value: "dolor sit amet",
+              }),
+            ],
+          }),
+        ],
+      }),
+    ],
+    mainColor: {
+      $res: true,
+    },
+    mainFont: {
+      $res: true,
+    },
+  }),
 });
 
 test("returns editor selection for selection of single text part", () => {

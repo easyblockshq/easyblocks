@@ -1,9 +1,9 @@
 import { uniqueId } from "@easyblocks/utils";
 import type { Text } from "slate";
-import { RichTextComponentConfig } from "../$richText";
+import type { RichTextComponentConfig } from "../$richText";
 import type { BlockElement } from "../$richText.types";
-import { RichTextBlockElementComponentConfig } from "../$richTextBlockElement/$richTextBlockElement";
-import { RichTextPartComponentConfig } from "../$richTextPart/$richTextPart";
+import type { RichTextBlockElementComponentConfig } from "../$richTextBlockElement/$richTextBlockElement";
+import type { RichTextPartComponentConfig } from "../$richTextPart/$richTextPart";
 
 function convertRichTextElementsToEditorValue(
   richTextElements: RichTextComponentConfig["elements"][string] | undefined
@@ -102,7 +102,6 @@ function getPlaceholderRichTextElements(): Array<BlockElement> {
               font: {
                 tokenId: "$body",
                 value: "",
-                widgetId: "@easyblocks/font",
               },
               text: "",
               TextWrapper: [],

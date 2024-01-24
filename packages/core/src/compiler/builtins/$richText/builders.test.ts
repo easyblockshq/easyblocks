@@ -1,4 +1,3 @@
-import { testCompilationContext } from "../../../../../app-test-utils/src";
 import { RichTextComponentConfig } from "./$richText";
 import {
   RichTextBlockElementComponentConfig,
@@ -50,6 +49,7 @@ describe("@easyblocks/rich-text-part", () => {
           },
         },
         value: "Lorem ipsum",
+        TextWrapper: [],
       })
     );
   });
@@ -91,7 +91,7 @@ describe("@easyblocks/rich-text", () => {
   test("builds with defaults", () => {
     expect(
       buildRichTextComponentConfig({
-        compilationContext: testCompilationContext,
+        locale: "en",
         elements: [],
         mainColor: {
           $res: true,
@@ -114,7 +114,7 @@ describe("@easyblocks/rich-text", () => {
         _template: "@easyblocks/rich-text",
         accessibilityRole: "div",
         elements: {
-          [testCompilationContext.contextParams.locale]: [],
+          en: [],
         },
         isListStyleAuto: true,
         mainColor: {
@@ -140,7 +140,7 @@ describe("@easyblocks/rich-text", () => {
     (accessibilityRole) => {
       const richTextComponentConfig = buildRichTextComponentConfig({
         accessibilityRole,
-        compilationContext: testCompilationContext,
+        locale: "en",
         elements: [],
         mainColor: {
           $res: true,
@@ -164,7 +164,7 @@ describe("@easyblocks/rich-text", () => {
 
   test("builds with set isListStyleAuto property", () => {
     const richTextComponentConfig = buildRichTextComponentConfig({
-      compilationContext: testCompilationContext,
+      locale: "en",
       elements: [],
       isListStyleAuto: false,
       mainColor: {

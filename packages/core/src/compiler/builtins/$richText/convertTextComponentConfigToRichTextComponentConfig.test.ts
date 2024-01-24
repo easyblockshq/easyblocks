@@ -1,9 +1,8 @@
-import { defaultTheme } from "@easyblocks/core/_internals";
 import { TextComponentConfig } from "../$text/$text";
 import { RichTextComponentConfig } from "./$richText";
 import { convertTextComponentConfigToRichTextComponentConfig } from "./convertTextComponentConfigToRichTextComponentConfig";
 
-const DEFAULT_BODY = defaultTheme.fonts.$body.value;
+const DEFAULT_BODY = { fontFamily: "sans-serif", fontSize: 16 };
 const TEST_LOCALE = "en";
 
 test("converts when text is a single line", () => {
@@ -12,20 +11,22 @@ test("converts when text is a single line", () => {
     _template: "@easyblocks/text",
     color: {
       $res: true,
-      b4: {
-        ref: "black",
+      xl: {
+        tokenId: "black",
         value: "black",
+        widgetId: "@easyblocks/color",
       },
     },
     font: {
       $res: true,
-      b4: {
-        ref: "$body",
+      xl: {
+        tokenId: "$body",
         value: DEFAULT_BODY,
       },
     },
     value: {
       id: "testTextId",
+      widgetId: "text",
     },
     accessibilityRole: "p",
   };
@@ -57,6 +58,7 @@ test("converts when text is a single line", () => {
                   color: testTextComponentConfig.color,
                   font: testTextComponentConfig.font,
                   value: "resolved test text value",
+                  TextWrapper: [],
                 },
               ],
             },
@@ -74,19 +76,13 @@ test("converts when text is a single line", () => {
     convertTextComponentConfigToRichTextComponentConfig(
       testTextComponentConfig,
       "en",
-      [
-        {
-          id: "testTextId",
-          values: {
-            default: {
-              [TEST_LOCALE]: "resolved test text value",
-            },
-          },
-          status: "success",
-          error: null,
+
+      {
+        "testId.value": {
           type: "text",
+          value: "resolved test text value",
         },
-      ]
+      }
     )
   ).toEqual(expectedRichTextComponentConfig);
 });
@@ -97,20 +93,22 @@ test("converts when text contains new line", () => {
     _template: "@easyblocks/text",
     color: {
       $res: true,
-      b4: {
-        ref: "black",
+      xl: {
+        tokenId: "black",
         value: "black",
+        widgetId: "@easyblocks/color",
       },
     },
     font: {
       $res: true,
-      b4: {
-        ref: "$body",
+      xl: {
+        tokenId: "$body",
         value: DEFAULT_BODY,
       },
     },
     value: {
       id: "testTextId",
+      widgetId: "text",
     },
     accessibilityRole: "p",
   };
@@ -139,6 +137,7 @@ test("converts when text contains new line", () => {
                   color: testTextComponentConfig.color,
                   font: testTextComponentConfig.font,
                   value: "resolved test text value",
+                  TextWrapper: [],
                 },
               ],
             },
@@ -154,6 +153,7 @@ test("converts when text contains new line", () => {
                   color: testTextComponentConfig.color,
                   font: testTextComponentConfig.font,
                   value: "next line of resolved text value",
+                  TextWrapper: [],
                 },
               ],
             },
@@ -171,20 +171,12 @@ test("converts when text contains new line", () => {
     convertTextComponentConfigToRichTextComponentConfig(
       testTextComponentConfig,
       "en",
-      [
-        {
-          id: "testTextId",
-          values: {
-            default: {
-              [TEST_LOCALE]:
-                "resolved test text value\nnext line of resolved text value",
-            },
-          },
-          status: "success",
-          error: null,
+      {
+        "testId.value": {
           type: "text",
+          value: "resolved test text value\nnext line of resolved text value",
         },
-      ]
+      }
     )
   ).toEqual(expectedRichTextComponentConfig);
 });
@@ -195,20 +187,22 @@ test("converts when text contains more than one new line between text lines", ()
     _template: "@easyblocks/text",
     color: {
       $res: true,
-      b4: {
-        ref: "black",
+      xl: {
+        tokenId: "black",
         value: "black",
+        widgetId: "@easyblocks/color",
       },
     },
     font: {
       $res: true,
-      b4: {
-        ref: "$body",
+      xl: {
+        tokenId: "$body",
         value: DEFAULT_BODY,
       },
     },
     value: {
       id: "testTextId",
+      widgetId: "text",
     },
     accessibilityRole: "p",
   };
@@ -233,6 +227,7 @@ test("converts when text contains more than one new line between text lines", ()
                   color: testTextComponentConfig.color,
                   font: testTextComponentConfig.font,
                   value: "resolved test text value",
+                  TextWrapper: [],
                 },
               ],
             },
@@ -246,6 +241,7 @@ test("converts when text contains more than one new line between text lines", ()
                   color: testTextComponentConfig.color,
                   font: testTextComponentConfig.font,
                   value: "",
+                  TextWrapper: [],
                 },
               ],
             },
@@ -259,6 +255,7 @@ test("converts when text contains more than one new line between text lines", ()
                   color: testTextComponentConfig.color,
                   font: testTextComponentConfig.font,
                   value: "",
+                  TextWrapper: [],
                 },
               ],
             },
@@ -272,6 +269,7 @@ test("converts when text contains more than one new line between text lines", ()
                   color: testTextComponentConfig.color,
                   font: testTextComponentConfig.font,
                   value: "next line of resolved text value",
+                  TextWrapper: [],
                 },
               ],
             },
@@ -289,20 +287,13 @@ test("converts when text contains more than one new line between text lines", ()
     convertTextComponentConfigToRichTextComponentConfig(
       testTextComponentConfig,
       "en",
-      [
-        {
-          id: "testTextId",
-          values: {
-            default: {
-              [TEST_LOCALE]:
-                "resolved test text value\n\n\nnext line of resolved text value",
-            },
-          },
-          status: "success",
-          error: null,
+      {
+        "testId.value": {
           type: "text",
+          value:
+            "resolved test text value\n\n\nnext line of resolved text value",
         },
-      ]
+      }
     )
   ).toEqual(expectedRichTextComponentConfig);
 });
