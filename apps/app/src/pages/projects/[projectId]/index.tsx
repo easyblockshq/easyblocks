@@ -26,7 +26,7 @@ import {
 import { createPagesServerClient } from "@supabase/auth-helpers-nextjs";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 function ProjectPage(
@@ -304,7 +304,7 @@ function GenerateAccessTokenButton({ projectId }: { projectId: string }) {
           method: "POST",
         }).then((res) => {
           if (res.ok) {
-            router.reload();
+            router.refresh();
           }
         });
       }}
@@ -326,7 +326,7 @@ function RegenerateTokenButton({ projectId }: { projectId: string }) {
             method: "POST",
           }).then((res) => {
             if (res.ok) {
-              router.reload();
+              router.refresh();
             }
           });
         }}

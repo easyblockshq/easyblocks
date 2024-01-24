@@ -1,7 +1,7 @@
 import { Button } from "@radix-ui/themes";
 import { Container } from "./Container";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { ExitIcon } from "@radix-ui/react-icons";
 import { Logo } from "./Logo";
 import { Logotype } from "./Logotype";

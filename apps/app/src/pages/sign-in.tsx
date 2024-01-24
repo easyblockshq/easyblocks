@@ -1,6 +1,6 @@
 import { Button, Link } from "@radix-ui/themes";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { AuthPageLayout } from "../lib/AuthPageLayout";
 import { useAuthFormStatus } from "../lib/useAuthFormStatus";
 import { GoogleSignInButton } from "../lib/GoogleSignInButton";
