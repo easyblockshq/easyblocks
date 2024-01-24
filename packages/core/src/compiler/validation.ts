@@ -1,10 +1,10 @@
 import { isComponentConfig, isDocument } from "../checkers";
-import { ComponentConfig, Document } from "../types";
+import { NoCodeComponentEntry, Document } from "../types";
 
 function validate(input: unknown):
   | {
       isValid: true;
-      input: Document | ComponentConfig | null | undefined;
+      input: Document | NoCodeComponentEntry | null | undefined;
     }
   | { isValid: false } {
   const isValid =
@@ -21,12 +21,12 @@ function validate(input: unknown):
 
   return {
     isValid: true,
-    input: input as Document | ComponentConfig | null | undefined,
+    input: input as Document | NoCodeComponentEntry | null | undefined,
   };
 }
 
 export { validate };
 
-export function isLegacyInput(input: unknown): input is ComponentConfig {
+export function isLegacyInput(input: unknown): input is NoCodeComponentEntry {
   return isComponentConfig(input);
 }

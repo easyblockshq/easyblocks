@@ -3,7 +3,7 @@ import {
   AnyEditingField,
   CompiledComponentConfig,
   CompiledComponentConfigBase,
-  ComponentConfig,
+  NoCodeComponentEntry,
   NoCodeComponentDefinition,
 } from "../../../../types";
 import { findPathOfFirstAncestorOfType } from "../../../parsePath";
@@ -120,7 +120,7 @@ type RichTextPartComponentConfig = EditableComponentToComponentConfig<
   value: string;
   color: Record<string, any>;
   font: Record<string, any>;
-  TextWrapper: [ComponentConfig] | [];
+  TextWrapper: [NoCodeComponentEntry] | [];
 };
 
 type RichTextPartCompiledComponentConfig = CompiledComponentConfigBase<

@@ -1,5 +1,5 @@
 import {
-  ComponentConfig,
+  NoCodeComponentEntry,
   SchemaProp,
   TrulyResponsiveValue,
   isTrulyResponsiveValue,
@@ -21,7 +21,7 @@ type ConfigMapCallback = (arg: {
 }) => any;
 
 function configMapArray(
-  configArray: ComponentConfig[] | undefined,
+  configArray: NoCodeComponentEntry[] | undefined,
   context: CompilationContextType,
   callback: ConfigMapCallback,
   prefix: string
@@ -45,22 +45,22 @@ function configMapArray(
 }
 
 function configMap(
-  config: ComponentConfig,
+  config: NoCodeComponentEntry,
   context: CompilationContextType,
   callback: ConfigMapCallback
-): ComponentConfig {
+): NoCodeComponentEntry {
   return configMapInternal(config, context, callback, "");
 }
 
 function configMapInternal(
-  config: ComponentConfig,
+  config: NoCodeComponentEntry,
   context: CompilationContextType,
   callback: ConfigMapCallback,
   prefix?: string
-): ComponentConfig {
+): NoCodeComponentEntry {
   const componentDefinition = findComponentDefinition(config, context);
 
-  const result: ComponentConfig = { ...config };
+  const result: NoCodeComponentEntry = { ...config };
 
   if (!componentDefinition) {
     console.warn(

@@ -1,7 +1,7 @@
 import { PartialDeep } from "type-fest";
 import { Locale } from "../locales";
 import {
-  ComponentConfig,
+  NoCodeComponentEntry,
   ComponentConfigBase,
   ComponentDefinitionShared,
   ContextParams,
@@ -35,7 +35,7 @@ export type Theme = {
 export type CompilationDocumentType = {
   id: string;
   label?: string;
-  entry: Omit<ComponentConfig, "_id">;
+  entry: Omit<NoCodeComponentEntry, "_id">;
   widths: Record<string, number>;
   schema?: Array<ExternalSchemaProp>;
 };
@@ -150,20 +150,20 @@ type EditorActions = {
   openComponentPicker: (config: {
     path: string;
     componentTypes?: string[];
-  }) => Promise<ComponentConfig | undefined>;
+  }) => Promise<NoCodeComponentEntry | undefined>;
   moveItems: (
     fieldNames: Array<string>,
     direction: "top" | "right" | "bottom" | "left"
   ) => void;
-  replaceItems: (paths: Array<string>, newConfig: ComponentConfig) => void;
+  replaceItems: (paths: Array<string>, newConfig: NoCodeComponentEntry) => void;
   removeItems: (fieldNames: Array<string>) => void;
   insertItem: (insertItemProps: {
     name: string;
     index: number;
-    block: ComponentConfig;
+    block: NoCodeComponentEntry;
   }) => void;
   duplicateItems: (fieldNames: Array<string>) => void;
-  pasteItems: (items: Array<ComponentConfig>) => void;
+  pasteItems: (items: Array<NoCodeComponentEntry>) => void;
   runChange: <Callback extends () => Array<string> | void>(
     configChangeCallback: Callback
   ) => void;

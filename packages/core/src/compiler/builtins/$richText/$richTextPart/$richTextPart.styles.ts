@@ -1,5 +1,5 @@
 import type {
-  ComponentConfig,
+  NoCodeComponentEntry,
   NoCodeComponentStylesFunctionInput,
   NoCodeComponentStylesFunctionResult,
 } from "../../../../types";
@@ -13,7 +13,7 @@ export interface RichTextPartValues {
   color: string;
   font: Record<string, any>;
   value: string;
-  TextWrapper: [ComponentConfig] | [];
+  TextWrapper: [NoCodeComponentEntry] | [];
 }
 
 export function richTextPartStyles({

@@ -1,5 +1,5 @@
 import { testCompilationContext } from "../testUtils";
-import { ComponentConfig } from "../types";
+import { NoCodeComponentEntry } from "../types";
 import { configTraverse } from "./configTraverse";
 import { CompilationContextType } from "./types";
 
@@ -23,7 +23,7 @@ const blueCard = createCard("blue");
 test("invokes callback for each valid schema prop from config", () => {
   const callback = jest.fn();
 
-  const config: ComponentConfig = {
+  const config: NoCodeComponentEntry = {
     _id: "",
     _template: "$Root",
     image: {

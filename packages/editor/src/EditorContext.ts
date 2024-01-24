@@ -1,6 +1,6 @@
 import {
   CompiledComponentConfig,
-  ComponentConfig,
+  NoCodeComponentEntry,
   ExternalTypeDefinition,
   InlineTypeDefinition,
   InlineTypeWidgetComponentProps,
@@ -59,7 +59,7 @@ export type EditorContextType = Omit<BaseEditorContextType, "types"> & {
   actions: ActionsType;
   save: (document: Document) => Promise<void>;
   compiledComponentConfig?: CompiledComponentConfig;
-  configAfterAuto?: ComponentConfig;
+  configAfterAuto?: NoCodeComponentEntry;
   compilationCache: CompilationCache;
   isAdminMode: boolean;
   readOnly: boolean;

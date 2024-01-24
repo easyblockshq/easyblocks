@@ -1,5 +1,5 @@
 import {
-  ComponentConfig,
+  NoCodeComponentEntry,
   ComponentSchemaProp,
   isNoCodeComponentOfType,
 } from "@easyblocks/core";
@@ -52,7 +52,7 @@ function pasteItems({
   resolveDestination,
   pasteCommand,
 }: {
-  what: Array<ComponentConfig>;
+  what: Array<NoCodeComponentEntry>;
   where: Array<string>;
   resolveDestination: ResolveDestination;
   pasteCommand: PasteCommand;
@@ -367,11 +367,11 @@ function removeItems(
 
 function replaceItems(
   paths: string[],
-  newConfig: ComponentConfig,
+  newConfig: NoCodeComponentEntry,
   editorContext: EditorContextType
 ) {
   paths.forEach((path) => {
-    const oldConfig: ComponentConfig = dotNotationGet(
+    const oldConfig: NoCodeComponentEntry = dotNotationGet(
       editorContext.form.values,
       path
     );

@@ -1,6 +1,6 @@
 /**
  * This compilation function doesn't take schema. It means that it assumes couple of things:
- * 1. That input is ComponentConfig or 1-item array of. ComponentConfig. Basically it's a single component.
+ * 1. That input is NoCodeComponentEntry or 1-item array of. NoCodeComponentEntry. Basically it's a single component.
  * 2. Return format
  */
 

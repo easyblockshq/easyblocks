@@ -1,4 +1,4 @@
-import { ComponentConfig } from "@easyblocks/core";
+import { NoCodeComponentEntry } from "@easyblocks/core";
 import { deepCompare } from "@easyblocks/utils";
 
 export enum EditorHistoryAction {
@@ -11,7 +11,7 @@ const HISTORY_SIZE = 50;
 
 export interface HistoryEntry {
   focussedField: Array<string>;
-  config: ComponentConfig;
+  config: NoCodeComponentEntry;
 }
 
 class EditorHistory {

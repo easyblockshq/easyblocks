@@ -5,7 +5,7 @@ import {
   BooleanSchemaProp,
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
-  ComponentConfig,
+  NoCodeComponentEntry,
   ComponentSchemaProp,
   ExternalSchemaProp,
   ExternalTypeDefinition,
@@ -62,10 +62,10 @@ export type TinaFieldProviders = {
   boolean: FieldProvider<BooleanSchemaProp>;
   select: FieldProvider<SelectSchemaProp>;
   "radio-group": FieldProvider<RadioGroupSchemaProp>;
-  component: FieldProvider<ComponentSchemaProp, [] | [ComponentConfig]>;
+  component: FieldProvider<ComponentSchemaProp, [] | [NoCodeComponentEntry]>;
   "component-collection": FieldProvider<
     ComponentCollectionSchemaProp,
-    Array<ComponentConfig>
+    Array<NoCodeComponentEntry>
   >;
   "component-collection-localised": FieldProvider<ComponentCollectionLocalisedSchemaProp>;
   component$$$: FieldProvider<ComponentSchemaProp>;

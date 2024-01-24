@@ -1,5 +1,5 @@
 import { serialize } from "@easyblocks/utils";
-import { ComponentConfig, SchemaProp } from "./types";
+import { NoCodeComponentEntry, SchemaProp } from "./types";
 import { Component$$$SchemaProp } from "./compiler/schema";
 
 type EasyblocksEditorEventData<
@@ -77,12 +77,12 @@ function componentPickerOpened(
 type ComponentPickerClosedEvent = MessageEvent<
   EasyblocksEditorEventData<
     "@easyblocks-editor/component-picker-closed",
-    { config?: ComponentConfig }
+    { config?: NoCodeComponentEntry }
   >
 >;
 
 function componentPickerClosed(
-  config?: ComponentConfig
+  config?: NoCodeComponentEntry
 ): InferShopstoryEditorEventData<ComponentPickerClosedEvent> {
   return {
     type: "@easyblocks-editor/component-picker-closed",
@@ -95,7 +95,7 @@ function componentPickerClosed(
 type ItemInsertedEvent = MessageEvent<
   EasyblocksEditorEventData<
     "@easyblocks-editor/item-inserted",
-    { name: string; index: number; block: ComponentConfig }
+    { name: string; index: number; block: NoCodeComponentEntry }
   >
 >;
 

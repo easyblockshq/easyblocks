@@ -23,11 +23,10 @@ import {
   CompilationMetadata,
   CompiledCustomComponentConfig,
   CompiledShopstoryComponentConfig,
-  CompiledTextModifier,
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
   ComponentSchemaProp,
-  ComponentConfig,
+  NoCodeComponentEntry,
   EditingField,
   EditingInfo,
   FieldPortal,
@@ -89,11 +88,11 @@ import { getFallbackLocaleForLocale } from "../locales";
 
 type ComponentCompilationArtifacts = {
   compiledComponentConfig: CompiledComponentConfig;
-  configAfterAuto: ComponentConfig;
+  configAfterAuto: NoCodeComponentEntry;
 };
 
 export function compileComponent(
-  editableElement: ComponentConfig,
+  editableElement: NoCodeComponentEntry,
   compilationContext: CompilationContextType,
   contextProps: ContextProps, // contextProps are already compiled! They're result of compilation function.
   meta: any,
@@ -737,7 +736,7 @@ function createOwnComponentProps({
   refMap,
   ref,
 }: {
-  config: ComponentConfig;
+  config: NoCodeComponentEntry;
   contextProps: ContextProps;
   componentDefinition: InternalComponentDefinition;
   compilationContext: CompilationContextType;
@@ -748,7 +747,7 @@ function createOwnComponentProps({
   const values = Object.fromEntries(
     componentDefinition.schema.map((schemaProp) => {
       if (isSchemaPropComponentOrComponentCollection(schemaProp)) {
-        let configValue: Array<ComponentConfig> = config[schemaProp.prop];
+        let configValue: Array<NoCodeComponentEntry> = config[schemaProp.prop];
 
         if (configValue.length === 0) {
           return [schemaProp.prop, []];
@@ -769,7 +768,10 @@ function createOwnComponentProps({
         if (isSchemaPropComponentCollectionLocalised(schemaProp)) {
           configValue =
             resolveLocalisedValue(
-              config[schemaProp.prop] as Record<string, Array<ComponentConfig>>,
+              config[schemaProp.prop] as Record<
+                string,
+                Array<NoCodeComponentEntry>
+              >,
               compilationContext
             )?.value ?? [];
         }
@@ -831,7 +833,7 @@ function createOwnComponentProps({
 }
 
 function flattenItemProps(
-  config: ComponentConfig,
+  config: NoCodeComponentEntry,
   componentDefinition: InternalComponentDefinition,
   collectionSchemaProp:
     | ComponentCollectionSchemaProp
@@ -853,7 +855,7 @@ function flattenItemProps(
 }
 
 function addComponentToSerializedComponentDefinitions(
-  component: ComponentConfig,
+  component: NoCodeComponentEntry,
   meta: CompilationMetadata,
   componentType: keyof SerializedComponentDefinitions,
   compilationContext: CompilationContextType
@@ -884,7 +886,7 @@ function addComponentToSerializedComponentDefinitions(
 }
 
 function compileSubcomponents(
-  editableElement: ComponentConfig,
+  editableElement: NoCodeComponentEntry,
   contextProps: ContextProps,
   subcomponentsContextProps: Record<string, Record<string, any>>,
   compilationContext: CompilationContextType,
@@ -893,7 +895,7 @@ function compileSubcomponents(
   editingInfoComponents: InternalEditingInfo["components"] | undefined,
   configPrefix: string,
   compiledComponentConfig: CompiledCustomComponentConfig,
-  configAfterAuto: ComponentConfig | null, // null means that we don't want auto
+  configAfterAuto: NoCodeComponentEntry | null, // null means that we don't want auto
   cache: CompilationCache
 ) {
   const componentDefinition = findComponentDefinition(
@@ -1039,7 +1041,7 @@ function calculateWidths(
 }
 
 function itemFieldsForEach(
-  config: ComponentConfig,
+  config: NoCodeComponentEntry,
   compilationContext: CompilationContextType,
   callback: (arg: {
     collectionSchemaProp:
@@ -1076,7 +1078,8 @@ function itemFieldsForEach(
         }
       }
 
-      const value: Array<ComponentConfig> = dotNotationGet(config, path) ?? [];
+      const value: Array<NoCodeComponentEntry> =
+        dotNotationGet(config, path) ?? [];
 
       value.forEach((_, index) => {
         if (itemFields) {

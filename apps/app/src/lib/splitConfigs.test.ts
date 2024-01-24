@@ -1,4 +1,4 @@
-import { ComponentConfig } from "@easyblocks/core";
+import { NoCodeComponentEntry } from "@easyblocks/core";
 import { splitConfigIntoSingleLocaleConfigs } from "./splitConfigs";
 
 const locales = [
@@ -188,7 +188,7 @@ const polishCard2 = {
   },
 };
 
-const config: ComponentConfig = {
+const config: NoCodeComponentEntry = {
   _template: "$LanguageSection",
   _id: "section1",
   textProp: localDog.config,

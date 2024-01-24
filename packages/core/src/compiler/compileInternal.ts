@@ -1,7 +1,7 @@
 import {
   CompilationMetadata,
   CompiledShopstoryComponentConfig,
-  ComponentConfig,
+  NoCodeComponentEntry,
 } from "../types";
 import { CompilationCache } from "./CompilationCache";
 import { normalize } from "./normalize";
@@ -12,11 +12,11 @@ import { getDevicesWidths } from "./devices";
 export type CompileInternalReturnType = {
   compiled: CompiledShopstoryComponentConfig;
   meta: CompilationMetadata;
-  configAfterAuto?: ComponentConfig;
+  configAfterAuto?: NoCodeComponentEntry;
 };
 
 export function compileInternal(
-  configComponent: ComponentConfig,
+  configComponent: NoCodeComponentEntry,
   compilationContext: CompilationContextType,
   cache = new CompilationCache()
 ): CompileInternalReturnType {

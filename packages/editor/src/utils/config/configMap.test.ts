@@ -1,4 +1,4 @@
-import { ComponentConfig } from "@easyblocks/core";
+import { NoCodeComponentEntry } from "@easyblocks/core";
 import {
   CompilationContextType,
   createTestCompilationContext,
@@ -27,7 +27,7 @@ const blueCard = createCard("blue");
 const testCompilationContext = createTestCompilationContext();
 
 describe("configMap", () => {
-  const config: ComponentConfig = {
+  const config: NoCodeComponentEntry = {
     _id: "123",
     _template: "$Root",
     image: {
@@ -209,7 +209,7 @@ describe("configMap", () => {
   });
 
   test("properly maps component schema props", () => {
-    const config: ComponentConfig = {
+    const config: NoCodeComponentEntry = {
       _id: "123",
       _template: "$Root",
       image: {

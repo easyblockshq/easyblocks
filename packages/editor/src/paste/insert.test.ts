@@ -1,4 +1,7 @@
-import { ComponentConfig, NoCodeComponentDefinition } from "@easyblocks/core";
+import {
+  NoCodeComponentEntry,
+  NoCodeComponentDefinition,
+} from "@easyblocks/core";
 import * as internals from "@easyblocks/core/_internals";
 import { uniqueId } from "@easyblocks/utils";
 import { Form } from "../form";
@@ -23,8 +26,8 @@ const createForm = (
 };
 
 const createConfigComponent = (
-  init: Partial<ComponentConfig> = {}
-): ComponentConfig => ({
+  init: Partial<NoCodeComponentEntry> = {}
+): NoCodeComponentEntry => ({
   _id: uniqueId(),
   _template: "",
   ...init,

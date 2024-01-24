@@ -1,7 +1,7 @@
 import { BaseEditor } from "slate";
 import { ReactEditor } from "slate-react";
 import {
-  ComponentConfig,
+  NoCodeComponentEntry,
   NoCodeComponentEditingFunctionInput,
   NoCodeComponentEditingFunctionResult,
 } from "../../../types";
@@ -14,7 +14,7 @@ export interface Text {
   highlightType?: "text" | "textWrapper";
   color: Record<string, any>;
   font: Record<string, any>;
-  TextWrapper: [ComponentConfig] | [];
+  TextWrapper: [NoCodeComponentEntry] | [];
 }
 
 export interface ParagraphElement {

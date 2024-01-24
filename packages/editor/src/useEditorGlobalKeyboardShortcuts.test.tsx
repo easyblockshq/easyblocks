@@ -1,4 +1,4 @@
-import { ComponentConfig } from "@easyblocks/core";
+import { NoCodeComponentEntry } from "@easyblocks/core";
 import { dotNotationSet } from "@easyblocks/utils";
 import { createEvent, fireEvent, render } from "@testing-library/react";
 import React from "react";
@@ -329,7 +329,7 @@ describe("copy", () => {
   });
 
   it("Should handle copy", () => {
-    const expectedData: ComponentConfig = { _template: "$component" };
+    const expectedData: NoCodeComponentEntry = { _template: "$component" };
 
     renderTestComponent({
       focussedField: ["data.0"],

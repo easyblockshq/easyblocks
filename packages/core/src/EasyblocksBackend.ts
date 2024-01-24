@@ -1,7 +1,7 @@
 import { getAppUrlRoot } from "./getAppRootUrl";
 import {
   Backend,
-  ComponentConfig,
+  NoCodeComponentEntry,
   UserDefinedTemplate,
   Document,
 } from "./types";
@@ -44,7 +44,7 @@ export type DocumentWithResolvedConfigDTO = DocumentDTO & {
 };
 
 export type ConfigDTO = {
-  config: ComponentConfig;
+  config: NoCodeComponentEntry;
   created_at: DateString;
   id: string;
   metadata: Record<string, unknown> | null;
@@ -279,7 +279,7 @@ export class EasyblocksBackend implements Backend {
     },
     create: async (input: {
       label: string;
-      entry: ComponentConfig;
+      entry: NoCodeComponentEntry;
       width?: number;
       widthAuto?: boolean;
     }): Promise<UserDefinedTemplate> => {
@@ -360,7 +360,7 @@ export class EasyblocksBackend implements Backend {
 
 function documentDTOToDocument(
   documentDTO: DocumentDTO,
-  entry: ComponentConfig
+  entry: NoCodeComponentEntry
 ): Document {
   if (!documentDTO.root_container) {
     throw new Error("unexpected server error");

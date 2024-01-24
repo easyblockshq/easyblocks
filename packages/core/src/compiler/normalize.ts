@@ -1,10 +1,10 @@
-import { ComponentConfig } from "../types";
+import { NoCodeComponentEntry } from "../types";
 import { normalizeComponent } from "./definitions";
 import { CompilationContextType } from "./types";
 
 export function normalize(
-  configComponent: Omit<ComponentConfig, "_id"> & { _id?: string },
+  configComponent: Omit<NoCodeComponentEntry, "_id"> & { _id?: string },
   compilationContext: CompilationContextType
-): ComponentConfig {
+): NoCodeComponentEntry {
   return normalizeComponent(configComponent, compilationContext);
 }

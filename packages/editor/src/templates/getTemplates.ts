@@ -1,6 +1,6 @@
 import {
   buildRichTextNoCodeEntry,
-  ComponentConfig,
+  NoCodeComponentEntry,
   InternalTemplate,
   Template,
   UserDefinedTemplate,
@@ -19,7 +19,7 @@ function getDefaultTemplateForDefinition(
   def: InternalComponentDefinition
 ): InternalTemplate {
   // Text has different way of building a default config
-  const config: ComponentConfig =
+  const config: NoCodeComponentEntry =
     def.id === "@easyblocks/rich-text"
       ? buildRichTextNoCodeEntry()
       : {
@@ -70,7 +70,7 @@ function getNecessaryDefaultTemplates(
 }
 
 function normalizeTextLocales(
-  config: ComponentConfig,
+  config: NoCodeComponentEntry,
   editorContext: EditorContextType
 ) {
   return configMap(config, editorContext, ({ value, schemaProp }) => {

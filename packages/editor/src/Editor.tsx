@@ -1,7 +1,7 @@
 import {
   CompilationCache,
   CompilationMetadata,
-  ComponentConfig,
+  NoCodeComponentEntry,
   Config,
   Document,
   ExternalData,
@@ -289,7 +289,7 @@ const EditorWrapper = memo(
 type EditorContentProps = EditorProps & {
   compilationContext: CompilationContextType;
   initialDocument: Document | null;
-  initialEntry: ComponentConfig;
+  initialEntry: NoCodeComponentEntry;
   heightMode?: "viewport" | "full";
 };
 
@@ -310,7 +310,7 @@ function parseExternalDataId(externalDataId: string): {
 function useBuiltContent(
   editorContext: EditorContextType,
   config: Config,
-  rawContent: ComponentConfig,
+  rawContent: NoCodeComponentEntry,
   externalData: ExternalData,
   onExternalDataChange: ExternalDataChangeHandler
 ): NonEmptyRenderableContent & {
@@ -319,7 +319,7 @@ function useBuiltContent(
   const buildEntryResult = useRef<ReturnType<typeof buildEntry>>();
 
   // cached inputs (needed to calculated "inputChanged")
-  const inputRawContent = useRef<ComponentConfig>();
+  const inputRawContent = useRef<NoCodeComponentEntry>();
   const inputIsEditing = useRef<boolean>();
   const inputBreakpointIndex = useRef<string>();
 
@@ -469,7 +469,7 @@ const EditorContent = ({
   const [isEditing, setEditing] = useState(true);
   const [componentPickerData, setComponentPickerData] = useState<
     | {
-        promiseResolve: (config: ComponentConfig | undefined) => void;
+        promiseResolve: (config: NoCodeComponentEntry | undefined) => void;
         config: OpenComponentPickerConfig;
       }
     | undefined
@@ -492,7 +492,7 @@ const EditorContent = ({
     setEditing(!isEditing);
   }, [isEditing]);
 
-  const closeComponentPickerModal = (config?: ComponentConfig) => {
+  const closeComponentPickerModal = (config?: NoCodeComponentEntry) => {
     setComponentPickerData(undefined);
     componentPickerData!.promiseResolve(config);
   };
@@ -1087,7 +1087,7 @@ function useIframeSize({
 }
 
 function adaptRemoteConfig(
-  config: ComponentConfig,
+  config: NoCodeComponentEntry,
   compilationContext: CompilationContextType
 ) {
   const withoutLocalizedFlag = removeLocalizedFlag(config, compilationContext);
@@ -1167,11 +1167,11 @@ function getMostCommonSubPath(path1: string, path2: string) {
 }
 
 function findConfigById(
-  config: ComponentConfig,
+  config: NoCodeComponentEntry,
   context: CompilationContextType,
   configId: string
-): ComponentConfig | undefined {
-  let foundConfig: ComponentConfig | undefined;
+): NoCodeComponentEntry | undefined {
+  let foundConfig: NoCodeComponentEntry | undefined;
 
   traverseComponents(config, context, ({ componentConfig }) => {
     if (foundConfig) {

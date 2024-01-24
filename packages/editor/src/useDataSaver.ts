@@ -1,4 +1,4 @@
-import { ComponentConfig, Document } from "@easyblocks/core";
+import { NoCodeComponentEntry, Document } from "@easyblocks/core";
 import { deepClone, deepCompare, sleep } from "@easyblocks/utils";
 import { useEffect, useRef, useState } from "react";
 import { EditorContextType } from "./EditorContext";
@@ -22,7 +22,7 @@ export function useDataSaver(
    * This state variable is going to be used ONLY for comparison with local config in case of missing document.
    * It's not going to change at any time during the lifecycle of this hook.
    */
-  const [initialConfigInCaseOfMissingDocument] = useState<ComponentConfig>(
+  const [initialConfigInCaseOfMissingDocument] = useState<NoCodeComponentEntry>(
     deepClone(editorContext.form.values)
   );
   const onTickRef = useRef<() => Promise<void>>(() => Promise.resolve());

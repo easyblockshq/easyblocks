@@ -1,6 +1,6 @@
 import {
   ComponentCollectionSchemaProp,
-  ComponentConfig,
+  NoCodeComponentEntry,
   ComponentSchemaProp,
   SchemaProp,
 } from "@easyblocks/core";
@@ -41,7 +41,7 @@ const insertCommand = ({
     fieldName: schema?.prop,
   });
 
-  return (path: string, index: number, item: ComponentConfig) => {
+  return (path: string, index: number, item: NoCodeComponentEntry) => {
     const itemDefinition = findComponentDefinition(item, context);
     if (!itemDefinition) {
       return null;

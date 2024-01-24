@@ -1,5 +1,5 @@
 import { testCompilationContext } from "../testUtils";
-import { ComponentConfig } from "../types";
+import { NoCodeComponentEntry } from "../types";
 import { configFindAllPaths } from "./configFindAllPaths";
 import { CompilationContextType } from "./types";
 
@@ -35,7 +35,7 @@ const compilationContext: CompilationContextType = {
   },
 };
 
-const testConfig: ComponentConfig = {
+const testConfig: NoCodeComponentEntry = {
   _id: "",
   _template: "$TestComponent1",
   Component: [
@@ -61,7 +61,7 @@ test("finds all paths for $TestComponent2", () => {
     configFindAllPaths(
       testConfig,
       compilationContext,
-      (config): config is ComponentConfig => {
+      (config): config is NoCodeComponentEntry => {
         return config._template === "$TestComponent2";
       }
     )

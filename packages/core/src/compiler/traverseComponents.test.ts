@@ -1,4 +1,4 @@
-import { ComponentConfig } from "@easyblocks/core";
+import { NoCodeComponentEntry } from "@easyblocks/core";
 import { createTestCompilationContext } from "../testUtils";
 import { traverseComponents } from "./traverseComponents";
 import { CompilationContextType } from "./types";
@@ -23,7 +23,7 @@ const blueCard = createCard("blue");
 test("invokes callback for each valid schema prop from config", () => {
   const callback = jest.fn();
 
-  const config: ComponentConfig = {
+  const config: NoCodeComponentEntry = {
     _id: "xxx",
     _template: "$Root",
     image: {

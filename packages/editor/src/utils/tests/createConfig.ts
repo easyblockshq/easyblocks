@@ -1,6 +1,8 @@
-import type { ComponentConfig } from "@easyblocks/core";
+import type { NoCodeComponentEntry } from "@easyblocks/core";
 
-function createConfig(init: Partial<ComponentConfig> = {}): ComponentConfig {
+function createConfig(
+  init: Partial<NoCodeComponentEntry> = {}
+): NoCodeComponentEntry {
   return { _template: "", ...init };
 }
 

@@ -1,54 +1,50 @@
 import {
-  ComponentConfig,
+  NoCodeComponentEntry,
   getFallbackForLocale,
   Locale,
 } from "@easyblocks/core";
 
-function isLocalizedText(configComponent: ComponentConfig) {
+function isLocalizedText(entry: NoCodeComponentEntry) {
   const LOCAL_PREFIX = "local.";
-  return (configComponent?.id ?? "").startsWith(LOCAL_PREFIX);
+  return (entry?.id ?? "").startsWith(LOCAL_PREFIX);
 }
 
 function extractSingleLocaleConfigs(
-  configComponent: ComponentConfig,
+  entry: NoCodeComponentEntry,
   localeCode: string,
   locales: Locale[]
 ): any {
-  if (configComponent === null) {
+  if (entry === null) {
     return;
   }
-  if (typeof configComponent !== "object") {
-    return configComponent;
+  if (typeof entry !== "object") {
+    return entry;
   }
-  if (Array.isArray(configComponent)) {
-    return configComponent.map((value) =>
+  if (Array.isArray(entry)) {
+    return entry.map((value) =>
       extractSingleLocaleConfigs(value, localeCode, locales)
     );
   }
-  if (configComponent.__localized !== true) {
+  if (entry.__localized !== true) {
     return Object.fromEntries(
-      Object.entries(configComponent).map(([key, value]) => {
+      Object.entries(entry).map(([key, value]) => {
         return [key, extractSingleLocaleConfigs(value, localeCode, locales)];
       })
     );
   }
-  if (isLocalizedText(configComponent)) {
-    const stringValue = configComponent?.value?.[localeCode];
+  if (isLocalizedText(entry)) {
+    const stringValue = entry?.value?.[localeCode];
     if (stringValue === null || stringValue === undefined) {
       return {
-        id: configComponent.id,
+        id: entry.id,
         value: {
-          [localeCode]: getFallbackForLocale(
-            configComponent.value,
-            localeCode,
-            locales
-          ),
+          [localeCode]: getFallbackForLocale(entry.value, localeCode, locales),
           __fallback: true,
         },
       };
     } else {
       return {
-        id: configComponent.id,
+        id: entry.id,
         value: {
           [localeCode]: stringValue,
         },
@@ -56,7 +52,7 @@ function extractSingleLocaleConfigs(
     }
   }
 
-  const localeCollection = configComponent[localeCode];
+  const localeCollection = entry[localeCode];
   if (localeCollection) {
     return {
       [localeCode]: extractSingleLocaleConfigs(
@@ -68,7 +64,7 @@ function extractSingleLocaleConfigs(
   } else {
     return {
       [localeCode]: extractSingleLocaleConfigs(
-        getFallbackForLocale(configComponent, localeCode, locales),
+        getFallbackForLocale(entry, localeCode, locales),
         localeCode,
         locales
       ),
@@ -97,10 +93,10 @@ function extractSingleLocaleConfigs(
  */
 
 function splitConfigIntoSingleLocaleConfigs(
-  config: ComponentConfig,
+  config: NoCodeComponentEntry,
   locales: Locale[]
 ) {
-  const localisedConfigs: { [locale: string]: ComponentConfig } = {};
+  const localisedConfigs: { [locale: string]: NoCodeComponentEntry } = {};
 
   locales.forEach((locale) => {
     localisedConfigs[locale.code] = extractSingleLocaleConfigs(

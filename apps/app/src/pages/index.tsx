@@ -1,31 +1,13 @@
-import {
-  FileTextIcon,
-  LockClosedIcon,
-  PlusIcon,
-  ExitIcon,
-} from "@radix-ui/react-icons";
-import {
-  AlertDialog,
-  Box,
-  Button,
-  Flex,
-  Grid,
-  Heading,
-  Text,
-  Link,
-} from "@radix-ui/themes";
-import {
-  createClientComponentClient,
-  createPagesServerClient,
-} from "@supabase/auth-helpers-nextjs";
+import { ProjectCard } from "@/components/Card";
+import { Root } from "@/components/Root";
+import { PlusIcon } from "@radix-ui/react-icons";
+import { AlertDialog, Button, Flex, Link } from "@radix-ui/themes";
+import { createPagesServerClient } from "@supabase/auth-helpers-nextjs";
 import { AuthSession } from "@supabase/supabase-js";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Database } from "../infrastructure/supabaseSchema";
-import { Container } from "@/components/Container";
-import { ProjectCard } from "@/components/Card";
-import { Root } from "@/components/Root";
 
 function HomePage({
   user,
@@ -52,7 +34,7 @@ function HomePage({
         Welcome to Easyblocks. In this panel you can manage your projects, each
         project is a storage and version control for your documents. Easyblocks
         is open-source so you can build your own backend if you want, however,
-        it's the simplest way to start. Enjoy!
+        it&apos;s the simplest way to start. Enjoy!
       </p>
 
       <div className="mt-12 mb-6 flex flex-row gap-2 items-center justify-between">
@@ -71,7 +53,7 @@ function HomePage({
             <AlertDialog.Description size="2">
               This is an early version of Easyblocks panel and adding new
               projects is not yet supported. If you want more projects, contact
-              us via email, we'll handle it:{" "}
+              us via email, we&apos;ll handle it:{" "}
               <Link href="mailto:andrzej@easyblocks.io">
                 andrzej@easyblocks.io
               </Link>

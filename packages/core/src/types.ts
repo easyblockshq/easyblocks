@@ -4,7 +4,7 @@ import { Locale } from "./locales";
 
 export type ScalarOrCollection<T> = T | Array<T>;
 
-export type RefMap = { [key: string]: ComponentConfig };
+export type RefMap = { [key: string]: NoCodeComponentEntry };
 
 export type PlaceholderAppearance = {
   width?: number;
@@ -18,7 +18,7 @@ export interface ComponentConfigBase<Identifier extends string> {
   _id: string;
 }
 
-export type ComponentConfig = {
+export type NoCodeComponentEntry = {
   _template: string; // instance of the component (unique id)
   _ref?: string; // ref of the component,
   _id: string;
@@ -334,7 +334,7 @@ export type UserDefinedTemplate = {
   label: string;
   thumbnail?: string;
   thumbnailLabel?: string;
-  entry: ComponentConfig;
+  entry: NoCodeComponentEntry;
   isUserDefined: true;
   width?: number;
   widthAuto?: boolean;
@@ -345,7 +345,7 @@ export type InternalTemplate = {
   label?: string;
   thumbnail?: string;
   thumbnailLabel?: string;
-  entry: ComponentConfig;
+  entry: NoCodeComponentEntry;
   isUserDefined?: false;
   width?: number;
   widthAuto?: boolean;
@@ -552,7 +552,7 @@ export type CustomTypeDefinition =
 export type Document = {
   id: string;
   version: number;
-  entry: ComponentConfig;
+  entry: NoCodeComponentEntry;
 };
 
 export type Backend = {
@@ -567,7 +567,7 @@ export type Backend = {
     getAll: () => Promise<UserDefinedTemplate[]>;
     create: (payload: {
       label: string;
-      entry: ComponentConfig;
+      entry: NoCodeComponentEntry;
       width?: number;
       widthAuto?: boolean;
     }) => Promise<UserDefinedTemplate>;
@@ -796,7 +796,7 @@ export type RenderableContent =
 export type RenderableDocument = {
   renderableContent: CompiledShopstoryComponentConfig | null;
   meta: CompilationMetadata;
-  configAfterAuto?: ComponentConfig;
+  configAfterAuto?: NoCodeComponentEntry;
 };
 
 export type AnyField = Field & { [key: string]: any };
@@ -910,7 +910,7 @@ export type ComponentPlaceholder = {
 /**
  * @public
  */
-export type ShopstoryClientInput = ComponentConfig | null | undefined;
+export type ShopstoryClientInput = NoCodeComponentEntry | null | undefined;
 
 /**
  * @public
@@ -937,7 +937,7 @@ export type EditorSidebarPreviewOptions = {
 export interface ConfigModel {
   id: string;
   parent_id: string | null;
-  config: ComponentConfig;
+  config: NoCodeComponentEntry;
   project_id: string;
   created_at: string;
 }
@@ -963,7 +963,7 @@ export type Metadata = CompilationMetadata & {
 
 export type CompilerModule = {
   compile: (
-    content: ComponentConfig,
+    content: NoCodeComponentEntry,
     config: Config,
     contextParams: ContextParams
   ) => {
@@ -984,7 +984,7 @@ export type CompilerModule = {
   validate: (input: unknown) =>
     | {
         isValid: true;
-        input: Document | ComponentConfig | null | undefined;
+        input: Document | NoCodeComponentEntry | null | undefined;
       }
     | { isValid: false };
 };

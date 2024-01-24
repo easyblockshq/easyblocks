@@ -4,7 +4,7 @@ test("idle", () => {
 });
 
 // import {
-//   ComponentConfig,
+//   NoCodeComponentEntry,
 //   Document,
 //   DocumentDTO,
 //   DocumentWithResolvedConfigDTO,
@@ -31,7 +31,7 @@ test("idle", () => {
 // });
 
 // function createEditorContext(
-//   initialConfig: ComponentConfig,
+//   initialConfig: NoCodeComponentEntry,
 //   ignoreCrud?: boolean
 // ): {
 //   editorContext: EditorContextType;
@@ -39,7 +39,7 @@ test("idle", () => {
 //   mockUpdate: any;
 //   mockRemove: ControllableMockAsyncFunction<NonNullable<TextSyncers["remove"]>>;
 //   mockSaveConfig: ControllableMockAsyncFunction<EditorContextType["save"]>;
-//   initialConfig: ComponentConfig;
+//   initialConfig: NoCodeComponentEntry;
 // } {
 //   const editorContext: EditorContextType = {
 //     ...testEditorContext,
@@ -90,7 +90,7 @@ test("idle", () => {
 //   };
 // }
 
-// const textItems: Array<ComponentConfig> = [
+// const textItems: Array<NoCodeComponentEntry> = [
 //   {
 //     _template: "@easyblocks/text",
 //     value: {
@@ -617,7 +617,7 @@ test("idle", () => {
 //         testApiClient.documents.createDocument = mockCreateDocument;
 //         testApiClient.documents.updateDocument = mockUpdateDocument;
 
-//         const initialConfig: ComponentConfig = {
+//         const initialConfig: NoCodeComponentEntry = {
 //           _template: "$RootSections",
 //           data: [
 //             {

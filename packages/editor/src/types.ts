@@ -1,7 +1,7 @@
 import {
   CompilationMetadata,
   CompiledShopstoryComponentConfig,
-  ComponentConfig,
+  NoCodeComponentEntry,
   ContextParams,
   ExternalData,
   ExternalReference,
@@ -48,7 +48,7 @@ export type RemoveItemActionType = {
 export type InsertItemActionType = {
   name: string;
   index: number;
-  block: ComponentConfig;
+  block: NoCodeComponentEntry;
 };
 
 export type DuplicateItemActionType = {
@@ -59,7 +59,7 @@ export type DuplicateItemActionType = {
 
 export type OpenTemplateModalActionCreate = {
   mode: "create";
-  config: ComponentConfig;
+  config: NoCodeComponentEntry;
   width?: number;
   widthAuto?: boolean;
 };
@@ -76,17 +76,17 @@ export type OpenTemplateModalAction =
 export type ActionsType = {
   openComponentPicker: (
     config: OpenComponentPickerConfig
-  ) => Promise<ComponentConfig | undefined>;
+  ) => Promise<NoCodeComponentEntry | undefined>;
   openTemplateModal: (arg: OpenTemplateModalAction) => void;
   moveItems: (
     fieldNames: Array<string>,
     direction: "top" | "right" | "bottom" | "left"
   ) => void;
-  replaceItems: (paths: Array<string>, newConfig: ComponentConfig) => void;
+  replaceItems: (paths: Array<string>, newConfig: NoCodeComponentEntry) => void;
   removeItems: (fieldNames: Array<string>) => void;
   insertItem: (insertItemProps: InsertItemActionType) => void;
   duplicateItems: (fieldNames: Array<string>) => void;
-  pasteItems: (items: Array<ComponentConfig>) => void;
+  pasteItems: (items: Array<NoCodeComponentEntry>) => void;
   runChange: <Callback extends () => Array<string> | void>(
     configChangeCallback: Callback
   ) => void;
@@ -107,7 +107,7 @@ export type Template = TemplateBase & {
   isGroupEmptyTemplate?: boolean;
   mapTo?: string | string[];
   isDefaultTextModifier?: boolean; // maybe to remove in the future. But we need to know which template is default text modifier!
-  entry: ComponentConfig; // this includes type and id!!!
+  entry: NoCodeComponentEntry; // this includes type and id!!!
   configId?: string;
   isRemoteUserDefined?: boolean;
   previewSettings?: {

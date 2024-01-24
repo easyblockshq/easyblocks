@@ -14,7 +14,7 @@ import {
   CompiledLocalTextReference,
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
-  ComponentConfig,
+  NoCodeComponentEntry,
   ComponentSchemaProp,
   Devices,
   ExternalReference,
@@ -108,28 +108,28 @@ export type RadioGroupSchemaPropDefinition = SchemaPropDefinition<
 
 export type ConfigComponentCompilationOutput = {
   compiledComponentConfig: CompiledComponentConfig;
-  configAfterAuto: ComponentConfig;
+  configAfterAuto: NoCodeComponentEntry;
 };
 
 export type ComponentSchemaPropDefinition = SchemaPropDefinition<
-  Array<ComponentConfig>,
+  Array<NoCodeComponentEntry>,
   Array<ConfigComponentCompilationOutput>
 >;
 
 export type ComponentCollectionSchemaPropDefinition = SchemaPropDefinition<
-  Array<ComponentConfig>,
+  Array<NoCodeComponentEntry>,
   Array<ConfigComponentCompilationOutput>
 >;
 
 export type ComponentCollectionLocalisedSchemaPropDefinition =
   SchemaPropDefinition<
-    { [locale: string]: ComponentConfig[] },
+    { [locale: string]: NoCodeComponentEntry[] },
     Array<ConfigComponentCompilationOutput>
   >;
 
 export type Component$$$SchemaPropDefinition = SchemaPropDefinition<
-  ComponentConfig,
-  ComponentConfig
+  NoCodeComponentEntry,
+  NoCodeComponentEntry
 >;
 
 export type SchemaPropDefinitionProviders = {
@@ -410,7 +410,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
 
         // FIXME: ?????
         const { configAfterAuto, compiledComponentConfig } = compileComponent(
-          arg[0] as ComponentConfig,
+          arg[0] as NoCodeComponentEntry,
           compilationContext,
           contextProps,
           serializedDefinitions || {
@@ -458,7 +458,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
       if (!Array.isArray(x)) {
         return [];
       }
-      const ret = (x || []).map((item: ComponentConfig) =>
+      const ret = (x || []).map((item: NoCodeComponentEntry) =>
         normalizeComponent(item, compilationContext)
       );
 
@@ -478,7 +478,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
       ) => {
         return arr.map((componentConfig, index) =>
           compileComponent(
-            componentConfig as ComponentConfig,
+            componentConfig as NoCodeComponentEntry,
             compilationContext,
             (contextProps.itemProps || [])[index] || {},
             serializedDefinitions,
@@ -512,7 +512,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         if (x === undefined) {
           return {};
         }
-        const normalized: { [locale: string]: ComponentConfig[] } = {};
+        const normalized: { [locale: string]: NoCodeComponentEntry[] } = {};
         for (const locale in x) {
           if (locale === "__fallback") {
             continue;
@@ -1172,11 +1172,11 @@ function externalReferenceGetHash(
 }
 
 export function normalizeComponent(
-  configComponent: Omit<ComponentConfig, "_id"> & { _id?: string },
+  configComponent: Omit<NoCodeComponentEntry, "_id"> & { _id?: string },
   compilationContext: CompilationContextType,
   isRef?: boolean
-): ComponentConfig {
-  const ret: ComponentConfig = {
+): NoCodeComponentEntry {
+  const ret: NoCodeComponentEntry = {
     _id: configComponent._id ?? uniqueId(),
     _template: configComponent._template,
     _master: configComponent._master,

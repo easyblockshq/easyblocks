@@ -1,4 +1,4 @@
-import { ComponentConfig, Locale } from "@easyblocks/core";
+import { NoCodeComponentEntry } from "@easyblocks/core";
 import { toArray } from "@easyblocks/utils";
 import { buildLocales } from "../../../helpers/buildLocales";
 import {
@@ -65,7 +65,7 @@ const handler: AuthenticatedNextApiHandler = async (
 
         const locales = buildLocales(localeCodes);
         const singleLocaleConfig = splitConfigIntoSingleLocaleConfigs(
-          data[0].config as ComponentConfig,
+          data[0].config as NoCodeComponentEntry,
           locales
         );
 

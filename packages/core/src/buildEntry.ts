@@ -4,7 +4,7 @@ import type {
   CompilationMetadata,
   CompiledShopstoryComponentConfig,
   CompilerModule,
-  ComponentConfig,
+  NoCodeComponentEntry,
   Config,
   ExternalData,
   ExternalParams,
@@ -15,7 +15,7 @@ import type {
 import { compile, findExternals, validate } from "./compiler";
 
 type BuildEntryOptions = {
-  entry: ComponentConfig;
+  entry: NoCodeComponentEntry;
   config: Config;
   locale: string;
   compiler?: CompilerModule;
@@ -49,7 +49,7 @@ function buildEntry({
   renderableContent: CompiledShopstoryComponentConfig;
   meta: CompilationMetadata;
   externalData: RequestedExternalData;
-  configAfterAuto?: ComponentConfig;
+  configAfterAuto?: NoCodeComponentEntry;
 } {
   if (!compiler.validate(entry)) {
     throw new Error("Invalid entry");

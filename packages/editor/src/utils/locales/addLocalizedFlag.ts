@@ -1,9 +1,9 @@
-import { ComponentConfig } from "@easyblocks/core";
+import { NoCodeComponentEntry } from "@easyblocks/core";
 import { CompilationContextType } from "@easyblocks/core/_internals";
 import { configMap } from "../config/configMap";
 
 export function addLocalizedFlag(
-  config: ComponentConfig,
+  config: NoCodeComponentEntry,
   context: CompilationContextType
 ) {
   return configMap(config, context, ({ value, schemaProp }) => {

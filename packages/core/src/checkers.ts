@@ -5,7 +5,7 @@ import {
   NonEmptyRenderableContent,
   EmptyRenderableContent,
   Document,
-  ComponentConfig,
+  NoCodeComponentEntry,
   LocalValue,
   ExternalData,
   ExternalDataCompoundResourceResolvedResult,
@@ -61,7 +61,7 @@ function isDocument(value: unknown): value is Document {
   return documentSchema.safeParse(value).success;
 }
 
-function isComponentConfig(value: any): value is ComponentConfig {
+function isComponentConfig(value: any): value is NoCodeComponentEntry {
   return (
     typeof value === "object" &&
     typeof value?._template === "string" &&

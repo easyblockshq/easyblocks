@@ -1,4 +1,8 @@
-import { ComponentConfig, ComponentSchemaProp, Field } from "@easyblocks/core";
+import {
+  NoCodeComponentEntry,
+  ComponentSchemaProp,
+  Field,
+} from "@easyblocks/core";
 import {
   findComponentDefinitionById,
   parsePath,
@@ -13,7 +17,7 @@ import { isMixedFieldValue } from "../components/isMixedFieldValue";
 import { PanelContext } from "./BlockFieldPlugin";
 
 interface IdentityFieldProps
-  extends FieldRenderProps<ComponentConfig, HTMLElement> {
+  extends FieldRenderProps<NoCodeComponentEntry, HTMLElement> {
   field: Field;
 }
 

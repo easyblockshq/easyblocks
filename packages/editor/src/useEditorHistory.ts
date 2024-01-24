@@ -1,4 +1,4 @@
-import type { ComponentConfig } from "@easyblocks/core";
+import type { NoCodeComponentEntry } from "@easyblocks/core";
 import { useRef } from "react";
 import ReactDOM from "react-dom";
 import { EditorHistory, HistoryEntry } from "./EditorHistory";
@@ -8,7 +8,7 @@ interface UseEditorHistoryParameters {
 }
 
 interface EditorHistoryChange {
-  config?: ComponentConfig;
+  config?: NoCodeComponentEntry;
   focusedField: Array<string>;
   type: "undo" | "redo";
 }

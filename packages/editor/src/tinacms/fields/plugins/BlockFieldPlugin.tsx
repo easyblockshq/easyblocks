@@ -1,5 +1,5 @@
 import {
-  ComponentConfig,
+  NoCodeComponentEntry,
   ComponentSchemaProp,
   ExternalData,
   ExternalReference,
@@ -48,7 +48,7 @@ export interface BlocksFieldDefinition extends InternalField {
 }
 
 interface BlockFieldProps
-  extends FieldRenderProps<ComponentConfig[] | FieldMixedValue> {
+  extends FieldRenderProps<NoCodeComponentEntry[] | FieldMixedValue> {
   field: BlocksFieldDefinition;
   form: FormApi;
   tinaForm: Form;
@@ -63,7 +63,7 @@ const BlockField = ({ field, input, isLabelHidden }: BlockFieldProps) => {
   const { openComponentPicker } = actions;
   const isMixed = isMixedFieldValue(input.value);
 
-  const config: ComponentConfig | null = (() => {
+  const config: NoCodeComponentEntry | null = (() => {
     if (isMixed) {
       return null;
     }
@@ -275,7 +275,7 @@ const SubComponentPanelButton = ({
 
 function getSidebarPreview(
   componentDefinition: NoCodeComponentDefinition,
-  entryAfterAuto: ComponentConfig,
+  entryAfterAuto: NoCodeComponentEntry,
   externalData: ExternalData,
   editorContext: EditorContextType
 ): SidebarPreviewVariant | undefined {
