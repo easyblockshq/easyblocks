@@ -1,6 +1,7 @@
-import { CompilationContextType, Form } from "@easyblocks/app-utils";
+import { CompilationContextType } from "@easyblocks/core/_internals";
 import { testEditorContext } from "../utils/tests";
 import { destinationResolver } from "./destinationResolver";
+import { Form } from "../form";
 
 function createForm(initialValues: Record<string, any>): Form {
   return new Form({

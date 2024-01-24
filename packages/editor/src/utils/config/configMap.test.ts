@@ -1,5 +1,9 @@
 import { ComponentConfig } from "@easyblocks/core";
 import { configMap } from "./configMap";
+import {
+  testCompilationContext,
+  CompilationContextType,
+} from "@easyblocks/core/_internals";
 
 function createCard(color: string) {
   return {
@@ -8,7 +12,8 @@ function createCard(color: string) {
     image: {
       $res: true,
       b4: {
-        id: "unresolved card image id",
+        externalId: "unresolved card image id",
+        widgetId: "image_widget",
       },
     },
   };
@@ -20,11 +25,13 @@ const blueCard = createCard("blue");
 
 describe("configMap", () => {
   const config: ComponentConfig = {
+    _id: "123",
     _template: "$Root",
     image: {
       $res: true,
       b4: {
-        id: "unresolved id",
+        externalId: "unresolved id",
+        widgetId: "image_widget",
       },
     },
     margin: {
@@ -56,8 +63,7 @@ describe("configMap", () => {
             },
             {
               prop: "image",
-              type: "resource",
-              resourceType: "image",
+              type: "image",
             },
             {
               prop: "text",
@@ -86,8 +92,7 @@ describe("configMap", () => {
             },
             {
               prop: "image",
-              type: "resource",
-              resourceType: "image",
+              type: "image",
             },
           ],
         },
@@ -105,8 +110,8 @@ describe("configMap", () => {
       ({ value, schemaProp, path }) => {
         if (schemaProp.type === "image") {
           return {
-            id: value.id,
-            value: value.id,
+            id: value.externalId,
+            value: value.externalId,
             path,
           };
         } else if (schemaProp.type === "text") {
@@ -122,6 +127,7 @@ describe("configMap", () => {
     );
 
     expect(mappedConfig).toEqual({
+      _id: "123",
       _template: "$Root",
       image: {
         $res: true,
@@ -201,9 +207,11 @@ describe("configMap", () => {
 
   test("properly maps component schema props", () => {
     const config: ComponentConfig = {
+      _id: "123",
       _template: "$Root",
       image: {
-        id: null,
+        externalId: null,
+        widgetId: "image_widget",
       },
       margin: {
         $res: true,

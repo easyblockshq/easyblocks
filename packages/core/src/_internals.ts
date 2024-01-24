@@ -40,3 +40,5 @@ export {
   ComponentBuilder,
   type ComponentBuilderProps,
 } from "./components/ComponentBuilder/ComponentBuilder";
+
+export { testCompilationContext } from "./testUtils";

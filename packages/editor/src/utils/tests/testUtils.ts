@@ -127,7 +127,7 @@ export const testEditorContext: EditorContextType = {
   syncTemplates: () => {},
   isAdminMode: false,
   definitions: {
-    components: [...schemas],
+    components: [],
     links: [],
     actions: [],
     textModifiers: [],
@@ -137,7 +137,7 @@ export const testEditorContext: EditorContextType = {
   devices: testDevices,
   types: testTypes,
   text: testText,
-  templates: {},
+  templates: [],
   contextParams: {
     locale: "en",
   },

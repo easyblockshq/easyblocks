@@ -1,5 +1,7 @@
 import { dotNotationGet } from "@easyblocks/utils";
-import { CompilationContextType, Form } from "@easyblocks/app-utils";
+import { CompilationContextType } from "@easyblocks/core/_internals";
+import { Form } from "./form";
+
 import {
   duplicateItems,
   logItems,
