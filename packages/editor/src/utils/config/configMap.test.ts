@@ -1,9 +1,10 @@
 import { ComponentConfig } from "@easyblocks/core";
-import { configMap } from "./configMap";
 import {
-  testCompilationContext,
   CompilationContextType,
+  createTestCompilationContext,
+  // @ts-ignore
 } from "@easyblocks/core/_internals";
+import { configMap } from "./configMap";
 
 function createCard(color: string) {
   return {
@@ -22,6 +23,8 @@ function createCard(color: string) {
 const whiteCard = createCard("#fff");
 const redCard = createCard("red");
 const blueCard = createCard("blue");
+
+const testCompilationContext = createTestCompilationContext();
 
 describe("configMap", () => {
   const config: ComponentConfig = {

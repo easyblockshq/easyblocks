@@ -193,14 +193,14 @@ function moveItems(
         moveItem(form, {
           from: index,
           name: parentPath,
-          to: index - 2,
+          to: index - 1,
         });
 
         if (!wasAnyFieldWithinCurrentGroupMoved) {
           wasAnyFieldWithinCurrentGroupMoved = true;
         }
 
-        nextFocusedFields.push(`${parentPath}.${index - 2}`);
+        nextFocusedFields.push(`${parentPath}.${index - 1}`);
       });
     });
 

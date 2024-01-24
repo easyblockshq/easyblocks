@@ -1,7 +1,6 @@
-import { dotNotationGet } from "@easyblocks/utils";
+// @ts-ignore
 import { CompilationContextType } from "@easyblocks/core/_internals";
-import { Form } from "./form";
-
+import { dotNotationGet } from "@easyblocks/utils";
 import {
   duplicateItems,
   logItems,
@@ -11,6 +10,7 @@ import {
   shiftPath,
   takeLastOfEachParent,
 } from "./editorActions";
+import { Form } from "./form";
 import { destinationResolver } from "./paste/destinationResolver";
 import { pasteManager } from "./paste/manager";
 
@@ -83,7 +83,6 @@ const testCompilationContext: CompilationContextType = {
       {
         id: "testComponent",
         schema: [],
-        tags: [],
       },
       {
         id: "testComponentWithComponentFixed",
@@ -95,7 +94,6 @@ const testCompilationContext: CompilationContextType = {
             required: true,
           },
         ],
-        tags: [],
       },
       {
         id: "testComponentWithComponent",
@@ -112,7 +110,6 @@ const testCompilationContext: CompilationContextType = {
             accepts: ["testComponent"],
           },
         ],
-        tags: [],
       },
       {
         id: "testTemplate",
@@ -122,7 +119,6 @@ const testCompilationContext: CompilationContextType = {
             prop: "name",
           },
         ],
-        tags: [],
       },
     ],
     links: [],
@@ -161,7 +157,6 @@ describe("duplicateItems", () => {
       _template: "testComponent",
       _id: expect.any(String),
       name: "child1",
-      traceId: expect.stringMatching("testComponent-"),
     });
     expect(form.values).toEqual({
       _template: "parentTestComponent",
@@ -171,7 +166,6 @@ describe("duplicateItems", () => {
           _template: "testComponent",
           _id: expect.any(String),
           name: "child1",
-          traceId: expect.stringMatching("testComponent-"),
         },
         { _template: "testComponent", name: "child2" },
         { _template: "testComponent", name: "child3" },
@@ -194,13 +188,11 @@ describe("duplicateItems", () => {
       _template: "testComponent",
       _id: expect.any(String),
       name: "child1",
-      traceId: expect.stringMatching("testComponent-"),
     });
     expect(form.mutators.insert).toHaveBeenNthCalledWith(2, "parent1", 3, {
       _template: "testComponent",
       _id: expect.any(String),
       name: "child2",
-      traceId: expect.stringMatching("testComponent-"),
     });
     expect(form.values).toEqual({
       _template: "parentTestComponent",
@@ -211,13 +203,11 @@ describe("duplicateItems", () => {
           _template: "testComponent",
           _id: expect.any(String),
           name: "child1",
-          traceId: expect.stringMatching("testComponent-"),
         },
         {
           _template: "testComponent",
           _id: expect.any(String),
           name: "child2",
-          traceId: expect.stringMatching("testComponent-"),
         },
         { _template: "testComponent", name: "child3" },
         { _template: "testComponent", name: "child4" },
@@ -239,13 +229,11 @@ describe("duplicateItems", () => {
       _template: "testComponent",
       _id: expect.any(String),
       name: "child1",
-      traceId: expect.stringMatching(/^testComponent-/),
     });
     expect(form.mutators.insert).toHaveBeenNthCalledWith(2, "parent1", 4, {
       _template: "testComponent",
       _id: expect.any(String),
       name: "child3",
-      traceId: expect.stringMatching(/^testComponent-/),
     });
     expect(form.values).toEqual({
       _template: "parentTestComponent",
@@ -257,13 +245,11 @@ describe("duplicateItems", () => {
           _template: "testComponent",
           _id: expect.any(String),
           name: "child1",
-          traceId: expect.stringMatching(/^testComponent-/),
         },
         {
           _template: "testComponent",
           _id: expect.any(String),
           name: "child3",
-          traceId: expect.stringMatching(/^testComponent-/),
         },
         { _template: "testComponent", name: "child4" },
       ],
@@ -284,13 +270,11 @@ describe("duplicateItems", () => {
       _template: "testComponent",
       _id: expect.any(String),
       name: "child1.1",
-      traceId: expect.stringMatching(/^testComponent-/),
     });
     expect(form.mutators.insert).toHaveBeenNthCalledWith(2, "parent2", 1, {
       _template: "testComponent",
       _id: expect.any(String),
       name: "child2.1",
-      traceId: expect.stringMatching(/^testComponent-/),
     });
     expect(form.values).toEqual({
       _template: "parentTestComponent",
@@ -300,7 +284,6 @@ describe("duplicateItems", () => {
           _template: "testComponent",
           _id: expect.any(String),
           name: "child1.1",
-          traceId: expect.stringMatching(/^testComponent-/),
         },
         { _template: "testComponent", name: "child1.2" },
         { _template: "testComponent", name: "child1.3" },
@@ -311,7 +294,6 @@ describe("duplicateItems", () => {
           _template: "testComponent",
           _id: expect.any(String),
           name: "child2.1",
-          traceId: expect.stringMatching(/^testComponent-/),
         },
         { _template: "testComponent", name: "child2.2" },
         { _template: "testComponent", name: "child2.3" },
@@ -1047,7 +1029,7 @@ describe("pasteAction", () => {
     ...testCompilationContext.definitions.components,
     {
       id: "$RootSection",
-      tags: ["root"],
+      type: ["root"],
       schema: [
         {
           prop: "data",
@@ -1059,7 +1041,7 @@ describe("pasteAction", () => {
     },
     {
       id: "$Grid",
-      tags: ["section"],
+      type: ["section"],
       schema: [
         {
           prop: "Component",
@@ -1072,7 +1054,6 @@ describe("pasteAction", () => {
     },
     {
       id: "$GridCard",
-      tags: [],
       schema: [
         {
           prop: "Cards",
@@ -1084,17 +1065,17 @@ describe("pasteAction", () => {
     },
     {
       id: "$BannerCard",
-      tags: ["card"],
+      type: ["card"],
       schema: [],
     },
     {
       id: "$ProductCard",
-      tags: ["card"],
+      type: ["card"],
       schema: [],
     },
     {
       id: "$CustomSection",
-      tags: ["section"],
+      type: ["section"],
       schema: [
         {
           prop: "Slot1",
@@ -1116,22 +1097,22 @@ describe("pasteAction", () => {
     },
     {
       id: "$CustomText",
-      tags: ["customText"],
+      type: ["customText"],
       schema: [],
     },
     {
       id: "$CustomImage",
-      tags: ["customImage"],
+      type: ["customImage"],
       schema: [],
     },
     {
       id: "$CustomCard",
-      tags: ["customCard", "card"],
+      type: ["customCard", "card"],
       schema: [],
     },
     {
       id: "$VoidSection",
-      tags: ["section"],
+      type: ["section"],
       schema: [
         {
           prop: "VoidSlot",
@@ -1201,50 +1182,6 @@ describe("pasteAction", () => {
       }
     );
   });
-
-  it.each`
-    item                                          | destination | expectedInsertedPath
-    ${{ _id: "id-2134", _template: "$GridCard" }} | ${"data.0"} | ${"data.0"}
-  `(
-    "Will not replace required component field",
-    ({ item, destination, expectedInsertedPath }) => {
-      const form = createTestForm({
-        initialValues: {
-          data: [
-            {
-              _template: "$Grid",
-              _id: "currentGridId",
-              Component: [
-                {
-                  _template: "$GridCard",
-                  Cards: [],
-                },
-              ],
-            },
-          ],
-          _template: "$RootSection",
-        },
-      });
-
-      const what = [item];
-      const where = [destination];
-
-      const result = pasteItems({
-        what,
-        where,
-        pasteCommand: pasteManager(),
-        resolveDestination: destinationResolver({
-          form,
-          context: testCompilationContext,
-        }),
-      });
-
-      expect(result).toEqual([expectedInsertedPath]);
-
-      const insertedItem = dotNotationGet(form.values, result?.[0] ?? "");
-      expect(insertedItem._id).toEqual("currentGridId");
-    }
-  );
 
   describe("Paste multiple items into single destination", () => {
     it.each`

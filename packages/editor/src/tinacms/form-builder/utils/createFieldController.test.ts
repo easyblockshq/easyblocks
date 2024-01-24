@@ -1,19 +1,18 @@
-import {
-  Form,
-  InferShopstoryEditorEventData,
-  InternalField,
-  RichTextChangedEvent,
-} from "@easyblocks/app-utils";
+import { AnyTinaField } from "@easyblocks/core";
 import {
   CompilationCache,
   CompilationCacheItemValue,
+  buildRichTextBlockElementComponentConfig,
+  buildRichTextComponentConfig,
+  buildRichTextLineElementComponentConfig,
+  buildRichTextPartComponentConfig,
   compileInternal,
   normalize,
 } from "@easyblocks/core/_internals";
-import { AnyTinaField } from "@easyblocks/core";
 import { dotNotationGet } from "@easyblocks/utils";
-import { isFieldPortal } from "../../../buildTinaFields";
 import { EditorContextType } from "../../../EditorContext";
+import { isFieldPortal } from "../../../buildTinaFields";
+import { Form } from "../../../form";
 import { FieldMixedValue } from "../../../types";
 import { testEditorContext } from "../../../utils/tests";
 import { createFieldController } from "./createFieldController";
@@ -39,7 +38,7 @@ afterAll(() => {
 });
 
 describe("single field", () => {
-  const fieldCustomValueField: InternalField = {
+  const fieldCustomValueField: AnyTinaField = {
     component: "",
     name: "field.custom.value",
     schemaProp: {
@@ -48,7 +47,7 @@ describe("single field", () => {
     },
   };
 
-  const fieldLocalisedCollectionFirstValueField: InternalField = {
+  const fieldLocalisedCollectionFirstValueField: AnyTinaField = {
     component: "",
     name: "field.localisedCollection.[locale].0.value",
     schemaProp: {
@@ -156,23 +155,19 @@ describe("single field", () => {
     const compiled = compileInternal(editorContext.form.values, editorContext);
 
     const fields = compiled.compiled.__editing!.fields!.filter(
-      // @ts-expect-error
       (field): field is AnyTinaField => !isFieldPortal(field)
     );
 
     const field1Controller = createFieldController({
-      // @ts-expect-error
-      field: fields[0],
-      editorContext,
-    });
-    const field2Controller = createFieldController({
-      // @ts-expect-error
       field: fields[1],
       editorContext,
     });
-    const fieldCalculatedController = createFieldController({
-      // @ts-expect-error
+    const field2Controller = createFieldController({
       field: fields[2],
+      editorContext,
+    });
+    const fieldCalculatedController = createFieldController({
+      field: fields[3],
       editorContext,
     });
 
@@ -214,7 +209,7 @@ describe("single field", () => {
 });
 
 describe("multiple fields", () => {
-  const fieldCustomValueField: InternalField = {
+  const fieldCustomValueField: AnyTinaField = {
     component: "",
     name: ["field.custom1.value", "field.custom2.value"],
     schemaProp: {
@@ -321,11 +316,9 @@ describe("rich text editor", () => {
     onChange("black");
 
     expect(postMessageMock).toHaveBeenCalledTimes(1);
-    expect(postMessageMock).toHaveBeenLastCalledWith<
-      [InferShopstoryEditorEventData<RichTextChangedEvent>, string]
-    >(
+    expect(postMessageMock).toHaveBeenLastCalledWith(
       {
-        type: "@shopstory-editor/rich-text-changed",
+        type: "@easyblocks-editor/rich-text-changed",
         payload: {
           prop: "color",
           schemaProp: { prop: "color", type: "color" },
@@ -355,11 +348,9 @@ describe("rich text editor", () => {
     onChange({ currentTarget: { value: "black" } });
 
     expect(postMessageMock).toHaveBeenCalledTimes(1);
-    expect(postMessageMock).toHaveBeenLastCalledWith<
-      [InferShopstoryEditorEventData<RichTextChangedEvent>, string]
-    >(
+    expect(postMessageMock).toHaveBeenLastCalledWith(
       {
-        type: "@shopstory-editor/rich-text-changed",
+        type: "@easyblocks-editor/rich-text-changed",
         payload: {
           prop: "color",
           schemaProp: { prop: "color", type: "color" },
@@ -382,7 +373,9 @@ describe("rich text editor", () => {
         schemaProp: {
           prop: "type",
           type: "select",
-          options: ["paragraph", "bulleted-list"],
+          params: {
+            options: ["paragraph", "bulleted-list"],
+          },
         },
       },
       editorContext,
@@ -420,49 +413,13 @@ describe("rich text editor", () => {
     onChange("black", "red");
 
     expect(postMessageMock).toHaveBeenCalledTimes(1);
-    expect(postMessageMock).toHaveBeenLastCalledWith<
-      [InferShopstoryEditorEventData<RichTextChangedEvent>, string]
-    >(
+    expect(postMessageMock).toHaveBeenLastCalledWith(
       {
-        type: "@shopstory-editor/rich-text-changed",
+        type: "@easyblocks-editor/rich-text-changed",
         payload: {
           prop: "color",
           schemaProp: { prop: "color", type: "color" },
           values: ["black", "red"],
-        },
-      },
-      "*"
-    );
-  });
-
-  test("removes $ sign from prop name before invoking on change handler", () => {
-    const editorContext = createTestEditorContext();
-
-    editorContext.focussedField.push(
-      ...["richText.elements.en.0.elements.0.elements.0"]
-    );
-
-    const { onChange } = createFieldController({
-      field: {
-        component: "",
-        name: "richText.elements.en.0.elements.0.elements.0.$color",
-        schemaProp: { prop: "$color", type: "color" },
-      },
-      editorContext,
-    });
-
-    onChange("black");
-
-    expect(postMessageMock).toHaveBeenCalledTimes(1);
-    expect(postMessageMock).toHaveBeenLastCalledWith<
-      [InferShopstoryEditorEventData<RichTextChangedEvent>, string]
-    >(
-      {
-        type: "@shopstory-editor/rich-text-changed",
-        payload: {
-          prop: "color",
-          schemaProp: { prop: "$color", type: "color" },
-          values: ["black"],
         },
       },
       "*"
@@ -557,11 +514,6 @@ describe("cache invalidation", () => {
     );
     editorContext.compilationCache.set(
       editorContext.form.values.richTextWithTextModifier.elements.en[0]
-        .elements[0].elements[0].elements[0]._id,
-      {} as CompilationCacheItemValue
-    );
-    editorContext.compilationCache.set(
-      editorContext.form.values.richTextWithTextModifier.elements.en[0]
         .elements[0].elements[1]._id,
       {} as CompilationCacheItemValue
     );
@@ -571,15 +523,15 @@ describe("cache invalidation", () => {
     const { onChange } = createFieldController({
       field: {
         component: "noop",
-        name: "richTextWithTextModifier.elements.en.0.elements.0.elements.0.actionTextModifier.0.underline",
-        schemaProp: { prop: "underline", type: "select", options: [] },
+        name: "richTextWithTextModifier.elements.en.0.elements.0.elements.0.color",
+        schemaProp: { prop: "color", type: "color" },
       },
       editorContext,
     });
 
-    onChange("hideOnHover");
+    onChange({ value: "red" });
 
-    expect(editorContext.compilationCache.remove).toHaveBeenCalledTimes(6);
+    expect(editorContext.compilationCache.remove).toHaveBeenCalledTimes(5);
     expect(editorContext.compilationCache.remove).toHaveBeenCalledWith(
       editorContext.form.values.richTextWithTextModifier._id
     );
@@ -596,32 +548,8 @@ describe("cache invalidation", () => {
     );
     expect(editorContext.compilationCache.remove).toHaveBeenCalledWith(
       editorContext.form.values.richTextWithTextModifier.elements.en[0]
-        .elements[0].elements[0].elements[0]._id
-    );
-    expect(editorContext.compilationCache.remove).toHaveBeenCalledWith(
-      editorContext.form.values.richTextWithTextModifier.elements.en[0]
         .elements[0].elements[1]._id
     );
-  });
-
-  test("removes cached compilation result of $RootSection component when $SectionWrapper changes", () => {
-    const editorContext = createTestEditorContext();
-
-    jest.spyOn(editorContext.compilationCache, "remove");
-
-    const { onChange } = createFieldController({
-      field: {
-        component: "noop",
-        name: "root.data.0.hide",
-        schemaProp: { prop: "boolean$", type: "boolean" },
-      },
-      editorContext,
-    });
-
-    onChange(true);
-
-    expect(editorContext.compilationCache.remove).toHaveBeenCalledTimes(1);
-    expect(editorContext.compilationCache.remove).toHaveBeenCalledWith("xxx");
   });
 });
 
@@ -642,58 +570,58 @@ function createTestEditorContext(): EditorContextType {
     compilationCache: new CompilationCache(),
     isEditing: true,
     definitions: {
-      actions: [],
       components: [
         ...testEditorContext.definitions.components,
         {
           id: "$ComponentWithCalculatedValue",
-          tags: [],
           schema: [
             {
               prop: "prop1",
-              type: "select$",
-              options: ["1", "2", "3", "4"],
+              type: "select",
+              responsive: true,
+              params: {
+                options: ["1", "2", "3", "4"],
+              },
             },
             {
               prop: "prop2",
               type: "select",
-              options: ["1", "2", "3", "4"],
+              params: {
+                options: ["1", "2", "3", "4"],
+              },
             },
             {
               prop: "propCalculated",
-              type: "select$",
-              options: ["1", "2", "3", "4", "5", "6", "7", "8"],
+              type: "select",
+              responsive: true,
+              params: {
+                options: ["1", "2", "3", "4", "5", "6", "7", "8"],
+              },
             },
           ],
-          styles: () => {
-            return {};
-          },
-          change: ({ value, fieldName, values }) => {
-            if (fieldName === "propCalculated") {
-              return {}; // we ignore changes of propCalculated
-            } else if (fieldName === "prop1" || fieldName === "prop2") {
+          change: ({ newValue, prop, values }) => {
+            if (prop === "propCalculated") {
+              return {};
+            }
+
+            if (prop === "prop1" || prop === "prop2") {
               // propCalculated is a sum of prop1 and prop2
               const prop1 = parseInt(
-                fieldName === "prop1" ? value : values.prop1
+                prop === "prop1" ? newValue : values.prop1
               );
               const prop2 = parseInt(
-                fieldName === "prop2" ? value : values.prop2
+                prop === "prop2" ? newValue : values.prop2
               );
 
               return {
-                [fieldName]: value,
+                [prop]: newValue,
                 propCalculated: (prop1 + prop2).toString(),
-              };
-            } else {
-              return {
-                [fieldName]: value,
               };
             }
           },
         },
         {
           id: "CustomComponent",
-          tags: [],
           schema: [
             {
               type: "string",
@@ -702,13 +630,13 @@ function createTestEditorContext(): EditorContextType {
             {
               type: "select",
               prop: "option",
-              options: ["one", "two", "three"],
+              params: {
+                options: ["one", "two", "three"],
+              },
             },
           ],
         },
       ],
-      links: [],
-      textModifiers: [actionTextModifier],
     },
     contextParams: {
       ...testEditorContext.contextParams,
@@ -720,8 +648,8 @@ function createTestEditorContext(): EditorContextType {
 
 function createTestForm() {
   return new Form({
-    id: "test",
-    label: "Test",
+    id: "",
+    label: "",
     onSubmit: () => {},
     initialValues: {
       field: {
@@ -750,7 +678,7 @@ function createTestForm() {
         },
       },
       richText: buildRichTextComponentConfig({
-        compilationContext: testEditorContext,
+        locale: testEditorContext.contextParams.locale,
         elements: [
           buildRichTextBlockElementComponentConfig("paragraph", [
             buildRichTextLineElementComponentConfig({
@@ -773,44 +701,15 @@ function createTestForm() {
         mainFont: { $res: true },
       }),
       richTextWithTextModifier: buildRichTextComponentConfig({
-        compilationContext: testEditorContext,
+        locale: testEditorContext.contextParams.locale,
         elements: [
           buildRichTextBlockElementComponentConfig("paragraph", [
             buildRichTextLineElementComponentConfig({
               elements: [
-                buildRichTextInlineWrapperElementComponentConfig({
-                  elements: [
-                    buildRichTextPartComponentConfig({
-                      color: { $res: true },
-                      font: { $res: true },
-                      value: "Lorem ipsum",
-                    }),
-                  ],
-                  actionTextModifier: [
-                    {
-                      _template: "$StandardActionStyles",
-                      _id: "bf78f7e9-3b5c-461e-8fc9-f9460860aee1",
-                      isColorOverwriteEnabled: true,
-                      color: {
-                        $res: true,
-                        xl: {
-                          value: "#0166cc",
-                        },
-                      },
-                      hoverColor: {
-                        $res: true,
-                        xl: {
-                          ref: "black",
-                          value: "black",
-                        },
-                      },
-                      isHoverColorEnabled: false,
-                      underline: "showOnHover",
-                      opacity: "1",
-                      hoverOpacity: "1",
-                      hoverOpacityAnimationDuration: "100ms",
-                    },
-                  ],
+                buildRichTextPartComponentConfig({
+                  color: { $res: true },
+                  font: { $res: true },
+                  value: "Lorem ipsum",
                 }),
                 buildRichTextPartComponentConfig({
                   color: { $res: true },

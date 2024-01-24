@@ -40,5 +40,5 @@ export {
   ComponentBuilder,
   type ComponentBuilderProps,
 } from "./components/ComponentBuilder/ComponentBuilder";
-
-export { testCompilationContext } from "./testUtils";
+export { createTestCompilationContext, createFormMock } from "./testUtils";
+export * from "./compiler/builtins/$richText/builders";

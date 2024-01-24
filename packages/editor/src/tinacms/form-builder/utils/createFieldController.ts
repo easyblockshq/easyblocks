@@ -437,29 +437,7 @@ const richTextCacheInvalidator: CacheInvalidator = (
   return cacheKeysToRemove;
 };
 
-// $SectionWrapper holds the hide prop, but the $RootSections component is responsible for showing/hiding sections
-// This is done during the compilation of $RootSections so we have to make sure that it's compiled when $SectionWrapper changes.
-const sectionWrapperCacheInvalidator: CacheInvalidator = (
-  _,
-  changedPath,
-  context
-) => {
-  const cacheKeysToRemove: Array<string> = [];
-
-  const { parent } = parsePath(changedPath, context.form);
-
-  if (parent && parent.templateId === "$RootSections") {
-    const rootSectionsConfig = dotNotationGet(context.form.values, parent.path);
-    cacheKeysToRemove.push(rootSectionsConfig._id);
-  }
-
-  return cacheKeysToRemove;
-};
-
-const cacheInvalidators: Array<CacheInvalidator> = [
-  richTextCacheInvalidator,
-  sectionWrapperCacheInvalidator,
-];
+const cacheInvalidators: Array<CacheInvalidator> = [richTextCacheInvalidator];
 
 function invalidateCache(changedPath: string, context: EditorContextType) {
   const cacheKeysToRemove = new Set(
