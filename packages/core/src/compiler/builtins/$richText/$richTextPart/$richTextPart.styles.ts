@@ -41,7 +41,7 @@ export function richTextPartStyles({
   if (isEditing) {
     // When editing, we're going to have nested spans rendered by Slate so we need to make sure they inherit the font
     // styles defined on Text component
-    textStyles["& *"] = {
+    textStyles['& [data-slate-string="true"]'] = {
       fontFamily: "inherit",
       fontStyle: "inherit",
       color: "inherit",
