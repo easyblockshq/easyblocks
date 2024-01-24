@@ -1,12 +1,16 @@
-import { Colors } from "@easyblocks/design-system";
-import { Button, TextFieldInput } from "@radix-ui/themes";
+import { Button, Link } from "@radix-ui/themes";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import styled from "styled-components";
 import { AuthPageLayout } from "../lib/AuthPageLayout";
 import { useAuthFormStatus } from "../lib/useAuthFormStatus";
 import { GoogleSignInButton } from "../lib/GoogleSignInButton";
+import {
+  EmailAddressField,
+  PasswordField,
+  FormError,
+  OrSeparator,
+  FormContainer,
+} from "@/components/LoginComponents";
 
 function SignInPage() {
   const supabaseClient = createClientComponentClient();
@@ -14,8 +18,9 @@ function SignInPage() {
   const router = useRouter();
 
   return (
-    <AuthPageLayout>
-      <Form
+    <AuthPageLayout title="Log in to Easyblocks">
+      <form
+        className="flex flex-col items-stretch"
         onSubmit={(event) => {
           event.preventDefault();
 
@@ -43,141 +48,46 @@ function SignInPage() {
             });
         }}
       >
-        <FormTitle>Log in to Easyblocks</FormTitle>
+        <GoogleSignInButton
+          supabaseClient={supabaseClient}
+          onSignInError={(error) => {
+            setFormStatus({
+              status: "error",
+              error,
+            });
+          }}
+        />
 
-        <FormBody>
-          <GoogleSignInButton
-            supabaseClient={supabaseClient}
-            onSignInError={(error) => {
-              setFormStatus({
-                status: "error",
-                error,
-              });
-            }}
-          />
+        <OrSeparator />
 
-          <SocialAndEmailProvidersSeparator />
-
+        <FormContainer>
           <EmailAddressField />
-
           <PasswordField autoComplete="current-password" />
 
           {formStatus.status === "error" && (
             <FormError error={formStatus.error.message} />
           )}
-        </FormBody>
 
-        <Button
-          type="submit"
-          variant="solid"
-          size="3"
-          disabled={formStatus.status === "loading"}
-        >
-          Log in
-        </Button>
+          <Button
+            type="submit"
+            variant="solid"
+            size="3"
+            disabled={formStatus.status === "loading"}
+          >
+            Log in
+          </Button>
 
-        <FormSecondaryActions>
-          <FormLink href="/reset-password">Reset password</FormLink>
-          <div>
-            No account? <FormLink href="/sign-up">Create one</FormLink>
+          <Link href="/reset-password" className="text-center mb-3">
+            Reset password
+          </Link>
+
+          <div className="text-center">
+            No account? <Link href="/sign-up">Create one</Link>
           </div>
-        </FormSecondaryActions>
-      </Form>
+        </FormContainer>
+      </form>
     </AuthPageLayout>
   );
 }
 
 export default SignInPage;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 44px;
-`;
-
-const FormTitle = styled.h2`
-  font-size: 24px;
-  line-height: 1.16;
-  color: #000;
-  text-align: center;
-`;
-
-const FormBody = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-`;
-
-const FormSecondaryActions = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-`;
-
-const FormLink = styled(Link)`
-  color: #0b75f0;
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
-  }
-
-  &:visited {
-    color: #0b75f0;
-  }
-`;
-
-function EmailAddressField() {
-  return (
-    <TextFieldInput
-      size="3"
-      name="email"
-      autoComplete="email"
-      placeholder="Email"
-      aria-label="Email"
-    />
-  );
-}
-
-function PasswordField(props: {
-  autoComplete: "current-password" | "new-password";
-}) {
-  return (
-    <TextFieldInput
-      size="3"
-      name="password"
-      autoComplete={props.autoComplete}
-      type="password"
-      placeholder="Password"
-      aria-label="Password"
-    />
-  );
-}
-
-function FormError(props: { error: string }) {
-  return (
-    <div
-      css={`
-        color: ${Colors.red};
-      `}
-    >
-      {props.error}
-    </div>
-  );
-}
-
-function SocialAndEmailProvidersSeparator() {
-  return (
-    <div
-      css={`
-        font-size: 16;
-        line-height: 1.16;
-        text-align: center;
-        color: #999;
-      `}
-    >
-      or
-    </div>
-  );
-}

@@ -1,11 +1,10 @@
-import { Colors } from "@easyblocks/design-system";
-import { Button, Flex, TextFieldInput } from "@radix-ui/themes";
+import { Button  } from "@radix-ui/themes";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/navigation";
-import styled from "styled-components";
 import { AuthPageLayout } from "../lib/AuthPageLayout";
 import { useAuthFormStatus } from "../lib/useAuthFormStatus";
+import { FormContainer, FormError, PasswordField } from "@/components/LoginComponents";
 
 function PasswordUpdatePage({
   email,
@@ -15,8 +14,8 @@ function PasswordUpdatePage({
   const router = useRouter();
 
   return (
-    <AuthPageLayout>
-      <Form
+    <AuthPageLayout title="Enter new password">
+      <form
         onSubmit={(event) => {
           event.preventDefault();
 
@@ -50,9 +49,7 @@ function PasswordUpdatePage({
             });
         }}
       >
-        <FormTitle>Enter your new password</FormTitle>
-
-        <Flex direction={"column"} gap="6">
+        <FormContainer>
           <input
             type="text"
             name="email"
@@ -62,23 +59,17 @@ function PasswordUpdatePage({
             readOnly
           />
 
-          <TextFieldInput
-            name="password"
-            autoComplete="new-password"
-            type="password"
-            placeholder="Password"
-            aria-label="Password"
-          />
+          <PasswordField autoComplete="new-password" />
 
           {formStatus.status === "error" && (
             <FormError error={formStatus.error.message} />
           )}
-        </Flex>
 
-        <Button variant="solid" size="3" type="submit">
-          Change password
-        </Button>
-      </Form>
+          <Button variant="solid" size="3" type="submit">
+            Change password
+          </Button>
+        </FormContainer>
+      </form>
     </AuthPageLayout>
   );
 }
@@ -94,28 +85,3 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     },
   };
 };
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 44px;
-`;
-
-const FormTitle = styled.h2`
-  font-size: 24px;
-  line-height: 1.16;
-  color: #000;
-  text-align: center;
-`;
-
-function FormError(props: { error: string }) {
-  return (
-    <div
-      css={`
-        color: ${Colors.red};
-      `}
-    >
-      {props.error}
-    </div>
-  );
-}
