@@ -1,4 +1,4 @@
-import { NoCodeComponentDefinition, RefValue } from "@easyblocks/core";
+import { NoCodeComponentDefinition, TokenValue } from "@easyblocks/core";
 import { solidColorStyles } from "./SolidColor.styles";
 
 const solidColorComponentDefinition: NoCodeComponentDefinition = {
@@ -15,14 +15,14 @@ const solidColorComponentDefinition: NoCodeComponentDefinition = {
     },
   ],
   preview({ values }) {
-    const colorValue = values.color as RefValue<string>;
+    const colorValue = values.color as TokenValue<string>;
 
     return {
       thumbnail: {
         type: "color",
         color: colorValue.value,
       },
-      description: colorValue.ref ?? colorValue.value,
+      description: colorValue.tokenId ?? colorValue.value,
     };
   },
 };
