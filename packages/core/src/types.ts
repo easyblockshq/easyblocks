@@ -26,14 +26,9 @@ export type NoCodeComponentEntry = {
   [key: string]: any; // props
 };
 
-export type RefValue<T> = {
-  value: T;
-  ref?: string;
-};
-
 export type RefType = "dev" | "ds" | "map";
 
-export type ThemeRefValue<T> = RefValue<T> & {
+export type ThemeRefValue<T> = TokenValue<T> & {
   type: RefType;
   label?: string;
   mapTo?: string | string[];
@@ -44,8 +39,6 @@ export type Spacing = string; // 10px, 0px, 10vw, etc
 export type Font = object;
 
 export type Color = string;
-
-export type NumberOfItemsInRow = "1" | "2" | "3" | "4" | "5" | "6";
 
 export type TrulyResponsiveValue<T> = {
   [key: string]: T | true | undefined;
@@ -112,10 +105,10 @@ export type RadioGroupSchemaProp = ValueSchemaProp<
   >;
 
 /**
- * Why do Space, Color and Font have ValueType ResponsiveValue<RefValue<ResponsiveValue<Color>>> type? It's complex! (T is Color / Space / Font).
+ * Why do Space, Color and Font have ValueType ResponsiveValue<TokenValue<ResponsiveValue<Color>>> type? It's complex! (T is Color / Space / Font).
  *
- * 1. For now values can be only RefValues (we don't have custom values, every space, color and font must be reference to a theme). Therefore RefValue.
- * 2. In a theme, fonts, spaces and colors (defined by developer) can be responsive. Therefore RefValue<ResponsiveValue<T>>
+ * 1. For now values can be only RefValues (we don't have custom values, every space, color and font must be reference to a theme). Therefore TokenValue.
+ * 2. In a theme, fonts, spaces and colors (defined by developer) can be responsive. Therefore TokenValue<ResponsiveValue<T>>
  * 3. User in editor can pick RESPONSIVELY different RefValues (that are responsive too). It's complex but makes sense.
  *
  * CompileType is obviously very simple because after compilation we just have "CSS output" which is basically responsive non-ref value (there's no concept of refs after compilation)
@@ -123,13 +116,13 @@ export type RadioGroupSchemaProp = ValueSchemaProp<
 
 export type ColorSchemaProp = ValueSchemaProp<
   "color",
-  ResponsiveValue<RefValue<Color>>,
+  ResponsiveValue<TokenValue<Color>>,
   "forced"
 >;
 
 export type StringTokenSchemaProp = ValueSchemaProp<
   "stringToken",
-  ResponsiveValue<RefValue<string>>,
+  ResponsiveValue<TokenValue<string>>,
   "forced"
 > &
   SchemaPropParams<
@@ -146,7 +139,7 @@ export type StringTokenSchemaProp = ValueSchemaProp<
 
 export type SpaceSchemaProp = ValueSchemaProp<
   "space",
-  ResponsiveValue<RefValue<Spacing>>,
+  ResponsiveValue<TokenValue<Spacing>>,
   "forced"
 > &
   SchemaPropParams<{
@@ -156,11 +149,15 @@ export type SpaceSchemaProp = ValueSchemaProp<
 
 export type FontSchemaProp = ValueSchemaProp<
   "font",
-  ResponsiveValue<RefValue<Font>>,
+  ResponsiveValue<TokenValue<Font>>,
   "forced"
 >;
 
-export type IconSchemaProp = ValueSchemaProp<"icon", RefValue<string>, "never">;
+export type IconSchemaProp = ValueSchemaProp<
+  "icon",
+  TokenValue<string>,
+  "never"
+>;
 
 export type ComponentPickerType = "large" | "large-3" | "compact";
 
@@ -304,15 +301,6 @@ export type ItemCustomComponent = CustomComponentShared & {
   type?: "item" | undefined;
 };
 
-export type CustomComponent =
-  | SectionCustomComponent
-  | CardCustomComponent
-  | ItemCustomComponent;
-
-export type CustomAction = CustomComponentShared;
-
-export type CustomLink = CustomComponentShared;
-
 export type ConfigDeviceRange = {
   startsFrom?: number;
   w?: number;
@@ -365,12 +353,6 @@ export type ExternalParams = Record<string, unknown>;
 export type ContextParams = {
   locale: string;
   [key: string]: any;
-};
-
-export type PickerItem = {
-  id: string;
-  title: string;
-  thumbnail?: string;
 };
 
 export type WidgetComponentProps<Identifier extends NonNullish = NonNullish> = {
@@ -606,16 +588,6 @@ export type Config = {
   };
 };
 
-type EditorProps = {
-  save: (document: Document) => Promise<void>;
-  locales: Locale[];
-  config: Config;
-  contextParams: ContextParams;
-  onClose: () => void;
-};
-
-export type EditorLauncherProps = Omit<EditorProps, "config">;
-
 export type SchemaPropShared<Type extends string> = {
   type: Type;
   prop: string;
@@ -658,48 +630,6 @@ export type SchemaPropParams<
     }
   : { params?: T };
 
-export type UnresolvedResource =
-  | UnresolvedResourceNonEmpty
-  | UnresolvedResourceEmpty;
-
-export type UnresolvedResourceNonEmpty = {
-  id: string;
-  widgetId: string;
-  /**
-   * This property is an exception and it's only available within local text resource.
-   * TODO: Move local text resources to other place
-   */
-  value?: LocalizedText;
-  key?: string;
-};
-
-export type UnresolvedResourceEmpty = {
-  id: null;
-  widgetId: string;
-};
-
-export type ResourceIdentity = {
-  id: string;
-  type: string;
-};
-
-export type ResolvedResource<Value = unknown> = ResourceIdentity & {
-  status: "success";
-  value: Value;
-  error: null;
-  key?: string;
-};
-
-export type RejectedResource = ResourceIdentity & {
-  status: "error";
-  value: undefined;
-  error: Error;
-};
-
-export type Resource<Value = unknown> =
-  | ResolvedResource<Value>
-  | RejectedResource;
-
 export type DeviceRange = {
   id: string;
   w: number;
@@ -709,8 +639,6 @@ export type DeviceRange = {
   label?: string;
   isMain?: boolean;
 };
-
-export type DeviceId = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
 export type Devices = DeviceRange[];
 
@@ -851,19 +779,6 @@ export type CompiledComponentConfigBase<
   props: Props;
 };
 
-export type CompiledActionComponentConfig = CompiledComponentConfigBase & {
-  __editing?: {
-    fields: Array<AnyField | FieldPortal>;
-  };
-};
-
-export interface CompiledTextModifier {
-  _template: string;
-  _id: string;
-  elements: Array<Record<string, any>>;
-  [key: string]: any;
-}
-
 export type EditingInfoBase = {
   direction?: "horizontal" | "vertical";
   noInline?: boolean;
@@ -907,27 +822,6 @@ export type ComponentPlaceholder = {
   label?: string;
 };
 
-/**
- * @public
- */
-export type ShopstoryClientInput = NoCodeComponentEntry | null | undefined;
-
-/**
- * @public
- */
-export type ShopstoryClientAddOptions = {
-  rootContainer: string;
-  [key: string]: unknown;
-};
-
-export interface IShopstoryClient {
-  add(
-    config: ShopstoryClientInput,
-    options: ShopstoryClientAddOptions
-  ): RenderableContent;
-  build(): Promise<Metadata>;
-}
-
 export type EditorSidebarPreviewOptions = {
   breakpointIndex: string;
   devices: Devices;
@@ -955,10 +849,6 @@ export type CompilationMetadata = {
     definitions: SerializedComponentDefinitions;
     [key: string]: any;
   };
-};
-
-export type Metadata = CompilationMetadata & {
-  resources: Array<Resource>;
 };
 
 export type CompilerModule = {

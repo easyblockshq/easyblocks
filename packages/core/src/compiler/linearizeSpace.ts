@@ -1,14 +1,13 @@
 import {
   isTrulyResponsiveValue,
-  responsiveValueGetDefinedValue,
   responsiveValueFill,
   responsiveValueForceGet,
-  responsiveValueGetFirstLowerValue,
+  responsiveValueGetDefinedValue,
   responsiveValueGetFirstHigherValue,
+  responsiveValueGetFirstLowerValue,
 } from "../responsiveness";
-import { spacingToPx, parseSpacing } from "../spacingToPx";
+import { parseSpacing, spacingToPx } from "../spacingToPx";
 import {
-  RefValue,
   ResponsiveValue,
   Spacing,
   TokenValue,
@@ -21,11 +20,11 @@ import { getDeviceWidthPairs } from "./getDeviceWidthPairs";
 import { CompilationContextType } from "./types";
 
 export function linearizeSpace(
-  input: ResponsiveValue<RefValue<ResponsiveValue<Spacing>>>,
+  input: ResponsiveValue<TokenValue<ResponsiveValue<Spacing>>>,
   compilationContext: CompilationContextType,
   widths: TrulyResponsiveValue<number>,
   constant = 0
-): ResponsiveValue<RefValue<ResponsiveValue<Spacing>>> {
+): ResponsiveValue<TokenValue<ResponsiveValue<Spacing>>> {
   if (!isTrulyResponsiveValue(input)) {
     return input;
   }
@@ -50,7 +49,7 @@ export function linearizeSpace(
   // Responsive token kind of "overrides auto".
   // If we want in the future auto for responsive tokens it's not the place for it. Linearizing tokens should happen in creating compilation context.
   const inputAfterResponsiveTokenAuto: TrulyResponsiveValue<
-    RefValue<ResponsiveValue<Spacing>>
+    TokenValue<ResponsiveValue<Spacing>>
   > = applyAutoUsingResponsiveTokens(input, compilationContext);
 
   const inputWithScalarNonRefValues: TrulyResponsiveValue<number> = {

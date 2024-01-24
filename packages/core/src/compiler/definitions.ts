@@ -14,7 +14,6 @@ import {
   CompiledLocalTextReference,
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
-  NoCodeComponentEntry,
   ComponentSchemaProp,
   Devices,
   ExternalReference,
@@ -25,13 +24,13 @@ import {
   LocalSchemaProp,
   LocalTextReference,
   LocalValue,
+  NoCodeComponentEntry,
   NumberSchemaProp,
   Option,
   Position,
   PositionSchemaProp,
   RadioGroupSchemaProp,
   RefMap,
-  RefValue,
   ResponsiveValue,
   SchemaProp,
   SelectSchemaProp,
@@ -866,7 +865,21 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
       },
       getHash: (value, breakpointIndex) => {
         function getTokenValue(value: TokenValue) {
-          return getRef({ value: value.value, ref: value.tokenId });
+          if (value.tokenId) {
+            return value.tokenId;
+          }
+
+          if (typeof value.value === "object") {
+            return JSON.stringify(value.value);
+          }
+
+          const scalarVal: any = value.value;
+
+          if (scalarVal.toString) {
+            return scalarVal.toString();
+          }
+
+          throw new Error("unreachable");
         }
 
         if (customTypeDefinition.type === "external") {
@@ -1097,24 +1110,6 @@ function normalizeTokenValue<T>(
   }
 
   return;
-}
-
-function getRef<T>(value: RefValue<T>): string {
-  if (value.ref) {
-    return value.ref;
-  }
-
-  if (typeof value.value === "object") {
-    return JSON.stringify(value.value);
-  }
-
-  const scalarVal: any = value.value;
-
-  if (scalarVal.toString) {
-    return scalarVal.toString();
-  }
-
-  throw new Error("unreachable");
 }
 
 function externalNormalize(
