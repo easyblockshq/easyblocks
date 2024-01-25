@@ -44,7 +44,7 @@ function buildRichTextNoCodeEntry(options?: {
 
   return {
     _id: uniqueId(),
-    _template: "@easyblocks/rich-text",
+    _component: "@easyblocks/rich-text",
     accessibilityRole: accessibilityRole ?? "div",
     elements: {
       [locale ?? "en"]: [
@@ -84,7 +84,7 @@ function buildRichTextComponentConfig({
   }): RichTextComponentConfig {
   return {
     _id: uniqueId(),
-    _template: "@easyblocks/rich-text",
+    _component: "@easyblocks/rich-text",
     accessibilityRole: accessibilityRole ?? "div",
     elements: {
       [locale]: elements,
@@ -100,7 +100,7 @@ function buildRichTextBlockElementComponentConfig(
   elements: RichTextBlockElementComponentConfig["elements"]
 ): RichTextBlockElementComponentConfig {
   return {
-    _template: "@easyblocks/rich-text-block-element",
+    _component: "@easyblocks/rich-text-block-element",
     elements,
     type,
     _id: uniqueId(),
@@ -114,7 +114,7 @@ function buildRichTextParagraphBlockElementComponentConfig({
   "elements"
 >): RichTextBlockElementComponentConfig {
   return {
-    _template: "@easyblocks/rich-text-block-element",
+    _component: "@easyblocks/rich-text-block-element",
     elements,
     type: "paragraph",
     _id: uniqueId(),
@@ -128,7 +128,7 @@ function buildRichTextBulletedListBlockElementComponentConfig({
   "elements"
 >): RichTextBlockElementComponentConfig {
   return {
-    _template: "@easyblocks/rich-text-block-element",
+    _component: "@easyblocks/rich-text-block-element",
     elements,
     type: "bulleted-list",
     _id: uniqueId(),
@@ -142,7 +142,7 @@ function buildRichTextLineElementComponentConfig({
   "elements"
 >): RichTextLineElementComponentConfig {
   return {
-    _template: "@easyblocks/rich-text-line-element",
+    _component: "@easyblocks/rich-text-line-element",
     elements,
     _id: uniqueId(),
   };
@@ -155,13 +155,13 @@ function buildRichTextPartComponentConfig({
   id,
   TextWrapper,
 }: SetOptional<
-  Omit<RichTextPartComponentConfig, "$$$refs" | "_id" | "_template"> &
+  Omit<RichTextPartComponentConfig, "$$$refs" | "_id" | "_component"> &
     Partial<Identity>,
   "TextWrapper"
 >): RichTextPartComponentConfig {
   return {
     _id: id ?? uniqueId(),
-    _template: "@easyblocks/rich-text-part",
+    _component: "@easyblocks/rich-text-part",
     color,
     font,
     value,

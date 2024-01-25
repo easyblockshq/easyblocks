@@ -71,7 +71,7 @@ type RichTextBlockElementComponentConfig = EditableComponentToComponentConfig<
 };
 
 type RichTextBlockElementCompiledComponentConfig = CompiledComponentConfigBase<
-  RichTextBlockElementComponentConfig["_template"],
+  RichTextBlockElementComponentConfig["_component"],
   { type: RichTextBlockElementType }
 > & {
   styled: NonNullable<ReturnType<typeof richTextBlockElementStyles>["styled"]>;

@@ -92,13 +92,13 @@ test("idle", () => {
 
 // const textItems: Array<NoCodeComponentEntry> = [
 //   {
-//     _template: "@easyblocks/text",
+//     _component: "@easyblocks/text",
 //     value: {
 //       id: "123",
 //     },
 //   },
 //   {
-//     _template: "@easyblocks/text",
+//     _component: "@easyblocks/text",
 //     value: {
 //       id: "345",
 //     },
@@ -214,7 +214,7 @@ test("idle", () => {
 //     version: 0,
 //     ...values,
 //     config: {
-//       config: { _template: "$RootSections", data: [] },
+//       config: { _component: "$RootSections", data: [] },
 //       created_at: "",
 //       id: "1",
 //       metadata: null,
@@ -245,7 +245,7 @@ test("idle", () => {
 //         mockRemove,
 //         mockSaveConfig,
 //       } = createEditorContext({
-//         _template: "$stack",
+//         _component: "$stack",
 //         Items: [...textItems],
 //       });
 
@@ -282,21 +282,21 @@ test("idle", () => {
 //         mockUpdate,
 //         editorContext,
 //       } = createEditorContext({
-//         _template: "$RootSections",
+//         _component: "$RootSections",
 //         data: [
 //           {
-//             _template: "$stack",
+//             _component: "$stack",
 //             Items: [
 //               ...textItems,
 //               {
-//                 _template: "@easyblocks/text",
+//                 _component: "@easyblocks/text",
 //                 value: {
 //                   id: "local.123",
 //                   value: { en: "Lorem ipsum" },
 //                 },
 //               },
 //               {
-//                 _template: "@easyblocks/text",
+//                 _component: "@easyblocks/text",
 //                 value: {
 //                   id: "local.345",
 //                   value: { en: "Dolor sit amet" },
@@ -382,10 +382,10 @@ test("idle", () => {
 //         mockUpdate,
 //         editorContext,
 //       } = createEditorContext({
-//         _template: "$RootSections",
+//         _component: "$RootSections",
 //         data: [
 //           {
-//             _template: "$stack",
+//             _component: "$stack",
 //             Items: [...textItems],
 //           },
 //         ],
@@ -460,10 +460,10 @@ test("idle", () => {
 //       testApiClient.documents.updateDocument = mockUpdateDocument;
 
 //       const context = createEditorContext({
-//         _template: "$RootSections",
+//         _component: "$RootSections",
 //         data: [
 //           {
-//             _template: "$stack",
+//             _component: "$stack",
 //             Items: [...textItems],
 //           },
 //         ],
@@ -618,10 +618,10 @@ test("idle", () => {
 //         testApiClient.documents.updateDocument = mockUpdateDocument;
 
 //         const initialConfig: NoCodeComponentEntry = {
-//           _template: "$RootSections",
+//           _component: "$RootSections",
 //           data: [
 //             {
-//               _template: "$stack",
+//               _component: "$stack",
 //               Items: START_ITEMS,
 //             },
 //           ],
@@ -1150,7 +1150,7 @@ test("idle", () => {
 //     "Adding new text",
 //     undefined,
 //     {
-//       _template: "@easyblocks/text",
+//       _component: "@easyblocks/text",
 //       value: {
 //         id: "local.123",
 //         value: "Lorem ipsum",
@@ -1162,14 +1162,14 @@ test("idle", () => {
 //   runTestsForAddOrModify(
 //     "Modifying existing text",
 //     {
-//       _template: "@easyblocks/text",
+//       _component: "@easyblocks/text",
 //       value: {
 //         id: "new.123",
 //         value: "Blablabla",
 //       },
 //     },
 //     {
-//       _template: "@easyblocks/text",
+//       _component: "@easyblocks/text",
 //       value: {
 //         id: "new.123",
 //         value: "Lorem ipsum",
@@ -1180,7 +1180,7 @@ test("idle", () => {
 
 //   describe("mode without text CRUD", () => {
 //     const text1 = {
-//       _template: "@easyblocks/text",
+//       _component: "@easyblocks/text",
 //       value: {
 //         id: "local.123",
 //         value: { en: "Lorem ipsum" },
@@ -1188,7 +1188,7 @@ test("idle", () => {
 //     };
 
 //     const text2 = {
-//       _template: "@easyblocks/text",
+//       _component: "@easyblocks/text",
 //       value: {
 //         id: "local.345",
 //         value: { en: "Dolor sit amet" },
@@ -1196,7 +1196,7 @@ test("idle", () => {
 //     };
 
 //     const text3 = {
-//       _template: "@easyblocks/text",
+//       _component: "@easyblocks/text",
 //       value: {
 //         id: "local.xxx",
 //         value: { en: "Blabla" },
@@ -1211,10 +1211,10 @@ test("idle", () => {
 
 //       const { mockSaveConfig, editorContext } = createEditorContext(
 //         {
-//           _template: "$RootSections",
+//           _component: "$RootSections",
 //           data: [
 //             {
-//               _template: "$stack",
+//               _component: "$stack",
 //               Items: [text1, text2],
 //             },
 //           ],
@@ -1279,7 +1279,7 @@ test("idle", () => {
 //   describe("Saving to remote storage", () => {
 //     const localTextItems = [
 //       {
-//         _template: "@easyblocks/text",
+//         _component: "@easyblocks/text",
 //         value: {
 //           id: "local.123",
 //           value: {
@@ -1289,7 +1289,7 @@ test("idle", () => {
 //         },
 //       },
 //       {
-//         _template: "@easyblocks/text",
+//         _component: "@easyblocks/text",
 //         value: {
 //           id: "local.345",
 //           value: {
@@ -1309,10 +1309,10 @@ test("idle", () => {
 
 //       const { mockSaveConfig, editorContext } = createEditorContext(
 //         {
-//           _template: "$RootSections",
+//           _component: "$RootSections",
 //           data: [
 //             {
-//               _template: "$stack",
+//               _component: "$stack",
 //               Items: [...localTextItems],
 //             },
 //           ],
@@ -1400,10 +1400,10 @@ test("idle", () => {
 //             version: newVersion,
 //             config: {
 //               config: {
-//                 _template: "$RootSections",
+//                 _component: "$RootSections",
 //                 data: [
 //                   {
-//                     _template: "$stack",
+//                     _component: "$stack",
 //                     Items: [],
 //                   },
 //                 ],
@@ -1418,10 +1418,10 @@ test("idle", () => {
 
 //       expect(testApiClient.documents.getDocumentById).toHaveBeenCalledTimes(2);
 //       expect(editorContext.form.values).toEqual({
-//         _template: "$RootSections",
+//         _component: "$RootSections",
 //         data: [
 //           {
-//             _template: "$stack",
+//             _component: "$stack",
 //             Items: [],
 //           },
 //         ],
@@ -1435,10 +1435,10 @@ test("idle", () => {
 //         unique_source_identifier: "test-unique-source-identifier-1",
 //         config: {
 //           config: {
-//             _template: "$RootSections",
+//             _component: "$RootSections",
 //             data: [
 //               {
-//                 _template: "$stack",
+//                 _component: "$stack",
 //                 Items: [...textItems],
 //               },
 //             ],
@@ -1483,10 +1483,10 @@ test("idle", () => {
 //       const { mockSaveConfig, editorContext, initialConfig } =
 //         createEditorContext(
 //           {
-//             _template: "$RootSections",
+//             _component: "$RootSections",
 //             data: [
 //               {
-//                 _template: "$stack",
+//                 _component: "$stack",
 //                 Items: [...textItems],
 //               },
 //             ],
@@ -1604,10 +1604,10 @@ test("idle", () => {
 //           createTestDocumentWithResolvedConfig({
 //             config: {
 //               config: {
-//                 _template: "$RootSections",
+//                 _component: "$RootSections",
 //                 data: [
 //                   {
-//                     _template: "$stack",
+//                     _component: "$stack",
 //                     Items: textItems.slice(0, 1),
 //                   },
 //                 ],
@@ -1640,10 +1640,10 @@ test("idle", () => {
 
 //       const { mockSaveConfig, editorContext } = createEditorContext(
 //         {
-//           _template: "$RootSections",
+//           _component: "$RootSections",
 //           data: [
 //             {
-//               _template: "$stack",
+//               _component: "$stack",
 //               Items: [...textItems],
 //             },
 //           ],
@@ -1704,10 +1704,10 @@ test("idle", () => {
 
 //     it("should not interact with API when running in playground", async () => {
 //       const { mockSaveConfig, editorContext } = createEditorContext({
-//         _template: "$RootSections",
+//         _component: "$RootSections",
 //         data: [
 //           {
-//             _template: "$stack",
+//             _component: "$stack",
 //             Items: [...textItems],
 //           },
 //         ],

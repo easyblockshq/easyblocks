@@ -61,7 +61,7 @@ function $findComponentDefinition(
     return undefined;
   }
 
-  return $findComponentDefinitionById(config._template, context);
+  return $findComponentDefinitionById(config._component, context);
 }
 
 function $findComponentDefinitionById(

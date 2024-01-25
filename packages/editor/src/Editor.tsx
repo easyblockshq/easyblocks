@@ -257,7 +257,7 @@ const EditorWrapper = memo(
     const locale = props.locale ?? getDefaultLocale(props.config.locales).code;
 
     const rootComponentId = props.document
-      ? props.document.entry._template
+      ? props.document.entry._component
       : props.rootComponentId;
 
     const compilationContext = createCompilationContext(
@@ -271,7 +271,7 @@ const EditorWrapper = memo(
     const initialEntry = props.document
       ? adaptRemoteConfig(props.document.entry, compilationContext)
       : normalize(
-          { _id: uniqueId(), _template: props.rootComponentId! },
+          { _id: uniqueId(), _component: props.rootComponentId! },
           compilationContext
         );
 
@@ -694,7 +694,7 @@ const EditorContent = ({
     disableCustomTemplates: props.config.disableCustomTemplates ?? false,
     isFullScreen,
     rootComponent: findComponentDefinitionById(
-      initialEntry._template,
+      initialEntry._component,
       compilationContext
     )!,
     components: props.components ?? {},

@@ -177,7 +177,7 @@ test.describe("API", () => {
         `/api/projects/${PROJECT_A_ID}/templates`,
         {
           data: {
-            config: { _template: "$Component2" },
+            config: { _component: "$Component2" },
           },
           headers: {
             [ACCESS_TOKEN_HEADER]: PROJECT_A_ACCESS_TOKEN,

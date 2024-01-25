@@ -106,19 +106,19 @@ const externalHamster = {
  */
 const englishCard1 = {
   config: {
-    _template: "SimpleCard",
+    _component: "SimpleCard",
     _id: "english.card.1",
     someProp: "one",
     textProp: localDog.config,
   },
   en: {
-    _template: "SimpleCard",
+    _component: "SimpleCard",
     _id: "english.card.1",
     someProp: "one",
     textProp: localDog.en,
   },
   pl: {
-    _template: "SimpleCard",
+    _component: "SimpleCard",
     _id: "english.card.1",
     someProp: "one",
     textProp: localDog.pl,
@@ -127,19 +127,19 @@ const englishCard1 = {
 
 const englishCard2 = {
   config: {
-    _template: "SimpleCard",
+    _component: "SimpleCard",
     _id: "english.card.2",
     someProp: "two",
     textProp: localCat.config,
   },
   en: {
-    _template: "SimpleCard",
+    _component: "SimpleCard",
     _id: "english.card.2",
     someProp: "two",
     textProp: localCat.en,
   },
   pl: {
-    _template: "SimpleCard",
+    _component: "SimpleCard",
     _id: "english.card.2",
     someProp: "two",
     textProp: localCat.pl,
@@ -148,19 +148,19 @@ const englishCard2 = {
 
 const polishCard1 = {
   config: {
-    _template: "SimpleCard",
+    _component: "SimpleCard",
     _id: "english.polish.1",
     someProp: "three",
     textProp: localHamster.config,
   },
   en: {
-    _template: "SimpleCard",
+    _component: "SimpleCard",
     _id: "english.polish.1",
     someProp: "three",
     textProp: localHamster.en,
   },
   pl: {
-    _template: "SimpleCard",
+    _component: "SimpleCard",
     _id: "english.polish.1",
     someProp: "three",
     textProp: localHamster.pl,
@@ -169,19 +169,19 @@ const polishCard1 = {
 
 const polishCard2 = {
   config: {
-    _template: "SimpleCard",
+    _component: "SimpleCard",
     _id: "english.polish.2",
     someProp: "four",
     textProp: externalCat,
   },
   en: {
-    _template: "SimpleCard",
+    _component: "SimpleCard",
     _id: "english.polish.2",
     someProp: "four",
     textProp: externalCat,
   },
   pl: {
-    _template: "SimpleCard",
+    _component: "SimpleCard",
     _id: "english.polish.2",
     someProp: "four",
     textProp: externalCat,
@@ -189,14 +189,14 @@ const polishCard2 = {
 };
 
 const config: NoCodeComponentEntry = {
-  _template: "$LanguageSection",
+  _component: "$LanguageSection",
   _id: "section1",
   textProp: localDog.config,
   textProp2: externalDog,
   otherProp: "one",
   Card1: [
     {
-      _template: "$LanguageCard",
+      _component: "$LanguageCard",
       _id: "card1",
       textProp: localCat.config,
       textProp2: externalCat,
@@ -209,7 +209,7 @@ const config: NoCodeComponentEntry = {
   ],
   Card2: [
     {
-      _template: "$LanguageCard",
+      _component: "$LanguageCard",
       _id: "card2",
       textProp: localHamster.config,
       textProp2: externalHamster,
@@ -275,21 +275,21 @@ describe("split", () => {
     const split = splitConfigIntoSingleLocaleConfigs(
       {
         _id: "root-id-123",
-        _template: "root",
+        _component: "root",
         elements: {
           __localized: true,
           en: [
             {
               _id: "localized-element-123",
-              _template: "localizedElement",
+              _component: "localizedElement",
               elements: [
                 {
                   _id: "element-id-123",
-                  _template: "element",
+                  _component: "element",
                   action: [
                     {
                       _id: "link-id-123",
-                      _template: "link",
+                      _component: "link",
                       url: {
                         __localized: true,
                         id: "local.url-id-123",
@@ -307,15 +307,15 @@ describe("split", () => {
           pl: [
             {
               _id: "localized-element-123",
-              _template: "localizedElement",
+              _component: "localizedElement",
               elements: [
                 {
                   _id: "element-id-123",
-                  _template: "element",
+                  _component: "element",
                   action: [
                     {
                       _id: "link-id-123",
-                      _template: "link",
+                      _component: "link",
                       url: {
                         __localized: true,
                         id: "local.url-id-123",
@@ -338,20 +338,20 @@ describe("split", () => {
     expect(split).toEqual({
       en: {
         _id: "root-id-123",
-        _template: "root",
+        _component: "root",
         elements: {
           en: [
             {
               _id: "localized-element-123",
-              _template: "localizedElement",
+              _component: "localizedElement",
               elements: [
                 {
                   _id: "element-id-123",
-                  _template: "element",
+                  _component: "element",
                   action: [
                     {
                       _id: "link-id-123",
-                      _template: "link",
+                      _component: "link",
                       url: { id: "local.url-id-123", value: { en: "English" } },
                     },
                   ],
@@ -363,20 +363,20 @@ describe("split", () => {
       },
       pl: {
         _id: "root-id-123",
-        _template: "root",
+        _component: "root",
         elements: {
           pl: [
             {
               _id: "localized-element-123",
-              _template: "localizedElement",
+              _component: "localizedElement",
               elements: [
                 {
                   _id: "element-id-123",
-                  _template: "element",
+                  _component: "element",
                   action: [
                     {
                       _id: "link-id-123",
-                      _template: "link",
+                      _component: "link",
                       url: { id: "local.url-id-123", value: { pl: "Polski" } },
                     },
                   ],
@@ -393,21 +393,21 @@ describe("split", () => {
     const split = splitConfigIntoSingleLocaleConfigs(
       {
         _id: "root-id-123",
-        _template: "root",
+        _component: "root",
         elements: {
           __localized: true,
           en: [
             {
               _id: "localized-element-123",
-              _template: "localizedElement",
+              _component: "localizedElement",
               elements: [
                 {
                   _id: "element-id-123",
-                  _template: "element",
+                  _component: "element",
                   action: [
                     {
                       _id: "link-id-123",
-                      _template: "link",
+                      _component: "link",
                       url: {
                         __localized: true,
                         id: "local.url-id-123",
@@ -430,20 +430,20 @@ describe("split", () => {
     expect(split).toEqual({
       en: {
         _id: "root-id-123",
-        _template: "root",
+        _component: "root",
         elements: {
           en: [
             {
               _id: "localized-element-123",
-              _template: "localizedElement",
+              _component: "localizedElement",
               elements: [
                 {
                   _id: "element-id-123",
-                  _template: "element",
+                  _component: "element",
                   action: [
                     {
                       _id: "link-id-123",
-                      _template: "link",
+                      _component: "link",
                       url: { id: "local.url-id-123", value: { en: "English" } },
                     },
                   ],
@@ -455,21 +455,21 @@ describe("split", () => {
       },
       pl: {
         _id: "root-id-123",
-        _template: "root",
+        _component: "root",
         elements: {
           __fallback: true,
           pl: [
             {
               _id: "localized-element-123",
-              _template: "localizedElement",
+              _component: "localizedElement",
               elements: [
                 {
                   _id: "element-id-123",
-                  _template: "element",
+                  _component: "element",
                   action: [
                     {
                       _id: "link-id-123",
-                      _template: "link",
+                      _component: "link",
                       url: { id: "local.url-id-123", value: { pl: "Polski" } },
                     },
                   ],
@@ -486,21 +486,21 @@ describe("split", () => {
     const split = splitConfigIntoSingleLocaleConfigs(
       {
         _id: "root-id-123",
-        _template: "root",
+        _component: "root",
         elements: {
           __localized: true,
           en: [
             {
               _id: "localized-element-123",
-              _template: "localizedElement",
+              _component: "localizedElement",
               elements: [
                 {
                   _id: "element-id-123",
-                  _template: "element",
+                  _component: "element",
                   action: [
                     {
                       _id: "link-id-123",
-                      _template: "link",
+                      _component: "link",
                       url: {
                         __localized: true,
                         id: "local.url-id-123",
@@ -522,20 +522,20 @@ describe("split", () => {
     expect(split).toEqual({
       en: {
         _id: "root-id-123",
-        _template: "root",
+        _component: "root",
         elements: {
           en: [
             {
               _id: "localized-element-123",
-              _template: "localizedElement",
+              _component: "localizedElement",
               elements: [
                 {
                   _id: "element-id-123",
-                  _template: "element",
+                  _component: "element",
                   action: [
                     {
                       _id: "link-id-123",
-                      _template: "link",
+                      _component: "link",
                       url: { id: "local.url-id-123", value: { en: "English" } },
                     },
                   ],
@@ -547,21 +547,21 @@ describe("split", () => {
       },
       pl: {
         _id: "root-id-123",
-        _template: "root",
+        _component: "root",
         elements: {
           __fallback: true,
           pl: [
             {
               _id: "localized-element-123",
-              _template: "localizedElement",
+              _component: "localizedElement",
               elements: [
                 {
                   _id: "element-id-123",
-                  _template: "element",
+                  _component: "element",
                   action: [
                     {
                       _id: "link-id-123",
-                      _template: "link",
+                      _component: "link",
                       url: {
                         id: "local.url-id-123",
                         value: { pl: "English", __fallback: true },

@@ -18,7 +18,7 @@ export const compile: CompilerModule["compile"] = (
   const compilationContext = createCompilationContext(
     config,
     contextParams,
-    content._template
+    content._component
   );
 
   const inputConfigComponent = normalizeInput(content);

@@ -5,7 +5,7 @@ describe("pasteManager", () => {
   const createConfigComponent = (
     init: Partial<NoCodeComponentEntry> = {}
   ): NoCodeComponentEntry => ({
-    _template: "",
+    _component: "",
     ...init,
   });
 

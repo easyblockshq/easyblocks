@@ -137,7 +137,7 @@ describe("single field", () => {
       "",
       normalize(
         {
-          _template: "$ComponentWithCalculatedValue",
+          _component: "$ComponentWithCalculatedValue",
           prop1: {
             $res: true,
             b4: "1",
@@ -654,24 +654,24 @@ function createTestForm() {
     initialValues: {
       field: {
         custom: {
-          _template: "CustomComponent",
+          _component: "CustomComponent",
           value: "old value",
           option: "one",
         },
         custom1: {
-          _template: "CustomComponent",
+          _component: "CustomComponent",
           value: "old value 1",
           option: "one",
         },
         custom2: {
-          _template: "CustomComponent",
+          _component: "CustomComponent",
           value: "old value 2",
           option: "two",
         },
         localisedCollection: {
           [testEditorContext.contextParams.locale]: [
             {
-              _template: "CustomComponent",
+              _component: "CustomComponent",
               value: "old value",
             },
           ],
@@ -724,11 +724,11 @@ function createTestForm() {
         mainFont: { $res: true },
       }),
       root: {
-        _template: "$RootSections",
+        _component: "$RootSections",
         _id: "xxx",
         data: [
           {
-            _template: "$SectionBanner",
+            _component: "$SectionBanner",
             _id: "yyy",
             hide: false,
           },

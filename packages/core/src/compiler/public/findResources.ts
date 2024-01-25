@@ -29,7 +29,7 @@ export const findExternals: CompilerModule["findExternals"] = (
   const compilationContext = createCompilationContext(
     config,
     contextParams,
-    input._template
+    input._component
   );
   const normalizedConfig = normalize(inputConfigComponent, compilationContext);
 
@@ -51,7 +51,7 @@ export const findExternals: CompilerModule["findExternals"] = (
       const hasInputComponentRootParams =
         compilationContext.definitions.components.some(
           (c: NoCodeComponentDefinition) =>
-            c.id === normalizedConfig._template && c.rootParams !== undefined
+            c.id === normalizedConfig._component && c.rootParams !== undefined
         );
 
       const configId =

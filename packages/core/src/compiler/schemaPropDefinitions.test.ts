@@ -2322,12 +2322,12 @@ describe.skip("component normalize with context props", () => {
   test("doesn't normalize context props if they're not there in input", () => {
     const normalized = normalize(
       {
-        _template: "$TestCard",
+        _component: "$TestCard",
       },
       editorContext
     );
 
-    expect(normalized._template).toBe("$TestCard");
+    expect(normalized._component).toBe("$TestCard");
     expect(normalized.cardSpace).toBeDefined();
     expect(normalized.cardBool).toBeDefined();
     expect(normalized._itemProps).toBeUndefined();
@@ -2336,7 +2336,7 @@ describe.skip("component normalize with context props", () => {
   test("properly normalize context props if given context", () => {
     const normalized = normalize(
       {
-        _template: "$TestCard",
+        _component: "$TestCard",
         _itemProps: {
           $TestSection: {
             CardsWithItemFields: {},
@@ -2346,7 +2346,7 @@ describe.skip("component normalize with context props", () => {
       editorContext
     );
 
-    expect(normalized._template).toBe("$TestCard");
+    expect(normalized._component).toBe("$TestCard");
     expect(normalized.cardSpace).toBeDefined();
     expect(normalized.cardBool).toBeDefined();
     expect(
@@ -2362,7 +2362,7 @@ describe.skip("component normalize with context props", () => {
 
   test("compilation", () => {
     const card = {
-      _template: "$TestCard",
+      _component: "$TestCard",
       _itemProps: {
         $TestSection: {
           CardsWithItemFields: {
@@ -2380,10 +2380,10 @@ describe.skip("component normalize with context props", () => {
 
     const normalized = normalize(
       {
-        _template: "$TestSection",
+        _component: "$TestSection",
         CardsWithItemFields: [card, card, card],
         CardsLocalised: {
-          en: [{ _template: "$TestCard" }],
+          en: [{ _component: "$TestCard" }],
         },
       },
       editorContext
@@ -2434,10 +2434,10 @@ describe.skip("[component field] no parent context", () => {
   test("tina field value is produced properly", () => {
     superTestWithoutCompileIntcompileInternal(
       x,
-      [{ _template: "$TestCard", _id: "abcd" }],
+      [{ _component: "$TestCard", _id: "abcd" }],
       [
         {
-          _template: "$TestCard",
+          _component: "$TestCard",
           _id: "abcd",
           cardBool: false,
           cardSpace: defres(globalSpaceDefault),
@@ -2445,7 +2445,7 @@ describe.skip("[component field] no parent context", () => {
       ],
       [
         {
-          _template: "$TestCard",
+          _component: "$TestCard",
           _id: "abcd",
           cardBool: false,
           cardSpace: defres(globalSpaceDefault),
@@ -2469,7 +2469,7 @@ describe.skip("[component field required] no parent context", () => {
 
   const DEFAULT_VALUE = [
     {
-      _template: "$TestCard",
+      _component: "$TestCard",
       cardBool: false,
       cardSpace: defres(globalSpaceDefault),
     },
@@ -2492,17 +2492,17 @@ describe.skip("[component field required] no parent context", () => {
   });
 
   test("tina field value is produced properly", () => {
-    expect(x.def.normalize([{ _template: "$TestCard" }])).toMatchObject(
+    expect(x.def.normalize([{ _component: "$TestCard" }])).toMatchObject(
       DEFAULT_VALUE
     );
     expect(
-      x.def.normalize([{ _template: "$TestCard" }])[0]._id
+      x.def.normalize([{ _component: "$TestCard" }])[0]._id
     ).toBeTemplateId();
   });
 
   test("_id is preserved", () => {
     expect(
-      x.def.normalize([{ _template: "$TestCard", _id: "abc" }])[0]._id
+      x.def.normalize([{ _component: "$TestCard", _id: "abc" }])[0]._id
     ).toBe("abc");
   });
 });
@@ -2522,7 +2522,7 @@ describe.skip("component field", () => {
   describe.skip("with custom component", () => {
     const normalized = normalize(
       {
-        _template: "MyButton",
+        _component: "MyButton",
         label: {
           id: "local.123",
           value: {
@@ -2549,23 +2549,23 @@ test("[component] works with empty subcomponents", () => {
   const ret = compileInternal(
     normalize(
       {
-        _template: "$TestSection",
+        _component: "$TestSection",
         _id: "abc",
         margin: { $res: true, b1: { value: "10px" }, b4: { value: "20px" } },
         isHorizontal: true,
         Card3Fixed: [
           {
-            _template: "$EmptyComponent",
+            _component: "$EmptyComponent",
             Card: [
               {
-                _template: "$EmptyComponent2",
+                _component: "$EmptyComponent2",
               },
             ],
           },
         ],
         testAction: [
           {
-            _template: "$CustomAction",
+            _component: "$CustomAction",
             someText: {
               id: "local.123",
               value: {
@@ -2580,7 +2580,7 @@ test("[component] works with empty subcomponents", () => {
         CardsLocalised: {
           en: [
             {
-              _template: "$TestCard",
+              _component: "$TestCard",
             },
           ],
         },
@@ -2592,7 +2592,7 @@ test("[component] works with empty subcomponents", () => {
 
   const item = ret.compiled;
 
-  expect(item._template).toBe("$TestSection");
+  expect(item._component).toBe("$TestSection");
   expect(item._id).toBe("abc");
 
   expect(item.components.Card1).toMatchObject([]);
@@ -2616,11 +2616,11 @@ test("[component] works with empty subcomponents", () => {
   // default value for component fixed
   const card3Fixed: any = item.components.Card3Fixed[0];
 
-  expect(card3Fixed._template).toBe("$EmptyComponent");
+  expect(card3Fixed._component).toBe("$EmptyComponent");
   expect(card3Fixed._id).toBeTemplateId();
 
   // default value for nested fixed component
-  expect(card3Fixed.components.Card[0]._template).toBe("$EmptyComponent2");
+  expect(card3Fixed.components.Card[0]._component).toBe("$EmptyComponent2");
   expect(card3Fixed.components.Card[0]._id).toBeTemplateId();
   expect(typeof card3Fixed.components.Card[0].styled.Box1).toBe("object");
 
@@ -2635,7 +2635,7 @@ test("[component] works with empty subcomponents", () => {
   // Action items are compiled
 
   expect(
-    (item.components.testAction[0] as CompiledComponentConfig)._template
+    (item.components.testAction[0] as CompiledComponentConfig)._component
   ).toBe("$CustomAction");
   expect(
     (item.components.testAction[0] as CompiledComponentConfig)._id
@@ -2647,7 +2647,7 @@ test("[component] works with empty subcomponents", () => {
 });
 
 function expectCorrectTestCard(input: any, output: any) {
-  expect(output._template).toBe(input._template);
+  expect(output._component).toBe(input._component);
   expect(output.props.cardBool).toBe(input.cardBool);
   expect(output.props.cardSpace).toBe(input.cardSpace.value + "px");
   expect(typeof output.styled.Box1).toBe("object");
@@ -2655,31 +2655,31 @@ function expectCorrectTestCard(input: any, output: any) {
 
 test("[component] works with nesting", () => {
   const card1 = {
-    _template: "$TestCard",
+    _component: "$TestCard",
     cardSpace: { value: 1, tokenId: "1" },
     cardBool: true,
   };
 
   const card2 = {
-    _template: "$TestCard",
+    _component: "$TestCard",
     cardSpace: { value: 2, tokenId: "2" },
     cardBool: false,
   };
 
   const card3 = {
-    _template: "$TestCard",
+    _component: "$TestCard",
     cardSpace: { value: 4, tokenId: "4" },
     cardBool: false,
   };
 
   const card4 = {
-    _template: "$TestCard",
+    _component: "$TestCard",
     cardSpace: { value: 6, tokenId: "6" },
     cardBool: true,
   };
 
   const card5 = {
-    _template: "$TestCard",
+    _component: "$TestCard",
     cardSpace: { value: 8, tokenId: "8" },
     cardBool: true,
   };
@@ -2687,7 +2687,7 @@ test("[component] works with nesting", () => {
   const ret = compileInternal(
     normalize(
       {
-        _template: "$TestSection",
+        _component: "$TestSection",
         margin: {
           value: 1,
           tokenId: "1",
@@ -2698,16 +2698,16 @@ test("[component] works with nesting", () => {
         Cards: [card3, card4, card5],
         Card3Fixed: [
           {
-            _template: "$EmptyComponent",
+            _component: "$EmptyComponent",
             Card: [
               {
-                _template: "$EmptyComponent2",
+                _component: "$EmptyComponent2",
               },
             ],
           },
         ],
         CardsLocalised: {
-          en: [{ _template: "$TestCard" }],
+          en: [{ _component: "$TestCard" }],
         },
       },
       editorContext
@@ -2716,7 +2716,7 @@ test("[component] works with nesting", () => {
   );
 
   const item = ret.compiled;
-  expect(item._template).toBe("$TestSection");
+  expect(item._component).toBe("$TestSection");
 
   expect(item.__editing!.components.Card1).toEqual({});
   expect(
@@ -2784,7 +2784,7 @@ test("[component] works with nesting", () => {
 
 describe.skip("[component] with local refs", () => {
   const card1 = {
-    _template: "MyProductCard",
+    _component: "MyProductCard",
     _id: "card1",
     product: { id: "shoes" },
     isLight: true,
@@ -2792,7 +2792,7 @@ describe.skip("[component] with local refs", () => {
   };
 
   const card2 = {
-    _template: "MyProductCard",
+    _component: "MyProductCard",
     _id: "card2",
     product: { id: "pants" },
     isLight: false,
@@ -2801,29 +2801,29 @@ describe.skip("[component] with local refs", () => {
 
   const card3 = {
     _id: "card3",
-    _template: "MyProductCard$$$local.ref1",
+    _component: "MyProductCard$$$local.ref1",
     product: { id: "top" },
   };
 
   const card4 = {
     _id: "card4",
-    _template: "MyProductCard$$$local.ref2",
+    _component: "MyProductCard$$$local.ref2",
     product: { id: "shoes" },
   };
 
   const card5 = {
     _id: "card5",
-    _template: "MyProductCard$$$local.ref1",
+    _component: "MyProductCard$$$local.ref1",
   };
 
   const ref1 = {
     _id: "ref1",
-    _template: "MyProductCard",
+    _component: "MyProductCard",
   };
 
   const ref2 = {
     _id: "ref2",
-    _template: "MyProductCard",
+    _component: "MyProductCard",
     product: { id: "ref-product" },
     isLight: false,
     number: "four",
@@ -2831,7 +2831,7 @@ describe.skip("[component] with local refs", () => {
 
   const normalized = normalize(
     {
-      _template: "$TestSection",
+      _component: "$TestSection",
       margin: {
         value: 1,
         ref: "s1",
@@ -2848,7 +2848,7 @@ describe.skip("[component] with local refs", () => {
       CardsLocalised: {
         en: [
           {
-            _template: "$TestCard",
+            _component: "$TestCard",
           },
         ],
       },
@@ -2891,7 +2891,7 @@ describe.skip("[component] with local refs", () => {
       const item = compiled.compiled;
 
       // we call here syncDatainconfig to make products already fetched!
-      expect(item._template).toBe("$TestSection");
+      expect(item._component).toBe("$TestSection");
 
       if (isEditing) {
         expect(item.__editing!.components.Card1).toEqual({});
@@ -2949,7 +2949,7 @@ describe.skip("[component] with local refs", () => {
       }
 
       expect(item.components.Card1[0]).toMatchObject({
-        _template: card1._template,
+        _component: card1._component,
         _id: card1._id,
         props: {
           product: {
@@ -2961,7 +2961,7 @@ describe.skip("[component] with local refs", () => {
       });
 
       expect(item.components.Card2[0]).toMatchObject({
-        _template: card3._template,
+        _component: card3._component,
         _id: card3._id,
         props: {
           product: {
@@ -2971,7 +2971,7 @@ describe.skip("[component] with local refs", () => {
       });
 
       expect(item.components.Cards[0]).toMatchObject({
-        _template: card2._template,
+        _component: card2._component,
         _id: card2._id,
         props: {
           product: {
@@ -2985,7 +2985,7 @@ describe.skip("[component] with local refs", () => {
 
       expect(item.components.Cards[1]).toMatchObject({
         _id: card4._id,
-        _template: card4._template,
+        _component: card4._component,
         props: {
           product: {
             id: card4.product.id,
@@ -3008,7 +3008,7 @@ describe.skip("[component] with local refs", () => {
       });
 
       expect(item.components.Card3Fixed[0]).toMatchObject({
-        _template: card4._template,
+        _component: card4._component,
         _id: card4._id,
         props: {
           product: {
@@ -3027,12 +3027,12 @@ describe.skip("[component-collection-localised]", () => {
     const compiledTestCollection = compileInternal(
       normalize(
         {
-          _template: "$TestSection",
+          _component: "$TestSection",
           _id: "123",
           CardsLocalised: {
             en: [
               {
-                _template: "$TestCard",
+                _component: "$TestCard",
               },
             ],
           },
@@ -3052,7 +3052,7 @@ describe.skip("[component-collection-localised]", () => {
       compileInternal(
         normalize(
           {
-            _template: "$TestSection",
+            _component: "$TestSection",
             _id: "123",
             CardsLocalised: {},
           },
@@ -3077,7 +3077,7 @@ describe.skip("Missings", () => {
         // TODO: Make this a part of implementation of `mockConsoleMethod` function from test utils.
         // We shouldn't blindly ignore all messages, we should only ignore the ones that we expect, unless there is a
         // good reason to ignore all of them.
-        if (chunks.join(" ").match(/\[normalize\] Unknown _template/)) {
+        if (chunks.join(" ").match(/\[normalize\] Unknown _component/)) {
           return;
         }
 
@@ -3094,11 +3094,11 @@ describe.skip("Missings", () => {
     ${"NotInTheSchema"}
     ${"WrongComponent"}
   `(
-    "given component of template '$missingTemplate' should compile it as $MissingComponent",
+    "given component of template '$missingTemplate' should compile it as @easyblocks/missing-component",
     ({ missingTemplate }) => {
       const { compiled } = compileInternal(
         {
-          _template: missingTemplate,
+          _component: missingTemplate,
           _id: "123",
         },
         editorContext
@@ -3106,7 +3106,7 @@ describe.skip("Missings", () => {
 
       expect(compiled).toMatchObject({
         _id: expect.any(String),
-        _template: "@easyblocks/missing-component",
+        _component: "@easyblocks/missing-component",
         components: {},
         props: {},
         styled: {},
@@ -3118,7 +3118,7 @@ describe.skip("Missings", () => {
     const { unmock } = mockConsoleMethod("warn");
 
     const card = {
-      _template: "MissingCardDefinition",
+      _component: "MissingCardDefinition",
       _itemProps: {
         $TestSection: {
           CardsWithItemFields: {
@@ -3132,7 +3132,7 @@ describe.skip("Missings", () => {
 
     const normalized = normalize(
       {
-        _template: "$TestSection",
+        _component: "$TestSection",
         CardsWithItemFields: [card, card],
       },
       editorContext
@@ -3172,7 +3172,7 @@ describe.skip("when responsive token is used, it should take precedence over aut
   test("single responsive value fills everything", () => {
     const card = normalizeComponent(
       {
-        _template: "$CardWithResponsiveToken",
+        _component: "$CardWithResponsiveToken",
         color: {
           $res: true,
           b4: {
@@ -3201,7 +3201,7 @@ describe.skip("when responsive token is used, it should take precedence over aut
   test("scalar value 'resets' responsive token so that auto can be applied to remaining unset breakpoints", () => {
     const card = normalizeComponent(
       {
-        _template: "$CardWithResponsiveToken",
+        _component: "$CardWithResponsiveToken",
         color: {
           $res: true,
           b2: { tokenId: "devBlue" },

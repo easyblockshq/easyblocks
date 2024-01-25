@@ -42,7 +42,7 @@ function configTraverseInternal(
 
   if (!componentDefinition) {
     console.warn(
-      `[configTraverse] Unknown component definition for: ${config._template}`
+      `[configTraverse] Unknown component definition for: ${config._component}`
     );
     return;
   }

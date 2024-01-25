@@ -311,7 +311,7 @@ test.describe.serial("documents", () => {
           data: {
             title: "DocumentA_1",
             config: {
-              _template: "@easyblocks/text",
+              _component: "@easyblocks/text",
               _id: "xxx",
               value: {
                 __localized: true,
@@ -345,7 +345,7 @@ test.describe.serial("documents", () => {
 
       expect(document.config.config).toEqual({
         _id: "xxx",
-        _template: "@easyblocks/text",
+        _component: "@easyblocks/text",
         value: { de: "Deutsch" },
       });
     } catch (error) {
@@ -369,7 +369,7 @@ test.describe.serial("documents", () => {
       `/api/projects/${PROJECT_A_ID}/documents`,
       {
         data: {
-          config: { _template: "$Component2" },
+          config: { _component: "$Component2" },
         },
         headers: {
           [ACCESS_TOKEN_HEADER]: PROJECT_A_ACCESS_TOKEN,

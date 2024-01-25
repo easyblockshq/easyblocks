@@ -114,12 +114,12 @@ export function compileComponent(
 
   if (contextProps.$width === undefined || contextProps.$width === -1) {
     throw new Error(
-      `assertion failed: incorrect $width in compileComponent: ${contextProps.$width}, component: ${editableElement._id}, ${editableElement._template}`
+      `assertion failed: incorrect $width in compileComponent: ${contextProps.$width}, component: ${editableElement._id}, ${editableElement._component}`
     );
   }
 
   const cachedResult = cache.get(editableElement._id);
-  const { name, ref } = splitTemplateName(editableElement._template);
+  const { name, ref } = splitTemplateName(editableElement._component);
 
   let componentDefinition = findComponentDefinitionById(
     name,
@@ -135,7 +135,7 @@ export function compileComponent(
     );
 
     editableElement = {
-      _template: componentDefinition.id,
+      _component: componentDefinition.id,
       _id: uniqueId(),
       error: `Easyblocks can’t find definition for component "${name}" in your config. Please contact your developers to resolve this issue.`,
     };
@@ -157,11 +157,11 @@ export function compileComponent(
   let hasComponentConfigChanged = true;
 
   let ownPropsAfterAuto: {
-    values: { _id: string; _template: string } & Record<string, any>;
+    values: { _id: string; _component: string } & Record<string, any>;
     params: Record<string, any>;
   };
   let compiled: CompiledComponentConfig = {
-    _template: editableElement._template,
+    _component: editableElement._component,
     _id: editableElement._id,
     props: {},
     components: {},
@@ -335,7 +335,7 @@ export function compileComponent(
 
     // We want to style block element based on the most common values from all text parts within all lines.
     // Only for this component, we compile nested @easyblocks/rich-text-part components values.
-    if (editableElement._template === "@easyblocks/rich-text") {
+    if (editableElement._component === "@easyblocks/rich-text") {
       if (compiledValues.isListStyleAuto) {
         const {
           mainColor = compiledValues.mainColor,
@@ -378,7 +378,7 @@ export function compileComponent(
         configPrefix,
         editorContext,
         compiledValues,
-        editableElement._template
+        editableElement._component
       );
 
       /**
@@ -570,7 +570,7 @@ export function compileComponent(
       configPrefix,
       editorContext,
       compiledValues,
-      editableElement._template
+      editableElement._component
     );
 
     /**
@@ -743,7 +743,7 @@ function createOwnComponentProps({
   refMap: RefMap;
   ref?: string;
 }) {
-  // Copy all values and refs defined in schema, for component fields copy only _id, _template and its _itemProps but flattened
+  // Copy all values and refs defined in schema, for component fields copy only _id, _component and its _itemProps but flattened
   const values = Object.fromEntries(
     componentDefinition.schema.map((schemaProp) => {
       if (isSchemaPropComponentOrComponentCollection(schemaProp)) {
@@ -759,7 +759,7 @@ function createOwnComponentProps({
             [
               {
                 _id: configValue[0]._id,
-                _template: configValue[0]._template,
+                _component: configValue[0]._component,
               },
             ],
           ];
@@ -787,14 +787,14 @@ function createOwnComponentProps({
 
             return {
               _id: config._id,
-              _template: config._template,
+              _component: config._component,
               ...flattenedItemProps,
             };
           }
 
           return {
             _id: config._id,
-            _template: config._template,
+            _component: config._component,
           };
         });
 
@@ -805,10 +805,10 @@ function createOwnComponentProps({
     })
   );
 
-  const ownValues: { _id: string; _template: string; [key: string]: any } = {
+  const ownValues: { _id: string; _component: string; [key: string]: any } = {
     // Copy id and template which uniquely identify component.
     _id: config._id,
-    _template: config._template,
+    _component: config._component,
     ...values,
   };
 
@@ -862,7 +862,7 @@ function addComponentToSerializedComponentDefinitions(
 ) {
   const definitions = meta.vars.definitions[componentType];
 
-  if (definitions.find((def: any) => def.id === component._template)) {
+  if (definitions.find((def: any) => def.id === component._component)) {
     return;
   }
 
@@ -938,7 +938,7 @@ function compileSubcomponents(
           );
           if (!resolvedValue) {
             throw new Error(
-              `Can't resolve localised value for prop "${schemaProp.prop}" of component ${editableElement._template}`
+              `Can't resolve localised value for prop "${schemaProp.prop}" of component ${editableElement._component}`
             );
           }
           value = resolvedValue.value as any[];
@@ -986,7 +986,7 @@ function compileSubcomponents(
           const configsAfterAuto = compilationOutput.map(
             (compilationOutput, index) => {
               if (schemaProp.itemFields) {
-                const itemPropsCollectionPath = `_itemProps.${editableElement._template}.${schemaProp.prop}`;
+                const itemPropsCollectionPath = `_itemProps.${editableElement._component}.${schemaProp.prop}`;
 
                 const itemProps = Object.fromEntries(
                   schemaProp.itemFields.map((itemSchemaProp) => {
@@ -1226,7 +1226,7 @@ function buildDefaultEditingInfo(
   } else {
     const rootComponentDefinition = assertDefined(
       findComponentDefinitionById(
-        dotNotationGet(editorContext.form.values, "")._template,
+        dotNotationGet(editorContext.form.values, "")._component,
         editorContext
       )
     );

@@ -329,7 +329,7 @@ describe("copy", () => {
   });
 
   it("Should handle copy", () => {
-    const expectedData: NoCodeComponentEntry = { _template: "$component" };
+    const expectedData: NoCodeComponentEntry = { _component: "$component" };
 
     renderTestComponent({
       focussedField: ["data.0"],
@@ -366,9 +366,9 @@ describe("copy", () => {
 
 describe("cut", () => {
   it.each`
-    focussedField           | data                           | expectedFormat        | expectedPayload
-    ${["data.0"]}           | ${{ _template: "$component" }} | ${"text/x-shopstory"} | ${JSON.stringify([{ _template: "$component" }])}
-    ${["data.0", "data.2"]} | ${{ _template: "$component" }} | ${"text/x-shopstory"} | ${JSON.stringify([{ _template: "$component" }, { _template: "$component" }])}
+    focussedField           | data                            | expectedFormat        | expectedPayload
+    ${["data.0"]}           | ${{ _component: "$component" }} | ${"text/x-shopstory"} | ${JSON.stringify([{ _component: "$component" }])}
+    ${["data.0", "data.2"]} | ${{ _component: "$component" }} | ${"text/x-shopstory"} | ${JSON.stringify([{ _component: "$component" }, { _component: "$component" }])}
   `(
     "Should set serialized configs on clipbaordData and call cutAction",
     ({ focussedField, data, expectedFormat, expectedPayload }) => {

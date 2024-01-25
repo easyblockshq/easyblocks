@@ -37,21 +37,21 @@ const compilationContext: CompilationContextType = {
 
 const testConfig: NoCodeComponentEntry = {
   _id: "",
-  _template: "$TestComponent1",
+  _component: "$TestComponent1",
   Component: [
     {
-      _template: "$TestComponent2",
+      _component: "$TestComponent2",
     },
   ],
   Components: [
     {
-      _template: "$TestComponent2",
+      _component: "$TestComponent2",
     },
     {
-      _template: "$TestComponent2",
+      _component: "$TestComponent2",
     },
     {
-      _template: "$TestComponent2",
+      _component: "$TestComponent2",
     },
   ],
 };
@@ -62,7 +62,7 @@ test("finds all paths for $TestComponent2", () => {
       testConfig,
       compilationContext,
       (config): config is NoCodeComponentEntry => {
-        return config._template === "$TestComponent2";
+        return config._component === "$TestComponent2";
       }
     )
   ).toEqual(["Component.0", "Components.0", "Components.1", "Components.2"]);

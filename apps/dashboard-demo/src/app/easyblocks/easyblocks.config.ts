@@ -47,34 +47,6 @@ const easyblocksConfig: Config = {
     },
   ],
 
-  // documentTypes: {
-  //   appShellContent: {
-  //     label: "AppShell",
-  //     entry: {
-  //       _template: "AppShell",
-  //     },
-  //   },
-  //   welcomeScreenContent: {
-  //     label: "Welcome screen",
-  //     entry: {
-  //       _template: "MainArea",
-  //     },
-  //   },
-  //   assetScreenContent: {
-  //     label: "Asset screen",
-  //     entry: {
-  //       _template: "MainArea",
-  //     },
-  //     // asset screen has an asset data type parameter
-  //     schema: [
-  //       {
-  //         prop: "asset",
-  //         label: "Asset",
-  //         type: "asset",
-  //       },
-  //     ],
-  //   },
-  // },
   tokens: {
     colors: [
       { id: "neutral-50", value: "#fafafa" },
@@ -257,7 +229,7 @@ const easyblocksConfig: Config = {
       id: "PanelCard_default",
       entry: {
         _id: "b1e16724-3ccb-4f7e-8ee1-38e138f5b9d6",
-        _template: "PanelCard",
+        _component: "PanelCard",
         traceId: "PanelCard-0abc795e",
         _itemProps: {
           MainArea: {
@@ -269,7 +241,7 @@ const easyblocksConfig: Config = {
         HeaderStack: [
           {
             _id: "607a0434-adcf-4305-ab7d-b3ec998242b2",
-            _template: "Stack",
+            _component: "Stack",
             traceId: "Stack-20db12c3",
             Items: [],
           },
@@ -279,12 +251,12 @@ const easyblocksConfig: Config = {
         Buttons: [
           {
             _id: "ba7fdba7-9b35-4bd6-8ecd-40f9dfe8afe5",
-            _template: "ButtonsGroup",
+            _component: "ButtonsGroup",
             traceId: "ButtonsGroup-f0125b6f",
             Buttons: [
               {
                 _id: "f3358b5f-e056-44c7-a3ee-a541dee97b5e",
-                _template: "Button",
+                _component: "Button",
                 traceId: "Button-ddcbf2ce",
                 _itemProps: { ButtonsGroup: { Buttons: {} } },
                 variant: "solid",
@@ -307,7 +279,7 @@ const easyblocksConfig: Config = {
       id: "ButtonsGroup_empty",
       entry: {
         _id: "c0b75635-f744-4863-9d7c-fd74c26186f5",
-        _template: "ButtonsGroup",
+        _component: "ButtonsGroup",
         gap: {
           $res: true,
           xl: {
@@ -318,7 +290,7 @@ const easyblocksConfig: Config = {
         Buttons: [
           {
             _id: "whatever",
-            _template: "Button",
+            _component: "Button",
           },
         ],
       },
@@ -328,23 +300,23 @@ const easyblocksConfig: Config = {
       id: "RichText_body-typography",
       entry: {
         _id: "20149cea-df28-4d5f-a085-3938c5ad3a08",
-        _template: "@easyblocks/rich-text",
+        _component: "@easyblocks/rich-text",
         elements: {
           en: [
             {
               _id: "56386a14-b91f-48f4-a3aa-6d34a3d2e71c",
-              _template: "@easyblocks/rich-text-block-element",
+              _component: "@easyblocks/rich-text-block-element",
               traceId: "$richTextBlockElement-e908698d",
               type: "paragraph",
               elements: [
                 {
                   _id: "cdaf3bb2-6648-4845-8c57-358a6ac8c3af",
-                  _template: "@easyblocks/rich-text-line-element",
+                  _component: "@easyblocks/rich-text-line-element",
                   traceId: "$richTextLineElement-407fc206",
                   elements: [
                     {
                       _id: "f8864077-9d1e-4186-a0a1-7b71e842aad6",
-                      _template: "@easyblocks/rich-text-part",
+                      _component: "@easyblocks/rich-text-part",
                       traceId: "$richTextPart-50021cf2",
                       value: "Lorem ipsum",
                       font: {
@@ -404,7 +376,7 @@ const easyblocksConfig: Config = {
       id: "DefaultSimpleText",
       entry: {
         _id: "49af13d4-baf8-441c-b8b0-4b0088d3a4df",
-        _template: "@easyblocks/text",
+        _component: "@easyblocks/text",
         traceId: "$text-31f5d455",
         _itemProps: {
           Stack: {
@@ -443,7 +415,7 @@ const easyblocksConfig: Config = {
       id: "DefaultPropertiesForm",
       entry: {
         _id: "40226ffc-5c00-4dc1-86ad-624bf36c2f23",
-        _template: "PropertiesForm",
+        _component: "PropertiesForm",
         traceId: "PropertiesForm-d7c9d94e",
         _itemProps: {
           Stack: {
@@ -471,7 +443,7 @@ const easyblocksConfig: Config = {
         Buttons: [
           {
             _id: "b7c1f32c-6c7a-45d6-983f-6d445e03c08d",
-            _template: "ButtonsGroup",
+            _component: "ButtonsGroup",
             traceId: "ButtonsGroup-0b9557b2",
             Buttons: [],
             gap: {

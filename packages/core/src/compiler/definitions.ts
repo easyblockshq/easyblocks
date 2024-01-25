@@ -381,7 +381,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         if (schemaProp.required) {
           return [
             normalizeComponent(
-              { _template: schemaProp.accepts[0] },
+              { _component: schemaProp.accepts[0] },
               compilationContext
             ),
           ];
@@ -441,7 +441,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
             );
           }
 
-          return value[0]._template;
+          return value[0]._component;
         }
 
         return "__BLOCK_EMPTY__";
@@ -493,7 +493,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         );
       },
       getHash: (value) => {
-        return value.map((v) => v._template).join(";");
+        return value.map((v) => v._component).join(";");
       },
     };
   },
@@ -565,7 +565,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
     return {
       normalize: (x) => x,
       compile: (x) => x,
-      getHash: (x) => x._template,
+      getHash: (x) => x._component,
     };
   },
 
@@ -1173,10 +1173,7 @@ export function normalizeComponent(
 ): NoCodeComponentEntry {
   const ret: NoCodeComponentEntry = {
     _id: configComponent._id ?? uniqueId(),
-    _template: configComponent._template,
-    _master: configComponent._master,
-    $$$refs: configComponent.$$$refs,
-    traceId: configComponent.traceId,
+    _component: configComponent._component,
   };
 
   // Normalize itemProps (before own props). If component definition is missing, we still normalize item props
@@ -1215,18 +1212,20 @@ export function normalizeComponent(
   }
 
   const componentDefinition = findComponentDefinitionById(
-    splitTemplateName(configComponent._template).name,
+    splitTemplateName(configComponent._component).name,
     compilationContext
   );
 
   if (!componentDefinition) {
-    console.warn(`[normalize] Unknown _template ${configComponent._template}`);
+    console.warn(
+      `[normalize] Unknown _component ${configComponent._component}`
+    );
     return ret;
   }
 
   componentDefinition.schema.forEach((schemaProp) => {
     if (!isRef) {
-      const { ref } = splitTemplateName(configComponent._template);
+      const { ref } = splitTemplateName(configComponent._component);
       if (ref) {
         if (!isExternalSchemaProp(schemaProp, compilationContext.types)) {
           return;
@@ -1260,7 +1259,7 @@ export function normalizeComponent(
   // When using prop of type `component` with `accepts: ["@easyblocks/rich-text"]` it's going to be initialized with empty
   // `elements` property which in result will cause RichText to not work properly. To fix this, we're going
   // to initialize `elements` with default template - the same that's being added when user adds RichText to Stack manually.
-  if (ret._template === "@easyblocks/rich-text") {
+  if (ret._component === "@easyblocks/rich-text") {
     if (
       Object.keys(ret.elements).length === 0 ||
       ret.elements[compilationContext.contextParams.locale]?.length === 0

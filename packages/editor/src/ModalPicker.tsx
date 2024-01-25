@@ -57,7 +57,7 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
       };
 
       editorContext.templates!.forEach((template) => {
-        if (component.id === template.entry._template) {
+        if (component.id === template.entry._component) {
           templatesDictionary![component.id].templates.push(template);
         }
       });
@@ -79,7 +79,7 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
 
   const close = (config: NoCodeComponentEntry) => {
     const _itemProps = {
-      [parentData._template]: {
+      [parentData._component]: {
         [fieldName]: {},
       },
     };

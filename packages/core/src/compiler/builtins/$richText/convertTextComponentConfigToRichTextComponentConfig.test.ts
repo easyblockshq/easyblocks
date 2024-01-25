@@ -8,7 +8,7 @@ const TEST_LOCALE = "en";
 test("converts when text is a single line", () => {
   const testTextComponentConfig: TextComponentConfig = {
     _id: "testId",
-    _template: "@easyblocks/text",
+    _component: "@easyblocks/text",
     color: {
       $res: true,
       xl: {
@@ -33,7 +33,7 @@ test("converts when text is a single line", () => {
 
   const expectedRichTextComponentConfig: RichTextComponentConfig = {
     _id: expect.any(String),
-    _template: "@easyblocks/rich-text",
+    _component: "@easyblocks/rich-text",
 
     accessibilityRole: "div",
     elements: {
@@ -41,19 +41,19 @@ test("converts when text is a single line", () => {
         {
           $$$refs: undefined,
           _id: expect.any(String),
-          _template: "@easyblocks/rich-text-block-element",
+          _component: "@easyblocks/rich-text-block-element",
 
           elements: [
             {
               $$$refs: undefined,
               _id: expect.any(String),
-              _template: "@easyblocks/rich-text-line-element",
+              _component: "@easyblocks/rich-text-line-element",
 
               elements: [
                 {
                   $$$refs: undefined,
                   _id: expect.any(String),
-                  _template: "@easyblocks/rich-text-part",
+                  _component: "@easyblocks/rich-text-part",
 
                   color: testTextComponentConfig.color,
                   font: testTextComponentConfig.font,
@@ -90,7 +90,7 @@ test("converts when text is a single line", () => {
 test("converts when text contains new line", () => {
   const testTextComponentConfig: TextComponentConfig = {
     _id: "testId",
-    _template: "@easyblocks/text",
+    _component: "@easyblocks/text",
     color: {
       $res: true,
       xl: {
@@ -115,24 +115,24 @@ test("converts when text contains new line", () => {
 
   const expectedRichTextComponentConfig: RichTextComponentConfig = {
     _id: expect.any(String),
-    _template: "@easyblocks/rich-text",
+    _component: "@easyblocks/rich-text",
 
     accessibilityRole: "div",
     elements: {
       [TEST_LOCALE]: [
         {
           _id: expect.any(String),
-          _template: "@easyblocks/rich-text-block-element",
+          _component: "@easyblocks/rich-text-block-element",
 
           elements: [
             {
               _id: expect.any(String),
-              _template: "@easyblocks/rich-text-line-element",
+              _component: "@easyblocks/rich-text-line-element",
 
               elements: [
                 {
                   _id: expect.any(String),
-                  _template: "@easyblocks/rich-text-part",
+                  _component: "@easyblocks/rich-text-part",
 
                   color: testTextComponentConfig.color,
                   font: testTextComponentConfig.font,
@@ -143,12 +143,12 @@ test("converts when text contains new line", () => {
             },
             {
               _id: expect.any(String),
-              _template: "@easyblocks/rich-text-line-element",
+              _component: "@easyblocks/rich-text-line-element",
 
               elements: [
                 {
                   _id: expect.any(String),
-                  _template: "@easyblocks/rich-text-part",
+                  _component: "@easyblocks/rich-text-part",
 
                   color: testTextComponentConfig.color,
                   font: testTextComponentConfig.font,
@@ -184,7 +184,7 @@ test("converts when text contains new line", () => {
 test("converts when text contains more than one new line between text lines", () => {
   const testTextComponentConfig: TextComponentConfig = {
     _id: "testId",
-    _template: "@easyblocks/text",
+    _component: "@easyblocks/text",
     color: {
       $res: true,
       xl: {
@@ -209,21 +209,21 @@ test("converts when text contains more than one new line between text lines", ()
 
   const expectedRichTextComponentConfig: RichTextComponentConfig = {
     _id: expect.any(String),
-    _template: "@easyblocks/rich-text",
+    _component: "@easyblocks/rich-text",
     accessibilityRole: "div",
     elements: {
       [TEST_LOCALE]: [
         {
           _id: expect.any(String),
-          _template: "@easyblocks/rich-text-block-element",
+          _component: "@easyblocks/rich-text-block-element",
           elements: [
             {
               _id: expect.any(String),
-              _template: "@easyblocks/rich-text-line-element",
+              _component: "@easyblocks/rich-text-line-element",
               elements: [
                 {
                   _id: expect.any(String),
-                  _template: "@easyblocks/rich-text-part",
+                  _component: "@easyblocks/rich-text-part",
                   color: testTextComponentConfig.color,
                   font: testTextComponentConfig.font,
                   value: "resolved test text value",
@@ -233,11 +233,11 @@ test("converts when text contains more than one new line between text lines", ()
             },
             {
               _id: expect.any(String),
-              _template: "@easyblocks/rich-text-line-element",
+              _component: "@easyblocks/rich-text-line-element",
               elements: [
                 {
                   _id: expect.any(String),
-                  _template: "@easyblocks/rich-text-part",
+                  _component: "@easyblocks/rich-text-part",
                   color: testTextComponentConfig.color,
                   font: testTextComponentConfig.font,
                   value: "",
@@ -247,11 +247,11 @@ test("converts when text contains more than one new line between text lines", ()
             },
             {
               _id: expect.any(String),
-              _template: "@easyblocks/rich-text-line-element",
+              _component: "@easyblocks/rich-text-line-element",
               elements: [
                 {
                   _id: expect.any(String),
-                  _template: "@easyblocks/rich-text-part",
+                  _component: "@easyblocks/rich-text-part",
                   color: testTextComponentConfig.color,
                   font: testTextComponentConfig.font,
                   value: "",
@@ -261,11 +261,11 @@ test("converts when text contains more than one new line between text lines", ()
             },
             {
               _id: expect.any(String),
-              _template: "@easyblocks/rich-text-line-element",
+              _component: "@easyblocks/rich-text-line-element",
               elements: [
                 {
                   _id: expect.any(String),
-                  _template: "@easyblocks/rich-text-part",
+                  _component: "@easyblocks/rich-text-part",
                   color: testTextComponentConfig.color,
                   font: testTextComponentConfig.font,
                   value: "next line of resolved text value",

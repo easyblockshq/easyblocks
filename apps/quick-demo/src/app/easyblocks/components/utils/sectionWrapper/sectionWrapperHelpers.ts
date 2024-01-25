@@ -251,7 +251,7 @@ export type SectionWrapperValues = {
   Background__: any[];
   padding: Spacing;
   Component: any[];
-  _template: string;
+  _component: string;
 };
 
 export function sectionWrapperCalculateMarginAndMaxWidth(

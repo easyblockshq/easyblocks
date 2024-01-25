@@ -36,7 +36,7 @@ type RichTextLineElementComponentConfig = EditableComponentToComponentConfig<
 };
 
 type RichTextLineElementCompiledComponentConfig = CompiledComponentConfigBase<
-  RichTextLineElementComponentConfig["_template"]
+  RichTextLineElementComponentConfig["_component"]
 > & {
   styled: NonNullable<ReturnType<typeof richTextLineElementStyles>["styled"]>;
 } & {

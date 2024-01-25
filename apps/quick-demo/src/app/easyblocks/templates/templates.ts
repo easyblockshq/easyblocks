@@ -226,7 +226,7 @@ export const templates: Template[] = [
     label: "Default",
     // @ts-expect-error
     entry: {
-      _template: "$buttons",
+      _component: "$buttons",
       gap: {
         $res: true,
         xl: {

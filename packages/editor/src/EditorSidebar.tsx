@@ -37,8 +37,8 @@ export const EditorSidebar: React.FC<EditorSidebarProps> = (props) => {
         path
       );
       const editableComponent = dotNotationGet(form.values, path);
-      if (compiledComponent?._template === "$MissingComponent") {
-        return `Shopstory can’t find definition for component: ${editableComponent._template} in your project. Please contact your developers to resolve this issue.`;
+      if (compiledComponent?._component === "@easyblocks/missing-component") {
+        return `Can’t find definition for component: ${editableComponent._component} in your project. Please contact your developers to resolve this issue.`;
       }
     }
 

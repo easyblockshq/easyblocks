@@ -32,7 +32,7 @@ test("populates cache for given component if cache is empty", () => {
 
   const result = compileInternal(
     {
-      _template: "$TestComponent",
+      _component: "$TestComponent",
       _id: "xxx",
       prop1: "Test",
     },
@@ -44,7 +44,7 @@ test("populates cache for given component if cache is empty", () => {
   expect(cache.get("xxx")).toEqual<ReturnType<CompilationCache["get"]>>({
     values: {
       values: {
-        _template: "$TestComponent",
+        _component: "$TestComponent",
         _id: "xxx",
         prop1: "Test",
       },
@@ -61,13 +61,13 @@ test("populates cache for given component if cache is empty", () => {
     },
     compiledConfig: result.compiled,
     compiledValues: {
-      _template: "$TestComponent",
+      _component: "$TestComponent",
       _id: "xxx",
       prop1: "Test",
     },
     valuesAfterAuto: {
       values: {
-        _template: "$TestComponent",
+        _component: "$TestComponent",
         _id: "xxx",
         prop1: "Test",
       },
@@ -102,7 +102,7 @@ test("reuses cache if it contains cached result for given component", () => {
   });
 
   const testConfig: TestComponentConfig = {
-    _template: "$TestComponent",
+    _component: "$TestComponent",
     _id: "xxx",
     prop1: "Test",
   };
@@ -114,7 +114,7 @@ test("reuses cache if it contains cached result for given component", () => {
         values: {
           values: {
             _id: testConfig._id,
-            _template: testConfig._template,
+            _component: testConfig._component,
             prop1: "Test",
           },
           params: {
@@ -131,20 +131,20 @@ test("reuses cache if it contains cached result for given component", () => {
         contextProps: {},
         compiledConfig: {
           _id: testConfig._id,
-          _template: testConfig._template,
+          _component: testConfig._component,
           components: {},
           props: {},
           styled: {},
         },
         compiledValues: {
           _id: testConfig._id,
-          _template: testConfig._template,
+          _component: testConfig._component,
           prop1: "Test",
         },
         valuesAfterAuto: {
           values: {
             _id: testConfig._id,
-            _template: testConfig._template,
+            _component: testConfig._component,
             prop1: "Test",
           },
           params: {
@@ -204,15 +204,15 @@ test("change of schema prop value of nested component triggers only recompilatio
   };
 
   const testConfig: TestComponentConfig = {
-    _template: "$TestComponent3",
+    _component: "$TestComponent3",
     _id: "xxx",
     Component: [
       {
-        _template: "$TestComponent2",
+        _component: "$TestComponent2",
         _id: "yyy",
         Component: [
           {
-            _template: "$TestComponent1",
+            _component: "$TestComponent1",
             _id: "zzz",
             prop1: "Test",
           },
@@ -267,7 +267,7 @@ test("change of schema prop value of nested component triggers only recompilatio
     ).components.Component[0] as CompiledComponentConfig,
     valuesAfterAuto: {
       values: {
-        _template: "$TestComponent1",
+        _component: "$TestComponent1",
         _id: "zzz",
         prop1: "Another test",
       },
@@ -283,14 +283,14 @@ test("change of schema prop value of nested component triggers only recompilatio
       },
     },
     compiledValues: {
-      _template: "$TestComponent1",
+      _component: "$TestComponent1",
       _id: "zzz",
       prop1: "Another test",
     },
     contextProps: {},
     values: {
       values: {
-        _template: "$TestComponent1",
+        _component: "$TestComponent1",
         _id: "zzz",
         prop1: "Another test",
       },
@@ -341,11 +341,11 @@ test("change of _itemProps triggers recompilation of the component that owns the
   });
 
   const testConfig: TestComponentConfig = {
-    _template: "$TestComponent2",
+    _component: "$TestComponent2",
     _id: "xxx",
     Components: [
       {
-        _template: "$TestComponent1",
+        _component: "$TestComponent1",
         _id: "yyy",
         prop1: "Test",
         _itemProps: {
@@ -380,11 +380,11 @@ test("change of _itemProps triggers recompilation of the component that owns the
       Components: [
         {
           _id: "yyy",
-          _template: "$TestComponent1",
+          _component: "$TestComponent1",
           itemProp1: false,
         },
       ],
-      _template: "$TestComponent2",
+      _component: "$TestComponent2",
     },
   });
 
@@ -392,7 +392,7 @@ test("change of _itemProps triggers recompilation of the component that owns the
 
   expect(cacheEntryComponent1?.values).toEqual({
     values: {
-      _template: "$TestComponent1",
+      _component: "$TestComponent1",
       _id: "yyy",
       prop1: "Test",
     },
@@ -409,11 +409,11 @@ test("change of _itemProps triggers recompilation of the component that owns the
   });
 
   const testConfig2: TestComponentConfig = {
-    _template: "$TestComponent2",
+    _component: "$TestComponent2",
     _id: "xxx",
     Components: [
       {
-        _template: "$TestComponent1",
+        _component: "$TestComponent1",
         _id: "yyy",
         prop1: "Test",
         _itemProps: {
@@ -432,12 +432,12 @@ test("change of _itemProps triggers recompilation of the component that owns the
   expect(cache.count).toBe(2);
   expect(cache.get("xxx")?.values).toEqual({
     values: {
-      _template: "$TestComponent2",
+      _component: "$TestComponent2",
       _id: "xxx",
       Components: [
         {
           _id: "yyy",
-          _template: "$TestComponent1",
+          _component: "$TestComponent1",
           itemProp1: true,
         },
       ],
@@ -496,12 +496,12 @@ test("change of context props triggers recompilation of component consuming them
   });
 
   const testConfig: TestComponentConfig = {
-    _template: "$TestComponent2",
+    _component: "$TestComponent2",
     _id: "xxx",
     prop1: true,
     Component: [
       {
-        _template: "$TestComponent1",
+        _component: "$TestComponent1",
         _id: "yyy",
         prop1: false,
       },
@@ -515,13 +515,13 @@ test("change of context props triggers recompilation of component consuming them
   expect(cache.count).toBe(2);
   expect(cache.get("xxx")?.values).toEqual({
     values: {
-      _template: "$TestComponent2",
+      _component: "$TestComponent2",
       _id: "xxx",
       prop1: true,
       Component: [
         {
           _id: "yyy",
-          _template: "$TestComponent1",
+          _component: "$TestComponent1",
         },
       ],
     },
@@ -538,7 +538,7 @@ test("change of context props triggers recompilation of component consuming them
   });
   expect(cache.get("yyy")?.values).toEqual({
     values: {
-      _template: "$TestComponent1",
+      _component: "$TestComponent1",
       _id: "yyy",
       prop1: false,
     },

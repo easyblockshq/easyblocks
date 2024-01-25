@@ -14,12 +14,12 @@ export type PlaceholderAppearance = {
 };
 
 export interface ComponentConfigBase<Identifier extends string> {
-  _template: Identifier;
+  _component: Identifier;
   _id: string;
 }
 
 export type NoCodeComponentEntry = {
-  _template: string; // instance of the component (unique id)
+  _component: string; // instance of the component (unique id)
   _ref?: string; // ref of the component,
   _id: string;
   $$$refs?: RefMap;
@@ -774,7 +774,7 @@ export type CompiledComponentConfigBase<
   Identifier extends string = string,
   Props extends Record<string, any> = Record<string, any>
 > = {
-  _template: Identifier; // instance of the component (unique id)
+  _component: Identifier; // instance of the component (unique id)
   _id: string;
   props: Props;
 };

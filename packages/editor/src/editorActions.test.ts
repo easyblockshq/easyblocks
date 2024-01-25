@@ -37,12 +37,12 @@ function createTestFormWithSingleParentElement() {
   return createTestForm({
     initialValues: {
       parent1: [
-        { _template: "testComponent", name: "child1" },
-        { _template: "testComponent", name: "child2" },
-        { _template: "testComponent", name: "child3" },
-        { _template: "testComponent", name: "child4" },
+        { _component: "testComponent", name: "child1" },
+        { _component: "testComponent", name: "child2" },
+        { _component: "testComponent", name: "child3" },
+        { _component: "testComponent", name: "child4" },
       ],
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
     },
   });
 }
@@ -50,16 +50,16 @@ function createTestFormWithSingleParentElement() {
 function createTestFormWithMultipleParentsElements() {
   return createTestForm({
     initialValues: {
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child1.1" },
-        { _template: "testComponent", name: "child1.2" },
-        { _template: "testComponent", name: "child1.3" },
+        { _component: "testComponent", name: "child1.1" },
+        { _component: "testComponent", name: "child1.2" },
+        { _component: "testComponent", name: "child1.3" },
       ],
       parent2: [
-        { _template: "testComponent", name: "child2.1" },
-        { _template: "testComponent", name: "child2.2" },
-        { _template: "testComponent", name: "child2.3" },
+        { _component: "testComponent", name: "child2.1" },
+        { _component: "testComponent", name: "child2.2" },
+        { _component: "testComponent", name: "child2.3" },
       ],
     },
   });
@@ -154,22 +154,22 @@ describe("duplicateItems", () => {
     expect(fieldsToFocus).toEqual(["parent1.1"]);
     expect(form.mutators.insert).toHaveBeenCalledTimes(1);
     expect(form.mutators.insert).toHaveBeenNthCalledWith(1, "parent1", 1, {
-      _template: "testComponent",
+      _component: "testComponent",
       _id: expect.any(String),
       name: "child1",
     });
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child1" },
+        { _component: "testComponent", name: "child1" },
         {
-          _template: "testComponent",
+          _component: "testComponent",
           _id: expect.any(String),
           name: "child1",
         },
-        { _template: "testComponent", name: "child2" },
-        { _template: "testComponent", name: "child3" },
-        { _template: "testComponent", name: "child4" },
+        { _component: "testComponent", name: "child2" },
+        { _component: "testComponent", name: "child3" },
+        { _component: "testComponent", name: "child4" },
       ],
     });
   });
@@ -185,32 +185,32 @@ describe("duplicateItems", () => {
     expect(fieldsToFocus).toEqual(["parent1.2", "parent1.3"]);
     expect(form.mutators.insert).toHaveBeenCalledTimes(2);
     expect(form.mutators.insert).toHaveBeenNthCalledWith(1, "parent1", 2, {
-      _template: "testComponent",
+      _component: "testComponent",
       _id: expect.any(String),
       name: "child1",
     });
     expect(form.mutators.insert).toHaveBeenNthCalledWith(2, "parent1", 3, {
-      _template: "testComponent",
+      _component: "testComponent",
       _id: expect.any(String),
       name: "child2",
     });
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child1" },
-        { _template: "testComponent", name: "child2" },
+        { _component: "testComponent", name: "child1" },
+        { _component: "testComponent", name: "child2" },
         {
-          _template: "testComponent",
+          _component: "testComponent",
           _id: expect.any(String),
           name: "child1",
         },
         {
-          _template: "testComponent",
+          _component: "testComponent",
           _id: expect.any(String),
           name: "child2",
         },
-        { _template: "testComponent", name: "child3" },
-        { _template: "testComponent", name: "child4" },
+        { _component: "testComponent", name: "child3" },
+        { _component: "testComponent", name: "child4" },
       ],
     });
   });
@@ -226,32 +226,32 @@ describe("duplicateItems", () => {
     expect(fieldsToFocus).toEqual(["parent1.3", "parent1.4"]);
     expect(form.mutators.insert).toHaveBeenCalledTimes(2);
     expect(form.mutators.insert).toHaveBeenNthCalledWith(1, "parent1", 3, {
-      _template: "testComponent",
+      _component: "testComponent",
       _id: expect.any(String),
       name: "child1",
     });
     expect(form.mutators.insert).toHaveBeenNthCalledWith(2, "parent1", 4, {
-      _template: "testComponent",
+      _component: "testComponent",
       _id: expect.any(String),
       name: "child3",
     });
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child1" },
-        { _template: "testComponent", name: "child2" },
-        { _template: "testComponent", name: "child3" },
+        { _component: "testComponent", name: "child1" },
+        { _component: "testComponent", name: "child2" },
+        { _component: "testComponent", name: "child3" },
         {
-          _template: "testComponent",
+          _component: "testComponent",
           _id: expect.any(String),
           name: "child1",
         },
         {
-          _template: "testComponent",
+          _component: "testComponent",
           _id: expect.any(String),
           name: "child3",
         },
-        { _template: "testComponent", name: "child4" },
+        { _component: "testComponent", name: "child4" },
       ],
     });
   });
@@ -267,36 +267,36 @@ describe("duplicateItems", () => {
     expect(fieldsToFocus).toEqual(["parent1.1", "parent2.1"]);
     expect(form.mutators.insert).toHaveBeenCalledTimes(2);
     expect(form.mutators.insert).toHaveBeenNthCalledWith(1, "parent1", 1, {
-      _template: "testComponent",
+      _component: "testComponent",
       _id: expect.any(String),
       name: "child1.1",
     });
     expect(form.mutators.insert).toHaveBeenNthCalledWith(2, "parent2", 1, {
-      _template: "testComponent",
+      _component: "testComponent",
       _id: expect.any(String),
       name: "child2.1",
     });
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child1.1" },
+        { _component: "testComponent", name: "child1.1" },
         {
-          _template: "testComponent",
+          _component: "testComponent",
           _id: expect.any(String),
           name: "child1.1",
         },
-        { _template: "testComponent", name: "child1.2" },
-        { _template: "testComponent", name: "child1.3" },
+        { _component: "testComponent", name: "child1.2" },
+        { _component: "testComponent", name: "child1.3" },
       ],
       parent2: [
-        { _template: "testComponent", name: "child2.1" },
+        { _component: "testComponent", name: "child2.1" },
         {
-          _template: "testComponent",
+          _component: "testComponent",
           _id: expect.any(String),
           name: "child2.1",
         },
-        { _template: "testComponent", name: "child2.2" },
-        { _template: "testComponent", name: "child2.3" },
+        { _component: "testComponent", name: "child2.2" },
+        { _component: "testComponent", name: "child2.3" },
       ],
     });
   });
@@ -304,10 +304,10 @@ describe("duplicateItems", () => {
   it("doesn't duplicate elements of type 'component' that's required", () => {
     const form = createTestForm({
       initialValues: {
-        _template: "testComponentWithComponentFixed",
+        _component: "testComponentWithComponentFixed",
         fixedChild: [
           {
-            _template: "testComponent",
+            _component: "testComponent",
             name: "child1",
           },
         ],
@@ -323,10 +323,10 @@ describe("duplicateItems", () => {
     expect(fieldsToFocus).toBeUndefined();
     expect(form.mutators.insert).toHaveBeenCalledTimes(0);
     expect(form.values).toEqual({
-      _template: "testComponentWithComponentFixed",
+      _component: "testComponentWithComponentFixed",
       fixedChild: [
         {
-          _template: "testComponent",
+          _component: "testComponent",
           name: "child1",
         },
       ],
@@ -336,10 +336,10 @@ describe("duplicateItems", () => {
   it("doesn't duplicate elements of type 'component' when it's required", () => {
     const form = createTestForm({
       initialValues: {
-        _template: "testComponentWithComponent",
+        _component: "testComponentWithComponent",
         componentRequiredChild: [
           {
-            _template: "testComponent",
+            _component: "testComponent",
             name: "child1",
           },
         ],
@@ -355,10 +355,10 @@ describe("duplicateItems", () => {
     expect(fieldsToFocus).toBeUndefined();
     expect(form.mutators.insert).toHaveBeenCalledTimes(0);
     expect(form.values).toEqual({
-      _template: "testComponentWithComponent",
+      _component: "testComponentWithComponent",
       componentRequiredChild: [
         {
-          _template: "testComponent",
+          _component: "testComponent",
           name: "child1",
         },
       ],
@@ -368,10 +368,10 @@ describe("duplicateItems", () => {
   it("doesn't duplicate elements of type 'component' when it's not required", () => {
     const form = createTestForm({
       initialValues: {
-        _template: "testComponentWithComponent",
+        _component: "testComponentWithComponent",
         componentChild: [
           {
-            _template: "testComponent",
+            _component: "testComponent",
             name: "child1",
           },
         ],
@@ -398,12 +398,12 @@ describe("moveItems", () => {
     expect(form.mutators.move).toHaveBeenCalledTimes(1);
     expect(form.mutators.move).toHaveBeenNthCalledWith(1, "parent1", 0, 1);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child2" },
-        { _template: "testComponent", name: "child1" },
-        { _template: "testComponent", name: "child3" },
-        { _template: "testComponent", name: "child4" },
+        { _component: "testComponent", name: "child2" },
+        { _component: "testComponent", name: "child1" },
+        { _component: "testComponent", name: "child3" },
+        { _component: "testComponent", name: "child4" },
       ],
     });
 
@@ -413,12 +413,12 @@ describe("moveItems", () => {
     expect(form.mutators.move).toHaveBeenCalledTimes(2);
     expect(form.mutators.move).toHaveBeenNthCalledWith(2, "parent1", 1, 2);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child2" },
-        { _template: "testComponent", name: "child3" },
-        { _template: "testComponent", name: "child1" },
-        { _template: "testComponent", name: "child4" },
+        { _component: "testComponent", name: "child2" },
+        { _component: "testComponent", name: "child3" },
+        { _component: "testComponent", name: "child1" },
+        { _component: "testComponent", name: "child4" },
       ],
     });
 
@@ -428,12 +428,12 @@ describe("moveItems", () => {
     expect(form.mutators.move).toHaveBeenCalledTimes(3);
     expect(form.mutators.move).toHaveBeenNthCalledWith(3, "parent1", 2, 3);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child2" },
-        { _template: "testComponent", name: "child3" },
-        { _template: "testComponent", name: "child4" },
-        { _template: "testComponent", name: "child1" },
+        { _component: "testComponent", name: "child2" },
+        { _component: "testComponent", name: "child3" },
+        { _component: "testComponent", name: "child4" },
+        { _component: "testComponent", name: "child1" },
       ],
     });
 
@@ -442,12 +442,12 @@ describe("moveItems", () => {
     expect(fieldsToFocus).toBeUndefined();
     expect(form.mutators.move).toHaveBeenCalledTimes(3);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child2" },
-        { _template: "testComponent", name: "child3" },
-        { _template: "testComponent", name: "child4" },
-        { _template: "testComponent", name: "child1" },
+        { _component: "testComponent", name: "child2" },
+        { _component: "testComponent", name: "child3" },
+        { _component: "testComponent", name: "child4" },
+        { _component: "testComponent", name: "child1" },
       ],
     });
   });
@@ -460,12 +460,12 @@ describe("moveItems", () => {
     expect(form.mutators.move).toHaveBeenCalledTimes(1);
     expect(form.mutators.move).toHaveBeenNthCalledWith(1, "parent1", 3, 2);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child1" },
-        { _template: "testComponent", name: "child2" },
-        { _template: "testComponent", name: "child4" },
-        { _template: "testComponent", name: "child3" },
+        { _component: "testComponent", name: "child1" },
+        { _component: "testComponent", name: "child2" },
+        { _component: "testComponent", name: "child4" },
+        { _component: "testComponent", name: "child3" },
       ],
     });
 
@@ -475,12 +475,12 @@ describe("moveItems", () => {
     expect(form.mutators.move).toHaveBeenCalledTimes(2);
     expect(form.mutators.move).toHaveBeenNthCalledWith(2, "parent1", 2, 1);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child1" },
-        { _template: "testComponent", name: "child4" },
-        { _template: "testComponent", name: "child2" },
-        { _template: "testComponent", name: "child3" },
+        { _component: "testComponent", name: "child1" },
+        { _component: "testComponent", name: "child4" },
+        { _component: "testComponent", name: "child2" },
+        { _component: "testComponent", name: "child3" },
       ],
     });
 
@@ -490,12 +490,12 @@ describe("moveItems", () => {
     expect(form.mutators.move).toHaveBeenCalledTimes(3);
     expect(form.mutators.move).toHaveBeenNthCalledWith(3, "parent1", 1, 0);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child4" },
-        { _template: "testComponent", name: "child1" },
-        { _template: "testComponent", name: "child2" },
-        { _template: "testComponent", name: "child3" },
+        { _component: "testComponent", name: "child4" },
+        { _component: "testComponent", name: "child1" },
+        { _component: "testComponent", name: "child2" },
+        { _component: "testComponent", name: "child3" },
       ],
     });
 
@@ -504,12 +504,12 @@ describe("moveItems", () => {
     expect(fieldsToFocus).toBeUndefined();
     expect(form.mutators.move).toHaveBeenCalledTimes(3);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child4" },
-        { _template: "testComponent", name: "child1" },
-        { _template: "testComponent", name: "child2" },
-        { _template: "testComponent", name: "child3" },
+        { _component: "testComponent", name: "child4" },
+        { _component: "testComponent", name: "child1" },
+        { _component: "testComponent", name: "child2" },
+        { _component: "testComponent", name: "child3" },
       ],
     });
   });
@@ -523,12 +523,12 @@ describe("moveItems", () => {
     expect(form.mutators.move).toHaveBeenNthCalledWith(1, "parent1", 1, 2);
     expect(form.mutators.move).toHaveBeenNthCalledWith(2, "parent1", 0, 1);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child3" },
-        { _template: "testComponent", name: "child1" },
-        { _template: "testComponent", name: "child2" },
-        { _template: "testComponent", name: "child4" },
+        { _component: "testComponent", name: "child3" },
+        { _component: "testComponent", name: "child1" },
+        { _component: "testComponent", name: "child2" },
+        { _component: "testComponent", name: "child4" },
       ],
     });
 
@@ -539,12 +539,12 @@ describe("moveItems", () => {
     expect(form.mutators.move).toHaveBeenNthCalledWith(3, "parent1", 2, 3);
     expect(form.mutators.move).toHaveBeenNthCalledWith(4, "parent1", 1, 2);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child3" },
-        { _template: "testComponent", name: "child4" },
-        { _template: "testComponent", name: "child1" },
-        { _template: "testComponent", name: "child2" },
+        { _component: "testComponent", name: "child3" },
+        { _component: "testComponent", name: "child4" },
+        { _component: "testComponent", name: "child1" },
+        { _component: "testComponent", name: "child2" },
       ],
     });
 
@@ -553,12 +553,12 @@ describe("moveItems", () => {
     expect(fieldsToFocus).toEqual(["parent1.3", "parent1.2"]);
     expect(form.mutators.move).toHaveBeenCalledTimes(4);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child3" },
-        { _template: "testComponent", name: "child4" },
-        { _template: "testComponent", name: "child1" },
-        { _template: "testComponent", name: "child2" },
+        { _component: "testComponent", name: "child3" },
+        { _component: "testComponent", name: "child4" },
+        { _component: "testComponent", name: "child1" },
+        { _component: "testComponent", name: "child2" },
       ],
     });
   });
@@ -572,12 +572,12 @@ describe("moveItems", () => {
     expect(form.mutators.move).toHaveBeenNthCalledWith(1, "parent1", 2, 1);
     expect(form.mutators.move).toHaveBeenNthCalledWith(2, "parent1", 3, 2);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child1" },
-        { _template: "testComponent", name: "child3" },
-        { _template: "testComponent", name: "child4" },
-        { _template: "testComponent", name: "child2" },
+        { _component: "testComponent", name: "child1" },
+        { _component: "testComponent", name: "child3" },
+        { _component: "testComponent", name: "child4" },
+        { _component: "testComponent", name: "child2" },
       ],
     });
 
@@ -588,12 +588,12 @@ describe("moveItems", () => {
     expect(form.mutators.move).toHaveBeenNthCalledWith(3, "parent1", 1, 0);
     expect(form.mutators.move).toHaveBeenNthCalledWith(4, "parent1", 2, 1);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child3" },
-        { _template: "testComponent", name: "child4" },
-        { _template: "testComponent", name: "child1" },
-        { _template: "testComponent", name: "child2" },
+        { _component: "testComponent", name: "child3" },
+        { _component: "testComponent", name: "child4" },
+        { _component: "testComponent", name: "child1" },
+        { _component: "testComponent", name: "child2" },
       ],
     });
 
@@ -602,12 +602,12 @@ describe("moveItems", () => {
     expect(fieldsToFocus).toEqual(["parent1.0", "parent1.1"]);
     expect(form.mutators.move).toHaveBeenCalledTimes(4);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child3" },
-        { _template: "testComponent", name: "child4" },
-        { _template: "testComponent", name: "child1" },
-        { _template: "testComponent", name: "child2" },
+        { _component: "testComponent", name: "child3" },
+        { _component: "testComponent", name: "child4" },
+        { _component: "testComponent", name: "child1" },
+        { _component: "testComponent", name: "child2" },
       ],
     });
   });
@@ -621,16 +621,16 @@ describe("moveItems", () => {
     expect(form.mutators.move).toHaveBeenNthCalledWith(1, "parent1", 0, 1);
     expect(form.mutators.move).toHaveBeenNthCalledWith(2, "parent2", 0, 1);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child1.2" },
-        { _template: "testComponent", name: "child1.1" },
-        { _template: "testComponent", name: "child1.3" },
+        { _component: "testComponent", name: "child1.2" },
+        { _component: "testComponent", name: "child1.1" },
+        { _component: "testComponent", name: "child1.3" },
       ],
       parent2: [
-        { _template: "testComponent", name: "child2.2" },
-        { _template: "testComponent", name: "child2.1" },
-        { _template: "testComponent", name: "child2.3" },
+        { _component: "testComponent", name: "child2.2" },
+        { _component: "testComponent", name: "child2.1" },
+        { _component: "testComponent", name: "child2.3" },
       ],
     });
   });
@@ -643,16 +643,16 @@ describe("moveItems", () => {
     expect(form.mutators.move).toHaveBeenCalledTimes(1);
     expect(form.mutators.move).toHaveBeenNthCalledWith(1, "parent2", 1, 2);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child1.1" },
-        { _template: "testComponent", name: "child1.2" },
-        { _template: "testComponent", name: "child1.3" },
+        { _component: "testComponent", name: "child1.1" },
+        { _component: "testComponent", name: "child1.2" },
+        { _component: "testComponent", name: "child1.3" },
       ],
       parent2: [
-        { _template: "testComponent", name: "child2.1" },
-        { _template: "testComponent", name: "child2.3" },
-        { _template: "testComponent", name: "child2.2" },
+        { _component: "testComponent", name: "child2.1" },
+        { _component: "testComponent", name: "child2.3" },
+        { _component: "testComponent", name: "child2.2" },
       ],
     });
   });
@@ -666,16 +666,16 @@ describe("moveItems", () => {
     expect(form.mutators.move).toHaveBeenNthCalledWith(1, "parent1", 2, 1);
     expect(form.mutators.move).toHaveBeenNthCalledWith(2, "parent2", 2, 1);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child1.1" },
-        { _template: "testComponent", name: "child1.3" },
-        { _template: "testComponent", name: "child1.2" },
+        { _component: "testComponent", name: "child1.1" },
+        { _component: "testComponent", name: "child1.3" },
+        { _component: "testComponent", name: "child1.2" },
       ],
       parent2: [
-        { _template: "testComponent", name: "child2.1" },
-        { _template: "testComponent", name: "child2.3" },
-        { _template: "testComponent", name: "child2.2" },
+        { _component: "testComponent", name: "child2.1" },
+        { _component: "testComponent", name: "child2.3" },
+        { _component: "testComponent", name: "child2.2" },
       ],
     });
   });
@@ -688,16 +688,16 @@ describe("moveItems", () => {
     expect(form.mutators.move).toHaveBeenCalledTimes(1);
     expect(form.mutators.move).toHaveBeenNthCalledWith(1, "parent1", 1, 0);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child1.2" },
-        { _template: "testComponent", name: "child1.1" },
-        { _template: "testComponent", name: "child1.3" },
+        { _component: "testComponent", name: "child1.2" },
+        { _component: "testComponent", name: "child1.1" },
+        { _component: "testComponent", name: "child1.3" },
       ],
       parent2: [
-        { _template: "testComponent", name: "child2.1" },
-        { _template: "testComponent", name: "child2.2" },
-        { _template: "testComponent", name: "child2.3" },
+        { _component: "testComponent", name: "child2.1" },
+        { _component: "testComponent", name: "child2.2" },
+        { _component: "testComponent", name: "child2.3" },
       ],
     });
   });
@@ -716,11 +716,11 @@ describe("removeItems", () => {
     expect(form.mutators.remove).toHaveBeenCalledTimes(1);
     expect(form.mutators.remove).toHaveBeenNthCalledWith(1, "parent1", 0);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child2" },
-        { _template: "testComponent", name: "child3" },
-        { _template: "testComponent", name: "child4" },
+        { _component: "testComponent", name: "child2" },
+        { _component: "testComponent", name: "child3" },
+        { _component: "testComponent", name: "child4" },
       ],
     });
   });
@@ -737,11 +737,11 @@ describe("removeItems", () => {
     expect(form.mutators.remove).toHaveBeenCalledTimes(1);
     expect(form.mutators.remove).toHaveBeenNthCalledWith(1, "parent1", 1);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child1" },
-        { _template: "testComponent", name: "child3" },
-        { _template: "testComponent", name: "child4" },
+        { _component: "testComponent", name: "child1" },
+        { _component: "testComponent", name: "child3" },
+        { _component: "testComponent", name: "child4" },
       ],
     });
   });
@@ -758,11 +758,11 @@ describe("removeItems", () => {
     expect(form.mutators.remove).toHaveBeenCalledTimes(1);
     expect(form.mutators.remove).toHaveBeenNthCalledWith(1, "parent1", 3);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child1" },
-        { _template: "testComponent", name: "child2" },
-        { _template: "testComponent", name: "child3" },
+        { _component: "testComponent", name: "child1" },
+        { _component: "testComponent", name: "child2" },
+        { _component: "testComponent", name: "child3" },
       ],
     });
   });
@@ -770,8 +770,8 @@ describe("removeItems", () => {
   it("removes single element when element is the only child", () => {
     const form = createTestForm({
       initialValues: {
-        _template: "parentTestComponent",
-        parent1: [{ _template: "testTemplate", name: "child1" }],
+        _component: "parentTestComponent",
+        parent1: [{ _component: "testTemplate", name: "child1" }],
       },
     });
 
@@ -788,7 +788,7 @@ describe("removeItems", () => {
     expect(form.change).toHaveBeenCalledTimes(1);
     expect(form.change).toHaveBeenNthCalledWith(1, "parent1", []);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [],
     });
   });
@@ -806,10 +806,10 @@ describe("removeItems", () => {
     expect(form.mutators.remove).toHaveBeenNthCalledWith(1, "parent1", 1);
     expect(form.mutators.remove).toHaveBeenNthCalledWith(2, "parent1", 0);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child3" },
-        { _template: "testComponent", name: "child4" },
+        { _component: "testComponent", name: "child3" },
+        { _component: "testComponent", name: "child4" },
       ],
     });
   });
@@ -827,10 +827,10 @@ describe("removeItems", () => {
     expect(form.mutators.remove).toHaveBeenNthCalledWith(1, "parent1", 2);
     expect(form.mutators.remove).toHaveBeenNthCalledWith(2, "parent1", 1);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child1" },
-        { _template: "testComponent", name: "child4" },
+        { _component: "testComponent", name: "child1" },
+        { _component: "testComponent", name: "child4" },
       ],
     });
   });
@@ -848,10 +848,10 @@ describe("removeItems", () => {
     expect(form.mutators.remove).toHaveBeenNthCalledWith(1, "parent1", 3);
     expect(form.mutators.remove).toHaveBeenNthCalledWith(2, "parent1", 2);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child1" },
-        { _template: "testComponent", name: "child2" },
+        { _component: "testComponent", name: "child1" },
+        { _component: "testComponent", name: "child2" },
       ],
     });
   });
@@ -869,10 +869,10 @@ describe("removeItems", () => {
     expect(form.mutators.remove).toHaveBeenNthCalledWith(1, "parent1", 3);
     expect(form.mutators.remove).toHaveBeenNthCalledWith(2, "parent1", 0);
     expect(form.values).toEqual({
-      _template: "parentTestComponent",
+      _component: "parentTestComponent",
       parent1: [
-        { _template: "testComponent", name: "child2" },
-        { _template: "testComponent", name: "child3" },
+        { _component: "testComponent", name: "child2" },
+        { _component: "testComponent", name: "child3" },
       ],
     });
   });
@@ -880,10 +880,10 @@ describe("removeItems", () => {
   it("doesn't remove elements of type 'component' that're required", () => {
     const form = createTestForm({
       initialValues: {
-        _template: "testComponentWithComponentFixed",
+        _component: "testComponentWithComponentFixed",
         fixedChild: [
           {
-            _template: "testComponent",
+            _component: "testComponent",
             name: "child1",
           },
         ],
@@ -899,10 +899,10 @@ describe("removeItems", () => {
     expect(fieldsToFocus).toBeUndefined();
     expect(form.mutators.remove).toHaveBeenCalledTimes(0);
     expect(form.values).toEqual({
-      _template: "testComponentWithComponentFixed",
+      _component: "testComponentWithComponentFixed",
       fixedChild: [
         {
-          _template: "testComponent",
+          _component: "testComponent",
           name: "child1",
         },
       ],
@@ -912,10 +912,10 @@ describe("removeItems", () => {
   it("doesn't remove elements of type 'component' that is required", () => {
     const form = createTestForm({
       initialValues: {
-        _template: "testComponentWithComponent",
+        _component: "testComponentWithComponent",
         componentRequiredChild: [
           {
-            _template: "testComponent",
+            _component: "testComponent",
             name: "child1",
           },
         ],
@@ -931,10 +931,10 @@ describe("removeItems", () => {
     expect(fieldsToFocus).toBeUndefined();
     expect(form.mutators.remove).toHaveBeenCalledTimes(0);
     expect(form.values).toEqual({
-      _template: "testComponentWithComponent",
+      _component: "testComponentWithComponent",
       componentRequiredChild: [
         {
-          _template: "testComponent",
+          _component: "testComponent",
           name: "child1",
         },
       ],
@@ -944,10 +944,10 @@ describe("removeItems", () => {
   it("does remove elements of type 'component' when it's not required", () => {
     const form = createTestForm({
       initialValues: {
-        _template: "testComponentWithComponent",
+        _component: "testComponentWithComponent",
         componentChild: [
           {
-            _template: "testComponent",
+            _component: "testComponent",
             name: "child1",
           },
         ],
@@ -1126,13 +1126,13 @@ describe("pasteAction", () => {
 
   describe("Paste single item into single destination", () => {
     it.each`
-      item                                             | destination             | expectedInsertedPath
-      ${{ _id: "id-2134", _template: "$BannerCard" }}  | ${"data.0"}             | ${"data.0.Component.0.Cards.0"}
-      ${{ _id: "id-4444", _template: "$ProductCard" }} | ${"data.0.Component.0"} | ${"data.0.Component.0.Cards.0"}
-      ${{ _id: "id-4444", _template: "$CustomCard" }}  | ${"data.1"}             | ${"data.1.Component.0.Cards.1"}
-      ${{ _id: "id-456", _template: "$CustomCard" }}   | ${"data.1.Component.0"} | ${"data.1.Component.0.Cards.1"}
-      ${{ _id: "id-1", _template: "$Grid" }}           | ${"data.0"}             | ${"data.1"}
-      ${{ _id: "id-2", _template: "$Grid" }}           | ${"data.1"}             | ${"data.2"}
+      item                                              | destination             | expectedInsertedPath
+      ${{ _id: "id-2134", _component: "$BannerCard" }}  | ${"data.0"}             | ${"data.0.Component.0.Cards.0"}
+      ${{ _id: "id-4444", _component: "$ProductCard" }} | ${"data.0.Component.0"} | ${"data.0.Component.0.Cards.0"}
+      ${{ _id: "id-4444", _component: "$CustomCard" }}  | ${"data.1"}             | ${"data.1.Component.0.Cards.1"}
+      ${{ _id: "id-456", _component: "$CustomCard" }}   | ${"data.1.Component.0"} | ${"data.1.Component.0.Cards.1"}
+      ${{ _id: "id-1", _component: "$Grid" }}           | ${"data.0"}             | ${"data.1"}
+      ${{ _id: "id-2", _component: "$Grid" }}           | ${"data.1"}             | ${"data.2"}
     `(
       "Paste $item into $destination",
       ({ item, destination, expectedInsertedPath }) => {
@@ -1140,25 +1140,25 @@ describe("pasteAction", () => {
           initialValues: {
             data: [
               {
-                _template: "$Grid",
+                _component: "$Grid",
                 Component: [
                   {
-                    _template: "$GridCard",
+                    _component: "$GridCard",
                     Cards: [],
                   },
                 ],
               },
               {
-                _template: "$Grid",
+                _component: "$Grid",
                 Component: [
                   {
-                    _template: "$GridCard",
-                    Cards: [{ _template: "$BannerCard" }],
+                    _component: "$GridCard",
+                    Cards: [{ _component: "$BannerCard" }],
                   },
                 ],
               },
             ],
-            _template: "$RootSection",
+            _component: "$RootSection",
           },
         });
 
@@ -1185,8 +1185,8 @@ describe("pasteAction", () => {
 
   describe("Paste multiple items into single destination", () => {
     it.each`
-      items                                                                                      | destination | expectedInsertedPaths
-      ${[{ _id: "id-1", _template: "$CustomText" }, { _id: "id-2", _template: "$CustomImage" }]} | ${"data.0"} | ${["data.0.Slot1.0", "data.0.Slot2.0"]}
+      items                                                                                        | destination | expectedInsertedPaths
+      ${[{ _id: "id-1", _component: "$CustomText" }, { _id: "id-2", _component: "$CustomImage" }]} | ${"data.0"} | ${["data.0.Slot1.0", "data.0.Slot2.0"]}
     `(
       "Paste $item into $destination",
       ({ items, destination, expectedInsertedPaths }) => {
@@ -1194,12 +1194,12 @@ describe("pasteAction", () => {
           initialValues: {
             data: [
               {
-                _template: "$CustomSection",
-                Slot1: [{ _id: "id-2", _template: "$CustomText" }],
+                _component: "$CustomSection",
+                Slot1: [{ _id: "id-2", _component: "$CustomText" }],
                 Slot2: [],
               },
             ],
-            _template: "$RootSection",
+            _component: "$RootSection",
           },
         });
 
@@ -1223,8 +1223,8 @@ describe("pasteAction", () => {
 
   describe("Paste single item into multiple destinations", () => {
     it.each`
-      item                                         | destinations                        | expectedInsertedPaths
-      ${{ _id: "id-1", _template: "$CustomCard" }} | ${["data.0", "data.1.Component.0"]} | ${["data.0.Slot3.0", "data.1.Component.0.Cards.0"]}
+      item                                          | destinations                        | expectedInsertedPaths
+      ${{ _id: "id-1", _component: "$CustomCard" }} | ${["data.0", "data.1.Component.0"]} | ${["data.0.Slot3.0", "data.1.Component.0.Cards.0"]}
     `(
       "Paste $item into $destination",
       ({ item, destinations, expectedInsertedPaths }) => {
@@ -1232,22 +1232,22 @@ describe("pasteAction", () => {
           initialValues: {
             data: [
               {
-                _template: "$CustomSection",
+                _component: "$CustomSection",
                 Slot1: [],
                 Slot2: [],
                 Slot3: [],
               },
               {
-                _template: "$Grid",
+                _component: "$Grid",
                 Component: [
                   {
-                    _template: "$GridCard",
+                    _component: "$GridCard",
                     Cards: [],
                   },
                 ],
               },
             ],
-            _template: "$RootSection",
+            _component: "$RootSection",
           },
         });
 
@@ -1282,21 +1282,21 @@ describe("pasteAction", () => {
   });
 
   it.each`
-    items                                                            | destination            | expectedInsertedPaths
-    ${[{ _template: "$CustomText" }, { _template: "$CustomImage" }]} | ${"data.0"}            | ${["data.0"]}
-    ${[{ _template: "$CustomText" }]}                                | ${"data.0.VoidSlot.0"} | ${["data.0.VoidSlot.0"]}
+    items                                                              | destination            | expectedInsertedPaths
+    ${[{ _component: "$CustomText" }, { _component: "$CustomImage" }]} | ${"data.0"}            | ${["data.0"]}
+    ${[{ _component: "$CustomText" }]}                                 | ${"data.0.VoidSlot.0"} | ${["data.0.VoidSlot.0"]}
   `(
     "Paste into destination that nothing can be paste into",
     ({ items, destination, expectedInsertedPaths }) => {
       const voidComponent = {
-        _template: "$VoidSection",
+        _component: "$VoidSection",
         VoidSlot: [],
       };
 
       const form = createTestForm({
         initialValues: {
           data: [voidComponent],
-          _template: "$RootSection",
+          _component: "$RootSection",
         },
       });
 
@@ -1330,11 +1330,11 @@ describe("logItems", () => {
 
     expect(logSpy).toHaveBeenCalledTimes(2);
     expect(logSpy).toHaveBeenNthCalledWith(1, "Config for", "parent1.0", {
-      _template: "testComponent",
+      _component: "testComponent",
       name: "child1",
     });
     expect(logSpy).toHaveBeenNthCalledWith(2, "Config for", "parent1.2", {
-      _template: "testComponent",
+      _component: "testComponent",
       name: "child3",
     });
 

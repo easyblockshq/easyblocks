@@ -194,7 +194,7 @@ export class EasyblocksBackend implements Backend {
           body: {
             title: "Untitled",
             config: payload.entry,
-            rootContainer: payload.entry._template,
+            rootContainer: payload.entry._component,
           },
         }
       );

@@ -2,62 +2,62 @@ import { parsePath } from "./parsePath";
 
 const form = {
   values: {
-    _template: "$Root",
+    _component: "$Root",
     cards: [
       {
-        _template: "$Child0",
+        _component: "$Child0",
         nestedCards: [
           {
-            _template: "$ChildNested0",
+            _component: "$ChildNested0",
           },
           {
-            _template: "$ChildNested1",
+            _component: "$ChildNested1",
           },
         ],
       },
       {
-        _template: "$Child1",
+        _component: "$Child1",
       },
       {
-        _template: "$Child2",
+        _component: "$Child2",
       },
     ],
     card1: {
-      _template: "$Child1",
+      _component: "$Child1",
       nestedCard: {
-        _template: "$ChildNested0",
+        _component: "$ChildNested0",
       },
     },
     card2: {
-      _template: "$Child2",
+      _component: "$Child2",
     },
     localisedCards: {
       en: [
         {
-          _template: "$EnglishCard1",
+          _component: "$EnglishCard1",
         },
         {
-          _template: "$EnglishCard2",
+          _component: "$EnglishCard2",
         },
       ],
       pl: [
         {
-          _template: "$PolishCard1",
+          _component: "$PolishCard1",
         },
       ],
     },
     testRichText: {
-      _template: "@easyblocks/rich-text",
+      _component: "@easyblocks/rich-text",
       elements: {
         en: [
           {
-            _template: "@easyblocks/rich-text-block-element",
+            _component: "@easyblocks/rich-text-block-element",
             elements: [
               {
-                _template: "@easyblocks/rich-text-line-element",
+                _component: "@easyblocks/rich-text-line-element",
                 elements: [
                   {
-                    _template: "@easyblocks/rich-text-part",
+                    _component: "@easyblocks/rich-text-part",
                     value: "Lorem ipsum",
                   },
                 ],

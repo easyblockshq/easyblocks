@@ -49,10 +49,10 @@ export function parsePath(path: string, form: any): PathInfo {
     const testedPath = pathSplit.slice(0, i).join(".");
     const value = dotNotationGet(values, testedPath);
 
-    if (typeof value === "object" && typeof value._template === "string") {
+    if (typeof value === "object" && typeof value._component === "string") {
       if (pathInfo === undefined) {
         pathInfo = {
-          templateId: value._template,
+          templateId: value._component,
         };
 
         // fieldName
@@ -67,7 +67,7 @@ export function parsePath(path: string, form: any): PathInfo {
         }
       } else {
         pathInfo.parent = {
-          templateId: value._template,
+          templateId: value._component,
           fieldName: pathSplit[i],
           path: testedPath,
         };

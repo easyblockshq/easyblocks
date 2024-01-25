@@ -14,7 +14,6 @@ import {
   NoCodeComponentDefinition,
   NoCodeComponentEditingFunction,
   NoCodeComponentStylesFunction,
-  RefMap,
   ResponsiveValue,
   SchemaProp,
   Spacing,
@@ -61,9 +60,7 @@ export type EditableComponentToComponentConfig<
     type?: string | string[];
     schema: Array<SchemaProp>;
   }
-> = ComponentConfigBase<EditableComponent["id"]> & {
-  $$$refs?: RefMap;
-};
+> = ComponentConfigBase<EditableComponent["id"]>;
 
 export type CompiledNoCodeComponentProps<
   Identifier extends string = string,
@@ -71,7 +68,7 @@ export type CompiledNoCodeComponentProps<
   ContextProps extends Record<string, any> = Record<string, any>,
   Styles extends Record<string, unknown> = Record<string, unknown>
 > = {
-  _template: Identifier;
+  _component: Identifier;
   _id: string;
   path: string;
   runtime: any;

@@ -86,7 +86,7 @@ function getComponentDefinition(
   runtimeContext: any
 ) {
   return findComponentDefinitionById(
-    splitTemplateName(compiled._template).name,
+    splitTemplateName(compiled._component).name,
     // @ts-ignore
     runtimeContext
   );
@@ -207,7 +207,7 @@ function getCompiledSubcomponents(
 
   if (schemaProp.noInline) {
     const elements = compiledArray.map((compiledChild, index) =>
-      "_template" in compiledChild ? (
+      "_component" in compiledChild ? (
         <ComponentBuilder
           path={`${path}.${index}`}
           compiled={compiledChild}
@@ -230,7 +230,7 @@ function getCompiledSubcomponents(
     : components["EditableComponentBuilder.client"];
 
   let elements = compiledArray.map((compiledChild, index) =>
-    "_template" in compiledChild ? (
+    "_component" in compiledChild ? (
       <EditableComponentBuilder
         compiled={compiledChild}
         schemaProp={schemaProp}
@@ -356,7 +356,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
 
   const component = getComponent(componentDefinition, components, isEditing);
   const isMissingComponent =
-    compiled._template === "@easyblocks/missing-component";
+    compiled._component === "@easyblocks/missing-component";
   const isMissingInstance = component === undefined;
   const isMissing = isMissingComponent || isMissingInstance;
   const MissingComponent = components["@easyblocks/missing-component"];
@@ -369,7 +369,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
     if (isMissingComponent) {
       return <MissingComponent error={true}>Missing</MissingComponent>;
     } else {
-      console.warn(`Missing "${compiled._template}"`);
+      console.warn(`Missing "${compiled._component}"`);
 
       return (
         <MissingComponent component={componentDefinition} error={true}>

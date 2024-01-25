@@ -476,7 +476,7 @@ function isLast(fieldPath: string, form: Form): boolean {
 }
 
 function isPlaceholder(path: string, values: any) {
-  const templateId = dotNotationGet(values, path)._template;
+  const templateId = dotNotationGet(values, path)._component;
   return templateId.startsWith("$Placeholder");
 }
 

@@ -34,7 +34,7 @@ describe("@easyblocks/rich-text-part", () => {
     ).toEqual(
       expect.objectContaining<RichTextPartComponentConfig>({
         _id: expect.any(String),
-        _template: "@easyblocks/rich-text-part",
+        _component: "@easyblocks/rich-text-part",
         color: {
           $res: true,
           xl: {
@@ -64,7 +64,7 @@ describe("@easyblocks/rich-text-line-element", () => {
     ).toEqual(
       expect.objectContaining<RichTextLineElementComponentConfig>({
         _id: expect.any(String),
-        _template: "@easyblocks/rich-text-line-element",
+        _component: "@easyblocks/rich-text-line-element",
         elements: [],
       })
     );
@@ -78,7 +78,7 @@ describe("@easyblocks/rich-text-block-element", () => {
       expect(buildRichTextBlockElementComponentConfig(type, [])).toEqual(
         expect.objectContaining<RichTextBlockElementComponentConfig>({
           _id: expect.any(String),
-          _template: "@easyblocks/rich-text-block-element",
+          _component: "@easyblocks/rich-text-block-element",
           elements: [],
           type,
         })
@@ -111,7 +111,7 @@ describe("@easyblocks/rich-text", () => {
     ).toEqual(
       expect.objectContaining<RichTextComponentConfig>({
         _id: expect.any(String),
-        _template: "@easyblocks/rich-text",
+        _component: "@easyblocks/rich-text",
         accessibilityRole: "div",
         elements: {
           en: [],

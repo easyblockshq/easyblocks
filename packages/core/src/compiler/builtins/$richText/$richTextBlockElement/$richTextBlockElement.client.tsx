@@ -3,7 +3,7 @@ import type { CompiledNoCodeComponentProps } from "../../../types";
 import type { RichTextBlockElementComponentConfig } from "./$richTextBlockElement";
 
 type RichTextBlockElementProps = CompiledNoCodeComponentProps<
-  RichTextBlockElementComponentConfig["_template"],
+  RichTextBlockElementComponentConfig["_component"],
   Pick<RichTextBlockElementComponentConfig, "type">
 > & {
   elements: Array<ReactElement>;

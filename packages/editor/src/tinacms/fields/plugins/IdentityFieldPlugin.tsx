@@ -33,7 +33,7 @@ function IdentityField({ input, field }: IdentityFieldProps) {
   }
 
   const componentDefinition = findComponentDefinitionById(
-    config._template,
+    config._component,
     editorContext
   );
 

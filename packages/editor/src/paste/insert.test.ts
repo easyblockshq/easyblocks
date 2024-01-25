@@ -29,7 +29,7 @@ const createConfigComponent = (
   init: Partial<NoCodeComponentEntry> = {}
 ): NoCodeComponentEntry => ({
   _id: uniqueId(),
-  _template: "",
+  _component: "",
   ...init,
 });
 
@@ -109,7 +109,7 @@ describe("insert", () => {
 
     jest
       .spyOn(internals, "duplicateConfig")
-      .mockReturnValue({ _template: "xxx" });
+      .mockReturnValue({ _component: "xxx" });
 
     const mockReconcile = jest.fn();
     jest.spyOn(reconcile, "reconcile").mockReturnValue(mockReconcile);

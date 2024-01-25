@@ -78,7 +78,7 @@ function internalBuildTinaFields(
 
           if (portalFieldFields.length === 0) {
             console.warn(
-              `Missing field "${item.fieldName}" at path "${item.source}" in portal for component ${compiledComponent._template}`
+              `Missing field "${item.fieldName}" at path "${item.source}" in portal for component ${compiledComponent._component}`
             );
             return;
           }
@@ -96,7 +96,7 @@ function internalBuildTinaFields(
             }
 
             throw new Error(
-              `Missing sources for multi field portal of component "${compiledComponent._template}" at path "${path}". Set "hidden" to "true" for this portal if sources are empty`
+              `Missing sources for multi field portal of component "${compiledComponent._component}" at path "${path}". Set "hidden" to "true" for this portal if sources are empty`
             );
           }
 

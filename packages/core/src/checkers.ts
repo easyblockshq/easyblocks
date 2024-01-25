@@ -64,7 +64,7 @@ function isDocument(value: unknown): value is Document {
 function isComponentConfig(value: any): value is NoCodeComponentEntry {
   return (
     typeof value === "object" &&
-    typeof value?._template === "string" &&
+    typeof value?._component === "string" &&
     typeof value?._id === "string"
   );
 }

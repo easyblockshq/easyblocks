@@ -16,7 +16,7 @@ function isEditorSelection(editor: Editor): editor is SelectedEditor {
 function updateSelection<
   T extends keyof Omit<
     RichTextPartComponentConfig,
-    "$$$refs" | "_id" | "_template" | "value"
+    "_id" | "_component" | "value"
   >
 >(
   editor: Editor,

@@ -31,7 +31,7 @@ function EditableComponentBuilder(props: EditableComponentBuilderProps) {
     <BlocksControls
       path={path}
       id={compiled._id}
-      templateId={compiled._template}
+      templateId={compiled._component}
       disabled={compiled.__editing?.noInline}
       direction={compiled.__editing?.direction ?? "vertical"}
       compiled={compiled}

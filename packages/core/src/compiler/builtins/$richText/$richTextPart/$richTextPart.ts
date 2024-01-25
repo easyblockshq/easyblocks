@@ -124,7 +124,7 @@ type RichTextPartComponentConfig = EditableComponentToComponentConfig<
 };
 
 type RichTextPartCompiledComponentConfig = CompiledComponentConfigBase<
-  RichTextPartComponentConfig["_template"],
+  RichTextPartComponentConfig["_component"],
   {
     value: string;
     color: Record<string, any>;

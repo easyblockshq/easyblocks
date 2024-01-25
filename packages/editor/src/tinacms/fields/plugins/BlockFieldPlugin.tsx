@@ -229,7 +229,7 @@ const SubComponentPanelButton = ({
   const label =
     componentDefinition?.label ??
     componentDefinition?.id ??
-    `Shopstory can’t find custom component with id: ${config._template} in your project. Please contact your developers to resolve this issue.`;
+    `Can’t find custom component with id: ${config._component} in your project. Please contact your developers to resolve this issue.`;
   const showError = componentDefinition === undefined;
 
   const sidebarPreview = componentDefinition

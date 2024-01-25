@@ -64,7 +64,7 @@ function configMapInternal(
 
   if (!componentDefinition) {
     console.warn(
-      `[configMap] Unknown component definition for: ${config._template}`
+      `[configMap] Unknown component definition for: ${config._component}`
     );
     return result;
   }

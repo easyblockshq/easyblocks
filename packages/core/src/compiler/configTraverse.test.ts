@@ -5,7 +5,7 @@ import { CompilationContextType } from "./types";
 
 function createCard(color: string) {
   return {
-    _template: "Card",
+    _component: "Card",
     color: color,
     image: {
       $res: true,
@@ -25,7 +25,7 @@ test("invokes callback for each valid schema prop from config", () => {
 
   const config: NoCodeComponentEntry = {
     _id: "",
-    _template: "$Root",
+    _component: "$Root",
     image: {
       $res: true,
       b4: {

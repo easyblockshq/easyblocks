@@ -2,7 +2,7 @@ import { Spacing } from "@easyblocks/core";
 
 export type StackCompiledValues = {
   Items: Array<{
-    _template: string;
+    _component: string;
     width: string;
     marginBottom: Spacing;
     align: string;

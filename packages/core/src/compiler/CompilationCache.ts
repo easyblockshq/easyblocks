@@ -6,11 +6,11 @@ type CompilationCacheItemValue = {
    * Values compared during compilation to determine if component has changed
    */
   values: {
-    values: { _id: string; _template: string } & Record<string, any>;
+    values: { _id: string; _component: string } & Record<string, any>;
     params: Record<string, any>;
   };
   valuesAfterAuto: {
-    values: { _id: string; _template: string } & Record<string, any>;
+    values: { _id: string; _component: string } & Record<string, any>;
     params: Record<string, any>;
   };
   compiledValues: Record<string, any>;

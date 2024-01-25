@@ -427,7 +427,7 @@ const richTextCacheInvalidator: CacheInvalidator = (
     traverseComponents(richTextConfig, context, ({ componentConfig }) => {
       if (
         componentConfig &&
-        componentConfig._template.startsWith("@easyblocks/rich-text")
+        componentConfig._component.startsWith("@easyblocks/rich-text")
       ) {
         cacheKeysToRemove.push(componentConfig._id!);
       }

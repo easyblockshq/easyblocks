@@ -8,7 +8,7 @@ import { configMap } from "./configMap";
 
 function createCard(color: string) {
   return {
-    _template: "Card",
+    _component: "Card",
     color: color,
     image: {
       $res: true,
@@ -29,7 +29,7 @@ const testCompilationContext = createTestCompilationContext();
 describe("configMap", () => {
   const config: NoCodeComponentEntry = {
     _id: "123",
-    _template: "$Root",
+    _component: "$Root",
     image: {
       $res: true,
       b4: {
@@ -131,7 +131,7 @@ describe("configMap", () => {
 
     expect(mappedConfig).toEqual({
       _id: "123",
-      _template: "$Root",
+      _component: "$Root",
       image: {
         $res: true,
         b4: {
@@ -151,7 +151,7 @@ describe("configMap", () => {
       },
       Card: [
         {
-          _template: "Card",
+          _component: "Card",
           color: "#fff",
           image: {
             $res: true,
@@ -166,7 +166,7 @@ describe("configMap", () => {
       LocalisedCards: {
         en: [
           {
-            _template: "Card",
+            _component: "Card",
             color: "red",
             image: {
               $res: true,
@@ -178,7 +178,7 @@ describe("configMap", () => {
             },
           },
           {
-            _template: "Card",
+            _component: "Card",
             color: "blue",
             image: {
               $res: true,
@@ -192,7 +192,7 @@ describe("configMap", () => {
         ],
         pl: [
           {
-            _template: "Card",
+            _component: "Card",
             color: "#fff",
             image: {
               $res: true,
@@ -211,7 +211,7 @@ describe("configMap", () => {
   test("properly maps component schema props", () => {
     const config: NoCodeComponentEntry = {
       _id: "123",
-      _template: "$Root",
+      _component: "$Root",
       image: {
         externalId: null,
         widgetId: "image_widget",

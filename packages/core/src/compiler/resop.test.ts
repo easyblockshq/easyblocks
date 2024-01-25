@@ -534,13 +534,13 @@ describe("resop2", () => {
         values: {
           Card: [
             {
-              _template: "$SomeCard",
+              _component: "$SomeCard",
               someProp: responsiveValue,
             },
           ],
           Cards: [
             {
-              _template: "$SomeCard",
+              _component: "$SomeCard",
               someProp: responsiveValue,
               schemaItemProp: responsiveValue,
             },
@@ -752,9 +752,9 @@ describe("resop2", () => {
       const input = {
         values: {
           Cards: [
-            { _template: "$Test" },
-            { _template: "$Test" },
-            { _template: "$Test" },
+            { _component: "$Test" },
+            { _component: "$Test" },
+            { _component: "$Test" },
           ],
         },
         params: {},

@@ -176,7 +176,7 @@ describe("updateSelection", () => {
   //       { prop: "action", type: "component", accepts: ["action"] },
   //       [
   //         {
-  //           _template: "$SomeAction",
+  //           _component: "$SomeAction",
   //         },
   //       ]
   //     );
@@ -198,7 +198,7 @@ describe("updateSelection", () => {
   //                   ],
   //                   action: [
   //                     {
-  //                       _template: "$SomeAction",
+  //                       _component: "$SomeAction",
   //                     },
   //                   ],
   //                   actionTextModifier: actionTextModifierConfig(),
@@ -245,13 +245,13 @@ describe("updateSelection", () => {
   //               ],
   //               action: [
   //                 {
-  //                   _template: "$SomeAction",
+  //                   _component: "$SomeAction",
   //                   _id: uniqueId(),
   //                 },
   //               ],
   //               actionTextModifier: [
   //                 {
-  //                   _template: "$StandardActionStyles",
+  //                   _component: "$StandardActionStyles",
   //                 },
   //               ],
   //             }),
@@ -285,7 +285,7 @@ describe("updateSelection", () => {
   //       { prop: "action", type: "component", accepts: ["action"] },
   //       [
   //         {
-  //           _template: "$SomeOtherAction",
+  //           _component: "$SomeOtherAction",
   //           _id: uniqueId(),
   //         },
   //       ]
@@ -308,7 +308,7 @@ describe("updateSelection", () => {
   //                   ],
   //                   action: [
   //                     expect.objectContaining({
-  //                       _template: "$SomeOtherAction",
+  //                       _component: "$SomeOtherAction",
   //                     }),
   //                   ],
   //                   actionTextModifier: actionTextModifierConfig(),
@@ -326,7 +326,7 @@ describe("updateSelection", () => {
   //                   ],
   //                   action: [
   //                     expect.objectContaining({
-  //                       _template: "$SomeAction",
+  //                       _component: "$SomeAction",
   //                     }),
   //                   ],
   //                   actionTextModifier: actionTextModifierConfig(),
@@ -363,12 +363,12 @@ describe("updateSelection", () => {
   //               ],
   //               action: [
   //                 {
-  //                   _template: "$SomeAction",
+  //                   _component: "$SomeAction",
   //                 },
   //               ],
   //               actionTextModifier: [
   //                 {
-  //                   _template: "$StandardActionStyles",
+  //                   _component: "$StandardActionStyles",
   //                 },
   //               ],
   //             }),
@@ -394,7 +394,7 @@ describe("updateSelection", () => {
   //       { prop: "action", type: "component", accepts: ["action"] },
   //       [
   //         {
-  //           _template: "$SomeOtherAction",
+  //           _component: "$SomeOtherAction",
   //         },
   //       ]
   //     );
@@ -416,7 +416,7 @@ describe("updateSelection", () => {
   //                   ],
   //                   action: [
   //                     expect.objectContaining({
-  //                       _template: "$SomeOtherAction",
+  //                       _component: "$SomeOtherAction",
   //                     }),
   //                   ],
   //                   actionTextModifier: actionTextModifierConfig(),
@@ -470,7 +470,7 @@ describe("updateSelection", () => {
   //       { prop: "$action", type: "component", accepts: ["action"] },
   //       [
   //         {
-  //           _template: "$SomeAction",
+  //           _component: "$SomeAction",
   //           _id: "xxx",
   //         },
   //       ]
@@ -487,13 +487,13 @@ describe("updateSelection", () => {
   //             buildRichTextInlineWrapperElementComponentConfig({
   //               action: [
   //                 {
-  //                   _template: "$SomeAction",
+  //                   _component: "$SomeAction",
   //                   _id: "xxx",
   //                 },
   //               ],
   //               actionTextModifier: [
   //                 {
-  //                   _template: "$StandardActionStyles",
+  //                   _component: "$StandardActionStyles",
   //                 },
   //               ],
   //               elements: [
@@ -547,7 +547,7 @@ describe("updateSelection", () => {
   //                   ],
   //                   action: [
   //                     {
-  //                       _template: "$SomeAction",
+  //                       _component: "$SomeAction",
   //                       _id: "xxx",
   //                     },
   //                   ],
@@ -568,7 +568,7 @@ describe("updateSelection", () => {
   //                   ],
   //                   action: [
   //                     {
-  //                       _template: "$SomeAction",
+  //                       _component: "$SomeAction",
   //                       _id: "xxx",
   //                     },
   //                   ],
@@ -594,7 +594,7 @@ describe("updateSelection", () => {
   //             buildRichTextInlineWrapperElementComponentConfig({
   //               action: [
   //                 {
-  //                   _template: "$SomeAction",
+  //                   _component: "$SomeAction",
   //                   _id: "xxx",
   //                 },
   //               ],
@@ -671,7 +671,7 @@ describe("updateSelection", () => {
   //             buildRichTextInlineWrapperElementComponentConfig({
   //               action: [
   //                 {
-  //                   _template: "$SomeAction",
+  //                   _component: "$SomeAction",
   //                   _id: "xxx",
   //                 },
   //               ],
@@ -790,14 +790,14 @@ function emptyTextPartConfig() {
 function actionTextModifierConfig() {
   return [
     expect.objectContaining({
-      _template: "$StandardActionStyles",
+      _component: "$StandardActionStyles",
     }),
   ];
 }
 
 function configContaining(id: string, props: Record<string, unknown>) {
   return expect.objectContaining({
-    _template: id,
+    _component: id,
     _id: expect.any(String),
     ...props,
   });

@@ -23,7 +23,7 @@ function getDefaultTemplateForDefinition(
     def.id === "@easyblocks/rich-text"
       ? buildRichTextNoCodeEntry()
       : {
-          _template: def.id,
+          _component: def.id,
           _id: uniqueId(),
         };
 
@@ -59,7 +59,7 @@ function getNecessaryDefaultTemplates(
 
   components.forEach((component) => {
     const componentTemplates = templates.filter(
-      (template) => template.entry._template === component.id
+      (template) => template.entry._component === component.id
     );
     if (componentTemplates.length === 0) {
       result.push(getDefaultTemplateForDefinition(component));
@@ -125,7 +125,7 @@ export function getTemplatesInternal(
   const result = allUserTemplates
     .filter((template) => {
       const definition = findComponentDefinitionById(
-        template.entry._template,
+        template.entry._component,
         editorContext
       );
 
@@ -142,7 +142,7 @@ export function getTemplatesInternal(
     //     )
     //     : true;
     //
-    //   if (template.entry._template === "ProductCard") {
+    //   if (template.entry._component === "ProductCard") {
     //     console.log('WOW2222!!!', result);
     //   }
     //

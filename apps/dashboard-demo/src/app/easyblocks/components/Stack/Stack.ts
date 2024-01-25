@@ -55,8 +55,8 @@ const stackDefinition: NoCodeComponentDefinition = {
       }
 
       const isChildRichText =
-        "_template" in item &&
-        item._template === "@easyblocks/rich-text" &&
+        "_component" in item &&
+        item._component === "@easyblocks/rich-text" &&
         !isEditing;
 
       outerItemWrappers.push({

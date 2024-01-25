@@ -5,7 +5,7 @@ import { CompilationContextType } from "./types";
 
 function createCard(color: string) {
   return {
-    _template: "Card",
+    _component: "Card",
     color: color,
     image: {
       $res: true,
@@ -25,7 +25,7 @@ test("invokes callback for each valid schema prop from config", () => {
 
   const config: NoCodeComponentEntry = {
     _id: "xxx",
-    _template: "$Root",
+    _component: "$Root",
     image: {
       $res: true,
       b4: {
@@ -161,11 +161,11 @@ test("Should not traverse further when cannot find component definition", () => 
   traverseComponents(
     {
       _id: "xxx",
-      _template: "$Root",
+      _component: "$Root",
       LocalisedCards: {
         en: [
           {
-            _template: "NOT_DEFINED_COMPONENT",
+            _component: "NOT_DEFINED_COMPONENT",
           },
         ],
       },
@@ -176,17 +176,17 @@ test("Should not traverse further when cannot find component definition", () => 
 
   expect(warn).toBeCalledWith(
     "[traverseComponents] Unknown component definition",
-    { _template: "NOT_DEFINED_COMPONENT" }
+    { _component: "NOT_DEFINED_COMPONENT" }
   );
   expect(callback).toBeCalledTimes(1);
   expect(callback).toHaveBeenNthCalledWith(1, {
     componentConfig: {
       _id: "xxx",
-      _template: "$Root",
+      _component: "$Root",
       LocalisedCards: {
         en: [
           {
-            _template: "NOT_DEFINED_COMPONENT",
+            _component: "NOT_DEFINED_COMPONENT",
           },
         ],
       },

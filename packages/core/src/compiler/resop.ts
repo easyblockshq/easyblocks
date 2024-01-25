@@ -242,9 +242,9 @@ export function scalarizeConfig(
    * There is a bit of chaos here. To understand what is happening, we must know what "Config" is in context of resop.
    *
    * Config is not a "real" config we're using in the Shopstory in almost all places. We're dealing here with "intermediate compiled config" used during compilation. What it means:
-   * 1. It has _template, _id, etc.
+   * 1. It has _component, _id, etc.
    * 2. All the props from schema that are *not* components are compiled and are available.
-   * 3. All the props from schema that are components have only _template and _id (exception below)
+   * 3. All the props from schema that are components have only _component and _id (exception below)
    * 4. component-collections has child Configs that have item props that are also compiled and are added *to the root level of the config*. They're simply context props. (IMPORTANT! -> localised is already non-localised ;p)
    * 5. context props from compilation are also added to the config.
    *

@@ -42,7 +42,7 @@ const editing: RichTextEditingFunction = ({
     richTextConfig,
     editorContext,
     (config): config is RichTextBlockElementComponentConfig => {
-      return config._template === "@easyblocks/rich-text-block-element";
+      return config._component === "@easyblocks/rich-text-block-element";
     }
   );
 
@@ -109,7 +109,7 @@ const editing: RichTextEditingFunction = ({
     richTextConfig,
     editorContext,
     (config): config is RichTextPartComponentConfig => {
-      return config._template === "@easyblocks/rich-text-part";
+      return config._component === "@easyblocks/rich-text-part";
     }
   );
 

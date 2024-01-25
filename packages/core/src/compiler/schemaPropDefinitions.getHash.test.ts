@@ -111,11 +111,11 @@ describe("component schema", () => {
   const componentSchemaTestCases: Array<SchemaPropTestCaseArray<"component">> =
     [
       [[], "__BLOCK_EMPTY__"],
-      [[{ _template: "test template", _id: "" }], "test template"],
+      [[{ _component: "test template", _id: "" }], "test template"],
       [
         [
-          { _template: "test template1", _id: "" },
-          { _template: "test template2", _id: "" },
+          { _component: "test template1", _id: "" },
+          { _component: "test template2", _id: "" },
         ],
         "test template1",
       ],
@@ -145,11 +145,11 @@ describe("component-collection schema", () => {
     SchemaPropTestCaseArray<"component-collection">
   > = [
     [[], ""],
-    [[{ _template: "test template", _id: "" }], "test template"],
+    [[{ _component: "test template", _id: "" }], "test template"],
     [
       [
-        { _template: "test template1", _id: "" },
-        { _template: "test template2", _id: "" },
+        { _component: "test template1", _id: "" },
+        { _component: "test template2", _id: "" },
       ],
       "test template1;test template2",
     ],
