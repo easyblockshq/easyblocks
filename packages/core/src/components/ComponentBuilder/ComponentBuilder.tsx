@@ -6,7 +6,6 @@ import {
   isSchemaPropComponentOrComponentCollection,
   isSchemaPropTextModifier,
 } from "../../compiler/schema";
-import { splitTemplateName } from "../../compiler/splitTemplateName";
 import {
   ContextProps,
   InternalComponentDefinition,
@@ -85,11 +84,7 @@ function getComponentDefinition(
   compiled: CompiledComponentConfig,
   runtimeContext: any
 ) {
-  return findComponentDefinitionById(
-    splitTemplateName(compiled._component).name,
-    // @ts-ignore
-    runtimeContext
-  );
+  return findComponentDefinitionById(compiled._component, runtimeContext);
 }
 
 /**

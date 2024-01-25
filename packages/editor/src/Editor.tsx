@@ -623,10 +623,8 @@ const EditorContent = ({
   const [isFullScreen, setFullScreen] = useState(false);
 
   const syncTemplates = () => {
-    // @ts-expect-error
-    getTemplates(editorContext, props.config.templates ?? []).then(
+    getTemplates(editorContext, (props.config.templates as any) ?? []).then(
       (newTemplates) => {
-        console.log(newTemplates);
         setTemplates(newTemplates);
       }
     );

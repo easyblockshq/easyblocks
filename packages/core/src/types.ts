@@ -4,8 +4,6 @@ import { Locale } from "./locales";
 
 export type ScalarOrCollection<T> = T | Array<T>;
 
-export type RefMap = { [key: string]: NoCodeComponentEntry };
-
 export type PlaceholderAppearance = {
   width?: number;
   height?: number;
@@ -20,9 +18,7 @@ export interface ComponentConfigBase<Identifier extends string> {
 
 export type NoCodeComponentEntry = {
   _component: string; // instance of the component (unique id)
-  _ref?: string; // ref of the component,
   _id: string;
-  $$$refs?: RefMap;
   [key: string]: any; // props
 };
 

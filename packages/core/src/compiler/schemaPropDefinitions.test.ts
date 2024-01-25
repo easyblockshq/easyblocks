@@ -2841,10 +2841,6 @@ describe.skip("[component] with local refs", () => {
       Card2: [card3],
       Cards: [card2, card4, card5],
       Card3Fixed: [card4],
-      $$$refs: {
-        ref1,
-        ref2,
-      },
       CardsLocalised: {
         en: [
           {
@@ -2855,16 +2851,6 @@ describe.skip("[component] with local refs", () => {
     },
     editorContext
   );
-
-  // Normalisation for refs works
-  test("visual properties inside of $$$refs are normalized", () => {
-    expect(normalized.$$$refs!.ref1.number).toBe("one");
-    expect(normalized.$$$refs!.ref1.isLight).toBe(false);
-  });
-
-  test("data properties inside of $$$refs are NOT normalized", () => {
-    expect(normalized.$$$refs!.ref1.product).toBe(undefined);
-  });
 
   test("visual properties in ref instances are NOT normalized", () => {
     expect(normalized.Cards[2].number).toBe(undefined);

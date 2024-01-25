@@ -35,9 +35,6 @@ export function compileInternal(
     },
   };
 
-  // const activeDocumentType = compilationContext.documentTypes.find(
-  //   (container) => container.id === compilationContext.documentType
-  // );
   const contextProps: ContextProps = {
     $width: getDevicesWidths(compilationContext.devices),
     $widthAuto: {
@@ -48,17 +45,11 @@ export function compileInternal(
     },
   };
 
-  // if (activeDocumentType?.widths) {
-  //   contextProps.$width = activeDocumentType.widths;
-  //   contextProps.$widthAuto = false;
-  // }
-
   const compilationArtifacts = compileComponent(
     normalizedConfig,
     compilationContext,
     contextProps,
     meta,
-    {},
     cache
   );
 

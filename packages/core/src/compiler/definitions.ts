@@ -30,7 +30,6 @@ import {
   Position,
   PositionSchemaProp,
   RadioGroupSchemaProp,
-  RefMap,
   ResponsiveValue,
   SchemaProp,
   SelectSchemaProp,
@@ -48,21 +47,20 @@ import { compileComponent } from "./compileComponent";
 import { getDevicesWidths } from "./devices";
 import { findComponentDefinitionById } from "./findComponentDefinition";
 import { isContextEditorContext } from "./isContextEditorContext";
-import { Component$$$SchemaProp, isExternalSchemaProp } from "./schema";
-import { splitTemplateName } from "./splitTemplateName";
+import { Component$$$SchemaProp } from "./schema";
 import {
   CompilationContextType,
   ContextProps,
   EditingInfoComponent,
   EditingInfoComponentCollection,
 } from "./types";
+import { SetOptional } from "type-fest";
 
 export type SchemaPropDefinition<Type, CompiledType = Type> = {
   compile: (
     value: Type,
     contextProps: ContextProps,
     serializedDefinitions: SerializedComponentDefinitions,
-    refMap: RefMap,
     editingInfoComponent:
       | EditingInfoComponent
       | EditingInfoComponentCollection
@@ -398,7 +396,6 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         arg,
         contextProps,
         serializedDefinitions,
-        refMap,
         editingInfoComponent,
         configPrefix,
         cache
@@ -413,12 +410,8 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
           compilationContext,
           contextProps,
           serializedDefinitions || {
-            actions: [],
             components: [],
-            links: [],
-            textModifiers: [],
           },
-          refMap,
           cache,
           editingInfoComponent,
           `${configPrefix}.0`
@@ -470,7 +463,6 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         arr,
         contextProps,
         serializedDefinitions,
-        refMap,
         editingInfoComponents,
         configPrefix,
         cache
@@ -481,7 +473,6 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
             compilationContext,
             (contextProps.itemProps || [])[index] || {},
             serializedDefinitions,
-            refMap,
             cache,
             (
               editingInfoComponents as
@@ -528,7 +519,6 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         value,
         contextProps,
         serializedDefinitions,
-        refMap,
         editingInfoComponents,
         configPrefix,
         cache
@@ -542,7 +532,6 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
           resolvedLocalisedValue?.value ?? [],
           contextProps,
           serializedDefinitions,
-          refMap,
           editingInfoComponents,
           `${configPrefix}.${
             resolvedLocalisedValue?.locale ??
@@ -1167,9 +1156,8 @@ function externalReferenceGetHash(
 }
 
 export function normalizeComponent(
-  configComponent: Omit<NoCodeComponentEntry, "_id"> & { _id?: string },
-  compilationContext: CompilationContextType,
-  isRef?: boolean
+  configComponent: SetOptional<NoCodeComponentEntry, "_id">,
+  compilationContext: CompilationContextType
 ): NoCodeComponentEntry {
   const ret: NoCodeComponentEntry = {
     _id: configComponent._id ?? uniqueId(),
@@ -1212,7 +1200,7 @@ export function normalizeComponent(
   }
 
   const componentDefinition = findComponentDefinitionById(
-    splitTemplateName(configComponent._component).name,
+    configComponent._component,
     compilationContext
   );
 
@@ -1224,36 +1212,11 @@ export function normalizeComponent(
   }
 
   componentDefinition.schema.forEach((schemaProp) => {
-    if (!isRef) {
-      const { ref } = splitTemplateName(configComponent._component);
-      if (ref) {
-        if (!isExternalSchemaProp(schemaProp, compilationContext.types)) {
-          return;
-        }
-      }
-    } else {
-      if (isExternalSchemaProp(schemaProp, compilationContext.types)) {
-        return;
-      }
-    }
-
     ret[schemaProp.prop] = getSchemaDefinition(
       schemaProp,
       compilationContext
     ).normalize(configComponent[schemaProp.prop]);
   });
-
-  // Normalize refs
-  if (configComponent.$$$refs) {
-    ret.$$$refs = {};
-    for (const refName in configComponent.$$$refs) {
-      ret.$$$refs[refName] = normalizeComponent(
-        configComponent.$$$refs![refName],
-        compilationContext,
-        true
-      );
-    }
-  }
 
   // RichText is a really specific component. It must have concrete shape to work properly.
   // When using prop of type `component` with `accepts: ["@easyblocks/rich-text"]` it's going to be initialized with empty

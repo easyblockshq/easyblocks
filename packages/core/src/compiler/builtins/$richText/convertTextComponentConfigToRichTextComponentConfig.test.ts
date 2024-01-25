@@ -39,19 +39,16 @@ test("converts when text is a single line", () => {
     elements: {
       [TEST_LOCALE]: [
         {
-          $$$refs: undefined,
           _id: expect.any(String),
           _component: "@easyblocks/rich-text-block-element",
 
           elements: [
             {
-              $$$refs: undefined,
               _id: expect.any(String),
               _component: "@easyblocks/rich-text-line-element",
 
               elements: [
                 {
-                  $$$refs: undefined,
                   _id: expect.any(String),
                   _component: "@easyblocks/rich-text-part",
 

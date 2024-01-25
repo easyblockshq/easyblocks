@@ -155,8 +155,7 @@ function buildRichTextPartComponentConfig({
   id,
   TextWrapper,
 }: SetOptional<
-  Omit<RichTextPartComponentConfig, "$$$refs" | "_id" | "_component"> &
-    Partial<Identity>,
+  Omit<RichTextPartComponentConfig, "_id" | "_component"> & Partial<Identity>,
   "TextWrapper"
 >): RichTextPartComponentConfig {
   return {

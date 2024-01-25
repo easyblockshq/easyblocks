@@ -32,7 +32,6 @@ import {
   FieldPortal,
   NoCodeComponentEditingFunctionResult,
   NoCodeComponentStylesFunctionInput,
-  RefMap,
   ScalarOrCollection,
   SchemaProp,
   SerializedComponentDefinitions,
@@ -70,7 +69,6 @@ import {
   isSchemaPropComponentOrComponentCollection,
   isSchemaPropTextModifier,
 } from "./schema";
-import { splitTemplateName } from "./splitTemplateName";
 import { getTinaField } from "./tinaFieldProviders";
 import {
   CompilationContextType,
@@ -96,7 +94,6 @@ export function compileComponent(
   compilationContext: CompilationContextType,
   contextProps: ContextProps, // contextProps are already compiled! They're result of compilation function.
   meta: any,
-  refMap: RefMap,
   cache: CompilationCache,
   parentComponentEditingInfo?:
     | EditingInfoComponent
@@ -119,10 +116,9 @@ export function compileComponent(
   }
 
   const cachedResult = cache.get(editableElement._id);
-  const { name, ref } = splitTemplateName(editableElement._component);
 
   let componentDefinition = findComponentDefinitionById(
-    name,
+    editableElement._component,
     compilationContext
   );
 
@@ -143,15 +139,11 @@ export function compileComponent(
     parentComponentEditingInfo = undefined;
   }
 
-  refMap = { ...refMap, ...(editableElement.$$$refs || {}) };
-
   const ownProps = createOwnComponentProps({
     config: editableElement,
     contextProps,
     componentDefinition,
     compilationContext,
-    refMap,
-    ref,
   });
 
   let hasComponentConfigChanged = true;
@@ -323,8 +315,7 @@ export function compileComponent(
           compilationContext,
           cache,
           {},
-          meta,
-          refMap
+          meta
         );
 
         compiledValues[collectionSchemaProp.prop][itemIndex][
@@ -651,7 +642,6 @@ export function compileComponent(
     contextProps,
     subcomponentsContextProps,
     compilationContext,
-    refMap,
     meta,
     editingContextProps,
     configPrefix,
@@ -733,15 +723,11 @@ function createOwnComponentProps({
   contextProps,
   componentDefinition,
   compilationContext,
-  refMap,
-  ref,
 }: {
   config: NoCodeComponentEntry;
   contextProps: ContextProps;
   componentDefinition: InternalComponentDefinition;
   compilationContext: CompilationContextType;
-  refMap: RefMap;
-  ref?: string;
 }) {
   // Copy all values and refs defined in schema, for component fields copy only _id, _component and its _itemProps but flattened
   const values = Object.fromEntries(
@@ -806,25 +792,11 @@ function createOwnComponentProps({
   );
 
   const ownValues: { _id: string; _component: string; [key: string]: any } = {
-    // Copy id and template which uniquely identify component.
+    // Copy id and component which uniquely identify component.
     _id: config._id,
     _component: config._component,
     ...values,
   };
-
-  if (ref) {
-    const refs = Object.fromEntries(
-      componentDefinition.schema
-        .filter((schemaProp) => {
-          return !isExternalSchemaProp(schemaProp, compilationContext.types);
-        })
-        .map((schemaProp) => {
-          return [schemaProp.prop, refMap[ref][schemaProp.prop]];
-        })
-    );
-
-    Object.assign(ownValues, refs);
-  }
 
   return {
     values: ownValues,
@@ -890,7 +862,6 @@ function compileSubcomponents(
   contextProps: ContextProps,
   subcomponentsContextProps: Record<string, Record<string, any>>,
   compilationContext: CompilationContextType,
-  refMap: RefMap,
   meta: any,
   editingInfoComponents: InternalEditingInfo["components"] | undefined,
   configPrefix: string,
@@ -963,7 +934,6 @@ function compileSubcomponents(
         cache,
         childContextProps,
         meta,
-        refMap,
         editingInfoComponents?.[schemaProp.prop],
         `${configPrefix}${configPrefix === "" ? "" : "."}${schemaProp.prop}`
       ) as ConfigComponentCompilationOutput[];
@@ -1460,39 +1430,15 @@ function getDefaultFieldDefinition(
   return {
     ...tinaField,
     prop: schemaProp.prop,
-    name: createFieldName(schemaProp, configPrefix, templateId, editorContext),
+    name: createFieldName(schemaProp, configPrefix),
     hidden: !visible,
   };
 }
 
-function createFieldName(
-  schemaProp: SchemaProp,
-  configPrefix: string,
-  templateId: string,
-  editorContext: EditorContextType
-): string {
-  const { ref, isRefLocal } = splitTemplateName(templateId);
-
-  /**
-   * This condition is kind of "ancient". It's ref mechanism (shared properties) that is not in use anymore. But it's necessary for backward compatibility.
-   */
-  if (ref && !isExternalSchemaProp(schemaProp, editorContext.types)) {
-    // local ref
-    if (!isRefLocal) {
-      throw new Error("global refs not enabled");
-    }
-
-    const parent = parsePath(
-      configPrefix + "." + schemaProp.prop,
-      editorContext.form
-    ).parent!;
-
-    return `${parent.path}.$$$refs.${ref}.${schemaProp.prop}`;
-  } else {
-    return schemaProp.prop === "$myself"
-      ? configPrefix
-      : `${configPrefix}${configPrefix === "" ? "" : "."}${schemaProp.prop}`;
-  }
+function createFieldName(schemaProp: SchemaProp, configPrefix: string): string {
+  return schemaProp.prop === "$myself"
+    ? configPrefix
+    : `${configPrefix}${configPrefix === "" ? "" : "."}${schemaProp.prop}`;
 }
 
 function convertInternalEditingInfoToEditingInfo(

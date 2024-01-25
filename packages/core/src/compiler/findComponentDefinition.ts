@@ -1,5 +1,4 @@
 import { toArray } from "@easyblocks/utils";
-import { splitTemplateName } from "./splitTemplateName";
 import { NoCodeComponentEntry } from "../types";
 import {
   InternalComponentDefinition,
@@ -68,9 +67,7 @@ function $findComponentDefinitionById(
   id: string,
   context?: AnyContextWithDefinitions
 ): InternalComponentDefinition | undefined {
-  return allDefs(context).find(
-    (component) => component.id === splitTemplateName(id).name
-  );
+  return allDefs(context).find((component) => component.id === id);
 }
 
 function $findComponentDefinitionsByTag(
