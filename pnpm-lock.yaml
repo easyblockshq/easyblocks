@@ -7848,7 +7848,7 @@ packages:
       '@babel/parser': 7.21.9
       '@babel/types': 7.22.10
       '@types/babel__generator': 7.6.4
-      '@types/babel__component': 7.4.1
+      '@types/babel__template': 7.4.1
       '@types/babel__traverse': 7.18.3
     dev: true
 
@@ -7858,7 +7858,7 @@ packages:
       '@babel/types': 7.22.10
     dev: true
 
-  /@types/babel__component@7.4.1:
+  /@types/babel__template@7.4.1:
     resolution: {integrity: sha512-azBFKemX6kMg5Io+/rdGT0dkGreboUVR0Cdm3fz9QJWpaQGJRQXl7C+6hOTCZcMll7KFyEQpgbYI2lHdsS4U7g==}
     dependencies:
       '@babel/parser': 7.21.9
