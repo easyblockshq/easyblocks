@@ -6,7 +6,6 @@ import {
   Document,
   ExternalData,
   ExternalDataChangeHandler,
-  ExternalTypeDefinition,
   FetchOutputResources,
   InlineTypeWidgetComponentProps,
   NonEmptyRenderableContent,
@@ -66,7 +65,6 @@ import {
 import { destinationResolver } from "./paste/destinationResolver";
 import { pasteManager } from "./paste/manager";
 import { SelectionFrame } from "./selectionFrame/SelectionFrame";
-import { documentDataWidgetFactory } from "./sidebar/DocumentDataWidget";
 import { getTemplates } from "./templates/getTemplates";
 import { useForm } from "./tinacms/react-core";
 import {
@@ -698,13 +696,6 @@ const EditorContent = ({
     components: props.components ?? {},
   };
 
-  if (
-    editorContext.rootComponent.rootParams &&
-    editorContext.rootComponent.rootParams.length > 0
-  ) {
-    ensureDocumentDataWidgetForTypes(editorContext);
-  }
-
   const { configAfterAuto, renderableContent, meta } = useBuiltContent(
     editorContext,
     props.config,
@@ -984,43 +975,6 @@ const EditorContent = ({
     </div>
   );
 };
-
-function ensureDocumentDataWidgetForTypes(editorContext: EditorContextType) {
-  const types = Array.from(
-    new Set([
-      "text",
-      ...Object.keys(editorContext.types).filter(
-        (t) => editorContext.types[t].type === "external"
-      ),
-    ])
-  );
-
-  types.forEach((builtinExternalType) => {
-    if (!editorContext.types[builtinExternalType]) {
-      editorContext.types[builtinExternalType] = {
-        type: "external",
-        widgets: [],
-      };
-    }
-
-    const externalTypeDefinition = editorContext.types[
-      builtinExternalType
-    ] as ExternalTypeDefinition;
-
-    // Make sure to add the document data widget to custom types
-    if (
-      !externalTypeDefinition.widgets.some(
-        (w) => w.id === "@easyblocks/document-data"
-      )
-    ) {
-      externalTypeDefinition.widgets.push(
-        documentDataWidgetFactory({
-          type: builtinExternalType,
-        }) as any
-      );
-    }
-  });
-}
 
 function useIframeSize({
   isScalingEnabled,

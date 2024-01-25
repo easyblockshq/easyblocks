@@ -79,7 +79,7 @@ function EasyblocksEditorDialog({
           <iframe
             ref={setIframeNode}
             src={`/easyblocks-editor?readOnly=false&rootComponent=${rootComponentId}${
-              documentId ? `&documentId=${documentId}` : ""
+              documentId ? `&document=${documentId}` : ""
             }`}
             className="w-full h-full"
           />

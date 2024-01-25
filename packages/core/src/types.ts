@@ -287,16 +287,6 @@ type CustomComponentShared = {
   previewImage?: string;
 };
 
-export type SectionCustomComponent = CustomComponentShared & {
-  type: "section";
-};
-
-export type CardCustomComponent = CustomComponentShared & { type: "card" };
-
-export type ItemCustomComponent = CustomComponentShared & {
-  type?: "item" | undefined;
-};
-
 export type ConfigDeviceRange = {
   startsFrom?: number;
   w?: number;

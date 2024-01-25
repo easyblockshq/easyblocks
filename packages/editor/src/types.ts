@@ -161,5 +161,5 @@ export type InternalWidgetComponentProps = Omit<
 > & {
   onChange: (id: ExternalReference["id"], key?: string) => void;
   resourceKey?: string;
-  path?: string;
+  path: string;
 };

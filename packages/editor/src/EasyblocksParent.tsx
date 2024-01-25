@@ -19,6 +19,7 @@ import { ColorTokenWidget } from "./sidebar/ColorTokenWidget";
 import { GlobalStyles } from "./tinacms/styles";
 import { SpaceTokenWidget } from "./sidebar/SpaceTokenWidget";
 import { parseQueryParams } from "./parseQueryParams";
+import { DocumentDataWidgetComponent } from "./sidebar/DocumentDataWidget";
 
 export type EasyblocksParentProps = {
   config: Config;
@@ -44,6 +45,7 @@ const shouldForwardProp: ShouldForwardProp<"web"> = (propName, target) => {
 const builtinWidgets: EasyblocksParentProps["widgets"] = {
   color: ColorTokenWidget,
   space: SpaceTokenWidget,
+  "@easyblocks/document-data": DocumentDataWidgetComponent as any,
 };
 
 export function EasyblocksParent(props: EasyblocksParentProps) {

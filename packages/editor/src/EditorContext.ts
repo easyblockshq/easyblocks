@@ -1,16 +1,15 @@
 import {
+  Backend,
   CompiledComponentConfig,
-  NoCodeComponentEntry,
+  Document,
   ExternalTypeDefinition,
   InlineTypeDefinition,
   InlineTypeWidgetComponentProps,
+  NoCodeComponentEntry,
   Template,
   TokenTypeDefinition,
   TokenTypeWidgetComponentProps,
   Widget,
-  WidgetComponentProps,
-  Document,
-  Backend,
 } from "@easyblocks/core";
 import {
   EditorContextType as BaseEditorContextType,
@@ -18,8 +17,8 @@ import {
   InternalAnyField,
 } from "@easyblocks/core/_internals";
 import React, { ComponentType, useContext } from "react";
-import { ActionsType } from "./types";
 import { Form } from "./form";
+import { ActionsType, InternalWidgetComponentProps } from "./types";
 
 export type EditorExternalTypeDefinition = Omit<
   ExternalTypeDefinition,
@@ -27,7 +26,7 @@ export type EditorExternalTypeDefinition = Omit<
 > & {
   widgets: Array<
     Widget & {
-      component?: ComponentType<WidgetComponentProps<any>>;
+      component?: ComponentType<InternalWidgetComponentProps>;
     }
   >;
 };

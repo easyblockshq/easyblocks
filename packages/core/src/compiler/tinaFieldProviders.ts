@@ -75,29 +75,11 @@ export type TinaFieldProviders = {
 };
 
 const tinaFieldProviders: TinaFieldProviders = {
-  text: (schemaProp, editorContext, value) => {
+  text: (schemaProp, _, value) => {
     if (!isValueLocalTextReference(value) && typeof value !== "string") {
-      const resourceDefinition = editorContext.types[
-        "text"
-      ] as ExternalTypeDefinition;
-
-      const fieldWidget = resourceDefinition.widgets.find(
-        (w) => w.id === value.widgetId
-      );
-
-      if (!fieldWidget) {
-        throw new Error(
-          `Can't find widget named "${
-            value.widgetId ?? resourceDefinition.widgets[0].id
-          }"`
-        );
-      }
-
       return {
         ...getCommonFieldProps(schemaProp),
         component: "external",
-        // @ts-expect-error
-        externalField: fieldWidget.component,
       };
     }
 

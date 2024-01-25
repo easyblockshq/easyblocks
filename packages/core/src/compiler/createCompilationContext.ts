@@ -11,6 +11,7 @@ import {
   Spacing,
   SchemaProp,
   TokenTypeDefinition,
+  ExternalTypeDefinition,
 } from "../types";
 import { richTextEditableComponent } from "./builtins/$richText/$richText";
 import { richTextBlockElementEditableComponent } from "./builtins/$richText/$richTextBlockElement/$richTextBlockElement";
@@ -173,6 +174,10 @@ export function createCompilationContext(
     throw new Error(
       `createCompilationContext: rootComponentId "${rootComponentId}" doesn't exist in config.components`
     );
+  }
+
+  if (rootComponent.rootParams && rootComponent.rootParams.length > 0) {
+    ensureDocumentDataWidgetForExternalTypes(types);
   }
 
   const builtinTypes = [
@@ -380,5 +385,34 @@ function createBuiltinTypes(): Record<string, CustomTypeDefinition> {
         return typeof value === "string" && value.trim().startsWith("<svg");
       },
     },
+    text: {
+      type: "external",
+      widgets: [],
+    },
   };
+}
+
+function ensureDocumentDataWidgetForExternalTypes(
+  types: CompilationContextType["types"]
+) {
+  const externalTypesNames = new Set([
+    ...Object.keys(types).filter((t) => types[t].type === "external"),
+  ]);
+
+  externalTypesNames.forEach((externalTypeName) => {
+    const externalTypeDefinition = types[
+      externalTypeName
+    ] as ExternalTypeDefinition;
+
+    const hasDocumentDataWidget = externalTypeDefinition.widgets.some(
+      (w) => w.id === "@easyblocks/document-data"
+    );
+
+    if (!hasDocumentDataWidget) {
+      externalTypeDefinition.widgets.push({
+        id: "@easyblocks/document-data",
+        label: "Document data",
+      });
+    }
+  });
 }
