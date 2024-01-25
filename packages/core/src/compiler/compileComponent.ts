@@ -346,8 +346,6 @@ export function compileComponent(
       );
     }
 
-    // User-defined components don't need any more work
-
     compiled = {
       ...compiled,
       components: {},
@@ -1358,18 +1356,6 @@ function mapResponsiveFontToResponsiveFontSize(
       return [breakpoint, fontValue.fontSize];
     })
   );
-}
-
-function extractContextPropsFromStyles(
-  styles: Record<string, Record<string, any>>
-) {
-  const contextProps = Object.fromEntries(
-    Object.entries(styles).filter(([, componentStyles]) => {
-      return !componentStyles.__isBox;
-    })
-  );
-
-  return contextProps;
 }
 
 function addStylesHash(styles: Record<PropertyKey, any>) {

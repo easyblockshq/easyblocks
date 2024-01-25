@@ -10,12 +10,7 @@ import {
 } from "./builtins/$richText/$richTextPart/$richTextPart";
 import { compileComponentValues } from "./compileComponentValues";
 import { findComponentDefinitionById } from "./findComponentDefinition";
-import { isContextEditorContext } from "./isContextEditorContext";
-import {
-  CompilationContextType,
-  EditorContextType,
-  InternalComponentDefinition,
-} from "./types";
+import { CompilationContextType, InternalComponentDefinition } from "./types";
 
 /**
  * Returns the most common value for given `prop` parameter among all @easyblocks/rich-text-part components from `richTextComponentConfig`.
@@ -31,18 +26,15 @@ function getMostCommonValueFromRichTextParts<
   compilationContext: CompilationContextType,
   cache: CompilationCache
 ) {
-  let richTextBlockElements:
+  const richTextBlockElements:
     | Array<RichTextBlockElementComponentConfig>
     | undefined =
-    richTextComponentConfig.elements[compilationContext.contextParams.locale];
-
-  if (isContextEditorContext(compilationContext) && !richTextBlockElements) {
-    richTextBlockElements = getFallbackForLocale(
+    richTextComponentConfig.elements[compilationContext.contextParams.locale] ??
+    getFallbackForLocale(
       richTextComponentConfig.elements,
       compilationContext.contextParams.locale,
-      (compilationContext as EditorContextType).locales
+      compilationContext.locales
     );
-  }
 
   if (!richTextBlockElements) {
     return;

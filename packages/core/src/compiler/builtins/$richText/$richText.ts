@@ -98,7 +98,7 @@ const editing: RichTextEditingFunction = ({
         ) {
           return {
             ...field,
-            hidden: false,
+            visible: true,
           };
         }
       }
