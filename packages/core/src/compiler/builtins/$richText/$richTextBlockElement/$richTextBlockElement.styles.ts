@@ -69,6 +69,7 @@ export function richTextBlockElementStyles({
   };
 
   const markerStyles = {
+    boxSizing: "content-box",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
