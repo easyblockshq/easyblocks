@@ -131,9 +131,6 @@ importers:
       '@easyblocks/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@easyblocks/design-system':
-        specifier: workspace:*
-        version: link:../../packages/design-system
       '@easyblocks/utils':
         specifier: workspace:*
         version: link:../../packages/utils
@@ -198,9 +195,6 @@ importers:
       eslint-config-next:
         specifier: ^12
         version: 12.3.4(eslint@8.23.0)(typescript@4.8.4)
-      next-transpile-modules:
-        specifier: ^9
-        version: 9.1.0
       playwright:
         specifier: ^1.25.2
         version: 1.32.0
@@ -683,31 +677,6 @@ importers:
       jison-gho:
         specifier: ^0.6.1-216
         version: 0.6.1-216
-
-  packages/shopify:
-    dependencies:
-      '@babel/runtime':
-        specifier: ^7.21.0
-        version: 7.21.0
-      '@easyblocks/core':
-        specifier: workspace:*
-        version: link:../core
-      '@easyblocks/design-system':
-        specifier: workspace:*
-        version: link:../design-system
-      graphql-request:
-        specifier: ^3.4.0
-        version: 3.7.0(graphql@16.6.0)
-      react:
-        specifier: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
-        version: 18.2.0
-    devDependencies:
-      '@easyblocks/build-tools':
-        specifier: workspace:*
-        version: link:../build-tools
-      '@types/react':
-        specifier: ^18.2.20
-        version: 18.2.42
 
   packages/test-utils: {}
 
@@ -16543,13 +16512,6 @@ packages:
 
   /neo-async@2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
-    dev: true
-
-  /next-transpile-modules@9.1.0:
-    resolution: {integrity: sha512-yzJji65xDqcIqjvx5vPJcs1M+MYQTzLM1pXH/qf8Q88ohx+bwVGDc1AeV+HKr1NwvMCNTpwVPSFI7cA5WdyeWA==}
-    dependencies:
-      enhanced-resolve: 5.14.1
-      escalade: 3.1.1
     dev: true
 
   /next@12.3.4(@babel/core@7.21.3)(react-dom@18.2.0)(react@18.2.0):
