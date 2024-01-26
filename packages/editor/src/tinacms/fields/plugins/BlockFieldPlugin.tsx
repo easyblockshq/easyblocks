@@ -42,8 +42,8 @@ import { isMixedFieldValue } from "../components/isMixedFieldValue";
 import { Form } from "../../../form";
 import { FormApi } from "final-form";
 
-export interface BlocksFieldDefinition extends InternalField {
-  component: "ss-block";
+interface BlocksFieldDefinition extends InternalField {
+  component: "block";
   schemaProp: ComponentSchemaProp | Component$$$SchemaProp;
 }
 
@@ -374,7 +374,7 @@ function Panel({ onCollapse, isExpanded, paths }: PanelProps) {
 
 export const BlockFieldPlugin = {
   __type: "field",
-  name: "ss-block",
+  name: "block",
   Component: BlockField,
 };
 

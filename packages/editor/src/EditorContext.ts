@@ -31,16 +31,13 @@ export type EditorExternalTypeDefinition = Omit<
   >;
 };
 
-export type EditorInlineTypeDefinition = Omit<
-  InlineTypeDefinition,
-  "widgets"
-> & {
+type EditorInlineTypeDefinition = Omit<InlineTypeDefinition, "widgets"> & {
   widget: Widget & {
     component?: ComponentType<InlineTypeWidgetComponentProps<any>>;
   };
 };
 
-export type EditorTokenTypeDefinition = Omit<TokenTypeDefinition, "widgets"> & {
+type EditorTokenTypeDefinition = Omit<TokenTypeDefinition, "widgets"> & {
   widget?: Widget & {
     component?: ComponentType<TokenTypeWidgetComponentProps<any>>;
   };

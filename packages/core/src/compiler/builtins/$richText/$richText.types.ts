@@ -7,7 +7,7 @@ import {
 } from "../../../types";
 import { EditorContextType } from "../../types";
 
-export interface Text {
+interface Text {
   text: string;
   id: string;
   isHighlighted?: boolean;

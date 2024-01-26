@@ -5,7 +5,6 @@ import {
   Config,
   Document,
   ExternalData,
-  ExternalDataChangeHandler,
   FetchOutputResources,
   InlineTypeWidgetComponentProps,
   NonEmptyRenderableContent,
@@ -79,6 +78,7 @@ import { removeLocalizedFlag } from "./utils/locales/removeLocalizedFlag";
 import { getDefaultLocale } from "@easyblocks/core";
 import { useEditorGlobalKeyboardShortcuts } from "./useEditorGlobalKeyboardShortcuts";
 import { Form } from "./form";
+import { ExternalDataChangeHandler } from "./EasyblocksEditorProps";
 
 const ContentContainer = styled.div`
   position: relative;

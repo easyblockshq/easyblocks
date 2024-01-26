@@ -1,4 +1,4 @@
-import { CompiledShopstoryComponentConfig, Template } from "@easyblocks/core";
+import { Template } from "@easyblocks/core";
 import {
   ButtonGhostColor,
   Colors,
@@ -9,11 +9,6 @@ import React, { useRef } from "react";
 import styled from "styled-components";
 import { EditorContextType, useEditorContext } from "./EditorContext";
 import { TemplatePicker } from "./TemplatePicker";
-
-export type CompiledEntryParentContext = {
-  parent: CompiledShopstoryComponentConfig;
-  fieldName: string;
-};
 
 type Mode = "large" | "large-3";
 

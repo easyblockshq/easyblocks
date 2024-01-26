@@ -120,26 +120,11 @@ export type InternalRenderableComponentDefinition<
   auto?: NoCodeComponentAutoFunction<Values, Params>;
   rootParams?: NoCodeComponentDefinition["rootParams"];
 };
-export type InternalActionComponentDefinition = ComponentDefinitionShared;
 
-export type InternalLinkDefinition = ComponentDefinitionShared;
-
-export type InternalComponentDefinition =
-  | InternalRenderableComponentDefinition
-  | InternalActionComponentDefinition
-  | InternalLinkDefinition
-  | InternalTextModifierDefinition;
+export type InternalComponentDefinition = InternalRenderableComponentDefinition;
 
 export type InternalComponentDefinitions = {
   components: InternalRenderableComponentDefinition<string, any, any>[];
-  actions: InternalActionComponentDefinition[];
-  links: InternalLinkDefinition[];
-  textModifiers: InternalTextModifierDefinition[];
-};
-
-export type InternalTextModifierDefinition = ComponentDefinitionShared & {
-  apply: (props: Record<string, any>) => Record<string, any>;
-  childApply?: (props: Record<string, any>) => Record<string, any>;
 };
 
 type EditorActions = {

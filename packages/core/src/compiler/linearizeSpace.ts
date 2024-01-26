@@ -204,7 +204,7 @@ function snapValueToToken(
   return currentToken;
 }
 
-export function linearizeSpaceWithoutNesting(
+function linearizeSpaceWithoutNesting(
   input: ResponsiveValue<number>,
   compilationContext: CompilationContextType,
   widths: TrulyResponsiveValue<number>,

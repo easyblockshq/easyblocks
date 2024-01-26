@@ -4,10 +4,10 @@ import { PlaceholderAppearance } from "@easyblocks/core";
 import { parsePath, useEasyblocksMetadata } from "@easyblocks/core/_internals";
 import { Colors, Fonts } from "@easyblocks/design-system";
 import { toArray } from "@easyblocks/utils";
-import React, { FC } from "react";
+import React from "react";
 import { EditorContextType } from "./EditorContext";
 
-export type PlaceholderProps = {
+type PlaceholderProps = {
   onClick: () => void;
   appearance: PlaceholderAppearance;
   meta: any;
@@ -114,8 +114,6 @@ type TypePlaceholderComponentBuilderProps = {
   meta: any;
 };
 
-type PlaceholderBuilderComponent = FC<TypePlaceholderComponentBuilderProps>;
-
 export default function TypePlaceholder(
   props: TypePlaceholderComponentBuilderProps
 ) {
@@ -207,8 +205,3 @@ export default function TypePlaceholder(
     />
   );
 }
-
-export type {
-  PlaceholderBuilderComponent,
-  TypePlaceholderComponentBuilderProps,
-};

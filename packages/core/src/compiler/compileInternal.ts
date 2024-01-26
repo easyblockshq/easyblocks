@@ -9,7 +9,7 @@ import { compileComponent } from "./compileComponent";
 import { CompilationContextType, ContextProps } from "./types";
 import { getDevicesWidths } from "./devices";
 
-export type CompileInternalReturnType = {
+type CompileInternalReturnType = {
   compiled: CompiledShopstoryComponentConfig;
   meta: CompilationMetadata;
   configAfterAuto?: NoCodeComponentEntry;

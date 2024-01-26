@@ -560,7 +560,6 @@ function mapExternalProps(
 }
 
 export { ComponentBuilder };
-export type { ComponentBuilderComponent };
 
 function getFieldStatus(
   externalReference: ResponsiveValue<ExternalReference>,

@@ -7,7 +7,7 @@ export interface InputProps {
   step?: string | number;
 }
 
-export const InputCss = css<InputProps>`
+const InputCss = css<InputProps>`
   box-sizing: border-box;
   padding: var(--tina-padding-small);
   border-radius: var(--tina-radius-small);

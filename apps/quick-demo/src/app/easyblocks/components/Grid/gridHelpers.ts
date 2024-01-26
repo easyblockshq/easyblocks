@@ -1,6 +1,6 @@
 import { deepClone } from "@easyblocks/utils";
 
-export type Rows = Array<Array<number>>;
+type Rows = Array<Array<number>>;
 
 export function findFirstItemInRows(rows: Rows, itemIndex: number) {
   for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
@@ -118,7 +118,7 @@ function fillRowsWithUnplacedCardsWith1x1Size(
   return rows;
 }
 
-export type ItemPosition = {
+type ItemPosition = {
   isFirstRow: boolean;
   isLastRow: boolean;
   isFirstColumn: boolean;

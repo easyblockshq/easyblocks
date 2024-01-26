@@ -99,15 +99,6 @@ export class Form<
   }
 
   /**
-   * A unique identifier for Forms.
-   *
-   * @alias id
-   */
-  get name() {
-    return this.id;
-  }
-
-  /**
    * Returns the current values of the form.
    *
    * if the form is still loading it returns `undefined`.
@@ -124,33 +115,6 @@ export class Form<
    */
   get initialValues() {
     return this.finalForm.getState().initialValues;
-  }
-
-  get pristine() {
-    return this.finalForm.getState().pristine;
-  }
-
-  get dirty() {
-    return this.finalForm.getState().dirty;
-  }
-
-  get submitting() {
-    return this.finalForm.getState().submitting;
-  }
-
-  get valid() {
-    return this.finalForm.getState().valid;
-  }
-
-  /**
-   * Resets the values back to the initial values the form was initialized with.
-   * Or empties all the values if the form was not initialized.
-   */
-  async reset() {
-    if (this._reset) {
-      await this._reset();
-    }
-    this.finalForm.reset();
   }
 
   /**
@@ -178,15 +142,6 @@ export class Form<
     } catch (error) {
       return { [FORM_ERROR]: error };
     }
-  };
-
-  /**
-   * Submits the form if there are currently no validation errors. It may
-   * return undefined or a Promise depending on the nature of the onSubmit
-   * configuration value given to the form when it was created.
-   */
-  submit: FormApi<S>["submit"] = () => {
-    return this.finalForm.submit();
   };
 
   /**

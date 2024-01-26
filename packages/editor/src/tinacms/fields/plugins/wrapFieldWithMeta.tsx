@@ -16,8 +16,8 @@ import {
   isExternalSchemaProp,
 } from "@easyblocks/core/_internals";
 import {
-  Loader,
   Fonts,
+  Loader,
   Select,
   SelectItem,
   Typography,
@@ -31,13 +31,13 @@ import {
   useEditorContext,
 } from "../../../EditorContext";
 import { useEditorExternalData } from "../../../EditorExternalDataProvider";
+import { Form } from "../../../form";
 import { FieldRenderProps } from "../../form-builder";
 import { COMPONENTS_SUPPORTING_MIXED_VALUES } from "../components/constants";
 import { isMixedFieldValue } from "../components/isMixedFieldValue";
 import type { ResponsiveFieldDefinition } from "./ResponsiveField/responsiveFieldController";
 import { Tooltip, TooltipArrow, TooltipBody } from "./Tooltip";
 import { useTooltip } from "./useTooltip";
-import { Form } from "../../../form";
 
 type ExtraFieldMetaWrapperFields = {
   layout?: "column" | "row";
@@ -383,7 +383,7 @@ interface FieldWrapperProps {
   layout: "column" | "row";
 }
 
-export const FieldWrapper = styled.div<FieldWrapperProps>`
+const FieldWrapper = styled.div<FieldWrapperProps>`
   display: flex;
   flex-direction: ${({ layout }) => layout};
   gap: ${({ layout }) => (layout === "row" ? "10px" : "4px")};
@@ -398,7 +398,7 @@ export const FieldWrapper = styled.div<FieldWrapperProps>`
   padding: 4px 16px;
 `;
 
-export const FieldLabelWrapper = styled.div<{ isFullWidth: boolean }>`
+const FieldLabelWrapper = styled.div<{ isFullWidth: boolean }>`
   all: unset;
   position: relative;
   display: flex;
@@ -412,7 +412,7 @@ type FieldLabelProps = {
   isError: boolean;
 };
 
-export const FieldLabel = styled.label<FieldLabelProps>`
+const FieldLabel = styled.label<FieldLabelProps>`
   all: unset;
   ${Fonts.body};
   color: ${({ isError }) => (isError ? "red" : "#000")};
@@ -421,7 +421,7 @@ export const FieldLabel = styled.label<FieldLabelProps>`
   cursor: default;
 `;
 
-export const FieldLabelIconWrapper = styled.span`
+const FieldLabelIconWrapper = styled.span`
   display: flex;
   font-size: 14px;
   line-height: 1;
@@ -433,19 +433,6 @@ export const FieldLabelIconWrapper = styled.span`
     height: 14px;
     flex-shrink: 0;
   }
-`;
-
-export const FieldDescription = styled.span`
-  all: unset;
-  display: block;
-  font-family: "Inter", sans-serif;
-  font-size: var(--tina-font-size-0);
-  font-style: italic;
-  font-weight: lighter;
-  color: var(--tina-color-grey-6);
-  padding-top: 4px;
-  white-space: normal;
-  margin: 0;
 `;
 
 const FieldError = styled.span`

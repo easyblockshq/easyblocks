@@ -440,26 +440,20 @@ importers:
         specifier: ^7.15.0
         version: 7.21.0(@babel/core@7.21.3)
       '@easyblocks/build-tools':
-        specifier: ^0.1.0
-        version: link:../build-tools
-      '@easyblocks/core':
         specifier: workspace:*
-        version: 'link:'
+        version: link:../build-tools
       '@easyblocks/reduce-css-calc':
         specifier: workspace:*
         version: link:../reduce-css-calc
       '@easyblocks/test-utils':
-        specifier: ^0.1.0
+        specifier: workspace:*
         version: link:../test-utils
       '@easyblocks/utils':
-        specifier: link:../utils
+        specifier: workspace:*
         version: link:../utils
       '@jest/types':
         specifier: ^26.6.2
         version: 26.6.2
-      '@playwright/test':
-        specifier: ^1.31.2
-        version: 1.32.0
       '@types/crypto-js':
         specifier: ^4.1.1
         version: 4.1.1
@@ -600,9 +594,6 @@ importers:
       '@easyblocks/build-tools':
         specifier: workspace:*
         version: link:../build-tools
-      '@easyblocks/test-utils':
-        specifier: workspace:*
-        version: link:../test-utils
       '@easyblocks/utils':
         specifier: workspace:*
         version: link:../utils

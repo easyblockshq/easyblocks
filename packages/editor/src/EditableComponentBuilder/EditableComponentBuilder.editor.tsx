@@ -8,7 +8,7 @@ import {
   ComponentBuilderProps,
   ContextProps,
 } from "@easyblocks/core/_internals";
-import React, { FC } from "react";
+import React from "react";
 import { BlocksControls } from "./BlockControls";
 
 type EditableComponentBuilderProps = ComponentBuilderProps & {
@@ -20,8 +20,6 @@ type EditableComponentBuilderProps = ComponentBuilderProps & {
   index: number;
   length: number;
 };
-
-type EditableComponentBuilderComponent = FC<EditableComponentBuilderProps>;
 
 function EditableComponentBuilder(props: EditableComponentBuilderProps) {
   const { path, compiled, index, length, components, ...restPassedProps } =
@@ -51,7 +49,3 @@ function EditableComponentBuilder(props: EditableComponentBuilderProps) {
 }
 
 export default EditableComponentBuilder;
-export type {
-  EditableComponentBuilderComponent,
-  EditableComponentBuilderProps,
-};

@@ -12,7 +12,7 @@ import {
   responsiveValueGetFirstLowerValue,
 } from "@easyblocks/core";
 
-export type ValueForWidth = { value: any; width: number; device: DeviceRange };
+type ValueForWidth = { value: any; width: number; device: DeviceRange };
 
 export type DecomposedValues = {
   values: Record<string, any>;

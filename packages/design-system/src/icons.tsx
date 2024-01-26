@@ -37,7 +37,7 @@ const IconContainer = styled.div.withConfig({
   `}
 `;
 
-export type IconProps = {
+type IconProps = {
   size?: number;
   isStroke?: boolean;
 };

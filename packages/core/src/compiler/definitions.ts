@@ -56,7 +56,7 @@ import {
 } from "./types";
 import { SetOptional } from "type-fest";
 
-export type SchemaPropDefinition<Type, CompiledType = Type> = {
+type SchemaPropDefinition<Type, CompiledType = Type> = {
   compile: (
     value: Type,
     contextProps: ContextProps,
@@ -76,29 +76,29 @@ export type SchemaPropDefinition<Type, CompiledType = Type> = {
   ) => string | undefined;
 };
 
-export type TextSchemaPropDefinition = SchemaPropDefinition<
+type TextSchemaPropDefinition = SchemaPropDefinition<
   LocalTextReference | ExternalReference<string>,
   CompiledLocalTextReference | ExternalReference<string>
 >;
 
-export type StringSchemaPropDefinition = SchemaPropDefinition<
+type StringSchemaPropDefinition = SchemaPropDefinition<
   ResponsiveValue<string>,
   ResponsiveValue<string>
 >;
 
-export type NumberSchemaPropDefinition = SchemaPropDefinition<number, number>;
+type NumberSchemaPropDefinition = SchemaPropDefinition<number, number>;
 
-export type BooleanSchemaPropDefinition = SchemaPropDefinition<
+type BooleanSchemaPropDefinition = SchemaPropDefinition<
   ResponsiveValue<boolean>,
   ResponsiveValue<boolean>
 >;
 
-export type SelectSchemaPropDefinition = SchemaPropDefinition<
+type SelectSchemaPropDefinition = SchemaPropDefinition<
   ResponsiveValue<string>,
   ResponsiveValue<string>
 >;
 
-export type RadioGroupSchemaPropDefinition = SchemaPropDefinition<
+type RadioGroupSchemaPropDefinition = SchemaPropDefinition<
   ResponsiveValue<string>,
   ResponsiveValue<string>
 >;
@@ -108,23 +108,22 @@ export type ConfigComponentCompilationOutput = {
   configAfterAuto: NoCodeComponentEntry;
 };
 
-export type ComponentSchemaPropDefinition = SchemaPropDefinition<
+type ComponentSchemaPropDefinition = SchemaPropDefinition<
   Array<NoCodeComponentEntry>,
   Array<ConfigComponentCompilationOutput>
 >;
 
-export type ComponentCollectionSchemaPropDefinition = SchemaPropDefinition<
+type ComponentCollectionSchemaPropDefinition = SchemaPropDefinition<
   Array<NoCodeComponentEntry>,
   Array<ConfigComponentCompilationOutput>
 >;
 
-export type ComponentCollectionLocalisedSchemaPropDefinition =
-  SchemaPropDefinition<
-    { [locale: string]: NoCodeComponentEntry[] },
-    Array<ConfigComponentCompilationOutput>
-  >;
+type ComponentCollectionLocalisedSchemaPropDefinition = SchemaPropDefinition<
+  { [locale: string]: NoCodeComponentEntry[] },
+  Array<ConfigComponentCompilationOutput>
+>;
 
-export type Component$$$SchemaPropDefinition = SchemaPropDefinition<
+type Component$$$SchemaPropDefinition = SchemaPropDefinition<
   NoCodeComponentEntry,
   NoCodeComponentEntry
 >;
@@ -190,7 +189,7 @@ export type SchemaPropDefinitionProviders = {
   >;
 };
 
-export type SchemaPropDefinitionProvider =
+type SchemaPropDefinitionProvider =
   SchemaPropDefinitionProviders[keyof SchemaPropDefinitionProviders];
 
 const textProvider: SchemaPropDefinitionProviders["text"] = (
@@ -372,8 +371,8 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
     compilationContext: CompilationContextType
   ): ComponentSchemaPropDefinition => {
     // Here:
-    // 1. if non-fixed => ss-block field.
-    // 2. if fixed => ss-block field with "fixed" flag (no component picker).
+    // 1. if non-fixed => block field.
+    // 2. if fixed => block field with "fixed" flag (no component picker).
     const normalize = (x: any) => {
       if (!Array.isArray(x) || x.length === 0) {
         if (schemaProp.required) {

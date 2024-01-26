@@ -14,7 +14,7 @@ const RATIOS: { [key: string]: number } = {
   portrait2: 1.32,
 };
 
-export type MediaRatio =
+type MediaRatio =
   | number
   | "landscape1"
   | "landscape2"

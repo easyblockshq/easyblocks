@@ -247,7 +247,7 @@ function generateFieldKey(
   return key;
 }
 
-export const FieldsGroupLabel = styled.div`
+const FieldsGroupLabel = styled.div`
   display: flex;
   align-items: center;
 
@@ -257,7 +257,7 @@ export const FieldsGroupLabel = styled.div`
   color: #000;
 `;
 
-export const FieldsGroup = styled.div`
+const FieldsGroup = styled.div`
   position: relative;
   display: block;
   width: 100%;

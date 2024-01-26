@@ -1,4 +1,4 @@
-import React, { CSSProperties, FC } from "react";
+import React, { CSSProperties } from "react";
 import { ComponentDefinitionShared } from "../types";
 
 type MissingComponentType = "BUTTON" | "CARD" | "SECTION";
@@ -57,8 +57,6 @@ type MissingComponentBuilderProps = {
   error?: boolean;
 };
 
-type MissingComponentBuilderComponent = FC<MissingComponentBuilderProps>;
-
 function MissingComponent({
   component,
   children,
@@ -93,8 +91,3 @@ function MissingComponent({
 }
 
 export { MissingComponent };
-export type {
-  MissingComponentType,
-  MissingComponentBuilderProps,
-  MissingComponentBuilderComponent,
-};

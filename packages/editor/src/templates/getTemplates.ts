@@ -99,7 +99,7 @@ function normalizeTextLocales(
   });
 }
 
-export function getTemplatesInternal(
+function getTemplatesInternal(
   editorContext: EditorContextType,
   configTemplates: InternalTemplate[],
   remoteUserDefinedTemplates: UserDefinedTemplate[]
@@ -109,10 +109,6 @@ export function getTemplatesInternal(
     ...configTemplates,
     ...getNecessaryDefaultTemplates(
       editorContext.definitions.components,
-      configTemplates
-    ),
-    ...getNecessaryDefaultTemplates(
-      editorContext.definitions.textModifiers,
       configTemplates
     ),
   ];

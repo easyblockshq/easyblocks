@@ -14,7 +14,7 @@ import {
 import { useEditorContext } from "./EditorContext";
 import { Backend } from "@easyblocks/core";
 
-export type TemplateModalProps = {
+type TemplateModalProps = {
   action: OpenTemplateModalAction;
   onClose: () => void;
   backend: Backend;

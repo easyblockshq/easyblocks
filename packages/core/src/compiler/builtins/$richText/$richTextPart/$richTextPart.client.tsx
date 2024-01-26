@@ -22,5 +22,3 @@ export function RichTextPartClient(props: RichTextPartProps) {
 
   return <Text.type {...Text.props}>{textValue}</Text.type>;
 }
-
-export type { RichTextPartProps };

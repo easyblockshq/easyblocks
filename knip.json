@@ -21,8 +21,8 @@
     }
   },
   "ignore": [
-    "apps/website/src/components/TwitterSection/TwitterSection.tsx",
-    "packages/core/src/compiler/builtins/inlineCodeTextModifier.ts"
+    "apps/dashboard-demo/seed.js",
+    "apps/website/src/components/TwitterSection/TwitterSection.tsx"
   ],
   "ignoreBinaries": ["supabase"],
   "ignoreDependencies": ["babel-jest"]

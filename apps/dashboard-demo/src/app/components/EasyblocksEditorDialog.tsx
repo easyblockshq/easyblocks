@@ -11,8 +11,6 @@ import { Button } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export type Document = { id: string; rootContainer: string };
-
 function EasyblocksEditorDialog({
   documentId,
   rootComponentId,

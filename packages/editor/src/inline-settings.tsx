@@ -29,7 +29,7 @@ export function InlineSettings({ fields }: InlineSettingsProps) {
     </StyleReset>
   );
 }
-export interface SettingsContentProps {
+interface SettingsContentProps {
   title?: string;
   fields: InternalField[];
 }

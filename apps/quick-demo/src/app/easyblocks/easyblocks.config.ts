@@ -6,8 +6,7 @@ import { linkDefinition } from "@/app/easyblocks/components/Link/Link.definition
 import { productCardDefinition } from "@/app/easyblocks/components/ProductCard/ProductCard.definition";
 import { vimeoPlayerEditableComponent } from "@/app/easyblocks/components/VimeoPlayer/VimeoPlayer.definition";
 import { mockVideoWidget } from "@/app/easyblocks/externalData/mockMedia/mockVideoWidget";
-import { templates } from "@/app/easyblocks/templates/templates";
-import { Config } from "@easyblocks/core";
+import { Config, EasyblocksBackend } from "@easyblocks/core";
 import { buttonComponentDefinition } from "./components/Button/Button.definition";
 import { buttonGroupDefinition } from "./components/ButtonGroup/ButtonGroup.definition";
 import { gridComponentDefinition } from "./components/Grid/Grid.definition";
@@ -18,13 +17,12 @@ import {
 } from "./components/RootSectionStack/RootSectionStack.definition";
 import { solidColorComponentDefinition } from "./components/SolidColor/SolidColor.definition";
 import { stackComponentDefinition } from "./components/Stack/Stack.definition";
+import { textLinkDefinition } from "./components/TextLink/TextLink.definition";
 import { twoCardsComponentDefinition } from "./components/TwoCards/TwoCards.definition";
 import { videoComponentDefinition } from "./components/Video/Video.definition";
 import { mockImageWidget } from "./externalData/mockMedia/mockImageWidget";
 import { pexelsImageWidget } from "./externalData/pexels/pexelsImageWidget";
 import { productWidget } from "./externalData/product/productWidget";
-import { EasyblocksBackend } from "@easyblocks/core";
-import { textLinkDefinition } from "./components/TextLink/TextLink.definition";
 
 if (!process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN) {
   throw new Error("Missing NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN");

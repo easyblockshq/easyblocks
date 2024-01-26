@@ -7,7 +7,7 @@ export type TemplatesDictionary = {
   };
 };
 
-export type TemplatePickerProps = {
+type TemplatePickerProps = {
   isOpen: boolean;
   templates?: TemplatesDictionary;
   onClose: (template?: Template) => void;

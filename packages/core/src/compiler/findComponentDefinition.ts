@@ -1,4 +1,3 @@
-import { toArray } from "@easyblocks/utils";
 import { NoCodeComponentEntry } from "../types";
 import {
   InternalComponentDefinition,
@@ -10,10 +9,7 @@ type AnyContextWithDefinitions = { definitions: InternalComponentDefinitions };
 function allDefs(
   context?: AnyContextWithDefinitions
 ): InternalComponentDefinition[] {
-  return [
-    ...(context?.definitions.components || []),
-    ...(context?.definitions.textModifiers ?? []),
-  ];
+  return context?.definitions.components || [];
 }
 
 /**
@@ -32,20 +28,6 @@ export function findComponentDefinitionById(
   context: AnyContextWithDefinitions
 ): InternalComponentDefinition | undefined {
   return $findComponentDefinitionById(id, context);
-}
-
-export function findComponentDefinitionsByTag(
-  tag: string,
-  context: AnyContextWithDefinitions
-): InternalComponentDefinition[] {
-  return $findComponentDefinitionsByTag(tag, context);
-}
-
-export function findComponentDefinitionsByComponentType(
-  componentType: string[],
-  context: AnyContextWithDefinitions
-): InternalComponentDefinition[] {
-  return $findComponentDefinitionsByComponentType(componentType, context);
 }
 
 /**
@@ -68,29 +50,4 @@ function $findComponentDefinitionById(
   context?: AnyContextWithDefinitions
 ): InternalComponentDefinition | undefined {
   return allDefs(context).find((component) => component.id === id);
-}
-
-function $findComponentDefinitionsByTag(
-  tag: string,
-  context?: AnyContextWithDefinitions
-): InternalComponentDefinition[] {
-  return allDefs(context).filter((def) =>
-    toArray(def.type ?? []).includes(tag)
-  );
-}
-
-function $findComponentDefinitionsByComponentType(
-  componentTypes: string[],
-  context?: AnyContextWithDefinitions
-): InternalComponentDefinition[] {
-  let componentDefinitions: InternalComponentDefinition[] = [];
-
-  componentTypes.forEach((componentType) => {
-    componentDefinitions = [
-      ...componentDefinitions,
-      ...$findComponentDefinitionsByTag(componentType, context),
-    ];
-  });
-
-  return componentDefinitions;
 }

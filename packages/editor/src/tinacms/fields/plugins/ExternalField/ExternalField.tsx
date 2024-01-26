@@ -29,7 +29,7 @@ type ExternalFieldProps = FieldRenderProps<
   any
 >;
 
-export const ExternalFieldComponent = (props: ExternalFieldProps) => {
+const ExternalFieldComponent = (props: ExternalFieldProps) => {
   const {
     tinaForm,
     field,

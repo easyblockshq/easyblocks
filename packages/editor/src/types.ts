@@ -2,32 +2,11 @@ import {
   CompilationMetadata,
   CompiledShopstoryComponentConfig,
   NoCodeComponentEntry,
-  ContextParams,
   ExternalData,
   ExternalReference,
-  LocalizedText,
   WidgetComponentProps,
 } from "@easyblocks/core";
 import { EditorContextType } from "./EditorContext";
-
-export type TextExternal = {
-  id: string /* id or tmp id */;
-  value?: LocalizedText;
-};
-
-export type TextExternalMap = { [id: string]: TextExternal };
-
-export type TextSyncers = {
-  create?: (
-    newTexts: TextExternal[],
-    contextParams: ContextParams
-  ) => Promise<TextExternalMap>; // batch add!
-  update?: (
-    texts: TextExternal[],
-    contextParams: ContextParams
-  ) => Promise<TextExternalMap>; // batch add!
-  remove?: (id: string[]) => Promise<any>;
-};
 
 export type OpenComponentPickerConfig = {
   path: string;
@@ -45,7 +24,7 @@ export type RemoveItemActionType = {
   name: string;
 };
 
-export type InsertItemActionType = {
+type InsertItemActionType = {
   name: string;
   index: number;
   block: NoCodeComponentEntry;
@@ -64,7 +43,7 @@ export type OpenTemplateModalActionCreate = {
   widthAuto?: boolean;
 };
 
-export type OpenTemplateModalActionEdit = {
+type OpenTemplateModalActionEdit = {
   mode: "edit";
   template: Template;
 };
@@ -94,7 +73,7 @@ export type ActionsType = {
   notify: (message: string) => void;
 };
 
-export type TemplateBase = {
+type TemplateBase = {
   id?: string;
   label?: string;
   type?: string;
@@ -114,35 +93,6 @@ export type Template = TemplateBase & {
     width: number;
     widthAuto: boolean;
   };
-};
-
-export type RoleId =
-  | "section"
-  | "card"
-  | "background"
-  | "symbol"
-  | "button"
-  | "actionTextModifier"
-  | "action"
-  | "actionLink"
-  | "item";
-
-export type RoleMaster = {
-  id: string;
-  label: string;
-  alwaysVisible?: boolean;
-};
-
-export type Role<T extends RoleId> = {
-  id: T;
-  masters?: RoleMaster[];
-  isTraceable?: boolean;
-};
-
-export type AnyRole = Role<RoleId>;
-
-export type Roles = {
-  [id in RoleId]: Role<id>;
 };
 
 export type FieldMixedValue = { __mixed__: true };

@@ -55,7 +55,7 @@ type FieldProvider<
   value: Value
 ) => AnyTinaField;
 
-export type TinaFieldProviders = {
+type TinaFieldProviders = {
   text: FieldProvider<TextSchemaProp>;
   string: FieldProvider<StringSchemaProp>;
   number: FieldProvider<NumberSchemaProp>;
@@ -164,7 +164,7 @@ const tinaFieldProviders: TinaFieldProviders = {
   component: (schemaProp) => {
     return {
       ...getCommonFieldProps(schemaProp),
-      component: "ss-block",
+      component: "block",
       schemaProp,
     };
   },

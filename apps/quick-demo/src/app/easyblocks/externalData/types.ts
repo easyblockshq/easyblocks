@@ -1,4 +1,4 @@
-export type ImageSrcSetEntry = {
+type ImageSrcSetEntry = {
   w: number;
   h: number;
   url: string;

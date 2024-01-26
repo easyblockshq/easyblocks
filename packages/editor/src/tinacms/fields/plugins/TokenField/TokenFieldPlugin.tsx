@@ -49,9 +49,9 @@ interface TokenFieldProps<TokenValue extends NonNullish>
   field: TokenField<TokenValue>;
 }
 
-export const CUSTOM_OPTION_VALUE = "__custom__";
+const CUSTOM_OPTION_VALUE = "__custom__";
 
-export function extraValuesIncludes(
+function extraValuesIncludes(
   extraValues: Array<string | { value: string; label: string }>,
   value: string
 ) {
@@ -418,7 +418,7 @@ function isValidFontTokenValue(value: unknown): value is {
   );
 }
 
-export const Root = styled.div`
+const Root = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -431,9 +431,8 @@ export const TokenFieldPlugin = {
 };
 
 export { TokenFieldComponent };
-export type { TokenField, TokenFieldProps };
 
-export const SelectColorTokenItem = forwardRef<
+const SelectColorTokenItem = forwardRef<
   HTMLDivElement,
   {
     children: ReactNode;

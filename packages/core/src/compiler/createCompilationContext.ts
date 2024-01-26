@@ -18,7 +18,6 @@ import { richTextBlockElementEditableComponent } from "./builtins/$richText/$ric
 import { richTextLineElementEditableComponent } from "./builtins/$richText/$richTextLineElement/$richTextLineElement";
 import { richTextPartEditableComponent } from "./builtins/$richText/$richTextPart/$richTextPart";
 import { textEditableComponent } from "./builtins/$text/$text";
-import { actionTextModifier } from "./builtins/actionTextModifier";
 import { DEFAULT_DEVICES } from "./devices";
 import { themeScalarValueToResponsiveValue } from "./themeValueToResponsiveValue";
 import { CompilationContextType, Theme } from "./types";
@@ -261,34 +260,11 @@ export function createCompilationContext(
     );
   }
 
-  // FIXME
-  const textModifiers: Array<any> = [
-    actionTextModifier,
-    // {
-    //   id: "$MissingTextModifier",
-    //   type: "actionTextModifier",
-    //   schema: [],
-    //   apply: () => {
-    //     return {};
-    //   },
-    // },
-    // ...(config.textModifiers ?? []).map((modifier) => {
-    //   return {
-    //     ...modifier,
-    //     type:
-    //       modifier.type === "text"
-    //         ? "textModifier"
-    //         : `${modifier.type}TextModifier`,
-    //   };
-    // }),
-  ];
-
   const compilationContext: CompilationContextType = {
     devices,
     theme,
     definitions: {
       components,
-      textModifiers,
     },
     types,
     mainBreakpointIndex: mainDevice.id,

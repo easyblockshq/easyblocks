@@ -13,7 +13,7 @@ export type ResponsiveFieldDefinition = Omit<InternalField, "component"> & {
   hasAuto?: boolean;
 };
 
-export type ResponsiveFieldController = {
+type ResponsiveFieldController = {
   field: InternalField;
   isResponsive: boolean;
   isSet: boolean;

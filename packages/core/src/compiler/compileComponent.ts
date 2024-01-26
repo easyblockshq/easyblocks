@@ -1829,7 +1829,7 @@ function toAbsolutePath(path: string, configPrefix: string | undefined) {
   return path;
 }
 
-export function isSchemaPropTokenized(schemaProp: SchemaProp) {
+function isSchemaPropTokenized(schemaProp: SchemaProp) {
   return (
     schemaProp.type === "color" ||
     schemaProp.type === "space" ||

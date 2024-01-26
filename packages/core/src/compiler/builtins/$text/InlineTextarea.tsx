@@ -3,7 +3,7 @@ import React, { useRef } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { useTextValue } from "../useTextValue";
 
-export interface InlineTextProps {
+interface InlineTextProps {
   path: string;
   placeholder?: string;
   stitches: any;

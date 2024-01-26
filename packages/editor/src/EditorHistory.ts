@@ -1,12 +1,6 @@
 import { NoCodeComponentEntry } from "@easyblocks/core";
 import { deepCompare } from "@easyblocks/utils";
 
-export enum EditorHistoryAction {
-  PUSH = "PUSH",
-  REPLACE = "REPLACE",
-  NONE = "NONE",
-}
-
 const HISTORY_SIZE = 50;
 
 export interface HistoryEntry {

@@ -26,9 +26,7 @@ export type {
   ContextProps,
   EditorContextType,
   InternalComponentDefinition,
-  InternalLinkDefinition,
   InternalRenderableComponentDefinition,
-  InternalTextModifierDefinition,
 } from "./compiler/types";
 export {
   EasyblocksMetadataProvider,

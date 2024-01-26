@@ -8,16 +8,10 @@ export function getAllComponentsOfType(
   type: string,
   editorContext: EditorContextType
 ) {
-  return [
-    ...getAllComponentsOfTypeFromDefinitionsArray(
-      type,
-      editorContext.definitions.components
-    ),
-    ...getAllComponentsOfTypeFromDefinitionsArray(
-      type,
-      editorContext.definitions.textModifiers
-    ),
-  ];
+  return getAllComponentsOfTypeFromDefinitionsArray(
+    type,
+    editorContext.definitions.components
+  );
 }
 
 function getAllComponentsOfTypeFromDefinitionsArray(

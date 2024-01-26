@@ -1,4 +1,4 @@
-import { InternalField } from "@easyblocks/app-utils";
+import { AnyField } from "@easyblocks/core";
 import { last } from "@easyblocks/utils";
 import type { MergeCommonFieldsParameters } from "./mergeCommonFields";
 import { mergeCommonFields } from "./mergeCommonFields";
@@ -182,8 +182,8 @@ test("uses string as the name if there is only single repeated visible field", (
 
 function createTestField(
   name: Array<string> | string,
-  restProperties: Partial<Omit<InternalField, "name" | "component">> = {}
-): InternalField {
+  restProperties: Partial<Omit<AnyField, "name" | "component">> = {}
+) {
   const propertyName = last((Array.isArray(name) ? name[0] : name).split("."));
 
   return {
@@ -192,10 +192,8 @@ function createTestField(
     schemaProp: {
       type: "string",
       prop: propertyName,
-      // @ts-ignore
       definition: {
         id: propertyName,
-        // @ts-ignore
         ...restProperties.schemaProp?.definition,
       },
     },

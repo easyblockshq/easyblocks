@@ -20,12 +20,7 @@ interface ToggleFieldDefinition extends InternalField {
 
 type FieldLabels = { true: string; false: string };
 
-export const Toggle: FC<ToggleProps> = ({
-  input,
-  field,
-  name,
-  disabled = false,
-}) => {
+export const Toggle: FC<ToggleProps> = ({ input, field, disabled = false }) => {
   const checked = !!(input.value || input.checked);
 
   const toggleProps = {

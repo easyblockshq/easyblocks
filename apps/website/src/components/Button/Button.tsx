@@ -15,7 +15,7 @@ type AnchorSpecificProps = CommonButtonProps & {
   as: "a";
 } & React.AnchorHTMLAttributes<HTMLAnchorElement>;
 
-export type ButtonProps = ButtonSpecificProps | AnchorSpecificProps;
+type ButtonProps = ButtonSpecificProps | AnchorSpecificProps;
 
 export const Button: React.FC<ButtonProps> = ({
   children,

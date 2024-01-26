@@ -16,7 +16,7 @@ const GLOBAL_SHORTCUTS_KEYS = [
   "L",
 ];
 
-export const DATA_TRANSFER_FORMAT = "text/x-shopstory";
+const DATA_TRANSFER_FORMAT = "text/x-shopstory";
 
 function useEditorGlobalKeyboardShortcuts(editorContext: EditorContextType) {
   useEffect(() => {

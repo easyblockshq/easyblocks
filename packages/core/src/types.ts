@@ -970,11 +970,6 @@ export type ExternalData = Record<
   (FetchOutputBasicResources | FetchOutputCompoundResources)[string]
 >;
 
-export type ExternalDataChangeHandler = (
-  resources: RequestedExternalData,
-  contextParams: ContextParams
-) => void;
-
 export type LocalReference<Value = unknown> = {
   id: string;
   value: Value;

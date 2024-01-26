@@ -1,6 +1,5 @@
 import {
   Config,
-  ExternalDataChangeHandler,
   FetchOutputResources,
   InlineTypeWidgetComponentProps,
   WidgetComponentProps,
@@ -20,8 +19,9 @@ import { GlobalStyles } from "./tinacms/styles";
 import { SpaceTokenWidget } from "./sidebar/SpaceTokenWidget";
 import { parseQueryParams } from "./parseQueryParams";
 import { DocumentDataWidgetComponent } from "./sidebar/DocumentDataWidget";
+import { ExternalDataChangeHandler } from "./EasyblocksEditorProps";
 
-export type EasyblocksParentProps = {
+type EasyblocksParentProps = {
   config: Config;
   externalData: FetchOutputResources;
   onExternalDataChange: ExternalDataChangeHandler;

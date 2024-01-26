@@ -79,8 +79,6 @@ export type Media = {
   height?: number;
 };
 
-export type MediaFetcher = () => Promise<Media[]>;
-
 const Card = styled.div`
   &:hover {
     outline: 1px solid ${Colors.black40};
