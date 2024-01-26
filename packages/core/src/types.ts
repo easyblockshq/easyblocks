@@ -492,7 +492,7 @@ export type InlineTypeDefinition<Value extends NonNullish = any> = {
 };
 
 export type ExternalTypeDefinition = {
-  widgets: Array<Widget>;
+  widgets?: Array<Widget>;
   responsiveness?: "always" | "optional" | "never";
   type: "external";
 };
@@ -561,7 +561,7 @@ export type Config = {
   devices?: ConfigDevices;
   __masterEnvironment?: boolean;
   strict?: boolean;
-  locales?: Array<Locale>;
+  locales: Array<Locale>;
   disableCustomTemplates?: boolean;
   hideCloseButton?: boolean;
   templates?: Template[];

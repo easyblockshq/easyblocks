@@ -20,7 +20,11 @@ import { richTextPartEditableComponent } from "./builtins/$richText/$richTextPar
 import { textEditableComponent } from "./builtins/$text/$text";
 import { DEFAULT_DEVICES } from "./devices";
 import { themeScalarValueToResponsiveValue } from "./themeValueToResponsiveValue";
-import { CompilationContextType, Theme } from "./types";
+import {
+  CompilationContextCustomTypeDefinition,
+  CompilationContextType,
+  Theme,
+} from "./types";
 import { validateColor } from "./validate-color";
 
 function normalizeSpace(
@@ -278,13 +282,24 @@ export function createCompilationContext(
 
 function createCustomTypes(
   types: Record<string, CustomTypeDefinition> | undefined
-): Record<string, CustomTypeDefinition> {
+): Record<string, CompilationContextCustomTypeDefinition> {
   if (!types) {
     return {};
   }
 
   return Object.fromEntries(
     Object.entries(types).map(([id, definition]) => {
+      if (definition.type === "external") {
+        return [
+          id,
+          {
+            ...definition,
+            responsiveness: definition.responsiveness ?? "never",
+            widgets: definition.widgets ?? [],
+          },
+        ];
+      }
+
       return [
         id,
         {
@@ -295,7 +310,11 @@ function createCustomTypes(
     })
   );
 }
-function createBuiltinTypes(): Record<string, CustomTypeDefinition> {
+
+function createBuiltinTypes(): Record<
+  string,
+  CompilationContextCustomTypeDefinition
+> {
   return {
     space: {
       type: "token",
@@ -379,6 +398,10 @@ function ensureDocumentDataWidgetForExternalTypes(
     const externalTypeDefinition = types[
       externalTypeName
     ] as ExternalTypeDefinition;
+
+    if (!externalTypeDefinition.widgets) {
+      externalTypeDefinition.widgets = [];
+    }
 
     const hasDocumentDataWidget = externalTypeDefinition.widgets.some(
       (w) => w.id === "@easyblocks/document-data"

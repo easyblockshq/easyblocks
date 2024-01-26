@@ -1,24 +1,26 @@
-import { PartialDeep } from "type-fest";
+import { PartialDeep, SetRequired } from "type-fest";
 import { Locale } from "../locales";
 import {
-  NoCodeComponentEntry,
   ComponentConfigBase,
   ComponentDefinitionShared,
   ContextParams,
-  CustomTypeDefinition,
   Devices,
   EditingInfoBase,
   ExternalSchemaProp,
+  ExternalTypeDefinition,
   FieldPortal,
+  InlineTypeDefinition,
   NoCodeComponentAutoFunction,
   NoCodeComponentDefinition,
   NoCodeComponentEditingFunction,
+  NoCodeComponentEntry,
   NoCodeComponentStylesFunction,
   ResponsiveValue,
   SchemaProp,
   Spacing,
   Template,
   ThemeRefValue,
+  TokenTypeDefinition,
 } from "../types";
 import { InternalAnyTinaField } from "./schema";
 
@@ -39,10 +41,15 @@ export type CompilationDocumentType = {
   schema?: Array<ExternalSchemaProp>;
 };
 
+export type CompilationContextCustomTypeDefinition =
+  | InlineTypeDefinition
+  | SetRequired<ExternalTypeDefinition, "widgets">
+  | TokenTypeDefinition;
+
 export type CompilationContextType = {
   devices: Devices;
   theme: Theme;
-  types: Record<string, CustomTypeDefinition>;
+  types: Record<string, CompilationContextCustomTypeDefinition>;
   // FIXME
   definitions: any;
   mainBreakpointIndex: string;

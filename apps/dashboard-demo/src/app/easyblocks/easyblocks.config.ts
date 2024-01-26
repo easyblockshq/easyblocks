@@ -155,19 +155,15 @@ const easyblocksConfig: Config = {
     },
     propertyText: {
       type: "external",
-      widgets: [],
     },
     propertyBoolean: {
       type: "external",
-      widgets: [],
     },
     propertyDate: {
       type: "external",
-      widgets: [],
     },
     formAction: {
       type: "external",
-      widgets: [],
     },
   },
   components: [

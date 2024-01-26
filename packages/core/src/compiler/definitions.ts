@@ -1,4 +1,5 @@
 import { uniqueId } from "@easyblocks/utils";
+import { SetOptional } from "type-fest";
 import { isLocalValue } from "..";
 import { getFallbackForLocale, getFallbackLocaleForLocale } from "../locales";
 import {
@@ -20,7 +21,6 @@ import {
   ExternalReferenceEmpty,
   ExternalReferenceNonEmpty,
   ExternalSchemaProp,
-  ExternalTypeDefinition,
   LocalSchemaProp,
   LocalTextReference,
   LocalValue,
@@ -54,7 +54,6 @@ import {
   EditingInfoComponent,
   EditingInfoComponentCollection,
 } from "./types";
-import { SetOptional } from "type-fest";
 
 type SchemaPropDefinition<Type, CompiledType = Type> = {
   compile: (
@@ -1125,7 +1124,10 @@ function externalNormalize(
             ? x.widgetId
             : (
                 compilationContext.types[externalType] as
-                  | ExternalTypeDefinition
+                  | Extract<
+                      CompilationContextType["types"][string],
+                      { type: "external" }
+                    >
                   | undefined
               )?.widgets[0]?.id,
       };

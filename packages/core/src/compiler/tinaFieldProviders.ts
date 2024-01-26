@@ -1,16 +1,14 @@
 import { assertDefined } from "@easyblocks/utils";
-import { responsiveValueGet } from "../responsiveness";
 import {
   AnyTinaField,
   BooleanSchemaProp,
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
-  NoCodeComponentEntry,
   ComponentSchemaProp,
   ExternalSchemaProp,
-  ExternalTypeDefinition,
   LocalSchemaProp,
   LocalTextReference,
+  NoCodeComponentEntry,
   NumberSchemaProp,
   PositionSchemaProp,
   RadioGroupSchemaProp,
@@ -184,9 +182,9 @@ const tinaFieldProviders: TinaFieldProviders = {
       schemaProp,
     };
   },
-  external: (schemaProp, editorContext, value) => {
+  external: (schemaProp, editorContext) => {
     const externalTypeDefinition = editorContext.types[schemaProp.type] as
-      | ExternalTypeDefinition
+      | Extract<EditorContextType["types"][string], { type: "external" }>
       | undefined;
 
     if (!externalTypeDefinition) {
@@ -194,31 +192,16 @@ const tinaFieldProviders: TinaFieldProviders = {
     }
 
     if (schemaProp.responsive) {
-      const currentDeviceValue =
-        responsiveValueGet(value, editorContext.breakpointIndex) ?? value;
-
-      const fieldWidget = externalTypeDefinition.widgets.find(
-        (w) => w.id === currentDeviceValue.widgetId
-      );
-
       return {
         ...getCommonFieldProps(schemaProp),
         component: "responsive2",
         subComponent: "external",
-        // @ts-expect-error
-        externalField: fieldWidget?.component,
       };
     }
-
-    const fieldWidget = externalTypeDefinition.widgets.find(
-      (w) => w.id === value.widgetId
-    );
 
     return {
       ...getCommonFieldProps(schemaProp),
       component: "external",
-      // @ts-expect-error
-      externalField: fieldWidget?.component,
     };
   },
   position: (schemaProp) => {
