@@ -757,6 +757,10 @@ function RichTextEditor(props: RichTextProps) {
 
               ReactEditor.focus(editor);
 
+              if (isEditorValueEmpty(editor.children as Array<BlockElement>)) {
+                return;
+              }
+
               const editorSelectionRange = {
                 anchor: Editor.start(editor, []),
                 focus: Editor.end(editor, []),
