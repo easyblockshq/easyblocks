@@ -171,20 +171,22 @@ function RichTextEditor(props: RichTextProps) {
     setEditorValue(nextEditorValue);
     editor.children = nextEditorValue;
 
-    const editorSelection = getEditorSelectionFromFocusedFields(
-      focussedField,
-      form
-    );
+    if (isEnabled) {
+      const editorSelection = getEditorSelectionFromFocusedFields(
+        focussedField,
+        form
+      );
 
-    // Slate gives us two methods to update its selection:
-    // - `setSelection` updates current selection, so `editor.selection` must be not null
-    // - `select` sets the selection, so `editor.selection` must be null
-    if (editorSelection !== null && editor.selection !== null) {
-      Transforms.setSelection(editor, editorSelection);
-    } else if (editorSelection !== null && editor.selection === null) {
-      Transforms.select(editor, editorSelection);
-    } else {
-      Transforms.deselect(editor);
+      // Slate gives us two methods to update its selection:
+      // - `setSelection` updates current selection, so `editor.selection` must be not null
+      // - `select` sets the selection, so `editor.selection` must be null
+      if (editorSelection !== null && editor.selection !== null) {
+        Transforms.setSelection(editor, editorSelection);
+      } else if (editorSelection !== null && editor.selection === null) {
+        Transforms.select(editor, editorSelection);
+      } else {
+        Transforms.deselect(editor);
+      }
     }
   }
 
