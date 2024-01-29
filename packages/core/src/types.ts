@@ -553,15 +553,10 @@ export type Backend = {
 
 export type Config = {
   backend: Backend;
-  projectId?: string;
-  types?: Record<string, CustomTypeDefinition>;
-  text?: ExternalDefinition;
-  buttons?: ButtonCustomComponent[];
   components?: Array<NoCodeComponentDefinition<any, any>>;
   devices?: ConfigDevices;
-  __masterEnvironment?: boolean;
-  strict?: boolean;
   locales: Array<Locale>;
+  types?: Record<string, CustomTypeDefinition>;
   disableCustomTemplates?: boolean;
   hideCloseButton?: boolean;
   templates?: Template[];
