@@ -1,7 +1,7 @@
 import {
-  NoCodeComponentEntry,
   ComponentSchemaProp,
   Field,
+  NoCodeComponentEntry,
 } from "@easyblocks/core";
 import {
   findComponentDefinitionById,

@@ -72,7 +72,7 @@ export const GlobalStyles = createGlobalStyle`
   ${theme};
 `;
 
-export const tina_reset_styles = css`
+const tina_reset_styles = css`
   * {
     font-family: "Inter", sans-serif;
     &::-webkit-scrollbar {

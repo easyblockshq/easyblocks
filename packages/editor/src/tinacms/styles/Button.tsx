@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 
-export interface ButtonProps {
+interface ButtonProps {
   primary?: boolean;
   small?: boolean;
   margin?: boolean;
@@ -10,7 +10,7 @@ export interface ButtonProps {
   disabled?: boolean;
 }
 
-export const Button = styled.button<ButtonProps>`
+const Button = styled.button<ButtonProps>`
   text-align: center;
   border: 0;
   border-radius: var(--tina-radius-big);
@@ -87,7 +87,7 @@ export const Button = styled.button<ButtonProps>`
 `;
 
 export const ICON_BUTTON_SIZE = 23;
-export const ICON_SIZE = 23;
+const ICON_SIZE = 23;
 
 export const IconButton = styled(Button)`
   padding: 0;

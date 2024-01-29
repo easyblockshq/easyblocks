@@ -2,22 +2,19 @@
   "$schema": "https://unpkg.com/knip@3/schema.json",
   "workspaces": {
     ".": {
-      "entry": ["packages/.eslintrc.js"]
+      "eslint": {
+        "config": ["packages/.eslintrc.js"]
+      }
     },
     "apps/*": {
-      "next": true,
-      "ignoreDependencies": ["eslint", "eslint-config-next"]
+      "next": true
     },
     "packages/*": {
-      "project": ["src/**/*.{js,ts,tsx}"],
-      "ignoreDependencies": ["@babel/runtime"]
+      "project": ["src/**/*.{js,ts,tsx}"]
     },
     "packages/core": {
       "entry": ["src/index.ts", "src/_internals.ts"],
-      "ignoreDependencies": ["@babel/runtime", "postcss-value-parser"]
-    },
-    "packages/editor": {
-      "ignoreDependencies": ["@babel/runtime"]
+      "ignoreDependencies": ["postcss-value-parser"]
     }
   },
   "ignore": [

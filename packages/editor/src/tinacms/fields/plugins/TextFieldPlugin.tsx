@@ -16,7 +16,7 @@ type TextFieldProps = FieldRenderProps<
   };
 };
 
-export function TextField({ input, field, noWrap }: TextFieldProps) {
+function TextField({ input, field, noWrap }: TextFieldProps) {
   const editorContext = useEditorContext();
   const { value, onChange, ...restInputProperties } = input;
 

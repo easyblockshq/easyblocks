@@ -430,8 +430,6 @@ export const TokenFieldPlugin = {
   Component: wrapFieldsWithMeta(TokenFieldComponent),
 };
 
-export { TokenFieldComponent };
-
 const SelectColorTokenItem = forwardRef<
   HTMLDivElement,
   {

@@ -6,7 +6,7 @@ import {
 import { EditorContextType } from "../../EditorContext";
 import { Form } from "../../form";
 
-export const testDevices: Devices = [
+const testDevices: Devices = [
   {
     id: "b1",
     w: 100,
@@ -94,15 +94,3 @@ export const testEditorContext: EditorContextType = {
   ],
   compilationCache: new CompilationCache(),
 };
-
-/**
- * Wrapper for `jest.fn` function, but with types which automatically infer parameters type and return type.
- * This is more handy for cases where the mocked function has its dedicated type.
- */
-export function mock<Implementation extends (...args: any) => any>(
-  implementation: Implementation
-): jest.Mock<ReturnType<Implementation>, Parameters<Implementation>> {
-  return jest.fn<ReturnType<Implementation>, Parameters<Implementation>>(
-    implementation
-  );
-}

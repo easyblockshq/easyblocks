@@ -3,7 +3,7 @@ import { wrapFieldsWithMeta } from "./wrapFieldWithMeta";
 import { NumberInput as BaseNumberField, InputProps } from "../components";
 import { parse } from "./numberFormat";
 
-export const NumberField = wrapFieldsWithMeta<{
+const NumberField = wrapFieldsWithMeta<{
   step: string | number;
   min?: number;
   max?: number;
