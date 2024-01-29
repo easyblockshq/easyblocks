@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 export type Document = { id: string; updatedAt: number };
 
-export const DocumenWidgetInline: React.FC<{
+export const DocumentWidgetInline: React.FC<{
   document?: Document | null;
   onSave: (document: Document) => void;
   isOpen: boolean;

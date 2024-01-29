@@ -23,6 +23,7 @@ import { videoComponentDefinition } from "./components/Video/Video.definition";
 import { mockImageWidget } from "./externalData/mockMedia/mockImageWidget";
 import { pexelsImageWidget } from "./externalData/pexels/pexelsImageWidget";
 import { productWidget } from "./externalData/product/productWidget";
+import { templates } from "./templates/templates";
 
 if (!process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN) {
   throw new Error("Missing NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN");
@@ -529,4 +530,5 @@ export const easyblocksConfig: Config = {
       },
     ],
   },
+  templates,
 };

@@ -1,0 +1,53 @@
+{
+  "_id": "ec4314d1-6df8-434e-a6ac-544c5051631a",
+  "_component": "@easyblocks/text",
+  "_itemProps": {
+    "Stack": {
+      "Items": {
+        "width": {
+          "$res": true,
+          "xl": "512px"
+        },
+        "marginBottom": {
+          "$res": true,
+          "xl": {
+            "value": "0px",
+            "tokenId": "0",
+            "widgetId": "@easyblocks/space"
+          }
+        },
+        "align": {
+          "$res": true,
+          "xl": "left"
+        }
+      }
+    }
+  },
+  "value": {
+    "id": "local.281cc83a-11ae-49c1-b58f-5548f2e3001c",
+    "value": {
+      "en-US": "Lorem ipsum"
+    },
+    "widgetId": "@easyblocks/local-text"
+  },
+  "color": {
+    "$res": true,
+    "xl": {
+      "tokenId": "grey_05",
+      "value": "#252525",
+      "widgetId": "@easyblocks/color"
+    }
+  },
+  "font": {
+    "$res": true,
+    "xl": {
+      "tokenId": "body",
+      "value": {
+        "fontSize": 20,
+        "lineHeight": 1.8,
+        "fontFamily": "test-soehne-mono"
+      }
+    }
+  },
+  "accessibilityRole": "p"
+}

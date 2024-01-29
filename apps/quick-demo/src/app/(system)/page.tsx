@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { DocumenWidgetInline, Document } from "@/app/DocumenWidgetInline";
+import { DocumentWidgetInline, Document } from "@/app/DocumenWidgetInline";
 
 const DOCUMENT_KEY = "easyblocksQuickDemoDocumentId";
 
@@ -179,7 +179,7 @@ export default function MainPage() {
       )}
 
       <div className={"flex-auto grid bg-white-1"}>
-        <DocumenWidgetInline
+        <DocumentWidgetInline
           isOpen={isOpen}
           onOpenChange={(isOpen) => {
             setOpen(isOpen);

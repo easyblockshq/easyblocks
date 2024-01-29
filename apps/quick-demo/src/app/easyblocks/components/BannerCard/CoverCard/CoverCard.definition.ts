@@ -75,7 +75,7 @@ export const coverCardDefinition: NoCodeComponentDefinition = {
           display: "grid",
           overflow: "hidden",
           position: "relative",
-          background: "black",
+          background: "transparent",
 
           paddingLeft,
           paddingRight,
