@@ -286,6 +286,7 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
       styled: {
         Root: {
           position: "relative",
+          display: "grid",
         },
         Container: {
           margin: "0 auto",
