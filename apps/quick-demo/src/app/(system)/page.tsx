@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { DocumenWidgetInline, Document } from "@/app/DocumenWidgetInline";
 
@@ -187,8 +186,13 @@ export default function MainPage() {
           }}
           document={document}
           onSave={(document) => {
-            setDocument(document);
-            localStorage.setItem(DOCUMENT_KEY, JSON.stringify(document));
+            const nowTime = new Date().getTime();
+            const documentWithUpdatedTime = { ...document, updatedAt: nowTime };
+            setDocument(documentWithUpdatedTime);
+            localStorage.setItem(
+              DOCUMENT_KEY,
+              JSON.stringify(documentWithUpdatedTime)
+            );
           }}
         />
 
