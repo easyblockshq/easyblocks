@@ -12,10 +12,18 @@ function Button(
     forwardedRef: Ref<HTMLButtonElement>;
   } & Record<string, any>
 ) {
-  const { ButtonRoot, IconWrapper, Action, variant, icon, label = "" } = props;
+  const {
+    ButtonRoot,
+    IconWrapper,
+    Action,
+    variant,
+    icon,
+    label = "",
+    onClick,
+  } = props;
 
   const triggerElement = (
-    <ButtonRoot.type {...ButtonRoot.props}>
+    <ButtonRoot.type {...ButtonRoot.props} onClick={onClick}>
       {variant !== "icon" && <div>{label}</div>}
       {variant !== "label" && (
         <IconWrapper.type

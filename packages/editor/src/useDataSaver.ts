@@ -28,12 +28,8 @@ export function useDataSaver(
   const onTickRef = useRef<() => Promise<void>>(() => Promise.resolve());
 
   const onTick = async () => {
-    console.log("---");
-    console.log("tick");
-
     // Playground mode is a special case, we don't want to save anything
     if (editorContext.readOnly) {
-      console.log("read only -> bye");
       return;
     }
 

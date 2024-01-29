@@ -50,9 +50,9 @@ const videoComponentDefinition: NoCodeComponentDefinition = {
       required: true,
       accepts: ["button"],
       group: "Playback control",
-      // visible: (values) => {
-      //   return values.enablePlaybackControls;
-      // },
+      visible: (values) => {
+        return values.enablePlaybackControls;
+      },
     },
     {
       prop: "PauseButton",
@@ -61,9 +61,9 @@ const videoComponentDefinition: NoCodeComponentDefinition = {
       required: true,
       accepts: ["button"],
       group: "Playback control",
-      // visible: (values) => {
-      //   return values.enablePlaybackControls;
-      // },
+      visible: (values) => {
+        return values.enablePlaybackControls;
+      },
     },
     {
       prop: "autoplay",
@@ -89,9 +89,9 @@ const videoComponentDefinition: NoCodeComponentDefinition = {
       required: true,
       accepts: ["button"],
       group: "Sound control",
-      // visible: (values) => {
-      //   return values.enableSoundControls;
-      // },
+      visible: (values) => {
+        return values.enableSoundControls;
+      },
     },
     {
       prop: "UnmuteButton",
@@ -100,9 +100,9 @@ const videoComponentDefinition: NoCodeComponentDefinition = {
       required: true,
       accepts: ["button"],
       group: "Sound control",
-      // visible: (values) => {
-      //   return values.enableSoundControls;
-      // },
+      visible: (values) => {
+        return values.enableSoundControls;
+      },
     },
 
     {

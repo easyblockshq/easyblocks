@@ -1,9 +1,10 @@
+import { NoCodeComponentProps } from "@easyblocks/core";
 import { useForceRerender } from "@easyblocks/utils";
 import { ReactElement, useEffect } from "react";
-import { VideoRenderer } from "./VideoRenderer";
 import { VideoSrc } from "../../externalData/types";
+import { VideoRenderer } from "./VideoRenderer";
 
-export type VideoProps = {
+export type VideoProps = NoCodeComponentProps & {
   image: VideoSrc | undefined;
   enablePlaybackControls: boolean;
   enableSoundControls: boolean;
@@ -12,7 +13,6 @@ export type VideoProps = {
   AspectRatioMaker: ReactElement;
   NaturalAspectRatioMaker: ReactElement;
   ImageWrapper: ReactElement;
-  isEditing: boolean;
   ControlsContainer: ReactElement;
   PlayButton: ReactElement;
   PauseButton: ReactElement;

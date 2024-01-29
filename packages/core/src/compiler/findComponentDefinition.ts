@@ -1,3 +1,4 @@
+import { toArray } from "@easyblocks/utils";
 import { NoCodeComponentEntry } from "../types";
 import {
   InternalComponentDefinition,
@@ -28,6 +29,15 @@ export function findComponentDefinitionById(
   context: AnyContextWithDefinitions
 ): InternalComponentDefinition | undefined {
   return $findComponentDefinitionById(id, context);
+}
+
+export function findComponentDefinitionsByType(
+  tag: string,
+  context: AnyContextWithDefinitions
+): InternalComponentDefinition[] {
+  return allDefs(context).filter((def) =>
+    toArray(def.type ?? []).includes(tag)
+  );
 }
 
 /**

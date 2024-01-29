@@ -11,7 +11,7 @@ function VideoRenderer(props: VideoRendererProps) {
     video,
     enablePlaybackControls,
     enableSoundControls,
-    isEditing,
+    __easyblocks: { isEditing },
     ControlsContainer,
     PlayButton,
     PauseButton,

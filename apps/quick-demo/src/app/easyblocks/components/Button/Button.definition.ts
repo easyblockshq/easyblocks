@@ -274,15 +274,22 @@ export const buttonComponentDefinition: NoCodeComponentDefinition = {
       group: "Border and shadow",
     },
   ],
-  editing: ({ editingInfo, values }) => {
-    const fields = editingInfo.fields;
+  editing: ({ editingInfo, values, params }) => {
     const minHeightField = assertDefined(
-      fields.find((field) => field.path === "minHeight"),
+      editingInfo.fields.find((field) => field.path === "minHeight"),
       "minHeight field not found in StandardButton component fields"
     );
 
     if (values.variant === "icon") {
       minHeightField.label = "Size";
+    }
+
+    if (params.noAction) {
+      const actionField = assertDefined(
+        editingInfo.fields.find((field) => field.path === "Action"),
+        "Action field not found in StandardButton component fields"
+      );
+      actionField.visible = false;
     }
 
     return editingInfo;

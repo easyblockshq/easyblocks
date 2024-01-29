@@ -45,7 +45,10 @@ import { CompilationCache } from "./CompilationCache";
 import { buildRichTextNoCodeEntry } from "./builtins/$richText/builders";
 import { compileComponent } from "./compileComponent";
 import { getDevicesWidths } from "./devices";
-import { findComponentDefinitionById } from "./findComponentDefinition";
+import {
+  findComponentDefinitionById,
+  findComponentDefinitionsByType,
+} from "./findComponentDefinition";
 import { isContextEditorContext } from "./isContextEditorContext";
 import { Component$$$SchemaProp } from "./schema";
 import {
@@ -375,11 +378,30 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
     const normalize = (x: any) => {
       if (!Array.isArray(x) || x.length === 0) {
         if (schemaProp.required) {
-          return [
-            normalizeComponent(
-              { _component: schemaProp.accepts[0] },
+          const accepts = schemaProp.accepts[0];
+          const componentDefinition = findComponentDefinitionById(
+            accepts,
+            compilationContext
+          );
+
+          if (!componentDefinition) {
+            const componentDefinitionsByType = findComponentDefinitionsByType(
+              accepts,
               compilationContext
-            ),
+            );
+
+            if (componentDefinitionsByType.length > 0) {
+              return [
+                normalizeComponent(
+                  { _component: componentDefinitionsByType[0].id },
+                  compilationContext
+                ),
+              ];
+            }
+          }
+
+          return [
+            normalizeComponent({ _component: accepts }, compilationContext),
           ];
         }
 
