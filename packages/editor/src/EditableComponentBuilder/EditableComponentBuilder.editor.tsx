@@ -1,22 +1,11 @@
 import {
-  ComponentCollectionLocalisedSchemaProp,
-  ComponentCollectionSchemaProp,
-  ComponentSchemaProp,
-} from "@easyblocks/core";
-import {
   ComponentBuilder,
   ComponentBuilderProps,
-  ContextProps,
 } from "@easyblocks/core/_internals";
 import React from "react";
 import { BlocksControls } from "./BlockControls";
 
 type EditableComponentBuilderProps = ComponentBuilderProps & {
-  schemaProp:
-    | ComponentSchemaProp
-    | ComponentCollectionSchemaProp
-    | ComponentCollectionLocalisedSchemaProp;
-  contextProps: ContextProps;
   index: number;
   length: number;
 };

@@ -1,10 +1,8 @@
 import React, { ComponentType, Fragment, ReactElement } from "react";
 import { findComponentDefinitionById } from "../../compiler/findComponentDefinition";
 import {
-  isSchemaPropActionTextModifier,
   isSchemaPropComponent,
   isSchemaPropComponentOrComponentCollection,
-  isSchemaPropTextModifier,
 } from "../../compiler/schema";
 import {
   ContextProps,
@@ -228,10 +226,8 @@ function getCompiledSubcomponents(
     "_component" in compiledChild ? (
       <EditableComponentBuilder
         compiled={compiledChild}
-        schemaProp={schemaProp}
         index={index}
         length={compiledArray.length}
-        contextProps={contextProps}
         path={`${path}.${index}`}
         components={components}
       />
@@ -322,8 +318,6 @@ export type InternalNoCodeComponentProps = NoCodeComponentProps & {
     runtime: any;
   };
 };
-
-type ComponentBuilderComponent = React.FC<ComponentBuilderProps>;
 
 function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
   const { compiled, passedProps, path, components, ...restProps } = props;
@@ -416,12 +410,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
 
   // Styled
   componentDefinition.schema.forEach((schemaProp) => {
-    if (
-      isSchemaPropComponentOrComponentCollection(schemaProp) &&
-      // !isSchemaPropAction(schemaProp) &&
-      !isSchemaPropActionTextModifier(schemaProp) &&
-      !isSchemaPropTextModifier(schemaProp)
-    ) {
+    if (isSchemaPropComponentOrComponentCollection(schemaProp)) {
       const contextProps =
         shopstoryCompiledConfig.__editing?.components?.[schemaProp.prop] || {};
 
