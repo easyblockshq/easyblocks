@@ -19,8 +19,8 @@
             "bottomMargin": {
               "$res": true,
               "xl": {
-                "tokenId": "64",
                 "value": "64px",
+                "tokenId": "64",
                 "widgetId": "@easyblocks/space"
               }
             }
@@ -260,22 +260,18 @@
               "elements": {
                 "en-US": [
                   {
+                    "_id": "e7748705-f893-4891-8f70-026e9a2fb024",
                     "_component": "@easyblocks/rich-text-block-element",
+                    "type": "paragraph",
                     "elements": [
                       {
+                        "_id": "3e261432-fed5-4c38-bb71-2a53467ad45b",
                         "_component": "@easyblocks/rich-text-line-element",
                         "elements": [
                           {
                             "_id": "edfb44af-2dda-44ab-b8e1-54eb4f9be7d8",
                             "_component": "@easyblocks/rich-text-part",
-                            "color": {
-                              "$res": true,
-                              "xl": {
-                                "value": "#252525",
-                                "tokenId": "grey_05",
-                                "widgetId": "@easyblocks/color"
-                              }
-                            },
+                            "value": "Get comfy",
                             "font": {
                               "$res": true,
                               "xl": {
@@ -297,15 +293,19 @@
                                 "tokenId": "heading1"
                               }
                             },
-                            "value": "Get comfy",
+                            "color": {
+                              "$res": true,
+                              "xl": {
+                                "value": "#252525",
+                                "tokenId": "grey_05",
+                                "widgetId": "@easyblocks/color"
+                              }
+                            },
                             "TextWrapper": []
                           }
-                        ],
-                        "_id": "3e261432-fed5-4c38-bb71-2a53467ad45b"
+                        ]
                       }
-                    ],
-                    "type": "paragraph",
-                    "_id": "e7748705-f893-4891-8f70-026e9a2fb024"
+                    ]
                   }
                 ]
               },
@@ -363,21 +363,18 @@
               "elements": {
                 "en-US": [
                   {
+                    "_id": "eddf060e-3092-462b-b1e3-100448d04dce",
                     "_component": "@easyblocks/rich-text-block-element",
+                    "type": "paragraph",
                     "elements": [
                       {
+                        "_id": "e7ab7e45-94b7-45ac-b90e-03be072c18a6",
                         "_component": "@easyblocks/rich-text-line-element",
                         "elements": [
                           {
                             "_id": "582446ed-838b-4647-a9d1-beafc892afbf",
                             "_component": "@easyblocks/rich-text-part",
-                            "color": {
-                              "$res": true,
-                              "xl": {
-                                "value": "#252525",
-                                "ref": "grey_05"
-                              }
-                            },
+                            "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do this is cool and gets even cooler incididunt ut labore.",
                             "font": {
                               "$res": true,
                               "xl": {
@@ -388,19 +385,21 @@
                                     "lineHeight": 1.8,
                                     "fontFamily": "test-soehne-mono"
                                   }
-                                },
-                                "ref": "body2"
+                                }
                               }
                             },
-                            "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do this is cool and gets even cooler incididunt ut labore.",
+                            "color": {
+                              "$res": true,
+                              "xl": {
+                                "value": "#252525",
+                                "widgetId": "@easyblocks/color"
+                              }
+                            },
                             "TextWrapper": []
                           }
-                        ],
-                        "_id": "e7ab7e45-94b7-45ac-b90e-03be072c18a6"
+                        ]
                       }
-                    ],
-                    "type": "paragraph",
-                    "_id": "eddf060e-3092-462b-b1e3-100448d04dce"
+                    ]
                   }
                 ]
               },
@@ -766,8 +765,8 @@
             "bottomMargin": {
               "$res": true,
               "xl": {
-                "tokenId": "128",
                 "value": "128px",
+                "tokenId": "128",
                 "widgetId": "@easyblocks/space"
               }
             }
@@ -1312,12 +1311,12 @@
                             "font": {
                               "$res": true,
                               "xl": {
-                                "tokenId": "body",
                                 "value": {
                                   "fontSize": 20,
                                   "lineHeight": 1.8,
                                   "fontFamily": "test-soehne-mono"
-                                }
+                                },
+                                "tokenId": "body"
                               }
                             },
                             "color": {
@@ -1437,7 +1436,7 @@
           },
           "coverPosition": {
             "$res": true,
-            "xl": "hide"
+            "xl": "bottom"
           },
           "coverVerticalAlign": "stretch",
           "coverWidth": {
@@ -1454,7 +1453,7 @@
                   "_id": "882b5917-38a9-4330-b76c-99580662f439",
                   "_component": "Image",
                   "image": {
-                    "id": null,
+                    "id": "b3h4SyrjadkmOzn1chdMo",
                     "widgetId": "mockImage"
                   },
                   "aspectRatio": {
@@ -1570,8 +1569,8 @@
           "paddingInternal": {
             "$res": true,
             "xl": {
-              "value": "16px",
-              "tokenId": "16",
+              "tokenId": "48",
+              "value": "48px",
               "widgetId": "@easyblocks/space"
             }
           },
@@ -1644,26 +1643,21 @@
                   "elements": {
                     "en-US": [
                       {
+                        "_id": "56902180-d465-47f6-b668-9533ee9c6481",
                         "_component": "@easyblocks/rich-text-block-element",
+                        "type": "paragraph",
                         "elements": [
                           {
+                            "_id": "2841c309-8002-4cd8-afc1-4f09375acf61",
                             "_component": "@easyblocks/rich-text-line-element",
                             "elements": [
                               {
                                 "_id": "6d3c8acf-3db6-4525-9c4d-d68c5b26f7ec",
                                 "_component": "@easyblocks/rich-text-part",
-                                "color": {
-                                  "$res": true,
-                                  "xl": {
-                                    "value": "#252525",
-                                    "tokenId": "grey_05",
-                                    "widgetId": "@easyblocks/color"
-                                  }
-                                },
+                                "value": "Kitchen essentials",
                                 "font": {
                                   "$res": true,
                                   "xl": {
-                                    "tokenId": "heading2",
                                     "value": {
                                       "$res": true,
                                       "sm": {
@@ -1678,18 +1672,23 @@
                                         "lineHeight": 1.2,
                                         "fontWeight": 700
                                       }
-                                    }
+                                    },
+                                    "tokenId": "heading2"
                                   }
                                 },
-                                "value": "Kitchen essentials",
+                                "color": {
+                                  "$res": true,
+                                  "xl": {
+                                    "value": "#252525",
+                                    "tokenId": "grey_05",
+                                    "widgetId": "@easyblocks/color"
+                                  }
+                                },
                                 "TextWrapper": []
                               }
-                            ],
-                            "_id": "2841c309-8002-4cd8-afc1-4f09375acf61"
+                            ]
                           }
-                        ],
-                        "type": "paragraph",
-                        "_id": "56902180-d465-47f6-b668-9533ee9c6481"
+                        ]
                       }
                     ]
                   },
@@ -1732,8 +1731,8 @@
                         "marginBottom": {
                           "$res": true,
                           "xl": {
-                            "tokenId": "24",
                             "value": "24px",
+                            "tokenId": "24",
                             "widgetId": "@easyblocks/space"
                           }
                         },
@@ -1958,43 +1957,6 @@
                       }
                     }
                   ]
-                },
-                {
-                  "_id": "29fa9dea-4532-4a42-b397-b1663839603f",
-                  "_component": "Image",
-                  "_itemProps": {
-                    "Stack": {
-                      "Items": {
-                        "width": {
-                          "$res": true,
-                          "xl": "384px"
-                        },
-                        "marginBottom": {
-                          "$res": true,
-                          "xl": {
-                            "value": "0px",
-                            "tokenId": "0",
-                            "widgetId": "@easyblocks/space"
-                          }
-                        },
-                        "align": {
-                          "$res": true,
-                          "xl": "left"
-                        }
-                      }
-                    }
-                  },
-                  "image": {
-                    "id": "b3h4SyrjadkmOzn1chdMo",
-                    "widgetId": "mockImage"
-                  },
-                  "aspectRatio": {
-                    "$res": true,
-                    "xl": {
-                      "value": "natural",
-                      "widgetId": "@easyblocks/aspectRatio"
-                    }
-                  }
                 }
               ]
             }
@@ -2197,7 +2159,7 @@
       ],
       "card1Width": {
         "$res": true,
-        "xl": "12"
+        "xl": "8"
       },
       "card1EscapeMargin": {
         "$res": true,
@@ -2300,8 +2262,8 @@
           "color": {
             "$res": true,
             "xl": {
-              "tokenId": "yellow",
               "value": "#FCF0C5",
+              "tokenId": "yellow",
               "widgetId": "@easyblocks/color"
             }
           }
@@ -2310,8 +2272,8 @@
       "padding": {
         "$res": true,
         "xl": {
-          "tokenId": "64",
           "value": "64px",
+          "tokenId": "64",
           "widgetId": "@easyblocks/space"
         }
       }
@@ -2333,8 +2295,8 @@
             "bottomMargin": {
               "$res": true,
               "xl": {
-                "tokenId": "96",
                 "value": "96px",
+                "tokenId": "96",
                 "widgetId": "@easyblocks/space"
               }
             }
@@ -2558,8 +2520,8 @@
                     "marginBottom": {
                       "$res": true,
                       "xl": {
-                        "tokenId": "32",
                         "value": "32px",
+                        "tokenId": "32",
                         "widgetId": "@easyblocks/space"
                       }
                     },
@@ -2573,26 +2535,21 @@
               "elements": {
                 "en-US": [
                   {
+                    "_id": "6b0efac3-5185-4283-912d-a47caa3c7b20",
                     "_component": "@easyblocks/rich-text-block-element",
+                    "type": "paragraph",
                     "elements": [
                       {
+                        "_id": "70f5968d-722b-4ae8-9173-04cc93e625aa",
                         "_component": "@easyblocks/rich-text-line-element",
                         "elements": [
                           {
                             "_id": "775676bb-783f-4c70-885b-801a3353e35b",
                             "_component": "@easyblocks/rich-text-part",
-                            "color": {
-                              "$res": true,
-                              "xl": {
-                                "value": "#f9f8f3",
-                                "tokenId": "grey_01",
-                                "widgetId": "@easyblocks/color"
-                              }
-                            },
+                            "value": "Living room",
                             "font": {
                               "$res": true,
                               "xl": {
-                                "tokenId": "heading2",
                                 "value": {
                                   "$res": true,
                                   "sm": {
@@ -2607,18 +2564,23 @@
                                     "lineHeight": 1.2,
                                     "fontWeight": 700
                                   }
-                                }
+                                },
+                                "tokenId": "heading2"
                               }
                             },
-                            "value": "Living room",
+                            "color": {
+                              "$res": true,
+                              "xl": {
+                                "value": "#f9f8f3",
+                                "tokenId": "grey_01",
+                                "widgetId": "@easyblocks/color"
+                              }
+                            },
                             "TextWrapper": []
                           }
-                        ],
-                        "_id": "70f5968d-722b-4ae8-9173-04cc93e625aa"
+                        ]
                       }
-                    ],
-                    "type": "paragraph",
-                    "_id": "6b0efac3-5185-4283-912d-a47caa3c7b20"
+                    ]
                   }
                 ]
               },
@@ -2966,8 +2928,8 @@
             "bottomMargin": {
               "$res": true,
               "xl": {
-                "tokenId": "96",
                 "value": "96px",
+                "tokenId": "96",
                 "widgetId": "@easyblocks/space"
               }
             }
@@ -4131,16 +4093,16 @@
       "headerSectionGap": {
         "$res": true,
         "xl": {
-          "tokenId": "48",
           "value": "48px",
+          "tokenId": "48",
           "widgetId": "@easyblocks/space"
         }
       },
       "footerSectionGap": {
         "$res": true,
         "xl": {
-          "tokenId": "48",
           "value": "48px",
+          "tokenId": "48",
           "widgetId": "@easyblocks/space"
         }
       },
@@ -4177,26 +4139,21 @@
               "elements": {
                 "en-US": [
                   {
+                    "_id": "539b9390-e08a-4b79-90b4-e9d7a9ec114e",
                     "_component": "@easyblocks/rich-text-block-element",
+                    "type": "paragraph",
                     "elements": [
                       {
+                        "_id": "5b12b85d-eaab-4dda-a17e-35717e4c082e",
                         "_component": "@easyblocks/rich-text-line-element",
                         "elements": [
                           {
                             "_id": "a452df79-daca-469c-b60f-5fb97702407d",
                             "_component": "@easyblocks/rich-text-part",
-                            "color": {
-                              "$res": true,
-                              "xl": {
-                                "value": "#252525",
-                                "tokenId": "grey_05",
-                                "widgetId": "@easyblocks/color"
-                              }
-                            },
+                            "value": "Side tables",
                             "font": {
                               "$res": true,
                               "xl": {
-                                "tokenId": "heading2",
                                 "value": {
                                   "$res": true,
                                   "sm": {
@@ -4211,18 +4168,23 @@
                                     "lineHeight": 1.2,
                                     "fontWeight": 700
                                   }
-                                }
+                                },
+                                "tokenId": "heading2"
                               }
                             },
-                            "value": "Side tables",
+                            "color": {
+                              "$res": true,
+                              "xl": {
+                                "value": "#252525",
+                                "tokenId": "grey_05",
+                                "widgetId": "@easyblocks/color"
+                              }
+                            },
                             "TextWrapper": []
                           }
-                        ],
-                        "_id": "5b12b85d-eaab-4dda-a17e-35717e4c082e"
+                        ]
                       }
-                    ],
-                    "type": "paragraph",
-                    "_id": "539b9390-e08a-4b79-90b4-e9d7a9ec114e"
+                    ]
                   }
                 ]
               },
@@ -4437,8 +4399,8 @@
             "bottomMargin": {
               "$res": true,
               "xl": {
-                "tokenId": "96",
                 "value": "96px",
+                "tokenId": "96",
                 "widgetId": "@easyblocks/space"
               }
             }
@@ -5072,8 +5034,8 @@
       "headerSectionGap": {
         "$res": true,
         "xl": {
-          "tokenId": "24",
           "value": "24px",
+          "tokenId": "24",
           "widgetId": "@easyblocks/space"
         }
       },
@@ -5118,22 +5080,18 @@
               "elements": {
                 "en-US": [
                   {
+                    "_id": "3e198951-427d-4658-a224-a034cbbf1fad",
                     "_component": "@easyblocks/rich-text-block-element",
+                    "type": "paragraph",
                     "elements": [
                       {
+                        "_id": "1a5945b4-4039-444a-8428-41d8383a7d3d",
                         "_component": "@easyblocks/rich-text-line-element",
                         "elements": [
                           {
                             "_id": "82291110-acbd-42f5-8d2d-e99c7ee42082",
                             "_component": "@easyblocks/rich-text-part",
-                            "color": {
-                              "$res": true,
-                              "xl": {
-                                "value": "#252525",
-                                "tokenId": "grey_05",
-                                "widgetId": "@easyblocks/color"
-                              }
-                            },
+                            "value": "Accessories",
                             "font": {
                               "$res": true,
                               "xl": {
@@ -5145,15 +5103,19 @@
                                 "tokenId": "body"
                               }
                             },
-                            "value": "Accessories",
+                            "color": {
+                              "$res": true,
+                              "xl": {
+                                "value": "#252525",
+                                "tokenId": "grey_05",
+                                "widgetId": "@easyblocks/color"
+                              }
+                            },
                             "TextWrapper": []
                           }
-                        ],
-                        "_id": "1a5945b4-4039-444a-8428-41d8383a7d3d"
+                        ]
                       }
-                    ],
-                    "type": "paragraph",
-                    "_id": "3e198951-427d-4658-a224-a034cbbf1fad"
+                    ]
                   }
                 ]
               },
@@ -5343,16 +5305,16 @@
           "paddingTop": {
             "$res": true,
             "xl": {
-              "tokenId": "48",
               "value": "48px",
+              "tokenId": "48",
               "widgetId": "@easyblocks/space"
             }
           },
           "paddingBottom": {
             "$res": true,
             "xl": {
-              "tokenId": "48",
               "value": "48px",
+              "tokenId": "48",
               "widgetId": "@easyblocks/space"
             }
           },
@@ -5450,8 +5412,8 @@
                         "marginBottom": {
                           "$res": true,
                           "xl": {
-                            "tokenId": "24",
                             "value": "24px",
+                            "tokenId": "24",
                             "widgetId": "@easyblocks/space"
                           }
                         },
@@ -5553,8 +5515,8 @@
                         "marginBottom": {
                           "$res": true,
                           "xl": {
-                            "tokenId": "24",
                             "value": "24px",
+                            "tokenId": "24",
                             "widgetId": "@easyblocks/space"
                           }
                         },
@@ -5568,21 +5530,18 @@
                   "elements": {
                     "en-US": [
                       {
+                        "_id": "d86521cc-28a8-4a6b-815b-475a1445640f",
                         "_component": "@easyblocks/rich-text-block-element",
+                        "type": "paragraph",
                         "elements": [
                           {
+                            "_id": "7c43bc46-b89c-4929-a5da-c24cf44b1cb9",
                             "_component": "@easyblocks/rich-text-line-element",
                             "elements": [
                               {
                                 "_id": "100c692e-2509-4ea6-9b54-05a9d7b1c286",
                                 "_component": "@easyblocks/rich-text-part",
-                                "color": {
-                                  "$res": true,
-                                  "xl": {
-                                    "value": "#f9f8f3",
-                                    "ref": "grey_01"
-                                  }
-                                },
+                                "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
                                 "font": {
                                   "$res": true,
                                   "xl": {
@@ -5593,19 +5552,21 @@
                                         "lineHeight": 1.8,
                                         "fontFamily": "test-soehne-mono"
                                       }
-                                    },
-                                    "ref": "body2"
+                                    }
                                   }
                                 },
-                                "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
+                                "color": {
+                                  "$res": true,
+                                  "xl": {
+                                    "value": "#f9f8f3",
+                                    "widgetId": "@easyblocks/color"
+                                  }
+                                },
                                 "TextWrapper": []
                               }
-                            ],
-                            "_id": "7c43bc46-b89c-4929-a5da-c24cf44b1cb9"
+                            ]
                           }
-                        ],
-                        "type": "paragraph",
-                        "_id": "d86521cc-28a8-4a6b-815b-475a1445640f"
+                        ]
                       }
                     ]
                   },
@@ -5884,16 +5845,16 @@
           "paddingTop": {
             "$res": true,
             "xl": {
-              "tokenId": "48",
               "value": "48px",
+              "tokenId": "48",
               "widgetId": "@easyblocks/space"
             }
           },
           "paddingBottom": {
             "$res": true,
             "xl": {
-              "tokenId": "48",
               "value": "48px",
+              "tokenId": "48",
               "widgetId": "@easyblocks/space"
             }
           },
@@ -5991,8 +5952,8 @@
                         "marginBottom": {
                           "$res": true,
                           "xl": {
-                            "tokenId": "24",
                             "value": "24px",
+                            "tokenId": "24",
                             "widgetId": "@easyblocks/space"
                           }
                         },
@@ -6006,22 +5967,18 @@
                   "elements": {
                     "en-US": [
                       {
+                        "_id": "8daa2b66-3436-4d6f-a885-247cac5c3cc0",
                         "_component": "@easyblocks/rich-text-block-element",
+                        "type": "paragraph",
                         "elements": [
                           {
+                            "_id": "641e4000-709b-4192-a0fb-adf321396a4b",
                             "_component": "@easyblocks/rich-text-line-element",
                             "elements": [
                               {
                                 "_id": "be1ca0b1-14da-4513-82b0-6c9e55f448fa",
                                 "_component": "@easyblocks/rich-text-part",
-                                "color": {
-                                  "$res": true,
-                                  "xl": {
-                                    "value": "#f9f8f3",
-                                    "tokenId": "grey_01",
-                                    "widgetId": "@easyblocks/color"
-                                  }
-                                },
+                                "value": "Office",
                                 "font": {
                                   "$res": true,
                                   "xl": {
@@ -6043,15 +6000,19 @@
                                     "tokenId": "heading2"
                                   }
                                 },
-                                "value": "Office",
+                                "color": {
+                                  "$res": true,
+                                  "xl": {
+                                    "value": "#f9f8f3",
+                                    "tokenId": "grey_01",
+                                    "widgetId": "@easyblocks/color"
+                                  }
+                                },
                                 "TextWrapper": []
                               }
-                            ],
-                            "_id": "641e4000-709b-4192-a0fb-adf321396a4b"
+                            ]
                           }
-                        ],
-                        "type": "paragraph",
-                        "_id": "8daa2b66-3436-4d6f-a885-247cac5c3cc0"
+                        ]
                       }
                     ]
                   },
@@ -6094,8 +6055,8 @@
                         "marginBottom": {
                           "$res": true,
                           "xl": {
-                            "tokenId": "24",
                             "value": "24px",
+                            "tokenId": "24",
                             "widgetId": "@easyblocks/space"
                           }
                         },
@@ -6109,21 +6070,18 @@
                   "elements": {
                     "en-US": [
                       {
+                        "_id": "ab40384f-1f87-4f7d-b174-eeebf62d5cd1",
                         "_component": "@easyblocks/rich-text-block-element",
+                        "type": "paragraph",
                         "elements": [
                           {
+                            "_id": "afe7778d-84fd-4f9a-bb44-9e1fb7c4b16b",
                             "_component": "@easyblocks/rich-text-line-element",
                             "elements": [
                               {
                                 "_id": "89c9ae16-0871-40a4-8b8f-d3f9d2e1869c",
                                 "_component": "@easyblocks/rich-text-part",
-                                "color": {
-                                  "$res": true,
-                                  "xl": {
-                                    "value": "#f9f8f3",
-                                    "ref": "grey_01"
-                                  }
-                                },
+                                "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
                                 "font": {
                                   "$res": true,
                                   "xl": {
@@ -6134,19 +6092,21 @@
                                         "lineHeight": 1.8,
                                         "fontFamily": "test-soehne-mono"
                                       }
-                                    },
-                                    "ref": "body2"
+                                    }
                                   }
                                 },
-                                "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
+                                "color": {
+                                  "$res": true,
+                                  "xl": {
+                                    "value": "#f9f8f3",
+                                    "widgetId": "@easyblocks/color"
+                                  }
+                                },
                                 "TextWrapper": []
                               }
-                            ],
-                            "_id": "afe7778d-84fd-4f9a-bb44-9e1fb7c4b16b"
+                            ]
                           }
-                        ],
-                        "type": "paragraph",
-                        "_id": "ab40384f-1f87-4f7d-b174-eeebf62d5cd1"
+                        ]
                       }
                     ]
                   },

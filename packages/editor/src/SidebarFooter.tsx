@@ -91,7 +91,7 @@ export function SidebarFooter(props: { paths: string[] }) {
                   );
                 }}
               >
-                Copy data
+                Copy entry
               </ButtonPrimary>
             </div>
             {value._master && (
