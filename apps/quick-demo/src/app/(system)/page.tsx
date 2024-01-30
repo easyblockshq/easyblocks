@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { DocumentWidgetInline, Document } from "@/app/DocumenWidgetInline";
+import { useSearchParams } from "next/navigation";
 
 const DOCUMENT_KEY = "easyblocksQuickDemoDocumentId";
 
@@ -11,6 +12,8 @@ export default function MainPage() {
   );
   const [isOpen, setOpen] = useState<boolean>(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  const locale = useSearchParams().get("locale");
 
   useEffect(() => {
     const documentRaw = localStorage.getItem(DOCUMENT_KEY);
@@ -157,7 +160,10 @@ export default function MainPage() {
                 {document && (
                   <p className={"text-sm text-black-2 max-w-lg"}>
                     <a
-                      href={`${window.location.origin}/page/${document.id}`}
+                      href={
+                        `${window.location.origin}/page/${document.id}` +
+                        (locale ? `?locale=${locale}` : ``)
+                      }
                       target={"_blank"}
                       className={linkClasses}
                     >

@@ -3,18 +3,24 @@ import { createMyCustomFetch } from "@/app/easyblocks/myCustomFetch";
 import { components } from "@/app/easyblocks/components";
 import { buildDocument } from "@easyblocks/core";
 import { EasyblocksContent } from "./EasyblocksContent";
+import { useSearchParams } from "next/navigation";
 
 const fetch = createMyCustomFetch();
 
 export default async function Page({
   params,
+  searchParams,
 }: {
   params: { documentId: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
+  const locale =
+    typeof searchParams?.locale === "string" ? searchParams.locale : "en-US";
+
   const { renderableDocument, externalData } = await buildDocument({
     documentId: params.documentId,
     config: easyblocksConfig,
-    locale: "en-US",
+    locale,
   });
 
   const fetchedExternalData = await fetch(externalData);

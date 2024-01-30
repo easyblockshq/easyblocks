@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export type Document = { id: string; updatedAt: number };
@@ -15,6 +15,9 @@ export const DocumentWidgetInline: React.FC<{
 
   const [editorIframeNode, setEditorIframeNode] =
     useState<HTMLIFrameElement | null>(null);
+
+  const searchParams = useSearchParams();
+  const locale = searchParams.get("locale");
 
   useEffect(() => {
     function handleMessage(event: MessageEvent) {
@@ -46,6 +49,10 @@ export const DocumentWidgetInline: React.FC<{
 
     if (document) {
       canvasUrl += `&document=${document.id}`;
+    }
+
+    if (locale) {
+      canvasUrl += `&locale=${locale}`;
     }
 
     return canvasUrl;

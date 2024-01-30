@@ -238,12 +238,8 @@ const textProvider: SchemaPropDefinitionProviders["text"] = (
       if ("value" in x) {
         const value = x.value[compilationContext.contextParams.locale];
 
-        // Let's apply fallback when we're editing
-        if (
-          isContextEditorContext(compilationContext) &&
-          compilationContext.locales &&
-          typeof value !== "string"
-        ) {
+        // Let's apply fallback
+        if (typeof value !== "string") {
           const fallbackValue =
             getFallbackForLocale(
               x.value,
@@ -256,16 +252,6 @@ const textProvider: SchemaPropDefinitionProviders["text"] = (
             value: fallbackValue,
             widgetId: "@easyblocks/local-text",
           };
-        }
-
-        if (value === undefined) {
-          const availableLocales = Object.keys(x.value)
-            .map((locale) => `"${locale}"`)
-            .join(",");
-
-          throw new Error(
-            `The content passed to ShopstoryClient is not available in a locale: "${compilationContext.contextParams.locale}" (available locales: ${availableLocales}). Please make sure to provide a valid locale code.`
-          );
         }
 
         return {
