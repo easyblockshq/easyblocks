@@ -89,7 +89,7 @@ export class EasyblocksBackend implements Backend {
     this.accessToken = args.accessToken;
   }
 
-  async init() {
+  private async init() {
     // don't reinitialize
     if (this.project) {
       return;
@@ -167,6 +167,8 @@ export class EasyblocksBackend implements Backend {
 
   documents = {
     get: async (payload: { id: string }): Promise<Document> => {
+      await this.init();
+
       const response = await this.get(
         `/projects/${this.project!.id}/documents/${payload.id}`,
         {
@@ -188,6 +190,8 @@ export class EasyblocksBackend implements Backend {
     create: async (
       payload: Omit<Document, "id" | "version">
     ): Promise<Document> => {
+      await this.init();
+
       const response = await this.post(
         `/projects/${this.project!.id}/documents`,
         {
@@ -215,6 +219,8 @@ export class EasyblocksBackend implements Backend {
     },
 
     update: async (payload: Document): Promise<Document> => {
+      await this.init();
+
       const response = await this.put(
         `/projects/${this.project!.id}/documents/${payload.id}`,
         {
@@ -243,6 +249,8 @@ export class EasyblocksBackend implements Backend {
 
   templates = {
     get: async (payload: { id: string }): Promise<UserDefinedTemplate> => {
+      await this.init();
+
       // dummy inefficient implementation
       const allTemplates = await this.templates.getAll();
       const template = allTemplates.find(
@@ -256,6 +264,8 @@ export class EasyblocksBackend implements Backend {
       return template;
     },
     getAll: async (): Promise<UserDefinedTemplate[]> => {
+      await this.init();
+
       try {
         const response = await this.get(
           `/projects/${this.project!.id}/templates`
@@ -283,6 +293,8 @@ export class EasyblocksBackend implements Backend {
       width?: number;
       widthAuto?: boolean;
     }): Promise<UserDefinedTemplate> => {
+      await this.init();
+
       const payload = {
         label: input.label,
         config: input.entry,
@@ -316,6 +328,8 @@ export class EasyblocksBackend implements Backend {
       id: string;
       label: string;
     }): Promise<Omit<UserDefinedTemplate, "entry">> => {
+      await this.init();
+
       const payload = {
         label: input.label,
         masterTemplateIds: [],
@@ -344,6 +358,8 @@ export class EasyblocksBackend implements Backend {
       };
     },
     delete: async (input: { id: string }) => {
+      await this.init();
+
       const response = await this.request(
         `/projects/${this.project!.id}/templates/${input.id}`,
         {

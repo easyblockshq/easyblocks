@@ -62,7 +62,6 @@ export const PreviewRenderer: React.FC<EasyblocksEditorProps> = (props) => {
           externalData,
         });
       } else {
-        await config.backend.init?.();
         const template = await config.backend.templates.get({
           id: templateId!,
         });
