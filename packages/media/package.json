@@ -1,6 +1,6 @@
 {
   "name": "@easyblocks/media",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
   "types": "dist/index.d.ts",
@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.21.0",
-    "@easyblocks/core": "^0.5.0",
+    "@easyblocks/core": "^0.6.0",
     "@easyblocks/design-system": "workspace:*",
     "@easyblocks/editor": "workspace:*",
     "styled-components": "^5.3.3"
@@ -39,7 +39,7 @@
     "react-dom": "^16.8.0 || ^17.0.0-rc.1 || ^18.0.0"
   },
   "devDependencies": {
-    "@easyblocks/build-tools": "^0.1.0",
+    "@easyblocks/build-tools": "^0.6.0",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@types/styled-components": "^5.1.26"
