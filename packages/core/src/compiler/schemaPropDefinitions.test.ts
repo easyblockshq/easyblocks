@@ -920,7 +920,7 @@ describe.skip("text", () => {
         },
       })
     ).toThrowError(
-      `The content passed to ShopstoryClient is not available in a locale: "en" (available locales: "de","pl"). Please make sure to provide a valid locale code.`
+      `The content passed to the buildDocument is not available in a locale: "en" (available locales: "de","pl"). Please make sure to provide a valid locale code.`
     );
   });
 });
