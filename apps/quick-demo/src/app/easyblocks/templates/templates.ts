@@ -31,6 +31,7 @@ import Grid_empty from "./basic/Grid_empty.json";
 import Slider_empty from "./basic/Slider_empty.json";
 import TwoCards_empty from "./basic/TwoCards_empty.json";
 import Video from "./basic/video.json";
+import StarterTemplate from "./starterTemplate.json";
 
 export const templates: Template[] = [
   {
@@ -133,5 +134,9 @@ export const templates: Template[] = [
     thumbnail:
       "https://images.ctfassets.net/blh4anz05qu1/5qsvp8xUQZjayKaj5XNmil/84f6f90a3c5779390e9eaabce5a3e1d3/Screenshot_2023-10-06_at_14.03.11.png",
     entry: Button_icon_standard,
+  },
+  {
+    id: "StarterTemplate",
+    entry: StarterTemplate,
   },
 ];

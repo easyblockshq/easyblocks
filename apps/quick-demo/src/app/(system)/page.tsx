@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { DocumentWidgetInline, Document } from "@/app/DocumenWidgetInline";
 import { useSearchParams } from "next/navigation";
 
-const DOCUMENT_KEY = "easyblocksQuickDemoDocumentId";
+const DOCUMENT_KEY = "easyblocksQuickDemoDocumentId_v2";
 
 export default function MainPage() {
   const [document, setDocument] = useState<null | undefined | Document>(

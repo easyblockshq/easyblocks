@@ -249,7 +249,7 @@ const EditorWrapper = memo(
       } else {
         if (props.rootComponentId === null) {
           throw new Error(
-            "When you create a new document you must pass a 'rootContainer' parameter to the editor"
+            "When you create a new document you must pass a 'rootContainer' or 'rootTemplate' parameter to the editor"
           );
         }
 

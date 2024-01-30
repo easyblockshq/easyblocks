@@ -45,7 +45,7 @@ export const DocumentWidgetInline: React.FC<{
 
   // canvas URL must be calculated once
   const [canvasUrl] = useState(() => {
-    let canvasUrl = `${window.location.origin}/easyblocks-editor?rootComponent=StandardPage&readOnly=false`;
+    let canvasUrl = `${window.location.origin}/easyblocks-editor?rootTemplate=StarterTemplate&readOnly=false`;
 
     if (document) {
       canvasUrl += `&document=${document.id}`;
