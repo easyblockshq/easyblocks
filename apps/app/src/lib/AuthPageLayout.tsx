@@ -11,12 +11,12 @@ function AuthPageLayout({
 }) {
   return (
     <div
-      css={`
-        position: fixed;
-        inset: 0;
-        display: grid;
-        place-items: center;
-      `}
+      style={{
+        position: "fixed",
+        inset: 0,
+        display: "grid",
+        placeItems: "center",
+      }}
     >
       <div className="w-96 flex flex-col gap-5">
         <div className="self-center">
