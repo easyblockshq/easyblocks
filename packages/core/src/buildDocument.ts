@@ -54,11 +54,8 @@ async function resolveEntryForDocument({
   config: Config;
   locale: string;
 }): Promise<Document> {
-  const backend = config.backend;
-  await backend.init?.();
-
   try {
-    const documentResponse = await backend.documents.get({
+    const documentResponse = await config.backend.documents.get({
       id: documentId,
       locale,
     });
