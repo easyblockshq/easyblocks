@@ -50,13 +50,12 @@ const rootSectionStackDefinitionBase: NoCodeComponentDefinition = {
           type: "space",
           group: "Section margins",
           defaultValue: {
-            tokenId: "0",
+            tokenId: "32",
           },
           params: {
             autoConstant: 24,
           },
         },
-
         {
           prop: "bottomMargin",
           label: "Bottom",
