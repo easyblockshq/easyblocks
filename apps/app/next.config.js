@@ -1,10 +1,7 @@
 const path = require("node:path");
-const transpileModules = require("next-transpile-modules");
-
-const withTM = transpileModules(["@easyblocks/app-utils", "@easyblocks/utils"]);
 
 /** @type {import('next').NextConfig} */
-const nextConfig = withTM({
+const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   compiler: {
@@ -31,9 +28,10 @@ const nextConfig = withTM({
       },
     ];
   },
+  transpilePackages: ["@easyblocks/utils"],
   typescript: {
     ignoreBuildErrors: true,
   },
-});
+};
 
 module.exports = nextConfig;

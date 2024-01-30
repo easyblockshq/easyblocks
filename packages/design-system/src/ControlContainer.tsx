@@ -1,11 +1,11 @@
 import React, { ReactNode } from "react";
 import styled, { css } from "styled-components";
-import { SSColors } from "./colors";
-import { SSFonts } from "./fonts";
-import { SSIcon } from "./icons";
+import { Colors } from "./colors";
+import { Fonts } from "./fonts";
+import { Icon } from "./icons";
 
 export type ControlProps = {
-  icon?: SSIcon;
+  icon?: Icon;
   iconBlack?: boolean;
   controlSize?: any;
   iconOnly?: boolean;
@@ -46,7 +46,7 @@ const Root = styled.div<ControlProps>`
 
   ${(p) => {
     const outlineStyles = `
-      box-shadow: 0 0 0 1px ${p.hasError ? "red" : SSColors.black10};
+      box-shadow: 0 0 0 1px ${p.hasError ? "red" : Colors.black10};
       .ss-arrow {
         color: black;
       }
@@ -56,7 +56,7 @@ const Root = styled.div<ControlProps>`
       if (p.disabled) {
         return `
           ${outlineStyles}
-          color: ${SSColors.black40};
+          color: ${Colors.black40};
         `;
       } else {
         return `
@@ -66,7 +66,7 @@ const Root = styled.div<ControlProps>`
     } else {
       if (p.disabled) {
         return `
-          color: ${SSColors.black40};
+          color: ${Colors.black40};
         `;
       } else {
         return `
@@ -79,7 +79,7 @@ const Root = styled.div<ControlProps>`
   }}
 
   &:focus-within {
-    box-shadow: 0 0 0 2px ${(p) => (p.hasError ? SSColors.red : SSColors.focus)};
+    box-shadow: 0 0 0 2px ${(p) => (p.hasError ? Colors.red : Colors.focus)};
     .ss-arrow {
       color: black;
     }
@@ -89,11 +89,11 @@ const Root = styled.div<ControlProps>`
   border-radius: 2px;
   display: inline-block;
 
-  ${SSFonts.body};
+  ${Fonts.body};
 `;
 
 const IconContainer = styled.div<ControlProps>`
-  color: ${(p) => (p.iconBlack ? "black" : SSColors.black40)};
+  color: ${(p) => (p.iconBlack ? "black" : Colors.black40)};
   position: absolute;
   left: ${(p) => sizing(p).paddingHorizontal};
   top: ${(p) => sizing(p).paddingVertical};

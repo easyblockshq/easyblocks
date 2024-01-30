@@ -31,7 +31,6 @@
     "@dnd-kit/sortable": "^7.0.2",
     "@easyblocks/core": "workspace:*",
     "@easyblocks/design-system": "workspace:*",
-    "@easyblocks/editable-components": "workspace:*",
     "@emotion/is-prop-valid": "^1.2.1",
     "@popperjs/core": "^2.11.5",
     "@radix-ui/react-radio-group": "^1.1.3",
@@ -46,9 +45,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@easyblocks/app-utils": "workspace:*",
     "@easyblocks/build-tools": "workspace:*",
-    "@easyblocks/test-utils": "workspace:*",
     "@easyblocks/utils": "workspace:*",
     "@jest/types": "^26.6.2",
     "@testing-library/jest-dom": "^5.16.5",

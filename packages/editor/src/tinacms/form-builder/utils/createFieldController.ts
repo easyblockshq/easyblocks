@@ -1,4 +1,5 @@
 import {
+  getDevicesWidths,
   getFallbackLocaleForLocale,
   isTrulyResponsiveValue,
   responsiveValueGetDefinedValue,
@@ -10,7 +11,6 @@ import {
   duplicateConfig,
   findComponentDefinitionById,
   findPathOfFirstAncestorOfType,
-  getDevicesWidths,
   getSchemaDefinition,
   parsePath,
   richTextChangedEvent,
@@ -74,15 +74,10 @@ function createFieldController({
 
         invalidateCache(normalizedFieldName[0], editorContext);
 
-        if (
-          templateId === "@easyblocks/rich-text-part" ||
-          templateId === "@easyblocks/rich-text-inline-wrapper-element"
-        ) {
-          let schemaPropNameToUpdate = last(normalizedFieldName[0].split("."));
-
-          if (schemaPropNameToUpdate.startsWith("$")) {
-            schemaPropNameToUpdate = schemaPropNameToUpdate.slice(1);
-          }
+        if (templateId === "@easyblocks/rich-text-part") {
+          const schemaPropNameToUpdate = last(
+            normalizedFieldName[0].split(".")
+          );
 
           const canvasIframe = document.getElementById(
             "shopstory-canvas"
@@ -131,6 +126,28 @@ function createFieldController({
           const inputValue = Array.isArray(newValue)
             ? getValue(newValue[fieldIndex])
             : getValue(newValue);
+
+          const customTypeDefinition =
+            editorContext.types[field.schemaProp.type];
+
+          if (
+            customTypeDefinition &&
+            "validate" in customTypeDefinition &&
+            customTypeDefinition.validate &&
+            "value" in inputValue &&
+            (customTypeDefinition.type === "token"
+              ? !("tokenId" in inputValue)
+              : true)
+          ) {
+            const isInputValueValid = customTypeDefinition.validate(
+              inputValue.value
+            );
+
+            if (!isInputValueValid) {
+              return;
+            }
+          }
+
           let parsedValue = parse(inputValue, path, field);
 
           // If path has locale token [locale] (component-collection-localised) then we must first replace it with correct token
@@ -218,11 +235,6 @@ function createFieldController({
                 ? val[editorContext.breakpointIndex]
                 : val;
 
-              /**
-               * IMPORTANT!!! Using responsiveValueGetClosestDefinedValue here is a total simplification. It can lead to bugs in the future, good thing it's only used in TwoCards, which are used in full screen mode.
-               * This should be fixed.
-               * Same applies
-               */
               closestDefinedValues[schemaProp.prop] =
                 responsiveValueGetDefinedValue(
                   val,
@@ -232,21 +244,25 @@ function createFieldController({
                 );
             });
 
+            const inputValue = isTrulyResponsiveValue(parsedValue)
+              ? parsedValue[editorContext.breakpointIndex]
+              : parsedValue;
+
             const result = parentDefinition.change({
-              value: isTrulyResponsiveValue(parsedValue)
-                ? parsedValue[editorContext.breakpointIndex]
-                : parsedValue,
-              closestDefinedValue: responsiveValueGetDefinedValue(
-                /** IMPORTANT!!! See warning above */
-                parsedValue,
-                editorContext.breakpointIndex,
-                editorContext.devices,
-                getDevicesWidths(editorContext.devices)
-              ),
-              fieldName: propName,
+              newValue: inputValue,
+              prop: propName,
               values,
-              closestDefinedValues,
-            });
+
+              /**
+               * IMPORTANT!!!
+               *
+               * valuesAfterAuto are an approximation for now, they're not real auto values, they just have closest defined values.
+               *
+               */
+              valuesAfterAuto: closestDefinedValues,
+            }) ?? {
+              [propName]: inputValue,
+            };
 
             parentDefinition.schema.forEach((schemaProp) => {
               if (!result.hasOwnProperty(schemaProp.prop)) {
@@ -411,7 +427,7 @@ const richTextCacheInvalidator: CacheInvalidator = (
     traverseComponents(richTextConfig, context, ({ componentConfig }) => {
       if (
         componentConfig &&
-        componentConfig._template.startsWith("@easyblocks/rich-text")
+        componentConfig._component.startsWith("@easyblocks/rich-text")
       ) {
         cacheKeysToRemove.push(componentConfig._id!);
       }
@@ -421,29 +437,7 @@ const richTextCacheInvalidator: CacheInvalidator = (
   return cacheKeysToRemove;
 };
 
-// $SectionWrapper holds the hide prop, but the $RootSections component is responsible for showing/hiding sections
-// This is done during the compilation of $RootSections so we have to make sure that it's compiled when $SectionWrapper changes.
-const sectionWrapperCacheInvalidator: CacheInvalidator = (
-  _,
-  changedPath,
-  context
-) => {
-  const cacheKeysToRemove: Array<string> = [];
-
-  const { parent } = parsePath(changedPath, context.form);
-
-  if (parent && parent.templateId === "$RootSections") {
-    const rootSectionsConfig = dotNotationGet(context.form.values, parent.path);
-    cacheKeysToRemove.push(rootSectionsConfig._id);
-  }
-
-  return cacheKeysToRemove;
-};
-
-const cacheInvalidators: Array<CacheInvalidator> = [
-  richTextCacheInvalidator,
-  sectionWrapperCacheInvalidator,
-];
+const cacheInvalidators: Array<CacheInvalidator> = [richTextCacheInvalidator];
 
 function invalidateCache(changedPath: string, context: EditorContextType) {
   const cacheKeysToRemove = new Set(

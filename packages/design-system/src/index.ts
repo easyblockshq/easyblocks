@@ -1,7 +1,7 @@
-export { SSFonts } from "./fonts";
-export { SSColors } from "./colors";
-export { SSIcons } from "./icons";
-export type { SSIcon } from "./icons";
+export { Fonts } from "./fonts";
+export { Colors } from "./colors";
+export { Icons } from "./icons";
+export type { Icon } from "./icons";
 export { Typography } from "./Typography";
 export { CustomComponentSymbol } from "./CustomComponentSymbol";
 

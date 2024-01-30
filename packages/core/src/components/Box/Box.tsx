@@ -32,7 +32,7 @@ const Box = React.forwardRef<HTMLElement, BoxProps>((props, ref) => {
   const { __compiled, __name, passedProps, devices, stitches, ...restProps } =
     props;
 
-  const { __as, __action, ...styles } = __compiled;
+  const { __as, ...styles } = __compiled;
   const realProps = { ...restProps, ...passedProps };
 
   const { as, itemWrappers, className, ...restPassedProps } = realProps;

@@ -1,4 +1,4 @@
-import { SSColors, Typography } from "@easyblocks/design-system";
+import { Colors, Typography } from "@easyblocks/design-system";
 import { ReactNode } from "react";
 
 const Color: React.FC<{ color: string; children: ReactNode }> = ({
@@ -36,19 +36,19 @@ export function ColorStories() {
           gap: "8px",
         }}
       >
-        <Color color={SSColors.black5}>black5</Color>
-        <Color color={SSColors.black10}>black10</Color>
-        <Color color={SSColors.black20}>black20</Color>
-        <Color color={SSColors.black40}>black40</Color>
-        <Color color={SSColors.blue}>blue</Color>
-        <Color color={SSColors.blue10}>blue10</Color>
-        <Color color={SSColors.blue20}>blue20</Color>
-        <Color color={SSColors.blue50}>blue50</Color>
-        <Color color={SSColors.blue60}>blue60</Color>
-        <Color color={SSColors.blue70}>blue70</Color>
-        <Color color={SSColors.focus}>focus</Color>
-        <Color color={SSColors.purple}>purple</Color>
-        <Color color={SSColors.red}>red</Color>
+        <Color color={Colors.black5}>black5</Color>
+        <Color color={Colors.black10}>black10</Color>
+        <Color color={Colors.black20}>black20</Color>
+        <Color color={Colors.black40}>black40</Color>
+        <Color color={Colors.blue}>blue</Color>
+        <Color color={Colors.blue10}>blue10</Color>
+        <Color color={Colors.blue20}>blue20</Color>
+        <Color color={Colors.blue50}>blue50</Color>
+        <Color color={Colors.blue60}>blue60</Color>
+        <Color color={Colors.blue70}>blue70</Color>
+        <Color color={Colors.focus}>focus</Color>
+        <Color color={Colors.purple}>purple</Color>
+        <Color color={Colors.red}>red</Color>
       </div>
     </div>
   );

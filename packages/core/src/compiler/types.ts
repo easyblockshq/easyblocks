@@ -1,49 +1,63 @@
-import { PartialDeep } from "type-fest";
+import { PartialDeep, SetRequired } from "type-fest";
 import { Locale } from "../locales";
 import {
-  Devices,
-  ExternalDefinition,
-  ContextParams,
-  ComponentConfig,
-  ExternalSchemaProp,
-  SchemaProp,
   ComponentConfigBase,
-  RefMap,
-  EditingInfoBase,
-  FieldPortal,
   ComponentDefinitionShared,
-  NoCodeComponentStylesFunction,
-  NoCodeComponentEditingFunction,
+  ContextParams,
+  Devices,
+  EditingInfoBase,
+  ExternalSchemaProp,
+  ExternalTypeDefinition,
+  FieldPortal,
+  InlineTypeDefinition,
   NoCodeComponentAutoFunction,
-  Resource,
+  NoCodeComponentDefinition,
+  NoCodeComponentEditingFunction,
+  NoCodeComponentEntry,
+  NoCodeComponentStylesFunction,
+  ResponsiveValue,
+  SchemaProp,
+  Spacing,
   Template,
+  ThemeTokenValue,
+  TokenTypeDefinition,
 } from "../types";
-import { Theme } from "./theme";
 import { InternalAnyTinaField } from "./schema";
+
+export type Theme = {
+  space: {
+    [key: string]: ThemeTokenValue<ResponsiveValue<Spacing>>;
+  };
+  [key: string]: {
+    [key: string]: ThemeTokenValue<any>;
+  };
+};
 
 export type CompilationDocumentType = {
   id: string;
   label?: string;
-  entry: Omit<ComponentConfig, "_id">;
+  entry: Omit<NoCodeComponentEntry, "_id">;
   widths: Record<string, number>;
   schema?: Array<ExternalSchemaProp>;
 };
 
+export type CompilationContextCustomTypeDefinition =
+  | InlineTypeDefinition
+  | SetRequired<ExternalTypeDefinition, "widgets">
+  | TokenTypeDefinition;
+
 export type CompilationContextType = {
   devices: Devices;
   theme: Theme;
-  types: {
-    [key: string]: ExternalDefinition;
-  };
+  types: Record<string, CompilationContextCustomTypeDefinition>;
   // FIXME
   definitions: any;
   mainBreakpointIndex: string;
   isEditing?: boolean;
   contextParams: ContextParams;
   strict?: boolean;
-  locales?: Array<Locale>;
-  documentType: string;
-  documentTypes: Array<CompilationDocumentType>;
+  locales: Array<Locale>;
+  rootComponent: NoCodeComponentDefinition;
 };
 
 export type EditableComponentToComponentConfig<
@@ -53,9 +67,7 @@ export type EditableComponentToComponentConfig<
     type?: string | string[];
     schema: Array<SchemaProp>;
   }
-> = ComponentConfigBase<EditableComponent["id"]> & {
-  $$$refs?: RefMap;
-};
+> = ComponentConfigBase<EditableComponent["id"]>;
 
 export type CompiledNoCodeComponentProps<
   Identifier extends string = string,
@@ -63,7 +75,7 @@ export type CompiledNoCodeComponentProps<
   ContextProps extends Record<string, any> = Record<string, any>,
   Styles extends Record<string, unknown> = Record<string, unknown>
 > = {
-  _template: Identifier;
+  _component: Identifier;
   _id: string;
   path: string;
   runtime: any;
@@ -113,27 +125,13 @@ export type InternalRenderableComponentDefinition<
   styles?: NoCodeComponentStylesFunction<Values, Params>;
   editing?: NoCodeComponentEditingFunction<Values, Params>;
   auto?: NoCodeComponentAutoFunction<Values, Params>;
+  rootParams?: NoCodeComponentDefinition["rootParams"];
 };
-export type InternalActionComponentDefinition = ComponentDefinitionShared;
 
-export type InternalLinkDefinition = ComponentDefinitionShared;
-
-export type InternalComponentDefinition =
-  | InternalRenderableComponentDefinition
-  | InternalActionComponentDefinition
-  | InternalLinkDefinition
-  | InternalTextModifierDefinition;
+export type InternalComponentDefinition = InternalRenderableComponentDefinition;
 
 export type InternalComponentDefinitions = {
   components: InternalRenderableComponentDefinition<string, any, any>[];
-  actions: InternalActionComponentDefinition[];
-  links: InternalLinkDefinition[];
-  textModifiers: InternalTextModifierDefinition[];
-};
-
-export type InternalTextModifierDefinition = ComponentDefinitionShared & {
-  apply: (props: Record<string, any>) => Record<string, any>;
-  childApply?: (props: Record<string, any>) => Record<string, any>;
 };
 
 type EditorActions = {
@@ -141,20 +139,20 @@ type EditorActions = {
   openComponentPicker: (config: {
     path: string;
     componentTypes?: string[];
-  }) => Promise<ComponentConfig | undefined>;
+  }) => Promise<NoCodeComponentEntry | undefined>;
   moveItems: (
     fieldNames: Array<string>,
     direction: "top" | "right" | "bottom" | "left"
   ) => void;
-  replaceItems: (paths: Array<string>, newConfig: ComponentConfig) => void;
+  replaceItems: (paths: Array<string>, newConfig: NoCodeComponentEntry) => void;
   removeItems: (fieldNames: Array<string>) => void;
   insertItem: (insertItemProps: {
     name: string;
     index: number;
-    block: ComponentConfig;
+    block: NoCodeComponentEntry;
   }) => void;
   duplicateItems: (fieldNames: Array<string>) => void;
-  pasteItems: (items: Array<ComponentConfig>) => void;
+  pasteItems: (items: Array<NoCodeComponentEntry>) => void;
   runChange: <Callback extends () => Array<string> | void>(
     configChangeCallback: Callback
   ) => void;
@@ -165,12 +163,10 @@ export type EditorContextType = CompilationContextType & {
   breakpointIndex: string;
   locales: Locale[];
   setBreakpointIndex: (breakpoint: string) => void;
-  resources: Array<Resource>;
   form: any;
   focussedField: Array<string>;
   setFocussedField: (focusedFields: string | Array<string>) => void;
   actions: EditorActions;
-  activeDocumentType: CompilationDocumentType;
   templates?: Template[];
   isFullScreen: boolean;
 };

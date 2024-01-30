@@ -5,7 +5,12 @@ import {
   NonEmptyRenderableContent,
   EmptyRenderableContent,
   Document,
-  ComponentConfig,
+  NoCodeComponentEntry,
+  LocalValue,
+  ExternalData,
+  ExternalDataCompoundResourceResolvedResult,
+  ExternalReference,
+  ExternalReferenceEmpty,
 } from "./types";
 
 function isRenderableContent(input: unknown): input is RenderableContent {
@@ -56,12 +61,39 @@ function isDocument(value: unknown): value is Document {
   return documentSchema.safeParse(value).success;
 }
 
-export function isComponentConfig(value: any): value is ComponentConfig {
+function isComponentConfig(value: any): value is NoCodeComponentEntry {
   return (
     typeof value === "object" &&
-    typeof value?._template === "string" &&
+    typeof value?._component === "string" &&
     typeof value?._id === "string"
   );
+}
+
+const localValueSchema = z.object({
+  value: z.any(),
+  widgetId: z.string(),
+});
+
+function isLocalValue(value: any): value is LocalValue {
+  return localValueSchema.safeParse(value).success;
+}
+
+export function isResolvedCompoundExternalDataValue(
+  value: ExternalData[string]
+): value is ExternalDataCompoundResourceResolvedResult {
+  return "type" in value && value.type === "object" && "value" in value;
+}
+
+export function isIdReferenceToDocumentExternalValue(
+  id: NonNullable<ExternalReference["id"]>
+) {
+  return typeof id === "string" && id.startsWith("$.");
+}
+
+export function isEmptyExternalReference(
+  externalDataConfigEntry: ExternalReference
+): externalDataConfigEntry is ExternalReferenceEmpty {
+  return externalDataConfigEntry.id === null;
 }
 
 export {
@@ -69,4 +101,6 @@ export {
   isNonEmptyRenderableContent,
   isEmptyRenderableContent,
   isDocument,
+  isComponentConfig,
+  isLocalValue,
 };

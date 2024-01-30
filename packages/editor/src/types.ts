@@ -1,35 +1,12 @@
 import {
+  CompilationMetadata,
   CompiledShopstoryComponentConfig,
-  ComponentConfig,
-  ConfigComponent,
-  ContextParams,
+  NoCodeComponentEntry,
+  ExternalData,
   ExternalReference,
-  LocalisedConfigs,
-  LocalisedDocument,
-  LocalizedText,
-  Metadata,
   WidgetComponentProps,
 } from "@easyblocks/core";
 import { EditorContextType } from "./EditorContext";
-
-export type TextExternal = {
-  id: string /* id or tmp id */;
-  value?: LocalizedText;
-};
-
-export type TextExternalMap = { [id: string]: TextExternal };
-
-export type TextSyncers = {
-  create?: (
-    newTexts: TextExternal[],
-    contextParams: ContextParams
-  ) => Promise<TextExternalMap>; // batch add!
-  update?: (
-    texts: TextExternal[],
-    contextParams: ContextParams
-  ) => Promise<TextExternalMap>; // batch add!
-  remove?: (id: string[]) => Promise<any>;
-};
 
 export type OpenComponentPickerConfig = {
   path: string;
@@ -47,10 +24,10 @@ export type RemoveItemActionType = {
   name: string;
 };
 
-export type InsertItemActionType = {
+type InsertItemActionType = {
   name: string;
   index: number;
-  block: ComponentConfig;
+  block: NoCodeComponentEntry;
 };
 
 export type DuplicateItemActionType = {
@@ -61,12 +38,12 @@ export type DuplicateItemActionType = {
 
 export type OpenTemplateModalActionCreate = {
   mode: "create";
-  config: ConfigComponent;
+  config: NoCodeComponentEntry;
   width?: number;
   widthAuto?: boolean;
 };
 
-export type OpenTemplateModalActionEdit = {
+type OpenTemplateModalActionEdit = {
   mode: "edit";
   template: Template;
 };
@@ -78,17 +55,17 @@ export type OpenTemplateModalAction =
 export type ActionsType = {
   openComponentPicker: (
     config: OpenComponentPickerConfig
-  ) => Promise<ComponentConfig | undefined>;
+  ) => Promise<NoCodeComponentEntry | undefined>;
   openTemplateModal: (arg: OpenTemplateModalAction) => void;
   moveItems: (
     fieldNames: Array<string>,
     direction: "top" | "right" | "bottom" | "left"
   ) => void;
-  replaceItems: (paths: Array<string>, newConfig: ComponentConfig) => void;
+  replaceItems: (paths: Array<string>, newConfig: NoCodeComponentEntry) => void;
   removeItems: (fieldNames: Array<string>) => void;
   insertItem: (insertItemProps: InsertItemActionType) => void;
   duplicateItems: (fieldNames: Array<string>) => void;
-  pasteItems: (items: Array<ComponentConfig>) => void;
+  pasteItems: (items: Array<NoCodeComponentEntry>) => void;
   runChange: <Callback extends () => Array<string> | void>(
     configChangeCallback: Callback
   ) => void;
@@ -96,7 +73,7 @@ export type ActionsType = {
   notify: (message: string) => void;
 };
 
-export type TemplateBase = {
+type TemplateBase = {
   id?: string;
   label?: string;
   type?: string;
@@ -109,7 +86,7 @@ export type Template = TemplateBase & {
   isGroupEmptyTemplate?: boolean;
   mapTo?: string | string[];
   isDefaultTextModifier?: boolean; // maybe to remove in the future. But we need to know which template is default text modifier!
-  entry: ComponentConfig; // this includes type and id!!!
+  entry: NoCodeComponentEntry; // this includes type and id!!!
   configId?: string;
   isRemoteUserDefined?: boolean;
   previewSettings?: {
@@ -118,45 +95,15 @@ export type Template = TemplateBase & {
   };
 };
 
-export type RoleId =
-  | "section"
-  | "card"
-  | "background"
-  | "symbol"
-  | "button"
-  | "actionTextModifier"
-  | "action"
-  | "actionLink"
-  | "item";
-
-export type RoleMaster = {
-  id: string;
-  label: string;
-  alwaysVisible?: boolean;
-};
-
-export type Role<T extends RoleId> = {
-  id: T;
-  masters?: RoleMaster[];
-  isTraceable?: boolean;
-};
-
-export type AnyRole = Role<RoleId>;
-
-export type Roles = {
-  [id in RoleId]: Role<id>;
-};
-
 export type FieldMixedValue = { __mixed__: true };
 
 export type EditorWindowAPI = {
   editorContext: EditorContextType;
   onUpdate?: () => void; // this function will be called by parent window when data is changed, child should "subscribe" to this function
-  meta: Metadata;
+  meta: CompilationMetadata;
   compiled: CompiledShopstoryComponentConfig;
+  externalData: ExternalData;
 };
-
-export type CMSInput = LocalisedDocument | LocalisedConfigs;
 
 export type InternalWidgetComponentProps = Omit<
   WidgetComponentProps,
@@ -164,5 +111,5 @@ export type InternalWidgetComponentProps = Omit<
 > & {
   onChange: (id: ExternalReference["id"], key?: string) => void;
   resourceKey?: string;
-  path?: string;
+  path: string;
 };

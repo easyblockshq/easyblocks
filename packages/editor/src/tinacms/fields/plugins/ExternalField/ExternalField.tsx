@@ -1,21 +1,19 @@
 import {
+  ExternalReference,
+  FetchCompoundResourceResultValues,
+  getExternalReferenceLocationKey,
   isEmptyExternalReference,
   isIdReferenceToDocumentExternalValue,
   isResolvedCompoundExternalDataValue,
-} from "@easyblocks/app-utils";
-import {
-  AnyField,
-  ExternalReference,
-  ExternalSchemaProp,
-  FetchCompoundResourceResultValues,
-  Field,
-  getExternalReferenceLocationKey,
-  TextSchemaProp,
 } from "@easyblocks/core";
-import { Select, SelectItem, Typography } from "@easyblocks/design-system";
+import { Select, SelectItem } from "@easyblocks/design-system";
 import { dotNotationGet, toArray } from "@easyblocks/utils";
 import React, { ComponentType, useLayoutEffect } from "react";
-import { useEditorContext } from "../../../../EditorContext";
+import {
+  EditorContextType,
+  EditorExternalTypeDefinition,
+  useEditorContext,
+} from "../../../../EditorContext";
 import { useEditorExternalData } from "../../../../EditorExternalDataProvider";
 import {
   FieldMixedValue,
@@ -23,19 +21,15 @@ import {
 } from "../../../../types";
 import { FieldRenderProps } from "../../../form-builder";
 import { isMixedFieldValue } from "../../components/isMixedFieldValue";
+import { MissingWidget } from "../MissingWidget";
 import { FieldMetaWrapper } from "../wrapFieldWithMeta";
 
-interface ExternalField
-  extends Field<AnyField, ExternalSchemaProp | TextSchemaProp> {
-  externalField?: ComponentType<InternalWidgetComponentProps>;
-}
+type ExternalFieldProps = FieldRenderProps<
+  ExternalReference | FieldMixedValue,
+  any
+>;
 
-interface ExternalFieldProps
-  extends FieldRenderProps<ExternalReference | FieldMixedValue, any> {
-  field: ExternalField;
-}
-
-export const ExternalFieldComponent = (props: ExternalFieldProps) => {
+const ExternalFieldComponent = (props: ExternalFieldProps) => {
   const {
     tinaForm,
     field,
@@ -46,7 +40,20 @@ export const ExternalFieldComponent = (props: ExternalFieldProps) => {
   const externalData = useEditorExternalData();
 
   const fieldNames = toArray(field.name);
-  const ExternalField = field.externalField;
+
+  const isSchemaPropRootParam = field.schemaProp.type.startsWith("param__");
+
+  const ExternalField: ComponentType<InternalWidgetComponentProps> | undefined =
+    !isMixedFieldValue(input.value)
+      ? isSchemaPropRootParam
+        ? getWidgetComponentForRootParam(input.value, editorContext)
+        : getWidgetComponentByType(
+            input.value,
+            field.schemaProp.type,
+            editorContext
+          )
+      : undefined;
+
   const path = fieldNames[0].split(".").slice(0, -1).join(".");
   const configId = dotNotationGet(editorContext.form.values, path)._id;
   const externalReferenceLocationKey = getExternalReferenceLocationKey(
@@ -158,6 +165,26 @@ export const ExternalFieldPlugin = {
   Component: ExternalFieldComponent,
 };
 
+function getWidgetComponentByType(
+  externalReference: ExternalReference,
+  type: string,
+  editorContext: EditorContextType
+) {
+  return (
+    editorContext.types[type] as EditorExternalTypeDefinition
+  ).widgets.find((w) => w.id === externalReference.widgetId)?.component;
+}
+
+function getWidgetComponentForRootParam(
+  externalReference: ExternalReference,
+  editorContext: EditorContextType
+) {
+  return Object.values(editorContext.types)
+    .filter((t): t is EditorExternalTypeDefinition => t.type === "external")
+    .flatMap((t) => t.widgets)
+    .find((w) => w.id === externalReference.widgetId)?.component;
+}
+
 export function getBasicResourcesOfType(
   compoundResourceValues: FetchCompoundResourceResultValues,
   type: string
@@ -204,8 +231,4 @@ export function CompoundResourceValueSelect(props: {
       })}
     </Select>
   );
-}
-
-function MissingWidget(props: { type: string }) {
-  return <Typography>Missing widget for type "{props.type}".</Typography>;
 }

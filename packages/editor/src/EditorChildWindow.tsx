@@ -7,7 +7,7 @@ import {
   useSensor,
 } from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
-import { ComponentConfig, Easyblocks } from "@easyblocks/core";
+import { NoCodeComponentEntry, Easyblocks } from "@easyblocks/core";
 import {
   EasyblocksMetadataProvider,
   EditorContextType,
@@ -163,7 +163,7 @@ export function EasyblocksCanvas({
 }
 
 function getSortableItems(
-  rootNoCodeEntry: ComponentConfig,
+  rootNoCodeEntry: NoCodeComponentEntry,
   editorContext: EditorContextType
 ) {
   const sortableItems: Array<string> = [];
@@ -180,7 +180,7 @@ function getSortableItems(
 
         sortableItems.push(`${value[0]._id}.before`);
         sortableItems.push(
-          ...(value as Array<ComponentConfig>).map((v) => v._id)
+          ...(value as Array<NoCodeComponentEntry>).map((v) => v._id)
         );
         sortableItems.push(`${value.at(-1)._id}.after`);
       }

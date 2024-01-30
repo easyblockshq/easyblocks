@@ -2,12 +2,12 @@
 import type { ElementType, ReactNode } from "react";
 import React, { ComponentPropsWithRef } from "react";
 import styled, { css } from "styled-components";
-import { SSColors } from "./colors";
-import { SSFonts } from "./fonts";
+import { Colors } from "./colors";
+import { Fonts } from "./fonts";
 
 type TypographyVariant = "body" | "body4" | "label" | "label2" | "label3";
 
-type TypographyColor = keyof typeof SSColors;
+type TypographyColor = keyof typeof Colors;
 
 type TypographyAlignment = "left" | "center" | "right" | "justify";
 
@@ -75,8 +75,8 @@ type TypographyRootProps = Required<
 //    or maybe you would get warning from React about incorrect nesting of HTML elements.
 //    By using the `div` as the default, you don't have to worry about it.
 const TypographyRoot = styled.div<TypographyRootProps>`
-  color: ${({ $color }) => ($color !== undefined ? SSColors[$color] : "black")};
-  ${({ variant }) => SSFonts[variant]}
+  color: ${({ $color }) => ($color !== undefined ? Colors[$color] : "black")};
+  ${({ variant }) => Fonts[variant]}
   text-align: ${({ align }) => align};
 
   ${({ $isTruncated }) =>

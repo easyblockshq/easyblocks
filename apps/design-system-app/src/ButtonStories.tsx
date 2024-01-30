@@ -1,9 +1,9 @@
 import {
-  SSButtonGhost,
-  SSButtonGhostColor,
-  SSButtonPrimary,
-  SSButtonSecondary,
-  SSIcons,
+  ButtonGhost,
+  ButtonGhostColor,
+  ButtonPrimary,
+  ButtonSecondary,
+  Icons,
   Typography,
 } from "@easyblocks/design-system";
 
@@ -13,49 +13,49 @@ export function ButtonStories() {
       <Typography variant={"label"}>Buttons</Typography>
       <br />
 
-      <SSButtonPrimary
+      <ButtonPrimary
         onClick={() => {
           alert("clicked");
         }}
       >
         Click me to show alert
-      </SSButtonPrimary>
+      </ButtonPrimary>
       <br />
-      <SSButtonPrimary variant={"standard"}>Standard size</SSButtonPrimary>
+      <ButtonPrimary variant={"standard"}>Standard size</ButtonPrimary>
       <br />
-      <SSButtonPrimary variant={"large"}>Large size</SSButtonPrimary>
+      <ButtonPrimary variant={"large"}>Large size</ButtonPrimary>
       <br />
-      <SSButtonPrimary variant={"tiny"}>Tiny size</SSButtonPrimary>
+      <ButtonPrimary variant={"tiny"}>Tiny size</ButtonPrimary>
       <br />
-      <SSButtonPrimary icon={SSIcons.Add}>With Add icon</SSButtonPrimary>
+      <ButtonPrimary icon={Icons.Add}>With Add icon</ButtonPrimary>
       <br />
-      <SSButtonPrimary height={"80px"}>Custom height</SSButtonPrimary>
+      <ButtonPrimary height={"80px"}>Custom height</ButtonPrimary>
       <br />
-      <SSButtonPrimary disabled={true}>Disabled</SSButtonPrimary>
+      <ButtonPrimary disabled={true}>Disabled</ButtonPrimary>
       <br />
-      <SSButtonPrimary isLoading={true}>Loading</SSButtonPrimary>
+      <ButtonPrimary isLoading={true}>Loading</ButtonPrimary>
       <br />
-      <SSButtonPrimary isLoading={true} disabled={true}>
+      <ButtonPrimary isLoading={true} disabled={true}>
         Loading disabled
-      </SSButtonPrimary>
+      </ButtonPrimary>
       <br />
 
-      <SSButtonSecondary>Button Secondary</SSButtonSecondary>
+      <ButtonSecondary>Button Secondary</ButtonSecondary>
       <br />
-      <SSButtonSecondary disabled={true}>Secondary disabled</SSButtonSecondary>
+      <ButtonSecondary disabled={true}>Secondary disabled</ButtonSecondary>
       <br />
-      <SSButtonSecondary isLoading={true}>Loading</SSButtonSecondary>
+      <ButtonSecondary isLoading={true}>Loading</ButtonSecondary>
       <br />
-      <SSButtonSecondary isLoading={true} disabled={true}>
+      <ButtonSecondary isLoading={true} disabled={true}>
         Loading disabled
-      </SSButtonSecondary>
+      </ButtonSecondary>
       <br />
 
-      <SSButtonGhost>Button Ghost</SSButtonGhost>
+      <ButtonGhost>Button Ghost</ButtonGhost>
       <br />
-      <SSButtonGhostColor>Button Ghost Color</SSButtonGhostColor>
+      <ButtonGhostColor>Button Ghost Color</ButtonGhostColor>
       <br />
-      <SSButtonGhost noPadding={true}>Ghost button no padding</SSButtonGhost>
+      <ButtonGhost noPadding={true}>Ghost button no padding</ButtonGhost>
       <br />
     </div>
   );

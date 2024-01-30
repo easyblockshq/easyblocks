@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import * as React from "react";
 
-import { SSButtonGhost } from "./buttons";
-import { SSIcons } from "./icons";
+import { ButtonGhost } from "./buttons";
+import { Icons } from "./icons";
 import { Typography } from "./Typography";
 
 export type ColorThumbnail = {
@@ -93,10 +93,10 @@ export function ThumbnailButton({
   } else if (thumbnail?.type === "icon") {
     const ComponentIcon =
       thumbnail.icon === "link"
-        ? SSIcons.Link
+        ? Icons.Link
         : thumbnail.icon === "grid_3x3"
-        ? SSIcons.Grid3x3
-        : SSIcons.Link;
+        ? Icons.Grid3x3
+        : Icons.Link;
     preview = <ComponentIcon size={16} />;
   } else {
     preview = <SolidColorPreview color={"transparent"} />;
@@ -124,9 +124,9 @@ export function ThumbnailButton({
 
   return (
     <div style={{ display: "grid", width: "100%" }}>
-      <SSButtonGhost onClick={onClick} height={"32px"} noPadding={true}>
+      <ButtonGhost onClick={onClick} height={"32px"} noPadding={true}>
         {content}
-      </SSButtonGhost>
+      </ButtonGhost>
     </div>
   );
 }

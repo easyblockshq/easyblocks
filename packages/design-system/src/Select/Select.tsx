@@ -6,8 +6,8 @@ import {
 import * as RadixSelect from "@radix-ui/react-select";
 import React, { forwardRef, ReactNode } from "react";
 import styled from "styled-components";
-import { SSColors } from "../colors";
-import { SSFonts } from "../fonts";
+import { Colors } from "../colors";
+import { Fonts } from "../fonts";
 
 const SelectTrigger = styled(RadixSelect.Trigger)`
   all: unset;
@@ -15,7 +15,7 @@ const SelectTrigger = styled(RadixSelect.Trigger)`
   display: flex;
   align-items: center;
 
-  ${SSFonts.body};
+  ${Fonts.body};
 `;
 
 function Select(props: {
@@ -39,7 +39,7 @@ function Select(props: {
 
           @media (hover: hover) {
             &:hover {
-              box-shadow: 0 0 0 1px ${SSColors.black10};
+              box-shadow: 0 0 0 1px ${Colors.black10};
             }
           }
         `}
@@ -53,7 +53,7 @@ function Select(props: {
           placeholder={props.placeholder ?? "Select a value..."}
         />
         <RadixSelect.Icon>
-          <ChevronDownIcon color={SSColors.black40} />
+          <ChevronDownIcon color={Colors.black40} />
         </RadixSelect.Icon>
       </SelectTrigger>
       <RadixSelect.Portal>
@@ -64,7 +64,7 @@ function Select(props: {
             padding: 4px 0;
 
             background: #fff;
-            border: 1px solid ${SSColors.black10};
+            border: 1px solid ${Colors.black10};
             border-radius: 2px;
             box-shadow: 0px 2px 14px 0px rgba(0, 0, 0, 0.15);
           `}
@@ -102,7 +102,7 @@ const SelectItemWrapper = styled(RadixSelect.Item)`
   min-height: 28px;
   padding: 0 6px;
 
-  ${SSFonts.body};
+  ${Fonts.body};
   color: #000;
 
   background: #fff;
@@ -147,7 +147,7 @@ function SelectSeparator() {
         height: 1px;
         margin: 4px;
 
-        background: ${SSColors.black100};
+        background: ${Colors.black100};
       `}
     />
   );

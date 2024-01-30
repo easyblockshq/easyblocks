@@ -1,7 +1,7 @@
-import { CompilationContextType } from "../types";
-import { testCompilationContext } from "../test-utils";
+import { testCompilationContext } from "../testUtils";
+import { NoCodeComponentEntry } from "../types";
 import { configFindAllPaths } from "./configFindAllPaths";
-import { ConfigComponent } from "@easyblocks/core";
+import { CompilationContextType } from "./types";
 
 const compilationContext: CompilationContextType = {
   ...testCompilationContext,
@@ -35,22 +35,23 @@ const compilationContext: CompilationContextType = {
   },
 };
 
-const testConfig: ConfigComponent = {
-  _template: "$TestComponent1",
+const testConfig: NoCodeComponentEntry = {
+  _id: "",
+  _component: "$TestComponent1",
   Component: [
     {
-      _template: "$TestComponent2",
+      _component: "$TestComponent2",
     },
   ],
   Components: [
     {
-      _template: "$TestComponent2",
+      _component: "$TestComponent2",
     },
     {
-      _template: "$TestComponent2",
+      _component: "$TestComponent2",
     },
     {
-      _template: "$TestComponent2",
+      _component: "$TestComponent2",
     },
   ],
 };
@@ -60,8 +61,8 @@ test("finds all paths for $TestComponent2", () => {
     configFindAllPaths(
       testConfig,
       compilationContext,
-      (config): config is { _template: "$TestComponent2" } => {
-        return config._template === "$TestComponent2";
+      (config): config is NoCodeComponentEntry => {
+        return config._component === "$TestComponent2";
       }
     )
   ).toEqual(["Component.0", "Components.0", "Components.1", "Components.2"]);

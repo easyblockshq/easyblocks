@@ -7,7 +7,6 @@ export * from "./object";
 export * from "./serialize";
 export * from "./sleep";
 export * from "./uniqueId";
-export * from "./getAppRootUrl";
 export * from "./func";
 export * from "./addEventListener";
 export * from "./assert";

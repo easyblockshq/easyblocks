@@ -1,6 +1,6 @@
 import React, { forwardRef, ReactNode } from "react";
 import * as RadixToggleGroup from "@radix-ui/react-toggle-group";
-import { SSColors } from "../colors";
+import { Colors } from "../colors";
 
 function ToggleGroup(props: {
   children: ReactNode;
@@ -41,7 +41,7 @@ const ToggleGroupItem = forwardRef<
         background-color: transparent;
 
         &[aria-checked="true"] {
-          background-color: ${SSColors.black10};
+          background-color: ${Colors.black10};
         }
 
         border-radius: 2px;
@@ -50,7 +50,7 @@ const ToggleGroupItem = forwardRef<
           cursor: pointer;
 
           &:hover {
-            box-shadow: 0 0 0 1px ${SSColors.black10};
+            box-shadow: 0 0 0 1px ${Colors.black10};
           }
         }
 

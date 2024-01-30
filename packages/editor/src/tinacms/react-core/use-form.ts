@@ -1,8 +1,8 @@
-import { Form, FormOptions } from "@easyblocks/app-utils";
 import { InternalField } from "@easyblocks/core/_internals";
 import React from "react";
+import { Form, FormOptions } from "../../form";
 
-export interface WatchableFormValue {
+interface WatchableFormValue {
   values: any;
   label: FormOptions<any>["label"];
   fields: FormOptions<any>["fields"];

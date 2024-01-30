@@ -1,4 +1,3 @@
-import { testCompilationContext } from "../../../../../app-test-utils/src";
 import { RichTextComponentConfig } from "./$richText";
 import {
   RichTextBlockElementComponentConfig,
@@ -35,7 +34,7 @@ describe("@easyblocks/rich-text-part", () => {
     ).toEqual(
       expect.objectContaining<RichTextPartComponentConfig>({
         _id: expect.any(String),
-        _template: "@easyblocks/rich-text-part",
+        _component: "@easyblocks/rich-text-part",
         color: {
           $res: true,
           xl: {
@@ -50,6 +49,7 @@ describe("@easyblocks/rich-text-part", () => {
           },
         },
         value: "Lorem ipsum",
+        TextWrapper: [],
       })
     );
   });
@@ -64,7 +64,7 @@ describe("@easyblocks/rich-text-line-element", () => {
     ).toEqual(
       expect.objectContaining<RichTextLineElementComponentConfig>({
         _id: expect.any(String),
-        _template: "@easyblocks/rich-text-line-element",
+        _component: "@easyblocks/rich-text-line-element",
         elements: [],
       })
     );
@@ -78,7 +78,7 @@ describe("@easyblocks/rich-text-block-element", () => {
       expect(buildRichTextBlockElementComponentConfig(type, [])).toEqual(
         expect.objectContaining<RichTextBlockElementComponentConfig>({
           _id: expect.any(String),
-          _template: "@easyblocks/rich-text-block-element",
+          _component: "@easyblocks/rich-text-block-element",
           elements: [],
           type,
         })
@@ -91,7 +91,7 @@ describe("@easyblocks/rich-text", () => {
   test("builds with defaults", () => {
     expect(
       buildRichTextComponentConfig({
-        compilationContext: testCompilationContext,
+        locale: "en",
         elements: [],
         mainColor: {
           $res: true,
@@ -111,10 +111,10 @@ describe("@easyblocks/rich-text", () => {
     ).toEqual(
       expect.objectContaining<RichTextComponentConfig>({
         _id: expect.any(String),
-        _template: "@easyblocks/rich-text",
+        _component: "@easyblocks/rich-text",
         accessibilityRole: "div",
         elements: {
-          [testCompilationContext.contextParams.locale]: [],
+          en: [],
         },
         isListStyleAuto: true,
         mainColor: {
@@ -140,7 +140,7 @@ describe("@easyblocks/rich-text", () => {
     (accessibilityRole) => {
       const richTextComponentConfig = buildRichTextComponentConfig({
         accessibilityRole,
-        compilationContext: testCompilationContext,
+        locale: "en",
         elements: [],
         mainColor: {
           $res: true,
@@ -164,7 +164,7 @@ describe("@easyblocks/rich-text", () => {
 
   test("builds with set isListStyleAuto property", () => {
     const richTextComponentConfig = buildRichTextComponentConfig({
-      compilationContext: testCompilationContext,
+      locale: "en",
       elements: [],
       isListStyleAuto: false,
       mainColor: {

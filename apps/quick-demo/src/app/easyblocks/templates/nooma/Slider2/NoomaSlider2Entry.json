@@ -1,410 +1,689 @@
 {
-  "_id": "310218b6-184e-41ce-9159-5d06ddbf2990",
-  "_template": "$Grid",
-  "traceId": "$Grid-a7fb24f1",
+  "_id": "6f8bcc67-2b2b-4667-b978-897c9c20f8db",
+  "_component": "Grid",
   "_itemProps": {
-    "$RootSections": {
+    "StandardPage": {
       "data": {
-        "topMargin": { "$res": true, "xl": { "ref": "32", "value": "32px" } },
-        "bottomMargin": { "$res": true, "xl": { "value": "32px", "ref": "32" } }
+        "topMargin": {
+          "$res": true,
+          "xl": {
+            "value": "0px",
+            "tokenId": "0",
+            "widgetId": "@easyblocks/space"
+          }
+        },
+        "bottomMargin": {
+          "$res": true,
+          "xl": {
+            "value": "32px",
+            "tokenId": "32",
+            "widgetId": "@easyblocks/space"
+          }
+        }
       }
     }
   },
-  "hide": { "$res": true, "xl": false },
-  "Component": [
-    {
-      "_id": "ac8069fc-580b-4974-8eeb-bd4429117cf4",
-      "_template": "$GridCard",
-      "traceId": "$GridCard-688528de",
-      "Cards": [
-        {
-          "_id": "984319a0-6a21-40f6-b064-997b43453ae0",
-          "_template": "ProductCard",
-          "traceId": "ProductCard-523d622a",
-          "_itemProps": {
-            "$GridCard": {
-              "Cards": {
-                "itemSize": { "$res": true, "xl": "1x1" },
-                "verticalAlign": { "$res": true, "xl": "auto" }
-              }
-            }
-          },
-          "product": {
-            "id": "gid://shopify/Product/7620417159380",
-            "widgetId": "product"
-          },
-          "relatedProductsMode": "disabled",
-          "withBackdrop": false
-        },
-        {
-          "_id": "f93c38c5-855c-42e4-8ce0-c2e82ac0222f",
-          "_template": "ProductCard",
-          "traceId": "ProductCard-4f33611a",
-          "_itemProps": {
-            "$GridCard": {
-              "Cards": {
-                "itemSize": { "$res": true, "xl": "1x1" },
-                "verticalAlign": { "$res": true, "xl": "auto" }
-              }
-            }
-          },
-          "product": {
-            "id": "gid://shopify/Product/7620416340180",
-            "widgetId": "product"
-          },
-          "relatedProductsMode": "disabled",
-          "withBackdrop": false
-        },
-        {
-          "_id": "4e822413-3938-44bb-89e0-20dbc71c75c2",
-          "_template": "ProductCard",
-          "traceId": "ProductCard-db6b5076",
-          "_itemProps": {
-            "$GridCard": {
-              "Cards": {
-                "itemSize": { "$res": true, "xl": "1x1" },
-                "verticalAlign": { "$res": true, "xl": "auto" }
-              }
-            }
-          },
-          "product": {
-            "id": "gid://shopify/Product/7620416504020",
-            "widgetId": "product"
-          },
-          "relatedProductsMode": "disabled",
-          "withBackdrop": false
-        },
-        {
-          "_id": "d6f0bcfe-7800-408d-a43f-ddf03b3fc662",
-          "_template": "ProductCard",
-          "traceId": "ProductCard-db784588",
-          "_itemProps": {
-            "$GridCard": {
-              "Cards": {
-                "itemSize": { "$res": true, "xl": "1x1" },
-                "verticalAlign": { "$res": true, "xl": "auto" }
-              }
-            }
-          },
-          "product": {
-            "id": "gid://shopify/Product/7620416930004",
-            "widgetId": "product"
-          },
-          "relatedProductsMode": "disabled",
-          "withBackdrop": false
-        },
-        {
-          "_id": "ab64d70f-6377-4996-b38c-e8c6eb26fdda",
-          "_template": "ProductCard",
-          "traceId": "ProductCard-2f2768f8",
-          "_itemProps": {
-            "$GridCard": {
-              "Cards": {
-                "itemSize": { "$res": true, "xl": "1x1" },
-                "verticalAlign": { "$res": true, "xl": "auto" }
-              }
-            }
-          },
-          "product": {
-            "id": "gid://shopify/Product/7620417290452",
-            "widgetId": "product"
-          },
-          "relatedProductsMode": "disabled",
-          "withBackdrop": false
-        },
-        {
-          "_id": "3f04ef08-d7b5-41de-852c-a1948c7d90d9",
-          "_template": "ProductCard",
-          "traceId": "ProductCard-46821a8a",
-          "_itemProps": {
-            "$GridCard": {
-              "Cards": {
-                "itemSize": { "$res": true, "xl": "1x1" },
-                "verticalAlign": { "$res": true, "xl": "auto" }
-              }
-            }
-          },
-          "product": {
-            "id": "gid://shopify/Product/7620417126612",
-            "widgetId": "product"
-          },
-          "relatedProductsMode": "disabled",
-          "withBackdrop": false
-        },
-        {
-          "_id": "3b531ce3-288c-417e-a2d5-42abde51d6a0",
-          "_template": "ProductCard",
-          "traceId": "ProductCard-a398e460",
-          "_itemProps": {
-            "$GridCard": {
-              "Cards": {
-                "itemSize": { "$res": true, "xl": "1x1" },
-                "verticalAlign": { "$res": true, "xl": "auto" }
-              }
-            }
-          },
-          "product": {
-            "id": "gid://shopify/Product/7620431478996",
-            "widgetId": "product"
-          },
-          "relatedProductsMode": "disabled",
-          "withBackdrop": false
-        },
-        {
-          "_id": "aee579d3-b2c6-4ec4-95a5-dc77fe7e91e7",
-          "_template": "ProductCard",
-          "traceId": "ProductCard-39c01d43",
-          "_itemProps": {
-            "$GridCard": {
-              "Cards": {
-                "itemSize": { "$res": true, "xl": "1x1" },
-                "verticalAlign": { "$res": true, "xl": "auto" }
-              }
-            }
-          },
-          "product": {
-            "id": "gid://shopify/Product/7621183865044",
-            "widgetId": "product"
-          },
-          "relatedProductsMode": "disabled",
-          "withBackdrop": false
-        },
-        {
-          "_id": "6885288a-5394-4317-a587-6c1475eece1e",
-          "_template": "ProductCard",
-          "traceId": "ProductCard-d99c01e7",
-          "_itemProps": {
-            "$GridCard": {
-              "Cards": {
-                "itemSize": { "$res": true, "xl": "1x1" },
-                "verticalAlign": { "$res": true, "xl": "auto" }
-              }
-            }
-          },
-          "product": {
-            "id": "gid://shopify/Product/7621187240148",
-            "widgetId": "product"
-          },
-          "relatedProductsMode": "disabled",
-          "withBackdrop": false
-        },
-        {
-          "_id": "b81d5e7f-f9d7-4b79-99e3-ab90f174c414",
-          "_template": "ProductCard",
-          "traceId": "ProductCard-c8c594ee",
-          "_itemProps": {
-            "$GridCard": {
-              "Cards": {
-                "itemSize": { "$res": true, "xl": "1x1" },
-                "verticalAlign": { "$res": true, "xl": "auto" }
-              }
-            }
-          },
-          "product": {
-            "id": "gid://shopify/Product/7620416471252",
-            "widgetId": "product"
-          },
-          "relatedProductsMode": "disabled",
-          "withBackdrop": false
-        }
-      ],
-      "variant": { "$res": true, "xl": "slider" },
-      "numberOfItems": { "$res": true, "xl": "5" },
-      "fractionalItemWidth": { "$res": true, "xl": "1.25" },
-      "columnGap": { "$res": true, "xl": { "value": "16px", "ref": "16" } },
-      "rowGap": { "$res": true, "xl": { "value": "16px", "ref": "16" } },
-      "verticalAlign": { "$res": true, "xl": "top" },
-      "showSliderControls": { "$res": true, "xl": false },
-      "shouldSliderItemsBeVisibleOnMargin": { "$res": true, "xl": true },
-      "gridMainObjectAspectRatio": {
-        "$res": true,
-        "xl": { "value": "4:5", "ref": "$gridMainObjectDefault" }
-      },
-      "borderEnabled": false,
-      "borderColor": {
-        "$res": true,
-        "xl": { "value": "black", "ref": "grey_05" }
-      },
-      "borderTop": { "$res": true, "xl": "1" },
-      "borderBottom": { "$res": true, "xl": "1" },
-      "borderLeft": { "$res": true, "xl": "1" },
-      "borderRight": { "$res": true, "xl": "1" },
-      "borderInner": { "$res": true, "xl": "1" },
-      "paddingTop": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
-      "paddingBottom": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
-      "paddingLeft": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
-      "paddingRight": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
-      "LeftArrow": [
-        {
-          "_id": "26f9c635-2944-4f4b-8493-979efece0ba6",
-          "_template": "$StandardButton",
-          "_master": "buttonDark",
-          "traceId": "$StandardButton-155abeeb",
-          "_itemProps": { "$GridCard": { "LeftArrow": {} } },
-          "Action": [],
-          "variant": "icon",
-          "label": {
-            "id": "local.cbb80209-3240-4af6-96dc-bfd22130d84d",
-            "value": { "en-US": "Click me" }
-          },
-          "icon": {
-            "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"red\" width=\"100px\" height=\"100px\"><path d=\"M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z\"/></svg>",
-            "ref": "arrowLeft"
-          },
-          "color": {
-            "$res": true,
-            "xl": { "ref": "grey_05", "value": "#252525" }
-          },
-          "minHeight": { "$res": true, "xl": "42" },
-          "minWidth": { "$res": true, "xl": "100" },
-          "horizontalPadding": {
-            "$res": true,
-            "xl": { "value": "16px", "ref": "16" }
-          },
-          "gap": { "$res": true, "xl": { "value": "6px", "ref": "6" } },
-          "cornerMode": { "$res": true, "xl": "circled" },
-          "cornerRadius": { "$res": true, "xl": "12" },
-          "font": {
-            "$res": true,
-            "xl": {
-              "value": {
-                "$res": true,
-                "2xl": {
-                  "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
-                  "fontSize": 16,
-                  "fontWeight": 500,
-                  "lineHeight": 1.2
-                }
-              },
-              "ref": "body2.bold"
-            }
-          },
-          "underline": "off",
-          "underlineOffset": { "$res": true, "xl": "1" },
-          "iconSize": { "$res": true, "xl": "24" },
-          "hasBackground": true,
-          "backgroundColor": {
-            "$res": true,
-            "xl": { "ref": "transparent-grey-light", "value": "#D8D8D880" }
-          },
-          "hasBorder": false,
-          "borderWidth": { "$res": true, "xl": "1" },
-          "borderColor": {
-            "$res": true,
-            "xl": { "value": "black", "ref": "grey_05" }
-          },
-          "boxShadow": {
-            "$res": true,
-            "xl": { "value": "none", "ref": "none" }
-          }
-        }
-      ],
-      "leftArrowPlacement": { "$res": true, "xl": "center" },
-      "leftArrowOffset": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
-      "RightArrow": [
-        {
-          "_id": "7178eab3-549a-4821-a209-61e726366b6b",
-          "_template": "$StandardButton",
-          "_master": "buttonDark",
-          "traceId": "$StandardButton-ecd2b496",
-          "_itemProps": { "$GridCard": { "RightArrow": {} } },
-          "Action": [],
-          "variant": "icon",
-          "label": {
-            "id": "local.cd389a95-98ee-4f7c-98d6-781aa82c65dd",
-            "value": { "en-US": "Click me" }
-          },
-          "icon": {
-            "ref": "arrowRight",
-            "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z\"/></svg>"
-          },
-          "color": {
-            "$res": true,
-            "xl": { "ref": "grey_05", "value": "#252525" }
-          },
-          "minHeight": { "$res": true, "xl": "42" },
-          "minWidth": { "$res": true, "xl": "100" },
-          "horizontalPadding": {
-            "$res": true,
-            "xl": { "value": "16px", "ref": "16" }
-          },
-          "gap": { "$res": true, "xl": { "value": "6px", "ref": "6" } },
-          "cornerMode": { "$res": true, "xl": "circled" },
-          "cornerRadius": { "$res": true, "xl": "12" },
-          "font": {
-            "$res": true,
-            "xl": {
-              "value": {
-                "$res": true,
-                "2xl": {
-                  "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
-                  "fontSize": 16,
-                  "fontWeight": 500,
-                  "lineHeight": 1.2
-                }
-              },
-              "ref": "body2.bold"
-            }
-          },
-          "underline": "off",
-          "underlineOffset": { "$res": true, "xl": "1" },
-          "iconSize": { "$res": true, "xl": "24" },
-          "hasBackground": true,
-          "backgroundColor": {
-            "$res": true,
-            "xl": { "ref": "transparent-grey-light", "value": "#D8D8D880" }
-          },
-          "hasBorder": false,
-          "borderWidth": { "$res": true, "xl": "1" },
-          "borderColor": {
-            "$res": true,
-            "xl": { "value": "black", "ref": "grey_05" }
-          },
-          "boxShadow": {
-            "$res": true,
-            "xl": { "value": "none", "ref": "none" }
-          }
-        }
-      ],
-      "rightArrowPlacement": { "$res": true, "xl": "center" },
-      "rightArrowOffset": { "$res": true, "xl": { "value": "0px", "ref": "0" } }
-    }
-  ],
   "containerMargin": {
     "$res": true,
     "xl": {
-      "value": { "$res": true, "xl": "5vw" },
-      "ref": "containerMargin.default"
+      "value": {
+        "$res": true,
+        "md": "5vw",
+        "lg": "8vw"
+      },
+      "tokenId": "containerMargin.standard",
+      "widgetId": "@easyblocks/space"
     }
   },
   "containerMaxWidth": {
     "$res": true,
-    "xl": { "value": "none", "ref": "none" }
+    "xl": {
+      "value": -1,
+      "tokenId": "none"
+    }
   },
-  "escapeMargin": { "$res": true, "xl": false },
+  "escapeMargin": {
+    "$res": true,
+    "xl": false
+  },
+  "Cards": [
+    {
+      "_id": "ab9177da-e6ae-450f-aed6-e8ec4cb4d8af",
+      "_component": "ProductCard",
+      "_itemProps": {
+        "Grid": {
+          "Cards": {
+            "itemSize": {
+              "$res": true,
+              "xl": "1x1"
+            },
+            "verticalAlign": {
+              "$res": true,
+              "xl": "auto"
+            }
+          }
+        }
+      },
+      "product": {
+        "id": "gid://shopify/Product/7620417159380",
+        "widgetId": "product",
+        "key": "self"
+      },
+      "relatedProductsMode": "disabled",
+      "withBackdrop": false
+    },
+    {
+      "_id": "cb5bd6c8-8128-4700-a541-81043ab1b2a9",
+      "_component": "ProductCard",
+      "_itemProps": {
+        "Grid": {
+          "Cards": {
+            "itemSize": {
+              "$res": true,
+              "xl": "1x1"
+            },
+            "verticalAlign": {
+              "$res": true,
+              "xl": "auto"
+            }
+          }
+        }
+      },
+      "product": {
+        "id": "gid://shopify/Product/7620416340180",
+        "widgetId": "product",
+        "key": "self"
+      },
+      "relatedProductsMode": "disabled",
+      "withBackdrop": false
+    },
+    {
+      "_id": "f6dfffe2-c4dd-4318-9e43-73ab32a456b0",
+      "_component": "ProductCard",
+      "_itemProps": {
+        "Grid": {
+          "Cards": {
+            "itemSize": {
+              "$res": true,
+              "xl": "1x1"
+            },
+            "verticalAlign": {
+              "$res": true,
+              "xl": "auto"
+            }
+          }
+        }
+      },
+      "product": {
+        "id": "gid://shopify/Product/7620416504020",
+        "widgetId": "product",
+        "key": "self"
+      },
+      "relatedProductsMode": "disabled",
+      "withBackdrop": false
+    },
+    {
+      "_id": "4630b353-e705-437b-a043-edb0ff05c69d",
+      "_component": "ProductCard",
+      "_itemProps": {
+        "Grid": {
+          "Cards": {
+            "itemSize": {
+              "$res": true,
+              "xl": "1x1"
+            },
+            "verticalAlign": {
+              "$res": true,
+              "xl": "auto"
+            }
+          }
+        }
+      },
+      "product": {
+        "id": "gid://shopify/Product/7620416930004",
+        "widgetId": "product",
+        "key": "self"
+      },
+      "relatedProductsMode": "disabled",
+      "withBackdrop": false
+    },
+    {
+      "_id": "8ea05df6-5f7f-4a69-99eb-8af91715d098",
+      "_component": "ProductCard",
+      "_itemProps": {
+        "Grid": {
+          "Cards": {
+            "itemSize": {
+              "$res": true,
+              "xl": "1x1"
+            },
+            "verticalAlign": {
+              "$res": true,
+              "xl": "auto"
+            }
+          }
+        }
+      },
+      "product": {
+        "id": "gid://shopify/Product/7620417290452",
+        "widgetId": "product",
+        "key": "self"
+      },
+      "relatedProductsMode": "disabled",
+      "withBackdrop": false
+    },
+    {
+      "_id": "59c6da7b-ecdd-4da1-accd-032f7f558f9e",
+      "_component": "ProductCard",
+      "_itemProps": {
+        "Grid": {
+          "Cards": {
+            "itemSize": {
+              "$res": true,
+              "xl": "1x1"
+            },
+            "verticalAlign": {
+              "$res": true,
+              "xl": "auto"
+            }
+          }
+        }
+      },
+      "product": {
+        "id": "gid://shopify/Product/7620417126612",
+        "widgetId": "product",
+        "key": "self"
+      },
+      "relatedProductsMode": "disabled",
+      "withBackdrop": false
+    },
+    {
+      "_id": "47861fb8-8f7d-4768-973a-21ac77c8122c",
+      "_component": "ProductCard",
+      "_itemProps": {
+        "Grid": {
+          "Cards": {
+            "itemSize": {
+              "$res": true,
+              "xl": "1x1"
+            },
+            "verticalAlign": {
+              "$res": true,
+              "xl": "auto"
+            }
+          }
+        }
+      },
+      "product": {
+        "id": "gid://shopify/Product/7620431478996",
+        "widgetId": "product",
+        "key": "self"
+      },
+      "relatedProductsMode": "disabled",
+      "withBackdrop": false
+    },
+    {
+      "_id": "2c306f42-382f-4612-bad9-eaba29484cc5",
+      "_component": "ProductCard",
+      "_itemProps": {
+        "Grid": {
+          "Cards": {
+            "itemSize": {
+              "$res": true,
+              "xl": "1x1"
+            },
+            "verticalAlign": {
+              "$res": true,
+              "xl": "auto"
+            }
+          }
+        }
+      },
+      "product": {
+        "id": "gid://shopify/Product/7621183865044",
+        "widgetId": "product",
+        "key": "self"
+      },
+      "relatedProductsMode": "disabled",
+      "withBackdrop": false
+    },
+    {
+      "_id": "f28d6f28-ea99-4714-b21a-02eb56171f83",
+      "_component": "ProductCard",
+      "_itemProps": {
+        "Grid": {
+          "Cards": {
+            "itemSize": {
+              "$res": true,
+              "xl": "1x1"
+            },
+            "verticalAlign": {
+              "$res": true,
+              "xl": "auto"
+            }
+          }
+        }
+      },
+      "product": {
+        "id": "gid://shopify/Product/7621187240148",
+        "widgetId": "product",
+        "key": "self"
+      },
+      "relatedProductsMode": "disabled",
+      "withBackdrop": false
+    },
+    {
+      "_id": "36c67bcb-c79b-426c-8e31-a543267afdda",
+      "_component": "ProductCard",
+      "_itemProps": {
+        "Grid": {
+          "Cards": {
+            "itemSize": {
+              "$res": true,
+              "xl": "1x1"
+            },
+            "verticalAlign": {
+              "$res": true,
+              "xl": "auto"
+            }
+          }
+        }
+      },
+      "product": {
+        "id": "gid://shopify/Product/7620416471252",
+        "widgetId": "product",
+        "key": "self"
+      },
+      "relatedProductsMode": "disabled",
+      "withBackdrop": false
+    }
+  ],
+  "variant": {
+    "$res": true,
+    "xl": "slider"
+  },
+  "numberOfItems": {
+    "$res": true,
+    "xl": "5"
+  },
+  "fractionalItemWidth": {
+    "$res": true,
+    "xl": "1.25"
+  },
+  "columnGap": {
+    "$res": true,
+    "xl": {
+      "value": "16px",
+      "tokenId": "16",
+      "widgetId": "@easyblocks/space"
+    }
+  },
+  "rowGap": {
+    "$res": true,
+    "xl": {
+      "value": "16px",
+      "tokenId": "16",
+      "widgetId": "@easyblocks/space"
+    }
+  },
+  "verticalAlign": {
+    "$res": true,
+    "xl": "top"
+  },
+  "showSliderControls": {
+    "$res": true,
+    "xl": false
+  },
+  "shouldSliderItemsBeVisibleOnMargin": {
+    "$res": true,
+    "xl": true
+  },
+  "gridMainObjectAspectRatio": {
+    "$res": true,
+    "xl": {
+      "value": "1:1",
+      "widgetId": "@easyblocks/aspectRatio"
+    }
+  },
+  "paddingTop": {
+    "$res": true,
+    "xl": {
+      "value": "0px",
+      "tokenId": "0",
+      "widgetId": "@easyblocks/space"
+    }
+  },
+  "paddingBottom": {
+    "$res": true,
+    "xl": {
+      "value": "0px",
+      "tokenId": "0",
+      "widgetId": "@easyblocks/space"
+    }
+  },
+  "paddingLeft": {
+    "$res": true,
+    "xl": {
+      "value": "0px",
+      "tokenId": "0",
+      "widgetId": "@easyblocks/space"
+    }
+  },
+  "paddingRight": {
+    "$res": true,
+    "xl": {
+      "value": "0px",
+      "tokenId": "0",
+      "widgetId": "@easyblocks/space"
+    }
+  },
+  "LeftArrow": [
+    {
+      "_id": "fe5f7c7a-ad87-4bc0-a10b-2c9453e5539c",
+      "_component": "Button",
+      "_itemProps": {
+        "Grid": {
+          "LeftArrow": {}
+        }
+      },
+      "Action": [],
+      "variant": "icon",
+      "label": {
+        "id": "local.9ea73604-2410-449f-9c5c-0e186d3ca2a9",
+        "value": {
+          "en-US": "Click me"
+        },
+        "widgetId": "@easyblocks/local-text"
+      },
+      "icon": {
+        "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"red\" width=\"100px\" height=\"100px\"><path d=\"M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z\"/></svg>",
+        "tokenId": "arrowLeft",
+        "widgetId": "@easyblocks/icon"
+      },
+      "color": {
+        "$res": true,
+        "xl": {
+          "tokenId": "grey_05",
+          "value": "#252525",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "minHeight": {
+        "$res": true,
+        "xl": "42"
+      },
+      "minWidth": {
+        "$res": true,
+        "xl": "100"
+      },
+      "horizontalPadding": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "gap": {
+        "$res": true,
+        "xl": {
+          "value": "6px",
+          "tokenId": "6",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "cornerMode": {
+        "$res": true,
+        "xl": "circled"
+      },
+      "cornerRadius": {
+        "$res": true,
+        "xl": "12"
+      },
+      "font": {
+        "$res": true,
+        "xl": {
+          "value": {
+            "fontSize": 13,
+            "lineHeight": 1.8,
+            "fontFamily": "test-soehne-mono"
+          },
+          "tokenId": "body2"
+        }
+      },
+      "underline": "on-custom",
+      "underlineOffset": {
+        "$res": true,
+        "xl": "3"
+      },
+      "iconSize": {
+        "$res": true,
+        "xl": "24"
+      },
+      "hasBackground": true,
+      "backgroundColor": {
+        "$res": true,
+        "xl": {
+          "tokenId": "transparent-grey-light",
+          "value": "#D8D8D880",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "hasBorder": false,
+      "borderWidth": {
+        "$res": true,
+        "xl": "1"
+      },
+      "borderColor": {
+        "$res": true,
+        "xl": {
+          "value": "#000000",
+          "widgetId": "@easyblocks/color",
+          "tokenId": "black"
+        }
+      },
+      "boxShadow": {
+        "$res": true,
+        "xl": {
+          "value": "none",
+          "tokenId": "none"
+        }
+      }
+    }
+  ],
+  "leftArrowPlacement": {
+    "$res": true,
+    "xl": "inside"
+  },
+  "leftArrowOffset": {
+    "$res": true,
+    "xl": {
+      "value": "0px",
+      "tokenId": "0",
+      "widgetId": "@easyblocks/space"
+    }
+  },
+  "RightArrow": [
+    {
+      "_id": "acba0d5b-9f48-43a3-a57c-019b333f1d5b",
+      "_component": "Button",
+      "_itemProps": {
+        "Grid": {
+          "RightArrow": {}
+        }
+      },
+      "Action": [],
+      "variant": "icon",
+      "label": {
+        "id": "local.a6b0bc11-fca2-4dc8-8d7f-30104202a99b",
+        "value": {
+          "en-US": "Click me"
+        },
+        "widgetId": "@easyblocks/local-text"
+      },
+      "icon": {
+        "tokenId": "arrowRight",
+        "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z\"/></svg>",
+        "widgetId": "@easyblocks/icon"
+      },
+      "color": {
+        "$res": true,
+        "xl": {
+          "tokenId": "grey_05",
+          "value": "#252525",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "minHeight": {
+        "$res": true,
+        "xl": "42"
+      },
+      "minWidth": {
+        "$res": true,
+        "xl": "100"
+      },
+      "horizontalPadding": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "gap": {
+        "$res": true,
+        "xl": {
+          "value": "6px",
+          "tokenId": "6",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "cornerMode": {
+        "$res": true,
+        "xl": "circled"
+      },
+      "cornerRadius": {
+        "$res": true,
+        "xl": "12"
+      },
+      "font": {
+        "$res": true,
+        "xl": {
+          "value": {
+            "fontSize": 13,
+            "lineHeight": 1.8,
+            "fontFamily": "test-soehne-mono"
+          },
+          "tokenId": "body2"
+        }
+      },
+      "underline": "on-custom",
+      "underlineOffset": {
+        "$res": true,
+        "xl": "3"
+      },
+      "iconSize": {
+        "$res": true,
+        "xl": "24"
+      },
+      "hasBackground": true,
+      "backgroundColor": {
+        "$res": true,
+        "xl": {
+          "tokenId": "transparent-grey-light",
+          "value": "#D8D8D880",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "hasBorder": false,
+      "borderWidth": {
+        "$res": true,
+        "xl": "1"
+      },
+      "borderColor": {
+        "$res": true,
+        "xl": {
+          "value": "#000000",
+          "widgetId": "@easyblocks/color",
+          "tokenId": "black"
+        }
+      },
+      "boxShadow": {
+        "$res": true,
+        "xl": {
+          "value": "none",
+          "tokenId": "none"
+        }
+      }
+    }
+  ],
+  "rightArrowPlacement": {
+    "$res": true,
+    "xl": "inside"
+  },
+  "rightArrowOffset": {
+    "$res": true,
+    "xl": {
+      "value": "0px",
+      "tokenId": "0",
+      "widgetId": "@easyblocks/space"
+    }
+  },
   "headerMode": "none",
   "layout1Stack": "left",
-  "layout2Stacks": { "$res": true, "xl": "left-right" },
-  "layout2StacksVerticalAlign": { "$res": true, "xl": "center" },
-  "headerStacksGap": { "$res": true, "xl": { "value": "12px", "ref": "12" } },
-  "headerSectionGap": { "$res": true, "xl": { "value": "12px", "ref": "12" } },
-  "footerSectionGap": { "$res": true, "xl": { "value": "12px", "ref": "12" } },
+  "layout2Stacks": {
+    "$res": true,
+    "xl": "left-right"
+  },
+  "layout2StacksVerticalAlign": {
+    "$res": true,
+    "xl": "center"
+  },
+  "headerStacksGap": {
+    "$res": true,
+    "xl": {
+      "value": "12px",
+      "tokenId": "12",
+      "widgetId": "@easyblocks/space"
+    }
+  },
+  "headerSectionGap": {
+    "$res": true,
+    "xl": {
+      "value": "12px",
+      "tokenId": "12",
+      "widgetId": "@easyblocks/space"
+    }
+  },
+  "footerSectionGap": {
+    "$res": true,
+    "xl": {
+      "value": "12px",
+      "tokenId": "12",
+      "widgetId": "@easyblocks/space"
+    }
+  },
   "HeaderStack": [
     {
-      "_id": "80dc2b46-e65c-40e8-aaad-2d5e65ccd8ad",
-      "_template": "$stack",
-      "traceId": "$stack-d2e3b086",
+      "_id": "e3eea548-985c-4ce5-9313-f4870ada6658",
+      "_component": "Stack",
       "Items": []
     }
   ],
   "HeaderSecondaryStack": [
     {
-      "_id": "526ee781-b3a2-423d-901e-97dbcdf4c223",
-      "_template": "$stack",
-      "traceId": "$stack-18b69643",
+      "_id": "e9c8da3b-9f3f-4301-8edd-bb1080c3cd7f",
+      "_component": "Stack",
       "Items": []
     }
   ],
   "Background__": [],
-  "padding": { "$res": true, "xl": { "value": "24px", "ref": "24" } }
+  "padding": {
+    "$res": true,
+    "xl": {
+      "value": "24px",
+      "tokenId": "24",
+      "widgetId": "@easyblocks/space"
+    }
+  }
 }

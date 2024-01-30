@@ -8,7 +8,7 @@
     "bundle": "NODE_ENV=production rollup -c rollup.config.js",
     "emit-declarations": "tsc",
     "bundle-declarations": "api-extractor run --local",
-    "test": "jest && playwright test e2e/",
+    "test": "jest",
     "check": "tsc && eslint --quiet src/"
   },
   "author": "Shopstory z o.o.",
@@ -28,37 +28,35 @@
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/plugin-transform-runtime": "^7.15.0",
-    "@easyblocks/build-tools": "^0.1.0",
+    "@easyblocks/build-tools": "workspace:*",
     "@easyblocks/reduce-css-calc": "workspace:*",
-    "@easyblocks/test-utils": "^0.1.0",
-    "@easyblocks/utils": "link:../utils",
+    "@easyblocks/test-utils": "workspace:*",
+    "@easyblocks/utils": "workspace:*",
     "@jest/types": "^26.6.2",
-    "@playwright/test": "^1.31.2",
     "@types/crypto-js": "^4.1.1",
     "@types/jest": "^26.0.20",
     "@types/lodash": "^4.14.191",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
-    "jest": "^26.6.3",
-    "playwright": "^1.31.2"
+    "jest": "^26.6.3"
   },
   "peerDependencies": {
     "react": "^16.8.0 || ^17.0.0-rc.1 || ^18.0.0",
     "react-dom": "^16.8.0 || ^17.0.0-rc.1 || ^18.0.0"
   },
-  "main": "./dist/index.js",
+  "main": "./dist/cjs/index.js",
   "module": "./dist/es/index.js",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/types/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "types": "./dist/types/index.d.ts",
       "import": "./dist/es/index.js",
-      "require": "./dist/index.js"
+      "require": "./dist/cjs/index.js"
     },
     "./_internals": {
-      "types": "./dist/_internals.d.ts",
+      "types": "./dist/types/_internals.d.ts",
       "import": "./dist/es/_internals.js",
-      "require": "./dist/_internals.js"
+      "require": "./dist/cjs/_internals.js"
     }
   },
   "sideEffects": false,

@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import { DocumenWidgetInline, Document } from "@/app/DocumenWidgetInline";
+import { DocumentWidgetInline, Document } from "@/app/DocumenWidgetInline";
+import { useSearchParams } from "next/navigation";
 
-const DOCUMENT_KEY = "easyblocksQuickDemoDocumentId";
+const DOCUMENT_KEY = "easyblocksQuickDemoDocumentId_v2";
 
 export default function MainPage() {
   const [document, setDocument] = useState<null | undefined | Document>(
@@ -12,6 +12,8 @@ export default function MainPage() {
   );
   const [isOpen, setOpen] = useState<boolean>(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  const locale = useSearchParams().get("locale");
 
   useEffect(() => {
     const documentRaw = localStorage.getItem(DOCUMENT_KEY);
@@ -158,7 +160,10 @@ export default function MainPage() {
                 {document && (
                   <p className={"text-sm text-black-2 max-w-lg"}>
                     <a
-                      href={`${window.location.origin}/page/${document.id}`}
+                      href={
+                        `${window.location.origin}/page/${document.id}` +
+                        (locale ? `?locale=${locale}` : ``)
+                      }
                       target={"_blank"}
                       className={linkClasses}
                     >
@@ -180,15 +185,20 @@ export default function MainPage() {
       )}
 
       <div className={"flex-auto grid bg-white-1"}>
-        <DocumenWidgetInline
+        <DocumentWidgetInline
           isOpen={isOpen}
           onOpenChange={(isOpen) => {
             setOpen(isOpen);
           }}
           document={document}
           onSave={(document) => {
-            setDocument(document);
-            localStorage.setItem(DOCUMENT_KEY, JSON.stringify(document));
+            const nowTime = new Date().getTime();
+            const documentWithUpdatedTime = { ...document, updatedAt: nowTime };
+            setDocument(documentWithUpdatedTime);
+            localStorage.setItem(
+              DOCUMENT_KEY,
+              JSON.stringify(documentWithUpdatedTime)
+            );
           }}
         />
 

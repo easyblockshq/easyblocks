@@ -1,5 +1,5 @@
+import { testDevices } from "../testUtils";
 import { getDeviceWidthPairs } from "./getDeviceWidthPairs";
-import { testDevices } from "./test-utils";
 
 test("works properly for each width different", () => {
   const result = getDeviceWidthPairs(

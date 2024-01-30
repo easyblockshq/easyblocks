@@ -1,6 +1,8 @@
-import { Form } from "@easyblocks/app-utils";
 import { RichTextComponentConfig } from "../$richText";
-import { createCompilationContext } from "../../../createCompilationContext";
+import {
+  createFormMock,
+  createTestCompilationContext,
+} from "../../../../testUtils";
 import { EditorContextType } from "../../../types";
 import {
   buildRichTextBlockElementComponentConfig,
@@ -10,20 +12,10 @@ import {
 } from "../builders";
 import { getRichTextComponentConfigFragment } from "./getRichTextComponentConfigFragment";
 
-const compilationContext = createCompilationContext(
-  { accessToken: "" },
-  { locale: "en" },
-  "content"
-);
-
 const testEditorContext: EditorContextType = {
-  ...compilationContext,
-  mainBreakpointIndex: "b4",
-  form: new Form({
-    label: "Test",
-    id: "test",
-    onSubmit: () => {},
-  }),
+  ...createTestCompilationContext(),
+  focussedField: [],
+  form: createFormMock(),
 } as unknown as EditorContextType;
 
 afterEach(() => {
@@ -33,7 +25,7 @@ afterEach(() => {
 
 test("returns whole component config when all text is selected", () => {
   const sourceRichTextComponentConfig = buildRichTextComponentConfig({
-    compilationContext: testEditorContext,
+    locale: "en",
     elements: [
       buildRichTextBlockElementComponentConfig("paragraph", [
         buildRichTextLineElementComponentConfig({
@@ -43,6 +35,7 @@ test("returns whole component config when all text is selected", () => {
                 $res: true,
                 [testEditorContext.mainBreakpointIndex]: {
                   value: "#fff",
+                  widgetId: "@easyblocks/color",
                 },
               },
               font: {
@@ -64,6 +57,7 @@ test("returns whole component config when all text is selected", () => {
       $res: true,
       [testEditorContext.mainBreakpointIndex]: {
         value: "#fff",
+        widgetId: "@easyblocks/color",
       },
     },
     mainFont: {
@@ -82,29 +76,30 @@ test("returns whole component config when all text is selected", () => {
 
   const expectedRichTextComponentConfigFragment: RichTextComponentConfig = {
     _id: testEditorContext.form.values._id,
-    _template: "@easyblocks/rich-text",
+    _component: "@easyblocks/rich-text",
     accessibilityRole: "div",
     elements: {
       [testEditorContext.contextParams.locale]: [
         {
-          _template: "@easyblocks/rich-text-block-element",
+          _component: "@easyblocks/rich-text-block-element",
           _id: testEditorContext.form.values.elements[
             testEditorContext.contextParams.locale
           ][0]._id,
           elements: [
             {
-              _template: "@easyblocks/rich-text-line-element",
+              _component: "@easyblocks/rich-text-line-element",
               _id: testEditorContext.form.values.elements[
                 testEditorContext.contextParams.locale
               ][0].elements[0]._id,
               elements: [
                 {
                   _id: expect.any(String),
-                  _template: "@easyblocks/rich-text-part",
+                  _component: "@easyblocks/rich-text-part",
                   color: {
                     $res: true,
                     [testEditorContext.mainBreakpointIndex]: {
                       value: "#fff",
+                      widgetId: "@easyblocks/color",
                     },
                   },
                   font: {
@@ -117,7 +112,7 @@ test("returns whole component config when all text is selected", () => {
                     },
                   },
                   value: "Lorem ipsum",
-                  traceId: expect.any(String),
+                  TextWrapper: [],
                 },
               ],
             },
@@ -131,6 +126,7 @@ test("returns whole component config when all text is selected", () => {
       $res: true,
       [testEditorContext.mainBreakpointIndex]: {
         value: "#fff",
+        widgetId: "@easyblocks/color",
       },
     },
     mainFont: {
@@ -154,7 +150,7 @@ test("returns whole component config when all text is selected", () => {
 
 test("returns fragment of component config when is bulleted list and only last list item is selected", () => {
   const sourceRichTextComponentConfig = buildRichTextComponentConfig({
-    compilationContext: testEditorContext,
+    locale: "en",
     elements: [
       buildRichTextBlockElementComponentConfig("bulleted-list", [
         buildRichTextLineElementComponentConfig({
@@ -247,25 +243,25 @@ test("returns fragment of component config when is bulleted list and only last l
 
   const expectedRichTextComponentConfigFragment: RichTextComponentConfig = {
     _id: testEditorContext.form.values._id,
-    _template: "@easyblocks/rich-text",
+    _component: "@easyblocks/rich-text",
     accessibilityRole: "div",
     elements: {
       [testEditorContext.contextParams.locale]: [
         {
-          _template: "@easyblocks/rich-text-block-element",
+          _component: "@easyblocks/rich-text-block-element",
           _id: testEditorContext.form.values.elements[
             testEditorContext.contextParams.locale
           ][0]._id,
           elements: [
             {
-              _template: "@easyblocks/rich-text-line-element",
+              _component: "@easyblocks/rich-text-line-element",
               _id: testEditorContext.form.values.elements[
                 testEditorContext.contextParams.locale
               ][0].elements[2]._id,
               elements: [
                 {
                   _id: expect.any(String),
-                  _template: "@easyblocks/rich-text-part",
+                  _component: "@easyblocks/rich-text-part",
                   color: {
                     $res: true,
                     [testEditorContext.mainBreakpointIndex]: {
@@ -281,8 +277,8 @@ test("returns fragment of component config when is bulleted list and only last l
                       },
                     },
                   },
-                  traceId: expect.any(String),
                   value: "three",
+                  TextWrapper: [],
                 },
               ],
             },

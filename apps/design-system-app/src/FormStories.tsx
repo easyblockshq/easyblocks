@@ -1,7 +1,7 @@
 import {
   FormElement,
-  SSInput,
-  SSToggle,
+  Input,
+  Toggle,
   Typography,
 } from "@easyblocks/design-system";
 
@@ -11,7 +11,7 @@ export function FormStories() {
       <Typography variant={"label"}>Forms</Typography>
       <br />
       <FormElement name={"test"} label={"Some field"}>
-        <SSInput placeholder={"test"} withBorder={true} />
+        <Input placeholder={"test"} withBorder={true} />
       </FormElement>
       <br />
 
@@ -20,15 +20,15 @@ export function FormStories() {
         label={"Field with error"}
         error={"This is some error so that you know what is wrong."}
       >
-        <SSInput placeholder={"test2"} withBorder={true} />
+        <Input placeholder={"test2"} withBorder={true} />
       </FormElement>
       <br />
       <FormElement name={"test-toggle"} label={"Toggle"}>
-        <SSToggle />
+        <Toggle />
       </FormElement>
 
       {/*<FormElement name={"test2"} label={"This is a very long label so that we can check how it behaves"} >*/}
-      {/*  <SSInput placeholder={"test2"} withBorder={true} />*/}
+      {/*  <Input placeholder={"test2"} withBorder={true} />*/}
       {/*</FormElement>*/}
     </div>
   );

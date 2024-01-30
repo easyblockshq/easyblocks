@@ -1,245 +1,487 @@
 {
-  "_id": "56101105-b6cd-41d3-9f4b-ae6dd6b48c6f",
-  "_template": "$video",
-  "traceId": "$video-f3341fe7",
+  "_id": "44691cd6-3d78-4e88-8056-fe9c5ca9056f",
+  "_component": "Video",
   "_itemProps": {
-    "$stack": {
+    "Stack": {
       "Items": {
-        "width": { "$res": true, "xl": "512px" },
-        "marginBottom": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
-        "align": { "$res": true, "xl": "left" }
+        "width": {
+          "$res": true,
+          "xl": "512px"
+        },
+        "marginBottom": {
+          "$res": true,
+          "xl": {
+            "value": "0px",
+            "tokenId": "0",
+            "widgetId": "@easyblocks/space"
+          }
+        },
+        "align": {
+          "$res": true,
+          "xl": "left"
+        }
       }
     }
   },
-  "image": { "$res": true, "xl": { "id": null, "widgetId": "mockVideo" } },
+  "image": {
+    "id": null,
+    "widgetId": "mockVideo"
+  },
   "aspectRatio": {
     "$res": true,
-    "xl": { "value": "16:9", "ref": "$landscape" }
+    "xl": {
+      "value": "16:9",
+      "tokenId": "landscape",
+      "widgetId": "@easyblocks/aspectRatio"
+    }
   },
   "enablePlaybackControls": true,
   "PlayButton": [
     {
-      "_id": "2c29d08f-ae21-489a-94ea-b7a9d06a2338",
-      "_template": "$StandardButton",
-      "traceId": "$StandardButton-bbd96961",
-      "_itemProps": { "$video": { "PlayButton": {} } },
-      "action": [],
+      "_id": "ac94e25f-25d8-4e1a-bdb9-3b6f6ff41d0c",
+      "_component": "Button",
+      "Action": [],
       "variant": "icon",
       "label": {
-        "id": "local.e8c4b5c5-f877-456b-9182-d7d3fdfdcf97",
-        "value": { "en-US": "Play" }
+        "id": "local.7fe94e3d-7c06-4153-835d-d0a725d2a46f",
+        "value": {
+          "en-US": "Lorem ipsum"
+        },
+        "widgetId": "@easyblocks/local-text"
       },
       "icon": {
-        "ref": "play",
-        "value": "<svg viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M8,5.14V19.14L19,12.14L8,5.14Z\" /></svg>"
+        "tokenId": "play",
+        "value": "<svg viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M8,5.14V19.14L19,12.14L8,5.14Z\" /></svg>",
+        "widgetId": "@easyblocks/icon"
       },
-      "color": { "$res": true, "xl": { "value": "white", "ref": "white" } },
-      "minHeight": { "$res": true, "xl": "32" },
-      "minWidth": { "$res": true, "xl": "100" },
+      "color": {
+        "$res": true,
+        "xl": {
+          "tokenId": "white",
+          "value": "#ffffff",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "minHeight": {
+        "$res": true,
+        "xl": "32"
+      },
+      "minWidth": {
+        "$res": true,
+        "xl": "100"
+      },
       "horizontalPadding": {
         "$res": true,
-        "xl": { "value": "16px", "ref": "16" }
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
       },
-      "gap": { "$res": true, "xl": { "value": "6px", "ref": "6" } },
-      "cornerMode": { "$res": true, "xl": "circled" },
-      "cornerRadius": { "$res": true, "xl": "8" },
+      "gap": {
+        "$res": true,
+        "xl": {
+          "value": "6px",
+          "tokenId": "6",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "cornerMode": {
+        "$res": true,
+        "xl": "circled"
+      },
+      "cornerRadius": {
+        "$res": true,
+        "xl": "8"
+      },
       "font": {
         "$res": true,
         "xl": {
           "value": {
-            "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
-            "fontSize": 16,
-            "fontWeight": 500,
-            "lineHeight": 1.2
-          },
-          "ref": "$body2.bold"
+            "fontFamily": "sans-serif",
+            "fontSize": "16px"
+          }
         }
       },
       "underline": "off",
-      "underlineOffset": { "$res": true, "xl": "1" },
-      "iconSize": { "$res": true, "xl": "20" },
+      "underlineOffset": {
+        "$res": true,
+        "xl": "1"
+      },
+      "iconSize": {
+        "$res": true,
+        "xl": "20"
+      },
       "hasBackground": true,
       "backgroundColor": {
         "$res": true,
-        "xl": { "value": "#363636", "ref": "transparent-grey-dark" }
+        "xl": {
+          "tokenId": "transparent-grey-dark",
+          "value": "#36363680",
+          "widgetId": "@easyblocks/color"
+        }
       },
       "hasBorder": false,
-      "borderWidth": { "$res": true, "xl": "1" },
+      "borderWidth": {
+        "$res": true,
+        "xl": "1"
+      },
       "borderColor": {
         "$res": true,
-        "xl": { "value": "black", "ref": "grey_05" }
+        "xl": {
+          "value": "#000000",
+          "widgetId": "@easyblocks/color",
+          "tokenId": "black"
+        }
       },
-      "boxShadow": { "$res": true, "xl": { "value": "none", "ref": "none" } }
+      "boxShadow": {
+        "$res": true,
+        "xl": {
+          "value": "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)"
+        }
+      }
     }
   ],
   "PauseButton": [
     {
-      "_id": "fa74aa47-12d8-44bc-a2fb-98da033f4d60",
-      "_template": "$StandardButton",
-      "traceId": "$StandardButton-744b506e",
-      "_itemProps": { "$video": { "PauseButton": {} } },
-      "action": [],
+      "_id": "995517fc-5aad-42d2-8ac0-17be2b7ccf07",
+      "_component": "Button",
+      "Action": [],
       "variant": "icon",
       "label": {
-        "id": "local.0a70f6d8-7385-49f9-b312-7e3af43f1a31",
-        "value": { "en-US": "Pause" }
+        "id": "local.a08248fe-bdb0-45c0-bab2-ffe0a2b36f15",
+        "value": {
+          "en-US": "Lorem ipsum"
+        },
+        "widgetId": "@easyblocks/local-text"
       },
       "icon": {
-        "ref": "pause",
-        "value": "<svg style=\"width:24px;height:24px\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M14,19H18V5H14M6,19H10V5H6V19Z\" /></svg>"
+        "tokenId": "pause",
+        "value": "<svg style=\"width:24px;height:24px\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M14,19H18V5H14M6,19H10V5H6V19Z\" /></svg>",
+        "widgetId": "@easyblocks/icon"
       },
-      "color": { "$res": true, "xl": { "value": "white", "ref": "white" } },
-      "minHeight": { "$res": true, "xl": "32" },
-      "minWidth": { "$res": true, "xl": "100" },
+      "color": {
+        "$res": true,
+        "xl": {
+          "tokenId": "white",
+          "value": "#ffffff",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "minHeight": {
+        "$res": true,
+        "xl": "32"
+      },
+      "minWidth": {
+        "$res": true,
+        "xl": "100"
+      },
       "horizontalPadding": {
         "$res": true,
-        "xl": { "value": "16px", "ref": "16" }
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
       },
-      "gap": { "$res": true, "xl": { "value": "6px", "ref": "6" } },
-      "cornerMode": { "$res": true, "xl": "circled" },
-      "cornerRadius": { "$res": true, "xl": "8" },
+      "gap": {
+        "$res": true,
+        "xl": {
+          "value": "6px",
+          "tokenId": "6",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "cornerMode": {
+        "$res": true,
+        "xl": "circled"
+      },
+      "cornerRadius": {
+        "$res": true,
+        "xl": "8"
+      },
       "font": {
         "$res": true,
         "xl": {
           "value": {
-            "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
-            "fontSize": 16,
-            "fontWeight": 500,
-            "lineHeight": 1.2
-          },
-          "ref": "$body2.bold"
+            "fontFamily": "sans-serif",
+            "fontSize": "16px"
+          }
         }
       },
       "underline": "off",
-      "underlineOffset": { "$res": true, "xl": "1" },
-      "iconSize": { "$res": true, "xl": "20" },
+      "underlineOffset": {
+        "$res": true,
+        "xl": "1"
+      },
+      "iconSize": {
+        "$res": true,
+        "xl": "20"
+      },
       "hasBackground": true,
       "backgroundColor": {
         "$res": true,
-        "xl": { "value": "#363636", "ref": "transparent-grey-dark" }
+        "xl": {
+          "tokenId": "transparent-grey-dark",
+          "value": "#36363680",
+          "widgetId": "@easyblocks/color"
+        }
       },
       "hasBorder": false,
-      "borderWidth": { "$res": true, "xl": "1" },
+      "borderWidth": {
+        "$res": true,
+        "xl": "1"
+      },
       "borderColor": {
         "$res": true,
-        "xl": { "value": "black", "ref": "grey_05" }
+        "xl": {
+          "value": "#000000",
+          "widgetId": "@easyblocks/color",
+          "tokenId": "black"
+        }
       },
-      "boxShadow": { "$res": true, "xl": { "value": "none", "ref": "none" } }
+      "boxShadow": {
+        "$res": true,
+        "xl": {
+          "value": "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)"
+        }
+      }
     }
   ],
   "autoplay": true,
   "enableSoundControls": true,
   "MuteButton": [
     {
-      "_id": "6d0b3637-dece-4844-b9b0-1b562f99b747",
-      "_template": "$StandardButton",
-      "traceId": "$StandardButton-6b613765",
-      "_itemProps": { "$video": { "MuteButton": {} } },
-      "action": [],
+      "_id": "044d663e-7013-44cb-b5d9-d389506b177d",
+      "_component": "Button",
+      "Action": [],
       "variant": "icon",
       "label": {
-        "id": "local.92f6bf41-5671-445b-aae9-7a9143244bdb",
-        "value": { "en-US": "Mute" }
+        "id": "local.422a664a-c00b-42c1-b707-3ab5f6bcedff",
+        "value": {
+          "en-US": "Lorem ipsum"
+        },
+        "widgetId": "@easyblocks/local-text"
       },
       "icon": {
-        "ref": "mute",
-        "value": "<svg viewBox=\"0 0 24 24\">\n    <path fill=\"currentColor\" d=\"M12,4L9.91,6.09L12,8.18M4.27,3L3,4.27L7.73,9H3V15H7L12,20V13.27L16.25,17.53C15.58,18.04 14.83,18.46 14,18.7V20.77C15.38,20.45 16.63,19.82 17.68,18.96L19.73,21L21,19.73L12,10.73M19,12C19,12.94 18.8,13.82 18.46,14.64L19.97,16.15C20.62,14.91 21,13.5 21,12C21,7.72 18,4.14 14,3.23V5.29C16.89,6.15 19,8.83 19,12M16.5,12C16.5,10.23 15.5,8.71 14,7.97V10.18L16.45,12.63C16.5,12.43 16.5,12.21 16.5,12Z\" />\n</svg>"
+        "tokenId": "mute",
+        "value": "<svg viewBox=\"0 0 24 24\">\n      <path fill=\"currentColor\" d=\"M12,4L9.91,6.09L12,8.18M4.27,3L3,4.27L7.73,9H3V15H7L12,20V13.27L16.25,17.53C15.58,18.04 14.83,18.46 14,18.7V20.77C15.38,20.45 16.63,19.82 17.68,18.96L19.73,21L21,19.73L12,10.73M19,12C19,12.94 18.8,13.82 18.46,14.64L19.97,16.15C20.62,14.91 21,13.5 21,12C21,7.72 18,4.14 14,3.23V5.29C16.89,6.15 19,8.83 19,12M16.5,12C16.5,10.23 15.5,8.71 14,7.97V10.18L16.45,12.63C16.5,12.43 16.5,12.21 16.5,12Z\" />\n  </svg>",
+        "widgetId": "@easyblocks/icon"
       },
-      "color": { "$res": true, "xl": { "value": "white", "ref": "white" } },
-      "minHeight": { "$res": true, "xl": "32" },
-      "minWidth": { "$res": true, "xl": "100" },
+      "color": {
+        "$res": true,
+        "xl": {
+          "tokenId": "white",
+          "value": "#ffffff",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "minHeight": {
+        "$res": true,
+        "xl": "32"
+      },
+      "minWidth": {
+        "$res": true,
+        "xl": "100"
+      },
       "horizontalPadding": {
         "$res": true,
-        "xl": { "value": "16px", "ref": "16" }
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
       },
-      "gap": { "$res": true, "xl": { "value": "6px", "ref": "6" } },
-      "cornerMode": { "$res": true, "xl": "circled" },
-      "cornerRadius": { "$res": true, "xl": "8" },
+      "gap": {
+        "$res": true,
+        "xl": {
+          "value": "6px",
+          "tokenId": "6",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "cornerMode": {
+        "$res": true,
+        "xl": "circled"
+      },
+      "cornerRadius": {
+        "$res": true,
+        "xl": "8"
+      },
       "font": {
         "$res": true,
         "xl": {
           "value": {
-            "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
-            "fontSize": 16,
-            "fontWeight": 500,
-            "lineHeight": 1.2
-          },
-          "ref": "$body2.bold"
+            "fontFamily": "sans-serif",
+            "fontSize": "16px"
+          }
         }
       },
       "underline": "off",
-      "underlineOffset": { "$res": true, "xl": "1" },
-      "iconSize": { "$res": true, "xl": "20" },
+      "underlineOffset": {
+        "$res": true,
+        "xl": "1"
+      },
+      "iconSize": {
+        "$res": true,
+        "xl": "20"
+      },
       "hasBackground": true,
       "backgroundColor": {
         "$res": true,
-        "xl": { "value": "#363636", "ref": "transparent-grey-dark" }
+        "xl": {
+          "tokenId": "transparent-grey-dark",
+          "value": "#36363680",
+          "widgetId": "@easyblocks/color"
+        }
       },
       "hasBorder": false,
-      "borderWidth": { "$res": true, "xl": "1" },
+      "borderWidth": {
+        "$res": true,
+        "xl": "1"
+      },
       "borderColor": {
         "$res": true,
-        "xl": { "value": "black", "ref": "grey_05" }
+        "xl": {
+          "value": "#000000",
+          "widgetId": "@easyblocks/color",
+          "tokenId": "black"
+        }
       },
-      "boxShadow": { "$res": true, "xl": { "value": "none", "ref": "none" } }
+      "boxShadow": {
+        "$res": true,
+        "xl": {
+          "tokenId": "none",
+          "value": "none"
+        }
+      }
     }
   ],
   "UnmuteButton": [
     {
-      "_id": "d84f9425-06d4-4e7f-acf8-f31c9c51d586",
-      "_template": "$StandardButton",
-      "traceId": "$StandardButton-3fadab1a",
-      "_itemProps": { "$video": { "UnmuteButton": {} } },
-      "action": [],
+      "_id": "d8d61650-3ba4-4a8e-b7fc-7a45e6a0915a",
+      "_component": "Button",
+      "Action": [],
       "variant": "icon",
       "label": {
-        "id": "local.e2b58ef6-49ed-4ec2-85bb-da6baedd2d37",
-        "value": { "en-US": "Unmute" }
+        "id": "local.5414dba9-f222-44bb-9253-cefd175bfa69",
+        "value": {
+          "en-US": "Lorem ipsum"
+        },
+        "widgetId": "@easyblocks/local-text"
       },
       "icon": {
-        "ref": "unmute",
-        "value": "<svg viewBox=\"0 0 24 24\">\n    <path fill=\"currentColor\" d=\"M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z\" />\n</svg>"
+        "tokenId": "unmute",
+        "value": "<svg viewBox=\"0 0 24 24\">\n      <path fill=\"currentColor\" d=\"M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z\" />\n  </svg>",
+        "widgetId": "@easyblocks/icon"
       },
-      "color": { "$res": true, "xl": { "value": "white", "ref": "white" } },
-      "minHeight": { "$res": true, "xl": "32" },
-      "minWidth": { "$res": true, "xl": "100" },
+      "color": {
+        "$res": true,
+        "xl": {
+          "tokenId": "white",
+          "value": "#ffffff",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "minHeight": {
+        "$res": true,
+        "xl": "32"
+      },
+      "minWidth": {
+        "$res": true,
+        "xl": "100"
+      },
       "horizontalPadding": {
         "$res": true,
-        "xl": { "value": "16px", "ref": "16" }
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
       },
-      "gap": { "$res": true, "xl": { "value": "6px", "ref": "6" } },
-      "cornerMode": { "$res": true, "xl": "circled" },
-      "cornerRadius": { "$res": true, "xl": "8" },
+      "gap": {
+        "$res": true,
+        "xl": {
+          "value": "6px",
+          "tokenId": "6",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "cornerMode": {
+        "$res": true,
+        "xl": "circled"
+      },
+      "cornerRadius": {
+        "$res": true,
+        "xl": "8"
+      },
       "font": {
         "$res": true,
         "xl": {
           "value": {
-            "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
-            "fontSize": 16,
-            "fontWeight": 500,
-            "lineHeight": 1.2
-          },
-          "ref": "$body2.bold"
+            "fontFamily": "sans-serif",
+            "fontSize": "16px"
+          }
         }
       },
       "underline": "off",
-      "underlineOffset": { "$res": true, "xl": "1" },
-      "iconSize": { "$res": true, "xl": "20" },
+      "underlineOffset": {
+        "$res": true,
+        "xl": "1"
+      },
+      "iconSize": {
+        "$res": true,
+        "xl": "20"
+      },
       "hasBackground": true,
       "backgroundColor": {
         "$res": true,
-        "xl": { "value": "#363636", "ref": "transparent-grey-dark" }
+        "xl": {
+          "tokenId": "transparent-grey-dark",
+          "value": "#36363680",
+          "widgetId": "@easyblocks/color"
+        }
       },
       "hasBorder": false,
-      "borderWidth": { "$res": true, "xl": "1" },
+      "borderWidth": {
+        "$res": true,
+        "xl": "1"
+      },
       "borderColor": {
         "$res": true,
-        "xl": { "value": "black", "ref": "grey_05" }
+        "xl": {
+          "value": "#000000",
+          "widgetId": "@easyblocks/color",
+          "tokenId": "black"
+        }
       },
-      "boxShadow": { "$res": true, "xl": { "value": "none", "ref": "none" } }
+      "boxShadow": {
+        "$res": true,
+        "xl": {
+          "tokenId": "none",
+          "value": "none"
+        }
+      }
     }
   ],
-  "controlsPosition": { "$res": true, "xl": "bottom-right" },
-  "margin": { "$res": true, "xl": { "value": "8px", "ref": "8" } },
-  "gap": { "$res": true, "xl": { "value": "6px", "ref": "6" } }
+  "controlsPosition": {
+    "$res": true,
+    "xl": "bottom-right"
+  },
+  "margin": {
+    "$res": true,
+    "xl": {
+      "value": "8px",
+      "tokenId": "8",
+      "widgetId": "@easyblocks/space"
+    }
+  },
+  "gap": {
+    "$res": true,
+    "xl": {
+      "value": "6px",
+      "tokenId": "6",
+      "widgetId": "@easyblocks/space"
+    }
+  }
 }

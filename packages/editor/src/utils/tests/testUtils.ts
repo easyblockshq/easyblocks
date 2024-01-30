@@ -1,97 +1,12 @@
-import { Form } from "@easyblocks/app-utils";
-import { Devices, ExternalFieldCustom } from "@easyblocks/core";
-import { CompilationCache } from "@easyblocks/core/_internals";
-import { schemas } from "@easyblocks/editable-components";
+import { Devices } from "@easyblocks/core";
+import {
+  CompilationCache,
+  createTestCompilationContext,
+} from "@easyblocks/core/_internals";
 import { EditorContextType } from "../../EditorContext";
+import { Form } from "../../form";
 
-const getImageFromId = (id: string) => ({
-  alt: id,
-  url: id,
-  aspectRatio: 1,
-  srcset: [
-    {
-      w: 100,
-      h: 100,
-      url: id,
-    },
-  ],
-  mimeType: "image/jpeg",
-});
-
-export const testEmptyWidget: ExternalFieldCustom = {
-  type: "custom",
-  component: () => {},
-};
-
-export const testTypes: EditorContextType["types"] = {
-  image: {
-    defaultFetch: async (resources) => {
-      return resources.map((resource) => {
-        return {
-          ...resource,
-          value: getImageFromId(resource.id),
-        };
-      });
-    },
-    widget: testEmptyWidget,
-  },
-  video: {
-    defaultFetch: async (resources) => {
-      return resources.map((resource) => {
-        return {
-          ...resource,
-          value: {
-            alt: resource.id,
-            url: resource.id,
-            aspectRatio: 1,
-          },
-        };
-      });
-    },
-    widget: testEmptyWidget,
-  },
-  product: {
-    fetch: async (resources) => {
-      return resources.map((resource) => {
-        return {
-          ...resource,
-          value: { id: resource.id, sku: resource.id },
-        };
-      });
-    },
-    widget: testEmptyWidget,
-  },
-};
-
-export const testText: EditorContextType["text"] = {
-  fetch: async (resources) => {
-    return resources.map((resource) => {
-      if (resource.id === "incorrect") {
-        return {
-          ...resource,
-          value: undefined,
-          error: new Error("Incorrect text!"),
-        };
-      }
-
-      return {
-        ...resource,
-        value: { en: `!${resource.id}` },
-      };
-    });
-  },
-  create: async () => {
-    return {};
-  },
-  update: async () => {
-    return {};
-  },
-  remove: async () => {
-    return;
-  },
-};
-
-export const testDevices: Devices = [
+const testDevices: Devices = [
   {
     id: "b1",
     w: 100,
@@ -124,21 +39,16 @@ export const testDevices: Devices = [
   },
 ];
 
+const testCompilationContext = createTestCompilationContext();
+
 export const testEditorContext: EditorContextType = {
+  ...testCompilationContext,
   syncTemplates: () => {},
   isAdminMode: false,
-  definitions: {
-    components: [...schemas],
-    links: [],
-    actions: [],
-    textModifiers: [],
-  },
   breakpointIndex: "b1",
   setBreakpointIndex: (b) => null,
   devices: testDevices,
-  types: testTypes,
-  text: testText,
-  templates: {},
+  templates: [],
   contextParams: {
     locale: "en",
   },
@@ -182,24 +92,5 @@ export const testEditorContext: EditorContextType = {
       fallback: "en",
     },
   ],
-  resources: [],
   compilationCache: new CompilationCache(),
-  imageVariants: [],
-  imageVariantsDisplay: [],
-  videoVariants: [],
-  videoVariantsDisplay: [],
-  rootContainer: "content",
-  rootContainers: [],
 };
-
-/**
- * Wrapper for `jest.fn` function, but with types which automatically infer parameters type and return type.
- * This is more handy for cases where the mocked function has its dedicated type.
- */
-export function mock<Implementation extends (...args: any) => any>(
-  implementation: Implementation
-): jest.Mock<ReturnType<Implementation>, Parameters<Implementation>> {
-  return jest.fn<ReturnType<Implementation>, Parameters<Implementation>>(
-    implementation
-  );
-}

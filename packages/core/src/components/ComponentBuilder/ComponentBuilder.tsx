@@ -1,14 +1,9 @@
 import React, { ComponentType, Fragment, ReactElement } from "react";
-import { isEmptyRenderableContent } from "../../checkers";
 import { findComponentDefinitionById } from "../../compiler/findComponentDefinition";
 import {
-  isExternalSchemaProp,
-  isSchemaPropActionTextModifier,
   isSchemaPropComponent,
   isSchemaPropComponentOrComponentCollection,
-  isSchemaPropTextModifier,
 } from "../../compiler/schema";
-import { splitTemplateName } from "../../compiler/splitTemplateName";
 import {
   ContextProps,
   InternalComponentDefinition,
@@ -19,21 +14,20 @@ import {
   itemInserted,
 } from "../../events";
 import {
-  getExternalReferenceLocationKey,
-  getExternalValue,
-  isCompoundExternalDataValue,
+  getResolvedExternalDataValue,
   isLocalTextReference,
+  resolveExternalValue,
 } from "../../resourcesUtils";
 import {
+  isTrulyResponsiveValue,
   responsiveValueGetDefinedValue,
-  responsiveValueMap,
   responsiveValueReduce,
+  responsiveValueValues,
 } from "../../responsiveness";
 import { resop } from "../../responsiveness/resop";
 import {
   CompilationMetadata,
   CompiledComponentConfig,
-  CompiledCustomComponentConfig,
   CompiledLocalTextReference,
   CompiledShopstoryComponentConfig,
   ComponentCollectionLocalisedSchemaProp,
@@ -42,17 +36,15 @@ import {
   Devices,
   ExternalData,
   ExternalReference,
-  ExternalReferenceNonEmpty,
   ExternalSchemaProp,
   LocalReference,
   LocalTextReference,
+  NoCodeComponentProps,
   ResponsiveValue,
 } from "../../types";
 import { Box } from "../Box/Box";
 import { useEasyblocksExternalData } from "../EasyblocksExternalDataProvider";
 import { useEasyblocksMetadata } from "../EasyblocksMetadataProvider";
-import { MissingComponent } from "../MissingComponent";
-import { ImageProps } from "../StandardImage";
 
 function buildBoxes(
   compiled: any,
@@ -90,11 +82,7 @@ function getComponentDefinition(
   compiled: CompiledComponentConfig,
   runtimeContext: any
 ) {
-  return findComponentDefinitionById(
-    splitTemplateName(compiled._template).name,
-    // @ts-ignore
-    runtimeContext
-  );
+  return findComponentDefinitionById(compiled._component, runtimeContext);
 }
 
 /**
@@ -139,7 +127,26 @@ function getRenderabilityStatus(
 
   const requiredExternalFields = componentDefinition.schema.filter(
     (schemaProp): schemaProp is ExternalSchemaProp => {
-      return isExternalSchemaProp(schemaProp) && !schemaProp.optional;
+      if (schemaProp.type === "text") {
+        return false;
+      }
+
+      const propValue = compiled.props[schemaProp.prop];
+
+      if (
+        typeof propValue === "object" &&
+        propValue !== null &&
+        "id" in propValue &&
+        "widgetId" in propValue
+      ) {
+        if ("optional" in schemaProp) {
+          return !schemaProp.optional;
+        }
+
+        return true;
+      }
+
+      return false;
     }
   );
 
@@ -174,11 +181,7 @@ function getRenderabilityStatus(
 
 function getCompiledSubcomponents(
   id: string,
-  compiledArray: (
-    | CompiledShopstoryComponentConfig
-    | CompiledCustomComponentConfig
-    | ReactElement
-  )[],
+  compiledArray: (CompiledComponentConfig | ReactElement)[],
   contextProps: ContextProps,
   schemaProp:
     | ComponentSchemaProp
@@ -197,7 +200,7 @@ function getCompiledSubcomponents(
 
   if (schemaProp.noInline) {
     const elements = compiledArray.map((compiledChild, index) =>
-      "_template" in compiledChild ? (
+      "_component" in compiledChild ? (
         <ComponentBuilder
           path={`${path}.${index}`}
           compiled={compiledChild}
@@ -220,13 +223,11 @@ function getCompiledSubcomponents(
     : components["EditableComponentBuilder.client"];
 
   let elements = compiledArray.map((compiledChild, index) =>
-    "_template" in compiledChild ? (
+    "_component" in compiledChild ? (
       <EditableComponentBuilder
         compiled={compiledChild}
-        schemaProp={schemaProp}
         index={index}
         length={compiledArray.length}
-        contextProps={contextProps}
         path={`${path}.${index}`}
         components={components}
       />
@@ -259,7 +260,7 @@ function getCompiledSubcomponents(
             event: ComponentPickerClosedEvent
           ) {
             if (
-              event.data.type === "@shopstory-editor/component-picker-closed"
+              event.data.type === "@easyblocks-editor/component-picker-closed"
             ) {
               window.removeEventListener(
                 "message",
@@ -298,21 +299,25 @@ export type ComponentBuilderProps = {
   passedProps?: {
     [key: string]: any; // any extra props passed in components
   };
-  compiled: CompiledShopstoryComponentConfig | CompiledCustomComponentConfig;
+  compiled: CompiledComponentConfig;
   components: {
+    "@easyblocks/missing-component": ComponentType<any>;
     "@easyblocks/rich-text.client": ComponentType<any>;
     "@easyblocks/rich-text-block-element": ComponentType<any>;
-    "@easyblocks/rich-text-inline-wrapper-element": ComponentType<any>;
     "@easyblocks/rich-text-line-element": ComponentType<any>;
     "@easyblocks/rich-text-part": ComponentType<any>;
     "@easyblocks/text.client": ComponentType<any>;
     "EditableComponentBuilder.client": ComponentType<any>;
-    Image: ComponentType<ImageProps>;
     [key: string]: ComponentType<any>;
   };
 };
 
-type ComponentBuilderComponent = React.FC<ComponentBuilderProps>;
+export type InternalNoCodeComponentProps = NoCodeComponentProps & {
+  __easyblocks: {
+    path: string;
+    runtime: any;
+  };
+};
 
 function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
   const { compiled, passedProps, path, components, ...restProps } = props;
@@ -339,13 +344,13 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
   })!;
 
   const component = getComponent(componentDefinition, components, isEditing);
-  const isMissingComponent = compiled._template === "$MissingComponent";
+  const isMissingComponent =
+    compiled._component === "@easyblocks/missing-component";
   const isMissingInstance = component === undefined;
   const isMissing = isMissingComponent || isMissingInstance;
+  const MissingComponent = components["@easyblocks/missing-component"];
 
   if (isMissing) {
-    console.warn(`Missing "${compiled._template}"`);
-
     if (!isEditing) {
       return null;
     }
@@ -353,6 +358,8 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
     if (isMissingComponent) {
       return <MissingComponent error={true}>Missing</MissingComponent>;
     } else {
+      console.warn(`Missing "${compiled._component}"`);
+
       return (
         <MissingComponent component={componentDefinition} error={true}>
           Missing
@@ -403,12 +410,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
 
   // Styled
   componentDefinition.schema.forEach((schemaProp) => {
-    if (
-      isSchemaPropComponentOrComponentCollection(schemaProp) &&
-      // !isSchemaPropAction(schemaProp) &&
-      !isSchemaPropActionTextModifier(schemaProp) &&
-      !isSchemaPropTextModifier(schemaProp)
-    ) {
+    if (isSchemaPropComponentOrComponentCollection(schemaProp)) {
       const contextProps =
         shopstoryCompiledConfig.__editing?.components?.[schemaProp.prop] || {};
 
@@ -433,12 +435,18 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
 
   const runtime = {
     stitches: meta.stitches,
-    Image: components["Image"],
     resop: resop,
     Box,
     devices: meta.vars.devices,
     isEditing,
     locale: meta.vars.locale,
+  };
+
+  const easyblocksProp: InternalNoCodeComponentProps["__easyblocks"] = {
+    id: shopstoryCompiledConfig._id,
+    isEditing,
+    path,
+    runtime,
   };
 
   const componentProps = {
@@ -450,10 +458,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
       externalData
     ),
     ...styled,
-    path,
-    isEditing,
-    runtime,
-    _id: shopstoryCompiledConfig._id,
+    __easyblocks: easyblocksProp,
   };
 
   return <Component {...componentProps} />;
@@ -497,10 +502,7 @@ function mapExternalProps(
       (currentSchema) => currentSchema.prop === propName
     );
 
-    if (
-      schemaProp &&
-      (isExternalSchemaProp(schemaProp) || schemaProp.type === "text")
-    ) {
+    if (schemaProp) {
       const propValue = props[propName] as ResponsiveValue<
         LocalReference | ExternalReference
       >;
@@ -513,19 +515,30 @@ function mapExternalProps(
           propValue as unknown as CompiledLocalTextReference
         ).value;
       } else if (
-        isExternalSchemaProp(schemaProp) ||
-        (schemaProp.type === "text" &&
-          !isLocalTextReference(
-            propValue as LocalReference | ExternalReference<string>,
-            "text"
+        // FIXME: this is a mess
+        (!isTrulyResponsiveValue(propValue) &&
+          typeof propValue === "object" &&
+          "id" in propValue &&
+          "widgetId" in propValue &&
+          !("value" in propValue)) ||
+        (isTrulyResponsiveValue(propValue) &&
+          responsiveValueValues(propValue).every(
+            (v) =>
+              typeof v === "object" &&
+              v &&
+              "id" in v &&
+              "widgetId" in v &&
+              !("value" in v)
           ))
       ) {
         resultsProps[propName] = resolveExternalValue(
-          propValue as ExternalReference,
+          propValue,
           configId,
           schemaProp as ExternalSchemaProp,
           externalData
         );
+      } else {
+        resultsProps[propName] = props[propName];
       }
     } else {
       resultsProps[propName] = props[propName];
@@ -535,66 +548,7 @@ function mapExternalProps(
   return resultsProps;
 }
 
-function resolveExternalValue(
-  responsiveResource: ResponsiveValue<ExternalReference>,
-  configId: string,
-  schemaProp: ExternalSchemaProp,
-  externalData: ExternalData
-) {
-  return responsiveValueMap(responsiveResource, (r, breakpointIndex) => {
-    if (r.id) {
-      // If resource field has `key` defined and its `id` starts with "$.", it means that it's a reference to the
-      // root resource and we need to look for the resource with the same id as the root resource.
-      const locationKey =
-        r.key && typeof r.id === "string" && r.id.startsWith("$.")
-          ? r.id
-          : getExternalReferenceLocationKey(
-              configId,
-              schemaProp.prop,
-              breakpointIndex
-            );
-      const externalDataValue = externalData[locationKey];
-
-      let resourceValue: ReturnType<typeof getExternalValue>;
-
-      if (externalDataValue) {
-        resourceValue = getExternalValue(externalDataValue);
-      }
-
-      if (
-        externalDataValue === undefined ||
-        isEmptyRenderableContent(resourceValue)
-      ) {
-        return;
-      }
-
-      if ("error" in externalDataValue) {
-        return;
-      }
-
-      if (isCompoundExternalDataValue(externalDataValue)) {
-        if (!r.key) {
-          return;
-        }
-
-        const resolvedResourceValue = externalDataValue.value[r.key].value;
-
-        if (!resolvedResourceValue) {
-          return;
-        }
-
-        return resolvedResourceValue;
-      }
-
-      return resourceValue;
-    }
-
-    return;
-  });
-}
-
 export { ComponentBuilder };
-export type { ComponentBuilderComponent };
 
 function getFieldStatus(
   externalReference: ResponsiveValue<ExternalReference>,
@@ -667,26 +621,6 @@ function getFieldStatus(
     { renderable: true, isLoading: false },
     devices
   );
-}
-
-function getResolvedExternalDataValue(
-  externalData: ExternalData,
-  configId: string,
-  fieldName: string,
-  value: ExternalReferenceNonEmpty
-) {
-  const externalReferenceLocationKey =
-    typeof value.id === "string" && value.id.startsWith("$.")
-      ? value.id
-      : getExternalReferenceLocationKey(configId, fieldName);
-
-  const externalValue = externalData[externalReferenceLocationKey];
-
-  if (externalValue === undefined || "error" in externalValue) {
-    return;
-  }
-
-  return externalValue;
 }
 
 function getComponentMainType(componentTypes: string[]) {

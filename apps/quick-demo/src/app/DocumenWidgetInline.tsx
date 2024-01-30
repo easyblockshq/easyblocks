@@ -1,19 +1,11 @@
 "use client";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogOverlay,
-  DialogPortal,
-  DialogTrigger,
-} from "@radix-ui/react-dialog";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { generatePreviewUrl } from "@/utils/generatePreviewUrl";
 
-export type Document = { id: string; rootContainer: string; updatedAt: number };
+export type Document = { id: string; updatedAt: number };
 
-export const DocumenWidgetInline: React.FC<{
+export const DocumentWidgetInline: React.FC<{
   document?: Document | null;
   onSave: (document: Document) => void;
   isOpen: boolean;
@@ -24,6 +16,9 @@ export const DocumenWidgetInline: React.FC<{
   const [editorIframeNode, setEditorIframeNode] =
     useState<HTMLIFrameElement | null>(null);
 
+  const searchParams = useSearchParams();
+  const locale = searchParams.get("locale");
+
   useEffect(() => {
     function handleMessage(event: MessageEvent) {
       if (event.data.type === "@easyblocks/closed") {
@@ -33,6 +28,7 @@ export const DocumenWidgetInline: React.FC<{
       }
 
       if (event.data.type === "@easyblocks/content-saved") {
+        console.log("ON SAVE", event.data.document);
         onSave(event.data.document);
       }
     }
@@ -49,12 +45,14 @@ export const DocumenWidgetInline: React.FC<{
 
   // canvas URL must be calculated once
   const [canvasUrl] = useState(() => {
-    const rootContainer = document?.rootContainer ?? "content";
-
-    let canvasUrl = `${window.location.origin}/easyblocks-editor?documentType=${rootContainer}&mode=app`;
+    let canvasUrl = `${window.location.origin}/easyblocks-editor?rootTemplate=StarterTemplate&readOnly=false`;
 
     if (document) {
-      canvasUrl += `&documentId=${document.id}`;
+      canvasUrl += `&document=${document.id}`;
+    }
+
+    if (locale) {
+      canvasUrl += `&locale=${locale}`;
     }
 
     return canvasUrl;

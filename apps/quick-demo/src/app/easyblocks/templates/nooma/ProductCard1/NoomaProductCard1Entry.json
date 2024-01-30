@@ -1,18 +1,24 @@
 {
-  "_id": "9f07c15c-e978-4d3d-b8c7-604bbab5ddcc",
-  "_template": "ProductCard",
-  "traceId": "ProductCard-d17cc3c6",
+  "_id": "d72cebfd-ed3d-41a2-837f-3ec84c551d96",
+  "_component": "ProductCard",
   "_itemProps": {
-    "$GridCard": {
+    "Grid": {
       "Cards": {
-        "itemSize": { "$res": true, "xl": "1x1" },
-        "verticalAlign": { "$res": true, "xl": "auto" }
+        "itemSize": {
+          "$res": true,
+          "xl": "1x1"
+        },
+        "verticalAlign": {
+          "$res": true,
+          "xl": "auto"
+        }
       }
     }
   },
   "product": {
     "id": "gid://shopify/Product/7620416209108",
-    "widgetId": "product"
+    "widgetId": "product",
+    "key": "self"
   },
   "relatedProductsMode": "enabled",
   "withBackdrop": false

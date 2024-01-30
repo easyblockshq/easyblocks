@@ -1,4 +1,6 @@
+import { EasyblocksBackend } from "../EasyblocksBackend";
 import { parseSpacing } from "../spacingToPx";
+import { testDevices } from "../testUtils";
 import {
   RefValue,
   ResponsiveValue,
@@ -10,18 +12,29 @@ import { getDevicesWidths } from "./devices";
 import { linearizeSpace } from "./linearizeSpace";
 import { CompilationContextType } from "./types";
 
-const testEditorContext = createCompilationContext(
-  { accessToken: "" },
+const testCompilationContext = createCompilationContext(
+  {
+    backend: new EasyblocksBackend({ accessToken: "" }),
+    components: [
+      {
+        id: "TestComponent",
+        schema: [],
+      },
+    ],
+    locales: [{ code: "en", isDefault: true }],
+  },
   { locale: "en" },
-  "content"
+  "TestComponent"
 );
 
-const devicesWidths = getDevicesWidths(testEditorContext.devices);
+testCompilationContext.devices = testDevices;
 
-const editorContextWithTokens: CompilationContextType = {
-  ...testEditorContext,
+const devicesWidths = getDevicesWidths(testCompilationContext.devices);
+
+const compilationContextWithTokens: CompilationContextType = {
+  ...testCompilationContext,
   theme: {
-    ...testEditorContext.theme,
+    ...testCompilationContext.theme,
     space: {
       0: { value: "0px", type: "dev" },
       1: { value: "1px", type: "dev" },
@@ -73,7 +86,7 @@ test("doesn't modify non-responsive value", () => {
       {
         value: "10px",
       },
-      testEditorContext,
+      testCompilationContext,
       devicesWidths
     )
   ).toEqual({ value: "10px" });
@@ -84,7 +97,7 @@ test("doesn't modify non-responsive value", () => {
         ref: "xxx",
         value: "10px",
       },
-      testEditorContext,
+      testCompilationContext,
       devicesWidths
     )
   ).toEqual({ ref: "xxx", value: "10px" });
@@ -92,13 +105,13 @@ test("doesn't modify non-responsive value", () => {
 
 test("single responsive token fills all the values", () => {
   const responsiveToken: RefValue<ResponsiveValue<Spacing>> = {
-    ref: "xxx",
+    // ref: "xxx",
     value: { $res: true, b1: "10px", b4: "20px" },
   };
 
   const result = linearizeSpace(
     { $res: true, b4: responsiveToken },
-    testEditorContext,
+    testCompilationContext,
     devicesWidths
   );
   expect(result).toEqual({
@@ -119,7 +132,7 @@ test("vw token single", () => {
 
   const result = linearizeSpace(
     { $res: true, b4: responsiveToken },
-    testEditorContext,
+    testCompilationContext,
     devicesWidths
   );
   expect(result).toEqual({
@@ -145,7 +158,7 @@ test("two responsive tokens fill all the undefined values correctly", () => {
 
   const result = linearizeSpace(
     { $res: true, b2: responsiveToken1, b4: responsiveToken2 },
-    testEditorContext,
+    testCompilationContext,
     devicesWidths
   );
   expect(result).toEqual({
@@ -177,7 +190,7 @@ test("single non-responsive token uses built-in linearity", () => {
 
   const result: any = linearizeSpace(
     { b4: b4Val, $res: true },
-    testEditorContext,
+    testCompilationContext,
     devicesWidths
   );
 
@@ -195,7 +208,7 @@ test("linearity works with 2 defined values and non-defined in-between", () => {
   expect(
     linearizeSpace(
       { b1: b1Val, b5: b5Val, $res: true },
-      testEditorContext,
+      testCompilationContext,
       devicesWidths
     )
   ).toEqual({
@@ -214,7 +227,7 @@ test("linearity works with 2 defined values, correct in-between linearity and ed
 
   const result: any = linearizeSpace(
     { b1: b1Val, b3: b3Val, $res: true },
-    testEditorContext,
+    testCompilationContext,
     devicesWidths
   );
 
@@ -233,7 +246,7 @@ test("linearity works with 2 defined values, correct in-between linearity and ed
 
   const result: any = linearizeSpace(
     { b2: b2Val, b4: b4Val, $res: true },
-    testEditorContext,
+    testCompilationContext,
     devicesWidths,
     constant
   );
@@ -261,7 +274,7 @@ test("If value is smaller than constant, then it should be preserved", () => {
 
   const result: any = linearizeSpace(
     { b2: b2Val, b4: b4Val, $res: true },
-    testEditorContext,
+    testCompilationContext,
     devicesWidths,
     constant
   );
@@ -280,7 +293,7 @@ test("All values identical based on auto (rare)", () => {
 
   const result: any = linearizeSpace(
     { b5: b5Val, $res: true },
-    testEditorContext,
+    testCompilationContext,
     devicesWidths,
     constant
   );
@@ -298,7 +311,7 @@ test("linearity works correctly on edges", () => {
 
   const result: any = linearizeSpace(
     { b3: b3Val, b4: b4Val, $res: true },
-    testEditorContext,
+    testCompilationContext,
     devicesWidths
   );
   expectValueToBeCloseTo(result.b1.value, defaultLinearValue(300, 30, 100));
@@ -314,7 +327,7 @@ test("linearity works with 2 defined values and non-defined upper", () => {
 
   const result: any = linearizeSpace(
     { b1: b1Val, b2: b2Val, $res: true },
-    testEditorContext,
+    testCompilationContext,
     devicesWidths
   );
 
@@ -332,7 +345,7 @@ test("two neighbouring equal values result in all equal in between", () => {
   expect(
     linearizeSpace(
       { b1: b1Val, b2: value20, b5: value20, $res: true },
-      testEditorContext,
+      testCompilationContext,
       devicesWidths
     )
   ).toEqual({
@@ -352,7 +365,7 @@ test("complex case of linearization", () => {
 
   const result: any = linearizeSpace(
     { b1: b1Val, b2: b2Val, b4: b4Val, $res: true },
-    testEditorContext,
+    testCompilationContext,
     devicesWidths
   );
 
@@ -371,7 +384,7 @@ test("complex case of linearization 2", () => {
   expect(
     linearizeSpace(
       { b1: b1Val, b3: b3Val, b5: b5Val, $res: true },
-      testEditorContext,
+      testCompilationContext,
       devicesWidths
     )
   ).toEqual({
@@ -394,7 +407,7 @@ test("linear function can be only ascending (with width, bigger widths -> bigger
   expect(
     linearizeSpace(
       { b1: b1Val, b5: b5Val, $res: true },
-      testEditorContext,
+      testCompilationContext,
       devicesWidths
     )
   ).toEqual({
@@ -414,7 +427,7 @@ describe("custom widths (reversed)", () => {
 
     const result: any = linearizeSpace(
       { b1: b1Val, b4: b4Val, $res: true },
-      testEditorContext,
+      testCompilationContext,
       {
         $res: true,
         b1: 300,
@@ -441,7 +454,7 @@ describe("custom widths (reversed)", () => {
 
     const result: any = linearizeSpace(
       { b2: b2Val, b3: b3Val, $res: true },
-      testEditorContext,
+      testCompilationContext,
       {
         $res: true,
         b1: 100,
@@ -475,7 +488,7 @@ describe("custom widths (reversed)", () => {
 
     const result: any = linearizeSpace(
       { b1: b1Val, b2: b2Val, b4: b4Val, $res: true },
-      testEditorContext,
+      testCompilationContext,
       nonDeviceWidths
     );
 
@@ -497,7 +510,7 @@ describe("custom widths (reversed)", () => {
     expect(
       linearizeSpace(
         { b1: b1Val, b3: b3Val, b5: b5Val, $res: true },
-        testEditorContext,
+        testCompilationContext,
         nonDeviceWidths
       )
     ).toEqual({
@@ -513,20 +526,28 @@ describe("custom widths (reversed)", () => {
 
 describe("snapping", () => {
   test("snapping to token works, rounding up", () => {
-    const b1Val = { ref: "xxx", value: "10px" };
-    const b5Val = { ref: "yyy", value: "50px" };
+    const b1Val = {
+      tokenId: "xxx",
+      value: "10px",
+      widgetId: "@easyblocks/space",
+    };
+    const b5Val = {
+      tokenId: "yyy",
+      value: "50px",
+      widgetId: "@easyblocks/space",
+    };
 
     const result: any = linearizeSpace(
       { b1: b1Val, b5: b5Val, $res: true },
-      editorContextWithTokens,
+      compilationContextWithTokens,
       devicesWidths
     );
 
     expect(result).toEqual({
       b1: b1Val,
-      b2: { ref: "24", value: "24px" },
-      b3: { ref: "32", value: "32px" },
-      b4: { ref: "48", value: "48px" },
+      b2: { tokenId: "24", value: "24px", widgetId: "@easyblocks/space" },
+      b3: { tokenId: "32", value: "32px", widgetId: "@easyblocks/space" },
+      b4: { tokenId: "48", value: "48px", widgetId: "@easyblocks/space" },
       b5: b5Val,
       $res: true,
     });
@@ -540,7 +561,7 @@ describe("snapping", () => {
     // in this scenario all values should be 11px and it's not possible to snap this, because there is not 11px token
     const result: any = linearizeSpace(
       { b2: b2Val, b4: b4Val, $res: true },
-      editorContextWithTokens,
+      compilationContextWithTokens,
       devicesWidths,
       constant
     );
@@ -556,11 +577,11 @@ describe("snapping", () => {
   });
 
   test("0 should be always 0", () => {
-    const b3Val = { ref: "yyy", value: "0px" };
+    const b3Val = { tokenId: "yyy", value: "0px" };
 
     const result: any = linearizeSpace(
       { b3: b3Val, $res: true },
-      editorContextWithTokens,
+      compilationContextWithTokens,
       devicesWidths,
       16
     );
@@ -577,7 +598,7 @@ describe("snapping", () => {
 
     const result: any = linearizeSpace(
       { b3: b3Val, $res: true },
-      editorContextWithTokens,
+      compilationContextWithTokens,
       devicesWidths,
       16
     );
@@ -596,7 +617,7 @@ test("linearisation is not turned on when there is no $width defined", () => {
 
   const result: any = linearizeSpace(
     { b2: b2Val, b4: b4Val, $res: true },
-    testEditorContext,
+    testCompilationContext,
     { $res: true, b1: -1, b2: -1, b3: -1, b4: -1, b5: -1 }
   );
 

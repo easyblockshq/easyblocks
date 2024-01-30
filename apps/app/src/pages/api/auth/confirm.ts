@@ -60,7 +60,7 @@ const confirmHandler: NextApiHandler = async (req, res) => {
       const insertProjectResult = await supabase
         .from("projects")
         .insert({
-          name: `${user.email}'s project`,
+          name: `Playground project`,
           organization_id: insertOrganizationResult.data[0].id,
         })
         .select("id");

@@ -1,10 +1,10 @@
 import React, { ReactNode, useContext } from "react";
 import styled, { createGlobalStyle } from "styled-components";
-import { SSFonts } from "../fonts";
-import { SSButtonGhost } from "../buttons";
-import { SSIcons } from "../icons";
-import { SSColors } from "../colors";
-import { SSInputRaw } from "../Input";
+import { Fonts } from "../fonts";
+import { ButtonGhost } from "../buttons";
+import { Icons } from "../icons";
+import { Colors } from "../colors";
+import { InputRaw } from "../Input";
 import ReactModal from "react-modal";
 
 type ModalBodyProps = {
@@ -43,7 +43,7 @@ const Root = styled.div<ModalBodyProps>`
 
 const HeaderBody = styled.div<Pick<ModalBodyProps, "headerLine">>`
   position: relative;
-  ${(p) => p.headerLine && `border-bottom: 1px solid ${SSColors.black10};`}
+  ${(p) => p.headerLine && `border-bottom: 1px solid ${Colors.black10};`}
   color: black;
 `;
 
@@ -65,21 +65,21 @@ const TitleHeader = styled.div`
 `;
 
 const TitleHeaderLabel = styled.div`
-  ${SSFonts.label};
+  ${Fonts.label};
 `;
 
 const HeaderLetter = styled.div`
   width: 24px;
   height: 24px;
   border-radius: 4px;
-  background-color: ${SSColors.black10};
-  ${SSFonts.label3};
+  background-color: ${Colors.black10};
+  ${Fonts.label3};
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-export const SSModalBody: React.FC<ModalBodyProps> = ({
+export const ModalBody: React.FC<ModalBodyProps> = ({
   onRequestClose,
   title,
   width,
@@ -96,7 +96,7 @@ export const SSModalBody: React.FC<ModalBodyProps> = ({
         <TitleHeader>
           {title && <TitleHeaderLabel>{title}</TitleHeaderLabel>}
           {searchProps && (
-            <SSInputRaw
+            <InputRaw
               {...searchProps}
               ref={(node) => {
                 if (node) {
@@ -107,8 +107,8 @@ export const SSModalBody: React.FC<ModalBodyProps> = ({
           )}
 
           {headerSymbol === "close" && onRequestClose !== undefined && (
-            <SSButtonGhost
-              icon={SSIcons.Close}
+            <ButtonGhost
+              icon={Icons.Close}
               hideLabel
               onClick={() => {
                 if (onRequestClose) {
@@ -117,7 +117,7 @@ export const SSModalBody: React.FC<ModalBodyProps> = ({
               }}
             >
               Close
-            </SSButtonGhost>
+            </ButtonGhost>
           )}
           {headerSymbol && headerSymbol !== "close" && (
             <HeaderLetter>{headerSymbol}</HeaderLetter>
@@ -150,13 +150,13 @@ const MODES = {
   },
 };
 
-export const SSModalContext = React.createContext<any>(null);
+export const ModalContext = React.createContext<any>(null);
 
-export const SSModal: React.FC<ModalProps> = (props) => {
+export const Modal: React.FC<ModalProps> = (props) => {
   const { isOpen, onRequestClose, mode = "center-small", ...bodyProps } = props;
 
   const parentSelector =
-    useContext(SSModalContext) ??
+    useContext(ModalContext) ??
     (() => {
       return document.querySelector("#modalContainer");
     });
@@ -169,30 +169,13 @@ export const SSModal: React.FC<ModalProps> = (props) => {
 
   const content = (
     <ModalRoot>
-      <SSModalBody
+      <ModalBody
         {...modeProps}
         {...bodyProps}
         onRequestClose={onRequestClose}
       />
     </ModalRoot>
   );
-
-  // TODO: here we are introducing a bug. Parent can't change when component is rendered. But here we check the context of parent for styled components.
-
-  // const parentNode = parentSelector();
-
-  // if (!parentNode) {
-  //   throw new Error("No modals container");
-  // }
-
-  // if (document && document !== parentNode.ownerDocument) {
-  //   content = (
-  //     // @ts-ignore
-  //     <StyleSheetManager target={parentNode.ownerDocument!.head}>
-  //       {content}
-  //     </StyleSheetManager>
-  //   );
-  // }
 
   return (
     <ReactModal
@@ -224,7 +207,7 @@ const sharedContentStyles = `
     }
 `;
 
-export const SSModalStyles = createGlobalStyle`
+export const GlobalModalStyles = createGlobalStyle`
   .Shopstory__ReactModalPortal {
     position: absolute;
     top: 0;

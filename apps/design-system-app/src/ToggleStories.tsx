@@ -1,15 +1,15 @@
-import { SSToggle, Typography } from "@easyblocks/design-system";
+import { Toggle, Typography } from "@easyblocks/design-system";
 
 export function ToggleStories() {
   return (
     <div>
       <Typography variant={"label"}>Toggle</Typography>
       <br />
-      <SSToggle />
+      <Toggle />
       <br />
       <Typography variant={"body"}>Forced checked</Typography>
       <br />
-      <SSToggle checked={true} />
+      <Toggle checked={true} />
     </div>
   );
 }

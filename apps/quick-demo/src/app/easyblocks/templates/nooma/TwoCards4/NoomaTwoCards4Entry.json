@@ -1,546 +1,631 @@
 {
-  "_id": "b115fe05-bf3d-4fa4-b1d2-4af8c79f9c02",
-  "_template": "$TwoCards",
-  "traceId": "$TwoCards-7f92e26e",
+  "_id": "3e83ec3e-2bc8-4812-89f5-86bf4625cda9",
+  "_component": "TwoCards",
   "_itemProps": {
-    "$RootSections": {
+    "StandardPage": {
       "data": {
-        "topMargin": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
-        "bottomMargin": { "$res": true, "xl": { "value": "32px", "ref": "32" } }
+        "topMargin": {
+          "$res": true,
+          "xl": {
+            "value": "0px",
+            "tokenId": "0",
+            "widgetId": "@easyblocks/space"
+          }
+        },
+        "bottomMargin": {
+          "$res": true,
+          "xl": {
+            "value": "32px",
+            "tokenId": "32",
+            "widgetId": "@easyblocks/space"
+          }
+        }
       }
     }
   },
   "containerMargin": {
     "$res": true,
     "xl": {
-      "value": { "$res": true, "xl": "5vw" },
-      "ref": "containerMargin.default"
+      "value": {
+        "$res": true,
+        "md": "5vw",
+        "lg": "8vw"
+      },
+      "tokenId": "containerMargin.standard",
+      "widgetId": "@easyblocks/space"
     }
   },
   "containerMaxWidth": {
     "$res": true,
-    "xl": { "value": "none", "ref": "none" }
+    "xl": {
+      "value": -1,
+      "tokenId": "none"
+    }
   },
-  "escapeMargin": { "$res": true, "xl": true },
-  "hide": { "$res": true, "xl": false },
+  "Card1": [
+    {
+      "_id": "8cc52218-a1bf-4c79-bf1d-462e4fcbe17d",
+      "_component": "BannerCard",
+      "_itemProps": {
+        "TwoCards": {
+          "Card1": {}
+        }
+      },
+      "coverPosition": {
+        "$res": true,
+        "xl": "hide"
+      },
+      "coverVerticalAlign": "stretch",
+      "coverWidth": {
+        "$res": true,
+        "xl": "50%"
+      },
+      "snapCoverToEdges": false,
+      "CoverCard": [
+        {
+          "_id": "ddba38c0-05dd-46b5-a012-1645724669ad",
+          "_component": "CoverCard",
+          "Background": [
+            {
+              "_id": "eebac34b-069e-4b76-bb88-876656fee44a",
+              "_component": "Image",
+              "image": {
+                "id": null,
+                "widgetId": "mockImage"
+              },
+              "aspectRatio": {
+                "$res": true,
+                "xl": {
+                  "value": "1:1",
+                  "widgetId": "@easyblocks/aspectRatio"
+                }
+              }
+            }
+          ],
+          "aspectRatio": {
+            "$res": true,
+            "xl": {
+              "value": "natural",
+              "widgetId": "@easyblocks/aspectRatio"
+            }
+          },
+          "enableBorder": {
+            "$res": true,
+            "xl": false
+          },
+          "borderColor": {
+            "$res": true,
+            "xl": {
+              "value": "#000000",
+              "widgetId": "@easyblocks/color",
+              "tokenId": "black"
+            }
+          },
+          "borderLeft": "1",
+          "borderRight": "1",
+          "borderTop": "1",
+          "borderBottom": "1",
+          "cornerRadius": {
+            "$res": true,
+            "xl": "0"
+          },
+          "overlayOpacity": {
+            "$res": true,
+            "xl": "0"
+          }
+        }
+      ],
+      "stackPosition": {
+        "$res": true,
+        "xl": "top-left"
+      },
+      "paddingLeft": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "paddingRight": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "paddingTop": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "paddingBottom": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "noFillPaddingLeft": {
+        "$res": true,
+        "xl": {
+          "value": "0px",
+          "tokenId": "0",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "noFillPaddingRight": {
+        "$res": true,
+        "xl": {
+          "value": "0px",
+          "tokenId": "0",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "noFillPaddingTop": {
+        "$res": true,
+        "xl": {
+          "value": "0px",
+          "tokenId": "0",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "noFillPaddingBottom": {
+        "$res": true,
+        "xl": {
+          "value": "0px",
+          "tokenId": "0",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "paddingInternal": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "forceStandardHorizontalPaddings": {
+        "$res": true,
+        "xl": false
+      },
+      "enableFill": {
+        "$res": true,
+        "xl": false
+      },
+      "fillColor": {
+        "$res": true,
+        "xl": {
+          "value": "#000000",
+          "widgetId": "@easyblocks/color",
+          "tokenId": "black"
+        }
+      },
+      "enableBorder": {
+        "$res": true,
+        "xl": false
+      },
+      "borderColor": {
+        "$res": true,
+        "xl": {
+          "value": "#000000",
+          "widgetId": "@easyblocks/color",
+          "tokenId": "black"
+        }
+      },
+      "borderLeft": "1",
+      "borderRight": "1",
+      "borderTop": "1",
+      "borderBottom": "1",
+      "cornerRadius": {
+        "$res": true,
+        "xl": "0"
+      },
+      "Stack": [
+        {
+          "_id": "6779c2e5-fdd9-41f8-8377-929d4eec599b",
+          "_component": "Stack",
+          "Items": [
+            {
+              "_id": "9ac470ec-48c8-4dee-b6ce-d9e858210f29",
+              "_component": "@easyblocks/rich-text",
+              "_itemProps": {
+                "Stack": {
+                  "Items": {
+                    "width": {
+                      "$res": true,
+                      "xl": "384px"
+                    },
+                    "marginBottom": {
+                      "$res": true,
+                      "xl": {
+                        "value": "0px",
+                        "tokenId": "0",
+                        "widgetId": "@easyblocks/space"
+                      }
+                    },
+                    "align": {
+                      "$res": true,
+                      "xl": "left"
+                    }
+                  }
+                }
+              },
+              "elements": {
+                "en-US": [
+                  {
+                    "_component": "@easyblocks/rich-text-block-element",
+                    "elements": [
+                      {
+                        "_component": "@easyblocks/rich-text-line-element",
+                        "elements": [
+                          {
+                            "_id": "842235d3-e7a6-48c5-83a9-90a8b9abd5b2",
+                            "_component": "@easyblocks/rich-text-part",
+                            "color": {
+                              "$res": true,
+                              "xl": {
+                                "value": "#252525",
+                                "ref": "grey_05"
+                              }
+                            },
+                            "font": {
+                              "$res": true,
+                              "xl": {
+                                "value": {
+                                  "$res": true,
+                                  "2xl": {
+                                    "fontSize": 20,
+                                    "lineHeight": 1.8,
+                                    "fontFamily": "test-soehne-mono"
+                                  }
+                                },
+                                "ref": "body"
+                              }
+                            },
+                            "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+                            "TextWrapper": []
+                          }
+                        ],
+                        "_id": "b78e8dee-12e7-4233-a65b-3444ba1332f6"
+                      }
+                    ],
+                    "type": "paragraph",
+                    "_id": "8030f70f-bf80-4a36-9eae-2ad3c96e5aca"
+                  }
+                ]
+              },
+              "align": {
+                "$res": true,
+                "xl": "left"
+              },
+              "accessibilityRole": "div",
+              "isListStyleAuto": true,
+              "mainFont": {
+                "$res": true,
+                "xl": {
+                  "value": {
+                    "fontSize": 20,
+                    "lineHeight": 1.8,
+                    "fontFamily": "test-soehne-mono"
+                  },
+                  "tokenId": "body"
+                }
+              },
+              "mainColor": {
+                "$res": true,
+                "xl": {
+                  "value": "#252525",
+                  "tokenId": "grey_05",
+                  "widgetId": "@easyblocks/color"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "Card2": [
+    {
+      "_id": "25ed0d9c-8fcc-4872-bba0-bb4ab9fad9d7",
+      "_component": "BannerCard",
+      "_itemProps": {
+        "TwoCards": {
+          "Card2": {}
+        }
+      },
+      "coverPosition": {
+        "$res": true,
+        "xl": "background"
+      },
+      "coverVerticalAlign": "stretch",
+      "coverWidth": {
+        "$res": true,
+        "xl": "50%"
+      },
+      "snapCoverToEdges": false,
+      "CoverCard": [
+        {
+          "_id": "c2612594-93db-4610-90b6-7d9fc6113bc6",
+          "_component": "CoverCard",
+          "Background": [
+            {
+              "_id": "079d066c-dd9b-44de-b68b-77e1c1965e3e",
+              "_component": "Image",
+              "image": {
+                "id": "4iLYBNvflCX3b0Rp0XF5nY",
+                "widgetId": "mockImage"
+              },
+              "aspectRatio": {
+                "$res": true,
+                "xl": {
+                  "value": "1:1",
+                  "widgetId": "@easyblocks/aspectRatio"
+                }
+              }
+            }
+          ],
+          "aspectRatio": {
+            "$res": true,
+            "xl": {
+              "value": "natural",
+              "widgetId": "@easyblocks/aspectRatio"
+            }
+          },
+          "enableBorder": {
+            "$res": true,
+            "xl": false
+          },
+          "borderColor": {
+            "$res": true,
+            "xl": {
+              "value": "#000000",
+              "widgetId": "@easyblocks/color",
+              "tokenId": "black"
+            }
+          },
+          "borderLeft": "1",
+          "borderRight": "1",
+          "borderTop": "1",
+          "borderBottom": "1",
+          "cornerRadius": {
+            "$res": true,
+            "xl": "0"
+          },
+          "overlayOpacity": {
+            "$res": true,
+            "xl": "0"
+          }
+        }
+      ],
+      "stackPosition": {
+        "$res": true,
+        "xl": "top-left"
+      },
+      "paddingLeft": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "paddingRight": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "paddingTop": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "paddingBottom": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "noFillPaddingLeft": {
+        "$res": true,
+        "xl": {
+          "value": "0px",
+          "tokenId": "0",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "noFillPaddingRight": {
+        "$res": true,
+        "xl": {
+          "value": "0px",
+          "tokenId": "0",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "noFillPaddingTop": {
+        "$res": true,
+        "xl": {
+          "value": "0px",
+          "tokenId": "0",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "noFillPaddingBottom": {
+        "$res": true,
+        "xl": {
+          "value": "0px",
+          "tokenId": "0",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "paddingInternal": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "forceStandardHorizontalPaddings": {
+        "$res": true,
+        "xl": false
+      },
+      "enableFill": {
+        "$res": true,
+        "xl": false
+      },
+      "fillColor": {
+        "$res": true,
+        "xl": {
+          "value": "#000000",
+          "widgetId": "@easyblocks/color",
+          "tokenId": "black"
+        }
+      },
+      "enableBorder": {
+        "$res": true,
+        "xl": false
+      },
+      "borderColor": {
+        "$res": true,
+        "xl": {
+          "value": "#000000",
+          "widgetId": "@easyblocks/color",
+          "tokenId": "black"
+        }
+      },
+      "borderLeft": "1",
+      "borderRight": "1",
+      "borderTop": "1",
+      "borderBottom": "1",
+      "cornerRadius": {
+        "$res": true,
+        "xl": "0"
+      },
+      "Stack": [
+        {
+          "_id": "ab31432a-17de-490a-a44c-1798678d531b",
+          "_component": "Stack",
+          "Items": []
+        }
+      ]
+    }
+  ],
+  "card1Width": {
+    "$res": true,
+    "xl": "12"
+  },
+  "card1EscapeMargin": {
+    "$res": true,
+    "xl": false
+  },
+  "card2Width": {
+    "$res": true,
+    "xl": "12"
+  },
+  "card2EscapeMargin": {
+    "$res": true,
+    "xl": true
+  },
+  "verticalLayout": {
+    "$res": true,
+    "xl": "irregular"
+  },
+  "verticalOffset": {
+    "$res": true,
+    "xl": "-2"
+  },
+  "collapse": {
+    "$res": true,
+    "xl": false
+  },
+  "gap": {
+    "$res": true,
+    "xl": {
+      "tokenId": "0",
+      "value": "0px",
+      "widgetId": "@easyblocks/space"
+    }
+  },
+  "verticalGap": {
+    "$res": true,
+    "xl": {
+      "value": "24px",
+      "tokenId": "24",
+      "widgetId": "@easyblocks/space"
+    }
+  },
+  "invertCollapsed": false,
   "headerMode": "none",
   "layout1Stack": "left",
-  "layout2Stacks": { "$res": true, "xl": "left-right" },
-  "layout2StacksVerticalAlign": { "$res": true, "xl": "center" },
-  "headerStacksGap": { "$res": true, "xl": { "value": "12px", "ref": "12" } },
-  "headerSectionGap": { "$res": true, "xl": { "value": "12px", "ref": "12" } },
-  "footerSectionGap": { "$res": true, "xl": { "value": "12px", "ref": "12" } },
+  "layout2Stacks": {
+    "$res": true,
+    "xl": "left-right"
+  },
+  "layout2StacksVerticalAlign": {
+    "$res": true,
+    "xl": "center"
+  },
+  "headerStacksGap": {
+    "$res": true,
+    "xl": {
+      "value": "12px",
+      "tokenId": "12",
+      "widgetId": "@easyblocks/space"
+    }
+  },
+  "headerSectionGap": {
+    "$res": true,
+    "xl": {
+      "value": "12px",
+      "tokenId": "12",
+      "widgetId": "@easyblocks/space"
+    }
+  },
+  "footerSectionGap": {
+    "$res": true,
+    "xl": {
+      "value": "12px",
+      "tokenId": "12",
+      "widgetId": "@easyblocks/space"
+    }
+  },
   "HeaderStack": [
     {
-      "_id": "0ea5bdb2-82cf-4614-ae56-7d9ba110cb39",
-      "_template": "$stack",
-      "traceId": "$stack-465bee8b",
+      "_id": "2473e56e-06cb-49e5-9b66-ab13ae02075a",
+      "_component": "Stack",
       "Items": []
     }
   ],
   "HeaderSecondaryStack": [
     {
-      "_id": "2d2a5e01-a585-49e2-9b87-e62ee4360059",
-      "_template": "$stack",
-      "traceId": "$stack-a8fc9752",
+      "_id": "f2dca9d3-27ad-4542-a507-3d68cf0be27d",
+      "_component": "Stack",
       "Items": []
     }
   ],
   "Background__": [],
-  "padding": { "$res": true, "xl": { "value": "48px", "ref": "48" } },
-  "Component": [
-    {
-      "_id": "f7341612-4694-45c0-9e8f-4820968ca029",
-      "_template": "$TwoCardsCard",
-      "traceId": "$TwoCardsCard-73667c68",
-      "Card1": [
-        {
-          "_id": "16288907-0900-4f52-b849-f060969dd0d0",
-          "_template": "$BannerCard2",
-          "traceId": "$BannerCard2-6247ab21",
-          "_itemProps": { "$TwoCardsCard": { "Card1": {} } },
-          "cornerRadius": { "$res": true, "xl": "0" },
-          "borderWidth": { "$res": true, "xl": "0" },
-          "borderColor": {
-            "$res": true,
-            "xl": { "value": "black", "ref": "grey_05" }
-          },
-          "borderTop": { "$res": true, "xl": "1" },
-          "borderBottom": { "$res": true, "xl": "1" },
-          "borderLeft": { "$res": true, "xl": "1" },
-          "borderRight": { "$res": true, "xl": "1" },
-          "boxShadow": {
-            "$res": true,
-            "xl": { "value": "none", "ref": "none" }
-          },
-          "Card1": [
-            {
-              "_id": "b569070d-e3dd-44e5-8045-0c3504d24326",
-              "_template": "$BasicCard",
-              "traceId": "$BasicCard-049c6231",
-              "size": { "$res": true, "xl": { "value": "fit-content" } },
-              "Background": [],
-              "borderWidth": { "$res": true, "xl": "0" },
-              "borderColor": {
-                "$res": true,
-                "xl": { "value": "black", "ref": "grey_05" }
-              },
-              "borderTop": { "$res": true, "xl": "1" },
-              "borderBottom": { "$res": true, "xl": "1" },
-              "borderLeft": { "$res": true, "xl": "1" },
-              "borderRight": { "$res": true, "xl": "1" },
-              "boxShadow": {
-                "$res": true,
-                "xl": { "value": "none", "ref": "none" }
-              },
-              "cornerRadius": { "$res": true, "xl": "0" },
-              "enableContent": true,
-              "position": { "$res": true, "xl": "top-left" },
-              "paddingLeft": {
-                "$res": true,
-                "xl": { "value": "24px", "ref": "24" }
-              },
-              "paddingRight": {
-                "$res": true,
-                "xl": { "value": "24px", "ref": "24" }
-              },
-              "paddingTop": {
-                "$res": true,
-                "xl": { "value": "24px", "ref": "24" }
-              },
-              "paddingBottom": {
-                "$res": true,
-                "xl": { "value": "24px", "ref": "24" }
-              },
-              "paddingLeftExternal": {
-                "$res": true,
-                "xl": { "value": "0px", "ref": "0" }
-              },
-              "paddingRightExternal": {
-                "$res": true,
-                "xl": { "value": "0px", "ref": "0" }
-              },
-              "paddingTopExternal": {
-                "$res": true,
-                "xl": { "value": "0px", "ref": "0" }
-              },
-              "paddingBottomExternal": {
-                "$res": true,
-                "xl": { "value": "0px", "ref": "0" }
-              },
-              "edgeMarginProtection": { "$res": true, "xl": true },
-              "Stack": [
-                {
-                  "_id": "50d35814-5770-47a2-a80b-d87448d83b73",
-                  "_template": "$stack",
-                  "traceId": "$stack-1194d9f2",
-                  "Items": [
-                    {
-                      "_id": "abd419e4-9901-437f-9776-c4bce5d9a4fd",
-                      "_template": "@easyblocks/rich-text",
-                      "traceId": "$richText-557bcbd4",
-                      "_itemProps": {
-                        "$stack": {
-                          "Items": {
-                            "width": { "$res": true, "xl": "384px" },
-                            "marginBottom": {
-                              "$res": true,
-                              "xl": { "value": "24px", "ref": "24" }
-                            },
-                            "align": { "$res": true, "xl": "left" }
-                          }
-                        }
-                      },
-                      "elements": {
-                        "en-US": [
-                          {
-                            "_id": "c73e083f-aa33-4a1c-aeea-5829e6af6955",
-                            "_template": "@easyblocks/rich-text-block-element",
-                            "traceId": "$richTextBlockElement-f6a4f389",
-                            "type": "paragraph",
-                            "elements": [
-                              {
-                                "_id": "f73158df-c90c-45f0-8589-1e3b17f562ae",
-                                "_template": "@easyblocks/rich-text-line-element",
-                                "traceId": "$richTextLineElement-4eb13767",
-                                "elements": [
-                                  {
-                                    "_id": "1e053dc4-aafd-4864-9608-cafda4e851a5",
-                                    "_template": "@easyblocks/rich-text-part",
-                                    "traceId": "$richTextPart-7fd4ba43",
-                                    "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-                                    "font": {
-                                      "$res": true,
-                                      "xl": {
-                                        "value": {
-                                          "$res": true,
-                                          "2xl": {
-                                            "fontSize": 20,
-                                            "lineHeight": 1.8,
-                                            "fontFamily": "test-soehne-mono"
-                                          }
-                                        },
-                                        "ref": "body"
-                                      }
-                                    },
-                                    "color": {
-                                      "$res": true,
-                                      "xl": {
-                                        "value": "#252525",
-                                        "ref": "grey_05"
-                                      }
-                                    }
-                                  }
-                                ]
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      "accessibilityRole": "div",
-                      "isListStyleAuto": true,
-                      "mainFont": {
-                        "$res": true,
-                        "xl": {
-                          "value": {
-                            "$res": true,
-                            "2xl": {
-                              "fontSize": 20,
-                              "lineHeight": 1.8,
-                              "fontFamily": "test-soehne-mono"
-                            }
-                          },
-                          "ref": "body"
-                        }
-                      },
-                      "mainColor": {
-                        "$res": true,
-                        "xl": { "value": "#252525", "ref": "grey_05" }
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "Card2": [
-            {
-              "_id": "93addeca-da64-4b0e-9965-c01649bec9c4",
-              "_template": "$BasicCardBackground",
-              "traceId": "$BasicCardBackground-526cedd1",
-              "size": { "$res": true, "xl": { "value": "fit-background" } },
-              "Background": [
-                {
-                  "_id": "e81a4fd2-b118-4364-a0b7-f57205cba706",
-                  "_template": "$image",
-                  "traceId": "$image-ac94e24b",
-                  "_itemProps": {
-                    "$BasicCardBackground": { "Background": {} }
-                  },
-                  "image": {
-                    "$res": true,
-                    "xl": { "id": null, "widgetId": "mockImage" }
-                  },
-                  "aspectRatio": { "$res": true, "xl": { "value": "1:1" } },
-                  "action": []
-                }
-              ],
-              "borderWidth": { "$res": true, "xl": "0" },
-              "borderColor": {
-                "$res": true,
-                "xl": { "value": "black", "ref": "grey_05" }
-              },
-              "borderTop": { "$res": true, "xl": "1" },
-              "borderBottom": { "$res": true, "xl": "1" },
-              "borderLeft": { "$res": true, "xl": "1" },
-              "borderRight": { "$res": true, "xl": "1" },
-              "boxShadow": {
-                "$res": true,
-                "xl": { "value": "none", "ref": "none" }
-              },
-              "cornerRadius": { "$res": true, "xl": "0" },
-              "enableContent": true,
-              "position": { "$res": true, "xl": "top-left" },
-              "paddingLeft": {
-                "$res": true,
-                "xl": { "value": "24px", "ref": "24" }
-              },
-              "paddingRight": {
-                "$res": true,
-                "xl": { "value": "24px", "ref": "24" }
-              },
-              "paddingTop": {
-                "$res": true,
-                "xl": { "value": "24px", "ref": "24" }
-              },
-              "paddingBottom": {
-                "$res": true,
-                "xl": { "value": "24px", "ref": "24" }
-              },
-              "paddingLeftExternal": {
-                "$res": true,
-                "xl": { "value": "0px", "ref": "0" }
-              },
-              "paddingRightExternal": {
-                "$res": true,
-                "xl": { "value": "0px", "ref": "0" }
-              },
-              "paddingTopExternal": {
-                "$res": true,
-                "xl": { "value": "0px", "ref": "0" }
-              },
-              "paddingBottomExternal": {
-                "$res": true,
-                "xl": { "value": "0px", "ref": "0" }
-              },
-              "edgeMarginProtection": { "$res": true, "xl": true },
-              "Stack": [
-                {
-                  "_id": "45ffa5c8-2651-4392-ae12-31ec729cd65b",
-                  "_template": "$stack",
-                  "traceId": "$stack-37014be1",
-                  "Items": []
-                }
-              ]
-            }
-          ],
-          "mode": { "$res": true, "xl": "none" },
-          "sideModeWidth": { "$res": true, "xl": "50%" },
-          "backgroundModePosition": { "$res": true, "xl": "top-left" },
-          "backgroundModePaddingLeft": {
-            "$res": true,
-            "xl": { "value": "24px", "ref": "24" }
-          },
-          "backgroundModePaddingRight": {
-            "$res": true,
-            "xl": { "value": "24px", "ref": "24" }
-          },
-          "backgroundModePaddingTop": {
-            "$res": true,
-            "xl": { "value": "24px", "ref": "24" }
-          },
-          "backgroundModePaddingBottom": {
-            "$res": true,
-            "xl": { "value": "24px", "ref": "24" }
-          },
-          "backgroundModeEdgeMarginProtection": { "$res": true, "xl": true }
-        }
-      ],
-      "Card2": [
-        {
-          "_id": "edaa1b44-2f19-4584-b677-8d0f8c0b248e",
-          "_template": "$BannerCard2",
-          "traceId": "$BannerCard2-17d027e5",
-          "_itemProps": { "$TwoCardsCard": { "Card2": {} } },
-          "cornerRadius": { "$res": true, "xl": "0" },
-          "borderWidth": { "$res": true, "xl": "0" },
-          "borderColor": {
-            "$res": true,
-            "xl": { "value": "black", "ref": "grey_05" }
-          },
-          "borderTop": { "$res": true, "xl": "1" },
-          "borderBottom": { "$res": true, "xl": "1" },
-          "borderLeft": { "$res": true, "xl": "1" },
-          "borderRight": { "$res": true, "xl": "1" },
-          "boxShadow": {
-            "$res": true,
-            "xl": { "value": "none", "ref": "none" }
-          },
-          "Card1": [
-            {
-              "_id": "952019bf-a28b-4736-8286-98eb906d7dcc",
-              "_template": "$BasicCard",
-              "traceId": "$BasicCard-e47acf83",
-              "size": { "$res": true, "xl": { "value": "fit-background" } },
-              "Background": [
-                {
-                  "_id": "01f9bb38-3481-4dba-8cc0-f4c7f5f15728",
-                  "_template": "$image",
-                  "traceId": "$image-10e17a40",
-                  "_itemProps": { "$BasicCard": { "Background": {} } },
-                  "image": {
-                    "$res": true,
-                    "xl": {
-                      "id": "4iLYBNvflCX3b0Rp0XF5nY",
-                      "widgetId": "mockImage"
-                    }
-                  },
-                  "aspectRatio": { "$res": true, "xl": { "value": "1:1" } },
-                  "action": []
-                }
-              ],
-              "borderWidth": { "$res": true, "xl": "0" },
-              "borderColor": {
-                "$res": true,
-                "xl": { "value": "black", "ref": "grey_05" }
-              },
-              "borderTop": { "$res": true, "xl": "1" },
-              "borderBottom": { "$res": true, "xl": "1" },
-              "borderLeft": { "$res": true, "xl": "1" },
-              "borderRight": { "$res": true, "xl": "1" },
-              "boxShadow": {
-                "$res": true,
-                "xl": { "value": "none", "ref": "none" }
-              },
-              "cornerRadius": { "$res": true, "xl": "0" },
-              "enableContent": true,
-              "position": { "$res": true, "xl": "top-left" },
-              "paddingLeft": {
-                "$res": true,
-                "xl": { "value": "24px", "ref": "24" }
-              },
-              "paddingRight": {
-                "$res": true,
-                "xl": { "value": "24px", "ref": "24" }
-              },
-              "paddingTop": {
-                "$res": true,
-                "xl": { "value": "24px", "ref": "24" }
-              },
-              "paddingBottom": {
-                "$res": true,
-                "xl": { "value": "24px", "ref": "24" }
-              },
-              "paddingLeftExternal": {
-                "$res": true,
-                "xl": { "value": "0px", "ref": "0" }
-              },
-              "paddingRightExternal": {
-                "$res": true,
-                "xl": { "value": "0px", "ref": "0" }
-              },
-              "paddingTopExternal": {
-                "$res": true,
-                "xl": { "value": "0px", "ref": "0" }
-              },
-              "paddingBottomExternal": {
-                "$res": true,
-                "xl": { "value": "0px", "ref": "0" }
-              },
-              "edgeMarginProtection": { "$res": true, "xl": true },
-              "Stack": [
-                {
-                  "_id": "59cf079e-3421-4ecd-8a7b-4aaf1ad05324",
-                  "_template": "$stack",
-                  "traceId": "$stack-388bb2d1",
-                  "Items": []
-                }
-              ]
-            }
-          ],
-          "Card2": [
-            {
-              "_id": "d9af2a9b-1ddb-4c35-9d17-fe44c68e60fa",
-              "_template": "$BasicCardBackground",
-              "traceId": "$BasicCardBackground-963d1744",
-              "size": { "$res": true, "xl": { "value": "fit-background" } },
-              "Background": [
-                {
-                  "_id": "d1a7c42e-e3d7-4501-84d1-7768eae6a3e5",
-                  "_template": "$image",
-                  "traceId": "$image-d7f2a970",
-                  "_itemProps": {
-                    "$BasicCardBackground": { "Background": {} }
-                  },
-                  "image": {
-                    "$res": true,
-                    "xl": { "id": null, "widgetId": "mockImage" }
-                  },
-                  "aspectRatio": { "$res": true, "xl": { "value": "1:1" } },
-                  "action": []
-                }
-              ],
-              "borderWidth": { "$res": true, "xl": "0" },
-              "borderColor": {
-                "$res": true,
-                "xl": { "value": "black", "ref": "grey_05" }
-              },
-              "borderTop": { "$res": true, "xl": "1" },
-              "borderBottom": { "$res": true, "xl": "1" },
-              "borderLeft": { "$res": true, "xl": "1" },
-              "borderRight": { "$res": true, "xl": "1" },
-              "boxShadow": {
-                "$res": true,
-                "xl": { "value": "none", "ref": "none" }
-              },
-              "cornerRadius": { "$res": true, "xl": "0" },
-              "enableContent": true,
-              "position": { "$res": true, "xl": "top-left" },
-              "paddingLeft": {
-                "$res": true,
-                "xl": { "value": "24px", "ref": "24" }
-              },
-              "paddingRight": {
-                "$res": true,
-                "xl": { "value": "24px", "ref": "24" }
-              },
-              "paddingTop": {
-                "$res": true,
-                "xl": { "value": "24px", "ref": "24" }
-              },
-              "paddingBottom": {
-                "$res": true,
-                "xl": { "value": "24px", "ref": "24" }
-              },
-              "paddingLeftExternal": {
-                "$res": true,
-                "xl": { "value": "0px", "ref": "0" }
-              },
-              "paddingRightExternal": {
-                "$res": true,
-                "xl": { "value": "0px", "ref": "0" }
-              },
-              "paddingTopExternal": {
-                "$res": true,
-                "xl": { "value": "0px", "ref": "0" }
-              },
-              "paddingBottomExternal": {
-                "$res": true,
-                "xl": { "value": "0px", "ref": "0" }
-              },
-              "edgeMarginProtection": { "$res": true, "xl": true },
-              "Stack": [
-                {
-                  "_id": "ac802084-8192-4073-b9cf-97bee5a13ff7",
-                  "_template": "$stack",
-                  "traceId": "$stack-15f31cc0",
-                  "Items": []
-                }
-              ]
-            }
-          ],
-          "mode": { "$res": true, "xl": "none" },
-          "sideModeWidth": { "$res": true, "xl": "50%" },
-          "backgroundModePosition": { "$res": true, "xl": "top-left" },
-          "backgroundModePaddingLeft": {
-            "$res": true,
-            "xl": { "value": "24px", "ref": "24" }
-          },
-          "backgroundModePaddingRight": {
-            "$res": true,
-            "xl": { "value": "24px", "ref": "24" }
-          },
-          "backgroundModePaddingTop": {
-            "$res": true,
-            "xl": { "value": "24px", "ref": "24" }
-          },
-          "backgroundModePaddingBottom": {
-            "$res": true,
-            "xl": { "value": "24px", "ref": "24" }
-          },
-          "backgroundModeEdgeMarginProtection": { "$res": true, "xl": true }
-        }
-      ],
-      "card1Width": { "$res": true, "xl": "12" },
-      "card1EscapeMargin": { "$res": true, "xl": false },
-      "card2Width": { "$res": true, "xl": "12" },
-      "card2EscapeMargin": { "$res": true, "xl": true },
-      "verticalLayout": { "$res": true, "xl": "irregular" },
-      "verticalOffset": { "$res": true, "xl": "-2" },
-      "collapse": { "$res": true, "xl": false },
-      "gap": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
-      "verticalGap": { "$res": true, "xl": { "value": "24px", "ref": "24" } },
-      "invertCollapsed": false
+  "padding": {
+    "$res": true,
+    "xl": {
+      "value": "24px",
+      "tokenId": "24",
+      "widgetId": "@easyblocks/space"
     }
-  ]
+  }
 }

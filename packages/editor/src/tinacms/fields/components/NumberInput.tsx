@@ -1,7 +1,7 @@
 import * as React from "react";
-import { SSInput } from "@easyblocks/design-system";
+import { Input } from "@easyblocks/design-system";
 
-export interface NumberProps
+interface NumberProps
   extends React.DetailedHTMLProps<
     React.InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
@@ -16,7 +16,7 @@ export const NumberInput: React.FC<NumberProps> = ({
   min,
   max,
 }) => (
-  <SSInput
+  <Input
     type="number"
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore

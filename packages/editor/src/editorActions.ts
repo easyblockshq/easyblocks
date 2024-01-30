@@ -1,7 +1,6 @@
-import { Form } from "@easyblocks/app-utils";
 import {
+  NoCodeComponentEntry,
   ComponentSchemaProp,
-  ConfigComponent,
   isNoCodeComponentOfType,
 } from "@easyblocks/core";
 import {
@@ -11,12 +10,12 @@ import {
   parsePath,
 } from "@easyblocks/core/_internals";
 import {
-  assertDefined,
   dotNotationGet,
   last,
   preOrderPathComparator,
 } from "@easyblocks/utils";
 import { EditorContextType } from "./EditorContext";
+import { Form } from "./form";
 import { ResolveDestination } from "./paste/destinationResolver";
 import { PasteCommand } from "./paste/manager";
 import {
@@ -53,7 +52,7 @@ function pasteItems({
   resolveDestination,
   pasteCommand,
 }: {
-  what: Array<ConfigComponent>;
+  what: Array<NoCodeComponentEntry>;
   where: Array<string>;
   resolveDestination: ResolveDestination;
   pasteCommand: PasteCommand;
@@ -194,14 +193,14 @@ function moveItems(
         moveItem(form, {
           from: index,
           name: parentPath,
-          to: index - 2,
+          to: index - 1,
         });
 
         if (!wasAnyFieldWithinCurrentGroupMoved) {
           wasAnyFieldWithinCurrentGroupMoved = true;
         }
 
-        nextFocusedFields.push(`${parentPath}.${index - 2}`);
+        nextFocusedFields.push(`${parentPath}.${index - 1}`);
       });
     });
 
@@ -321,15 +320,17 @@ function removeItems(
       name: fieldPath,
     });
 
-    const definition = assertDefined(
-      findComponentDefinitionById(templateId, compilationContext)
+    const definition = findComponentDefinitionById(
+      templateId,
+      compilationContext
     );
-    const isAction =
-      isNoCodeComponentOfType(definition, "action") ||
-      isNoCodeComponentOfType(definition, "actionLink");
+    const isTextWrapper =
+      definition &&
+      isNoCodeComponentOfType(definition, "@easyblocks/text-wrapper");
 
-    // If we're removing item from the action field let's focus the component holding that field for better UX
-    if (isAction) {
+    // If we're removing item from the text wrapper field let's focus the component holding that field for better UX
+    // TODO: We shouldn't decide based on the component type but rather on the source of the removal (canvas vs sidebar)
+    if (isTextWrapper) {
       return [parent.path];
     }
 
@@ -366,11 +367,11 @@ function removeItems(
 
 function replaceItems(
   paths: string[],
-  newConfig: ConfigComponent,
+  newConfig: NoCodeComponentEntry,
   editorContext: EditorContextType
 ) {
   paths.forEach((path) => {
-    const oldConfig: ConfigComponent = dotNotationGet(
+    const oldConfig: NoCodeComponentEntry = dotNotationGet(
       editorContext.form.values,
       path
     );
@@ -475,7 +476,7 @@ function isLast(fieldPath: string, form: Form): boolean {
 }
 
 function isPlaceholder(path: string, values: any) {
-  const templateId = dotNotationGet(values, path)._template;
+  const templateId = dotNotationGet(values, path)._component;
   return templateId.startsWith("$Placeholder");
 }
 

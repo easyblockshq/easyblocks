@@ -2,7 +2,7 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "jest.jestCommandLine": "npx jest",
   "search.exclude": {
-    "packages/**/.next/": true,
+    "apps/**/.next/": true,
     "packages/**/dist/": true,
     "packages/**/dist-types/": true
   }

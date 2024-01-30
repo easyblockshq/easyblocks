@@ -1,8 +1,7 @@
-import { Form } from "@easyblocks/app-utils";
 import {
   ComponentCollectionSchemaProp,
+  NoCodeComponentEntry,
   ComponentSchemaProp,
-  ConfigComponent,
   SchemaProp,
 } from "@easyblocks/core";
 import {
@@ -11,6 +10,7 @@ import {
   findComponentDefinition,
 } from "@easyblocks/core/_internals";
 import { includesAny } from "@easyblocks/utils";
+import { Form } from "../form";
 import { normalizeToStringArray } from "../normalizeToStringArray";
 import { reconcile } from "./reconcile";
 
@@ -41,7 +41,7 @@ const insertCommand = ({
     fieldName: schema?.prop,
   });
 
-  return (path: string, index: number, item: ConfigComponent) => {
+  return (path: string, index: number, item: NoCodeComponentEntry) => {
     const itemDefinition = findComponentDefinition(item, context);
     if (!itemDefinition) {
       return null;

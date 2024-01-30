@@ -1,6 +1,5 @@
-import { Form } from "@easyblocks/app-utils";
 import { CompiledComponentConfig } from "@easyblocks/core";
-import { SSFonts } from "@easyblocks/design-system";
+import { Fonts } from "@easyblocks/design-system";
 import { dotNotationGet } from "@easyblocks/utils";
 import React from "react";
 import styled from "styled-components";
@@ -8,6 +7,7 @@ import { buildTinaFields } from "./buildTinaFields";
 import { useEditorContext } from "./EditorContext";
 import { InlineSettings } from "./inline-settings";
 import { mergeCommonFields } from "./tinacms/form-builder/utils/mergeCommonFields";
+import { Form } from "./form";
 
 type EditorSidebarProps = {
   focussedField: Array<string>;
@@ -15,7 +15,7 @@ type EditorSidebarProps = {
 };
 
 const Error = styled.div`
-  ${SSFonts.body}
+  ${Fonts.body}
   padding: 7px 6px 7px;
   color: hsl(0deg 0% 50% / 0.8);
   white-space: normal;
@@ -37,8 +37,8 @@ export const EditorSidebar: React.FC<EditorSidebarProps> = (props) => {
         path
       );
       const editableComponent = dotNotationGet(form.values, path);
-      if (compiledComponent?._template === "$MissingComponent") {
-        return `Shopstory can’t find definition for component: ${editableComponent._template} in your project. Please contact your developers to resolve this issue.`;
+      if (compiledComponent?._component === "@easyblocks/missing-component") {
+        return `Can’t find definition for component: ${editableComponent._component} in your project. Please contact your developers to resolve this issue.`;
       }
     }
 

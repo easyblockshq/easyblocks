@@ -7,7 +7,7 @@ export function isCompiledComponentConfig(
   return (
     typeof arg === "object" &&
     arg !== null &&
-    typeof arg._template === "string" &&
+    typeof arg._component === "string" &&
     typeof arg._id === "string" &&
     typeof arg.actions === "object" &&
     typeof arg.components === "object"

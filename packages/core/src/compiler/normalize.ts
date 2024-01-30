@@ -1,16 +1,11 @@
-import { ConfigComponent } from "../types";
-import { buildFullTheme } from "./buildFullTheme";
+import { SetOptional } from "type-fest";
+import { NoCodeComponentEntry } from "../types";
 import { normalizeComponent } from "./definitions";
 import { CompilationContextType } from "./types";
 
 export function normalize(
-  configComponent: Omit<ConfigComponent, "_id"> & { _id?: string },
+  configComponent: SetOptional<NoCodeComponentEntry, "_id">,
   compilationContext: CompilationContextType
-): ConfigComponent {
-  const compilationContextWithFullTheme = {
-    ...compilationContext,
-    theme: buildFullTheme(compilationContext.theme),
-  };
-
-  return normalizeComponent(configComponent, compilationContextWithFullTheme);
+): NoCodeComponentEntry {
+  return normalizeComponent(configComponent, compilationContext);
 }

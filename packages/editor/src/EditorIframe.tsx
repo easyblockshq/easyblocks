@@ -1,4 +1,4 @@
-import { SSColors } from "@easyblocks/design-system";
+import { Colors } from "@easyblocks/design-system";
 import React, { forwardRef, useState } from "react";
 import styled, { css } from "styled-components";
 import { TOP_BAR_HEIGHT } from "./EditorTopBar";
@@ -14,7 +14,6 @@ interface EditorIframeWrapperProps {
   isFullScreen: boolean;
   isEditing: boolean;
   margin: number;
-  url?: string;
 }
 
 const EditorIframe = forwardRef<HTMLIFrameElement, EditorIframeWrapperProps>(
@@ -29,7 +28,6 @@ const EditorIframe = forwardRef<HTMLIFrameElement, EditorIframeWrapperProps>(
       isEditing,
       containerRef,
       margin,
-      url,
     },
     ref
   ) => {
@@ -72,7 +70,7 @@ const EditorIframe = forwardRef<HTMLIFrameElement, EditorIframeWrapperProps>(
               width={isFullScreenModeEnabled ? "100%" : `${width}px`}
               height={isFullScreenModeEnabled ? "100%" : `${height}px`}
               scaleFactor={scaleFactor}
-              src={url ?? window.location.href}
+              src={window.location.href}
               margin={margin}
             />
           </IframeInnerContainer>
@@ -87,7 +85,7 @@ export { EditorIframe };
 const IframeContainer = styled.div`
   position: relative;
   flex: 1 1 auto;
-  background: ${SSColors.black100};
+  background: ${Colors.black100};
 `;
 
 type IframeInnerContainerProps = {

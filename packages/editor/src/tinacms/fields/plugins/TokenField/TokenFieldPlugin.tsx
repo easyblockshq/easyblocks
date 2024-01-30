@@ -1,20 +1,25 @@
 import {
+  TokenValue as CoreTokenValue,
   Field,
-  RefValue,
-  ResponsiveValue,
-  ThemeRefValue,
+  NonNullish,
+  ThemeFont,
+  ThemeTokenValue,
+  TokenTypeWidgetComponentProps,
+  getDevicesWidths,
   isTrulyResponsiveValue,
+  responsiveValueFill,
+  responsiveValueForceGet,
   responsiveValueGetDefinedValue,
 } from "@easyblocks/core";
-import { getDevicesWidths } from "@easyblocks/core/_internals";
 import {
-  SSColors,
-  SSInput,
+  Colors,
+  Input,
   Select,
   SelectItem,
   SelectSeparator,
 } from "@easyblocks/design-system";
 import React, {
+  ComponentType,
   Fragment,
   ReactNode,
   forwardRef,
@@ -23,22 +28,22 @@ import React, {
 } from "react";
 import { FieldRenderProps } from "react-final-form";
 import styled from "styled-components";
-import { useEditorContext } from "../../../../EditorContext";
+import { EditorContextType, useEditorContext } from "../../../../EditorContext";
 import { FieldMixedValue } from "../../../../types";
 import { MIXED_VALUE } from "../../components/constants";
 import { isMixedFieldValue } from "../../components/isMixedFieldValue";
 import { wrapFieldsWithMeta } from "../wrapFieldWithMeta";
 
-interface TokenField<TokenValue = unknown> extends Field {
-  tokens: { [key: string]: ThemeRefValue<TokenValue> };
+interface TokenField<TokenValue extends NonNullish = NonNullish> extends Field {
+  tokens: { [key: string]: ThemeTokenValue<TokenValue> };
   normalizeCustomValue?: (value: string) => any;
   allowCustom?: boolean;
   extraValues?: Array<string | { value: string; label: string }>;
 }
 
-interface TokenFieldProps<TokenValue>
+interface TokenFieldProps<TokenValue extends NonNullish>
   extends FieldRenderProps<
-    RefValue<ResponsiveValue<string>> | FieldMixedValue,
+    CoreTokenValue | FieldMixedValue,
     HTMLSelectElement
   > {
   field: TokenField<TokenValue>;
@@ -65,14 +70,39 @@ function extraValuesIncludes(
   return false;
 }
 
-function TokenFieldComponent<TokenValue>({
+type TokenTypesResult = Record<
+  string,
+  Extract<EditorContextType["types"][string], { type: "token" }>
+>;
+
+function useTokenTypes(): TokenTypesResult {
+  const editorContext = useEditorContext();
+
+  const tokenTypes = Object.fromEntries(
+    Object.entries(editorContext.types).filter<
+      [string, TokenTypesResult[string]]
+    >(
+      (
+        typeDefinitionEntry
+      ): typeDefinitionEntry is [string, TokenTypesResult[string]] => {
+        return typeDefinitionEntry[1].type === "token";
+      }
+    )
+  );
+
+  return tokenTypes;
+}
+
+function TokenFieldComponent<TokenValue extends NonNullish>({
   input,
   field,
 }: TokenFieldProps<TokenValue>) {
   const editorContext = useEditorContext();
+  const tokenTypes = useTokenTypes();
+  const tokenTypeDefinition = tokenTypes[field.schemaProp.type];
   const normalizeCustomValue = field.normalizeCustomValue || ((x: string) => x);
-  const allowCustom =
-    field.allowCustom === undefined ? false : field.allowCustom;
+  const allowCustom = field.allowCustom ?? false;
+  const extraValues = field.extraValues ?? [];
 
   const [inputValue, setInputValue] = useState(
     isMixedFieldValue(input.value) ? "" : input.value?.value.toString() ?? ""
@@ -80,16 +110,29 @@ function TokenFieldComponent<TokenValue>({
 
   const customValueTextFieldRef = useRef<HTMLInputElement | null>(null);
 
-  const options = Object.entries(field.tokens).map(([tokenId, tokenValue]) => ({
-    id: tokenId,
-    label: tokenValue.label ?? tokenId,
-  }));
+  const options = Object.entries(field.tokens).map(([tokenId, tokenValue]) => {
+    if (tokenTypeDefinition.token === "fonts") {
+      const fontTokenLabel = getFontTokenLabel(
+        tokenId,
+        tokenValue,
+        editorContext
+      );
 
-  const extraValues = field.extraValues || [];
+      return {
+        id: tokenId,
+        label: fontTokenLabel,
+      };
+    }
+
+    return {
+      id: tokenId,
+      label: tokenValue.label ?? tokenId,
+    };
+  });
 
   // Extra values are displayed in select
-  if (extraValues) {
-    extraValues.forEach((extraValue) => {
+  if (field.extraValues) {
+    field.extraValues.forEach((extraValue) => {
       if (typeof extraValue === "string") {
         options.push({
           id: extraValue,
@@ -104,43 +147,41 @@ function TokenFieldComponent<TokenValue>({
     });
   }
 
-  // If ref exist but is removed from a theme -> let's add special option for this
+  // If token exist but is removed from a theme -> let's add special option for this
   if (
     !isMixedFieldValue(input.value) &&
-    typeof input.value.ref === "string" &&
-    !field.tokens[input.value.ref]
+    typeof input.value.tokenId === "string" &&
+    !field.tokens[input.value.tokenId]
   ) {
     options.unshift({
-      id: input.value.ref,
-      label: `(removed) ${input.value.ref}`,
+      id: input.value.tokenId,
+      label: `(removed) ${input.value.tokenId}`,
     });
   }
 
   const isExtraValueSelected =
     !isMixedFieldValue(input.value) &&
-    !input.value.ref &&
+    !input.value.tokenId &&
     extraValuesIncludes(
       extraValues,
-      isTrulyResponsiveValue(input.value.value)
-        ? (responsiveValueGetDefinedValue(
-            // not sure about usage of responsiveValueGet without widths here
-            input.value.value,
-            editorContext.breakpointIndex,
-            editorContext.devices,
-            getDevicesWidths(
-              editorContext.devices
-            ) /** FOR NOW TOKENS ARE RELATIVE TO SCREEN **/
-          ) as string)
-        : input.value.value
+      responsiveValueGetDefinedValue(
+        input.value.value,
+        editorContext.breakpointIndex,
+        editorContext.devices,
+        getDevicesWidths(
+          editorContext.devices
+        ) /** FOR NOW TOKENS ARE RELATIVE TO SCREEN **/
+      ) as string
     );
 
-  const shouldShowInput =
+  const shouldShowCustomValueInput =
     !isMixedFieldValue(input.value) &&
-    !(input.value.ref || isExtraValueSelected);
+    !(input.value.tokenId || isExtraValueSelected) &&
+    allowCustom;
 
   const selectValue = isMixedFieldValue(input.value)
     ? MIXED_VALUE
-    : input.value.ref ||
+    : input.value.tokenId ??
       (isExtraValueSelected
         ? (input.value.value as string)
         : CUSTOM_OPTION_VALUE);
@@ -150,6 +191,7 @@ function TokenFieldComponent<TokenValue>({
       if (isMixedFieldValue(input.value)) {
         input.onChange({
           value: "",
+          widgetId: tokenTypeDefinition.widget?.id,
         });
         setInputValue("");
         return;
@@ -172,6 +214,7 @@ function TokenFieldComponent<TokenValue>({
 
       input.onChange({
         value,
+        widgetId: input.value.widgetId,
       });
       setInputValue(value);
 
@@ -181,37 +224,55 @@ function TokenFieldComponent<TokenValue>({
     } else if (extraValuesIncludes(extraValues, selectedValue)) {
       input.onChange({
         value: selectedValue,
+        widgetId: tokenTypeDefinition.widget?.id,
       });
     } else {
       input.onChange({
-        ref: selectedValue,
+        tokenId: selectedValue,
         value: field.tokens[selectedValue].value,
+        widgetId: tokenTypeDefinition.widget?.id,
       });
     }
   };
 
-  const customInputElement = shouldShowInput ? (
+  const CustomInputWidgetComponent = tokenTypeDefinition?.widget?.component as
+    | ComponentType<TokenTypeWidgetComponentProps<string>>
+    | undefined;
+
+  const customInputElement = shouldShowCustomValueInput ? (
     <div>
       <div style={{ height: 4 }} />
-      <SSInput
-        value={inputValue}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          setInputValue(e.target.value);
-        }}
-        onBlur={() => {
-          const normalizedValue = normalizeCustomValue(inputValue);
-          setInputValue(normalizedValue);
-          input.onChange({
-            value: normalizedValue,
-          });
-        }}
-        ref={customValueTextFieldRef}
-        align={"right"}
-      />
+      {CustomInputWidgetComponent ? (
+        <CustomInputWidgetComponent
+          value={inputValue}
+          onChange={(value) => {
+            input.onChange({
+              value,
+              widgetId: tokenTypeDefinition.widget?.id,
+            });
+          }}
+        />
+      ) : (
+        <Input
+          value={inputValue}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setInputValue(e.target.value);
+          }}
+          onBlur={() => {
+            const normalizedValue = normalizeCustomValue(inputValue);
+            setInputValue(normalizedValue);
+            input.onChange({
+              value: normalizedValue,
+            });
+          }}
+          ref={customValueTextFieldRef}
+          align={"right"}
+        />
+      )}
     </div>
   ) : null;
 
-  if (field.schemaProp.type === "color") {
+  if (tokenTypeDefinition.token === "colors") {
     return (
       <Fragment>
         <Select value={selectValue} onChange={onSelectChange}>
@@ -230,7 +291,12 @@ function TokenFieldComponent<TokenValue>({
                   <SelectColorTokenItem
                     key={o.id}
                     value={o.id}
-                    previewColor={(field.tokens[o.id]?.value as string) ?? o.id}
+                    // Color tokens are always strings
+                    previewColor={
+                      (field.tokens[o.id]?.value as unknown as
+                        | string
+                        | undefined) ?? o.id
+                    }
                   >
                     {o.label}
                   </SelectColorTokenItem>
@@ -275,6 +341,15 @@ function TokenFieldComponent<TokenValue>({
             <SelectSeparator />
           </>
         )}
+
+        {selectValue === CUSTOM_OPTION_VALUE && !allowCustom && (
+          <>
+            <SelectItem value={CUSTOM_OPTION_VALUE} isDisabled>
+              Custom
+            </SelectItem>
+            <SelectSeparator />
+          </>
+        )}
         {
           <Fragment>
             {options.map((o) => {
@@ -298,6 +373,51 @@ function TokenFieldComponent<TokenValue>({
   );
 }
 
+function getFontTokenLabel(
+  name: string,
+  token: ThemeTokenValue<ThemeFont>,
+  editorContext: EditorContextType
+) {
+  const filledResponsiveFontValue = responsiveValueFill(
+    token.value,
+    editorContext.devices,
+    getDevicesWidths(editorContext.devices)
+  );
+
+  const currentDeviceFontValue = responsiveValueForceGet(
+    filledResponsiveFontValue,
+    editorContext.breakpointIndex
+  );
+
+  if (isValidFontTokenValue(currentDeviceFontValue)) {
+    return `${token.label ?? name} (${stripPxUnit(
+      currentDeviceFontValue.fontSize
+    )}/${stripPxUnit(currentDeviceFontValue.lineHeight)})`;
+  }
+
+  return token.label ?? name;
+}
+
+function stripPxUnit(value: number | string) {
+  if (typeof value === "number") {
+    return value;
+  }
+
+  return value.replace(new RegExp("px"), "");
+}
+
+function isValidFontTokenValue(value: unknown): value is {
+  fontSize: number | string;
+  lineHeight: number | string;
+} {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "fontSize" in value &&
+    "lineHeight" in value
+  );
+}
+
 const Root = styled.div`
   display: flex;
   flex-direction: column;
@@ -309,9 +429,6 @@ export const TokenFieldPlugin = {
   type: "token",
   Component: wrapFieldsWithMeta(TokenFieldComponent),
 };
-
-export { TokenFieldComponent };
-export type { TokenField, TokenFieldProps };
 
 const SelectColorTokenItem = forwardRef<
   HTMLDivElement,
@@ -343,7 +460,7 @@ const SelectColorTokenItem = forwardRef<
             cy="8.00024"
             r="6.78931"
             fill={props.previewColor ?? "#fff"}
-            stroke={SSColors.black100}
+            stroke={Colors.black100}
           />
         </svg>
         <span>{props.children}</span>

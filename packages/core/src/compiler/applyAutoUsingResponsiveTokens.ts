@@ -1,25 +1,24 @@
 import {
   isTrulyResponsiveValue,
-  responsiveValueGetHighestDefinedDevice,
   responsiveValueForceGet,
   responsiveValueGet,
+  responsiveValueGetHighestDefinedDevice,
 } from "../responsiveness";
-import { RefValue, ResponsiveValue, TrulyResponsiveValue } from "../types";
+import { ResponsiveValue, TokenValue, TrulyResponsiveValue } from "../types";
 import { CompilationContextType } from "./types";
 
 export function applyAutoUsingResponsiveTokens<T>(
-  input: TrulyResponsiveValue<RefValue<ResponsiveValue<T>>>,
+  input: TrulyResponsiveValue<TokenValue<ResponsiveValue<T>>>,
   compilationContext: CompilationContextType
-): TrulyResponsiveValue<RefValue<ResponsiveValue<T>>>;
+): TrulyResponsiveValue<TokenValue<ResponsiveValue<T>>>;
 export function applyAutoUsingResponsiveTokens<T>(
-  input: RefValue<ResponsiveValue<T>>,
+  input: TokenValue<ResponsiveValue<T>>,
   compilationContext: CompilationContextType
-): RefValue<ResponsiveValue<T>>;
-
+): TokenValue<ResponsiveValue<T>>;
 export function applyAutoUsingResponsiveTokens<T>(
-  input: ResponsiveValue<RefValue<ResponsiveValue<T>>>,
+  input: ResponsiveValue<TokenValue<ResponsiveValue<T>>>,
   compilationContext: CompilationContextType
-): ResponsiveValue<RefValue<ResponsiveValue<T>>> {
+): ResponsiveValue<TokenValue<ResponsiveValue<T>>> {
   if (!isTrulyResponsiveValue(input)) {
     return input;
   }
@@ -33,7 +32,7 @@ export function applyAutoUsingResponsiveTokens<T>(
     highestDefinedDevice.id
   );
 
-  const inputAfterAuto: TrulyResponsiveValue<RefValue<ResponsiveValue<T>>> = {
+  const inputAfterAuto: TrulyResponsiveValue<TokenValue<ResponsiveValue<T>>> = {
     $res: true,
   };
 
@@ -51,7 +50,7 @@ export function applyAutoUsingResponsiveTokens<T>(
     if (value !== undefined) {
       inputAfterAuto[device.id] = value;
 
-      highestDefinedValue = input[device.id] as RefValue<ResponsiveValue<T>>;
+      highestDefinedValue = input[device.id] as TokenValue<ResponsiveValue<T>>;
     }
   }
 

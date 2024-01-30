@@ -1,8 +1,8 @@
 import React from "react";
 import Select, { ClearIndicatorProps } from "react-select";
-import { SSFonts } from "./fonts";
-import { SSColors } from "./colors";
-import { SSIcons } from "./icons";
+import { Fonts } from "./fonts";
+import { Colors } from "./colors";
+import { Icons } from "./icons";
 
 const options = [
   { value: "chocolate", label: "Chocolate" },
@@ -13,7 +13,7 @@ const options = [
 function DropdownIndicator() {
   return (
     <div style={{ padding: "0px 3px" }}>
-      <SSIcons.ChevronDown size={16} />
+      <Icons.ChevronDown size={16} />
     </div>
   );
 }
@@ -21,7 +21,7 @@ function DropdownIndicator() {
 function ClearIndicator(props: ClearIndicatorProps) {
   return (
     <div {...props.innerProps} style={{ padding: "0px 6px" }}>
-      <SSIcons.Close size={12} />
+      <Icons.Close size={12} />
     </div>
   );
 }
@@ -40,7 +40,7 @@ export function MultiSelect() {
         // @ts-ignore
         container: (baseStyles, state) => ({
           ...baseStyles,
-          ...SSFonts.body,
+          ...Fonts.body,
         }),
         // @ts-ignore
         control: (baseStyles, state) => {
@@ -49,10 +49,10 @@ export function MultiSelect() {
             borderWidth: 0,
             borderRadius: 2,
             boxShadow: state.isFocused
-              ? `0 0 0 2px ${SSColors.focus}`
-              : `0 0 0 1px ${SSColors.black10}`,
+              ? `0 0 0 2px ${Colors.focus}`
+              : `0 0 0 1px ${Colors.black10}`,
             "&:hover": {
-              borderColor: SSColors.black20,
+              borderColor: Colors.black20,
             },
             minHeight: 28,
           };

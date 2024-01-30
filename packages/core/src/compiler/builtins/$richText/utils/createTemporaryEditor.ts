@@ -1,6 +1,6 @@
 import { createEditor, Editor } from "slate";
 import { withReact } from "slate-react";
-import { withShopstory } from "../withShopstory";
+import { withEasyblocks } from "../withEasyblocks";
 
 // Slate's transforms methods mutates given editor instance.
 // By creating temporary editor instance we can apply all transformations without
@@ -8,7 +8,7 @@ import { withShopstory } from "../withShopstory";
 function createTemporaryEditor(
   editor: Pick<Editor, "children" | "selection">
 ): Editor {
-  const temporaryEditor = withShopstory(withReact(createEditor()));
+  const temporaryEditor = withEasyblocks(withReact(createEditor()));
   temporaryEditor.children = [...editor.children];
   temporaryEditor.selection = editor.selection ? { ...editor.selection } : null;
   return temporaryEditor;

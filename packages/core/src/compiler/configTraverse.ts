@@ -1,4 +1,4 @@
-import { SchemaProp, ComponentConfig, ConfigComponent } from "../types";
+import { NoCodeComponentEntry, SchemaProp } from "../types";
 import { findComponentDefinition } from "./findComponentDefinition";
 import { isSchemaPropComponent } from "./schema";
 import { CompilationContextType } from "./types";
@@ -7,14 +7,14 @@ type ConfigTraverseCallback = (arg: {
   path: string;
   value: any;
   schemaProp: SchemaProp;
-  config: ComponentConfig;
+  config: NoCodeComponentEntry;
 }) => void;
 
 /**
  * Traverses given `config` by invoking given `callback` for each schema prop defined within components from `context`
  */
 function configTraverse(
-  config: ComponentConfig,
+  config: NoCodeComponentEntry,
   context: Pick<CompilationContextType, "definitions">,
   callback: ConfigTraverseCallback
 ): void {
@@ -22,7 +22,7 @@ function configTraverse(
 }
 
 function configTraverseArray(
-  array: ConfigComponent[],
+  array: NoCodeComponentEntry[],
   context: Pick<CompilationContextType, "definitions">,
   callback: ConfigTraverseCallback,
   path: string
@@ -33,7 +33,7 @@ function configTraverseArray(
 }
 
 function configTraverseInternal(
-  config: ComponentConfig,
+  config: NoCodeComponentEntry,
   context: Pick<CompilationContextType, "definitions">,
   callback: ConfigTraverseCallback,
   path: string
@@ -42,7 +42,7 @@ function configTraverseInternal(
 
   if (!componentDefinition) {
     console.warn(
-      `[configTraverse] Unknown component definition for: ${config._template}`
+      `[configTraverse] Unknown component definition for: ${config._component}`
     );
     return;
   }

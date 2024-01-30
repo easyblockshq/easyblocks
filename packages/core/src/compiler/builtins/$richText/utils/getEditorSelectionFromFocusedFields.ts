@@ -30,7 +30,9 @@ function getEditorSelectionFromFocusedFields(
         path: parsedFocusedField.path,
       },
     };
-  } catch {
+  } catch (error) {
+    console.log(error);
+
     return null;
   }
 }

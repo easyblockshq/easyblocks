@@ -1,14 +1,14 @@
+import { range } from "@easyblocks/utils";
 import {
   Color,
+  ExternalReference,
   Font,
   NoCodeComponentDefinition,
-  RefValue,
   ResponsiveValue,
-  UnresolvedResource,
+  TokenValue,
 } from "../../../types";
-import { range } from "@easyblocks/utils";
-import { textStyles } from "./$text.styles";
 import { EditableComponentToComponentConfig } from "../../types";
+import { textStyles } from "./$text.styles";
 
 const textEditableComponent: NoCodeComponentDefinition<
   {
@@ -62,9 +62,9 @@ const textEditableComponent: NoCodeComponentDefinition<
 type TextComponentConfig = EditableComponentToComponentConfig<
   typeof textEditableComponent
 > & {
-  color: ResponsiveValue<RefValue<ResponsiveValue<Color>>>;
-  font: ResponsiveValue<RefValue<ResponsiveValue<Font>>>;
-  value: UnresolvedResource;
+  color: ResponsiveValue<TokenValue<Color>>;
+  font: ResponsiveValue<TokenValue<ResponsiveValue<Font>>>;
+  value: ExternalReference;
   accessibilityRole: string;
 };
 

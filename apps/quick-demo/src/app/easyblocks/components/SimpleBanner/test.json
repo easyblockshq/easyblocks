@@ -1,0 +1,305 @@
+{
+  "_id": "ded5c983-42f7-4e05-98b3-8282fc85a358",
+  "_component": "SimpleBanner",
+  "backgroundColor": {
+    "$res": true,
+    "xl": {
+      "tokenId": "sky-blue",
+      "value": "#7DABDA",
+      "widgetId": "@easyblocks/color"
+    }
+  },
+  "hasBorder": {
+    "$res": true,
+    "xl": true
+  },
+  "padding": {
+    "$res": true,
+    "xl": {
+      "tokenId": "48",
+      "value": "48px",
+      "widgetId": "@easyblocks/space"
+    }
+  },
+  "gap": {
+    "$res": true,
+    "xl": {
+      "tokenId": "16",
+      "value": "16px",
+      "widgetId": "@easyblocks/space"
+    }
+  },
+  "buttonsGap": {
+    "$res": true,
+    "xl": {
+      "tokenId": "12",
+      "value": "12px",
+      "widgetId": "@easyblocks/space"
+    }
+  },
+  "Title": [
+    {
+      "_id": "eb6c8c9a-63b7-4b58-8ab3-9f0d310c68d2",
+      "_component": "@easyblocks/text",
+      "value": {
+        "id": "local.9d550249-cdfa-4e01-8fd1-edeb69a1f7ba",
+        "value": {
+          "en-US": "Lorem ipsum dolor."
+        },
+        "widgetId": "@easyblocks/local-text"
+      },
+      "color": {
+        "$res": true,
+        "xl": {
+          "tokenId": "black",
+          "value": "#000000",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "font": {
+        "$res": true,
+        "xl": {
+          "tokenId": "heading2",
+          "value": {
+            "$res": true,
+            "sm": {
+              "fontFamily": "test-national-2",
+              "fontSize": 24,
+              "lineHeight": 1.2,
+              "fontWeight": 700
+            },
+            "md": {
+              "fontFamily": "test-national-2",
+              "fontSize": 36,
+              "lineHeight": 1.2,
+              "fontWeight": 700
+            }
+          }
+        }
+      },
+      "accessibilityRole": "p"
+    }
+  ],
+  "Buttons": [
+    {
+      "_id": "047289c6-96ed-4b9b-9df3-204dff1315d0",
+      "_component": "Button",
+      "_itemProps": {
+        "SimpleBanner": {
+          "Buttons": {}
+        }
+      },
+      "Action": [],
+      "variant": "label",
+      "label": {
+        "id": "local.458b2e47-e5b9-4871-9125-3d37d2db3651",
+        "value": {
+          "en-US": "Primary button"
+        },
+        "widgetId": "@easyblocks/local-text"
+      },
+      "icon": {
+        "value": "<svg viewBox=\"0 -960 960 960\"><path fill=\"currentColor\" d=\"m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z\"/></svg>",
+        "widgetId": "@easyblocks/icon"
+      },
+      "color": {
+        "$res": true,
+        "xl": {
+          "tokenId": "grey_01",
+          "value": "#f9f8f3",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "minHeight": {
+        "$res": true,
+        "xl": "42"
+      },
+      "minWidth": {
+        "$res": true,
+        "xl": "100"
+      },
+      "horizontalPadding": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "gap": {
+        "$res": true,
+        "xl": {
+          "value": "6px",
+          "tokenId": "6",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "cornerMode": {
+        "$res": true,
+        "xl": "custom"
+      },
+      "cornerRadius": {
+        "$res": true,
+        "xl": "12"
+      },
+      "font": {
+        "$res": true,
+        "xl": {
+          "value": {
+            "fontSize": 13,
+            "lineHeight": 1.8,
+            "fontFamily": "test-soehne-mono"
+          },
+          "tokenId": "body2"
+        }
+      },
+      "underline": "off",
+      "underlineOffset": {
+        "$res": true,
+        "xl": "1"
+      },
+      "iconSize": {
+        "$res": true,
+        "xl": "24"
+      },
+      "hasBackground": true,
+      "backgroundColor": {
+        "$res": true,
+        "xl": {
+          "tokenId": "grey_05",
+          "value": "#252525",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "hasBorder": false,
+      "borderWidth": {
+        "$res": true,
+        "xl": "1"
+      },
+      "borderColor": {
+        "$res": true,
+        "xl": {
+          "value": "#000000",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "boxShadow": {
+        "$res": true,
+        "xl": {
+          "value": "none",
+          "tokenId": "none"
+        }
+      }
+    },
+    {
+      "_id": "ebebf572-9353-48a0-a0bb-eb5d0512b63c",
+      "_component": "Button",
+      "_itemProps": {
+        "SimpleBanner": {
+          "Buttons": {}
+        }
+      },
+      "Action": [],
+      "variant": "label",
+      "label": {
+        "id": "local.4e69bfb6-45f2-4595-9360-351445cdfbc8",
+        "value": {
+          "en-US": "Click me"
+        },
+        "widgetId": "@easyblocks/local-text"
+      },
+      "icon": {
+        "value": "<svg viewBox=\"0 -960 960 960\"><path fill=\"currentColor\" d=\"m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z\"/></svg>",
+        "widgetId": "@easyblocks/icon"
+      },
+      "color": {
+        "$res": true,
+        "xl": {
+          "value": "#252525",
+          "tokenId": "grey_05",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "minHeight": {
+        "$res": true,
+        "xl": "42"
+      },
+      "minWidth": {
+        "$res": true,
+        "xl": "100"
+      },
+      "horizontalPadding": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "gap": {
+        "$res": true,
+        "xl": {
+          "value": "6px",
+          "tokenId": "6",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "cornerMode": {
+        "$res": true,
+        "xl": "custom"
+      },
+      "cornerRadius": {
+        "$res": true,
+        "xl": "12"
+      },
+      "font": {
+        "$res": true,
+        "xl": {
+          "value": {
+            "fontSize": 13,
+            "lineHeight": 1.8,
+            "fontFamily": "test-soehne-mono"
+          },
+          "tokenId": "body2"
+        }
+      },
+      "underline": "off",
+      "underlineOffset": {
+        "$res": true,
+        "xl": "1"
+      },
+      "iconSize": {
+        "$res": true,
+        "xl": "24"
+      },
+      "hasBackground": true,
+      "backgroundColor": {
+        "$res": true,
+        "xl": {
+          "value": "#f9f8f3",
+          "tokenId": "grey_01",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "hasBorder": false,
+      "borderWidth": {
+        "$res": true,
+        "xl": "1"
+      },
+      "borderColor": {
+        "$res": true,
+        "xl": {
+          "value": "#000000",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "boxShadow": {
+        "$res": true,
+        "xl": {
+          "value": "none",
+          "tokenId": "none"
+        }
+      }
+    }
+  ]
+}

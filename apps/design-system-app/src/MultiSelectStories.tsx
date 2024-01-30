@@ -1,7 +1,7 @@
 import {
   FormElement,
   MultiSelect,
-  SSInput,
+  Input,
   Typography,
 } from "@easyblocks/design-system";
 
@@ -12,7 +12,7 @@ export function MultiSelectStories() {
       <br />
 
       <FormElement name={"Input"} label={"Text"}>
-        <SSInput placeholder={"Input to compare"} withBorder={true} />
+        <Input placeholder={"Input to compare"} withBorder={true} />
       </FormElement>
       <br />
 

@@ -1,15 +1,26 @@
-import { Form, FormApi } from "@easyblocks/app-utils";
-import { ComponentSchemaProp, ConfigComponent } from "@easyblocks/core";
+import {
+  NoCodeComponentEntry,
+  ComponentSchemaProp,
+  ExternalData,
+  ExternalReference,
+  LocalTextReference,
+  NoCodeComponentDefinition,
+  SidebarPreviewVariant,
+  resolveExternalValue,
+  resolveLocalisedValue,
+  responsiveValueForceGet,
+} from "@easyblocks/core";
 import {
   Component$$$SchemaProp,
   InternalField,
   findComponentDefinition,
+  isExternalSchemaProp,
 } from "@easyblocks/core/_internals";
 import {
-  SSButtonGhost,
-  SSColors,
-  SSFonts,
-  SSIcons,
+  ButtonGhost,
+  Colors,
+  Fonts,
+  Icons,
   ThumbnailButton,
   ThumbnailType,
   Typography,
@@ -18,23 +29,26 @@ import { dotNotationGet, toArray } from "@easyblocks/utils";
 import React from "react";
 import ReactDOM from "react-dom";
 import styled, { css, keyframes } from "styled-components";
-import { useEditorContext } from "../../../EditorContext";
+import { useConfigAfterAuto } from "../../../ConfigAfterAutoContext";
+import { EditorContextType, useEditorContext } from "../../../EditorContext";
 import { useEditorExternalData } from "../../../EditorExternalDataProvider";
 import { SidebarFooter } from "../../../SidebarFooter";
 import { buildTinaFields } from "../../../buildTinaFields";
 import { FieldMixedValue } from "../../../types";
+import { isConfigPathRichTextPart } from "../../../utils/isConfigPathRichTextPart";
 import { FieldRenderProps, FieldsBuilder } from "../../form-builder";
 import { mergeCommonFields } from "../../form-builder/utils/mergeCommonFields";
 import { isMixedFieldValue } from "../components/isMixedFieldValue";
-import { isConfigPathRichTextPart } from "../../../utils/isConfigPathRichTextPart";
+import { Form } from "../../../form";
+import { FormApi } from "final-form";
 
-export interface BlocksFieldDefinition extends InternalField {
-  component: "ss-block";
+interface BlocksFieldDefinition extends InternalField {
+  component: "block";
   schemaProp: ComponentSchemaProp | Component$$$SchemaProp;
 }
 
 interface BlockFieldProps
-  extends FieldRenderProps<ConfigComponent[] | FieldMixedValue> {
+  extends FieldRenderProps<NoCodeComponentEntry[] | FieldMixedValue> {
   field: BlocksFieldDefinition;
   form: FormApi;
   tinaForm: Form;
@@ -49,7 +63,7 @@ const BlockField = ({ field, input, isLabelHidden }: BlockFieldProps) => {
   const { openComponentPicker } = actions;
   const isMixed = isMixedFieldValue(input.value);
 
-  const config: ConfigComponent | null = (() => {
+  const config: NoCodeComponentEntry | null = (() => {
     if (isMixed) {
       return null;
     }
@@ -101,7 +115,7 @@ const BlockField = ({ field, input, isLabelHidden }: BlockFieldProps) => {
             </div>
             {!field.schemaProp.required && (
               <div style={{ flex: "0 0 auto", minWidth: 0 }}>
-                <SSButtonGhost
+                <ButtonGhost
                   onClick={() => {
                     if (
                       editorContext.focussedField.some(isConfigPathRichTextPart)
@@ -111,7 +125,7 @@ const BlockField = ({ field, input, isLabelHidden }: BlockFieldProps) => {
                       actions.removeItems(paths);
                     }
                   }}
-                  icon={SSIcons.Remove}
+                  icon={Icons.Remove}
                   aria-label="Remove"
                 />
               </div>
@@ -156,7 +170,7 @@ interface AddButtonProps {
 
 function AddButton({ onAdd }: AddButtonProps) {
   return (
-    <SSButtonGhost
+    <ButtonGhost
       css={css`
         width: 100%;
         padding-left: 0;
@@ -180,15 +194,15 @@ function AddButton({ onAdd }: AddButtonProps) {
             width: 32px;
             height: 32px;
             margin-left: -1px;
-            border: 1px dashed ${SSColors.black20};
+            border: 1px dashed ${Colors.black20};
             border-radius: 2px;
           `}
         >
-          <SSIcons.Add size={16} />
+          <Icons.Add size={16} />
         </div>
         Add
       </div>
-    </SSButtonGhost>
+    </ButtonGhost>
   );
 }
 
@@ -208,29 +222,32 @@ const SubComponentPanelButton = ({
   const sidebarPanelsRoot = document.getElementById("sidebar-panels-root");
   const editorContext = useEditorContext();
   const externalData = useEditorExternalData();
+  const entryAfterAuto = useConfigAfterAuto();
 
   const config = dotNotationGet(editorContext.form.values, paths[0]);
   const componentDefinition = findComponentDefinition(config, editorContext);
   const label =
     componentDefinition?.label ??
     componentDefinition?.id ??
-    `Shopstory can’t find custom component with id: ${config._template} in your project. Please contact your developers to resolve this issue.`;
+    `Can’t find custom component with id: ${config._component} in your project. Please contact your developers to resolve this issue.`;
   const showError = componentDefinition === undefined;
 
-  const sidebarPreview =
-    componentDefinition?.getEditorSidebarPreview?.(
-      config,
-      externalData,
-      editorContext
-    ) ?? {};
+  const sidebarPreview = componentDefinition
+    ? getSidebarPreview(
+        componentDefinition,
+        dotNotationGet(entryAfterAuto, paths[0]),
+        externalData,
+        editorContext
+      )
+    : undefined;
 
   const defaultThumbnail: ThumbnailType | undefined =
     componentDefinition?.thumbnail
       ? { type: "image", src: componentDefinition.thumbnail }
       : undefined;
   const thumbnail: ThumbnailType | undefined =
-    sidebarPreview.thumbnail ?? defaultThumbnail;
-  const description: string | undefined = sidebarPreview.description;
+    sidebarPreview?.thumbnail ?? defaultThumbnail;
+  const description: string | undefined = sidebarPreview?.description;
 
   return showError ? (
     <Error>{label}</Error>
@@ -256,8 +273,48 @@ const SubComponentPanelButton = ({
   );
 };
 
+function getSidebarPreview(
+  componentDefinition: NoCodeComponentDefinition,
+  entryAfterAuto: NoCodeComponentEntry,
+  externalData: ExternalData,
+  editorContext: EditorContextType
+): SidebarPreviewVariant | undefined {
+  const previewValues = Object.fromEntries(
+    componentDefinition.schema.map((s) => {
+      const value = responsiveValueForceGet(
+        entryAfterAuto[s.prop],
+        editorContext.breakpointIndex
+      );
+
+      if (isExternalSchemaProp(s, editorContext.types)) {
+        const externalDataValue = resolveExternalValue(
+          value as ExternalReference,
+          entryAfterAuto._id,
+          s,
+          externalData
+        );
+        return [s.prop, externalDataValue];
+      }
+
+      if (s.type === "text") {
+        return [
+          s.prop,
+          resolveLocalisedValue<string>(
+            (value as LocalTextReference).value,
+            editorContext
+          )?.value,
+        ];
+      }
+
+      return [s.prop, value];
+    })
+  );
+
+  return componentDefinition.preview?.({ values: previewValues, externalData });
+}
+
 const Error = styled.div`
-  ${SSFonts.body}
+  ${Fonts.body}
   padding: 7px 6px 7px;
   color: hsl(0deg 0% 50% / 0.8);
   white-space: normal;
@@ -317,7 +374,7 @@ function Panel({ onCollapse, isExpanded, paths }: PanelProps) {
 
 export const BlockFieldPlugin = {
   __type: "field",
-  name: "ss-block",
+  name: "block",
   Component: BlockField,
 };
 

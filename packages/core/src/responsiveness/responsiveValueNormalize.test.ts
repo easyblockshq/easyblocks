@@ -1,4 +1,4 @@
-import { Devices, ResponsiveValue } from "@easyblocks/core";
+import { Devices, ResponsiveValue } from "../types";
 import { responsiveValueNormalize } from "./responsiveValueNormalize";
 
 const devices: Devices = [

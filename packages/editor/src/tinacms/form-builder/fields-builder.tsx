@@ -1,14 +1,14 @@
-import { Form } from "@easyblocks/app-utils";
 import { InternalField } from "@easyblocks/core/_internals";
-import { SSColors, SSFonts } from "@easyblocks/design-system";
+import { Colors, Fonts, Typography } from "@easyblocks/design-system";
 import { toArray } from "@easyblocks/utils";
-import React from "react";
+import React, { useContext } from "react";
 import styled, { css } from "styled-components";
 import { useEditorContext } from "../../EditorContext";
+import { Form } from "../../form";
 import {
   BlockFieldPlugin,
   ExternalFieldPlugin,
-  FontTokenFieldPlugin,
+  FieldMetaWrapper,
   IdentityFieldPlugin,
   NumberFieldPlugin,
   RadioGroupFieldPlugin,
@@ -20,6 +20,8 @@ import {
   ToggleFieldPlugin,
   TokenFieldPlugin,
 } from "../fields";
+import { PanelContext } from "../fields/plugins/BlockFieldPlugin";
+import { LocalFieldPlugin } from "../fields/plugins/LocalFIeld";
 import { PositionFieldPlugin } from "../fields/plugins/PositionFieldPlugin";
 import { FieldPlugin } from "./field-plugin";
 import { createFieldController } from "./utils/createFieldController";
@@ -31,7 +33,7 @@ export interface FieldBuilderProps {
   isLabelHidden?: boolean;
 }
 
-function shouldFieldBeDisplayed(form: Form, field: InternalField): boolean {
+function shouldFieldBeDisplayed(field: InternalField): boolean {
   if (field.component === null) return false;
 
   if (Array.isArray(field.name)) {
@@ -59,7 +61,7 @@ const FIELD_COMPONENTS: Array<FieldPlugin> = [
   ExternalFieldPlugin,
   TokenFieldPlugin,
   IdentityFieldPlugin,
-  FontTokenFieldPlugin,
+  LocalFieldPlugin,
 ];
 
 export function FieldBuilder({
@@ -70,7 +72,7 @@ export function FieldBuilder({
 }: FieldBuilderProps) {
   const editorContext = useEditorContext();
 
-  if (!shouldFieldBeDisplayed(form, field)) {
+  if (!shouldFieldBeDisplayed(field)) {
     return null;
   }
 
@@ -110,6 +112,8 @@ export function FieldBuilder({
   }
 
   if (typeof field.component !== "string" && field.component !== null) {
+    console.log("not a string");
+
     return (
       <field.component
         input={{
@@ -126,7 +130,18 @@ export function FieldBuilder({
     );
   }
 
-  return <p>Unrecognized field type</p>;
+  return (
+    <FieldMetaWrapper
+      input={{
+        value: getValue(),
+        onChange,
+      }}
+      field={field}
+      layout="column"
+    >
+      <Typography>Unrecognized field type</Typography>
+    </FieldMetaWrapper>
+  );
 }
 
 export interface FieldsBuilderProps {
@@ -135,11 +150,13 @@ export interface FieldsBuilderProps {
 }
 
 export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
+  const editorContext = useEditorContext();
+  const panelContext = useContext(PanelContext);
   const grouped: Record<string, Array<InternalField>> = {};
   const ungrouped: Array<InternalField> = [];
 
   fields.forEach((field) => {
-    if (!shouldFieldBeDisplayed(form, field)) {
+    if (!shouldFieldBeDisplayed(field)) {
       return;
     }
 
@@ -160,12 +177,18 @@ export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
       css={css`
         height: 1px;
         margin-top: -1px;
-        background-color: ${SSColors.black10};
+        background-color: ${Colors.black10};
       `}
     />
   );
 
   const identityField = fields.find((field) => field.component === "identity");
+
+  // If nested panel is opened within the sidebar, we need to force rerender fields, but keep the panel open for better UX
+  // to do that we also add breakpointIndex to the key of the each nested field
+  const breakpointIndex = panelContext
+    ? editorContext.breakpointIndex
+    : undefined;
 
   return (
     <FieldsGroup>
@@ -180,7 +203,7 @@ export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
           <FieldsGroupLabel>{groupName}</FieldsGroupLabel>
           {grouped[groupName].map((field, index, fields) => (
             <div
-              key={generateFieldKey(field)}
+              key={generateFieldKey(field, breakpointIndex)}
               css={css`
                 margin-bottom: ${index === fields.length - 1 ? "8px" : 0};
               `}
@@ -197,7 +220,7 @@ export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
       ))}
       {ungrouped.map((field, index, fields) => (
         <div
-          key={generateFieldKey(field)}
+          key={generateFieldKey(field, breakpointIndex)}
           css={css`
             margin-bottom: ${index === fields.length - 1 ? "8px" : 0};
           `}
@@ -214,23 +237,27 @@ export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
   );
 }
 
-function generateFieldKey(field: InternalField) {
-  const key = `${toArray(field.name).join("_")}_${field.schemaProp.type}`;
+function generateFieldKey(
+  field: InternalField,
+  breakpointIndex: string | undefined
+) {
+  const key = `${toArray(field.name).join("_")}_${field.schemaProp.type}${
+    breakpointIndex ? `_${breakpointIndex}` : ""
+  }`;
   return key;
 }
 
-export const FieldsGroupLabel = styled.div`
+const FieldsGroupLabel = styled.div`
   display: flex;
   align-items: center;
 
-  //min-height: 48px;
   padding: 20px 16px 10px 16px;
 
-  ${SSFonts.label};
+  ${Fonts.label};
   color: #000;
 `;
 
-export const FieldsGroup = styled.div`
+const FieldsGroup = styled.div`
   position: relative;
   display: block;
   width: 100%;

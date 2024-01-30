@@ -71,7 +71,7 @@ type RichTextBlockElementComponentConfig = EditableComponentToComponentConfig<
 };
 
 type RichTextBlockElementCompiledComponentConfig = CompiledComponentConfigBase<
-  RichTextBlockElementComponentConfig["_template"],
+  RichTextBlockElementComponentConfig["_component"],
   { type: RichTextBlockElementType }
 > & {
   styled: NonNullable<ReturnType<typeof richTextBlockElementStyles>["styled"]>;
@@ -81,11 +81,7 @@ type RichTextBlockElementCompiledComponentConfig = CompiledComponentConfigBase<
   };
 };
 
-export {
-  RICH_TEXT_BLOCK_ELEMENT_TYPES,
-  RICH_TEXT_BLOCK_ELEMENT_TYPE_OPTIONS,
-  richTextBlockElementEditableComponent,
-};
+export { RICH_TEXT_BLOCK_ELEMENT_TYPES, richTextBlockElementEditableComponent };
 export type {
   RichTextBlockElementCompiledComponentConfig,
   RichTextBlockElementComponentConfig,

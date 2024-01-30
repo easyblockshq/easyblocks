@@ -1,19 +1,20 @@
 import { BaseEditor } from "slate";
 import { ReactEditor } from "slate-react";
 import {
-  ConfigComponent,
+  NoCodeComponentEntry,
   NoCodeComponentEditingFunctionInput,
   NoCodeComponentEditingFunctionResult,
 } from "../../../types";
 import { EditorContextType } from "../../types";
 
-export interface Text {
+interface Text {
   text: string;
   id: string;
   isHighlighted?: boolean;
-  highlightType?: "text" | "wrapper";
+  highlightType?: "text" | "textWrapper";
   color: Record<string, any>;
   font: Record<string, any>;
+  TextWrapper: [NoCodeComponentEntry] | [];
 }
 
 export interface ParagraphElement {
@@ -25,7 +26,7 @@ export interface ParagraphElement {
 export interface TextLineElement {
   id: string;
   type: "text-line";
-  children: Array<Text | InlineWrapperElement>;
+  children: Array<Text>;
 }
 
 export interface BulletedList {
@@ -43,18 +44,8 @@ export interface NumberedList {
 export interface ListItemElement {
   id: string;
   type: "list-item";
-  children: Array<Text | InlineWrapperElement>;
-}
-
-export interface InlineWrapperElement {
-  id: string;
-  type: "inline-wrapper";
   children: Array<Text>;
-  action: [ConfigComponent] | [];
-  textModifier: [ConfigComponent] | [];
-  actionTextModifier: [ConfigComponent] | [];
 }
-
 export type BlockElement = BulletedList | NumberedList | ParagraphElement;
 
 declare module "slate" {
@@ -65,8 +56,7 @@ declare module "slate" {
       | ListItemElement
       | NumberedList
       | ParagraphElement
-      | TextLineElement
-      | InlineWrapperElement;
+      | TextLineElement;
     Text: Text;
   }
 }

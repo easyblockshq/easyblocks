@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 
-import { SSColors } from "./colors";
+import { Colors } from "./colors";
 
-export type SSRangeSliderProps = React.InputHTMLAttributes<HTMLInputElement> & {
+export type RangeSliderProps = React.InputHTMLAttributes<HTMLInputElement> & {
   max: number;
   min: number;
   step?: number;
@@ -12,7 +12,7 @@ export type SSRangeSliderProps = React.InputHTMLAttributes<HTMLInputElement> & {
 const trackHeight = "1px";
 const thumbSize = "11px";
 const thumbRadius = "50%";
-const trackColor = SSColors.black10;
+const trackColor = Colors.black10;
 const trackColorHover = "black";
 const thumbColor = "black";
 
@@ -104,7 +104,7 @@ const Root = styled.div`
 
 const SliderStyled = styled.input``;
 
-export const SSRangeSlider: React.FC<SSRangeSliderProps> = (props) => {
+export const RangeSlider: React.FC<RangeSliderProps> = (props) => {
   return (
     <Root>
       <SliderStyled {...props} type={"range"} />

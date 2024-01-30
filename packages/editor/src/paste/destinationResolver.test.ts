@@ -1,6 +1,7 @@
-import { CompilationContextType, Form } from "@easyblocks/app-utils";
+import { CompilationContextType } from "@easyblocks/core/_internals";
 import { testEditorContext } from "../utils/tests";
 import { destinationResolver } from "./destinationResolver";
+import { Form } from "../form";
 
 function createForm(initialValues: Record<string, any>): Form {
   return new Form({
@@ -136,77 +137,77 @@ describe("destinationResolver", () => {
   const form = createForm({
     data: [
       {
-        _template: "$Grid",
+        _component: "$Grid",
         Component: [],
       },
       {
-        _template: "$Grid",
+        _component: "$Grid",
         Component: [
           {
-            _template: "$GridCard",
+            _component: "$GridCard",
             Cards: [],
           },
         ],
       },
       {
-        _template: "$Grid",
+        _component: "$Grid",
         Component: [
           {
-            _template: "$GridCard",
+            _component: "$GridCard",
             Cards: [
               {
-                _template: "$ProductCard",
+                _component: "$ProductCard",
               },
               {
-                _template: "$BannerCard",
+                _component: "$BannerCard",
               },
             ],
           },
         ],
       },
       {
-        _template: "$Grid",
+        _component: "$Grid",
         Component: [
           {
-            _template: "$ComponentWithoutDefintion",
+            _component: "$ComponentWithoutDefintion",
             Component: [],
           },
         ],
       },
       {
-        _template: "$ComponentA",
+        _component: "$ComponentA",
         ComponentB: [
           {
-            _template: "$ComponentB",
+            _component: "$ComponentB",
             ComponentC: [
               {
-                _template: "$ComponentC",
+                _component: "$ComponentC",
               },
             ],
           },
         ],
       },
       {
-        _template: "$ComponentCollectionA",
+        _component: "$ComponentCollectionA",
         ComponentCollectionB: [
           {
-            _template: "$ComponentCollectionB",
+            _component: "$ComponentCollectionB",
             ComponentCollectionC: [
               {
-                _template: "$ComponentC",
+                _component: "$ComponentC",
               },
               {
-                _template: "$ComponentC",
+                _component: "$ComponentC",
               },
               {
-                _template: "$ComponentC",
+                _component: "$ComponentC",
               },
             ],
           },
         ],
       },
     ],
-    _template: "$RootSections",
+    _component: "$RootSections",
   });
 
   it.each`

@@ -5,7 +5,8 @@
     "moduleResolution": "node16",
     "declaration": true,
     "emitDeclarationOnly": true,
-    "declarationDir": "./dist"
+    "declarationDir": "./dist/types",
+    "target": "ESNext"
   },
   "include": ["./src/"],
   "exclude": [

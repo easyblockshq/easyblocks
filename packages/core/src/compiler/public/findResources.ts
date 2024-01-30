@@ -1,4 +1,3 @@
-import { assertDefined } from "@easyblocks/utils";
 import {
   getExternalReferenceLocationKey,
   isLocalTextReference,
@@ -12,6 +11,7 @@ import {
   ExternalReference,
   ExternalSchemaProp,
   ExternalWithSchemaProp,
+  NoCodeComponentDefinition,
 } from "../../types";
 import { configTraverse } from "../configTraverse";
 import { createCompilationContext } from "../createCompilationContext";
@@ -29,7 +29,7 @@ export const findExternals: CompilerModule["findExternals"] = (
   const compilationContext = createCompilationContext(
     config,
     contextParams,
-    contextParams.rootContainer
+    input._component
   );
   const normalizedConfig = normalize(inputConfigComponent, compilationContext);
 
@@ -42,15 +42,22 @@ export const findExternals: CompilerModule["findExternals"] = (
       // treat "text" that's actually external as non external.
       if (
         (schemaProp.type === "text" && isLocalTextReference(value, "text")) ||
-        (schemaProp.type !== "text" && !isExternalSchemaProp(schemaProp))
+        (schemaProp.type !== "text" &&
+          !isExternalSchemaProp(schemaProp, compilationContext.types))
       ) {
         return;
       }
 
+      const hasInputComponentRootParams =
+        compilationContext.definitions.components.some(
+          (c: NoCodeComponentDefinition) =>
+            c.id === normalizedConfig._component && c.rootParams !== undefined
+        );
+
       const configId =
-        assertDefined(normalizedConfig._id) === assertDefined(config._id)
+        normalizedConfig._id === config._id && hasInputComponentRootParams
           ? "$"
-          : assertDefined(config._id);
+          : config._id;
 
       if (isTrulyResponsiveValue(value)) {
         responsiveValueEntries(value).forEach(([breakpoint, currentValue]) => {

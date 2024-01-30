@@ -1,13 +1,13 @@
-import { ConfigComponent } from "@easyblocks/core";
+import { NoCodeComponentEntry } from "@easyblocks/core";
 import {
   findComponentDefinition,
   stripRichTextPartSelection,
 } from "@easyblocks/core/_internals";
 import {
-  SSButtonPrimary,
-  SSButtonSecondary,
-  SSColors,
-  SSFonts,
+  ButtonPrimary,
+  ButtonSecondary,
+  Colors,
+  Fonts,
 } from "@easyblocks/design-system";
 import { dotNotationGet } from "@easyblocks/utils";
 import * as React from "react";
@@ -18,20 +18,20 @@ import { pathToCompiledPath } from "./pathToCompiledPath";
 const IdWrapper = styled.div`
   display: block;
   padding: 16px;
-  ${SSFonts.body}
-  color: ${SSColors.black40};
+  ${Fonts.body}
+  color: ${Colors.black40};
 `;
 
 export function SidebarFooter(props: { paths: string[] }) {
   const editorContext = useEditorContext();
-  const { form, isMaster, isAdminMode } = editorContext;
+  const { form, isAdminMode } = editorContext;
 
   if (props.paths.length === 0) {
     return null;
   }
 
   const path = stripRichTextPartSelection(props.paths[0]);
-  const value: ConfigComponent = dotNotationGet(form.values, path);
+  const value: NoCodeComponentEntry = dotNotationGet(form.values, path);
 
   if (!value) {
     return null;
@@ -52,7 +52,7 @@ export function SidebarFooter(props: { paths: string[] }) {
 
   const showSaveAsTemplate =
     isSaveable &&
-    !editorContext.isPlayground &&
+    !editorContext.readOnly &&
     !editorContext.disableCustomTemplates;
 
   return (
@@ -62,7 +62,7 @@ export function SidebarFooter(props: { paths: string[] }) {
         <br />
 
         {showSaveAsTemplate && (
-          <SSButtonSecondary
+          <ButtonSecondary
             onClick={() => {
               editorContext.actions.openTemplateModal({
                 mode: "create",
@@ -73,13 +73,13 @@ export function SidebarFooter(props: { paths: string[] }) {
             }}
           >
             Save as template
-          </SSButtonSecondary>
+          </ButtonSecondary>
         )}
 
-        {(isMaster || isAdminMode) && (
+        {isAdminMode && (
           <div style={{ paddingTop: 16 }}>
             <div>
-              <SSButtonPrimary
+              <ButtonPrimary
                 onClick={() => {
                   navigator.clipboard.writeText(JSON.stringify(value)).then(
                     () => {
@@ -91,8 +91,8 @@ export function SidebarFooter(props: { paths: string[] }) {
                   );
                 }}
               >
-                Copy data
-              </SSButtonPrimary>
+                Copy entry
+              </ButtonPrimary>
             </div>
             {value._master && (
               <div style={{ paddingTop: 16 }}>Master: {value._master}</div>

@@ -1,49 +1,72 @@
-import { Form } from "@easyblocks/app-utils";
 import {
+  Backend,
   CompiledComponentConfig,
-  ConfigComponent,
-  Resource,
+  Document,
+  ExternalTypeDefinition,
+  InlineTypeDefinition,
+  InlineTypeWidgetComponentProps,
+  NoCodeComponentEntry,
   Template,
+  TokenTypeDefinition,
+  TokenTypeWidgetComponentProps,
+  Widget,
 } from "@easyblocks/core";
 import {
   EditorContextType as BaseEditorContextType,
   CompilationCache,
   InternalAnyField,
 } from "@easyblocks/core/_internals";
-import React, { useContext } from "react";
-import { EditorWidget } from "./sidebar/types";
-import { ActionsType, TextSyncers } from "./types";
+import React, { ComponentType, useContext } from "react";
+import { Form } from "./form";
+import { ActionsType, InternalWidgetComponentProps } from "./types";
+
+export type EditorExternalTypeDefinition = Omit<
+  ExternalTypeDefinition,
+  "widgets"
+> & {
+  widgets: Array<
+    Widget & {
+      component?: ComponentType<InternalWidgetComponentProps>;
+    }
+  >;
+};
+
+type EditorInlineTypeDefinition = Omit<InlineTypeDefinition, "widgets"> & {
+  widget: Widget & {
+    component?: ComponentType<InlineTypeWidgetComponentProps<any>>;
+  };
+};
+
+type EditorTokenTypeDefinition = Omit<TokenTypeDefinition, "widgets"> & {
+  widget?: Widget & {
+    component?: ComponentType<TokenTypeWidgetComponentProps<any>>;
+  };
+};
 
 export type EditorContextType = Omit<BaseEditorContextType, "types"> & {
+  backend: Backend;
   templates?: Template[];
   syncTemplates: () => void;
   focussedField: Array<string>;
   setFocussedField: (field: Array<string> | string) => void;
   form: Form<any, InternalAnyField>;
-  isMaster?: boolean;
   isEditing?: boolean;
   actions: ActionsType;
-  text?: TextSyncers;
-  save: (document: {
-    id: string;
-    version: number;
-    updatedAt: number;
-    projectId: string;
-  }) => Promise<void>;
+  save: (document: Document) => Promise<void>;
   compiledComponentConfig?: CompiledComponentConfig;
-  configAfterAuto?: ConfigComponent;
-  resources: Array<Resource>;
+  configAfterAuto?: NoCodeComponentEntry;
   compilationCache: CompilationCache;
   isAdminMode: boolean;
-  project: {
-    id: string;
-    name: string;
-    token: string;
-  };
-  isPlayground: boolean;
+  readOnly: boolean;
   disableCustomTemplates: boolean;
   isFullScreen: boolean;
-  types: Record<string, { widgets: Array<EditorWidget> }>;
+  types: Record<
+    string,
+    | EditorExternalTypeDefinition
+    | EditorInlineTypeDefinition
+    | EditorTokenTypeDefinition
+  >;
+  components: Record<string, ComponentType<any>>;
 };
 
 export const EditorContext = React.createContext<EditorContextType | null>(

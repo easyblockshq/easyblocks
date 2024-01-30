@@ -1,12 +1,12 @@
-import { ConfigComponent } from "../types";
+import { NoCodeComponentEntry } from "../types";
 import { traverseComponents } from "./traverseComponents";
 import { CompilationContextType } from "./types";
 
-function configFindAllPaths<T extends ConfigComponent>(
-  config: ConfigComponent,
+function configFindAllPaths<T extends NoCodeComponentEntry>(
+  config: NoCodeComponentEntry,
   editorContext: CompilationContextType,
   predicate: (
-    config: ConfigComponent,
+    config: NoCodeComponentEntry,
     editorContext: CompilationContextType
   ) => config is T
 ): Array<string> {

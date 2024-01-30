@@ -1,33 +1,32 @@
-import { createFetchingContext } from "../createFetchingContext";
 import { responsiveValueMap } from "../responsiveness";
 import { parseSpacing } from "../spacingToPx";
 import {
   Config,
   ConfigDeviceRange,
   ContextParams,
+  CustomTypeDefinition,
   Devices,
-  EditorLauncherProps,
-  ExternalSchemaProp,
   NoCodeComponentDefinition,
   ResponsiveValue,
-  DocumentType,
   Spacing,
+  SchemaProp,
+  TokenTypeDefinition,
+  ExternalTypeDefinition,
+  ThemeTokenValue,
 } from "../types";
-import { buildFullTheme } from "./buildFullTheme";
 import { richTextEditableComponent } from "./builtins/$richText/$richText";
 import { richTextBlockElementEditableComponent } from "./builtins/$richText/$richTextBlockElement/$richTextBlockElement";
-import { richTextInlineWrapperElementEditableComponent } from "./builtins/$richText/$richTextInlineWrapperElement/$richTextInlineWrapperElement";
 import { richTextLineElementEditableComponent } from "./builtins/$richText/$richTextLineElement/$richTextLineElement";
 import { richTextPartEditableComponent } from "./builtins/$richText/$richTextPart/$richTextPart";
 import { textEditableComponent } from "./builtins/$text/$text";
-import { actionTextModifier } from "./builtins/actionTextModifier";
 import { DEFAULT_DEVICES } from "./devices";
-import { Theme } from "./theme";
+import { themeScalarValueToResponsiveValue } from "./themeValueToResponsiveValue";
 import {
-  themeObjectValueToResponsiveValue,
-  themeScalarValueToResponsiveValue,
-} from "./themeValueToResponsiveValue";
-import { CompilationContextType, CompilationDocumentType } from "./types";
+  CompilationContextCustomTypeDefinition,
+  CompilationContextType,
+  Theme,
+} from "./types";
+import { validateColor } from "./validate-color";
 
 function normalizeSpace(
   space: ResponsiveValue<number | string>
@@ -73,7 +72,7 @@ function prepareDevices(configDevices: Config["devices"]): Devices {
 export function createCompilationContext(
   config: Config,
   contextParams: ContextParams,
-  documentType: NonNullable<EditorLauncherProps["documentType"]>
+  rootComponentId: string
 ): CompilationContextType {
   const devices = prepareDevices(config.devices);
   const mainDevice = devices.find((x) => x.isMain);
@@ -82,21 +81,16 @@ export function createCompilationContext(
     throw new Error(`Missing main device in devices config.`);
   }
 
+  const { space, ...customTokens } = config.tokens ?? {};
+
   const theme: Theme = {
-    colors: {},
-    fonts: {},
     space: {},
-    numberOfItemsInRow: {},
-    aspectRatios: {},
-    icons: {},
-    containerWidths: {},
-    boxShadows: {},
   };
 
   // TODO: allow for custom breakpoints!!! What happens with old ones when the new ones show up?
 
-  if (config.space) {
-    config.space.forEach((space) => {
+  if (space) {
+    space.forEach((space) => {
       let val = space.value;
 
       // If value is "vw" and is not responsive then we should responsify it.
@@ -104,232 +98,319 @@ export function createCompilationContext(
       // Responsive token automatically "fills" all the breakpoints.
       // If someone does 10vw it is responsive in nature, it's NEVER a scalar.
       if (typeof val === "string" && parseSpacing(val).unit === "vw") {
-        val = { [`@${mainDevice.id}`]: val };
+        val = { $res: true, [mainDevice.id]: val };
       }
 
-      const { id, ...rest } = space;
-
-      theme.space[id] = {
-        ...rest,
-        type: "dev",
+      theme.space[space.id] = {
         value: normalizeSpace(themeScalarValueToResponsiveValue(val, devices)),
+        isDefault: space.isDefault ?? false,
+        label: space.label,
       };
     });
   }
 
-  if (config.colors) {
-    config.colors.forEach((color) => {
-      const { id, ...rest } = color;
+  const types = {
+    ...createCustomTypes(config.types),
+    ...createBuiltinTypes(),
+  };
 
-      theme.colors[id] = {
-        ...rest,
-        type: "dev",
-        value: themeScalarValueToResponsiveValue(color.value, devices),
-      };
-    });
-  }
+  const allTypeIds = Object.keys(types);
 
-  if (config.fonts) {
-    // fonts are a bit more complex because they're objects
-    config.fonts.forEach((font) => {
-      const { id, ...rest } = font;
+  Object.entries(customTokens).forEach(([id, tokens]) => {
+    const type = Object.values(types).find(
+      (type) => type.type === "token" && type.token === id
+    ) as TokenTypeDefinition;
 
-      theme.fonts[id] = {
-        ...rest,
-        type: "dev",
-        value: themeObjectValueToResponsiveValue(font.value, devices),
-      };
-    });
-  }
+    if (!type) {
+      throw new Error(
+        `Can't find a matching type for a token "${id}" (found in Config.tokens)`
+      );
+    }
 
-  if (config.aspectRatios) {
-    config.aspectRatios.forEach((aspectRatio) => {
-      const { id, ...rest } = aspectRatio;
+    theme[id] = Object.fromEntries<ThemeTokenValue<any>>(
+      tokens.map((token) => {
+        if (type.validate) {
+          if (type.validate(token.value) !== true) {
+            throw new Error(
+              `The value for token "${id}.${token.id}" (${token.value}) is incorrect. The validation function for its corresponding type must return 'true'. `
+            );
+          }
+        }
 
-      theme.aspectRatios[id] = {
-        ...rest,
-        type: "dev",
-        value: themeScalarValueToResponsiveValue(aspectRatio.value, devices),
-      };
-    });
-  }
-
-  if (config.boxShadows) {
-    config.boxShadows.forEach((boxShadow) => {
-      const { id, ...rest } = boxShadow;
-
-      theme.boxShadows[id] = {
-        ...rest,
-        type: "dev",
-        value: themeScalarValueToResponsiveValue(boxShadow.value, devices),
-      };
-    });
-  }
-
-  if (config.containerWidths) {
-    config.containerWidths.forEach((containerWidth) => {
-      const { id, ...rest } = containerWidth;
-
-      theme.containerWidths[id] = {
-        ...rest,
-        type: "dev",
-        value: themeScalarValueToResponsiveValue(
-          containerWidth.value.toString(),
-          devices
-        ),
-      };
-    });
-  }
-
-  if (config.icons) {
-    config.icons.forEach((icon) => {
-      const { id, ...rest } = icon;
-
-      theme.icons[id] = {
-        ...rest,
-        type: "dev",
-        value: icon.value,
-      };
-    });
-  }
-
-  const fetchingContext = createFetchingContext(config);
-  const documentTypes = buildDocumentTypes(config.documentTypes, devices);
+        return [
+          token.id,
+          {
+            label: token.label,
+            value: token.value,
+            isDefault: token.isDefault ?? false,
+          },
+        ];
+      })
+    );
+  });
 
   const components: Array<NoCodeComponentDefinition<any, any>> = [
     textEditableComponent,
     richTextEditableComponent,
     richTextBlockElementEditableComponent,
     richTextLineElementEditableComponent,
-    richTextInlineWrapperElementEditableComponent,
     richTextPartEditableComponent,
+    {
+      id: "@easyblocks/missing-component",
+      label: "Missing component",
+      schema: [
+        {
+          prop: "error",
+          type: "string",
+          visible: false,
+        },
+      ],
+    },
   ];
 
-  if (config.components) {
-    components.push(...config.components);
-  }
+  const rootComponent = (config.components ?? []).find(
+    (component) => component.id === rootComponentId
+  );
 
-  const activeDocument = documentTypes.find((r) => r.id === documentType);
-
-  if (!activeDocument) {
-    throw new Error(`Document type "${documentType}" doesn't exist.`);
-  }
-
-  if (activeDocument.schema) {
-    const rootComponentDefinition = components.find(
-      (c) => c.id === activeDocument.entry._template
+  if (!rootComponent) {
+    throw new Error(
+      `createCompilationContext: rootComponentId "${rootComponentId}" doesn't exist in config.components`
     );
+  }
 
-    if (!rootComponentDefinition) {
-      throw new Error(
-        `Missing definition for component "${activeDocument.entry._template}".`
-      );
-    }
+  if (rootComponent.rootParams && rootComponent.rootParams.length > 0) {
+    ensureDocumentDataWidgetForExternalTypes(types);
+  }
 
-    activeDocument.schema.forEach((schemaProp) => {
-      if (
-        !rootComponentDefinition.schema.some((s) => s.prop === schemaProp.prop)
-      ) {
-        const rootExternalSchemaProp: ExternalSchemaProp = {
-          ...schemaProp,
-          group: "Preview data",
-          optional: true,
-        };
+  const builtinTypes = [
+    "string",
+    "number",
+    "boolean",
+    "select",
+    "radio-group",
+    "text",
+    "component",
+    "component-collection",
+    "component-collection-localised",
+    "position",
+  ];
 
-        rootComponentDefinition.schema.push(rootExternalSchemaProp);
+  // Validate if components have correct types
+  if (config.components) {
+    config.components.forEach((component) => {
+      if (component.schema) {
+        component.schema.forEach((prop) => {
+          if (builtinTypes.includes(prop.type)) {
+            return;
+          }
+
+          if (!allTypeIds.includes(prop.type)) {
+            throw new Error(
+              `The field "${component.id}.${prop.prop}" has an unrecognized type: "${prop.type}". Custom types can be added in Config.types object`
+            );
+          }
+        });
       }
     });
   }
 
-  // FIXME
-  const textModifiers: Array<any> = [
-    actionTextModifier,
-    // {
-    //   id: "$MissingTextModifier",
-    //   type: "actionTextModifier",
-    //   schema: [],
-    //   apply: () => {
-    //     return {};
-    //   },
-    // },
-    // ...(config.textModifiers ?? []).map((modifier) => {
-    //   return {
-    //     ...modifier,
-    //     type:
-    //       modifier.type === "text"
-    //         ? "textModifier"
-    //         : `${modifier.type}TextModifier`,
-    //   };
-    // }),
-  ];
+  if (config.components) {
+    components.push(
+      ...(config.components ?? []).map((component) => {
+        // For root component with rootParams we should create special param types and move params to schema props
+        if (component.id === rootComponent.id && rootComponent.rootParams) {
+          const paramSchemaProps: SchemaProp[] = [];
+
+          rootComponent.rootParams.forEach((param) => {
+            const typeName = "param__" + param.prop;
+
+            types[typeName] = {
+              type: "external",
+              widgets: param.widgets,
+            };
+
+            paramSchemaProps.push({
+              prop: param.prop,
+              label: param.label,
+              type: typeName,
+              group: "Parameters",
+              optional: true,
+            });
+          });
+
+          return {
+            ...component,
+            schema: [...paramSchemaProps, ...component.schema],
+          };
+        }
+
+        return component;
+      })
+    );
+  }
+
+  if (!config.locales) {
+    throw new Error(
+      `Required property config.locales doesn't exist in your config.`
+    );
+  }
+
+  if (
+    config.locales.find((l) => l.code === contextParams.locale) === undefined
+  ) {
+    throw new Error(
+      `You passed locale "${contextParams.locale}" which doesn't exist in your config.locales`
+    );
+  }
 
   const compilationContext: CompilationContextType = {
     devices,
-    theme: buildFullTheme(theme),
+    theme,
     definitions: {
       components,
-      actions: [],
-      links: [],
-      textModifiers,
     },
-    types: fetchingContext.types,
+    types,
     mainBreakpointIndex: mainDevice.id,
     contextParams,
-    strict: fetchingContext.strict,
     locales: config.locales,
-    documentType,
-    documentTypes,
+    rootComponent,
   };
 
   return compilationContext;
 }
 
-function buildDocumentTypes(
-  documentTypes: Config["documentTypes"],
-  devices: Devices
-): CompilationContextType["documentTypes"] {
-  const resultDocumentTypes: CompilationContextType["documentTypes"] = [];
-
-  if (documentTypes) {
-    for (const [id, documentType] of Object.entries(documentTypes)) {
-      const resultDocumentType: CompilationDocumentType = {
-        id,
-        label: documentType.label,
-        entry: documentType.entry,
-        schema: documentType.schema,
-        widths: buildDocumentTypesWidths(id, documentType, devices),
-      };
-
-      resultDocumentTypes.push(resultDocumentType);
-    }
+function createCustomTypes(
+  types: Record<string, CustomTypeDefinition> | undefined
+): Record<string, CompilationContextCustomTypeDefinition> {
+  if (!types) {
+    return {};
   }
 
-  return resultDocumentTypes;
+  return Object.fromEntries(
+    Object.entries(types).map(([id, definition]) => {
+      if (definition.type === "external") {
+        return [
+          id,
+          {
+            ...definition,
+            responsiveness: definition.responsiveness ?? "never",
+            widgets: definition.widgets ?? [],
+          },
+        ];
+      }
+
+      return [
+        id,
+        {
+          ...definition,
+          responsiveness: definition.responsiveness ?? "never",
+        },
+      ];
+    })
+  );
 }
 
-function buildDocumentTypesWidths(
-  id: string,
-  documentType: DocumentType,
-  devices: Devices
-) {
-  let widths: CompilationDocumentType["widths"];
+function createBuiltinTypes(): Record<
+  string,
+  CompilationContextCustomTypeDefinition
+> {
+  return {
+    space: {
+      type: "token",
+      responsiveness: "always",
+      token: "space",
+      defaultValue: { value: "0px" },
+      widget: { id: "@easyblocks/space", label: "Space" },
+      allowCustom: true,
+      validate(value) {
+        return typeof value === "string" && !!parseSpacing(value);
+      },
+    },
+    color: {
+      type: "token",
+      responsiveness: "always",
+      token: "colors",
+      defaultValue: { value: "#000000" },
+      widget: { id: "@easyblocks/color", label: "Color" },
+      allowCustom: true,
+      validate(value) {
+        return typeof value === "string" && validateColor(value);
+      },
+    },
+    font: {
+      type: "token",
+      token: "fonts",
+      responsiveness: "always",
+      defaultValue: { value: { fontFamily: "sans-serif", fontSize: "16px" } },
+    },
+    aspectRatio: {
+      type: "token",
+      token: "aspectRatios",
+      responsiveness: "always",
+      widget: { id: "@easyblocks/aspectRatio", label: "Aspect ratio" },
+      defaultValue: { value: "1:1" },
+      allowCustom: true,
+      validate(value) {
+        return (
+          typeof value === "string" &&
+          (!!value.match(/[0-9]+:[0-9]+/) || value === "natural")
+        );
+      },
+    },
+    boxShadow: {
+      type: "token",
+      token: "boxShadows",
+      responsiveness: "always",
+      defaultValue: {
+        value:
+          "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+      },
+    },
+    icon: {
+      type: "token",
+      responsiveness: "never",
+      token: "icons",
+      defaultValue: {
+        value: `<svg viewBox="0 -960 960 960"><path fill="currentColor" d="m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z"/></svg>`,
+      },
+      widget: { id: "@easyblocks/icon", label: "Icon" },
+      allowCustom: true,
+      validate(value) {
+        return typeof value === "string" && value.trim().startsWith("<svg");
+      },
+    },
+    text: {
+      type: "external",
+      widgets: [],
+    },
+  };
+}
 
-  if (documentType.widths) {
-    if (documentType.widths.length !== devices.length) {
-      throw new Error(
-        `Invalid number of widths for root container "${id}". Expected ${devices.length} widths, got ${documentType.widths.length}.`
-      );
+function ensureDocumentDataWidgetForExternalTypes(
+  types: CompilationContextType["types"]
+) {
+  const externalTypesNames = new Set([
+    ...Object.keys(types).filter((t) => types[t].type === "external"),
+  ]);
+
+  externalTypesNames.forEach((externalTypeName) => {
+    const externalTypeDefinition = types[
+      externalTypeName
+    ] as ExternalTypeDefinition;
+
+    if (!externalTypeDefinition.widgets) {
+      externalTypeDefinition.widgets = [];
     }
 
-    widths = Object.fromEntries(
-      documentType.widths.map((containerWidth, index) => {
-        const currentDevice = devices[index];
-        return [currentDevice.id, Math.min(containerWidth, currentDevice.w)];
-      })
+    const hasDocumentDataWidget = externalTypeDefinition.widgets.some(
+      (w) => w.id === "@easyblocks/document-data"
     );
-  } else {
-    widths = Object.fromEntries(devices.map((device) => [device.id, device.w]));
-  }
 
-  return widths;
+    if (!hasDocumentDataWidget) {
+      externalTypeDefinition.widgets.push({
+        id: "@easyblocks/document-data",
+        label: "Document data",
+      });
+    }
+  });
 }

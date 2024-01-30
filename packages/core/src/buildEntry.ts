@@ -1,11 +1,10 @@
-import { Locale } from "./locales";
 import { isLocalTextReference } from "./resourcesUtils";
 import type {
-  ChangedExternalData,
+  RequestedExternalData,
   CompilationMetadata,
   CompiledShopstoryComponentConfig,
   CompilerModule,
-  ComponentConfig,
+  NoCodeComponentEntry,
   Config,
   ExternalData,
   ExternalParams,
@@ -13,13 +12,14 @@ import type {
   ExternalSchemaProp,
   ExternalWithSchemaProp,
 } from "./types";
+import { compile, findExternals, validate } from "./compiler";
 
 type BuildEntryOptions = {
-  entry: ComponentConfig;
+  entry: NoCodeComponentEntry;
   config: Config;
-  contextParams: { locale: Locale["code"]; rootContainer: string };
-  compiler: CompilerModule;
-  externalData: ExternalData;
+  locale: string;
+  compiler?: CompilerModule;
+  externalData?: ExternalData;
   isExternalDataChanged?: (
     externalData: {
       id: string;
@@ -32,29 +32,37 @@ type BuildEntryOptions = {
   ) => boolean;
 };
 
+const defaultCompiler: CompilerModule = {
+  compile,
+  findExternals,
+  validate,
+};
+
 function buildEntry({
   entry,
   config,
-  contextParams,
-  compiler,
-  externalData,
+  locale,
+  compiler = defaultCompiler,
+  externalData = {},
   isExternalDataChanged,
 }: BuildEntryOptions): {
   renderableContent: CompiledShopstoryComponentConfig;
   meta: CompilationMetadata;
-  externalData: ChangedExternalData;
-  configAfterAuto?: ComponentConfig;
+  externalData: RequestedExternalData;
+  configAfterAuto?: NoCodeComponentEntry;
 } {
   if (!compiler.validate(entry)) {
     throw new Error("Invalid entry");
   }
 
+  const contextParams = { locale };
   const compilationResult = compiler.compile(entry, config, contextParams);
   const resourcesWithSchemaProps = compiler.findExternals(
     entry,
     config,
     contextParams
   );
+
   const pendingExternalData = findChangedExternalData(
     resourcesWithSchemaProps,
     externalData,
@@ -76,7 +84,7 @@ function findChangedExternalData(
   externalData: ExternalData,
   isExternalDataPending: BuildEntryOptions["isExternalDataChanged"]
 ) {
-  const changedExternalData: ChangedExternalData = {};
+  const changedExternalData: RequestedExternalData = {};
 
   function defaultIsExternalDataPending(
     id: string,

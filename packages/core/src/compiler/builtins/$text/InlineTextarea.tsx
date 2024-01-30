@@ -1,13 +1,13 @@
 import { dotNotationGet } from "@easyblocks/utils";
-import React, { useRef } from "react";
+import React, { ElementRef, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import TextareaAutosize from "react-textarea-autosize";
-import { CompiledNoCodeComponentProps } from "../../types";
 import { useTextValue } from "../useTextValue";
 
-export interface InlineTextProps {
+interface InlineTextProps {
   path: string;
   placeholder?: string;
-  stitches: CompiledNoCodeComponentProps["runtime"]["stitches"];
+  stitches: any;
 }
 
 export function InlineTextarea({
@@ -15,6 +15,9 @@ export function InlineTextarea({
   placeholder,
   stitches,
 }: InlineTextProps) {
+  const [isEnabled, setIsEnabled] = useState(false);
+  const textAreaRef = useRef<ElementRef<"textarea">>(null);
+
   const {
     form,
     contextParams: { locale },
@@ -33,35 +36,64 @@ export function InlineTextarea({
     placeholder
   );
 
-  const css = useRef(
-    stitches.css({
-      width: "100%",
-      wordWrap: "break-word",
-      display: "block",
-      fontSize: "inherit",
-      fontFamily: "inherit",
-      fontWeight: "inherit",
-      boxSizing: "border-box",
-      color: "inherit",
-      letterSpacing: "inherit",
-      lineHeight: "inherit",
-      margin: "0 auto",
-      maxWidth: "inherit",
-      textTransform: "inherit",
-      backgroundColor: "inherit",
-      textAlign: "inherit",
-      outline: "none",
-      resize: "none",
-      border: "none",
-      overflow: "visible",
-      position: "relative",
-      padding: 0,
-      "-ms-overflow-style": "none",
-      "&::-webkit-scrollbar": {
-        display: "none",
-      },
-    })()
-  );
+  const css = stitches.css({
+    width: "100%",
+    wordWrap: "break-word",
+    display: "block",
+    fontSize: "inherit",
+    fontFamily: "inherit",
+    fontWeight: "inherit",
+    boxSizing: "border-box",
+    color: "inherit",
+    letterSpacing: "inherit",
+    lineHeight: "inherit",
+    margin: "0 auto",
+    maxWidth: "inherit",
+    textTransform: "inherit",
+    backgroundColor: "inherit",
+    textAlign: "inherit",
+    outline: "none",
+    resize: "none",
+    border: "none",
+    overflow: "visible",
+    position: "relative",
+    padding: 0,
+    "-ms-overflow-style": "none",
+    "&::-webkit-scrollbar": {
+      display: "none",
+    },
+    pointerEvents: isEnabled ? "auto" : "none",
+  })();
 
-  return <TextareaAutosize className={css.current} rows={1} {...inputProps} />;
+  return (
+    <div
+      onMouseDown={(event) => {
+        if (event.detail === 2) {
+          event.preventDefault();
+
+          flushSync(() => {
+            setIsEnabled(true);
+          });
+
+          textAreaRef.current?.select();
+        }
+      }}
+    >
+      <TextareaAutosize
+        className={css}
+        rows={1}
+        {...inputProps}
+        ref={textAreaRef}
+        onMouseDown={(event) => {
+          if (isEnabled) {
+            event.stopPropagation();
+            return;
+          }
+        }}
+        onBlur={() => {
+          setIsEnabled(false);
+        }}
+      />
+    </div>
+  );
 }

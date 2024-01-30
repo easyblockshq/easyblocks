@@ -2,12 +2,12 @@ import { useDndContext } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
 import { PlaceholderAppearance } from "@easyblocks/core";
 import { parsePath, useEasyblocksMetadata } from "@easyblocks/core/_internals";
-import { SSColors, SSFonts } from "@easyblocks/design-system";
+import { Colors, Fonts } from "@easyblocks/design-system";
 import { toArray } from "@easyblocks/utils";
-import React, { FC } from "react";
+import React from "react";
 import { EditorContextType } from "./EditorContext";
 
-export type PlaceholderProps = {
+type PlaceholderProps = {
   onClick: () => void;
   appearance: PlaceholderAppearance;
   meta: any;
@@ -27,7 +27,7 @@ function Placeholder(props: PlaceholderProps) {
   }
 
   const rootClassName = stitches.css({
-    border: `1px dashed ${SSColors.blue50}`,
+    border: `1px dashed ${Colors.blue50}`,
     position: "relative",
     width: `${width ? `${width}px` : "auto"}`,
     height: "auto",
@@ -41,16 +41,16 @@ function Placeholder(props: PlaceholderProps) {
     width: "100%",
     height: "100%",
     display: "flex",
-    color: SSColors.blue50,
+    color: Colors.blue50,
     justifyContent: "center",
     alignItems: "center",
     cursor: "pointer",
-    ...SSFonts.body,
+    ...Fonts.body,
     "&:hover": {
-      backgroundColor: SSColors.blue10,
+      backgroundColor: Colors.blue10,
     },
     "&[data-draggable-over=true]": {
-      backgroundColor: SSColors.blue10,
+      backgroundColor: Colors.blue10,
     },
     "&[data-draggable-dragging=true]": {
       cursor: "grabbing",
@@ -73,7 +73,7 @@ function Placeholder(props: PlaceholderProps) {
         viewBox="0 0 15 15"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        style={{ color: SSColors.blue50 }}
+        style={{ color: Colors.blue50 }}
       >
         <path
           d="M8 2.75C8 2.47386 7.77614 2.25 7.5 2.25C7.22386 2.25 7 2.47386 7 2.75V7H2.75C2.47386 7 2.25 7.22386 2.25 7.5C2.25 7.77614 2.47386 8 2.75 8H7V12.25C7 12.5261 7.22386 12.75 7.5 12.75C7.77614 12.75 8 12.5261 8 12.25V8H12.25C12.5261 8 12.75 7.77614 12.75 7.5C12.75 7.22386 12.5261 7 12.25 7H8V2.75Z"
@@ -113,8 +113,6 @@ type TypePlaceholderComponentBuilderProps = {
   onClick: () => void;
   meta: any;
 };
-
-type PlaceholderBuilderComponent = FC<TypePlaceholderComponentBuilderProps>;
 
 export default function TypePlaceholder(
   props: TypePlaceholderComponentBuilderProps
@@ -207,8 +205,3 @@ export default function TypePlaceholder(
     />
   );
 }
-
-export type {
-  PlaceholderBuilderComponent,
-  TypePlaceholderComponentBuilderProps,
-};

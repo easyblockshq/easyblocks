@@ -1,28 +1,10 @@
-import type {
-  ChangedExternalData,
-  Config,
-  ContextParams,
-  ExternalData,
-  WidgetComponentProps,
-} from "@easyblocks/core";
-import React, { ComponentType, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { EasyblocksEditorProps } from "./EasyblocksEditorProps";
+import { EasyblocksParent } from "./EasyblocksParent";
 import { EasyblocksCanvas } from "./EditorChildWindow";
 import { PreviewRenderer } from "./PreviewRenderer";
-import { EasyblocksParent } from "./launchEditor";
+import { addDebugToEditorProps } from "./debug/addDebugToEditorProps";
 import { parseQueryParams } from "./parseQueryParams";
-
-export type ExternalDataChangeHandler = (
-  externalData: ChangedExternalData,
-  contextParams: ContextParams
-) => void;
-
-export type EasyblocksEditorProps = {
-  config: Config;
-  externalData: ExternalData;
-  onExternalDataChange: ExternalDataChangeHandler;
-  components?: Record<string, React.ComponentType<any>>;
-  widgets?: Record<string, ComponentType<WidgetComponentProps<any>>>;
-};
 
 export function EasyblocksEditor(props: EasyblocksEditorProps) {
   const [selectedWindow, setSelectedWindow] = useState<
@@ -63,6 +45,14 @@ export function EasyblocksEditor(props: EasyblocksEditorProps) {
     }
   }, []);
 
+  if (!selectedWindow) {
+    return null;
+  }
+
+  if (parseQueryParams().debug) {
+    props = addDebugToEditorProps(props);
+  }
+
   return (
     <>
       {selectedWindow === "parent" && (
@@ -71,6 +61,7 @@ export function EasyblocksEditor(props: EasyblocksEditorProps) {
           externalData={props.externalData}
           onExternalDataChange={props.onExternalDataChange}
           widgets={props.widgets}
+          components={props.components}
         />
       )}
 
@@ -78,9 +69,7 @@ export function EasyblocksEditor(props: EasyblocksEditorProps) {
         <EasyblocksCanvas components={props.components} />
       )}
 
-      {selectedWindow === "preview" && (
-        <PreviewRenderer config={props.config} />
-      )}
+      {selectedWindow === "preview" && <PreviewRenderer {...props} />}
     </>
   );
 }

@@ -1,9 +1,9 @@
-import { ConfigComponent } from "@easyblocks/core";
+import { NoCodeComponentEntry } from "@easyblocks/core";
 import { Destination } from "./destinationResolver";
 
 function pasteManager() {
   const inserts = new Map<string, number>();
-  return (destinations: Destination[]) => (item: ConfigComponent) => {
+  return (destinations: Destination[]) => (item: NoCodeComponentEntry) => {
     let i = 0;
 
     while (i < destinations.length) {

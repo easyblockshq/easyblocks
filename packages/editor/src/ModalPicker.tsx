@@ -1,14 +1,12 @@
 import {
+  NoCodeComponentEntry,
   ComponentSchemaProp,
-  ConfigComponent,
   Template,
 } from "@easyblocks/core";
 import {
   duplicateConfig,
   findComponentDefinition,
   normalize,
-  optionalTextModifierSchemaProp,
-  richTextInlineWrapperActionSchemaProp,
 } from "@easyblocks/core/_internals";
 import { dotNotationGet } from "@easyblocks/utils";
 import React, { FC } from "react";
@@ -21,7 +19,7 @@ import { unrollAcceptsFieldIntoComponents } from "./unrollAcceptsFieldIntoCompon
 
 type ModalProps = {
   config: OpenComponentPickerConfig;
-  onClose: (config?: ConfigComponent) => void;
+  onClose: (config?: NoCodeComponentEntry) => void;
 };
 
 export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
@@ -32,21 +30,14 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
   const parentPath = split.slice(0, split.length - 1).join(".");
   const fieldName = split[split.length - 1];
 
-  const parentData: ConfigComponent = dotNotationGet(form.values, parentPath);
-  let schemaProp = findComponentDefinition(
+  const parentData: NoCodeComponentEntry = dotNotationGet(
+    form.values,
+    parentPath
+  );
+  const schemaProp = findComponentDefinition(
     parentData,
     editorContext
   )!.schema.find((x) => x.prop === fieldName) as ComponentSchemaProp;
-
-  if (!schemaProp && parentData._template === "@easyblocks/rich-text-part") {
-    if (fieldName === "$action") {
-      schemaProp = richTextInlineWrapperActionSchemaProp;
-    }
-
-    if (fieldName === "$textModifier") {
-      schemaProp = optionalTextModifierSchemaProp;
-    }
-  }
 
   const componentTypes = config.componentTypes ?? schemaProp.accepts;
   const components = unrollAcceptsFieldIntoComponents(
@@ -66,7 +57,7 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
       };
 
       editorContext.templates!.forEach((template) => {
-        if (component.id === template.entry._template) {
+        if (component.id === template.entry._component) {
           templatesDictionary![component.id].templates.push(template);
         }
       });
@@ -86,9 +77,9 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
   //
   // const pickerMode = schemaProp.picker || defaultPickerMode;
 
-  const close = (config: ConfigComponent) => {
+  const close = (config: NoCodeComponentEntry) => {
     const _itemProps = {
-      [parentData._template]: {
+      [parentData._component]: {
         [fieldName]: {},
       },
     };
@@ -127,8 +118,6 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
       />
     );
   } else if (picker === "compact") {
-    console.log("COMPACT!!!!!", templatesDictionary);
-
     return (
       <SearchableSmallPickerModal
         isOpen={true}
@@ -139,25 +128,4 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
   } else {
     throw new Error(`unknown template picker: "${picker}"`);
   }
-
-  // if (pickerMode === "small") {
-  //   modal = (
-  //     <SearchableSmallPickerModal
-  //       isOpen={true}
-  //       onClose={onModalClose}
-  //       componentTypes={componentTypes}
-  //     />
-  //   );
-  // } else {
-  //   modal = (
-  //     <SectionPickerModal
-  //       isOpen={true}
-  //       onSelect={onModalClose}
-  //       onClose={onClose}
-  //       componentTypes={componentTypes}
-  //     />
-  //   );
-  // }
-
-  // return modal;
 };

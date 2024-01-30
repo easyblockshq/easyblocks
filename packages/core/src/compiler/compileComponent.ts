@@ -23,23 +23,22 @@ import {
   CompilationMetadata,
   CompiledCustomComponentConfig,
   CompiledShopstoryComponentConfig,
-  CompiledTextModifier,
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
   ComponentSchemaProp,
-  ConfigComponent,
+  NoCodeComponentEntry,
   EditingField,
   EditingInfo,
   FieldPortal,
   NoCodeComponentEditingFunctionResult,
   NoCodeComponentStylesFunctionInput,
-  RefMap,
   ScalarOrCollection,
   SchemaProp,
   SerializedComponentDefinitions,
   SerializedRenderableComponentDefinition,
   SpaceSchemaProp,
   TrulyResponsiveValue,
+  CompiledComponentConfig,
 } from "../types";
 import type {
   CompilationCache,
@@ -48,7 +47,6 @@ import type {
 import { applyAutoUsingResponsiveTokens } from "./applyAutoUsingResponsiveTokens";
 import { compileBox } from "./box";
 import { RichTextComponentConfig } from "./builtins/$richText/$richText";
-import { richTextInlineWrapperActionSchemaProp } from "./builtins/$richText/$richTextInlineWrapperElement/richTextInlineWrapperActionSchemaProp";
 import { compileComponentValues } from "./compileComponentValues";
 import { compileFromSchema } from "./compileFromSchema";
 import { ConfigComponentCompilationOutput } from "./definitions";
@@ -71,7 +69,6 @@ import {
   isSchemaPropComponentOrComponentCollection,
   isSchemaPropTextModifier,
 } from "./schema";
-import { splitTemplateName } from "./splitTemplateName";
 import { getTinaField } from "./tinaFieldProviders";
 import {
   CompilationContextType,
@@ -85,20 +82,18 @@ import {
   InternalEditingInfo,
   InternalRenderableComponentDefinition,
 } from "./types";
+import { getFallbackLocaleForLocale } from "../locales";
 
 type ComponentCompilationArtifacts = {
-  compiledComponentConfig:
-    | CompiledShopstoryComponentConfig
-    | CompiledCustomComponentConfig;
-  configAfterAuto: ConfigComponent;
+  compiledComponentConfig: CompiledComponentConfig;
+  configAfterAuto: NoCodeComponentEntry;
 };
 
 export function compileComponent(
-  editableElement: ConfigComponent,
+  editableElement: NoCodeComponentEntry,
   compilationContext: CompilationContextType,
   contextProps: ContextProps, // contextProps are already compiled! They're result of compilation function.
   meta: any,
-  refMap: RefMap,
   cache: CompilationCache,
   parentComponentEditingInfo?:
     | EditingInfoComponent
@@ -114,54 +109,55 @@ export function compileComponent(
     throw new Error("[compile] wrong input for compileComponent");
   }
 
+  if (contextProps.$width === undefined || contextProps.$width === -1) {
+    throw new Error(
+      `assertion failed: incorrect $width in compileComponent: ${contextProps.$width}, component: ${editableElement._id}, ${editableElement._component}`
+    );
+  }
+
   const cachedResult = cache.get(editableElement._id);
-  const { name, ref } = splitTemplateName(editableElement._template);
 
   let componentDefinition = findComponentDefinitionById(
-    name,
+    editableElement._component,
     compilationContext
   );
 
   if (!componentDefinition) {
     componentDefinition = assertDefined(
-      findComponentDefinitionById("$MissingComponent", compilationContext)
+      findComponentDefinitionById(
+        "@easyblocks/missing-component",
+        compilationContext
+      )
     );
 
     editableElement = {
-      _template: componentDefinition.id,
+      _component: componentDefinition.id,
       _id: uniqueId(),
-      error: `Shopstory can’t find definition for component: ${name} in your project. Please contact your developers to resolve this issue.`,
+      error: `Easyblocks can’t find definition for component "${name}" in your config. Please contact your developers to resolve this issue.`,
     };
 
     parentComponentEditingInfo = undefined;
   }
-
-  refMap = { ...refMap, ...(editableElement.$$$refs || {}) };
 
   const ownProps = createOwnComponentProps({
     config: editableElement,
     contextProps,
     componentDefinition,
     compilationContext,
-    refMap,
-    ref,
   });
 
   let hasComponentConfigChanged = true;
 
   let ownPropsAfterAuto: {
-    values: { _id: string; _template: string } & Record<string, any>;
+    values: { _id: string; _component: string } & Record<string, any>;
     params: Record<string, any>;
   };
-  let compiled:
-    | CompiledCustomComponentConfig
-    | CompiledShopstoryComponentConfig = {
-    _template: editableElement._template,
+  let compiled: CompiledComponentConfig = {
+    _component: editableElement._component,
     _id: editableElement._id,
     props: {},
-    actions: {},
     components: {},
-    textModifiers: {},
+    styled: {},
   };
   let configAfterAuto: any;
   let editingInfo: InternalEditingInfo | undefined;
@@ -257,6 +253,7 @@ export function compileComponent(
         params: {
           ...ownPropsAfterAuto.params,
           $width,
+          $widthAuto,
         },
         devices: compilationContext.devices,
       });
@@ -318,8 +315,7 @@ export function compileComponent(
           compilationContext,
           cache,
           {},
-          meta,
-          refMap
+          meta
         );
 
         compiledValues[collectionSchemaProp.prop][itemIndex][
@@ -328,38 +324,9 @@ export function compileComponent(
       }
     );
 
-    componentDefinition.schema.forEach((schemaProp: SchemaProp) => {
-      if (
-        isSchemaPropActionTextModifier(schemaProp) ||
-        isSchemaPropTextModifier(schemaProp)
-      ) {
-        const modifierValue = editableElement[schemaProp.prop][0];
-
-        if (!modifierValue) {
-          compiledValues[schemaProp.prop] = [];
-          return;
-        }
-
-        compiledValues[schemaProp.prop] = [
-          compileTextModifier(
-            modifierValue,
-            editableElement.elements,
-            compilationContext,
-            `${configPrefix}${configPrefix === "" ? "" : "."}${
-              schemaProp.prop
-            }.0`,
-            cache
-          ),
-        ];
-
-        compiled.textModifiers[schemaProp.prop] =
-          compiledValues[schemaProp.prop];
-      }
-    });
-
     // We want to style block element based on the most common values from all text parts within all lines.
     // Only for this component, we compile nested @easyblocks/rich-text-part components values.
-    if (editableElement._template === "@easyblocks/rich-text") {
+    if (editableElement._component === "@easyblocks/rich-text") {
       if (compiledValues.isListStyleAuto) {
         const {
           mainColor = compiledValues.mainColor,
@@ -378,25 +345,6 @@ export function compileComponent(
         compiledValues.mainFont
       );
     }
-
-    // $SectionWrapper holds the hide prop, but the $RootSections component is responsible for showing/hiding sections
-    // We add `hide` value of each section to compiled values of $RootSections component
-    if (editableElement._template === "$RootSections") {
-      compiledValues.data = compiledValues.data.map(
-        (data: Record<string, any>, index: number) => {
-          return {
-            ...data,
-            hide: responsiveValueFill(
-              editableElement.data[index].hide,
-              compilationContext.devices,
-              getDevicesWidths(compilationContext.devices)
-            ),
-          };
-        }
-      );
-    }
-
-    // User-defined components don't need any more work
 
     compiled = {
       ...compiled,
@@ -419,7 +367,7 @@ export function compileComponent(
         configPrefix,
         editorContext,
         compiledValues,
-        editableElement._template
+        editableElement._component
       );
 
       /**
@@ -452,6 +400,9 @@ export function compileComponent(
           values: scalarizedConfig,
           params: ownPropsAfterAuto.params,
           editingInfo: editingInfoInput,
+          device: editorContext.devices.find(
+            (device) => device.id === editorContext.breakpointIndex
+          )!,
           ...(componentDefinition.id === "@easyblocks/rich-text" ||
           componentDefinition.id === "@easyblocks/rich-text-part"
             ? {
@@ -519,8 +470,7 @@ export function compileComponent(
           },
           isEditing: !!compilationContext.isEditing,
           device,
-          ...(componentDefinition!.id ===
-          "@easyblocks/rich-text-inline-wrapper-element"
+          ...(componentDefinition!.id === "@easyblocks/rich-text-part"
             ? { __COMPILATION_CONTEXT__: compilationContext }
             : {}),
         };
@@ -564,7 +514,10 @@ export function compileComponent(
         return;
       }
 
-      if (isExternalSchemaProp(schemaProp) || schemaProp.type === "text") {
+      if (
+        isExternalSchemaProp(schemaProp, compilationContext.types) ||
+        schemaProp.type === "text"
+      ) {
         // We simply copy ONLY the breakpoints which are defined in the raw data
         compiled.props[schemaProp.prop] = Object.fromEntries(
           Object.keys(editableElement[schemaProp.prop]).map((deviceId) => {
@@ -606,7 +559,7 @@ export function compileComponent(
       configPrefix,
       editorContext,
       compiledValues,
-      editableElement._template
+      editableElement._component
     );
 
     /**
@@ -639,6 +592,9 @@ export function compileComponent(
         values: scalarizedValues,
         params: ownPropsAfterAuto!.params,
         editingInfo: editingInfoInput,
+        device: editorContext.devices.find(
+          (device) => device.id === editorContext.breakpointIndex
+        )!,
         ...(componentDefinition.id === "@easyblocks/rich-text" ||
         componentDefinition.id === "@easyblocks/rich-text-part"
           ? {
@@ -684,7 +640,6 @@ export function compileComponent(
     contextProps,
     subcomponentsContextProps,
     compilationContext,
-    refMap,
     meta,
     editingContextProps,
     configPrefix,
@@ -766,21 +721,17 @@ function createOwnComponentProps({
   contextProps,
   componentDefinition,
   compilationContext,
-  refMap,
-  ref,
 }: {
-  config: ConfigComponent;
+  config: NoCodeComponentEntry;
   contextProps: ContextProps;
   componentDefinition: InternalComponentDefinition;
   compilationContext: CompilationContextType;
-  refMap: RefMap;
-  ref?: string;
 }) {
-  // Copy all values and refs defined in schema, for component fields copy only _id, _template and its _itemProps but flattened
+  // Copy all values and refs defined in schema, for component fields copy only _id, _component and its _itemProps but flattened
   const values = Object.fromEntries(
     componentDefinition.schema.map((schemaProp) => {
       if (isSchemaPropComponentOrComponentCollection(schemaProp)) {
-        let configValue: Array<ConfigComponent> = config[schemaProp.prop];
+        let configValue: Array<NoCodeComponentEntry> = config[schemaProp.prop];
 
         if (configValue.length === 0) {
           return [schemaProp.prop, []];
@@ -792,7 +743,7 @@ function createOwnComponentProps({
             [
               {
                 _id: configValue[0]._id,
-                _template: configValue[0]._template,
+                _component: configValue[0]._component,
               },
             ],
           ];
@@ -801,7 +752,10 @@ function createOwnComponentProps({
         if (isSchemaPropComponentCollectionLocalised(schemaProp)) {
           configValue =
             resolveLocalisedValue(
-              config[schemaProp.prop] as Record<string, Array<ConfigComponent>>,
+              config[schemaProp.prop] as Record<
+                string,
+                Array<NoCodeComponentEntry>
+              >,
               compilationContext
             )?.value ?? [];
         }
@@ -817,14 +771,14 @@ function createOwnComponentProps({
 
             return {
               _id: config._id,
-              _template: config._template,
+              _component: config._component,
               ...flattenedItemProps,
             };
           }
 
           return {
             _id: config._id,
-            _template: config._template,
+            _component: config._component,
           };
         });
 
@@ -835,26 +789,12 @@ function createOwnComponentProps({
     })
   );
 
-  const ownValues: { _id: string; _template: string; [key: string]: any } = {
-    // Copy id and template which uniquely identify component.
+  const ownValues: { _id: string; _component: string; [key: string]: any } = {
+    // Copy id and component which uniquely identify component.
     _id: config._id,
-    _template: config._template,
+    _component: config._component,
     ...values,
   };
-
-  if (ref) {
-    const refs = Object.fromEntries(
-      componentDefinition.schema
-        .filter((schemaProp) => {
-          return !isExternalSchemaProp(schemaProp);
-        })
-        .map((schemaProp) => {
-          return [schemaProp.prop, refMap[ref][schemaProp.prop]];
-        })
-    );
-
-    Object.assign(ownValues, refs);
-  }
 
   return {
     values: ownValues,
@@ -863,7 +803,7 @@ function createOwnComponentProps({
 }
 
 function flattenItemProps(
-  config: ConfigComponent,
+  config: NoCodeComponentEntry,
   componentDefinition: InternalComponentDefinition,
   collectionSchemaProp:
     | ComponentCollectionSchemaProp
@@ -885,14 +825,14 @@ function flattenItemProps(
 }
 
 function addComponentToSerializedComponentDefinitions(
-  component: ConfigComponent,
+  component: NoCodeComponentEntry,
   meta: CompilationMetadata,
   componentType: keyof SerializedComponentDefinitions,
   compilationContext: CompilationContextType
 ) {
   const definitions = meta.vars.definitions[componentType];
 
-  if (definitions.find((def: any) => def.id === component._template)) {
+  if (definitions.find((def: any) => def.id === component._component)) {
     return;
   }
 
@@ -916,16 +856,15 @@ function addComponentToSerializedComponentDefinitions(
 }
 
 function compileSubcomponents(
-  editableElement: ConfigComponent,
+  editableElement: NoCodeComponentEntry,
   contextProps: ContextProps,
   subcomponentsContextProps: Record<string, Record<string, any>>,
   compilationContext: CompilationContextType,
-  refMap: RefMap,
   meta: any,
   editingInfoComponents: InternalEditingInfo["components"] | undefined,
   configPrefix: string,
   compiledComponentConfig: CompiledCustomComponentConfig,
-  configAfterAuto: ConfigComponent | null, // null means that we don't want auto
+  configAfterAuto: NoCodeComponentEntry | null, // null means that we don't want auto
   cache: CompilationCache
 ) {
   const componentDefinition = findComponentDefinition(
@@ -967,7 +906,9 @@ function compileSubcomponents(
             compilationContext
           );
           if (!resolvedValue) {
-            throw new Error("can't resolve localised value");
+            throw new Error(
+              `Can't resolve localised value for prop "${schemaProp.prop}" of component ${editableElement._component}`
+            );
           }
           value = resolvedValue.value as any[];
         }
@@ -991,7 +932,6 @@ function compileSubcomponents(
         cache,
         childContextProps,
         meta,
-        refMap,
         editingInfoComponents?.[schemaProp.prop],
         `${configPrefix}${configPrefix === "" ? "" : "."}${schemaProp.prop}`
       ) as ConfigComponentCompilationOutput[];
@@ -1014,7 +954,7 @@ function compileSubcomponents(
           const configsAfterAuto = compilationOutput.map(
             (compilationOutput, index) => {
               if (schemaProp.itemFields) {
-                const itemPropsCollectionPath = `_itemProps.${editableElement._template}.${schemaProp.prop}`;
+                const itemPropsCollectionPath = `_itemProps.${editableElement._component}.${schemaProp.prop}`;
 
                 const itemProps = Object.fromEntries(
                   schemaProp.itemFields.map((itemSchemaProp) => {
@@ -1069,7 +1009,7 @@ function calculateWidths(
 }
 
 function itemFieldsForEach(
-  config: ConfigComponent,
+  config: NoCodeComponentEntry,
   compilationContext: CompilationContextType,
   callback: (arg: {
     collectionSchemaProp:
@@ -1106,7 +1046,8 @@ function itemFieldsForEach(
         }
       }
 
-      const value: Array<ConfigComponent> = dotNotationGet(config, path) ?? [];
+      const value: Array<NoCodeComponentEntry> =
+        dotNotationGet(config, path) ?? [];
 
       value.forEach((_, index) => {
         if (itemFields) {
@@ -1141,105 +1082,19 @@ function resolveLocalisedValue<T>(
     };
   }
 
-  if (compilationContext.isEditing) {
-    //   const editorContext = compilationContext as EditorContextType;
-    //   const fallbackLocale = getFallbackLocaleForLocale(
-    //     locale,
-    //     editorContext.locales
-    //   );
-    //   if (!fallbackLocale) {
-    //     return;
-    //   }
-    //   return {
-    //     value: localisedValue[fallbackLocale],
-    //     locale: fallbackLocale,
-    //   };
-  } else {
+  const fallbackLocale = getFallbackLocaleForLocale(
+    locale,
+    compilationContext.locales
+  );
+
+  if (!fallbackLocale) {
     return;
   }
-}
 
-// function tracingType(tags: string[], overwrite?: EventSourceType) {
-//   if (overwrite) {
-//     return overwrite;
-//   }
-//
-//   const types: EventSourceType[] = ["section", "card", "button", "item"];
-//
-//   return types.find((t) => tags.includes(t)) ?? "item";
-// }
-
-function compileTextModifier(
-  modifierValue: ConfigComponent,
-  textParts: Array<ConfigComponent>,
-  compilationContext: CompilationContextType,
-  configPrefix: string | undefined,
-  cache: CompilationCache
-): CompiledTextModifier {
-  const modifierDefinition = findComponentDefinitionById(
-    modifierValue._template,
-    compilationContext
-  );
-
-  if (!modifierDefinition) {
-    return {
-      _template: "$MissingTextModifier",
-      _id: uniqueId(),
-      elements: [],
-    };
-  }
-
-  const compiledModifierValues = compileComponentValues(
-    modifierValue,
-    modifierDefinition,
-    compilationContext,
-    cache
-  );
-
-  const textPartDefinition = findComponentDefinitionById(
-    "@easyblocks/rich-text-part",
-    compilationContext
-  );
-
-  if (!textPartDefinition) {
-    throw new Error(
-      `[compile] Couldn't find a modifier definition for "@easyblocks/rich-text-part". `
-    );
-  }
-
-  const compiledTextPartsValues = textParts.map((textPartConfig) => {
-    return compileComponentValues(
-      textPartConfig,
-      textPartDefinition,
-      compilationContext,
-      cache
-    );
-  });
-
-  const compiledModifier: CompiledTextModifier = {
-    _template: modifierValue._template,
-    _id: modifierValue._id!,
-    ...compiledModifierValues,
-    elements: compiledTextPartsValues,
+  return {
+    value: localisedValue[fallbackLocale],
+    locale: fallbackLocale,
   };
-
-  if (compilationContext.isEditing) {
-    const editorContext = compilationContext as EditorContextType;
-
-    const editingInfo = buildDefaultEditingInfo(
-      modifierDefinition,
-      configPrefix!,
-      editorContext,
-      compiledModifierValues,
-      modifierValue._template
-    );
-
-    compiledModifier.__editing = {
-      fields: editingInfo.fields,
-    };
-  }
-
-  return compiledModifier;
 }
 
 function buildDefaultEditingInfo(
@@ -1339,7 +1194,7 @@ function buildDefaultEditingInfo(
   } else {
     const rootComponentDefinition = assertDefined(
       findComponentDefinitionById(
-        dotNotationGet(editorContext.form.values, "")._template,
+        dotNotationGet(editorContext.form.values, "")._component,
         editorContext
       )
     );
@@ -1503,18 +1358,6 @@ function mapResponsiveFontToResponsiveFontSize(
   );
 }
 
-function extractContextPropsFromStyles(
-  styles: Record<string, Record<string, any>>
-) {
-  const contextProps = Object.fromEntries(
-    Object.entries(styles).filter(([, componentStyles]) => {
-      return !componentStyles.__isBox;
-    })
-  );
-
-  return contextProps;
-}
-
 function addStylesHash(styles: Record<PropertyKey, any>) {
   if ("__hash" in styles) {
     delete styles["__hash"];
@@ -1573,39 +1416,15 @@ function getDefaultFieldDefinition(
   return {
     ...tinaField,
     prop: schemaProp.prop,
-    name: createFieldName(schemaProp, configPrefix, templateId, editorContext),
+    name: createFieldName(schemaProp, configPrefix),
     hidden: !visible,
   };
 }
 
-function createFieldName(
-  schemaProp: SchemaProp,
-  configPrefix: string,
-  templateId: string,
-  editorContext: EditorContextType
-): string {
-  const { ref, isRefLocal } = splitTemplateName(templateId);
-
-  /**
-   * This condition is kind of "ancient". It's ref mechanism (shared properties) that is not in use anymore. But it's necessary for backward compatibility.
-   */
-  if (ref && !isExternalSchemaProp(schemaProp)) {
-    // local ref
-    if (!isRefLocal) {
-      throw new Error("global refs not enabled");
-    }
-
-    const parent = parsePath(
-      configPrefix + "." + schemaProp.prop,
-      editorContext.form
-    ).parent!;
-
-    return `${parent.path}.$$$refs.${ref}.${schemaProp.prop}`;
-  } else {
-    return schemaProp.prop === "$myself"
-      ? configPrefix
-      : `${configPrefix}${configPrefix === "" ? "" : "."}${schemaProp.prop}`;
-  }
+function createFieldName(schemaProp: SchemaProp, configPrefix: string): string {
+  return schemaProp.prop === "$myself"
+    ? configPrefix
+    : `${configPrefix}${configPrefix === "" ? "" : "."}${schemaProp.prop}`;
 }
 
 function convertInternalEditingInfoToEditingInfo(
@@ -1874,30 +1693,6 @@ function convertEditingFieldToInternalEditingField(
         fieldName,
       };
     }
-
-    if (field.path === "$action") {
-      // When @easyblocks/rich-text-part is outside of wrapper element, we add field for displaying action schema prop to allow
-      // to add action to selected text without putting it into schemas of @easyblocks/rich-text-part.
-      const actionField = getTinaField(
-        {
-          ...richTextInlineWrapperActionSchemaProp,
-          prop: "$action",
-          definition: findComponentDefinitionById(
-            "@easyblocks/rich-text-inline-wrapper-element",
-            editorContext
-          )!,
-          defaultValue: [],
-        },
-        editorContext,
-        []
-      );
-
-      return {
-        ...actionField,
-        name: `${configPrefix}.$action`,
-        hidden: false,
-      };
-    }
   }
 
   if (field.type === "field") {
@@ -2012,7 +1807,7 @@ function isFieldPathAbsolutePath(
     pathFragments[currentPathFragmentIndex]
   );
 
-  while (currentValue) {
+  while (currentValue !== undefined) {
     if (pathFragments.length - 1 === currentPathFragmentIndex) {
       return true;
     }
@@ -2034,11 +1829,13 @@ function toAbsolutePath(path: string, configPrefix: string | undefined) {
   return path;
 }
 
-export function isSchemaPropTokenized(schemaProp: SchemaProp) {
+function isSchemaPropTokenized(schemaProp: SchemaProp) {
   return (
     schemaProp.type === "color" ||
     schemaProp.type === "space" ||
     schemaProp.type === "font" ||
-    schemaProp.type === "stringToken"
+    schemaProp.type === "aspectRatio" ||
+    schemaProp.type === "boxShadow" ||
+    schemaProp.type === "containerWidth"
   );
 }

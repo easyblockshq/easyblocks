@@ -1,4 +1,4 @@
-export const SSColors = {
+export const Colors = {
   blue: "#3F76CD",
   focus: "#8EB2F1",
   purple: "#7B70F5",

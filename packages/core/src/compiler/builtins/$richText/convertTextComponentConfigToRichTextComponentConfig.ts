@@ -38,14 +38,14 @@ function convertTextComponentConfigToRichTextComponentConfig(
                 color: textComponentConfig.color,
                 font: textComponentConfig.font,
                 value,
+                TextWrapper: [],
               }),
             ],
           });
         }),
       }),
     ],
-    // @ts-ignore
-    compilationContext: { contextParams: { locale } },
+    locale,
     mainColor: textComponentConfig.color,
     mainFont: textComponentConfig.font,
   });

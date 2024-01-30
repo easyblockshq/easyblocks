@@ -2,10 +2,6 @@ import React from "react";
 
 export const easyblocksStitchesInstances: any[] = [];
 
-export function addEasyblocksStitchesInstance(instance: any) {
-  easyblocksStitchesInstances.push(instance);
-}
-
 export function easyblocksGetCssText() {
   return easyblocksStitchesInstances
     .map((stitches) => stitches.getCssText())

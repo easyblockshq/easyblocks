@@ -37,14 +37,14 @@ const IconContainer = styled.div.withConfig({
   `}
 `;
 
-export type IconProps = {
+type IconProps = {
   size?: number;
   isStroke?: boolean;
 };
 
-export type SSIcon = React.ComponentType<IconProps>;
+export type Icon = React.ComponentType<IconProps>;
 
-function createIcon(svg: JSX.Element, isStroke = false): SSIcon {
+function createIcon(svg: JSX.Element, isStroke = false): Icon {
   return (props: IconProps) => {
     return (
       <IconContainer {...props} isStroke={isStroke}>
@@ -544,7 +544,7 @@ const OpenInNew = createIcon(
   </svg>
 );
 
-export const SSIcons = {
+export const Icons = {
   Dropdown,
   MaxHeight,
   Add,

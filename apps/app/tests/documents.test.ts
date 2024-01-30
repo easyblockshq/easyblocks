@@ -4,13 +4,22 @@ import { createClient } from "@supabase/supabase-js";
 
 const ACCESS_TOKEN_HEADER = "x-shopstory-access-token";
 
-const PROJECT_A_ID = "89ed48c6-dc0b-4936-9a97-4eb791396853";
-const PROJECT_A_ACCESS_TOKEN =
-  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2NjE5NTM2NzMsImV4cCI6MTY5MzQ4OTY3MywiYXVkIjoiYXV0aGVudGljYXRlZCIsInN1YiI6IjEyMyIsImVtYWlsIjoibWljaGFsQHNob3BzdG9yeS5hcHAiLCJwcm9qZWN0X2lkIjoiODllZDQ4YzYtZGMwYi00OTM2LTlhOTctNGViNzkxMzk2ODUzIn0.3I9QMjhPkYHtzW19g-uIjattobPBiXEK0Fz4AwxEfQg";
+import {
+  PROJECT_A_ACCESS_TOKEN,
+  PROJECT_A_ID,
+  PROJECT_B_ACCESS_TOKEN,
+  PROJECT_B_ID,
+  SUPABASE_HOST,
+  SUPABASE_KEY,
+} from "./testData";
 
-const PROJECT_B_ID = "04bc84cb-9204-4ede-aeb1-b0dde5e7d83d";
-const PROJECT_B_ACCESS_TOKEN =
-  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2NjI2MjUyMzYsImV4cCI6MTY5NDE2MTIzNiwiYXVkIjoiYXV0aGVudGljYXRlZCIsInN1YiI6Im1pY2hhbEBzaG9wc3RvcnkuYXBwIiwicHJvamVjdF9pZCI6IjA0YmM4NGNiLTkyMDQtNGVkZS1hZWIxLWIwZGRlNWU3ZDgzZCJ9.CgoPHlke30wti_U7I8KT8nXXVK0fjRghnbhnGIfeYJI";
+// const PROJECT_A_ID = "89ed48c6-dc0b-4936-9a97-4eb791396853";
+// const PROJECT_A_ACCESS_TOKEN =
+//   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2NjE5NTM2NzMsImV4cCI6MTY5MzQ4OTY3MywiYXVkIjoiYXV0aGVudGljYXRlZCIsInN1YiI6IjEyMyIsImVtYWlsIjoibWljaGFsQHNob3BzdG9yeS5hcHAiLCJwcm9qZWN0X2lkIjoiODllZDQ4YzYtZGMwYi00OTM2LTlhOTctNGViNzkxMzk2ODUzIn0.3I9QMjhPkYHtzW19g-uIjattobPBiXEK0Fz4AwxEfQg";
+
+// const PROJECT_B_ID = "04bc84cb-9204-4ede-aeb1-b0dde5e7d83d";
+// const PROJECT_B_ACCESS_TOKEN =
+//   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2NjI2MjUyMzYsImV4cCI6MTY5NDE2MTIzNiwiYXVkIjoiYXV0aGVudGljYXRlZCIsInN1YiI6Im1pY2hhbEBzaG9wc3RvcnkuYXBwIiwicHJvamVjdF9pZCI6IjA0YmM4NGNiLTkyMDQtNGVkZS1hZWIxLWIwZGRlNWU3ZDgzZCJ9.CgoPHlke30wti_U7I8KT8nXXVK0fjRghnbhnGIfeYJI";
 
 test.use({
   baseURL: "http://localhost:3100",
@@ -64,15 +73,11 @@ test.describe.serial("documents", () => {
   };
 
   async function cleanAllTestDocuments() {
-    const supabase = createClient(
-      "http://localhost:54321",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU",
-      {
-        auth: {
-          persistSession: false,
-        },
-      }
-    );
+    const supabase = createClient(SUPABASE_HOST, SUPABASE_KEY, {
+      auth: {
+        persistSession: false,
+      },
+    });
 
     await supabase.from("documents").delete().eq("project_id", PROJECT_A_ID);
     await supabase.from("documents").delete().eq("project_id", PROJECT_B_ID);
@@ -306,7 +311,7 @@ test.describe.serial("documents", () => {
           data: {
             title: "DocumentA_1",
             config: {
-              _template: "@easyblocks/text",
+              _component: "@easyblocks/text",
               _id: "xxx",
               value: {
                 __localized: true,
@@ -340,7 +345,7 @@ test.describe.serial("documents", () => {
 
       expect(document.config.config).toEqual({
         _id: "xxx",
-        _template: "@easyblocks/text",
+        _component: "@easyblocks/text",
         value: { de: "Deutsch" },
       });
     } catch (error) {
@@ -364,7 +369,7 @@ test.describe.serial("documents", () => {
       `/api/projects/${PROJECT_A_ID}/documents`,
       {
         data: {
-          config: { _template: "$Component2" },
+          config: { _component: "$Component2" },
         },
         headers: {
           [ACCESS_TOKEN_HEADER]: PROJECT_A_ACCESS_TOKEN,

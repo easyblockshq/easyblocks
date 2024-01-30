@@ -1,7 +1,4 @@
-import {
-  CompiledCustomComponentConfig,
-  CompiledShopstoryComponentConfig,
-} from "../types";
+import { CompiledComponentConfig } from "../types";
 import { InternalEditingInfo } from "./types";
 
 type CompilationCacheItemValue = {
@@ -9,17 +6,15 @@ type CompilationCacheItemValue = {
    * Values compared during compilation to determine if component has changed
    */
   values: {
-    values: { _id: string; _template: string } & Record<string, any>;
+    values: { _id: string; _component: string } & Record<string, any>;
     params: Record<string, any>;
   };
   valuesAfterAuto: {
-    values: { _id: string; _template: string } & Record<string, any>;
+    values: { _id: string; _component: string } & Record<string, any>;
     params: Record<string, any>;
   };
   compiledValues: Record<string, any>;
-  compiledConfig:
-    | CompiledShopstoryComponentConfig
-    | CompiledCustomComponentConfig;
+  compiledConfig: CompiledComponentConfig;
   contextProps: { [componentName in string]: Record<string, any> };
   // TODO: editor only????
   editingContextProps?: InternalEditingInfo["components"];

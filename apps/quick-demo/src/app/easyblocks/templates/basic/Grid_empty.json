@@ -1,219 +1,287 @@
 {
-  "_id": "2139606b-c677-41fd-b2b7-3c5065b0aab2",
-  "_template": "$Grid",
-  "traceId": "$Grid-4a9c51c9",
+  "_id": "bbccc88e-3c48-4fe0-a13e-7e659db4257f",
+  "_component": "Grid",
   "_itemProps": {
-    "$RootSections": {
+    "StandardPage": {
       "data": {
-        "topMargin": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
-        "bottomMargin": { "$res": true, "xl": { "value": "32px", "ref": "32" } }
+        "topMargin": {
+          "$res": true,
+          "xl": {
+            "value": "0px",
+            "tokenId": "0",
+            "widgetId": "@easyblocks/space"
+          }
+        },
+        "bottomMargin": {
+          "$res": true,
+          "xl": {
+            "value": "32px",
+            "tokenId": "32",
+            "widgetId": "@easyblocks/space"
+          }
+        }
       }
     }
   },
-  "hide": { "$res": true, "xl": false },
-  "Component": [
-    {
-      "_id": "18ec1304-6b34-4612-b57a-112646babb91",
-      "_template": "$GridCard",
-      "traceId": "$GridCard-596f74f7",
-      "Cards": [],
-      "variant": { "$res": true, "xl": "grid" },
-      "numberOfItems": { "$res": true, "xl": "4" },
-      "fractionalItemWidth": { "$res": true, "xl": "1.25" },
-      "columnGap": { "$res": true, "xl": { "value": "16px", "ref": "16" } },
-      "rowGap": { "$res": true, "xl": { "value": "16px", "ref": "16" } },
-      "verticalAlign": { "$res": true, "xl": "top" },
-      "showSliderControls": { "$res": true, "xl": false },
-      "shouldSliderItemsBeVisibleOnMargin": { "$res": true, "xl": true },
-      "gridMainObjectAspectRatio": {
-        "$res": true,
-        "xl": { "value": "4:5", "ref": "$gridMainObjectDefault" }
-      },
-      "borderEnabled": false,
-      "borderColor": {
-        "$res": true,
-        "xl": { "value": "black", "ref": "grey_05" }
-      },
-      "borderTop": { "$res": true, "xl": "1" },
-      "borderBottom": { "$res": true, "xl": "1" },
-      "borderLeft": { "$res": true, "xl": "1" },
-      "borderRight": { "$res": true, "xl": "1" },
-      "borderInner": { "$res": true, "xl": "1" },
-      "paddingTop": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
-      "paddingBottom": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
-      "paddingLeft": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
-      "paddingRight": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
-      "LeftArrow": [
-        {
-          "_id": "a348280c-d0b9-4fb9-915d-a19265e6b752",
-          "_template": "$StandardButton",
-          "_master": "buttonDark",
-          "traceId": "$StandardButton-6db6e0a0",
-          "_itemProps": { "$GridCard": { "LeftArrow": {} } },
-          "Action": [],
-          "variant": "icon",
-          "label": {
-            "id": "local.6e7098ed-53e6-48d2-ad8c-5b3eda50fcee",
-            "value": { "en-US": "Click me" }
-          },
-          "icon": {
-            "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"red\" width=\"100px\" height=\"100px\"><path d=\"M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z\"/></svg>",
-            "ref": "arrowLeft"
-          },
-          "color": {
-            "$res": true,
-            "xl": { "value": "black", "ref": "grey_05" }
-          },
-          "minHeight": { "$res": true, "xl": "42" },
-          "minWidth": { "$res": true, "xl": "100" },
-          "horizontalPadding": {
-            "$res": true,
-            "xl": { "value": "16px", "ref": "16" }
-          },
-          "gap": { "$res": true, "xl": { "value": "6px", "ref": "6" } },
-          "cornerMode": { "$res": true, "xl": "circled" },
-          "cornerRadius": { "$res": true, "xl": "12" },
-          "font": {
-            "$res": true,
-            "xl": {
-              "value": {
-                "$res": true,
-                "2xl": {
-                  "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
-                  "fontSize": 16,
-                  "fontWeight": 500,
-                  "lineHeight": 1.2
-                }
-              },
-              "ref": "body2.bold"
-            }
-          },
-          "underline": "off",
-          "underlineOffset": { "$res": true, "xl": "1" },
-          "iconSize": { "$res": true, "xl": "24" },
-          "hasBackground": true,
-          "backgroundColor": {
-            "$res": true,
-            "xl": { "value": "#D8D8D880", "ref": "transparent-grey-light" }
-          },
-          "hasBorder": false,
-          "borderWidth": { "$res": true, "xl": "1" },
-          "borderColor": {
-            "$res": true,
-            "xl": { "value": "black", "ref": "grey_05" }
-          },
-          "boxShadow": {
-            "$res": true,
-            "xl": { "value": "none", "ref": "none" }
-          }
-        }
-      ],
-      "leftArrowPlacement": { "$res": true, "xl": "center" },
-      "leftArrowOffset": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
-      "RightArrow": [
-        {
-          "_id": "c5d2b04b-1320-4b64-a6cb-078985daa89d",
-          "_template": "$StandardButton",
-          "_master": "buttonDark",
-          "traceId": "$StandardButton-bace734d",
-          "_itemProps": { "$GridCard": { "RightArrow": {} } },
-          "Action": [],
-          "variant": "icon",
-          "label": {
-            "id": "local.ee68aa2c-5133-425b-b801-8aed22bd6c67",
-            "value": { "en-US": "Click me" }
-          },
-          "icon": {
-            "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z\"/></svg>",
-            "ref": "arrowRight"
-          },
-          "color": {
-            "$res": true,
-            "xl": { "value": "black", "ref": "grey_05" }
-          },
-          "minHeight": { "$res": true, "xl": "42" },
-          "minWidth": { "$res": true, "xl": "100" },
-          "horizontalPadding": {
-            "$res": true,
-            "xl": { "value": "16px", "ref": "16" }
-          },
-          "gap": { "$res": true, "xl": { "value": "6px", "ref": "6" } },
-          "cornerMode": { "$res": true, "xl": "circled" },
-          "cornerRadius": { "$res": true, "xl": "12" },
-          "font": {
-            "$res": true,
-            "xl": {
-              "value": {
-                "$res": true,
-                "2xl": {
-                  "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
-                  "fontSize": 16,
-                  "fontWeight": 500,
-                  "lineHeight": 1.2
-                }
-              },
-              "ref": "body2.bold"
-            }
-          },
-          "underline": "off",
-          "underlineOffset": { "$res": true, "xl": "1" },
-          "iconSize": { "$res": true, "xl": "24" },
-          "hasBackground": true,
-          "backgroundColor": {
-            "$res": true,
-            "xl": { "value": "#D8D8D880", "ref": "transparent-grey-light" }
-          },
-          "hasBorder": false,
-          "borderWidth": { "$res": true, "xl": "1" },
-          "borderColor": {
-            "$res": true,
-            "xl": { "value": "black", "ref": "grey_05" }
-          },
-          "boxShadow": {
-            "$res": true,
-            "xl": { "value": "none", "ref": "none" }
-          }
-        }
-      ],
-      "rightArrowPlacement": { "$res": true, "xl": "center" },
-      "rightArrowOffset": { "$res": true, "xl": { "value": "0px", "ref": "0" } }
-    }
-  ],
   "containerMargin": {
     "$res": true,
     "xl": {
-      "value": { "$res": true, "xl": "5vw" },
-      "ref": "containerMargin.default"
+      "value": { "$res": true, "md": "5vw", "lg": "8vw" },
+      "tokenId": "containerMargin.standard",
+      "widgetId": "@easyblocks/space"
     }
   },
   "containerMaxWidth": {
     "$res": true,
-    "xl": { "value": "none", "ref": "none" }
+    "xl": { "value": -1, "tokenId": "none" }
   },
   "escapeMargin": { "$res": true, "xl": false },
+  "Cards": [],
+  "variant": { "$res": true, "xl": "grid" },
+  "numberOfItems": { "$res": true, "xl": "4" },
+  "fractionalItemWidth": { "$res": true, "xl": "1.25" },
+  "columnGap": {
+    "$res": true,
+    "xl": { "value": "16px", "tokenId": "16", "widgetId": "@easyblocks/space" }
+  },
+  "rowGap": {
+    "$res": true,
+    "xl": { "value": "16px", "tokenId": "16", "widgetId": "@easyblocks/space" }
+  },
+  "verticalAlign": { "$res": true, "xl": "top" },
+  "showSliderControls": { "$res": true, "xl": false },
+  "shouldSliderItemsBeVisibleOnMargin": { "$res": true, "xl": true },
+  "gridMainObjectAspectRatio": {
+    "$res": true,
+    "xl": { "value": "1:1", "widgetId": "@easyblocks/aspectRatio" }
+  },
+  "paddingTop": {
+    "$res": true,
+    "xl": { "value": "0px", "tokenId": "0", "widgetId": "@easyblocks/space" }
+  },
+  "paddingBottom": {
+    "$res": true,
+    "xl": { "value": "0px", "tokenId": "0", "widgetId": "@easyblocks/space" }
+  },
+  "paddingLeft": {
+    "$res": true,
+    "xl": { "value": "0px", "tokenId": "0", "widgetId": "@easyblocks/space" }
+  },
+  "paddingRight": {
+    "$res": true,
+    "xl": { "value": "0px", "tokenId": "0", "widgetId": "@easyblocks/space" }
+  },
+  "LeftArrow": [
+    {
+      "_id": "3373f25f-e02d-4557-adcf-6e5d362ff960",
+      "_component": "Button",
+      "_itemProps": { "Grid": { "LeftArrow": {} } },
+      "Action": [],
+      "variant": "icon",
+      "label": {
+        "id": "local.34771ea7-5883-49ac-98dd-800d57532bad",
+        "value": { "en-US": "Click me" },
+        "widgetId": "@easyblocks/local-text"
+      },
+      "icon": {
+        "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"red\" width=\"100px\" height=\"100px\"><path d=\"M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z\"/></svg>",
+        "tokenId": "arrowLeft",
+        "widgetId": "@easyblocks/icon"
+      },
+      "color": {
+        "$res": true,
+        "xl": {
+          "value": "#252525",
+          "tokenId": "grey_05",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "minHeight": { "$res": true, "xl": "42" },
+      "minWidth": { "$res": true, "xl": "100" },
+      "horizontalPadding": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "gap": {
+        "$res": true,
+        "xl": {
+          "value": "6px",
+          "tokenId": "6",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "cornerMode": { "$res": true, "xl": "circled" },
+      "cornerRadius": { "$res": true, "xl": "12" },
+      "font": {
+        "$res": true,
+        "xl": {
+          "value": {
+            "fontSize": 13,
+            "lineHeight": 1.8,
+            "fontFamily": "test-soehne-mono"
+          },
+          "tokenId": "body2"
+        }
+      },
+      "underline": "on-custom",
+      "underlineOffset": { "$res": true, "xl": "3" },
+      "iconSize": { "$res": true, "xl": "24" },
+      "hasBackground": true,
+      "backgroundColor": {
+        "$res": true,
+        "xl": {
+          "value": "#D8D8D880",
+          "tokenId": "transparent-grey-light",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "hasBorder": false,
+      "borderWidth": { "$res": true, "xl": "1" },
+      "borderColor": {
+        "$res": true,
+        "xl": {
+          "value": "#000000",
+          "tokenId": "black",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "boxShadow": {
+        "$res": true,
+        "xl": { "value": "none", "tokenId": "none" }
+      }
+    }
+  ],
+  "leftArrowPlacement": { "$res": true, "xl": "center" },
+  "leftArrowOffset": {
+    "$res": true,
+    "xl": { "value": "0px", "widgetId": "@easyblocks/space" }
+  },
+  "RightArrow": [
+    {
+      "_id": "f082f68f-e52d-455e-a264-c315ce8ca3a4",
+      "_component": "Button",
+      "_itemProps": { "Grid": { "RightArrow": {} } },
+      "Action": [],
+      "variant": "icon",
+      "label": {
+        "id": "local.f876f3b3-e59a-4f9e-af59-a7156093aed5",
+        "value": { "en-US": "Click me" },
+        "widgetId": "@easyblocks/local-text"
+      },
+      "icon": {
+        "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z\"/></svg>",
+        "tokenId": "arrowRight",
+        "widgetId": "@easyblocks/icon"
+      },
+      "color": {
+        "$res": true,
+        "xl": {
+          "value": "#252525",
+          "tokenId": "grey_05",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "minHeight": { "$res": true, "xl": "42" },
+      "minWidth": { "$res": true, "xl": "100" },
+      "horizontalPadding": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "gap": {
+        "$res": true,
+        "xl": {
+          "value": "6px",
+          "tokenId": "6",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "cornerMode": { "$res": true, "xl": "circled" },
+      "cornerRadius": { "$res": true, "xl": "12" },
+      "font": {
+        "$res": true,
+        "xl": {
+          "value": {
+            "fontSize": 13,
+            "lineHeight": 1.8,
+            "fontFamily": "test-soehne-mono"
+          },
+          "tokenId": "body2"
+        }
+      },
+      "underline": "on-custom",
+      "underlineOffset": { "$res": true, "xl": "3" },
+      "iconSize": { "$res": true, "xl": "24" },
+      "hasBackground": true,
+      "backgroundColor": {
+        "$res": true,
+        "xl": {
+          "value": "#D8D8D880",
+          "tokenId": "transparent-grey-light",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "hasBorder": false,
+      "borderWidth": { "$res": true, "xl": "1" },
+      "borderColor": {
+        "$res": true,
+        "xl": {
+          "value": "#000000",
+          "tokenId": "black",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "boxShadow": {
+        "$res": true,
+        "xl": { "value": "none", "tokenId": "none" }
+      }
+    }
+  ],
+  "rightArrowPlacement": { "$res": true, "xl": "inside" },
+  "rightArrowOffset": {
+    "$res": true,
+    "xl": { "value": "0px", "widgetId": "@easyblocks/space" }
+  },
   "headerMode": "none",
   "layout1Stack": "left",
   "layout2Stacks": { "$res": true, "xl": "left-right" },
   "layout2StacksVerticalAlign": { "$res": true, "xl": "center" },
-  "headerStacksGap": { "$res": true, "xl": { "value": "12px", "ref": "12" } },
-  "headerSectionGap": { "$res": true, "xl": { "value": "12px", "ref": "12" } },
-  "footerSectionGap": { "$res": true, "xl": { "value": "12px", "ref": "12" } },
+  "headerStacksGap": {
+    "$res": true,
+    "xl": { "value": "12px", "tokenId": "12", "widgetId": "@easyblocks/space" }
+  },
+  "headerSectionGap": {
+    "$res": true,
+    "xl": { "value": "12px", "tokenId": "12", "widgetId": "@easyblocks/space" }
+  },
+  "footerSectionGap": {
+    "$res": true,
+    "xl": { "value": "12px", "tokenId": "12", "widgetId": "@easyblocks/space" }
+  },
   "HeaderStack": [
     {
-      "_id": "2c0414d1-14c8-4a83-b86c-77b12b3fce90",
-      "_template": "$stack",
-      "traceId": "$stack-03f1fe21",
+      "_id": "c7d02cda-48a9-498b-9022-d3260d9e85fc",
+      "_component": "Stack",
       "Items": []
     }
   ],
   "HeaderSecondaryStack": [
     {
-      "_id": "f76e37cd-8f95-412e-bf8d-02066fc015bc",
-      "_template": "$stack",
-      "traceId": "$stack-66986d49",
+      "_id": "108f69ed-a3f3-4426-b746-6d7f44e48712",
+      "_component": "Stack",
       "Items": []
     }
   ],
   "Background__": [],
-  "padding": { "$res": true, "xl": { "value": "24px", "ref": "24" } }
+  "padding": {
+    "$res": true,
+    "xl": { "value": "24px", "tokenId": "24", "widgetId": "@easyblocks/space" }
+  }
 }

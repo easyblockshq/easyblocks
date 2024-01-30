@@ -1,11 +1,11 @@
 import { uniqueId } from "@easyblocks/utils";
-import { CompilationContextType } from "../../types";
+import { SetOptional } from "type-fest";
+import type { TokenValue } from "../../../types";
 import type { RichTextComponentConfig } from "./$richText";
 import type {
   RichTextBlockElementComponentConfig,
   RichTextBlockElementType,
 } from "./$richTextBlockElement/$richTextBlockElement";
-import type { RichTextInlineWrapperElementEditableComponentConfig } from "./$richTextInlineWrapperElement/$richTextInlineWrapperElement";
 import type { RichTextLineElementComponentConfig } from "./$richTextLineElement/$richTextLineElement";
 import type { RichTextPartComponentConfig } from "./$richTextPart/$richTextPart";
 
@@ -22,22 +22,29 @@ function buildRichTextNoCodeEntry(options?: {
 }) {
   const { accessibilityRole, font, color, text, locale = "en" } = options ?? {};
 
-  const colorRefValue = {
-    ref: color,
+  const colorTokenValue: TokenValue = {
     value: "#000000",
+    widgetId: "@easyblocks/color",
   };
 
-  const fontRefValue = {
-    ref: font,
+  if (color) {
+    colorTokenValue.tokenId = color;
+  }
+
+  const fontTokenValue: TokenValue = {
     value: {
       fontFamily: "sans-serif",
       fontSize: "16px",
     },
   };
 
+  if (font) {
+    fontTokenValue.tokenId = font;
+  }
+
   return {
     _id: uniqueId(),
-    _template: "@easyblocks/rich-text",
+    _component: "@easyblocks/rich-text",
     accessibilityRole: accessibilityRole ?? "div",
     elements: {
       [locale ?? "en"]: [
@@ -45,9 +52,10 @@ function buildRichTextNoCodeEntry(options?: {
           buildRichTextLineElementComponentConfig({
             elements: [
               buildRichTextPartComponentConfig({
-                color: colorRefValue,
-                font: fontRefValue,
+                color: colorTokenValue,
+                font: fontTokenValue,
                 value: text ?? "Lorem ipsum",
+                TextWrapper: [],
               }),
             ],
           }),
@@ -55,14 +63,14 @@ function buildRichTextNoCodeEntry(options?: {
       ],
     },
     isListStyleAuto: true,
-    mainColor: colorRefValue,
-    mainFont: fontRefValue,
+    mainColor: colorTokenValue,
+    mainFont: fontTokenValue,
   };
 }
 
 function buildRichTextComponentConfig({
   accessibilityRole,
-  compilationContext,
+  locale,
   elements,
   isListStyleAuto,
   mainColor,
@@ -71,15 +79,15 @@ function buildRichTextComponentConfig({
   Partial<
     Pick<RichTextComponentConfig, "accessibilityRole" | "isListStyleAuto">
   > & {
-    compilationContext: CompilationContextType;
+    locale: string;
     elements: RichTextComponentConfig["elements"][string];
   }): RichTextComponentConfig {
   return {
     _id: uniqueId(),
-    _template: "@easyblocks/rich-text",
+    _component: "@easyblocks/rich-text",
     accessibilityRole: accessibilityRole ?? "div",
     elements: {
-      [compilationContext.contextParams.locale]: elements,
+      [locale]: elements,
     },
     isListStyleAuto: isListStyleAuto ?? true,
     mainColor,
@@ -92,7 +100,7 @@ function buildRichTextBlockElementComponentConfig(
   elements: RichTextBlockElementComponentConfig["elements"]
 ): RichTextBlockElementComponentConfig {
   return {
-    _template: "@easyblocks/rich-text-block-element",
+    _component: "@easyblocks/rich-text-block-element",
     elements,
     type,
     _id: uniqueId(),
@@ -106,7 +114,7 @@ function buildRichTextParagraphBlockElementComponentConfig({
   "elements"
 >): RichTextBlockElementComponentConfig {
   return {
-    _template: "@easyblocks/rich-text-block-element",
+    _component: "@easyblocks/rich-text-block-element",
     elements,
     type: "paragraph",
     _id: uniqueId(),
@@ -120,7 +128,7 @@ function buildRichTextBulletedListBlockElementComponentConfig({
   "elements"
 >): RichTextBlockElementComponentConfig {
   return {
-    _template: "@easyblocks/rich-text-block-element",
+    _component: "@easyblocks/rich-text-block-element",
     elements,
     type: "bulleted-list",
     _id: uniqueId(),
@@ -134,33 +142,9 @@ function buildRichTextLineElementComponentConfig({
   "elements"
 >): RichTextLineElementComponentConfig {
   return {
-    _template: "@easyblocks/rich-text-line-element",
+    _component: "@easyblocks/rich-text-line-element",
     elements,
     _id: uniqueId(),
-  };
-}
-
-function buildRichTextInlineWrapperElementComponentConfig({
-  id,
-  elements,
-  action,
-  textModifier,
-  actionTextModifier,
-}: Pick<RichTextInlineWrapperElementEditableComponentConfig, "elements"> &
-  Partial<
-    Identity &
-      Pick<
-        RichTextInlineWrapperElementEditableComponentConfig,
-        "textModifier" | "actionTextModifier" | "action"
-      >
-  >): RichTextInlineWrapperElementEditableComponentConfig {
-  return {
-    _id: id ?? uniqueId(),
-    _template: "@easyblocks/rich-text-inline-wrapper-element",
-    elements,
-    action: action ?? [],
-    textModifier: textModifier ?? [],
-    actionTextModifier: actionTextModifier ?? [],
   };
 }
 
@@ -169,24 +153,27 @@ function buildRichTextPartComponentConfig({
   font,
   value,
   id,
-}: Pick<RichTextPartComponentConfig, "color" | "font" | "value"> &
-  Partial<Identity>): RichTextPartComponentConfig {
+  TextWrapper,
+}: SetOptional<
+  Omit<RichTextPartComponentConfig, "_id" | "_component"> & Partial<Identity>,
+  "TextWrapper"
+>): RichTextPartComponentConfig {
   return {
     _id: id ?? uniqueId(),
-    _template: "@easyblocks/rich-text-part",
+    _component: "@easyblocks/rich-text-part",
     color,
     font,
     value,
+    TextWrapper: TextWrapper ?? [],
   };
 }
 
 export {
-  buildRichTextNoCodeEntry,
-  buildRichTextComponentConfig,
   buildRichTextBlockElementComponentConfig,
   buildRichTextBulletedListBlockElementComponentConfig,
-  buildRichTextParagraphBlockElementComponentConfig,
+  buildRichTextComponentConfig,
   buildRichTextLineElementComponentConfig,
-  buildRichTextInlineWrapperElementComponentConfig,
+  buildRichTextNoCodeEntry,
+  buildRichTextParagraphBlockElementComponentConfig,
   buildRichTextPartComponentConfig,
 };

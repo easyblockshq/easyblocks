@@ -1,16 +1,16 @@
 import {
   isTrulyResponsiveValue,
-  responsiveValueGetDefinedValue,
   responsiveValueFill,
   responsiveValueForceGet,
-  responsiveValueGetFirstLowerValue,
+  responsiveValueGetDefinedValue,
   responsiveValueGetFirstHigherValue,
+  responsiveValueGetFirstLowerValue,
 } from "../responsiveness";
-import { spacingToPx, parseSpacing } from "../spacingToPx";
+import { parseSpacing, spacingToPx } from "../spacingToPx";
 import {
-  RefValue,
   ResponsiveValue,
   Spacing,
+  TokenValue,
   TrulyResponsiveValue,
 } from "../types";
 import { applyAutoUsingResponsiveTokens } from "./applyAutoUsingResponsiveTokens";
@@ -20,11 +20,11 @@ import { getDeviceWidthPairs } from "./getDeviceWidthPairs";
 import { CompilationContextType } from "./types";
 
 export function linearizeSpace(
-  input: ResponsiveValue<RefValue<ResponsiveValue<Spacing>>>,
+  input: ResponsiveValue<TokenValue<ResponsiveValue<Spacing>>>,
   compilationContext: CompilationContextType,
   widths: TrulyResponsiveValue<number>,
   constant = 0
-): ResponsiveValue<RefValue<ResponsiveValue<Spacing>>> {
+): ResponsiveValue<TokenValue<ResponsiveValue<Spacing>>> {
   if (!isTrulyResponsiveValue(input)) {
     return input;
   }
@@ -49,7 +49,7 @@ export function linearizeSpace(
   // Responsive token kind of "overrides auto".
   // If we want in the future auto for responsive tokens it's not the place for it. Linearizing tokens should happen in creating compilation context.
   const inputAfterResponsiveTokenAuto: TrulyResponsiveValue<
-    RefValue<ResponsiveValue<Spacing>>
+    TokenValue<ResponsiveValue<Spacing>>
   > = applyAutoUsingResponsiveTokens(input, compilationContext);
 
   const inputWithScalarNonRefValues: TrulyResponsiveValue<number> = {
@@ -133,7 +133,7 @@ function snapValueToToken(
   spaces: CompilationContextType["theme"]["space"],
   constant: number
 ) {
-  let currentToken: RefValue<Spacing> | undefined = undefined;
+  let currentToken: TokenValue<Spacing> | undefined = undefined;
   let minDelta = Number.MAX_VALUE;
 
   for (const tokenId in spaces) {
@@ -188,8 +188,9 @@ function snapValueToToken(
     ) {
       minDelta = delta;
       currentToken = {
-        ref: tokenId,
+        tokenId,
         value: tokenValue,
+        widgetId: "@easyblocks/space",
       };
     }
   }
@@ -203,7 +204,7 @@ function snapValueToToken(
   return currentToken;
 }
 
-export function linearizeSpaceWithoutNesting(
+function linearizeSpaceWithoutNesting(
   input: ResponsiveValue<number>,
   compilationContext: CompilationContextType,
   widths: TrulyResponsiveValue<number>,

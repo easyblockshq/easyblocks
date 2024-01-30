@@ -1,9 +1,10 @@
 import { Devices, Locale } from "@easyblocks/core";
 import {
-  SSButtonGhost,
-  SSColors,
-  SSIcons,
-  SSToggle,
+  ButtonGhost,
+  Colors,
+  Fonts,
+  Icons,
+  Toggle,
   ToggleGroup,
   ToggleGroupItem,
   Tooltip,
@@ -28,6 +29,19 @@ const TopBar = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+`;
+
+const Label = styled.div`
+  background: ${Colors.purple};
+  height: 24px;
+  ${Fonts.label}
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 12px;
+  padding-right: 12px;
+  border-radius: 12px;
+  color: white;
 `;
 
 const TopBarLeft = styled.div`
@@ -76,6 +90,7 @@ export const EditorTopBar: React.FC<{
   setFullScreen: (x: boolean) => void;
   onAdminModeChange: (x: boolean) => void;
   hideCloseButton: boolean;
+  readOnly: boolean;
 }> = ({
   onClose,
   onBreakpointChange,
@@ -89,6 +104,7 @@ export const EditorTopBar: React.FC<{
   setFullScreen,
   onAdminModeChange,
   hideCloseButton,
+  readOnly,
 }) => {
   const headingRef = useRef<HTMLDivElement>(null);
 
@@ -101,8 +117,8 @@ export const EditorTopBar: React.FC<{
       <TopBarLeft>
         {!hideCloseButton && (
           <>
-            <SSButtonGhost
-              icon={SSIcons.Close}
+            <ButtonGhost
+              icon={Icons.Close}
               hideLabel
               onClick={() => {
                 if (onClose) {
@@ -111,31 +127,32 @@ export const EditorTopBar: React.FC<{
               }}
             >
               Close
-            </SSButtonGhost>
+            </ButtonGhost>
 
             <div
-              style={{ height: "100%", background: SSColors.black10, width: 1 }}
+              style={{ height: "100%", background: Colors.black10, width: 1 }}
             />
           </>
         )}
-        <SSButtonGhost
-          icon={SSIcons.Undo}
+        <ButtonGhost
+          icon={Icons.Undo}
           hideLabel
           onClick={() => {
             onUndo();
           }}
         >
           Undo
-        </SSButtonGhost>
-        <SSButtonGhost
-          icon={SSIcons.Redo}
+        </ButtonGhost>
+        <ButtonGhost
+          icon={Icons.Redo}
           hideLabel
           onClick={() => {
             onRedo();
           }}
         >
           Redo
-        </SSButtonGhost>
+        </ButtonGhost>
+        {readOnly && <Label>Read-Only</Label>}
       </TopBarLeft>
 
       <TopBarCenter>
@@ -171,7 +188,7 @@ export const EditorTopBar: React.FC<{
           >
             Edit mode
           </Typography>{" "}
-          <SSToggle
+          <Toggle
             name="easyblocks-edit-mode-button"
             checked={isEditing}
             onChange={() => {

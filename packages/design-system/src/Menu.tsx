@@ -7,7 +7,7 @@ import {
   Separator,
 } from "@radix-ui/react-dropdown-menu";
 import React from "react";
-import { SSColors } from "./colors";
+import { Colors } from "./colors";
 
 function Menu(props: { children: React.ReactNode }) {
   return <Root>{props.children}</Root>;
@@ -30,7 +30,7 @@ function MenuContent(props: {
         css={`
           min-width: 200px;
           padding: 0 4px;
-          background-color: ${SSColors.black800};
+          background-color: ${Colors.black800};
           border-radius: 4px;
         `}
       >
@@ -53,13 +53,13 @@ function MenuItem(props: {
         padding: 10px 8px;
 
         &:focus {
-          background-color: ${SSColors.black700};
+          background-color: ${Colors.black700};
         }
 
         @media (hover: hover) {
           &:hover:not([aria-disabled="true"])]) {
             cursor: pointer;
-            background-color: ${SSColors.black700};
+            background-color: ${Colors.black700};
           }
         }
       `}
@@ -74,7 +74,7 @@ function MenuSeparator() {
     <Separator
       css={`
         height: 1px;
-        background-color: ${SSColors.black700};
+        background-color: ${Colors.black700};
       `}
     />
   );

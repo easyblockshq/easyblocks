@@ -1,15 +1,12 @@
 import {
-  FormApi,
-  isEmptyExternalReference,
-  isIdReferenceToDocumentExternalValue,
-} from "@easyblocks/app-utils";
-import {
   ExternalReference,
   ExternalSchemaProp,
   LocalTextReference,
   TextSchemaProp,
   TrulyResponsiveValue,
   getExternalReferenceLocationKey,
+  isEmptyExternalReference,
+  isIdReferenceToDocumentExternalValue,
   isTrulyResponsiveValue,
   responsiveValueFindDeviceWithDefinedValue,
   responsiveValueForceGet,
@@ -19,8 +16,8 @@ import {
   isExternalSchemaProp,
 } from "@easyblocks/core/_internals";
 import {
+  Fonts,
   Loader,
-  SSFonts,
   Select,
   SelectItem,
   Typography,
@@ -29,8 +26,12 @@ import { dotNotationGet, toArray, uniqueId } from "@easyblocks/utils";
 import React, { ReactNode, useState } from "react";
 import styled, { css } from "styled-components";
 import { useConfigAfterAuto } from "../../../ConfigAfterAutoContext";
-import { useEditorContext } from "../../../EditorContext";
+import {
+  EditorExternalTypeDefinition,
+  useEditorContext,
+} from "../../../EditorContext";
 import { useEditorExternalData } from "../../../EditorExternalDataProvider";
+import { Form } from "../../../form";
 import { FieldRenderProps } from "../../form-builder";
 import { COMPONENTS_SUPPORTING_MIXED_VALUES } from "../components/constants";
 import { isMixedFieldValue } from "../components/isMixedFieldValue";
@@ -47,7 +48,7 @@ type ExtraFieldMetaWrapperFields = {
 export interface FieldProps<InputProps extends Record<string, unknown>>
   extends FieldRenderProps<any, HTMLElement> {
   field: InternalField;
-  form: FormApi;
+  form: Form;
 }
 
 type InputFieldType<
@@ -135,7 +136,7 @@ export function FieldMetaWrapper<
   const label = field.label || input.name;
   const { schemaProp } = field;
   const isExternalField =
-    isExternalSchemaProp(schemaProp) ||
+    isExternalSchemaProp(schemaProp, editorContext.types) ||
     (schemaProp.type === "text" && !input.value.id?.startsWith("local."));
   const componentPaths = fieldNames.map((fieldName) =>
     fieldName[0].split(".").slice(0, -1).join(".")
@@ -213,7 +214,8 @@ export function FieldMetaWrapper<
           )}
 
           {layout === "column" &&
-            (isExternalSchemaProp(schemaProp) || schemaProp.type === "text") &&
+            (isExternalSchemaProp(schemaProp, editorContext.types) ||
+              schemaProp.type === "text") &&
             !isMixedValue && (
               <WidgetsSelect
                 schemaProp={schemaProp}
@@ -250,6 +252,9 @@ export function FieldMetaWrapper<
                     input.onChange(newFieldValue);
                   }
                 }}
+                isRootComponent={fieldNames.some(
+                  (f) => f.split(".").length === 1
+                )}
               />
             )}
         </FieldLabelWrapper>
@@ -271,20 +276,24 @@ function WidgetsSelect({
   value,
   onChange,
   schemaProp,
+  isRootComponent,
 }: {
   value: LocalTextReference | ExternalReference;
   onChange: (widgetId: string) => void;
   schemaProp: ExternalSchemaProp | TextSchemaProp;
+  isRootComponent: boolean;
 }) {
   const editorContext = useEditorContext();
+  const [selectedWidgetId, setSelectedWidgetId] = useState(value.widgetId);
 
-  const [selectedWidgetId, setSelectedWidgetId] = useState<string>(
-    () => value.widgetId
-  );
-
-  const availableWidgets = [
-    ...(editorContext.types[schemaProp.type]?.widgets ?? []),
-  ];
+  const widgets = (
+    editorContext.types[schemaProp.type] as EditorExternalTypeDefinition
+  ).widgets;
+  const availableWidgets = isRootComponent
+    ? widgets.filter((w) => {
+        return w.id !== "@easyblocks/document-data";
+      })
+    : [...widgets];
 
   if (schemaProp.type === "text") {
     availableWidgets.unshift({
@@ -374,7 +383,7 @@ interface FieldWrapperProps {
   layout: "column" | "row";
 }
 
-export const FieldWrapper = styled.div<FieldWrapperProps>`
+const FieldWrapper = styled.div<FieldWrapperProps>`
   display: flex;
   flex-direction: ${({ layout }) => layout};
   gap: ${({ layout }) => (layout === "row" ? "10px" : "4px")};
@@ -389,7 +398,7 @@ export const FieldWrapper = styled.div<FieldWrapperProps>`
   padding: 4px 16px;
 `;
 
-export const FieldLabelWrapper = styled.div<{ isFullWidth: boolean }>`
+const FieldLabelWrapper = styled.div<{ isFullWidth: boolean }>`
   all: unset;
   position: relative;
   display: flex;
@@ -403,16 +412,16 @@ type FieldLabelProps = {
   isError: boolean;
 };
 
-export const FieldLabel = styled.label<FieldLabelProps>`
+const FieldLabel = styled.label<FieldLabelProps>`
   all: unset;
-  ${SSFonts.body};
+  ${Fonts.body};
   color: ${({ isError }) => (isError ? "red" : "#000")};
   text-overflow: ellipsis;
   overflow: hidden;
   cursor: default;
 `;
 
-export const FieldLabelIconWrapper = styled.span`
+const FieldLabelIconWrapper = styled.span`
   display: flex;
   font-size: 14px;
   line-height: 1;
@@ -424,19 +433,6 @@ export const FieldLabelIconWrapper = styled.span`
     height: 14px;
     flex-shrink: 0;
   }
-`;
-
-export const FieldDescription = styled.span`
-  all: unset;
-  display: block;
-  font-family: "Inter", sans-serif;
-  font-size: var(--tina-font-size-0);
-  font-style: italic;
-  font-weight: lighter;
-  color: var(--tina-color-grey-6);
-  padding-top: 4px;
-  white-space: normal;
-  margin: 0;
 `;
 
 const FieldError = styled.span`

@@ -1,10 +1,10 @@
 import React, { ChangeEvent, InputHTMLAttributes, useState } from "react";
 import styled from "styled-components";
-import { SSColors } from "./colors";
+import { Colors } from "./colors";
 
-export type SSToggleProps = InputHTMLAttributes<HTMLInputElement>;
+export type ToggleProps = InputHTMLAttributes<HTMLInputElement>;
 
-export const SSToggle: React.FC<SSToggleProps> = (props) => {
+export const Toggle: React.FC<ToggleProps> = (props) => {
   const [internalChecked, setInternalChecked] = useState<boolean>(
     props.checked ?? false
   );
@@ -41,7 +41,7 @@ const ToggleWrap = styled.div`
   align-items: center;
 
   > span {
-    color: ${SSColors.black10};
+    color: ${Colors.black10};
   }
 `;
 
@@ -72,7 +72,7 @@ const ToggleSwitch = styled.div<{ checked: boolean; disabled: boolean }>`
   border-radius: 8px;
   background-color: white;
   box-shadow: 0 0 0 1px
-    ${(p) => (!p.checked || p.disabled ? SSColors.black40 : "black")};
+    ${(p) => (!p.checked || p.disabled ? Colors.black40 : "black")};
 
   transition: all 0.1s;
   pointer-events: none;
@@ -83,8 +83,7 @@ const ToggleSwitch = styled.div<{ checked: boolean; disabled: boolean }>`
     top: 50%;
     width: 10px;
     height: 10px;
-    background: ${(p) =>
-      !p.checked || p.disabled ? SSColors.black40 : "black"};
+    background: ${(p) => (!p.checked || p.disabled ? Colors.black40 : "black")};
     transform: translate3d(${(p) => (p.checked ? "16px" : "0")}, -50%, 0);
     transition: transform 150ms ease-out, opacity 0.1s;
   }
@@ -104,7 +103,7 @@ const ToggleInput = styled.input`
   /*
   &:focus {
     + ${ToggleLabel} ${ToggleSwitch} {
-      box-shadow: 0 0 0 2px ${SSColors.blue50};
+      box-shadow: 0 0 0 2px ${Colors.blue50};
     }
   }
   */

@@ -1,11 +1,11 @@
-import { ComponentConfig } from "@easyblocks/core";
-import { testCompilationContext } from "../test-utils";
-import type { CompilationContextType } from "../types";
+import { NoCodeComponentEntry } from "@easyblocks/core";
+import { createTestCompilationContext } from "../testUtils";
 import { traverseComponents } from "./traverseComponents";
+import { CompilationContextType } from "./types";
 
 function createCard(color: string) {
   return {
-    _template: "Card",
+    _component: "Card",
     color: color,
     image: {
       $res: true,
@@ -23,8 +23,9 @@ const blueCard = createCard("blue");
 test("invokes callback for each valid schema prop from config", () => {
   const callback = jest.fn();
 
-  const config: ComponentConfig = {
-    _template: "$Root",
+  const config: NoCodeComponentEntry = {
+    _id: "xxx",
+    _component: "$Root",
     image: {
       $res: true,
       b4: {
@@ -50,13 +51,12 @@ test("invokes callback for each valid schema prop from config", () => {
   };
 
   const compilationContext: CompilationContextType = {
-    ...testCompilationContext,
+    ...createTestCompilationContext(),
     definitions: {
       components: [
         {
           id: "$Root",
-          tags: ["section"],
-          styles: null,
+          type: ["section"],
           schema: [
             {
               prop: "margin",
@@ -64,8 +64,7 @@ test("invokes callback for each valid schema prop from config", () => {
             },
             {
               prop: "image",
-              type: "resource",
-              resourceType: "image",
+              type: "image",
             },
             {
               prop: "text",
@@ -85,8 +84,7 @@ test("invokes callback for each valid schema prop from config", () => {
         },
         {
           id: "Card",
-          tags: ["card"],
-          styles: null,
+          type: ["card"],
           schema: [
             {
               prop: "color",
@@ -94,8 +92,7 @@ test("invokes callback for each valid schema prop from config", () => {
             },
             {
               prop: "image",
-              type: "resource",
-              resourceType: "image",
+              type: "image",
             },
           ],
         },
@@ -138,13 +135,12 @@ test("invokes callback for each valid schema prop from config", () => {
 
 test("Should not traverse further when cannot find component definition", () => {
   const compilationContext: CompilationContextType = {
-    ...testCompilationContext,
+    ...createTestCompilationContext(),
     definitions: {
       components: [
         {
           id: "$Root",
-          tags: ["section"],
-          styles: null,
+          type: ["section"],
           schema: [
             {
               prop: "LocalisedCards",
@@ -154,9 +150,6 @@ test("Should not traverse further when cannot find component definition", () => 
           ],
         },
       ],
-      links: [],
-      actions: [],
-      textModifiers: [],
     },
   };
 
@@ -167,11 +160,12 @@ test("Should not traverse further when cannot find component definition", () => 
 
   traverseComponents(
     {
-      _template: "$Root",
+      _id: "xxx",
+      _component: "$Root",
       LocalisedCards: {
         en: [
           {
-            _template: "NOT_DEFINED_COMPONENT",
+            _component: "NOT_DEFINED_COMPONENT",
           },
         ],
       },
@@ -182,16 +176,17 @@ test("Should not traverse further when cannot find component definition", () => 
 
   expect(warn).toBeCalledWith(
     "[traverseComponents] Unknown component definition",
-    { _template: "NOT_DEFINED_COMPONENT" }
+    { _component: "NOT_DEFINED_COMPONENT" }
   );
   expect(callback).toBeCalledTimes(1);
   expect(callback).toHaveBeenNthCalledWith(1, {
     componentConfig: {
-      _template: "$Root",
+      _id: "xxx",
+      _component: "$Root",
       LocalisedCards: {
         en: [
           {
-            _template: "NOT_DEFINED_COMPONENT",
+            _component: "NOT_DEFINED_COMPONENT",
           },
         ],
       },

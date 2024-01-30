@@ -26,14 +26,16 @@ test("converts empty elements to default editor value", () => {
             {
               id: expect.any(String),
               color: {
-                ref: "black",
+                tokenId: "black",
                 value: "black",
+                widgetId: "@easyblocks/color",
               },
               font: {
-                ref: "$body",
+                tokenId: "$body",
                 value: "",
               },
               text: "",
+              TextWrapper: [],
             },
           ],
         },
@@ -69,7 +71,7 @@ test("converts paragraph with single line containing single text part", () => {
         ],
       }),
     ],
-    compilationContext: testEditorContext,
+    locale: testEditorContext.contextParams.locale,
     mainColor: {
       $res: true,
     },
@@ -104,6 +106,7 @@ test("converts paragraph with single line containing single text part", () => {
                 },
               },
               text: "Lorem ipsum",
+              TextWrapper: [],
             },
           ],
         },
@@ -169,7 +172,7 @@ test("converts paragraph with single line containing multiple text parts", () =>
         ],
       }),
     ],
-    compilationContext: testEditorContext,
+    locale: testEditorContext.contextParams.locale,
     mainColor: {
       $res: true,
     },
@@ -204,6 +207,7 @@ test("converts paragraph with single line containing multiple text parts", () =>
                 },
               },
               text: "Lorem ipsum",
+              TextWrapper: [],
             },
             {
               id: expect.any(String),
@@ -220,6 +224,7 @@ test("converts paragraph with single line containing multiple text parts", () =>
                 },
               },
               text: " dolor ",
+              TextWrapper: [],
             },
             {
               id: expect.any(String),
@@ -236,6 +241,7 @@ test("converts paragraph with single line containing multiple text parts", () =>
                 },
               },
               text: "sit amet",
+              TextWrapper: [],
             },
           ],
         },
@@ -290,7 +296,7 @@ test("converts paragraph of multiple lines each containing single text part", ()
         ],
       }),
     ],
-    compilationContext: testEditorContext,
+    locale: testEditorContext.contextParams.locale,
     mainColor: {
       $res: true,
     },
@@ -325,6 +331,7 @@ test("converts paragraph of multiple lines each containing single text part", ()
                 },
               },
               text: "Lorem ipsum",
+              TextWrapper: [],
             },
           ],
         },
@@ -347,6 +354,7 @@ test("converts paragraph of multiple lines each containing single text part", ()
                 },
               },
               text: "dolor sit amet",
+              TextWrapper: [],
             },
           ],
         },

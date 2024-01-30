@@ -1,8 +1,6 @@
-import { configMap } from "@easyblocks/app-utils";
 import {
-  ComponentConfig,
-  ConfigComponent,
-  IApiClient,
+  buildRichTextNoCodeEntry,
+  NoCodeComponentEntry,
   InternalTemplate,
   Template,
   UserDefinedTemplate,
@@ -10,23 +8,26 @@ import {
 } from "@easyblocks/core";
 import {
   InternalComponentDefinition,
-  buildRichTextNoCodeEntry,
   findComponentDefinitionById,
   normalize,
 } from "@easyblocks/core/_internals";
 import { uniqueId } from "@easyblocks/utils";
 import { EditorContextType } from "../EditorContext";
-import { getRemoteUserTemplates } from "./getRemoteUserTemplates";
+import { configMap } from "../utils/config/configMap";
 
 function getDefaultTemplateForDefinition(
-  def: InternalComponentDefinition
+  def: InternalComponentDefinition,
+  editorContext: EditorContextType
 ): InternalTemplate {
   // Text has different way of building a default config
-  const config: ComponentConfig =
+  const config: NoCodeComponentEntry =
     def.id === "@easyblocks/rich-text"
-      ? buildRichTextNoCodeEntry()
+      ? buildRichTextNoCodeEntry({
+          color: getDefaultTokenId(editorContext.theme.colors),
+          font: getDefaultTokenId(editorContext.theme.fonts),
+        })
       : {
-          _template: def.id,
+          _component: def.id,
           _id: uniqueId(),
         };
 
@@ -38,25 +39,18 @@ function getDefaultTemplateForDefinition(
   };
 }
 
+function getDefaultTokenId(tokens: EditorContextType["theme"][string]) {
+  return Object.entries(tokens).find(([, value]) => value.isDefault)?.[0];
+}
+
 export async function getTemplates(
   editorContext: EditorContextType,
-  apiClient: IApiClient,
   configTemplates: InternalTemplate[] = []
 ): Promise<Template[]> {
-  let remoteUserDefinedTemplates: UserDefinedTemplate[] = [];
-
-  if (!editorContext.isPlayground && !editorContext.disableCustomTemplates) {
-    const project = editorContext.project;
-    if (!project) {
-      throw new Error(
-        "Trying to access templates API without project id. This is an unexpected error state."
-      );
-    }
-    remoteUserDefinedTemplates = await getRemoteUserTemplates(
-      apiClient,
-      project.id
-    );
-  }
+  const remoteUserDefinedTemplates: UserDefinedTemplate[] =
+    !editorContext.disableCustomTemplates
+      ? await editorContext.backend.templates.getAll()
+      : [];
 
   return getTemplatesInternal(
     editorContext,
@@ -67,16 +61,17 @@ export async function getTemplates(
 
 function getNecessaryDefaultTemplates(
   components: InternalComponentDefinition[],
-  templates: Template[]
+  templates: Template[],
+  editorContext: EditorContextType
 ) {
   const result: InternalTemplate[] = [];
 
   components.forEach((component) => {
     const componentTemplates = templates.filter(
-      (template) => template.entry._template === component.id
+      (template) => template.entry._component === component.id
     );
     if (componentTemplates.length === 0) {
-      result.push(getDefaultTemplateForDefinition(component));
+      result.push(getDefaultTemplateForDefinition(component, editorContext));
     }
   });
 
@@ -84,7 +79,7 @@ function getNecessaryDefaultTemplates(
 }
 
 function normalizeTextLocales(
-  config: ConfigComponent,
+  config: NoCodeComponentEntry,
   editorContext: EditorContextType
 ) {
   return configMap(config, editorContext, ({ value, schemaProp }) => {
@@ -113,7 +108,7 @@ function normalizeTextLocales(
   });
 }
 
-export function getTemplatesInternal(
+function getTemplatesInternal(
   editorContext: EditorContextType,
   configTemplates: InternalTemplate[],
   remoteUserDefinedTemplates: UserDefinedTemplate[]
@@ -123,19 +118,8 @@ export function getTemplatesInternal(
     ...configTemplates,
     ...getNecessaryDefaultTemplates(
       editorContext.definitions.components,
-      configTemplates
-    ),
-    ...getNecessaryDefaultTemplates(
-      editorContext.definitions.links,
-      configTemplates
-    ),
-    ...getNecessaryDefaultTemplates(
-      editorContext.definitions.actions,
-      configTemplates
-    ),
-    ...getNecessaryDefaultTemplates(
-      editorContext.definitions.textModifiers,
-      configTemplates
+      configTemplates,
+      editorContext
     ),
   ];
 
@@ -147,26 +131,34 @@ export function getTemplatesInternal(
   const result = allUserTemplates
     .filter((template) => {
       const definition = findComponentDefinitionById(
-        template.entry._template,
+        template.entry._component,
         editorContext
       );
+
       if (!definition || definition.hideTemplates) {
         return false;
       }
       return true;
     })
-    .filter((template) => {
-      return template.entry._itemProps
-        ? Object.keys(template.entry._itemProps).every((componentId) =>
-            findComponentDefinitionById(componentId, editorContext)
-          )
-        : true;
-    })
+    // .filter((template) => {
+    //
+    //   const result = template.entry._itemProps
+    //     ? Object.keys(template.entry._itemProps).every((componentId) =>
+    //       findComponentDefinitionById(componentId, editorContext)
+    //     )
+    //     : true;
+    //
+    //   if (template.entry._component === "ProductCard") {
+    //     console.log('WOW2222!!!', result);
+    //   }
+    //
+    //   return result;
+    // })
     .map((template) => {
       const newTemplate: Template = {
         ...template,
         entry: normalizeTextLocales(
-          normalize(template.entry, editorContext),
+          normalize({ ...template.entry, _itemProps: {} }, editorContext),
           editorContext
         ),
       };

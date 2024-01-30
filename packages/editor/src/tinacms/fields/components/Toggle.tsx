@@ -1,5 +1,5 @@
 import { InternalField } from "@easyblocks/core/_internals";
-import { SSToggle } from "@easyblocks/design-system";
+import { Toggle as DesignSystemToggle } from "@easyblocks/design-system";
 import React, { FC } from "react";
 import styled from "styled-components";
 
@@ -20,12 +20,7 @@ interface ToggleFieldDefinition extends InternalField {
 
 type FieldLabels = { true: string; false: string };
 
-export const Toggle: FC<ToggleProps> = ({
-  input,
-  field,
-  name,
-  disabled = false,
-}) => {
+export const Toggle: FC<ToggleProps> = ({ input, field, disabled = false }) => {
   const checked = !!(input.value || input.checked);
 
   const toggleProps = {
@@ -38,7 +33,7 @@ export const Toggle: FC<ToggleProps> = ({
   };
   return (
     <ToggleFieldWrapper>
-      <SSToggle {...toggleProps} />
+      <DesignSystemToggle {...toggleProps} />
     </ToggleFieldWrapper>
   );
 };

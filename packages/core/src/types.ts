@@ -4,65 +4,28 @@ import { Locale } from "./locales";
 
 export type ScalarOrCollection<T> = T | Array<T>;
 
-export type RefMap = { [key: string]: ConfigComponent };
-
 export type PlaceholderAppearance = {
   width?: number;
   height?: number;
   aspectRatio?: number;
   label?: string;
 };
-export interface ConfigComponentIdentifier {
-  id: string;
-}
 
 export interface ComponentConfigBase<Identifier extends string> {
-  _template: Identifier;
+  _component: Identifier;
   _id: string;
-  traceId?: string;
 }
 
-export type ConfigComponent = {
-  _template: string; // instance of the component (unique id)
-  _ref?: string; // ref of the component,
+export type NoCodeComponentEntry = {
+  _component: string; // instance of the component (unique id)
   _id: string;
-  $$$refs?: RefMap;
   [key: string]: any; // props
 };
 
-export type ComponentConfig = ConfigComponent;
-
-export type LocalisedConfigs<
-  T extends ConfigComponent | Array<ConfigComponent> = ConfigComponent
-> = {
-  [locale: string]: T;
-};
-
-export type Document = {
-  documentId: string;
-  projectId: string;
-  rootContainer: string;
-  /**
-   * This field serves as a cache of document's content when used by `ShopstoryClient`.
-   * It allows to avoid fetching the content of the document from the server when it's already available.
-   * It shouldn't be used by editor. It's missing when the config was too big to be stored in the CMS.
-   */
-  config?: ConfigComponent;
-};
-
-export type LocalisedDocument = Record<string, Document>;
-
-export type RefValue<T> = {
+export type ThemeTokenValue<T> = {
   value: T;
-  ref?: string;
-};
-
-export type RefType = "dev" | "ds" | "map";
-
-export type ThemeRefValue<T> = RefValue<T> & {
-  type: RefType;
+  isDefault: boolean;
   label?: string;
-  mapTo?: string | string[];
 };
 
 export type Spacing = string; // 10px, 0px, 10vw, etc
@@ -70,8 +33,6 @@ export type Spacing = string; // 10px, 0px, 10vw, etc
 export type Font = object;
 
 export type Color = string;
-
-export type NumberOfItemsInRow = "1" | "2" | "3" | "4" | "5" | "6";
 
 export type TrulyResponsiveValue<T> = {
   [key: string]: T | true | undefined;
@@ -82,11 +43,11 @@ export type ResponsiveValue<T> = T | TrulyResponsiveValue<T>;
 
 export type ThemeSpaceScalar = number | string;
 
-export type ThemeSpace = ThemeSpaceScalar | { [key: string]: ThemeSpaceScalar };
+export type ThemeSpace = ResponsiveValue<ThemeSpaceScalar>;
 
-export type ThemeColor = Color | { [key: string]: Color };
+export type ThemeColor = ResponsiveValue<Color>;
 
-export type ThemeFont = { [key: string]: any };
+export type ThemeFont = ResponsiveValue<{ [key: string]: any }>;
 
 export type ButtonCustomComponent = CustomComponentShared & {
   builtinProps?: {
@@ -138,10 +99,10 @@ export type RadioGroupSchemaProp = ValueSchemaProp<
   >;
 
 /**
- * Why do Space, Color and Font have ValueType ResponsiveValue<RefValue<ResponsiveValue<Color>>> type? It's complex! (T is Color / Space / Font).
+ * Why do Space, Color and Font have ValueType ResponsiveValue<TokenValue<ResponsiveValue<Color>>> type? It's complex! (T is Color / Space / Font).
  *
- * 1. For now values can be only RefValues (we don't have custom values, every space, color and font must be reference to a theme). Therefore RefValue.
- * 2. In a theme, fonts, spaces and colors (defined by developer) can be responsive. Therefore RefValue<ResponsiveValue<T>>
+ * 1. For now values can be only RefValues (we don't have custom values, every space, color and font must be reference to a theme). Therefore TokenValue.
+ * 2. In a theme, fonts, spaces and colors (defined by developer) can be responsive. Therefore TokenValue<ResponsiveValue<T>>
  * 3. User in editor can pick RESPONSIVELY different RefValues (that are responsive too). It's complex but makes sense.
  *
  * CompileType is obviously very simple because after compilation we just have "CSS output" which is basically responsive non-ref value (there's no concept of refs after compilation)
@@ -149,13 +110,13 @@ export type RadioGroupSchemaProp = ValueSchemaProp<
 
 export type ColorSchemaProp = ValueSchemaProp<
   "color",
-  ResponsiveValue<RefValue<Color>>,
+  ResponsiveValue<TokenValue<Color>>,
   "forced"
 >;
 
 export type StringTokenSchemaProp = ValueSchemaProp<
   "stringToken",
-  ResponsiveValue<RefValue<string>>,
+  ResponsiveValue<TokenValue<string>>,
   "forced"
 > &
   SchemaPropParams<
@@ -172,7 +133,7 @@ export type StringTokenSchemaProp = ValueSchemaProp<
 
 export type SpaceSchemaProp = ValueSchemaProp<
   "space",
-  ResponsiveValue<RefValue<Spacing>>,
+  ResponsiveValue<TokenValue<Spacing>>,
   "forced"
 > &
   SchemaPropParams<{
@@ -182,11 +143,15 @@ export type SpaceSchemaProp = ValueSchemaProp<
 
 export type FontSchemaProp = ValueSchemaProp<
   "font",
-  ResponsiveValue<RefValue<Font>>,
+  ResponsiveValue<TokenValue<Font>>,
   "forced"
 >;
 
-export type IconSchemaProp = ValueSchemaProp<"icon", RefValue<string>, "never">;
+export type IconSchemaProp = ValueSchemaProp<
+  "icon",
+  TokenValue<string>,
+  "never"
+>;
 
 export type ComponentPickerType = "large" | "large-3" | "compact";
 
@@ -262,6 +227,21 @@ export type ExternalSchemaProp = ValueSchemaProp<
   optional?: boolean;
 };
 
+export type LocalSchemaProp = ValueSchemaProp<
+  string & Record<never, never>,
+  any,
+  "optional"
+>;
+
+export type TokenSchemaProp = ValueSchemaProp<
+  string & Record<never, never>,
+  any,
+  "forced"
+> &
+  SchemaPropParams<{
+    extraValues: Array<any | { value: any; label: string }>;
+  }>;
+
 export type SchemaProp =
   | StringSchemaProp
   | NumberSchemaProp
@@ -278,7 +258,9 @@ export type SchemaProp =
   | ComponentCollectionSchemaProp
   | ComponentCollectionLocalisedSchemaProp
   | PositionSchemaProp
-  | ExternalSchemaProp;
+  | ExternalSchemaProp
+  | LocalSchemaProp
+  | TokenSchemaProp;
 
 export type AnyValueSchemaProp =
   | StringSchemaProp
@@ -303,33 +285,6 @@ type CustomComponentShared = {
   previewImage?: string;
 };
 
-export type SectionCustomComponent = CustomComponentShared & {
-  type: "section";
-};
-
-export type CardCustomComponent = CustomComponentShared & { type: "card" };
-
-export type ItemCustomComponent = CustomComponentShared & {
-  type?: "item" | undefined;
-};
-
-export type CustomComponent =
-  | SectionCustomComponent
-  | CardCustomComponent
-  | ItemCustomComponent;
-
-export type CustomAction = CustomComponentShared;
-
-export type CustomLink = CustomComponentShared;
-
-type TextModifierType = "text" | "link" | "action";
-
-export type CustomTextModifier = ComponentDefinitionShared & {
-  type: TextModifierType;
-  apply: (props: Record<string, any>) => Record<string, any>;
-  childApply?: (props: Record<string, any>) => Record<string, any>;
-};
-
 export type ConfigDeviceRange = {
   startsFrom?: number;
   w?: number;
@@ -351,8 +306,10 @@ export type UserDefinedTemplate = {
   label: string;
   thumbnail?: string;
   thumbnailLabel?: string;
-  entry: ConfigComponent;
+  entry: NoCodeComponentEntry;
   isUserDefined: true;
+  width?: number;
+  widthAuto?: boolean;
 };
 
 export type InternalTemplate = {
@@ -360,45 +317,19 @@ export type InternalTemplate = {
   label?: string;
   thumbnail?: string;
   thumbnailLabel?: string;
-  entry: ConfigComponent;
+  entry: NoCodeComponentEntry;
   isUserDefined?: false;
+  width?: number;
+  widthAuto?: boolean;
 };
 
 export type Template = InternalTemplate | UserDefinedTemplate;
 
-//
-// export type Template = {
-//   id?: string;
-//   label?: string;
-//   thumbnail?: string;
-//
-//   config: ConfigComponent
-//
-//   isUserDefined?: boolean,
-//
-//
-//   // type?: string;
-//   // previewImage?: string;
-//   // group?: string;
-//   // isGroupEmptyTemplate?: boolean;
-//   // mapTo?: string | string[];
-//
-//   // isDefaultTextModifier?: boolean; // maybe to remove in the future. But we need to know which template is default text modifier!
-//
-//   // config: ConfigComponent;
-//   // configId?: string;
-//   // isRemoteUserDefined?: boolean;
-//   // previewSettings?: {
-//   //   width: number;
-//   //   widthAuto: boolean;
-//   // };
-// };
-
-type RuntimeConfigThemeValue<T> = {
+export type ConfigTokenValue<T> = {
   id: string;
   label?: string;
   value: T;
-  mapTo?: string | string[];
+  isDefault?: boolean;
 };
 
 export type ExternalParams = Record<string, unknown>;
@@ -408,16 +339,21 @@ export type ContextParams = {
   [key: string]: any;
 };
 
-export type PickerItem = {
-  id: string;
-  title: string;
-  thumbnail?: string;
-};
-
 export type WidgetComponentProps<Identifier extends NonNullish = NonNullish> = {
   id: ExternalReference<Identifier>["id"];
   onChange: (newId: ExternalReference<Identifier>["id"]) => void;
 };
+
+export type InlineTypeWidgetComponentProps<
+  Type extends NonNullish = NonNullish
+> = {
+  value: Type;
+  onChange: (newValue: Type) => void;
+};
+
+export type TokenTypeWidgetComponentProps<
+  Type extends NonNullish = NonNullish
+> = InlineTypeWidgetComponentProps<Type>;
 
 export type Widget = {
   id: string;
@@ -432,16 +368,6 @@ export type LocalizedText = {
   [locale: string]: string;
 };
 
-export type DocumentType = {
-  label?: string;
-  entry: Omit<ComponentConfig, "_id">;
-  widths?: Array<number>;
-  resource?: {
-    type: string;
-  };
-  schema?: Array<ExternalSchemaProp>;
-};
-
 export type NoCodeComponentStylesFunctionInput<
   Values extends Record<string, any> = Record<string, any>,
   Params extends Record<string, any> = Record<string, any>
@@ -452,19 +378,24 @@ export type NoCodeComponentStylesFunctionInput<
   isEditing: boolean;
 };
 
+export type InferNoCodeComponentStylesFunctionInput<T> =
+  T extends NoCodeComponentDefinition<infer Values, infer Params>
+    ? NoCodeComponentStylesFunctionInput<Values, Params>
+    : never;
+
 export type NoCodeComponentStylesFunctionResult = {
-  props?: Record<string, unknown>;
+  props?: Record<string, any>;
   components?: Record<
     string,
     {
       /**
        * `itemProps` can only be set if component prop is a collection.
        */
-      itemProps?: Array<Record<string, unknown>>;
-      [key: string]: unknown;
+      itemProps?: Array<Record<string, any>>;
+      [key: string]: any;
     }
   >;
-  styled?: Record<string, ScalarOrCollection<Record<string, unknown>>>;
+  styled?: Record<string, ScalarOrCollection<Record<string, any>>>;
 };
 
 export type NoCodeComponentStylesFunction<
@@ -481,6 +412,7 @@ export type NoCodeComponentEditingFunctionInput<
   values: Values;
   params: Params;
   editingInfo: EditingInfo;
+  device: DeviceRange;
 };
 
 export type NoCodeComponentEditingFunction<
@@ -503,8 +435,16 @@ export type NoCodeComponentAutoFunction<
   Values extends Record<string, any> = Record<string, any>,
   Params extends Record<string, any> = Record<string, any>
 > = (
-  input: NoCodeComponentAutoFunctionInput<Values, { $width: number } & Params>
+  input: NoCodeComponentAutoFunctionInput<Values, Params> & {
+    params: { $width: TrulyResponsiveValue<number> };
+  }
 ) => any;
+
+export type RootParameter = {
+  prop: string;
+  label: string;
+  widgets: Array<Widget>;
+};
 
 export type NoCodeComponentDefinition<
   Values extends Record<string, any> = Record<string, any>,
@@ -517,53 +457,112 @@ export type NoCodeComponentDefinition<
   styles?: NoCodeComponentStylesFunction<Values, Params>;
   editing?: NoCodeComponentEditingFunction<Values, Params>;
   auto?: NoCodeComponentAutoFunction<Values, Params>;
+  change?: NoCodeComponentChangeFunction;
   pasteSlots?: Array<string>;
   thumbnail?: string;
+  preview?: (input: {
+    values: Values;
+    externalData: ExternalData;
+  }) => SidebarPreviewVariant | undefined;
+  allowSave?: boolean;
+  rootParams?: RootParameter[];
 };
 
+/**
+ * @internal
+ */
+type ConfigTokens = {
+  aspectRatios: string;
+  boxShadows: string;
+  containerWidths: number;
+  colors: ThemeColor;
+  fonts: ThemeFont;
+  icons: string;
+  space: ThemeSpace;
+};
+
+export type InlineTypeDefinition<Value extends NonNullish = any> = {
+  widget: Widget;
+  responsiveness?: "always" | "optional" | "never";
+  type: "inline";
+  defaultValue: Value;
+  validate?: (value: any) => boolean;
+};
+
+export type ExternalTypeDefinition = {
+  widgets?: Array<Widget>;
+  responsiveness?: "always" | "optional" | "never";
+  type: "external";
+};
+
+export type TokenTypeDefinition<Value extends NonNullish = any> = {
+  widget?: Widget;
+  responsiveness?: "always" | "optional" | "never";
+  type: "token";
+  token: keyof ConfigTokens | (string & Record<never, never>);
+  defaultValue: { value: Value } | { tokenId: string };
+  extraValues?: Array<Value | { value: Value; label: string }>;
+  allowCustom?: boolean;
+  validate?: (value: any) => boolean;
+};
+
+export type CustomTypeDefinition =
+  | InlineTypeDefinition
+  | ExternalTypeDefinition
+  | TokenTypeDefinition;
+
+/**
+ * Backend types
+ */
+
+export type Document = {
+  id: string;
+  version: number;
+  entry: NoCodeComponentEntry;
+};
+
+export type Backend = {
+  documents: {
+    get: (payload: { id: string; locale?: string }) => Promise<Document>;
+    create: (payload: Omit<Document, "id" | "version">) => Promise<Document>;
+    update: (payload: Omit<Document, "type">) => Promise<Document>;
+  };
+  templates: {
+    get(payload: { id: string }): Promise<UserDefinedTemplate>;
+    getAll: () => Promise<UserDefinedTemplate[]>;
+    create: (payload: {
+      label: string;
+      entry: NoCodeComponentEntry;
+      width?: number;
+      widthAuto?: boolean;
+    }) => Promise<UserDefinedTemplate>;
+    update: (payload: {
+      id: string;
+      label: string;
+    }) => Promise<Omit<UserDefinedTemplate, "entry">>;
+    delete: (payload: { id: string }) => Promise<void>;
+  };
+};
+
+/**
+ * Config
+ */
+
 export type Config = {
-  accessToken: string;
-  projectId?: string;
-  types?: Record<string, ExternalDefinition>;
-  text?: ExternalDefinition;
-  space?: RuntimeConfigThemeValue<ThemeSpace>[];
-  colors?: RuntimeConfigThemeValue<ThemeColor>[];
-  fonts?: RuntimeConfigThemeValue<ThemeFont>[];
-  icons?: RuntimeConfigThemeValue<string>[];
-  aspectRatios?: RuntimeConfigThemeValue<string>[];
-  boxShadows?: RuntimeConfigThemeValue<string>[];
-  containerWidths?: RuntimeConfigThemeValue<number>[];
-  buttons?: ButtonCustomComponent[];
+  backend: Backend;
   components?: Array<NoCodeComponentDefinition<any, any>>;
   devices?: ConfigDevices;
-  textModifiers?: Array<CustomTextModifier>;
-  __masterEnvironment?: boolean;
-  strict?: boolean;
-  locales?: Array<Locale>;
-  documentTypes?: Record<string, DocumentType>;
+  locales: Array<Locale>;
+  types?: Record<string, CustomTypeDefinition>;
   disableCustomTemplates?: boolean;
   hideCloseButton?: boolean;
   templates?: Template[];
+  tokens?: {
+    [key in keyof ConfigTokens]?: Array<ConfigTokenValue<ConfigTokens[key]>>;
+  } & {
+    [key: string & Record<never, never>]: Array<ConfigTokenValue<any>>;
+  };
 };
-
-type EditorProps = {
-  configs?: LocalisedConfigs | LocalisedDocument;
-  uniqueSourceIdentifier?: string;
-  save: (
-    documents: LocalisedDocument,
-    externals: ExternalReference[]
-  ) => Promise<void>;
-  locales: Locale[];
-  config: Config;
-  contextParams: ContextParams;
-  onClose: () => void;
-  documentType: string;
-  container?: HTMLElement;
-  heightMode?: "viewport" | "parent";
-  canvasUrl?: string;
-};
-
-export type EditorLauncherProps = Omit<EditorProps, "config">;
 
 export type SchemaPropShared<Type extends string> = {
   type: Type;
@@ -607,48 +606,6 @@ export type SchemaPropParams<
     }
   : { params?: T };
 
-export type UnresolvedResource =
-  | UnresolvedResourceNonEmpty
-  | UnresolvedResourceEmpty;
-
-export type UnresolvedResourceNonEmpty = {
-  id: string;
-  widgetId: string;
-  /**
-   * This property is an exception and it's only available within local text resource.
-   * TODO: Move local text resources to other place
-   */
-  value?: LocalizedText;
-  key?: string;
-};
-
-export type UnresolvedResourceEmpty = {
-  id: null;
-  widgetId: string;
-};
-
-export type ResourceIdentity = {
-  id: string;
-  type: string;
-};
-
-export type ResolvedResource<Value = unknown> = ResourceIdentity & {
-  status: "success";
-  value: Value;
-  error: null;
-  key?: string;
-};
-
-export type RejectedResource = ResourceIdentity & {
-  status: "error";
-  value: undefined;
-  error: Error;
-};
-
-export type Resource<Value = unknown> =
-  | ResolvedResource<Value>
-  | RejectedResource;
-
 export type DeviceRange = {
   id: string;
   w: number;
@@ -659,28 +616,14 @@ export type DeviceRange = {
   isMain?: boolean;
 };
 
-export type DeviceId = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
-
 export type Devices = DeviceRange[];
 
 export type NoCodeComponentChangeFunction = (arg: {
-  value: any;
-  closestDefinedValue: any;
-  // closestDefinedValue: any;
-  // /**
-  //  * closestDefinedValue, why?
-  //  *
-  //  * 1. When change is called, the value can be undefined (resetting in auto).
-  //  * 2. But sometimes we need to know what auto value will be applied for this new undefined val.
-  //  * 3. We can't run auto here, it's too heavy. We just apply "responsiveValueGet" and this is our "guess" for now.
-  //  * 4. Remember that if we had a real auto here, after change, auto values can change again, and that should trigger another change etc... Very bad recursions.
-  //  * 5. That's why custom change is tricky, we must remember about that.
-  //  *
-  //  */
-  fieldName: string;
+  newValue: any;
+  prop: string;
   values: Record<string, any>;
-  closestDefinedValues: Record<string, any>;
-}) => Record<string, any>;
+  valuesAfterAuto: Record<string, any>;
+}) => Record<string, any> | undefined;
 
 export type SidebarPreviewVariant = {
   description?: string;
@@ -701,20 +644,25 @@ export type ComponentDefinitionShared<Identifier extends string = string> = {
 
   change?: NoCodeComponentChangeFunction;
   icon?: "link" | "grid_3x3";
-  getEditorSidebarPreview?: (
-    config: ConfigComponent,
-    externalData: ExternalData,
-    editorContext: EditorSidebarPreviewOptions
-  ) => SidebarPreviewVariant | undefined;
+  preview?: (input: {
+    values: Record<string, any>;
+    externalData: ExternalData;
+  }) => SidebarPreviewVariant | undefined;
   previewImage?: string;
 
   hideTemplates?: boolean;
   allowSave?: boolean;
 };
 
+export type NoCodeComponentProps = {
+  __easyblocks: {
+    id: string;
+    isEditing: boolean;
+  };
+};
+
 export type SerializedRenderableComponentDefinition =
   ComponentDefinitionShared & {
-    componentCode?: string; // optional because it might be also an action or built-in component
     pasteSlots?: Array<string>;
   };
 
@@ -752,7 +700,7 @@ export type RenderableContent =
 export type RenderableDocument = {
   renderableContent: CompiledShopstoryComponentConfig | null;
   meta: CompilationMetadata;
-  configAfterAuto?: ComponentConfig;
+  configAfterAuto?: NoCodeComponentEntry;
 };
 
 export type AnyField = Field & { [key: string]: any };
@@ -802,23 +750,10 @@ export type CompiledComponentConfigBase<
   Identifier extends string = string,
   Props extends Record<string, any> = Record<string, any>
 > = {
-  _template: Identifier; // instance of the component (unique id)
+  _component: Identifier; // instance of the component (unique id)
   _id: string;
   props: Props;
 };
-
-export type CompiledActionComponentConfig = CompiledComponentConfigBase & {
-  __editing?: {
-    fields: Array<AnyField | FieldPortal>;
-  };
-};
-
-export interface CompiledTextModifier {
-  _template: string;
-  _id: string;
-  elements: Array<Record<string, any>>;
-  [key: string]: any;
-}
 
 export type EditingInfoBase = {
   direction?: "horizontal" | "vertical";
@@ -831,17 +766,9 @@ export type WidthInfo = {
 };
 
 export type CompiledCustomComponentConfig = CompiledComponentConfigBase & {
-  actions: {
-    [key: string]: CompiledActionComponentConfig[];
-  };
   components: {
-    [key: string]: (
-      | CompiledShopstoryComponentConfig
-      | CompiledCustomComponentConfig
-      | ReactElement
-    )[];
+    [key: string]: (CompiledComponentConfig | ReactElement)[];
   };
-  textModifiers: Record<string, [CompiledTextModifier]>;
   __editing?: EditingInfoBase & {
     widthInfo?: WidthInfo;
     fields: Array<AnyField | FieldPortal>;
@@ -863,10 +790,7 @@ export type CompiledShopstoryComponentConfig = CompiledCustomComponentConfig & {
   };
 };
 
-export type CompiledComponentConfig =
-  | CompiledActionComponentConfig
-  | CompiledShopstoryComponentConfig
-  | CompiledCustomComponentConfig;
+export type CompiledComponentConfig = CompiledShopstoryComponentConfig;
 
 export type ComponentPlaceholder = {
   width: number;
@@ -874,38 +798,16 @@ export type ComponentPlaceholder = {
   label?: string;
 };
 
-/**
- * @public
- */
-export type ShopstoryClientInput = ComponentConfig | null | undefined;
-
-/**
- * @public
- */
-export type ShopstoryClientAddOptions = {
-  rootContainer: string;
-  [key: string]: unknown;
-};
-
-export interface IShopstoryClient {
-  add(
-    config: ShopstoryClientInput,
-    options: ShopstoryClientAddOptions
-  ): RenderableContent;
-  build(): Promise<Metadata>;
-}
-
 export type EditorSidebarPreviewOptions = {
   breakpointIndex: string;
   devices: Devices;
   contextParams: ContextParams;
-  resources: Array<Resource>;
 };
 
 export interface ConfigModel {
   id: string;
   parent_id: string | null;
-  config: ConfigComponent;
+  config: NoCodeComponentEntry;
   project_id: string;
   created_at: string;
 }
@@ -925,13 +827,9 @@ export type CompilationMetadata = {
   };
 };
 
-export type Metadata = CompilationMetadata & {
-  resources: Array<Resource>;
-};
-
 export type CompilerModule = {
   compile: (
-    content: unknown,
+    content: NoCodeComponentEntry,
     config: Config,
     contextParams: ContextParams
   ) => {
@@ -952,7 +850,7 @@ export type CompilerModule = {
   validate: (input: unknown) =>
     | {
         isValid: true;
-        input: Document | ComponentConfig | null | undefined;
+        input: Document | NoCodeComponentEntry | null | undefined;
       }
     | { isValid: false };
 };
@@ -1048,24 +946,19 @@ export type FetchOutputResources = Record<
   (FetchOutputBasicResources | FetchOutputCompoundResources)[string]
 >;
 
-export type ChangedExternalDataValue = {
+export type RequestedExternalDataValue = {
   id: ExternalReference["id"];
   type: string;
   widgetId: string;
   fetchParams?: ExternalParams;
 };
 
-export type ChangedExternalData = Record<string, ChangedExternalDataValue>;
+export type RequestedExternalData = Record<string, RequestedExternalDataValue>;
 
 export type ExternalData = Record<
   string,
   (FetchOutputBasicResources | FetchOutputCompoundResources)[string]
 >;
-
-export type ExternalDataChangeHandler = (
-  resources: ChangedExternalData,
-  contextParams: ContextParams
-) => void;
 
 export type LocalReference<Value = unknown> = {
   id: string;
@@ -1099,3 +992,14 @@ export type ExternalReferenceNonEmpty<
 export type ExternalReference<Identifier extends NonNullish = NonNullish> =
   | ExternalReferenceEmpty
   | ExternalReferenceNonEmpty<Identifier>;
+
+export type LocalValue<T = any> = {
+  value: T;
+  widgetId: string;
+};
+
+export type TokenValue<T = any> = {
+  value: T;
+  tokenId?: string;
+  widgetId?: string;
+};

@@ -1,297 +1,366 @@
 {
-  "_id": "0aa112ca-53f0-459a-8726-dd794056afcc",
-  "_template": "$Grid",
-  "traceId": "$Grid-7dba237e",
+  "_id": "22c562c5-aeff-44e0-8247-5a2c4ab20719",
+  "_component": "Grid",
   "_itemProps": {
-    "$RootSections": {
+    "StandardPage": {
       "data": {
-        "topMargin": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
-        "bottomMargin": { "$res": true, "xl": { "value": "32px", "ref": "32" } }
+        "topMargin": {
+          "$res": true,
+          "xl": {
+            "value": "0px",
+            "tokenId": "0",
+            "widgetId": "@easyblocks/space"
+          }
+        },
+        "bottomMargin": {
+          "$res": true,
+          "xl": {
+            "value": "32px",
+            "tokenId": "32",
+            "widgetId": "@easyblocks/space"
+          }
+        }
       }
     }
   },
-  "hide": { "$res": true, "xl": false },
-  "Component": [
-    {
-      "_id": "787fc400-fd26-4b79-a55c-e54317adc27f",
-      "_template": "$GridCard",
-      "traceId": "$GridCard-3e4f5be3",
-      "Cards": [
-        {
-          "_id": "6d23ecec-21b6-476b-add6-a9fd40a54165",
-          "_template": "ProductCard",
-          "traceId": "ProductCard-cc6f1114",
-          "_itemProps": {
-            "$GridCard": {
-              "Cards": {
-                "itemSize": { "$res": true, "xl": "1x1" },
-                "verticalAlign": { "$res": true, "xl": "auto" }
-              }
-            }
-          },
-          "product": {
-            "id": "gid://shopify/Product/7560669528276",
-            "widgetId": "product"
-          },
-          "relatedProductsMode": "disabled",
-          "withBackdrop": false
-        },
-        {
-          "_id": "fbc92207-0979-44b1-bb96-e8c990ce7d11",
-          "_template": "ProductCard",
-          "traceId": "ProductCard-9a1121ba",
-          "_itemProps": {
-            "$GridCard": {
-              "Cards": {
-                "itemSize": { "$res": true, "xl": "1x1" },
-                "verticalAlign": { "$res": true, "xl": "auto" }
-              }
-            }
-          },
-          "product": {
-            "id": "gid://shopify/Product/7560670773460",
-            "widgetId": "product"
-          },
-          "relatedProductsMode": "disabled",
-          "withBackdrop": false
-        },
-        {
-          "_id": "36ca861d-cd6b-4d09-a2e7-019a4eda3072",
-          "_template": "ProductCard",
-          "traceId": "ProductCard-56827efa",
-          "_itemProps": {
-            "$GridCard": {
-              "Cards": {
-                "itemSize": { "$res": true, "xl": "1x1" },
-                "verticalAlign": { "$res": true, "xl": "auto" }
-              }
-            }
-          },
-          "product": {
-            "id": "gid://shopify/Product/7566862745812",
-            "widgetId": "product"
-          },
-          "relatedProductsMode": "disabled",
-          "withBackdrop": false
-        },
-        {
-          "_id": "01fe59ce-3f9a-4f4a-9524-632990efd34e",
-          "_template": "ProductCard",
-          "traceId": "ProductCard-402c9f58",
-          "_itemProps": {
-            "$GridCard": {
-              "Cards": {
-                "itemSize": { "$res": true, "xl": "1x1" },
-                "verticalAlign": { "$res": true, "xl": "auto" }
-              }
-            }
-          },
-          "product": {
-            "id": "gid://shopify/Product/7568753819860",
-            "widgetId": "product"
-          },
-          "relatedProductsMode": "disabled",
-          "withBackdrop": false
-        }
-      ],
-      "variant": { "$res": true, "xl": "grid" },
-      "numberOfItems": { "$res": true, "xl": "4" },
-      "fractionalItemWidth": { "$res": true, "xl": "1.25" },
-      "columnGap": { "$res": true, "xl": { "ref": "0", "value": "0px" } },
-      "rowGap": { "$res": true, "xl": { "value": "16px", "ref": "16" } },
-      "verticalAlign": { "$res": true, "xl": "top" },
-      "showSliderControls": { "$res": true, "xl": false },
-      "shouldSliderItemsBeVisibleOnMargin": { "$res": true, "xl": true },
-      "gridMainObjectAspectRatio": {
-        "$res": true,
-        "xl": { "value": "4:5", "ref": "$gridMainObjectDefault" }
-      },
-      "borderEnabled": false,
-      "borderColor": {
-        "$res": true,
-        "xl": { "value": "black", "ref": "grey_05" }
-      },
-      "borderTop": { "$res": true, "xl": "1" },
-      "borderBottom": { "$res": true, "xl": "1" },
-      "borderLeft": { "$res": true, "xl": "1" },
-      "borderRight": { "$res": true, "xl": "1" },
-      "borderInner": { "$res": true, "xl": "1" },
-      "paddingTop": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
-      "paddingBottom": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
-      "paddingLeft": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
-      "paddingRight": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
-      "LeftArrow": [
-        {
-          "_id": "9e7b3078-1027-4c8a-8ef0-210159e8394b",
-          "_template": "$StandardButton",
-          "_master": "buttonDark",
-          "traceId": "$StandardButton-ed18a167",
-          "_itemProps": { "$GridCard": { "LeftArrow": {} } },
-          "Action": [],
-          "variant": "icon",
-          "label": {
-            "id": "local.2e078553-c145-41b1-95cb-b500db4f9120",
-            "value": { "en-US": "Click me" }
-          },
-          "icon": {
-            "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"red\" width=\"100px\" height=\"100px\"><path d=\"M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z\"/></svg>",
-            "ref": "arrowLeft"
-          },
-          "color": {
-            "$res": true,
-            "xl": { "value": "black", "ref": "grey_05" }
-          },
-          "minHeight": { "$res": true, "xl": "42" },
-          "minWidth": { "$res": true, "xl": "100" },
-          "horizontalPadding": {
-            "$res": true,
-            "xl": { "value": "16px", "ref": "16" }
-          },
-          "gap": { "$res": true, "xl": { "value": "6px", "ref": "6" } },
-          "cornerMode": { "$res": true, "xl": "circled" },
-          "cornerRadius": { "$res": true, "xl": "12" },
-          "font": {
-            "$res": true,
-            "xl": {
-              "value": {
-                "$res": true,
-                "2xl": {
-                  "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
-                  "fontSize": 16,
-                  "fontWeight": 500,
-                  "lineHeight": 1.2
-                }
-              },
-              "ref": "body2.bold"
-            }
-          },
-          "underline": "off",
-          "underlineOffset": { "$res": true, "xl": "1" },
-          "iconSize": { "$res": true, "xl": "24" },
-          "hasBackground": true,
-          "backgroundColor": {
-            "$res": true,
-            "xl": { "value": "#D8D8D880", "ref": "transparent-grey-light" }
-          },
-          "hasBorder": false,
-          "borderWidth": { "$res": true, "xl": "1" },
-          "borderColor": {
-            "$res": true,
-            "xl": { "value": "black", "ref": "grey_05" }
-          },
-          "boxShadow": {
-            "$res": true,
-            "xl": { "value": "none", "ref": "none" }
-          }
-        }
-      ],
-      "leftArrowPlacement": { "$res": true, "xl": "center" },
-      "leftArrowOffset": { "$res": true, "xl": { "value": "0px", "ref": "0" } },
-      "RightArrow": [
-        {
-          "_id": "244d50a2-e9d9-4be0-88db-f6be3cea34ef",
-          "_template": "$StandardButton",
-          "_master": "buttonDark",
-          "traceId": "$StandardButton-083b8413",
-          "_itemProps": { "$GridCard": { "RightArrow": {} } },
-          "Action": [],
-          "variant": "icon",
-          "label": {
-            "id": "local.0ab3707c-9cc5-4cc2-abbe-6d909bacfc6d",
-            "value": { "en-US": "Click me" }
-          },
-          "icon": {
-            "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z\"/></svg>",
-            "ref": "arrowRight"
-          },
-          "color": {
-            "$res": true,
-            "xl": { "value": "black", "ref": "grey_05" }
-          },
-          "minHeight": { "$res": true, "xl": "42" },
-          "minWidth": { "$res": true, "xl": "100" },
-          "horizontalPadding": {
-            "$res": true,
-            "xl": { "value": "16px", "ref": "16" }
-          },
-          "gap": { "$res": true, "xl": { "value": "6px", "ref": "6" } },
-          "cornerMode": { "$res": true, "xl": "circled" },
-          "cornerRadius": { "$res": true, "xl": "12" },
-          "font": {
-            "$res": true,
-            "xl": {
-              "value": {
-                "$res": true,
-                "2xl": {
-                  "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
-                  "fontSize": 16,
-                  "fontWeight": 500,
-                  "lineHeight": 1.2
-                }
-              },
-              "ref": "body2.bold"
-            }
-          },
-          "underline": "off",
-          "underlineOffset": { "$res": true, "xl": "1" },
-          "iconSize": { "$res": true, "xl": "24" },
-          "hasBackground": true,
-          "backgroundColor": {
-            "$res": true,
-            "xl": { "value": "#D8D8D880", "ref": "transparent-grey-light" }
-          },
-          "hasBorder": false,
-          "borderWidth": { "$res": true, "xl": "1" },
-          "borderColor": {
-            "$res": true,
-            "xl": { "value": "black", "ref": "grey_05" }
-          },
-          "boxShadow": {
-            "$res": true,
-            "xl": { "value": "none", "ref": "none" }
-          }
-        }
-      ],
-      "rightArrowPlacement": { "$res": true, "xl": "center" },
-      "rightArrowOffset": { "$res": true, "xl": { "value": "0px", "ref": "0" } }
-    }
-  ],
   "containerMargin": {
     "$res": true,
     "xl": {
-      "value": { "$res": true, "xl": "5vw" },
-      "ref": "containerMargin.default"
+      "value": { "$res": true, "md": "5vw", "lg": "8vw" },
+      "tokenId": "containerMargin.standard",
+      "widgetId": "@easyblocks/space"
     }
   },
   "containerMaxWidth": {
     "$res": true,
-    "xl": { "value": "none", "ref": "none" }
+    "xl": { "value": -1, "tokenId": "none" }
   },
-  "escapeMargin": { "$res": true, "xl": true },
+  "escapeMargin": { "$res": true, "xl": false },
+  "Cards": [
+    {
+      "_id": "b09e46de-cf21-4fef-906b-bb105f58d4cd",
+      "_component": "ProductCard",
+      "_itemProps": {
+        "Grid": {
+          "Cards": {
+            "itemSize": { "$res": true, "xl": "1x1" },
+            "verticalAlign": { "$res": true, "xl": "auto" }
+          }
+        }
+      },
+      "product": {
+        "id": "gid://shopify/Product/7560669528276",
+        "widgetId": "product",
+        "key": "self"
+      },
+      "relatedProductsMode": "disabled",
+      "withBackdrop": false
+    },
+    {
+      "_id": "a3c804c6-86d9-4d7b-85c8-6947b4ee95ff",
+      "_component": "ProductCard",
+      "_itemProps": {
+        "Grid": {
+          "Cards": {
+            "itemSize": { "$res": true, "xl": "1x1" },
+            "verticalAlign": { "$res": true, "xl": "auto" }
+          }
+        }
+      },
+      "product": {
+        "id": "gid://shopify/Product/7560670773460",
+        "widgetId": "product",
+        "key": "self"
+      },
+      "relatedProductsMode": "disabled",
+      "withBackdrop": false
+    },
+    {
+      "_id": "d8a76d2d-10d6-47d0-b05b-eb34fb423473",
+      "_component": "ProductCard",
+      "_itemProps": {
+        "Grid": {
+          "Cards": {
+            "itemSize": { "$res": true, "xl": "1x1" },
+            "verticalAlign": { "$res": true, "xl": "auto" }
+          }
+        }
+      },
+      "product": {
+        "id": "gid://shopify/Product/7566862745812",
+        "widgetId": "product",
+        "key": "self"
+      },
+      "relatedProductsMode": "disabled",
+      "withBackdrop": false
+    },
+    {
+      "_id": "8b6ab0b2-0d13-4d4c-a64e-07a3015a6584",
+      "_component": "ProductCard",
+      "_itemProps": {
+        "Grid": {
+          "Cards": {
+            "itemSize": { "$res": true, "xl": "1x1" },
+            "verticalAlign": { "$res": true, "xl": "auto" }
+          }
+        }
+      },
+      "product": {
+        "id": "gid://shopify/Product/7568753819860",
+        "widgetId": "product",
+        "key": "self"
+      },
+      "relatedProductsMode": "disabled",
+      "withBackdrop": false
+    }
+  ],
+  "variant": { "$res": true, "xl": "grid" },
+  "numberOfItems": { "$res": true, "xl": "4" },
+  "fractionalItemWidth": { "$res": true, "xl": "1.25" },
+  "columnGap": {
+    "$res": true,
+    "xl": { "value": "0px", "tokenId": "0", "widgetId": "@easyblocks/space" }
+  },
+  "rowGap": {
+    "$res": true,
+    "xl": { "value": "16px", "tokenId": "16", "widgetId": "@easyblocks/space" }
+  },
+  "verticalAlign": { "$res": true, "xl": "top" },
+  "showSliderControls": { "$res": true, "xl": false },
+  "shouldSliderItemsBeVisibleOnMargin": { "$res": true, "xl": true },
+  "gridMainObjectAspectRatio": {
+    "$res": true,
+    "xl": { "value": "1:1", "widgetId": "@easyblocks/aspectRatio" }
+  },
+  "paddingTop": {
+    "$res": true,
+    "xl": { "value": "0px", "tokenId": "0", "widgetId": "@easyblocks/space" }
+  },
+  "paddingBottom": {
+    "$res": true,
+    "xl": { "value": "0px", "tokenId": "0", "widgetId": "@easyblocks/space" }
+  },
+  "paddingLeft": {
+    "$res": true,
+    "xl": { "value": "0px", "tokenId": "0", "widgetId": "@easyblocks/space" }
+  },
+  "paddingRight": {
+    "$res": true,
+    "xl": { "value": "0px", "tokenId": "0", "widgetId": "@easyblocks/space" }
+  },
+  "LeftArrow": [
+    {
+      "_id": "e8261c54-9aaa-4c91-9fa0-7f85e747cdcd",
+      "_component": "Button",
+      "_itemProps": { "Grid": { "LeftArrow": {} } },
+      "Action": [],
+      "variant": "icon",
+      "label": {
+        "id": "local.69906a71-7fa3-4426-ae40-fc264f7e44ab",
+        "value": { "en-US": "Click me" },
+        "widgetId": "@easyblocks/local-text"
+      },
+      "icon": {
+        "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"red\" width=\"100px\" height=\"100px\"><path d=\"M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z\"/></svg>",
+        "tokenId": "arrowLeft",
+        "widgetId": "@easyblocks/icon"
+      },
+      "color": {
+        "$res": true,
+        "xl": {
+          "tokenId": "black",
+          "value": "#000000",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "minHeight": { "$res": true, "xl": "42" },
+      "minWidth": { "$res": true, "xl": "100" },
+      "horizontalPadding": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "gap": {
+        "$res": true,
+        "xl": {
+          "value": "6px",
+          "tokenId": "6",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "cornerMode": { "$res": true, "xl": "circled" },
+      "cornerRadius": { "$res": true, "xl": "12" },
+      "font": {
+        "$res": true,
+        "xl": {
+          "value": {
+            "fontSize": 13,
+            "lineHeight": 1.8,
+            "fontFamily": "test-soehne-mono"
+          },
+          "tokenId": "body2"
+        }
+      },
+      "underline": "on-custom",
+      "underlineOffset": { "$res": true, "xl": "3" },
+      "iconSize": { "$res": true, "xl": "24" },
+      "hasBackground": true,
+      "backgroundColor": {
+        "$res": true,
+        "xl": {
+          "tokenId": "transparent-grey-light",
+          "value": "#D8D8D880",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "hasBorder": false,
+      "borderWidth": { "$res": true, "xl": "1" },
+      "borderColor": {
+        "$res": true,
+        "xl": {
+          "value": "#000000",
+          "tokenId": "black",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "boxShadow": {
+        "$res": true,
+        "xl": { "value": "none", "tokenId": "none" }
+      }
+    }
+  ],
+  "leftArrowPlacement": { "$res": true, "xl": "inside" },
+  "leftArrowOffset": {
+    "$res": true,
+    "xl": { "value": "0px", "tokenId": "0", "widgetId": "@easyblocks/space" }
+  },
+  "RightArrow": [
+    {
+      "_id": "0effc661-0076-483d-9a4a-f843d027c1e9",
+      "_component": "Button",
+      "_itemProps": { "Grid": { "RightArrow": {} } },
+      "Action": [],
+      "variant": "icon",
+      "label": {
+        "id": "local.11e95d07-cf77-4e43-b676-ecf482ce8c6c",
+        "value": { "en-US": "Click me" },
+        "widgetId": "@easyblocks/local-text"
+      },
+      "icon": {
+        "tokenId": "arrowRight",
+        "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z\"/></svg>",
+        "widgetId": "@easyblocks/icon"
+      },
+      "color": {
+        "$res": true,
+        "xl": {
+          "tokenId": "black",
+          "value": "#000000",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "minHeight": { "$res": true, "xl": "42" },
+      "minWidth": { "$res": true, "xl": "100" },
+      "horizontalPadding": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "gap": {
+        "$res": true,
+        "xl": {
+          "value": "6px",
+          "tokenId": "6",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "cornerMode": { "$res": true, "xl": "circled" },
+      "cornerRadius": { "$res": true, "xl": "12" },
+      "font": {
+        "$res": true,
+        "xl": {
+          "value": {
+            "fontSize": 13,
+            "lineHeight": 1.8,
+            "fontFamily": "test-soehne-mono"
+          },
+          "tokenId": "body2"
+        }
+      },
+      "underline": "on-custom",
+      "underlineOffset": { "$res": true, "xl": "3" },
+      "iconSize": { "$res": true, "xl": "24" },
+      "hasBackground": true,
+      "backgroundColor": {
+        "$res": true,
+        "xl": {
+          "tokenId": "transparent-grey-light",
+          "value": "#D8D8D880",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "hasBorder": false,
+      "borderWidth": { "$res": true, "xl": "1" },
+      "borderColor": {
+        "$res": true,
+        "xl": {
+          "value": "#000000",
+          "tokenId": "black",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "boxShadow": {
+        "$res": true,
+        "xl": { "value": "none", "tokenId": "none" }
+      }
+    }
+  ],
+  "rightArrowPlacement": { "$res": true, "xl": "inside" },
+  "rightArrowOffset": {
+    "$res": true,
+    "xl": { "tokenId": "0", "value": "0px", "widgetId": "@easyblocks/space" }
+  },
   "headerMode": "1-stack",
   "layout1Stack": "center",
   "layout2Stacks": { "$res": true, "xl": "left-right" },
   "layout2StacksVerticalAlign": { "$res": true, "xl": "center" },
-  "headerStacksGap": { "$res": true, "xl": { "value": "12px", "ref": "12" } },
-  "headerSectionGap": { "$res": true, "xl": { "ref": "24", "value": "24px" } },
-  "footerSectionGap": { "$res": true, "xl": { "value": "12px", "ref": "12" } },
+  "headerStacksGap": {
+    "$res": true,
+    "xl": { "value": "12px", "tokenId": "12", "widgetId": "@easyblocks/space" }
+  },
+  "headerSectionGap": {
+    "$res": true,
+    "xl": { "value": "24px", "tokenId": "24", "widgetId": "@easyblocks/space" }
+  },
+  "footerSectionGap": {
+    "$res": true,
+    "xl": { "value": "12px", "tokenId": "12", "widgetId": "@easyblocks/space" }
+  },
   "HeaderStack": [
     {
-      "_id": "0e7e47a5-2752-40b1-add6-a358c0d9b8e8",
-      "_template": "$stack",
-      "traceId": "$stack-b5c60d21",
+      "_id": "98450741-811a-4b49-baae-38b577829ac8",
+      "_component": "Stack",
       "Items": [
         {
-          "_id": "55215394-f7fe-4f77-be48-3d52a5420bef",
-          "_template": "@easyblocks/rich-text",
-          "traceId": "$richText-fb63fd15",
+          "_id": "2a92e462-6494-46e8-877a-68a6af5c4dbe",
+          "_component": "@easyblocks/rich-text",
           "_itemProps": {
-            "$stack": {
+            "Stack": {
               "Items": {
                 "width": { "$res": true, "xl": "512px" },
                 "marginBottom": {
                   "$res": true,
-                  "xl": { "value": "0px", "ref": "0" }
+                  "xl": {
+                    "value": "0px",
+                    "tokenId": "0",
+                    "widgetId": "@easyblocks/space"
+                  }
                 },
                 "align": { "$res": true, "xl": "left" }
               }
@@ -300,63 +369,67 @@
           "elements": {
             "en-US": [
               {
-                "_template": "@easyblocks/rich-text-block-element",
+                "_id": "3195d494-95b3-42f5-884b-24d79f70307b",
+                "_component": "@easyblocks/rich-text-block-element",
+                "type": "paragraph",
                 "elements": [
                   {
-                    "_template": "@easyblocks/rich-text-line-element",
+                    "_id": "4b940675-54d7-4b34-8f02-dc43c9acb9e8",
+                    "_component": "@easyblocks/rich-text-line-element",
                     "elements": [
                       {
-                        "_id": "54400ec9-853c-411f-b1c3-a6016c4873da",
-                        "_template": "@easyblocks/rich-text-part",
-                        "color": {
-                          "$res": true,
-                          "xl": { "ref": "grey_05", "value": "#252525" }
-                        },
+                        "_id": "e99e70ba-7c72-46d0-bed5-91647c69a579",
+                        "_component": "@easyblocks/rich-text-part",
+                        "value": "New arrivals",
                         "font": {
                           "$res": true,
                           "xl": {
-                            "ref": "heading3",
                             "value": {
-                              "$res": true,
-                              "2xl": {
-                                "fontFamily": "test-national-2",
-                                "fontSize": 21,
-                                "lineHeight": 1.4,
-                                "fontWeight": 600
-                              }
-                            }
+                              "fontFamily": "test-national-2",
+                              "fontSize": 21,
+                              "lineHeight": 1.4,
+                              "fontWeight": 600
+                            },
+                            "tokenId": "heading3"
                           }
                         },
-                        "value": "New arrivals"
+                        "color": {
+                          "$res": true,
+                          "xl": {
+                            "value": "#252525",
+                            "tokenId": "grey_05",
+                            "widgetId": "@easyblocks/color"
+                          }
+                        },
+                        "TextWrapper": []
                       }
-                    ],
-                    "_id": "ac2d7335-123b-4291-b66d-6d9fc4d1906f"
+                    ]
                   }
-                ],
-                "type": "paragraph",
-                "_id": "1060087a-cbeb-4df8-8b44-600dbc854d8f"
+                ]
               }
             ]
           },
+          "align": { "$res": true, "xl": "left" },
           "accessibilityRole": "div",
           "isListStyleAuto": true,
           "mainFont": {
             "$res": true,
             "xl": {
               "value": {
-                "$res": true,
-                "2xl": {
-                  "fontSize": 20,
-                  "lineHeight": 1.8,
-                  "fontFamily": "test-soehne-mono"
-                }
+                "fontSize": 20,
+                "lineHeight": 1.8,
+                "fontFamily": "test-soehne-mono"
               },
-              "ref": "body"
+              "tokenId": "body"
             }
           },
           "mainColor": {
             "$res": true,
-            "xl": { "value": "#000000", "ref": "grey_05" }
+            "xl": {
+              "value": "#252525",
+              "tokenId": "grey_05",
+              "widgetId": "@easyblocks/color"
+            }
           }
         }
       ]
@@ -364,12 +437,14 @@
   ],
   "HeaderSecondaryStack": [
     {
-      "_id": "b924bb9f-0ed0-473d-8c71-98f6b434f89d",
-      "_template": "$stack",
-      "traceId": "$stack-da39c726",
+      "_id": "29728dff-8791-488f-82cd-456cf4cc9238",
+      "_component": "Stack",
       "Items": []
     }
   ],
   "Background__": [],
-  "padding": { "$res": true, "xl": { "value": "24px", "ref": "24" } }
+  "padding": {
+    "$res": true,
+    "xl": { "value": "24px", "tokenId": "24", "widgetId": "@easyblocks/space" }
+  }
 }

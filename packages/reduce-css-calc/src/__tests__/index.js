@@ -1,16 +1,16 @@
 import test from "ava";
 
-import reduceCalc from "..";
+import { reduceCSSCalc } from "..";
 
 function testFixture(t, fixture, expected = null, precision = 5, map = {}) {
   if (expected === null) expected = fixture;
 
-  const out = reduceCalc(fixture, precision, map);
+  const out = reduceCSSCalc(fixture, precision, map);
   t.deepEqual(out, expected);
 }
 
 function testThrows(t, fixture, expected, precision = 5, map = {}) {
-  t.throws(() => reduceCalc(fixture, precision), expected, map);
+  t.throws(() => reduceCSSCalc(fixture, precision), expected, map);
 }
 
 // vw

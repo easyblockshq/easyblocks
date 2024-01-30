@@ -1,14 +1,17 @@
-import { CompiledComponentConfig, ConfigComponent, Devices } from "../types";
+import {
+  CompiledComponentConfig,
+  NoCodeComponentEntry,
+  Devices,
+} from "../types";
 import { SetRequired } from "type-fest";
 import { CompilationCache } from "./CompilationCache";
 import { compileInternal } from "./compileInternal";
 import {
   InternalRenderableComponentDefinition,
-  InternalActionComponentDefinition,
   CompilationContextType,
 } from "./types";
 
-type TestComponentConfig = SetRequired<ConfigComponent, "_id">;
+type TestComponentConfig = SetRequired<NoCodeComponentEntry, "_id">;
 
 test("populates cache for given component if cache is empty", () => {
   const testComponentDefinition: InternalRenderableComponentDefinition = {
@@ -19,7 +22,6 @@ test("populates cache for given component if cache is empty", () => {
         type: "string",
       },
     ],
-    tags: [],
   };
 
   const testCompilationContext = createTestCompilationContext({
@@ -30,7 +32,7 @@ test("populates cache for given component if cache is empty", () => {
 
   const result = compileInternal(
     {
-      _template: "$TestComponent",
+      _component: "$TestComponent",
       _id: "xxx",
       prop1: "Test",
     },
@@ -41,20 +43,44 @@ test("populates cache for given component if cache is empty", () => {
   expect(cache.count).toBe(1);
   expect(cache.get("xxx")).toEqual<ReturnType<CompilationCache["get"]>>({
     values: {
-      _template: "$TestComponent",
-      _id: "xxx",
-      prop1: "Test",
+      values: {
+        _component: "$TestComponent",
+        _id: "xxx",
+        prop1: "Test",
+      },
+      params: {
+        $width: {
+          $res: true,
+          d1: 1024,
+        },
+        $widthAuto: {
+          $res: true,
+          d1: false,
+        },
+      },
     },
     compiledConfig: result.compiled,
     compiledValues: {
-      _template: "$TestComponent",
+      _component: "$TestComponent",
       _id: "xxx",
       prop1: "Test",
     },
     valuesAfterAuto: {
-      _template: "$TestComponent",
-      _id: "xxx",
-      prop1: "Test",
+      values: {
+        _component: "$TestComponent",
+        _id: "xxx",
+        prop1: "Test",
+      },
+      params: {
+        $width: {
+          $res: true,
+          d1: 1024,
+        },
+        $widthAuto: {
+          $res: true,
+          d1: false,
+        },
+      },
     },
     contextProps: {},
   });
@@ -69,7 +95,6 @@ test("reuses cache if it contains cached result for given component", () => {
         type: "string",
       },
     ],
-    tags: [],
   };
 
   const testCompilationContext = createTestCompilationContext({
@@ -77,7 +102,7 @@ test("reuses cache if it contains cached result for given component", () => {
   });
 
   const testConfig: TestComponentConfig = {
-    _template: "$TestComponent",
+    _component: "$TestComponent",
     _id: "xxx",
     prop1: "Test",
   };
@@ -87,29 +112,51 @@ test("reuses cache if it contains cached result for given component", () => {
       "xxx",
       {
         values: {
-          _id: testConfig._id,
-          prop1: "Test",
-          _itemProps: {},
+          values: {
+            _id: testConfig._id,
+            _component: testConfig._component,
+            prop1: "Test",
+          },
+          params: {
+            $width: {
+              $res: true,
+              d1: 1024,
+            },
+            $widthAuto: {
+              $res: true,
+              d1: false,
+            },
+          },
         },
         contextProps: {},
         compiledConfig: {
           _id: testConfig._id,
-          _template: testConfig._template,
-          actions: {},
+          _component: testConfig._component,
           components: {},
           props: {},
           styled: {},
-          textModifiers: {},
         },
         compiledValues: {
           _id: testConfig._id,
-          _template: testConfig._template,
+          _component: testConfig._component,
           prop1: "Test",
         },
         valuesAfterAuto: {
-          _id: testConfig._id,
-          _template: testConfig._template,
-          prop1: "Test",
+          values: {
+            _id: testConfig._id,
+            _component: testConfig._component,
+            prop1: "Test",
+          },
+          params: {
+            $width: {
+              $res: true,
+              d1: 1024,
+            },
+            $widthAuto: {
+              $res: true,
+              d1: false,
+            },
+          },
         },
       },
     ],
@@ -132,7 +179,6 @@ test("change of schema prop value of nested component triggers only recompilatio
         type: "string",
       },
     ],
-    tags: [],
   };
 
   const testComponentDefinition2: InternalRenderableComponentDefinition = {
@@ -144,7 +190,6 @@ test("change of schema prop value of nested component triggers only recompilatio
         accepts: [testComponentDefinition1.id],
       },
     ],
-    tags: [],
   };
 
   const testComponentDefinition3: InternalRenderableComponentDefinition = {
@@ -156,19 +201,18 @@ test("change of schema prop value of nested component triggers only recompilatio
         accepts: [testComponentDefinition2.id],
       },
     ],
-    tags: [],
   };
 
   const testConfig: TestComponentConfig = {
-    _template: "$TestComponent3",
+    _component: "$TestComponent3",
     _id: "xxx",
     Component: [
       {
-        _template: "$TestComponent2",
+        _component: "$TestComponent2",
         _id: "yyy",
         Component: [
           {
-            _template: "$TestComponent1",
+            _component: "$TestComponent1",
             _id: "zzz",
             prop1: "Test",
           },
@@ -218,23 +262,48 @@ test("change of schema prop value of nested component triggers only recompilatio
   expect(cacheEntryComponent2).toEqual(cache.get("yyy"));
   expect(cacheEntryComponent1).not.toEqual(cache.get("zzz"));
   expect(cache.get("zzz")).toEqual<ReturnType<CompilationCache["get"]>>({
-    compiledConfig:
-      result.compiled.components.Component[0].components.Component[0],
+    compiledConfig: (
+      result.compiled.components.Component[0] as CompiledComponentConfig
+    ).components.Component[0] as CompiledComponentConfig,
     valuesAfterAuto: {
-      _template: "$TestComponent1",
-      _id: "zzz",
-      prop1: "Another test",
+      values: {
+        _component: "$TestComponent1",
+        _id: "zzz",
+        prop1: "Another test",
+      },
+      params: {
+        $width: {
+          $res: true,
+          d1: 1024,
+        },
+        $widthAuto: {
+          $res: true,
+          d1: false,
+        },
+      },
     },
     compiledValues: {
-      _template: "$TestComponent1",
+      _component: "$TestComponent1",
       _id: "zzz",
       prop1: "Another test",
     },
     contextProps: {},
     values: {
-      _template: "$TestComponent1",
-      _id: "zzz",
-      prop1: "Another test",
+      values: {
+        _component: "$TestComponent1",
+        _id: "zzz",
+        prop1: "Another test",
+      },
+      params: {
+        $width: {
+          $res: true,
+          d1: 1024,
+        },
+        $widthAuto: {
+          $res: true,
+          d1: false,
+        },
+      },
     },
   });
 });
@@ -248,7 +317,6 @@ test("change of _itemProps triggers recompilation of the component that owns the
         type: "string",
       },
     ],
-    tags: [],
   };
 
   const testComponentDefinition2: InternalRenderableComponentDefinition = {
@@ -266,7 +334,6 @@ test("change of _itemProps triggers recompilation of the component that owns the
         ],
       },
     ],
-    tags: [],
   };
 
   const testCompilationContext = createTestCompilationContext({
@@ -274,11 +341,11 @@ test("change of _itemProps triggers recompilation of the component that owns the
   });
 
   const testConfig: TestComponentConfig = {
-    _template: "$TestComponent2",
+    _component: "$TestComponent2",
     _id: "xxx",
     Components: [
       {
-        _template: "$TestComponent1",
+        _component: "$TestComponent1",
         _id: "yyy",
         prop1: "Test",
         _itemProps: {
@@ -298,33 +365,55 @@ test("change of _itemProps triggers recompilation of the component that owns the
 
   expect(cache.count).toBe(2);
   expect(cache.get("xxx")?.values).toEqual({
-    _id: "xxx",
-    Components: [
-      {
-        _id: "yyy",
-        _template: "$TestComponent1",
-        itemProp1: false,
+    params: {
+      $width: {
+        $res: true,
+        d1: 1024,
       },
-    ],
-    _template: "$TestComponent2",
+      $widthAuto: {
+        $res: true,
+        d1: false,
+      },
+    },
+    values: {
+      _id: "xxx",
+      Components: [
+        {
+          _id: "yyy",
+          _component: "$TestComponent1",
+          itemProp1: false,
+        },
+      ],
+      _component: "$TestComponent2",
+    },
   });
 
   const cacheEntryComponent1 = cache.get("yyy");
 
   expect(cacheEntryComponent1?.values).toEqual({
-    _template: "$TestComponent1",
-    _id: "yyy",
-    prop1: "Test",
-    index: 0,
-    length: 1,
+    values: {
+      _component: "$TestComponent1",
+      _id: "yyy",
+      prop1: "Test",
+    },
+    params: {
+      $width: {
+        $res: true,
+        d1: 1024,
+      },
+      $widthAuto: {
+        $res: true,
+        d1: false,
+      },
+    },
   });
 
   const testConfig2: TestComponentConfig = {
-    _template: "$TestComponent2",
+    _component: "$TestComponent2",
     _id: "xxx",
     Components: [
       {
-        _template: "$TestComponent1",
+        _component: "$TestComponent1",
         _id: "yyy",
         prop1: "Test",
         _itemProps: {
@@ -342,15 +431,27 @@ test("change of _itemProps triggers recompilation of the component that owns the
 
   expect(cache.count).toBe(2);
   expect(cache.get("xxx")?.values).toEqual({
-    _template: "$TestComponent2",
-    _id: "xxx",
-    Components: [
-      {
-        _id: "yyy",
-        _template: "$TestComponent1",
-        itemProp1: true,
+    values: {
+      _component: "$TestComponent2",
+      _id: "xxx",
+      Components: [
+        {
+          _id: "yyy",
+          _component: "$TestComponent1",
+          itemProp1: true,
+        },
+      ],
+    },
+    params: {
+      $width: {
+        $res: true,
+        d1: 1024,
       },
-    ],
+      $widthAuto: {
+        $res: true,
+        d1: false,
+      },
+    },
   });
   expect(cache.get("yyy")).toEqual(cacheEntryComponent1);
 });
@@ -364,7 +465,6 @@ test("change of context props triggers recompilation of component consuming them
         type: "boolean",
       },
     ],
-    tags: [],
   };
 
   const testComponentDefinition2: InternalRenderableComponentDefinition = {
@@ -380,14 +480,15 @@ test("change of context props triggers recompilation of component consuming them
         type: "boolean",
       },
     ],
-    styles: (values: { prop1: boolean }) => {
+    styles: ({ values }) => {
       return {
-        Component: {
-          contextProp1: values.prop1,
+        components: {
+          Component: {
+            contextProp1: values.prop1,
+          },
         },
       };
     },
-    tags: [],
   };
 
   const testCompilationContext = createTestCompilationContext({
@@ -395,12 +496,12 @@ test("change of context props triggers recompilation of component consuming them
   });
 
   const testConfig: TestComponentConfig = {
-    _template: "$TestComponent2",
+    _component: "$TestComponent2",
     _id: "xxx",
     prop1: true,
     Component: [
       {
-        _template: "$TestComponent1",
+        _component: "$TestComponent1",
         _id: "yyy",
         prop1: false,
       },
@@ -413,103 +514,52 @@ test("change of context props triggers recompilation of component consuming them
 
   expect(cache.count).toBe(2);
   expect(cache.get("xxx")?.values).toEqual({
-    _template: "$TestComponent2",
-    _id: "xxx",
-    prop1: true,
-    Component: [
-      {
-        _id: "yyy",
-        _template: "$TestComponent1",
+    values: {
+      _component: "$TestComponent2",
+      _id: "xxx",
+      prop1: true,
+      Component: [
+        {
+          _id: "yyy",
+          _component: "$TestComponent1",
+        },
+      ],
+    },
+    params: {
+      $width: {
+        $res: true,
+        d1: 1024,
       },
-    ],
+      $widthAuto: {
+        $res: true,
+        d1: false,
+      },
+    },
   });
   expect(cache.get("yyy")?.values).toEqual({
-    _template: "$TestComponent1",
-    _id: "yyy",
-    prop1: false,
-    contextProp1: {
-      $res: true,
-      d1: true,
+    values: {
+      _component: "$TestComponent1",
+      _id: "yyy",
+      prop1: false,
     },
-  });
-});
-
-test("action is recompiled even if the owner component didn't change", () => {
-  const testActionDefinition: InternalActionComponentDefinition = {
-    id: "$TestAction",
-    schema: [
-      {
-        prop: "prop1",
-        type: "string",
+    params: {
+      contextProp1: {
+        $res: true,
+        d1: true,
       },
-    ],
-    tags: ["action"],
-  };
-
-  const testComponentDefinition: InternalRenderableComponentDefinition = {
-    id: "$TestComponent",
-    schema: [
-      {
-        prop: "prop1",
-        type: "component",
-        accepts: ["action"],
+      $width: {
+        $res: true,
+        d1: 1024,
       },
-    ],
-    tags: [],
-  };
-
-  const testCompilationContext = createTestCompilationContext({
-    actions: [testActionDefinition],
-    components: [testComponentDefinition],
-  });
-
-  const cache = new CompilationCache();
-
-  const result1 = compileInternal(
-    {
-      _template: "$TestComponent",
-      _id: "xxx",
-      prop1: [
-        {
-          _template: "$TestAction",
-          _id: "yyy",
-          prop1: "Test",
-        },
-      ],
+      $widthAuto: {
+        $res: true,
+        d1: false,
+      },
     },
-    testCompilationContext,
-    cache
-  );
-
-  expect(cache.count).toBe(1);
-  expect(result1.compiled.actions.prop1[0].props).toEqual({
-    prop1: "Test",
-  });
-
-  const result2 = compileInternal(
-    {
-      _template: "$TestComponent",
-      _id: "xxx",
-      prop1: [
-        {
-          _template: "$TestAction",
-          _id: "yyy",
-          prop1: "Another test",
-        },
-      ],
-    },
-    testCompilationContext,
-    cache
-  );
-
-  expect(cache.count).toBe(1);
-  expect(result2.compiled.actions.prop1[0].props).toEqual({
-    prop1: "Another test",
   });
 });
 
 function createTestCompilationContext({
-  actions = [],
   components = [],
   devices = [
     {
@@ -521,7 +571,6 @@ function createTestCompilationContext({
     },
   ],
 }: {
-  actions?: Array<InternalActionComponentDefinition>;
   components?: Array<InternalRenderableComponentDefinition>;
   devices?: Devices;
 }): CompilationContextType {
@@ -530,30 +579,16 @@ function createTestCompilationContext({
       locale: "en",
     },
     definitions: {
-      actions,
       components,
-      links: [],
-      textModifiers: [],
     },
     devices,
-    image: {
-      resourceType: "testAsset",
-      transform: () => {
-        throw new Error();
-      },
-    },
     mainBreakpointIndex: "",
     theme: {} as any,
     types: {},
-    video: {
-      resourceType: "testAsset",
-      transform: () => {
-        throw new Error();
-      },
+    locales: [{ code: "en-US", isDefault: true }],
+    rootComponent: {
+      id: "$RootComponent",
+      schema: [],
     },
-    imageVariants: [],
-    documentType: "content",
-    documentTypes: [],
-    videoVariants: [],
   };
 }

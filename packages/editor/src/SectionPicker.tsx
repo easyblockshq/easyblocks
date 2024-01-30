@@ -1,19 +1,14 @@
-import { CompiledShopstoryComponentConfig, Template } from "@easyblocks/core";
+import { Template } from "@easyblocks/core";
 import {
-  SSButtonGhostColor,
-  SSColors,
-  SSFonts,
-  SSModal,
+  ButtonGhostColor,
+  Colors,
+  Fonts,
+  Modal,
 } from "@easyblocks/design-system";
 import React, { useRef } from "react";
 import styled from "styled-components";
 import { EditorContextType, useEditorContext } from "./EditorContext";
 import { TemplatePicker } from "./TemplatePicker";
-
-export type CompiledEntryParentContext = {
-  parent: CompiledShopstoryComponentConfig;
-  fieldName: string;
-};
 
 type Mode = "large" | "large-3";
 
@@ -27,7 +22,7 @@ type VisualProps = {
 
 const CardRoot = styled.div`
   &:hover {
-    outline: 1px solid ${SSColors.black10};
+    outline: 1px solid ${Colors.black10};
     outline-offset: 8px;
   }
 
@@ -44,7 +39,7 @@ const CardRoot = styled.div`
 
 const ImageContainer = styled.div<VisualProps>`
   position: relative;
-  background-color: ${SSColors.black10};
+  background-color: ${Colors.black10};
   margin-bottom: 8px;
   padding-bottom: ${(p) => (p.mode === "large-3" ? "90%" : "60%")};
   cursor: pointer;
@@ -87,12 +82,12 @@ const CardLabelContainer = styled.div`
 `;
 
 const CardLabelTemplateName = styled.div`
-  ${SSFonts.body};
+  ${Fonts.body};
   color: black;
 `;
 
 const Title = styled.div`
-  ${SSFonts.label}
+  ${Fonts.label}
 `;
 
 const TitleContainer = styled.div`
@@ -105,7 +100,7 @@ const TitleContainer = styled.div`
 
 const Message = styled.div`
   padding-top: 32px;
-  ${SSFonts.body};
+  ${Fonts.body};
 `;
 
 type SectionCardProps = {
@@ -121,11 +116,6 @@ function getTemplatePreviewImage(
   // template.previewImage is always most important and overrides other sources of preview
   if (template.thumbnail) {
     return template.thumbnail;
-  }
-
-  // TODO: not only access token is important here but also information if user is authorised (access token correct)
-  if (!editorContext.project) {
-    return;
   }
 
   return;
@@ -170,21 +160,21 @@ const SectionCard: React.FC<SectionCardProps> = ({
             >
               <path
                 d="M8.18102 5.39789L6.89683 10.3512L7.86482 10.6022L9.14901 5.64885L8.18102 5.39789Z"
-                fill={SSColors.black20}
+                fill={Colors.black20}
               />
               <path
                 d="M9.38171 6.1215L11.1837 7.92352L9.38172 9.72549L10.0888 10.4326L12.5979 7.92353L10.0888 5.4144L9.38171 6.1215Z"
-                fill={SSColors.black20}
+                fill={Colors.black20}
               />
               <path
                 d="M6.54828 6.11507L4.80393 7.92352L6.54828 9.73192L5.82854 10.4262L3.41455 7.92353L5.82853 5.42083L6.54828 6.11507Z"
-                fill={SSColors.black20}
+                fill={Colors.black20}
               />
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"
                 d="M2 3C2 2.44772 2.44772 2 3 2H13C13.5523 2 14 2.44772 14 3V13C14 13.5523 13.5523 14 13 14H3C2.44772 14 2 13.5523 2 13V3ZM3 3H13V13H3L3 3Z"
-                fill={SSColors.black20}
+                fill={Colors.black20}
               />
             </svg>
           </CardImgPlaceholder>
@@ -204,8 +194,8 @@ const SectionCard: React.FC<SectionCardProps> = ({
 
         <div></div>
 
-        {template.isUserDefined && (
-          <SSButtonGhostColor
+        {template.isUserDefined && !editorContext.readOnly && (
+          <ButtonGhostColor
             className={"editButton"}
             onClick={() => {
               editorContext.actions.openTemplateModal({
@@ -215,7 +205,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
             }}
           >
             Edit
-          </SSButtonGhostColor>
+          </ButtonGhostColor>
         )}
       </CardFooter>
     </CardRoot>
@@ -247,7 +237,7 @@ const ModalGridRoot = styled.div<VisualProps>`
 const Sidebar = styled.div`
   overflow-y: hidden;
   overflow-x: hidden;
-  border-right: 1px solid ${SSColors.black5};
+  border-right: 1px solid ${Colors.black5};
   height: 100%;
 `;
 
@@ -261,12 +251,12 @@ const SidebarContent = styled.div`
 const SidebarButton = styled.button`
   all: unset;
   height: 38px;
-  ${SSFonts.body}
+  ${Fonts.body}
   display: flex;
   padding-left: 16px;
   align-items: center;
   &:hover {
-    background: ${SSColors.black5};
+    background: ${Colors.black5};
   }
   cursor: pointer;
 `;
@@ -295,7 +285,7 @@ export const SectionPickerModal: TemplatePicker<{ mode?: Mode }> = ({
   };
 
   return (
-    <SSModal
+    <Modal
       noPadding={true}
       title={"Pick section"}
       isOpen={isOpen}
@@ -378,6 +368,6 @@ export const SectionPickerModal: TemplatePicker<{ mode?: Mode }> = ({
             )}
         </GridRoot>
       </ModalRoot>
-    </SSModal>
+    </Modal>
   );
 };

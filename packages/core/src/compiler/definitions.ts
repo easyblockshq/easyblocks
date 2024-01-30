@@ -1,75 +1,68 @@
+import { uniqueId } from "@easyblocks/utils";
+import { SetOptional } from "type-fest";
+import { isLocalValue } from "..";
+import { getFallbackForLocale, getFallbackLocaleForLocale } from "../locales";
+import {
+  isTrulyResponsiveValue,
+  responsiveValueAt,
+  responsiveValueFill,
+  responsiveValueFlatten,
+  responsiveValueMap,
+} from "../responsiveness";
 import {
   BooleanSchemaProp,
-  Color,
-  ColorSchemaProp,
-  CompiledCustomComponentConfig,
+  CompiledComponentConfig,
   CompiledLocalTextReference,
-  CompiledShopstoryComponentConfig,
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
-  ComponentConfig,
   ComponentSchemaProp,
-  ConfigComponent,
   Devices,
   ExternalReference,
   ExternalReferenceEmpty,
   ExternalReferenceNonEmpty,
   ExternalSchemaProp,
-  Font,
-  FontSchemaProp,
-  IconSchemaProp,
+  LocalSchemaProp,
   LocalTextReference,
+  LocalValue,
+  NoCodeComponentEntry,
   NumberSchemaProp,
   Option,
   Position,
   PositionSchemaProp,
   RadioGroupSchemaProp,
-  RefMap,
-  RefValue,
   ResponsiveValue,
   SchemaProp,
   SelectSchemaProp,
   SerializedComponentDefinitions,
-  SpaceSchemaProp,
-  Spacing,
   StringSchemaProp,
-  StringTokenSchemaProp,
   TextSchemaProp,
-  ThemeRefValue,
+  ThemeTokenValue,
+  TokenSchemaProp,
+  TokenValue,
   TrulyResponsiveValue,
 } from "../types";
-import { uniqueId } from "@easyblocks/utils";
 import { CompilationCache } from "./CompilationCache";
-import { compileComponent } from "./compileComponent";
-import { getFallbackForLocale, getFallbackLocaleForLocale } from "../locales";
-import {
-  isTrulyResponsiveValue,
-  responsiveValueAt,
-  responsiveValueMap,
-  responsiveValueFlatten,
-  responsiveValueFill,
-} from "../responsiveness";
-import { parseSpacing } from "../spacingToPx";
 import { buildRichTextNoCodeEntry } from "./builtins/$richText/builders";
+import { compileComponent } from "./compileComponent";
 import { getDevicesWidths } from "./devices";
-import { findComponentDefinitionById } from "./findComponentDefinition";
-import { Component$$$SchemaProp, isExternalSchemaProp } from "./schema";
-import { splitTemplateName } from "./splitTemplateName";
 import {
+  findComponentDefinitionById,
+  findComponentDefinitionsByType,
+} from "./findComponentDefinition";
+import { isContextEditorContext } from "./isContextEditorContext";
+import { Component$$$SchemaProp } from "./schema";
+import {
+  CompilationContextType,
   ContextProps,
   EditingInfoComponent,
   EditingInfoComponentCollection,
-  CompilationContextType,
 } from "./types";
-import { isContextEditorContext } from "./isContextEditorContext";
-import { getMappedToken } from "../getMappedToken";
 
-export type SchemaPropDefinition<Type, CompiledType> = {
+type SchemaPropDefinition<Type, CompiledType = Type> = {
   compile: (
     value: Type,
     contextProps: ContextProps,
     serializedDefinitions: SerializedComponentDefinitions,
-    refMap: RefMap,
     editingInfoComponent:
       | EditingInfoComponent
       | EditingInfoComponentCollection
@@ -85,94 +78,56 @@ export type SchemaPropDefinition<Type, CompiledType> = {
   ) => string | undefined;
 };
 
-export type TextSchemaPropDefinition = SchemaPropDefinition<
+type TextSchemaPropDefinition = SchemaPropDefinition<
   LocalTextReference | ExternalReference<string>,
   CompiledLocalTextReference | ExternalReference<string>
 >;
 
-export type StringSchemaPropDefinition = SchemaPropDefinition<
+type StringSchemaPropDefinition = SchemaPropDefinition<
   ResponsiveValue<string>,
   ResponsiveValue<string>
 >;
 
-export type NumberSchemaPropDefinition = SchemaPropDefinition<number, number>;
+type NumberSchemaPropDefinition = SchemaPropDefinition<number, number>;
 
-export type BooleanSchemaPropDefinition = SchemaPropDefinition<
+type BooleanSchemaPropDefinition = SchemaPropDefinition<
   ResponsiveValue<boolean>,
   ResponsiveValue<boolean>
 >;
 
-export type SelectSchemaPropDefinition = SchemaPropDefinition<
+type SelectSchemaPropDefinition = SchemaPropDefinition<
   ResponsiveValue<string>,
   ResponsiveValue<string>
 >;
 
-export type RadioGroupSchemaPropDefinition = SchemaPropDefinition<
+type RadioGroupSchemaPropDefinition = SchemaPropDefinition<
   ResponsiveValue<string>,
   ResponsiveValue<string>
->;
-
-export type ColorSchemaPropDefinition = SchemaPropDefinition<
-  /*explained above*/ ResponsiveValue<RefValue<ResponsiveValue<Color>>>,
-  ResponsiveValue<Color>
->;
-
-export type StringTokenSchemaPropDefinition = SchemaPropDefinition<
-  /*explained above*/ ResponsiveValue<RefValue<ResponsiveValue<string>>>,
-  ResponsiveValue<string>
->;
-
-export type SpaceSchemaPropDefinition = SchemaPropDefinition<
-  /*explained above*/ ResponsiveValue<RefValue<ResponsiveValue<Spacing>>>,
-  ResponsiveValue<Spacing>
->;
-
-export type FontSchemaPropDefinition = SchemaPropDefinition<
-  /*explained above*/ ResponsiveValue<RefValue<ResponsiveValue<Font>>>,
-  ResponsiveValue<Font>
->;
-
-export type IconSchemaPropDefinition = SchemaPropDefinition<
-  RefValue<string>,
-  string
 >;
 
 export type ConfigComponentCompilationOutput = {
-  compiledComponentConfig:
-    | CompiledShopstoryComponentConfig
-    | CompiledCustomComponentConfig;
-  configAfterAuto: ConfigComponent;
+  compiledComponentConfig: CompiledComponentConfig;
+  configAfterAuto: NoCodeComponentEntry;
 };
 
-export type ComponentSchemaPropDefinition = SchemaPropDefinition<
-  Array<ConfigComponent>,
+type ComponentSchemaPropDefinition = SchemaPropDefinition<
+  Array<NoCodeComponentEntry>,
   Array<ConfigComponentCompilationOutput>
 >;
 
-export type ComponentCollectionSchemaPropDefinition = SchemaPropDefinition<
-  Array<ConfigComponent>,
+type ComponentCollectionSchemaPropDefinition = SchemaPropDefinition<
+  Array<NoCodeComponentEntry>,
   Array<ConfigComponentCompilationOutput>
 >;
 
-export type ComponentCollectionLocalisedSchemaPropDefinition =
-  SchemaPropDefinition<
-    { [locale: string]: ConfigComponent[] },
-    Array<ConfigComponentCompilationOutput>
-  >;
-
-export type ComponentFixedSchemaPropDefinition = SchemaPropDefinition<
-  Array<ConfigComponent>,
+type ComponentCollectionLocalisedSchemaPropDefinition = SchemaPropDefinition<
+  { [locale: string]: NoCodeComponentEntry[] },
   Array<ConfigComponentCompilationOutput>
 >;
 
-type ExternalSchemaPropDefinition = SchemaPropDefinition<
-  ResponsiveValue<ExternalReference>,
-  ResponsiveValue<ExternalReference>
->;
-
-export type Component$$$SchemaPropDefinition = SchemaPropDefinition<
-  ComponentConfig,
-  ComponentConfig
+type Component$$$SchemaPropDefinition = SchemaPropDefinition<
+  NoCodeComponentEntry,
+  NoCodeComponentEntry
 >;
 
 export type SchemaPropDefinitionProviders = {
@@ -200,26 +155,6 @@ export type SchemaPropDefinitionProviders = {
     schemaProp: RadioGroupSchemaProp,
     compilationContext: CompilationContextType
   ) => RadioGroupSchemaPropDefinition;
-  color: (
-    schemaProp: ColorSchemaProp,
-    compilationContext: CompilationContextType
-  ) => ColorSchemaPropDefinition;
-  stringToken: (
-    schemaProp: StringTokenSchemaProp,
-    compilationContext: CompilationContextType
-  ) => StringTokenSchemaPropDefinition;
-  space: (
-    schemaProp: SpaceSchemaProp,
-    compilationContext: CompilationContextType
-  ) => SpaceSchemaPropDefinition;
-  font: (
-    schemaProp: FontSchemaProp,
-    compilationContext: CompilationContextType
-  ) => FontSchemaPropDefinition;
-  icon: (
-    schemaProp: IconSchemaProp,
-    compilationContext: CompilationContextType
-  ) => IconSchemaPropDefinition;
   component: (
     schemaProp: ComponentSchemaProp,
     compilationContext: CompilationContextType
@@ -236,10 +171,10 @@ export type SchemaPropDefinitionProviders = {
     schemaProp: Component$$$SchemaProp,
     compilationContext: CompilationContextType
   ) => Component$$$SchemaPropDefinition;
-  external: (
-    schemaProp: ExternalSchemaProp,
-    compilationContext: CompilationContextType
-  ) => ExternalSchemaPropDefinition;
+  // external: (
+  //   schemaProp: ExternalSchemaProp,
+  //   compilationContext: CompilationContextType
+  // ) => ExternalSchemaPropDefinition;
   position: (
     schemaProp: PositionSchemaProp,
     compilationContext: CompilationContextType
@@ -247,9 +182,16 @@ export type SchemaPropDefinitionProviders = {
     ResponsiveValue<Position>,
     ResponsiveValue<Position>
   >;
+  custom: (
+    schemaProp: ExternalSchemaProp | LocalSchemaProp | TokenSchemaProp,
+    compilationContext: CompilationContextType
+  ) => SchemaPropDefinition<
+    ResponsiveValue<ExternalReference | LocalValue | TokenValue>,
+    ExternalReference | string
+  >;
 };
 
-export type SchemaPropDefinitionProvider =
+type SchemaPropDefinitionProvider =
   SchemaPropDefinitionProviders[keyof SchemaPropDefinitionProviders];
 
 const textProvider: SchemaPropDefinitionProviders["text"] = (
@@ -296,12 +238,8 @@ const textProvider: SchemaPropDefinitionProviders["text"] = (
       if ("value" in x) {
         const value = x.value[compilationContext.contextParams.locale];
 
-        // Let's apply fallback when we're editing
-        if (
-          isContextEditorContext(compilationContext) &&
-          compilationContext.locales &&
-          typeof value !== "string"
-        ) {
+        // Let's apply fallback
+        if (typeof value !== "string") {
           const fallbackValue =
             getFallbackForLocale(
               x.value,
@@ -314,16 +252,6 @@ const textProvider: SchemaPropDefinitionProviders["text"] = (
             value: fallbackValue,
             widgetId: "@easyblocks/local-text",
           };
-        }
-
-        if (value === undefined) {
-          const availableLocales = Object.keys(x.value)
-            .map((locale) => `"${locale}"`)
-            .join(",");
-
-          throw new Error(
-            `The content passed to ShopstoryClient is not available in a locale: "${compilationContext.contextParams.locale}" (available locales: ${availableLocales}). Please make sure to provide a valid locale code.`
-          );
         }
 
         return {
@@ -426,243 +354,40 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
 
   "radio-group": getSelectSchemaPropDefinition(),
 
-  color: (schemaProp, compilationContext): ColorSchemaPropDefinition => {
-    // @ts-ignore
-    return {
-      ...buildThemeDefinition(
-        compilationContext.theme.colors,
-        { value: "#000000" },
-        schemaProp,
-        compilationContext,
-        (x: any) => {
-          if (typeof x !== "string") {
-            return;
-          }
-
-          // right now we assume that user gives correct CSS color!
-          return x;
-        }
-      ),
-      getHash: (value, breakpointIndex) => {
-        if (isTrulyResponsiveValue(value)) {
-          const breakpointValue = responsiveValueAt(value, breakpointIndex);
-          return breakpointValue ? getRef(breakpointValue) : undefined;
-        }
-
-        return getRef(value);
-      },
-    };
-  },
-
-  stringToken: (
-    schemaProp,
-    compilationContext
-  ): StringTokenSchemaPropDefinition => {
-    const { tokenId } = schemaProp.params;
-    const themeValues = compilationContext.theme[tokenId];
-    if (!themeValues) {
-      throw new Error(
-        `string token with ID "${tokenId}" doesn't have any values.`
-      );
-    }
-
-    let defaultKey: string | RefValue<string>;
-
-    if (tokenId === "numberOfItemsInRow") {
-      defaultKey = "4";
-    } else if (tokenId === "aspectRatios") {
-      defaultKey = { value: "1:1" }; //$landscape";
-    } else if (tokenId === "containerWidths") {
-      defaultKey = "none";
-    } else if (tokenId === "boxShadows") {
-      defaultKey = "none";
-    } else {
-      throw new Error("unknown token Id: " + tokenId);
-    }
-
-    // @ts-ignore
-    return {
-      ...buildThemeDefinition(
-        themeValues,
-        defaultKey,
-        schemaProp,
-        compilationContext,
-        (x: any) => {
-          if (typeof x !== "string") {
-            return;
-          }
-
-          // right now we assume that user gives correct CSS color!
-          return x;
-        }
-      ),
-      getHash: (value, breakpointIndex) => {
-        if (isTrulyResponsiveValue(value)) {
-          const breakpointValue = responsiveValueAt(value, breakpointIndex);
-
-          if (!breakpointValue) {
-            return breakpointValue;
-          }
-
-          if (breakpointValue.ref) {
-            return breakpointValue.ref;
-          }
-
-          if (isTrulyResponsiveValue(breakpointValue.value)) {
-            const nestedBreakpointValue = responsiveValueAt(
-              breakpointValue.value,
-              breakpointIndex
-            );
-            return nestedBreakpointValue;
-          }
-
-          return breakpointValue.value;
-        }
-
-        if (value.ref) {
-          return value.ref;
-        }
-
-        if (isTrulyResponsiveValue(value.value)) {
-          const breakpointValue = responsiveValueAt(
-            value.value,
-            breakpointIndex
-          );
-
-          return breakpointValue;
-        }
-
-        return value.value;
-      },
-    };
-  },
-
-  // @ts-ignore TODO: temporary, we need to fix those types
-  font: (schemaProp, compilationContext): FontSchemaPropDefinition => {
-    // @ts-ignore
-    return {
-      ...buildThemeDefinition(
-        compilationContext.theme.fonts,
-        { value: { fontFamily: "sans-serif", fontSize: "16px" } },
-        schemaProp,
-        compilationContext,
-        (x: any) => {
-          if (typeof x !== "object" || x === null) {
-            return;
-          }
-
-          return x;
-        }
-      ),
-      getHash: (value, breakpointIndex) => {
-        if (isTrulyResponsiveValue(value)) {
-          const breakpointValue = responsiveValueAt(value, breakpointIndex);
-          return breakpointValue ? getRef(breakpointValue) : undefined;
-        }
-
-        return getRef(value);
-      },
-    };
-  },
-
-  // @ts-ignore TODO: temporary, we need to fix those types
-  space: (schemaProp, compilationContext): SpaceSchemaPropDefinition => {
-    // @ts-ignore
-    return {
-      ...buildThemeDefinition(
-        compilationContext.theme.space,
-        {
-          value: "10vw",
-        },
-        schemaProp,
-        compilationContext,
-        (x: any) => {
-          if (typeof x === "number") {
-            return `${x}px`;
-          }
-
-          if (typeof x !== "string") {
-            return;
-          }
-
-          try {
-            parseSpacing(x);
-            return x;
-          } catch (error) {
-            return;
-          }
-        }
-      ),
-      getHash: (value, breakpointIndex) => {
-        if (isTrulyResponsiveValue(value)) {
-          const breakpointValue = responsiveValueAt(value, breakpointIndex);
-          return breakpointValue ? getRef(breakpointValue) : undefined;
-        }
-
-        return getRef(value);
-      },
-    };
-  },
-
-  icon: (schemaProp, compilationContext): IconSchemaPropDefinition => {
-    const ultimateDefaultValue = {
-      value: `<svg viewBox="0 -960 960 960"><path fill="currentColor" d="m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z"/></svg>`,
-    };
-
-    const scalarValueNormalize = (x: any) => {
-      if (typeof x === "string" && x.trim().startsWith("<svg")) {
-        return x;
-      }
-      return;
-    };
-
-    const defaultValue =
-      normalizeTokenValue<string>(
-        schemaProp.defaultValue,
-        compilationContext.theme.icons,
-        ultimateDefaultValue,
-        scalarValueNormalize
-      ) || ultimateDefaultValue;
-
-    return {
-      normalize: (x: any) => {
-        const normalized = normalizeTokenValue<string>(
-          x,
-          compilationContext.theme.icons,
-          defaultValue,
-          scalarValueNormalize
-        );
-
-        if (!normalized) {
-          return defaultValue;
-        }
-
-        return normalized;
-      },
-      compile: (x) => {
-        return x.value;
-      },
-      getHash: (x) => {
-        return getRef(x);
-      },
-    };
-  },
-
   component: (
     schemaProp,
     compilationContext: CompilationContextType
   ): ComponentSchemaPropDefinition => {
     // Here:
-    // 1. if non-fixed => ss-block field.
-    // 2. if fixed => ss-block field with "fixed" flag (no component picker).
+    // 1. if non-fixed => block field.
+    // 2. if fixed => block field with "fixed" flag (no component picker).
     const normalize = (x: any) => {
       if (!Array.isArray(x) || x.length === 0) {
         if (schemaProp.required) {
-          return [
-            normalizeComponent(
-              { _template: schemaProp.accepts[0] },
+          const accepts = schemaProp.accepts[0];
+          const componentDefinition = findComponentDefinitionById(
+            accepts,
+            compilationContext
+          );
+
+          if (!componentDefinition) {
+            const componentDefinitionsByType = findComponentDefinitionsByType(
+              accepts,
               compilationContext
-            ),
+            );
+
+            if (componentDefinitionsByType.length > 0) {
+              return [
+                normalizeComponent(
+                  { _component: componentDefinitionsByType[0].id },
+                  compilationContext
+                ),
+              ];
+            }
+          }
+
+          return [
+            normalizeComponent({ _component: accepts }, compilationContext),
           ];
         }
 
@@ -677,7 +402,6 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         arg,
         contextProps,
         serializedDefinitions,
-        refMap,
         editingInfoComponent,
         configPrefix,
         cache
@@ -688,16 +412,12 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
 
         // FIXME: ?????
         const { configAfterAuto, compiledComponentConfig } = compileComponent(
-          arg[0] as ConfigComponent,
+          arg[0] as NoCodeComponentEntry,
           compilationContext,
           contextProps,
           serializedDefinitions || {
-            actions: [],
             components: [],
-            links: [],
-            textModifiers: [],
           },
-          refMap,
           cache,
           editingInfoComponent,
           `${configPrefix}.0`
@@ -720,7 +440,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
             );
           }
 
-          return value[0]._template;
+          return value[0]._component;
         }
 
         return "__BLOCK_EMPTY__";
@@ -736,7 +456,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
       if (!Array.isArray(x)) {
         return [];
       }
-      const ret = (x || []).map((item: ConfigComponent) =>
+      const ret = (x || []).map((item: NoCodeComponentEntry) =>
         normalizeComponent(item, compilationContext)
       );
 
@@ -749,18 +469,16 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         arr,
         contextProps,
         serializedDefinitions,
-        refMap,
         editingInfoComponents,
         configPrefix,
         cache
       ) => {
         return arr.map((componentConfig, index) =>
           compileComponent(
-            componentConfig as ConfigComponent,
+            componentConfig as NoCodeComponentEntry,
             compilationContext,
             (contextProps.itemProps || [])[index] || {},
             serializedDefinitions,
-            refMap,
             cache,
             (
               editingInfoComponents as
@@ -772,7 +490,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         );
       },
       getHash: (value) => {
-        return value.map((v) => v._template).join(";");
+        return value.map((v) => v._component).join(";");
       },
     };
   },
@@ -790,7 +508,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         if (x === undefined) {
           return {};
         }
-        const normalized: { [locale: string]: ConfigComponent[] } = {};
+        const normalized: { [locale: string]: NoCodeComponentEntry[] } = {};
         for (const locale in x) {
           if (locale === "__fallback") {
             continue;
@@ -807,7 +525,6 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         value,
         contextProps,
         serializedDefinitions,
-        refMap,
         editingInfoComponents,
         configPrefix,
         cache
@@ -821,7 +538,6 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
           resolvedLocalisedValue?.value ?? [],
           contextProps,
           serializedDefinitions,
-          refMap,
           editingInfoComponents,
           `${configPrefix}.${
             resolvedLocalisedValue?.locale ??
@@ -844,62 +560,62 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
     return {
       normalize: (x) => x,
       compile: (x) => x,
-      getHash: (x) => x._template,
+      getHash: (x) => x._component,
     };
   },
 
-  external: (schemaProp, compilationContext) => {
-    if (schemaProp.responsive) {
-      const defaultValue: ExternalReferenceEmpty = {
-        id: null,
-        widgetId: compilationContext.isEditing
-          ? compilationContext.types[schemaProp.type]?.widgets[0]?.id
-          : "",
-      };
+  // external: (schemaProp, compilationContext) => {
+  //   if (schemaProp.responsive) {
+  //     const defaultValue: ExternalReferenceEmpty = {
+  //       id: null,
+  //       widgetId: compilationContext.isEditing
+  //         ? compilationContext.types[schemaProp.type]?.widgets[0]?.id
+  //         : "",
+  //     };
 
-      const normalize = getResponsiveNormalize<ExternalReference>(
-        compilationContext,
-        defaultValue,
-        defaultValue,
-        externalNormalize(schemaProp.type)
-      );
+  //     const normalize = getResponsiveNormalize<ExternalReference>(
+  //       compilationContext,
+  //       defaultValue,
+  //       defaultValue,
+  //       externalNormalize(schemaProp.type)
+  //     );
 
-      return {
-        normalize,
-        compile: (x) => x,
-        getHash: externalReferenceGetHash,
-      };
-    }
+  //     return {
+  //       normalize,
+  //       compile: (x) => x,
+  //       getHash: externalReferenceGetHash,
+  //     };
+  //   }
 
-    return {
-      normalize: (value) => {
-        const normalized = externalNormalize(schemaProp.type)(
-          value,
-          compilationContext
-        );
+  //   return {
+  //     normalize: (value) => {
+  //       const normalized = externalNormalize(schemaProp.type)(
+  //         value,
+  //         compilationContext
+  //       );
 
-        if (!normalized) {
-          return {
-            id: null,
-            widgetId: compilationContext.types[schemaProp.type]?.widgets[0]?.id,
-          };
-        }
+  //       if (!normalized) {
+  //         return {
+  //           id: null,
+  //           widgetId: compilationContext.types[schemaProp.type]?.widgets[0]?.id,
+  //         };
+  //       }
 
-        return normalized;
-      },
-      compile: (value) => {
-        return value;
-      },
-      getHash: (value) => {
-        if (value.id === null) {
-          return `${schemaProp.type}.${schemaProp.type}`;
-        }
+  //       return normalized;
+  //     },
+  //     compile: (value) => {
+  //       return value;
+  //     },
+  //     getHash: (value) => {
+  //       if (value.id === null) {
+  //         return `${schemaProp.type}.${value.widgetId}`;
+  //       }
 
-        return `${schemaProp.type}.${schemaProp.type}.${value.id}`;
-      },
-    };
-  },
-  position: function (schemaProp, compilationContext) {
+  //       return `${schemaProp.type}.${value.widgetId}.${value.id}`;
+  //     },
+  //   };
+  // },
+  position: (schemaProp, compilationContext) => {
     return {
       normalize: getResponsiveNormalize<Position>(
         compilationContext,
@@ -917,6 +633,287 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         }
 
         return value;
+      },
+    };
+  },
+  custom: (schemaProp, compilationContext) => {
+    const customTypeDefinition = compilationContext.types[schemaProp.type];
+
+    return {
+      normalize: (value) => {
+        if (customTypeDefinition.type === "inline") {
+          const defaultValue =
+            schemaProp.defaultValue ?? customTypeDefinition.defaultValue;
+
+          const normalizeScalar = (v: any) => {
+            if (isLocalValue(v)) {
+              if (customTypeDefinition.validate) {
+                const isValueValid = customTypeDefinition.validate(v.value);
+
+                if (isValueValid) {
+                  return v;
+                }
+
+                return {
+                  value: defaultValue,
+                  widgetId: v.widgetId,
+                };
+              }
+
+              return {
+                value: v.value ?? defaultValue,
+                widgetId: v.widgetId,
+              };
+            }
+
+            return {
+              value: v ?? defaultValue,
+              widgetId: customTypeDefinition.widget.id,
+            };
+          };
+
+          if (
+            (customTypeDefinition.responsiveness === "optional" &&
+              schemaProp.responsive) ||
+            customTypeDefinition.responsiveness === "always"
+          ) {
+            const normalize = getResponsiveNormalize(
+              compilationContext,
+              defaultValue,
+              defaultValue,
+              normalizeScalar
+            );
+
+            return normalize(value);
+          }
+
+          if (
+            customTypeDefinition.responsiveness === "never" &&
+            schemaProp.responsive
+          ) {
+            console.warn(
+              `Custom type "${schemaProp.type}" is marked as "never" responsive, but schema prop is marked as responsive. This is not supported and the value for this field is going to stay not responsive. Please change custom type definition or schema prop definition.`
+            );
+          }
+
+          const result = normalizeScalar(value);
+
+          if (result) {
+            return result;
+          }
+
+          const defaultLocalValue: LocalValue = {
+            value: defaultValue,
+            widgetId: customTypeDefinition.widget.id,
+          };
+
+          return defaultLocalValue;
+        }
+
+        if (customTypeDefinition.type === "token") {
+          const themeValues =
+            compilationContext.theme[customTypeDefinition.token];
+          const defaultThemeValueEntry = Object.entries(themeValues).find(
+            ([, v]) => v.isDefault
+          );
+          const defaultValue = defaultThemeValueEntry
+            ? { tokenId: defaultThemeValueEntry[0] }
+            : schemaProp.defaultValue ?? customTypeDefinition.defaultValue;
+          const defaultWidgetId = customTypeDefinition.widget?.id;
+
+          const createTokenNormalizer = (normalizeScalar?: (x: any) => any) => {
+            return customTypeDefinition.responsiveness === "always" ||
+              (customTypeDefinition.responsiveness === "optional" &&
+                schemaProp.responsive)
+              ? getResponsiveNormalize<any>(
+                  compilationContext,
+                  schemaProp.defaultValue,
+                  customTypeDefinition.defaultValue,
+                  (x: any) => {
+                    return normalizeTokenValue(
+                      x,
+                      themeValues as ResponsiveValue<any>,
+                      defaultValue,
+                      defaultWidgetId,
+                      normalizeScalar ?? ((x) => x)
+                    );
+                  }
+                )
+              : getNormalize(
+                  compilationContext,
+                  schemaProp.defaultValue,
+                  customTypeDefinition.defaultValue,
+                  (x: any) => {
+                    return normalizeTokenValue(
+                      x,
+                      themeValues as ResponsiveValue<any>,
+                      defaultValue,
+                      defaultWidgetId,
+                      normalizeScalar ?? ((x) => x)
+                    );
+                  }
+                );
+          };
+
+          if (customTypeDefinition.token === "space") {
+            const normalizeSpace = createTokenNormalizer((x) => {
+              if (typeof x === "number") {
+                return `${x}px`;
+              }
+
+              const isValidSpacing = customTypeDefinition.validate?.(x) ?? true;
+
+              if (!isValidSpacing) {
+                return;
+              }
+
+              return x;
+            });
+
+            return normalizeSpace(value);
+          }
+
+          if (customTypeDefinition.token === "icons") {
+            const scalarValueNormalize = (x: any) => {
+              if (typeof x === "string" && x.trim().startsWith("<svg")) {
+                return x;
+              }
+              return;
+            };
+
+            const iconDefaultValue =
+              normalizeTokenValue<string>(
+                schemaProp.defaultValue,
+                themeValues as Record<string, ThemeTokenValue<string>>,
+                customTypeDefinition.defaultValue,
+                defaultWidgetId,
+                scalarValueNormalize
+              ) ?? customTypeDefinition.defaultValue;
+
+            return (
+              normalizeTokenValue<string>(
+                value,
+                themeValues as Record<string, ThemeTokenValue<string>>,
+                iconDefaultValue,
+                defaultWidgetId,
+                scalarValueNormalize
+              ) ?? value
+            );
+          }
+
+          const defaultTokenNormalizer = createTokenNormalizer();
+
+          return defaultTokenNormalizer(value);
+        }
+
+        if (customTypeDefinition.type === "external") {
+          if (schemaProp.responsive) {
+            const defaultValue: ExternalReferenceEmpty = {
+              id: null,
+              widgetId: compilationContext.isEditing
+                ? customTypeDefinition.widgets[0]?.id
+                : "",
+            };
+
+            const normalize = getResponsiveNormalize<ExternalReference>(
+              compilationContext,
+              defaultValue,
+              defaultValue,
+              externalNormalize(schemaProp.type)
+            );
+
+            return normalize(value);
+          }
+
+          const normalized = externalNormalize(schemaProp.type)(
+            value,
+            compilationContext
+          );
+
+          if (!normalized) {
+            return {
+              id: null,
+              widgetId: customTypeDefinition.widgets[0]?.id,
+            };
+          }
+
+          return normalized;
+        }
+
+        throw new Error("Unknown type definition");
+      },
+      compile: (x) => {
+        const val = responsiveValueMap(x, (y) => {
+          if ("value" in y) {
+            return y.value;
+          }
+
+          return y;
+        });
+
+        const flattened = responsiveValueFlatten(
+          val,
+          compilationContext.devices
+        );
+
+        return responsiveValueFill(
+          flattened,
+          compilationContext.devices,
+          getDevicesWidths(compilationContext.devices)
+        );
+      },
+      getHash: (value, breakpointIndex) => {
+        function getTokenValue(value: TokenValue) {
+          if (value.tokenId) {
+            return value.tokenId;
+          }
+
+          if (typeof value.value === "object") {
+            return JSON.stringify(value.value);
+          }
+
+          const scalarVal: any = value.value;
+
+          if (scalarVal.toString) {
+            return scalarVal.toString();
+          }
+
+          throw new Error("unreachable");
+        }
+
+        if (customTypeDefinition.type === "external") {
+          return externalReferenceGetHash(
+            value as ResponsiveValue<ExternalReference>,
+            breakpointIndex
+          );
+        }
+
+        if (isTrulyResponsiveValue(value)) {
+          const breakpointValue = responsiveValueAt(
+            value as TrulyResponsiveValue<LocalValue | TokenValue>,
+            breakpointIndex
+          );
+
+          if (!breakpointValue) {
+            return;
+          }
+
+          if ("tokenId" in breakpointValue) {
+            return getTokenValue(breakpointValue);
+          }
+
+          return typeof breakpointValue.value === "object"
+            ? JSON.stringify(breakpointValue.value)
+            : breakpointValue.value;
+        }
+
+        if ("tokenId" in value) {
+          return getTokenValue(value);
+        }
+
+        return typeof (value as LocalValue).value === "object"
+          ? JSON.stringify((value as LocalValue).value)
+          : (value as LocalValue).value;
       },
     };
   },
@@ -1062,164 +1059,56 @@ function getFirstOptionValue(
   return firstOptionValue;
 }
 
-function buildThemeDefinition<T>(
-  themeValues: { [key: string]: ThemeRefValue<ResponsiveValue<T>> },
-  defaultValue: any, // we must make sure that defaultKey is always correct
-  schemaProp:
-    | ColorSchemaProp
-    | SpaceSchemaProp
-    | FontSchemaProp
-    | StringTokenSchemaProp,
-  compilationContext: CompilationContextType,
-  scalarValueNormalize: (x: any) => T | undefined = (x) => undefined // normalizes scalar value
-  // shouldLinearize?: boolean
-) {
-  // Create default value
-  // const defaultValue = Object.values(themeValues)[0];
-
-  /**
-   * TODO:
-   * - getResponsiveNormalize and helpers take into account recursion now!
-   * - only thing we need to do is to write compile properly
-   */
-
-  const normalize = getResponsiveNormalize(
-    compilationContext,
-    schemaProp.defaultValue,
-    defaultValue,
-    (x: any) => {
-      return normalizeTokenValue(
-        x,
-        themeValues,
-        defaultValue,
-        scalarValueNormalize
-      );
-    }
-  );
-
-  return {
-    normalize,
-
-    // FIXME: input of compile should be output of normalize.
-    compile: (x: ReturnType<typeof normalize>) => {
-      // /**
-      //  * We need to run this normalization here. Why?
-      //  *
-      //  * Although compiled config is promised to be normalized, but in case of theme can change under the hood.
-      //  * And this will cause Tina state to be invalid (ref not conformant with value). That's why we normalize here.
-      //  *
-      //  * That could probably go from here.
-      //  */
-      //
-      // // x = normalize(x);
-
-      const val = responsiveValueMap(x, (y) => {
-        return y?.value;
-      });
-
-      const flattened = responsiveValueFlatten(val, compilationContext.devices);
-      return responsiveValueFill(
-        flattened,
-        compilationContext.devices,
-        getDevicesWidths(compilationContext.devices)
-      );
-    },
-  };
-}
-
 function normalizeTokenValue<T>(
   x: any,
-  themeValues: { [key: string]: ThemeRefValue<T> },
-  defaultValue: RefValue<T>,
+  themeValues: { [key: string]: ThemeTokenValue<T> },
+  defaultValue: { tokenId: string } | { value: any },
+  defaultWidgetId: string | undefined,
   scalarValueNormalize: (x: any) => T | undefined = (x) => undefined
-) {
-  // Mapping of legacy value of string (now not possible)
-  if (typeof x === "string" && themeValues[x]) {
-    // If string value exist as a theme key
-    x = {
-      value: themeValues[x].value,
-      ref: x,
-    };
-  }
+): TokenValue<T> | undefined {
+  const input = x ?? defaultValue;
+  const widgetId = input.widgetId ?? defaultWidgetId;
 
-  // Mapping of legacy value of type object which could be a font (now not possible)
-  // The test below is shitty but this code should stay.
-  if (
-    !(
-      (
-        typeof x === "object" &&
-        x !== null &&
-        (x.value !== undefined || typeof x.ref === "string")
-      ) /* this is primitive test if this is ThemeRef value (either ref or value defined). It can also be object for Font! */
-    )
-  ) {
-    x = {
-      value: x,
-    };
-  }
+  // if (typeof input !== "object" && "value" in defaultValue) {
+  //   const normalizedVal = scalarValueNormalize(defaultValue.value);
 
-  if (typeof x.ref === "string") {
-    // Mapping
-    x = getMappedToken(x.ref, themeValues) ?? x;
+  //   if (normalizedVal !== undefined) {
+  //     return {
+  //       value: normalizedVal,
+  //       widgetId,
+  //     };
+  //   }
 
-    // If ref is defined
-    const val = themeValues[x.ref];
+  //   return;
+  // }
 
-    // If ref exists in a theme we just take ref value
-    if (val) {
+  const hasTokenId = "tokenId" in input && typeof input.tokenId === "string";
+
+  if (hasTokenId) {
+    const val = themeValues[input.tokenId];
+
+    if (val !== undefined) {
       return {
         value: val.value,
-        ref: x.ref,
-      };
-    }
-
-    // If ref is defined but doesn't exist in a theme it means that it was probably removed
-    // In that case we simply pass the non-existent ref name (it can be later brought back).
-    // The value is scalar-normalized! We'll never get incorrect value after normalization.
-
-    const normalizedVal = scalarValueNormalize(x.value);
-
-    if (normalizedVal === undefined) {
-      return {
-        value: defaultValue.value, // if value was incorrect, we apply default value
-        ref: x.ref,
-      };
-    } else {
-      return {
-        value: normalizedVal, // if value was correct, it stays
-        ref: x.ref,
+        tokenId: input.tokenId,
+        widgetId,
       };
     }
   }
-  // If ref is not defined
-  else {
-    const normalizedVal = scalarValueNormalize(x.value);
-    if (normalizedVal === undefined) {
-      return;
-    } else {
+
+  if ("value" in input) {
+    const normalizedVal = scalarValueNormalize(input.value);
+
+    if (normalizedVal !== undefined) {
       return {
+        tokenId: hasTokenId ? input.tokenId : undefined,
         value: normalizedVal,
+        widgetId,
       };
     }
   }
-}
 
-function getRef<T>(value: RefValue<T>): string {
-  if (value.ref) {
-    return value.ref;
-  }
-
-  if (typeof value.value === "object") {
-    return JSON.stringify(value.value);
-  }
-
-  const scalarVal: any = value.value;
-
-  if (scalarVal.toString) {
-    return scalarVal.toString();
-  }
-
-  throw new Error("unreachable");
+  return;
 }
 
 function externalNormalize(
@@ -1230,7 +1119,7 @@ function externalNormalize(
 ) => ExternalReference | undefined {
   return (x, compilationContext) => {
     if (typeof x === "object" && x !== null) {
-      if (x.id !== null) {
+      if ("id" in x && x.id !== null) {
         const normalized: ExternalReferenceNonEmpty = {
           id: x.id,
           widgetId: x.widgetId,
@@ -1245,7 +1134,14 @@ function externalNormalize(
         widgetId:
           typeof x.widgetId === "string"
             ? x.widgetId
-            : compilationContext.types[externalType]?.widgets[0]?.id,
+            : (
+                compilationContext.types[externalType] as
+                  | Extract<
+                      CompilationContextType["types"][string],
+                      { type: "external" }
+                    >
+                  | undefined
+              )?.widgets[0]?.id,
       };
 
       return normalized;
@@ -1273,16 +1169,12 @@ function externalReferenceGetHash(
 }
 
 export function normalizeComponent(
-  configComponent: Omit<ConfigComponent, "_id"> & { _id?: string },
-  compilationContext: CompilationContextType,
-  isRef?: boolean
-): ConfigComponent {
-  const ret: ConfigComponent = {
+  configComponent: SetOptional<NoCodeComponentEntry, "_id">,
+  compilationContext: CompilationContextType
+): NoCodeComponentEntry {
+  const ret: NoCodeComponentEntry = {
     _id: configComponent._id ?? uniqueId(),
-    _template: configComponent._template,
-    _master: configComponent._master,
-    $$$refs: configComponent.$$$refs,
-    traceId: configComponent.traceId,
+    _component: configComponent._component,
   };
 
   // Normalize itemProps (before own props). If component definition is missing, we still normalize item props
@@ -1321,52 +1213,29 @@ export function normalizeComponent(
   }
 
   const componentDefinition = findComponentDefinitionById(
-    splitTemplateName(configComponent._template).name,
+    configComponent._component,
     compilationContext
   );
 
   if (!componentDefinition) {
-    console.warn(`[normalize] Unknown _template ${configComponent._template}`);
+    console.warn(
+      `[normalize] Unknown _component ${configComponent._component}`
+    );
     return ret;
   }
 
   componentDefinition.schema.forEach((schemaProp) => {
-    if (!isRef) {
-      const { ref } = splitTemplateName(configComponent._template);
-      if (ref) {
-        if (!isExternalSchemaProp(schemaProp)) {
-          return;
-        }
-      }
-    } else {
-      if (isExternalSchemaProp(schemaProp)) {
-        return;
-      }
-    }
-
     ret[schemaProp.prop] = getSchemaDefinition(
       schemaProp,
       compilationContext
     ).normalize(configComponent[schemaProp.prop]);
   });
 
-  // Normalize refs
-  if (configComponent.$$$refs) {
-    ret.$$$refs = {};
-    for (const refName in configComponent.$$$refs) {
-      ret.$$$refs[refName] = normalizeComponent(
-        configComponent.$$$refs![refName],
-        compilationContext,
-        true
-      );
-    }
-  }
-
   // RichText is a really specific component. It must have concrete shape to work properly.
   // When using prop of type `component` with `accepts: ["@easyblocks/rich-text"]` it's going to be initialized with empty
   // `elements` property which in result will cause RichText to not work properly. To fix this, we're going
   // to initialize `elements` with default template - the same that's being added when user adds RichText to Stack manually.
-  if (ret._template === "@easyblocks/rich-text") {
+  if (ret._component === "@easyblocks/rich-text") {
     if (
       Object.keys(ret.elements).length === 0 ||
       ret.elements[compilationContext.contextParams.locale]?.length === 0
@@ -1388,14 +1257,16 @@ export function getSchemaDefinition<
   schemaProp: T,
   compilationContext: CompilationContextType
 ): ReturnType<SchemaPropDefinitionProvider> {
-  const provider = isExternalSchemaProp(schemaProp)
-    ? schemaPropDefinitions.external
-    : schemaPropDefinitions[schemaProp.type];
+  const provider =
+    compilationContext.types[schemaProp.type] && schemaProp.type !== "text"
+      ? schemaPropDefinitions.custom
+      : // @ts-expect-error
+        schemaPropDefinitions[schemaProp.type];
 
   return provider(schemaProp as any, compilationContext);
 }
 
-function resolveLocalisedValue<T>(
+export function resolveLocalisedValue<T>(
   localisedValue: Record<string, T>,
   compilationContext: CompilationContextType
 ): { value: T; locale: string } | undefined {
@@ -1408,19 +1279,15 @@ function resolveLocalisedValue<T>(
     };
   }
 
-  if (isContextEditorContext(compilationContext)) {
-    const fallbackLocale = getFallbackLocaleForLocale(
-      locale,
-      compilationContext.locales
-    );
-    if (!fallbackLocale) {
-      return;
-    }
-    return {
-      value: localisedValue[fallbackLocale],
-      locale: fallbackLocale,
-    };
-  } else {
+  const fallbackLocale = getFallbackLocaleForLocale(
+    locale,
+    compilationContext.locales
+  );
+  if (!fallbackLocale) {
     return;
   }
+  return {
+    value: localisedValue[fallbackLocale],
+    locale: fallbackLocale,
+  };
 }

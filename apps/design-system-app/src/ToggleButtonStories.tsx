@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
-  SSSelectInline,
-  SSToggleButton,
+  SelectInline,
+  ToggleButton,
   Typography,
 } from "@easyblocks/design-system";
 
@@ -13,7 +13,7 @@ export function ToggleButtonStories() {
     <div>
       <Typography variant={"label"}>ToggleButton</Typography>
       <br />
-      <SSToggleButton
+      <ToggleButton
         onChange={(val) => {
           console.log("val", val);
           setSelected(val);
@@ -21,14 +21,14 @@ export function ToggleButtonStories() {
         selected={selected}
       >
         Click me
-      </SSToggleButton>
+      </ToggleButton>
       <br />
       <br />
-      <SSSelectInline value={value} onChange={(newVal) => setValue(newVal)}>
-        <SSToggleButton value={"one"}>One</SSToggleButton>
-        <SSToggleButton value={"two"}>Two</SSToggleButton>
-        <SSToggleButton value={"three"}>Three</SSToggleButton>
-      </SSSelectInline>
+      <SelectInline value={value} onChange={(newVal) => setValue(newVal)}>
+        <ToggleButton value={"one"}>One</ToggleButton>
+        <ToggleButton value={"two"}>Two</ToggleButton>
+        <ToggleButton value={"three"}>Three</ToggleButton>
+      </SelectInline>
     </div>
   );
 }

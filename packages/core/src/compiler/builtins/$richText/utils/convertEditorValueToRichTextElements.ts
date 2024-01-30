@@ -1,5 +1,5 @@
 import { cleanString } from "@easyblocks/utils";
-import { Element, Text } from "slate";
+import { Element } from "slate";
 import type {
   BlockElement,
   BulletedList,
@@ -11,10 +11,9 @@ import type {
 import type { RichTextBlockElementComponentConfig } from "../$richTextBlockElement/$richTextBlockElement";
 import type { RichTextLineElementComponentConfig } from "../$richTextLineElement/$richTextLineElement";
 import {
+  buildRichTextBlockElementComponentConfig,
   buildRichTextLineElementComponentConfig,
   buildRichTextPartComponentConfig,
-  buildRichTextInlineWrapperElementComponentConfig,
-  buildRichTextBlockElementComponentConfig,
 } from "../builders";
 
 function convertEditorValueToRichTextElements(
@@ -50,28 +49,12 @@ function convertEditorElementToRichTextLineElement(
 ): RichTextLineElementComponentConfig {
   const lineElement = buildRichTextLineElementComponentConfig({
     elements: editorElement.children.map((child) => {
-      if (Text.isText(child)) {
-        return buildRichTextPartComponentConfig({
-          value: cleanString(child.text),
-          color: child.color,
-          font: child.font,
-          id: child.id,
-        });
-      }
-
-      return buildRichTextInlineWrapperElementComponentConfig({
+      return buildRichTextPartComponentConfig({
+        value: cleanString(child.text),
+        color: child.color,
+        font: child.font,
         id: child.id,
-        elements: child.children.map((child) => {
-          return buildRichTextPartComponentConfig({
-            value: cleanString(child.text),
-            color: child.color,
-            font: child.font,
-            id: child.id,
-          });
-        }),
-        action: child.action,
-        textModifier: child.textModifier,
-        actionTextModifier: child.actionTextModifier,
+        TextWrapper: child.TextWrapper,
       });
     }),
   });

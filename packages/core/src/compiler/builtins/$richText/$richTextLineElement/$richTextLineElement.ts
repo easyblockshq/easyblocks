@@ -1,8 +1,4 @@
 import {
-  RichTextInlineWrapperElementEditableComponentConfig,
-  richTextInlineWrapperElementEditableComponent,
-} from "../$richTextInlineWrapperElement/$richTextInlineWrapperElement";
-import {
   RichTextPartCompiledComponentConfig,
   RichTextPartComponentConfig,
   richTextPartEditableComponent,
@@ -27,10 +23,7 @@ const richTextLineElementEditableComponent: NoCodeComponentDefinition<
     {
       prop: "elements",
       type: "component-collection",
-      accepts: [
-        richTextPartEditableComponent.id,
-        richTextInlineWrapperElementEditableComponent.id,
-      ],
+      accepts: [richTextPartEditableComponent.id],
     },
   ],
   styles: richTextLineElementStyles,
@@ -39,14 +32,11 @@ const richTextLineElementEditableComponent: NoCodeComponentDefinition<
 type RichTextLineElementComponentConfig = EditableComponentToComponentConfig<
   typeof richTextLineElementEditableComponent
 > & {
-  elements: Array<
-    | RichTextPartComponentConfig
-    | RichTextInlineWrapperElementEditableComponentConfig
-  >;
+  elements: Array<RichTextPartComponentConfig>;
 };
 
 type RichTextLineElementCompiledComponentConfig = CompiledComponentConfigBase<
-  RichTextLineElementComponentConfig["_template"]
+  RichTextLineElementComponentConfig["_component"]
 > & {
   styled: NonNullable<ReturnType<typeof richTextLineElementStyles>["styled"]>;
 } & {

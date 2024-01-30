@@ -1,57 +1,12 @@
-"use client";
 import {
-  SSColors,
-  SSFonts,
-  SSModal,
+  Colors,
+  Fonts,
+  Modal,
   ThumbnailButton,
 } from "@easyblocks/design-system";
-import React, { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
 import type { Media } from "./Media";
-import { fetchAssetsFromContentful } from "@/app/easyblocks/externalData/mockMedia/fetchAssetsFromContentful";
-
-const ModalRoot = styled.div`
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  height: 100%;
-  padding: 16px;
-`;
-
-const GridRoot = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  grid-column-gap: 30px;
-  grid-row-gap: 30px;
-`;
-
-const CardTitle = styled.div`
-  ${SSFonts.body};
-  word-break: break-word;
-`;
-
-const Cover = styled.div`
-  display: grid;
-  place-items: center;
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  font-size: 24px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(0, 0, 0, 0.3);
-  pointer-events: none;
-`;
-
-const Card = styled.div`
-  &:hover {
-    outline: 1px solid ${SSColors.black40};
-  }
-  outline-offset: 4px;
-  cursor: pointer;
-`;
+import { MOCK_ASSETS } from "./mockAssets";
 
 function CardsGroup(props: {
   items: Media[];
@@ -60,13 +15,21 @@ function CardsGroup(props: {
 }) {
   return (
     <div style={{ marginTop: "40px" }}>
-      <GridRoot>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+          gridColumnGap: "30px",
+          gridRowGap: "30px",
+        }}
+      >
         {props.items.map((item) => (
-          <Card
+          <div
             onClick={() => {
               props.onSelect(item);
             }}
             key={item.id}
+            className="cursor-pointer outline-offset-8 outline-1 hover:outline hover:outline-neutral-400"
           >
             <div
               style={{
@@ -118,11 +81,13 @@ function CardsGroup(props: {
                 marginTop: "12px",
               }}
             >
-              <CardTitle>{item.title}</CardTitle>
+              <div style={{ ...Fonts.body, wordBreak: "break-word" }}>
+                {item.title}
+              </div>
             </div>
-          </Card>
+          </div>
         ))}
-      </GridRoot>
+      </div>
     </div>
   );
 }
@@ -133,9 +98,8 @@ export const MediaPicker: React.FC<{
   mediaType: "video" | "image";
 }> = ({ onChange, id, mediaType }) => {
   const [isOpen, setOpen] = useState(false);
-  const [items, setItems] = useState<Media[] | null>(null);
 
-  const selectedItem = items && items.find((item) => item.id === id);
+  const selectedItem = MOCK_ASSETS.find((item) => item.id === id);
 
   let label = "Pick media";
 
@@ -146,12 +110,6 @@ export const MediaPicker: React.FC<{
   } else if (selectedItem) {
     label = "Image";
   }
-
-  useEffect(() => {
-    fetchAssetsFromContentful(mediaType).then((assets) => {
-      setItems(assets);
-    });
-  }, []);
 
   return (
     <div className="w-full">
@@ -168,7 +126,7 @@ export const MediaPicker: React.FC<{
         }
       />
 
-      <SSModal
+      <Modal
         title="Media"
         isOpen={isOpen}
         onRequestClose={() => {
@@ -177,17 +135,19 @@ export const MediaPicker: React.FC<{
         mode={"center-huge"}
         headerLine={true}
       >
-        <ModalRoot>
+        <div className="flex flex-col h-max p-6">
           <CardsGroup
             onSelect={(item) => {
               onChange(item.id);
               setOpen(false);
             }}
-            items={items ?? []}
+            items={MOCK_ASSETS.filter(
+              (a) => a.isVideo === (mediaType === "video")
+            )}
             mediaType={mediaType}
           />
-        </ModalRoot>
-      </SSModal>
+        </div>
+      </Modal>
     </div>
   );
 };

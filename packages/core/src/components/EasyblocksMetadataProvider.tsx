@@ -10,7 +10,7 @@ const EasyblocksMetadataContext = createContext<
   (CompilationMetadata & { stitches: any }) | undefined
 >(undefined);
 
-export type EasyblocksMetadataProviderProps = {
+type EasyblocksMetadataProviderProps = {
   children: ReactNode;
   meta: CompilationMetadata;
 };

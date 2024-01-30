@@ -1,7 +1,7 @@
 import { wrapFieldsWithMeta } from "./wrapFieldWithMeta";
 import { Toggle } from "../components";
 
-export const ToggleField = wrapFieldsWithMeta(Toggle);
+const ToggleField = wrapFieldsWithMeta(Toggle);
 
 export const ToggleFieldPlugin = {
   name: "toggle",

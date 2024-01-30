@@ -1,6 +1,6 @@
 import * as RadixTooltip from "@radix-ui/react-tooltip";
 import React, { ReactNode } from "react";
-import { SSColors } from "../colors";
+import { Colors } from "../colors";
 
 function TooltipProvider(props: { children: ReactNode }) {
   return <RadixTooltip.Provider>{props.children}</RadixTooltip.Provider>;
@@ -25,14 +25,14 @@ function TooltipContent(props: { children: ReactNode }) {
           align-items: center;
 
           border-radius: 2px;
-          background: ${SSColors.black800};
+          background: ${Colors.black800};
 
-          color: ${SSColors.white};
+          color: ${Colors.white};
         `}
       >
         <RadixTooltip.Arrow
           css={`
-            fill: ${SSColors.black800};
+            fill: ${Colors.black800};
           `}
         />
         {props.children}

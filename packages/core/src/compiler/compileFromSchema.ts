@@ -1,4 +1,4 @@
-import { RefMap, SchemaProp } from "../types";
+import { SchemaProp } from "../types";
 import { CompilationCache } from "./CompilationCache";
 import { getSchemaDefinition } from "./definitions";
 import {
@@ -15,7 +15,6 @@ export function compileFromSchema<T extends SchemaProp>(
   cache: CompilationCache,
   contextProps?: ContextProps,
   meta?: any,
-  refMap?: RefMap,
   editingInfoComponent?:
     | EditingInfoComponent
     | EditingInfoComponentCollection
@@ -26,7 +25,6 @@ export function compileFromSchema<T extends SchemaProp>(
     value,
     contextProps as any,
     meta,
-    refMap as any,
     editingInfoComponent,
     configPrefix as any,
     cache

@@ -5,29 +5,26 @@ import { easyblocksConfig } from "@/app/easyblocks/easyblocks.config";
 import { ExternalData } from "@easyblocks/core";
 import { EasyblocksEditor } from "@easyblocks/editor";
 import { useState } from "react";
-import {
-  MockImagePicker,
-  mockImageWidget,
-} from "../easyblocks/externalData/mockMedia/mockImageWidget";
-import {
-  MockVideoPicker,
-  mockVideoWidget,
-} from "../easyblocks/externalData/mockMedia/mockVideoWidget";
+import { mockImageWidget } from "../easyblocks/externalData/mockMedia/mockImageWidget";
+import { MockImagePicker } from "../easyblocks/externalData/mockMedia/MockImagePicker";
+import { mockVideoWidget } from "../easyblocks/externalData/mockMedia/mockVideoWidget";
+import { MockVideoPicker } from "../easyblocks/externalData/mockMedia/MockVideoPicker";
 import { createMyCustomFetch } from "../easyblocks/myCustomFetch";
 import {
   PexelsImagePicker,
   pexelsImageWidget,
-} from "../easyblocks/resources/pexels/pexelsImageWidget";
+} from "../easyblocks/externalData/pexels/pexelsImageWidget";
 import {
   PexelsVideoPicker,
   pexelsVideoWidget,
-} from "../easyblocks/resources/pexels/pexelsVideoWidget";
+} from "../easyblocks/externalData/pexels/pexelsVideoWidget";
 import {
   ProductPicker,
   productWidget,
-} from "../easyblocks/resources/product/productWidget";
+} from "../easyblocks/externalData/product/productWidget";
+import { UrlWidget } from "../easyblocks/types/UrlWidget";
 
-const myCustomFetch = createMyCustomFetch(easyblocksConfig.accessToken);
+const myCustomFetch = createMyCustomFetch();
 
 export default function EeasyblocksEditorPage() {
   const [externalData, setExternalData] = useState<ExternalData>({});
@@ -63,7 +60,9 @@ export default function EeasyblocksEditorPage() {
         [productWidget.id]: ProductPicker,
         [pexelsImageWidget.id]: PexelsImagePicker,
         [pexelsVideoWidget.id]: PexelsVideoPicker,
+        url: UrlWidget,
       }}
+      __debug={true}
     />
   );
 }

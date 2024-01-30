@@ -3,7 +3,7 @@ import {
   PositionHorizontal,
   PositionVertical,
 } from "@easyblocks/core";
-import { SSColors } from "@easyblocks/design-system";
+import { Colors } from "@easyblocks/design-system";
 import * as RadixRadioGroup from "@radix-ui/react-radio-group";
 import React from "react";
 import styled from "styled-components";
@@ -64,7 +64,7 @@ function PositionPickerInput({
         grid-template-columns: repeat(3, 1fr);
         gap: 0;
         border-radius: 2px;
-        border: 1px solid ${SSColors.black10};
+        border: 1px solid ${Colors.black10};
       `}
     >
       {positions.map((p) => {

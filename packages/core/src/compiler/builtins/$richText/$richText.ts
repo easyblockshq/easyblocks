@@ -1,10 +1,9 @@
 import { dotNotationGet, nonNullable, range } from "@easyblocks/utils";
-import { getFallbackLocaleForLocale } from "../../../locales";
+import { Locale, getFallbackLocaleForLocale } from "../../../locales";
 import {
-  LocalisedConfigs,
   NoCodeComponentDefinition,
-  RefValue,
   ResponsiveValue,
+  TokenValue,
 } from "../../../types";
 import { configFindAllPaths } from "../../configFindAllPaths";
 import { EditableComponentToComponentConfig } from "../../types";
@@ -43,7 +42,7 @@ const editing: RichTextEditingFunction = ({
     richTextConfig,
     editorContext,
     (config): config is RichTextBlockElementComponentConfig => {
-      return config._template === "@easyblocks/rich-text-block-element";
+      return config._component === "@easyblocks/rich-text-block-element";
     }
   );
 
@@ -99,7 +98,7 @@ const editing: RichTextEditingFunction = ({
         ) {
           return {
             ...field,
-            hidden: false,
+            visible: true,
           };
         }
       }
@@ -110,7 +109,7 @@ const editing: RichTextEditingFunction = ({
     richTextConfig,
     editorContext,
     (config): config is RichTextPartComponentConfig => {
-      return config._template === "@easyblocks/rich-text-part";
+      return config._component === "@easyblocks/rich-text-part";
     }
   );
 
@@ -260,9 +259,9 @@ type RichTextComponentConfig = EditableComponentToComponentConfig<
 > & {
   accessibilityRole: RichTextAccessibilityRole;
   isListStyleAuto: boolean;
-  elements: LocalisedConfigs<Array<RichTextBlockElementComponentConfig>>;
-  mainFont: ResponsiveValue<Record<string, any>>;
-  mainColor: ResponsiveValue<RefValue<ResponsiveValue<string>>>;
+  elements: Record<Locale["code"], Array<RichTextBlockElementComponentConfig>>;
+  mainFont: ResponsiveValue<TokenValue<Record<string, any>>>;
+  mainColor: ResponsiveValue<TokenValue<ResponsiveValue<string>>>;
 };
 
 export { richTextEditableComponent };

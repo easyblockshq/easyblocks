@@ -1,21 +1,18 @@
 import {
-  responsiveValueNormalize,
   responsiveValueForceGet,
+  responsiveValueNormalize,
 } from "../responsiveness";
 import {
   Devices,
-  SchemaProp,
-  TrulyResponsiveValue,
   NoCodeComponentStylesFunctionResult,
   ResponsiveValue,
+  SchemaProp,
+  TrulyResponsiveValue,
 } from "../types";
 import {
-  isExternalSchemaProp,
-  isSchemaPropActionTextModifier,
   isSchemaPropCollection,
   isSchemaPropComponent,
   isSchemaPropComponentOrComponentCollection,
-  isSchemaPropTextModifier,
 } from "./schema";
 import type { InternalComponentDefinition } from "./types";
 
@@ -191,10 +188,8 @@ function scalarizeNonComponentProp(
       throw new Error("unreachable");
     }
 
-    // External values and text value should not be scalarized
-    // At least we introduce `responsive` property for external definition
-    // TODO: recheck after introducing `responsive` property
-    if (isExternalSchemaProp(schemaProp) || schemaProp.type === "text") {
+    // Text values aren't responsive
+    if (schemaProp.type === "text") {
       return value;
     }
 
@@ -247,9 +242,9 @@ export function scalarizeConfig(
    * There is a bit of chaos here. To understand what is happening, we must know what "Config" is in context of resop.
    *
    * Config is not a "real" config we're using in the Shopstory in almost all places. We're dealing here with "intermediate compiled config" used during compilation. What it means:
-   * 1. It has _template, _id, etc.
+   * 1. It has _component, _id, etc.
    * 2. All the props from schema that are *not* components are compiled and are available.
-   * 3. All the props from schema that are components have only _template and _id (exception below)
+   * 3. All the props from schema that are components have only _component and _id (exception below)
    * 4. component-collections has child Configs that have item props that are also compiled and are added *to the root level of the config*. They're simply context props. (IMPORTANT! -> localised is already non-localised ;p)
    * 5. context props from compilation are also added to the config.
    *
@@ -269,49 +264,7 @@ export function scalarizeConfig(
     if (schemaProp) {
       // subcomponents don't get scalarized
       if (isSchemaPropComponent(schemaProp)) {
-        // Text modifiers are components for now and in contrast to real components, we need to compile its values.
-        if (
-          isSchemaPropActionTextModifier(schemaProp) ||
-          isSchemaPropTextModifier(schemaProp)
-        ) {
-          const modifierConfig = config[prop][0];
-
-          if (modifierConfig) {
-            const scalarModifierValues: Record<string, any> = {};
-
-            for (const modifierKey in modifierConfig) {
-              if (Array.isArray(modifierConfig[modifierKey])) {
-                scalarModifierValues[modifierKey] = [];
-
-                modifierConfig[modifierKey].forEach(
-                  (values: Record<string, any>, index: number) => {
-                    scalarModifierValues[modifierKey][index] = {};
-
-                    for (const nestedModifierKey in values) {
-                      scalarModifierValues[modifierKey][index][
-                        nestedModifierKey
-                      ] = scalarizeNonComponentProp(
-                        modifierConfig[modifierKey][index][nestedModifierKey],
-                        breakpoint
-                      );
-                    }
-                  }
-                );
-              } else {
-                scalarModifierValues[modifierKey] = scalarizeNonComponentProp(
-                  modifierConfig[modifierKey],
-                  breakpoint
-                );
-              }
-            }
-
-            ret[prop] = [scalarModifierValues];
-          } else {
-            ret[prop] = config[prop];
-          }
-        } else {
-          ret[prop] = config[prop];
-        }
+        ret[prop] = config[prop];
       }
       // component collection should have item props scalarized. We know the types of item props!
       // component collection localised is already dealing with value that is NON-LOCALISED (it was flattened earlier)
@@ -363,13 +316,13 @@ type Resop2Result = Required<NoCodeComponentStylesFunctionResult>;
 
 export function resop2(
   input: {
-    values: Record<string, ResponsiveValue<unknown>>;
-    params: Record<string, ResponsiveValue<unknown>>;
+    values: Record<string, ResponsiveValue<any>>;
+    params: Record<string, ResponsiveValue<any>>;
   },
   callback: (
     scalarInput: {
-      values: Record<string, unknown>;
-      params: Record<string, unknown>;
+      values: Record<string, any>;
+      params: Record<string, any>;
     },
     breakpointIndex: string
   ) => NoCodeComponentStylesFunctionResult,

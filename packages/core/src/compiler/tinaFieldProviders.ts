@@ -1,34 +1,24 @@
 import { assertDefined } from "@easyblocks/utils";
-import { getMappedToken } from "../getMappedToken";
-import { responsiveValueGet } from "../responsiveness";
 import {
   AnyTinaField,
-  AnyValueSchemaProp,
   BooleanSchemaProp,
-  ColorSchemaProp,
   ComponentCollectionLocalisedSchemaProp,
   ComponentCollectionSchemaProp,
-  ComponentConfig,
   ComponentSchemaProp,
   ExternalSchemaProp,
-  FontSchemaProp,
-  IconSchemaProp,
+  LocalSchemaProp,
   LocalTextReference,
+  NoCodeComponentEntry,
   NumberSchemaProp,
   PositionSchemaProp,
   RadioGroupSchemaProp,
-  ResponsiveValue,
   SchemaProp,
   SelectSchemaProp,
-  SpaceSchemaProp,
   StringSchemaProp,
-  StringTokenSchemaProp,
   TextSchemaProp,
-  ThemeRefValue,
+  TokenSchemaProp,
 } from "../types";
-import { isExternalSchemaProp } from "./schema";
 import { EditorContextType } from "./types";
-import { validateColor } from "./validate-color";
 
 function getCommonFieldProps(
   schemaProp: SchemaProp
@@ -49,60 +39,6 @@ function getCommonFieldProps(
   };
 }
 
-function buildThemeDefinition<T>(
-  themeValues: { [key: string]: ThemeRefValue<ResponsiveValue<T>> },
-  schemaProp: AnyValueSchemaProp,
-  allowCustom?: boolean,
-  normalizeCustomValue: (value: string) => any = (x) => x
-) {
-  const outputThemeValues = { ...themeValues };
-  if ("params" in schemaProp && schemaProp.params.prefix) {
-    for (const key in outputThemeValues) {
-      if (!key.startsWith(schemaProp.params!.prefix + ".")) {
-        delete outputThemeValues[key];
-      } else {
-        outputThemeValues[key] = {
-          ...outputThemeValues[key],
-          label: key.split(`${schemaProp.params!.prefix}.`)[1],
-        };
-      }
-    }
-  }
-
-  for (const key in outputThemeValues) {
-    if (getMappedToken(key, themeValues)) {
-      delete outputThemeValues[key];
-    }
-  }
-
-  return {
-    ...getCommonFieldProps(schemaProp),
-    component: "responsive2",
-    subComponent: "token",
-    /**
-     * For now we force "hasAuto: false", because auto logic is not yet decided.
-     * 1. We must decide if we set 100px on desktop and go to mobile if we should show "auto" or "100px". Or "(auto) 100px".
-     * 2. To show sth like "(auto) 100px" we must have access to compiled field (right now we have only access to compiled).
-     * 3. This causes a bug, that when linearity is on, show value from higher breakpoint which is basically not true (the value is different).
-     */
-    hasAuto: false,
-    tokens: outputThemeValues,
-    extraValues:
-      schemaProp.type === "stringToken"
-        ? (schemaProp as Extract<AnyValueSchemaProp, { type: "stringToken" }>)
-            .params.extraValues
-        : undefined, // other fields might ignore it
-    normalizeCustomValue,
-    allowCustom,
-    format: (x: any) => {
-      return x;
-    },
-    parse: (x: any) => {
-      return x;
-    },
-  };
-}
-
 type FieldProvider<
   S extends Exclude<
     SchemaProp,
@@ -117,51 +53,31 @@ type FieldProvider<
   value: Value
 ) => AnyTinaField;
 
-export type TinaFieldProviders = {
+type TinaFieldProviders = {
   text: FieldProvider<TextSchemaProp>;
   string: FieldProvider<StringSchemaProp>;
   number: FieldProvider<NumberSchemaProp>;
   boolean: FieldProvider<BooleanSchemaProp>;
   select: FieldProvider<SelectSchemaProp>;
   "radio-group": FieldProvider<RadioGroupSchemaProp>;
-  color: FieldProvider<ColorSchemaProp>;
-  stringToken: FieldProvider<StringTokenSchemaProp>;
-  space: FieldProvider<SpaceSchemaProp>;
-  font: FieldProvider<FontSchemaProp>;
-  icon: FieldProvider<IconSchemaProp>;
-  component: FieldProvider<ComponentSchemaProp, [] | [ComponentConfig]>;
+  component: FieldProvider<ComponentSchemaProp, [] | [NoCodeComponentEntry]>;
   "component-collection": FieldProvider<
     ComponentCollectionSchemaProp,
-    Array<ComponentConfig>
+    Array<NoCodeComponentEntry>
   >;
   "component-collection-localised": FieldProvider<ComponentCollectionLocalisedSchemaProp>;
   component$$$: FieldProvider<ComponentSchemaProp>;
   external: FieldProvider<ExternalSchemaProp>;
+  custom: FieldProvider<ExternalSchemaProp | LocalSchemaProp | TokenSchemaProp>;
   position: FieldProvider<PositionSchemaProp>;
 };
 
 const tinaFieldProviders: TinaFieldProviders = {
-  text: (schemaProp, editorContext, value) => {
+  text: (schemaProp, _, value) => {
     if (!isValueLocalTextReference(value) && typeof value !== "string") {
-      const resourceDefinition = editorContext.types["text"];
-
-      const fieldWidget = resourceDefinition.widgets.find(
-        (w) => w.id === value.widgetId
-      );
-
-      if (!fieldWidget) {
-        throw new Error(
-          `Can't find widget named "${
-            value.widgetId ?? resourceDefinition.widgets[0].id
-          }"`
-        );
-      }
-
       return {
         ...getCommonFieldProps(schemaProp),
         component: "external",
-        // @ts-expect-error
-        externalField: fieldWidget.component,
       };
     }
 
@@ -243,119 +159,10 @@ const tinaFieldProviders: TinaFieldProviders = {
       options: schemaProp.params.options,
     };
   },
-  color: (schemaProp, editorContext) => {
-    return buildThemeDefinition(
-      editorContext.theme.colors,
-      schemaProp,
-      true,
-      (x: string) => {
-        if (validateColor(x)) {
-          return x;
-        }
-        // "fafafa" should be a correct color!
-        if (validateColor("#" + x)) {
-          return "#" + x;
-        }
-        return "#999999";
-      }
-    );
-  },
-  stringToken: (schemaProp, editorContext) => {
-    let allowCustom;
-    let normalizeFunction;
-
-    if (schemaProp.params.tokenId === "aspectRatios") {
-      allowCustom = true;
-      normalizeFunction = (x: any) => {
-        const defaultValue = "3:2";
-        if (typeof x !== "string") {
-          return defaultValue;
-        }
-
-        if (!x.match(/[0-9]+:[0-9]+/)) {
-          return defaultValue;
-        }
-        return x;
-      };
-    } else if (schemaProp.params.tokenId === "containerWidths") {
-      allowCustom = true;
-      normalizeFunction = (x: any) => {
-        if (x === "none") {
-          return x;
-        }
-
-        const defaultValue = "1600";
-        if (typeof x !== "string") {
-          return defaultValue;
-        }
-
-        let parsed = parseInt(x);
-        if (isNaN(parsed)) {
-          return defaultValue;
-        }
-
-        parsed = Math.max(parsed, 500);
-        parsed = Math.min(parsed, 3000);
-
-        return parsed.toString();
-      };
-    }
-
-    return buildThemeDefinition(
-      {
-        ...assertDefined(
-          editorContext.theme[schemaProp.params.tokenId],
-          `Missing theme value for token "${schemaProp.params.tokenId}"`
-        ),
-      },
-      schemaProp,
-      allowCustom,
-      normalizeFunction
-    );
-  },
-  font: (schemaProp, editorContext) => {
-    return {
-      ...buildThemeDefinition(editorContext.theme.fonts, schemaProp),
-      subComponent: "fontToken",
-    };
-  },
-  space: (schemaProp, editorContext) => {
-    return buildThemeDefinition(
-      editorContext.theme.space,
-      schemaProp,
-      true,
-      (x: string) => {
-        const int = Math.round(parseInt(x));
-        if (isNaN(int) || int < 0) {
-          return "0px";
-        }
-        return `${int}px`;
-      }
-    );
-  },
-  icon: (schemaProp, editorContext) => {
-    return {
-      ...getCommonFieldProps(schemaProp),
-      component: "token",
-      /**
-       * For now we force "hasAuto: false", because auto logic is not yet decided.
-       * 1. We must decide if we set 100px on desktop and go to mobile if we should show "auto" or "100px". Or "(auto) 100px".
-       * 2. To show sth like "(auto) 100px" we must have access to compiled field (right now we have only access to compiled).
-       * 3. This causes a bug, that when linearity is on, show value from higher breakpoint which is basically not true (the value is different).
-       */
-      hasAuto: false,
-      tokens: editorContext.theme.icons,
-      normalizeCustomValue: (x: any) => {
-        return x;
-      },
-      allowCustom: true,
-    };
-  },
-
   component: (schemaProp) => {
     return {
       ...getCommonFieldProps(schemaProp),
-      component: "ss-block",
+      component: "block",
       schemaProp,
     };
   },
@@ -375,41 +182,26 @@ const tinaFieldProviders: TinaFieldProviders = {
       schemaProp,
     };
   },
-  external: (schemaProp, editorContext, value) => {
-    const externalTypeDefinition = editorContext.types[schemaProp.type];
+  external: (schemaProp, editorContext) => {
+    const externalTypeDefinition = editorContext.types[schemaProp.type] as
+      | Extract<EditorContextType["types"][string], { type: "external" }>
+      | undefined;
 
     if (!externalTypeDefinition) {
       throw new Error(`Can't find definition for type "${schemaProp.type}"`);
     }
 
-    // TODO: Right now only image and video can hold responsive external reference
-    // After introducing `responsive` property for type definition of external we should look at it
     if (schemaProp.responsive) {
-      const currentDeviceValue =
-        responsiveValueGet(value, editorContext.breakpointIndex) ?? value;
-
-      const fieldWidget = externalTypeDefinition.widgets.find(
-        (w) => w.id === currentDeviceValue.widgetId
-      );
-
       return {
         ...getCommonFieldProps(schemaProp),
         component: "responsive2",
         subComponent: "external",
-        // @ts-expect-error
-        externalField: fieldWidget?.component,
       };
     }
-
-    const fieldWidget = externalTypeDefinition.widgets.find(
-      (w) => w.id === value.widgetId
-    );
 
     return {
       ...getCommonFieldProps(schemaProp),
       component: "external",
-      // @ts-expect-error
-      externalField: fieldWidget?.component,
     };
   },
   position: (schemaProp) => {
@@ -419,6 +211,86 @@ const tinaFieldProviders: TinaFieldProviders = {
       subComponent: "position",
     };
   },
+  custom: (schemaProp, editorContext, value) => {
+    const customTypeDefinition = editorContext.types[schemaProp.type];
+
+    if (!customTypeDefinition) {
+      throw new Error(`Can't find definition for type "${schemaProp.type}"`);
+    }
+
+    if (customTypeDefinition.type === "external") {
+      return tinaFieldProviders.external(schemaProp, editorContext, value);
+    }
+
+    if (customTypeDefinition.type === "token") {
+      let tokens = assertDefined(
+        editorContext.theme[customTypeDefinition.token],
+        `Missing token values within the Easyblocks config for "${customTypeDefinition.token}"`
+      );
+
+      if (
+        "params" in schemaProp &&
+        schemaProp.params &&
+        "prefix" in schemaProp.params &&
+        typeof schemaProp.params.prefix === "string"
+      ) {
+        // Copy tokens to prevent mutating original tokens
+        tokens = { ...tokens };
+
+        for (const key in tokens) {
+          if (!key.startsWith(schemaProp.params.prefix + ".")) {
+            delete tokens[key];
+          } else {
+            tokens[key] = {
+              ...tokens[key],
+              label: key.split(`${schemaProp.params.prefix}.`)[1],
+            };
+          }
+        }
+      }
+
+      const commonTokenFieldProps = {
+        tokens,
+        allowCustom: !!customTypeDefinition.allowCustom,
+        extraValues:
+          "params" in schemaProp &&
+          schemaProp.params &&
+          "extraValues" in schemaProp.params
+            ? schemaProp.params.extraValues
+            : undefined,
+      };
+
+      if (customTypeDefinition.responsiveness === "never") {
+        return {
+          ...getCommonFieldProps(schemaProp),
+          component: "token",
+          ...commonTokenFieldProps,
+        };
+      }
+
+      return {
+        ...getCommonFieldProps(schemaProp),
+        // Token fields are always responsive
+        component: "responsive2",
+        subComponent: "token",
+        ...commonTokenFieldProps,
+      };
+    }
+
+    return {
+      ...getCommonFieldProps(schemaProp),
+      ...(customTypeDefinition.responsiveness === "always" ||
+      (customTypeDefinition.responsiveness === "optional" &&
+        schemaProp.responsive)
+        ? {
+            component: "responsive2",
+            subComponent: "local",
+          }
+        : {
+            component: "local",
+          }),
+    };
+  },
 };
 
 export function getTinaField<T extends SchemaProp>(
@@ -426,11 +298,10 @@ export function getTinaField<T extends SchemaProp>(
   editorContext: EditorContextType,
   value: any
 ) {
-  if (isExternalSchemaProp(schemaProp)) {
-    return tinaFieldProviders.external(schemaProp, editorContext, value);
-  }
-
-  const fieldProvider = (tinaFieldProviders as any)[schemaProp.type];
+  const fieldProvider =
+    editorContext.types[schemaProp.type] && schemaProp.type !== "text"
+      ? tinaFieldProviders.custom
+      : (tinaFieldProviders as any)[schemaProp.type];
 
   return fieldProvider(schemaProp, editorContext, value);
 }

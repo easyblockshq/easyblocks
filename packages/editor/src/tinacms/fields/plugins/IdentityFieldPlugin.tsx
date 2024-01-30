@@ -1,11 +1,14 @@
-import { ComponentSchemaProp, ConfigComponent, Field } from "@easyblocks/core";
+import {
+  ComponentSchemaProp,
+  Field,
+  NoCodeComponentEntry,
+} from "@easyblocks/core";
 import {
   findComponentDefinitionById,
   parsePath,
-  richTextChangedEvent,
 } from "@easyblocks/core/_internals";
-import { SSButtonGhost, SSIcons, Typography } from "@easyblocks/design-system";
-import { assertDefined, toArray } from "@easyblocks/utils";
+import { ButtonGhost, Icons, Typography } from "@easyblocks/design-system";
+import { toArray } from "@easyblocks/utils";
 import React, { useContext } from "react";
 import type { FieldRenderProps } from "react-final-form";
 import { css } from "styled-components";
@@ -14,7 +17,7 @@ import { isMixedFieldValue } from "../components/isMixedFieldValue";
 import { PanelContext } from "./BlockFieldPlugin";
 
 interface IdentityFieldProps
-  extends FieldRenderProps<ConfigComponent, HTMLElement> {
+  extends FieldRenderProps<NoCodeComponentEntry, HTMLElement> {
   field: Field;
 }
 
@@ -30,7 +33,7 @@ function IdentityField({ input, field }: IdentityFieldProps) {
   }
 
   const componentDefinition = findComponentDefinitionById(
-    config._template,
+    config._component,
     editorContext
   );
 
@@ -44,7 +47,6 @@ function IdentityField({ input, field }: IdentityFieldProps) {
   const parentSchemaProp = parentComponentDefinition?.schema.find(
     (schemaProp) => schemaProp.prop === parent!.fieldName
   );
-  const rootComponentId = editorContext.activeDocumentType.entry._template;
 
   const isNonRemovable =
     (componentDefinition?.id.startsWith("@easyblocks/rich-text") &&
@@ -56,7 +58,7 @@ function IdentityField({ input, field }: IdentityFieldProps) {
 
   const isNonChangable =
     componentDefinition?.id === "@easyblocks/rich-text-part" ||
-    componentDefinition?.id === rootComponentId;
+    componentDefinition?.id === editorContext.rootComponent.id;
 
   function handleChangeComponentType() {
     if (isNonChangable) {
@@ -85,38 +87,6 @@ function IdentityField({ input, field }: IdentityFieldProps) {
       return;
     }
 
-    const componentType = toArray(componentDefinition?.type ?? []);
-
-    if (
-      componentType.includes("action") &&
-      parentComponentDefinition?.id ===
-        "@easyblocks/rich-text-inline-wrapper-element"
-    ) {
-      // When component we're about to remove is an action and it's parent is a rich text inline wrapper element
-      // we handle the removal by dispatching rich text changed event and let the rich text editor handle the removal
-      const canvasIframe = document.getElementById(
-        "shopstory-canvas"
-      ) as HTMLIFrameElement | null;
-
-      const actionProp = assertDefined(
-        parentComponentDefinition.schema.find<ComponentSchemaProp>(
-          (s): s is ComponentSchemaProp =>
-            s.type === "component" &&
-            (s as ComponentSchemaProp).accepts.includes("action")
-        )
-      );
-
-      canvasIframe?.contentWindow?.postMessage(
-        richTextChangedEvent({
-          prop: actionProp.prop,
-          schemaProp: actionProp,
-          values: [[]],
-        })
-      );
-
-      return;
-    }
-
     editorContext.actions.removeItems(configPaths);
   }
 
@@ -134,13 +104,9 @@ function IdentityField({ input, field }: IdentityFieldProps) {
           font-weight: 700;
         `}
       >
-        {componentDefinition?.id === rootComponentId &&
-        editorContext.activeDocumentType
-          ? editorContext.activeDocumentType.label ??
-            `${editorContext.activeDocumentType.id} document template`
-          : componentDefinition?.label ?? componentDefinition?.id}
+        {componentDefinition?.label ?? componentDefinition?.id}
       </Typography>
-      {!isNonChangable && <SSIcons.ChevronDown size={16} />}
+      {!isNonChangable && <Icons.ChevronDown size={16} />}
     </div>
   );
 
@@ -161,8 +127,8 @@ function IdentityField({ input, field }: IdentityFieldProps) {
         `}
       >
         {isWithinNestedPanel && (
-          <SSButtonGhost
-            icon={SSIcons.ChevronLeft}
+          <ButtonGhost
+            icon={Icons.ChevronLeft}
             onClick={() => {
               panelContext.onClose();
             }}
@@ -176,14 +142,14 @@ function IdentityField({ input, field }: IdentityFieldProps) {
           <div style={{ padding: "7px 6px" }}>{titleContent}</div>
         )}
         {!isNonChangable && (
-          <SSButtonGhost onClick={handleChangeComponentType}>
+          <ButtonGhost onClick={handleChangeComponentType}>
             {titleContent}
-          </SSButtonGhost>
+          </ButtonGhost>
         )}
 
-        <SSButtonGhost
+        <ButtonGhost
           aria-label="Remove component"
-          icon={SSIcons.Remove}
+          icon={Icons.Remove}
           onClick={handleRemove}
           css={css`
             margin-left: auto;

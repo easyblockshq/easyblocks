@@ -1,6 +1,6 @@
 import React from "react";
 
-export type ArrowRightIconProps = {
+type ArrowRightIconProps = {
   size?: number;
 };
 export const ArrowRightIcon: React.FC<ArrowRightIconProps> = ({

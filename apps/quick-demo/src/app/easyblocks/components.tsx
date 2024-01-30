@@ -1,39 +1,43 @@
 "use client";
-import { ProductCard } from "@/components/ProductCard/ProductCard";
-import { builtinEditableComponents } from "@easyblocks/editable-components";
-
-const $Link = (props: any) => {
-  const { url, shouldOpenInNewWindow, trigger: TriggerElement } = props;
-
-  return (
-    <TriggerElement.type
-      {...TriggerElement.props}
-      as={"a"}
-      href={url}
-      target={shouldOpenInNewWindow ? "_blank" : undefined}
-    />
-  );
-};
-
-const $AlertAction = (props: any) => {
-  const { text, trigger: TriggerElement } = props;
-
-  return (
-    <TriggerElement.type
-      {...TriggerElement.props}
-      as={"button"}
-      onClick={() => {
-        alert(text);
-      }}
-    />
-  );
-};
+import { AlertAction } from "@/app/easyblocks/components/AlertAction/AlertAction";
+import { BannerCard } from "@/app/easyblocks/components/BannerCard/BannerCard";
+import { BannerSection } from "@/app/easyblocks/components/BannerSection/BannerSection";
+import { Link } from "@/app/easyblocks/components/Link/Link";
+import { ProductCard } from "@/app/easyblocks/components/ProductCard/ProductCard";
+import { VimeoPlayer } from "@/app/easyblocks/components/VimeoPlayer/VimeoPlayer";
+import { CoverCard } from "./components/BannerCard/CoverCard/CoverCard";
+import { Button } from "./components/Button/Button";
+import { ButtonGroup } from "./components/ButtonGroup/ButtonGroup";
+import { Grid } from "./components/Grid/Grid";
+import { Image } from "./components/Image/Image";
+import { RootSectionStack } from "./components/RootSectionStack/RootSectionStack";
+import { SolidColor } from "./components/SolidColor/SolidColor";
+import { Stack } from "./components/Stack/Stack";
+import { TextLink } from "./components/TextLink/TextLink";
+import { TwoCards } from "./components/TwoCards/TwoCards";
+import { Video } from "./components/Video/Video";
+import { SimpleBanner } from "./components/SimpleBanner/SimpleBanner";
 
 const components = {
-  ...builtinEditableComponents(),
   ProductCard,
-  $Link,
-  $AlertAction,
+  Link,
+  AlertAction,
+  ProductPage: RootSectionStack,
+  StandardPage: RootSectionStack,
+  ButtonGroup,
+  Button,
+  Image,
+  Video,
+  Stack,
+  Grid,
+  TwoCards,
+  SolidColor,
+  CoverCard,
+  BannerCard,
+  BannerSection,
+  VimeoPlayer,
+  TextLink,
+  SimpleBanner,
 };
 
 export { components };

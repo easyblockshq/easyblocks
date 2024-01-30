@@ -1,12 +1,12 @@
 import { Devices, TrulyResponsiveValue } from "../types";
 import { responsiveValueForceGet } from "../responsiveness/responsiveValueGet";
 
-export type DeviceWidthPair = {
+type DeviceWidthPair = {
   width: number;
   deviceId: string;
 };
 
-export type DeviceWidthPairs = DeviceWidthPair[];
+type DeviceWidthPairs = DeviceWidthPair[];
 
 export function getDeviceWidthPairs(
   widths: TrulyResponsiveValue<number>,

@@ -1,17 +1,17 @@
-import { ComponentConfig } from "../types";
+import { NoCodeComponentEntry } from "../types";
 import { findComponentDefinition } from "./findComponentDefinition";
 import { isSchemaPropComponent } from "./schema";
 import { CompilationContextType } from "./types";
 
 type TraverseComponentsCallback = (arg: {
   path: string;
-  componentConfig: ComponentConfig;
+  componentConfig: NoCodeComponentEntry;
 }) => void;
 /**
  * Traverses given `config` by invoking given `callback` for each schema prop defined within components from `context`
  */
 function traverseComponents(
-  config: ComponentConfig,
+  config: NoCodeComponentEntry,
   context: CompilationContextType,
   callback: TraverseComponentsCallback
 ): void {
@@ -19,7 +19,7 @@ function traverseComponents(
 }
 
 function traverseComponentsArray(
-  array: ComponentConfig[],
+  array: NoCodeComponentEntry[],
   context: CompilationContextType,
   callback: TraverseComponentsCallback,
   path: string
@@ -30,7 +30,7 @@ function traverseComponentsArray(
 }
 
 function traverseComponentsInternal(
-  componentConfig: ComponentConfig,
+  componentConfig: NoCodeComponentEntry,
   context: CompilationContextType,
   callback: TraverseComponentsCallback,
   path: string
