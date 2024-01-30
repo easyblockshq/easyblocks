@@ -78,6 +78,7 @@ export const bannerSectionDefinition: NoCodeComponentDefinition<
         ...sectionStyles.styled,
         ...bannerCardStyles.styled,
         SectionRoot: {
+          display: "grid",
           position: "relative",
           paddingLeft: values.escapeMargin ? 0 : margin.css,
           paddingRight: values.escapeMargin ? 0 : margin.css,

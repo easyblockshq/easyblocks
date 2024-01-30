@@ -289,7 +289,6 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
           display: "grid",
         },
         Container: {
-          margin: "0 auto",
           backgroundColor: enableFill ? fillColor : "initial",
           ...bordersStyles(values),
           ...cornerStyles(values, isNaked),
@@ -307,9 +306,7 @@ export const bannerCardDefinition: NoCodeComponentDefinition = {
           justifyItems: toStartEnd(stackJustify),
           position: "relative",
         },
-        StackInnerContainer: {
-          // background: "red",
-        },
+        StackInnerContainer: {},
         CoverContainer: {
           display: coverDisplay,
           position: "relative",
