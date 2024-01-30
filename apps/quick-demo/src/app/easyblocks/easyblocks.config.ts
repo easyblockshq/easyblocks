@@ -45,6 +45,8 @@ export const easyblocksConfig: Config = {
     },
   ],
   components: [
+    bannerSectionDefinition,
+    bannerCardDefinition,
     productPageDefinition,
     standardPageDefinition,
     gridComponentDefinition,
@@ -56,8 +58,6 @@ export const easyblocksConfig: Config = {
     solidColorComponentDefinition,
     buttonComponentDefinition,
     coverCardDefinition,
-    bannerCardDefinition,
-    bannerSectionDefinition,
     vimeoPlayerEditableComponent,
     productCardDefinition,
     linkDefinition,

@@ -334,7 +334,11 @@
           "verticalLayout": false,
           "gap": {
             "$res": true,
-            "xl": { "value": "0px", "widgetId": "@easyblocks/space" }
+            "xl": {
+              "value": "0px",
+              "tokenId": "0",
+              "widgetId": "@easyblocks/space"
+            }
           },
           "Buttons": [
             {

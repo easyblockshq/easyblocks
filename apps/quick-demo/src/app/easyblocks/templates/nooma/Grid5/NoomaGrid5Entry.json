@@ -1302,6 +1302,7 @@
     "$res": true,
     "xl": {
       "value": "0px",
+      "tokenId": "0",
       "widgetId": "@easyblocks/space"
     }
   },
@@ -1319,6 +1320,7 @@
     "$res": true,
     "xl": {
       "value": "0px",
+      "tokenId": "0",
       "widgetId": "@easyblocks/space"
     }
   },
