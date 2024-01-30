@@ -61,7 +61,8 @@
         "$res": true,
         "xl": {
           "value": "#000000",
-          "widgetId": "@easyblocks/color"
+          "widgetId": "@easyblocks/color",
+          "tokenId": "black"
         }
       },
       "borderLeft": "1",
@@ -166,7 +167,8 @@
     "$res": true,
     "xl": {
       "value": "#000000",
-      "widgetId": "@easyblocks/color"
+      "widgetId": "@easyblocks/color",
+      "tokenId": "black"
     }
   },
   "enableBorder": {
@@ -177,7 +179,8 @@
     "$res": true,
     "xl": {
       "value": "#000000",
-      "widgetId": "@easyblocks/color"
+      "widgetId": "@easyblocks/color",
+      "tokenId": "black"
     }
   },
   "borderLeft": "1",
@@ -525,7 +528,8 @@
                 "$res": true,
                 "xl": {
                   "value": "#000000",
-                  "widgetId": "@easyblocks/color"
+                  "widgetId": "@easyblocks/color",
+                  "tokenId": "black"
                 }
               },
               "boxShadow": {
