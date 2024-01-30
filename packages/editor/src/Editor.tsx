@@ -182,8 +182,6 @@ function EditorBackendInitializer(props: EditorProps) {
   useEffect(() => {
     async function run() {
       try {
-        await props.config.backend.init?.();
-
         if (props.documentId) {
           const document = await props.config.backend.documents.get({
             id: props.documentId,
