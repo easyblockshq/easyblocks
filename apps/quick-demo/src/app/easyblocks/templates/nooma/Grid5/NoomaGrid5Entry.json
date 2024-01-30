@@ -1,5 +1,5 @@
 {
-  "_id": "08ee7d97-86e3-4ba9-b807-c6303fba85b3",
+  "_id": "ea32eba9-3165-4d4c-9cdc-d25c5620c730",
   "_component": "Grid",
   "_itemProps": {
     "StandardPage": {
@@ -48,7 +48,7 @@
   },
   "Cards": [
     {
-      "_id": "33c65890-4136-4351-814b-ccfb457fc87f",
+      "_id": "53ecd1d7-dac5-44d4-b57a-6a852f10c7b3",
       "_component": "BannerCard",
       "_itemProps": {
         "Grid": {
@@ -76,11 +76,11 @@
       "snapCoverToEdges": false,
       "CoverCard": [
         {
-          "_id": "710d74a9-c920-4abe-b8cb-182604f17aa7",
+          "_id": "a51effba-e848-4519-a22c-4b5aaca14008",
           "_component": "CoverCard",
           "Background": [
             {
-              "_id": "8d1d598e-355e-4a73-a130-f497daae1954",
+              "_id": "75c06712-4612-4a5f-8d00-0b0b3dc23c03",
               "_component": "Image",
               "image": {
                 "id": "1EfvgzIvaX4hK5viWhGBcE",
@@ -98,8 +98,8 @@
           "aspectRatio": {
             "$res": true,
             "xl": {
-              "tokenId": "portrait",
               "value": "4:5",
+              "tokenId": "portrait",
               "widgetId": "@easyblocks/aspectRatio"
             }
           },
@@ -111,8 +111,8 @@
             "$res": true,
             "xl": {
               "value": "#000000",
-              "widgetId": "@easyblocks/color",
-              "tokenId": "black"
+              "tokenId": "black",
+              "widgetId": "@easyblocks/color"
             }
           },
           "borderLeft": "1",
@@ -217,8 +217,8 @@
         "$res": true,
         "xl": {
           "value": "#000000",
-          "widgetId": "@easyblocks/color",
-          "tokenId": "black"
+          "tokenId": "black",
+          "widgetId": "@easyblocks/color"
         }
       },
       "enableBorder": {
@@ -229,8 +229,8 @@
         "$res": true,
         "xl": {
           "value": "#000000",
-          "widgetId": "@easyblocks/color",
-          "tokenId": "black"
+          "tokenId": "black",
+          "widgetId": "@easyblocks/color"
         }
       },
       "borderLeft": "1",
@@ -243,11 +243,11 @@
       },
       "Stack": [
         {
-          "_id": "d2442605-a82f-4b0c-b362-1c4a193e2c33",
+          "_id": "9e555e11-19b9-4905-96f2-c8bc29bb86b4",
           "_component": "Stack",
           "Items": [
             {
-              "_id": "ee2bc56f-406c-4dbc-9385-9b6668e6d61f",
+              "_id": "dbdd7649-bafd-4bd0-bd12-882aa14ddea7",
               "_component": "@easyblocks/rich-text",
               "_itemProps": {
                 "Stack": {
@@ -259,8 +259,8 @@
                     "marginBottom": {
                       "$res": true,
                       "xl": {
-                        "tokenId": "8",
                         "value": "8px",
+                        "tokenId": "8",
                         "widgetId": "@easyblocks/space"
                       }
                     },
@@ -274,43 +274,43 @@
               "elements": {
                 "en-US": [
                   {
+                    "_id": "3cf90b6f-5acc-472d-b654-0b177ffe85df",
                     "_component": "@easyblocks/rich-text-block-element",
+                    "type": "paragraph",
                     "elements": [
                       {
+                        "_id": "44891f1c-c51d-47d2-a7e7-eebeb368b35e",
                         "_component": "@easyblocks/rich-text-line-element",
                         "elements": [
                           {
-                            "_id": "73e6264c-c81b-401c-a4f0-687e00c6748e",
+                            "_id": "beea786d-22c0-4987-ba86-b79d5fdc61ab",
                             "_component": "@easyblocks/rich-text-part",
-                            "color": {
-                              "$res": true,
-                              "xl": {
-                                "tokenId": "grey_05",
-                                "value": "#252525",
-                                "widgetId": "@easyblocks/color"
-                              }
-                            },
+                            "value": "Make it stand out",
                             "font": {
                               "$res": true,
                               "xl": {
-                                "tokenId": "heading4",
                                 "value": {
                                   "fontFamily": "test-national-2",
                                   "fontSize": 16,
                                   "lineHeight": 1.4,
                                   "fontWeight": 600
-                                }
+                                },
+                                "tokenId": "heading4"
                               }
                             },
-                            "value": "Make it stand out",
+                            "color": {
+                              "$res": true,
+                              "xl": {
+                                "value": "#252525",
+                                "tokenId": "grey_05",
+                                "widgetId": "@easyblocks/color"
+                              }
+                            },
                             "TextWrapper": []
                           }
-                        ],
-                        "_id": "821c52a7-be7b-4f6f-8d18-945f1c214d7e"
+                        ]
                       }
-                    ],
-                    "type": "paragraph",
-                    "_id": "96aab4c6-9054-4e83-9933-071cae044c68"
+                    ]
                   }
                 ]
               },
@@ -341,7 +341,7 @@
               }
             },
             {
-              "_id": "79764a26-39a6-4158-a6f7-f68aa3809462",
+              "_id": "d7448d30-07d0-4bee-9c44-f1d2b14fbcf2",
               "_component": "@easyblocks/rich-text",
               "_itemProps": {
                 "Stack": {
@@ -368,42 +368,42 @@
               "elements": {
                 "en-US": [
                   {
+                    "_id": "da260a18-5718-4149-ae1b-8c7d335acf04",
                     "_component": "@easyblocks/rich-text-block-element",
+                    "type": "paragraph",
                     "elements": [
                       {
+                        "_id": "712d264d-d325-41b2-a968-283e684e4204",
                         "_component": "@easyblocks/rich-text-line-element",
                         "elements": [
                           {
-                            "_id": "1d4dc8f9-d0d8-47c1-a575-518d56a36fcd",
+                            "_id": "4b9419f8-eb64-41b2-b0b4-783c91dc2e62",
                             "_component": "@easyblocks/rich-text-part",
-                            "color": {
-                              "$res": true,
-                              "xl": {
-                                "tokenId": "black",
-                                "value": "#000000",
-                                "widgetId": "@easyblocks/color"
-                              }
-                            },
+                            "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                             "font": {
                               "$res": true,
                               "xl": {
-                                "tokenId": "body2",
                                 "value": {
                                   "fontSize": 13,
                                   "lineHeight": 1.8,
                                   "fontFamily": "test-soehne-mono"
-                                }
+                                },
+                                "tokenId": "body2"
                               }
                             },
-                            "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                            "color": {
+                              "$res": true,
+                              "xl": {
+                                "value": "#000000",
+                                "tokenId": "black",
+                                "widgetId": "@easyblocks/color"
+                              }
+                            },
                             "TextWrapper": []
                           }
-                        ],
-                        "_id": "32a33938-3ccf-469c-a385-1dfb49d09b39"
+                        ]
                       }
-                    ],
-                    "type": "paragraph",
-                    "_id": "b9ed7e22-3559-48cc-b7fb-43c681a29662"
+                    ]
                   }
                 ]
               },
@@ -438,7 +438,7 @@
       ]
     },
     {
-      "_id": "19b7296f-0fe6-4bfe-a812-6d6fab9cf2f7",
+      "_id": "0df442b0-1227-4922-a327-c99746e552bc",
       "_component": "BannerCard",
       "_itemProps": {
         "Grid": {
@@ -466,11 +466,11 @@
       "snapCoverToEdges": false,
       "CoverCard": [
         {
-          "_id": "7f414359-d274-4bc4-96d4-67cae1229a51",
+          "_id": "84c25fe9-776a-4013-aef1-02df1aebf86d",
           "_component": "CoverCard",
           "Background": [
             {
-              "_id": "eb0e11f6-77cb-4c4e-b4a3-a1cd0a398858",
+              "_id": "75656565-9a0d-4dd8-9313-5bcb4271f9ff",
               "_component": "Image",
               "image": {
                 "id": "ooHwxsscetlBKWUHvDrYv",
@@ -488,8 +488,8 @@
           "aspectRatio": {
             "$res": true,
             "xl": {
-              "tokenId": "portrait",
               "value": "4:5",
+              "tokenId": "portrait",
               "widgetId": "@easyblocks/aspectRatio"
             }
           },
@@ -501,8 +501,8 @@
             "$res": true,
             "xl": {
               "value": "#000000",
-              "widgetId": "@easyblocks/color",
-              "tokenId": "black"
+              "tokenId": "black",
+              "widgetId": "@easyblocks/color"
             }
           },
           "borderLeft": "1",
@@ -607,8 +607,8 @@
         "$res": true,
         "xl": {
           "value": "#000000",
-          "widgetId": "@easyblocks/color",
-          "tokenId": "black"
+          "tokenId": "black",
+          "widgetId": "@easyblocks/color"
         }
       },
       "enableBorder": {
@@ -619,8 +619,8 @@
         "$res": true,
         "xl": {
           "value": "#000000",
-          "widgetId": "@easyblocks/color",
-          "tokenId": "black"
+          "tokenId": "black",
+          "widgetId": "@easyblocks/color"
         }
       },
       "borderLeft": "1",
@@ -633,11 +633,11 @@
       },
       "Stack": [
         {
-          "_id": "c726b1d8-3bb6-44de-ac49-f395759893e9",
+          "_id": "b0d90248-ddd3-4c3e-a998-1aa7da221cb8",
           "_component": "Stack",
           "Items": [
             {
-              "_id": "87880156-4c22-48bd-a63c-77ac7928d9f9",
+              "_id": "76426bd9-4aa3-467f-8d52-32c2c9b1c52c",
               "_component": "@easyblocks/rich-text",
               "_itemProps": {
                 "Stack": {
@@ -649,8 +649,8 @@
                     "marginBottom": {
                       "$res": true,
                       "xl": {
-                        "tokenId": "8",
                         "value": "8px",
+                        "tokenId": "8",
                         "widgetId": "@easyblocks/space"
                       }
                     },
@@ -664,43 +664,43 @@
               "elements": {
                 "en-US": [
                   {
+                    "_id": "f744c685-84ae-4c02-8140-c7a111287234",
                     "_component": "@easyblocks/rich-text-block-element",
+                    "type": "paragraph",
                     "elements": [
                       {
+                        "_id": "0749df8a-126b-4e39-af4d-472f986f3dd2",
                         "_component": "@easyblocks/rich-text-line-element",
                         "elements": [
                           {
-                            "_id": "c8059925-563e-4c1c-ad65-264e85f2c567",
+                            "_id": "7d31e675-8952-4308-81cb-6e6996014bcd",
                             "_component": "@easyblocks/rich-text-part",
-                            "color": {
-                              "$res": true,
-                              "xl": {
-                                "tokenId": "grey_05",
-                                "value": "#252525",
-                                "widgetId": "@easyblocks/color"
-                              }
-                            },
+                            "value": "Make it stand out",
                             "font": {
                               "$res": true,
                               "xl": {
-                                "tokenId": "heading4",
                                 "value": {
                                   "fontFamily": "test-national-2",
                                   "fontSize": 16,
                                   "lineHeight": 1.4,
                                   "fontWeight": 600
-                                }
+                                },
+                                "tokenId": "heading4"
                               }
                             },
-                            "value": "Make it stand out",
+                            "color": {
+                              "$res": true,
+                              "xl": {
+                                "value": "#252525",
+                                "tokenId": "grey_05",
+                                "widgetId": "@easyblocks/color"
+                              }
+                            },
                             "TextWrapper": []
                           }
-                        ],
-                        "_id": "5cd2c206-35ac-431e-bfae-777bf7c0f1b1"
+                        ]
                       }
-                    ],
-                    "type": "paragraph",
-                    "_id": "274d854f-8a09-4547-86e3-5d179ddc1031"
+                    ]
                   }
                 ]
               },
@@ -731,7 +731,7 @@
               }
             },
             {
-              "_id": "8f024ea1-fecb-4c26-9148-a336d8e50ce8",
+              "_id": "d02ff21b-1349-4f36-aeb1-a3482b999c6f",
               "_component": "@easyblocks/rich-text",
               "_itemProps": {
                 "Stack": {
@@ -758,42 +758,42 @@
               "elements": {
                 "en-US": [
                   {
+                    "_id": "f2cb5675-ac63-473c-afc9-344433d40d3e",
                     "_component": "@easyblocks/rich-text-block-element",
+                    "type": "paragraph",
                     "elements": [
                       {
+                        "_id": "48291057-2f7b-4270-abf9-7a3fe990435e",
                         "_component": "@easyblocks/rich-text-line-element",
                         "elements": [
                           {
-                            "_id": "9652cec2-bfd9-484a-a464-d204a1e39053",
+                            "_id": "f16aad0c-e0bf-48ab-9cac-2402199bd48b",
                             "_component": "@easyblocks/rich-text-part",
-                            "color": {
-                              "$res": true,
-                              "xl": {
-                                "tokenId": "black",
-                                "value": "#000000",
-                                "widgetId": "@easyblocks/color"
-                              }
-                            },
+                            "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                             "font": {
                               "$res": true,
                               "xl": {
-                                "tokenId": "body2",
                                 "value": {
                                   "fontSize": 13,
                                   "lineHeight": 1.8,
                                   "fontFamily": "test-soehne-mono"
-                                }
+                                },
+                                "tokenId": "body2"
                               }
                             },
-                            "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                            "color": {
+                              "$res": true,
+                              "xl": {
+                                "value": "#000000",
+                                "tokenId": "black",
+                                "widgetId": "@easyblocks/color"
+                              }
+                            },
                             "TextWrapper": []
                           }
-                        ],
-                        "_id": "209c2e39-b0ea-4a49-ac32-8de236619673"
+                        ]
                       }
-                    ],
-                    "type": "paragraph",
-                    "_id": "fb1c348b-dec0-4013-972d-3ebffc278b6c"
+                    ]
                   }
                 ]
               },
@@ -828,7 +828,7 @@
       ]
     },
     {
-      "_id": "fec7002f-0519-4cb7-976b-8bc50f2e1ffb",
+      "_id": "1164f102-1935-4d6e-8445-aee8d96a1022",
       "_component": "BannerCard",
       "_itemProps": {
         "Grid": {
@@ -856,11 +856,11 @@
       "snapCoverToEdges": false,
       "CoverCard": [
         {
-          "_id": "8681cf0f-b803-47a2-b8c4-d87040521c9b",
+          "_id": "96c3456e-99c3-4e3c-8796-f06793fab625",
           "_component": "CoverCard",
           "Background": [
             {
-              "_id": "f0fdd96f-5041-4e3b-9b27-4caadd21ee1a",
+              "_id": "f9694089-09fc-44e0-812c-be3abf3d4234",
               "_component": "Image",
               "image": {
                 "id": "1JJzf4oPaNvaFJOFI0PN7C",
@@ -878,8 +878,8 @@
           "aspectRatio": {
             "$res": true,
             "xl": {
-              "tokenId": "portrait",
               "value": "4:5",
+              "tokenId": "portrait",
               "widgetId": "@easyblocks/aspectRatio"
             }
           },
@@ -891,8 +891,8 @@
             "$res": true,
             "xl": {
               "value": "#000000",
-              "widgetId": "@easyblocks/color",
-              "tokenId": "black"
+              "tokenId": "black",
+              "widgetId": "@easyblocks/color"
             }
           },
           "borderLeft": "1",
@@ -997,8 +997,8 @@
         "$res": true,
         "xl": {
           "value": "#000000",
-          "widgetId": "@easyblocks/color",
-          "tokenId": "black"
+          "tokenId": "black",
+          "widgetId": "@easyblocks/color"
         }
       },
       "enableBorder": {
@@ -1009,8 +1009,8 @@
         "$res": true,
         "xl": {
           "value": "#000000",
-          "widgetId": "@easyblocks/color",
-          "tokenId": "black"
+          "tokenId": "black",
+          "widgetId": "@easyblocks/color"
         }
       },
       "borderLeft": "1",
@@ -1023,11 +1023,11 @@
       },
       "Stack": [
         {
-          "_id": "ee8757d2-533a-4914-97f2-07df6a1f9463",
+          "_id": "1154b369-9df9-4cf1-8210-c5a6b2a74b4c",
           "_component": "Stack",
           "Items": [
             {
-              "_id": "e69402a5-e6b1-42d5-93b2-3d3c005b50d8",
+              "_id": "da555de9-194c-4104-8176-f3c7056ba97d",
               "_component": "@easyblocks/rich-text",
               "_itemProps": {
                 "Stack": {
@@ -1039,8 +1039,8 @@
                     "marginBottom": {
                       "$res": true,
                       "xl": {
-                        "tokenId": "8",
                         "value": "8px",
+                        "tokenId": "8",
                         "widgetId": "@easyblocks/space"
                       }
                     },
@@ -1054,43 +1054,43 @@
               "elements": {
                 "en-US": [
                   {
+                    "_id": "082e22f4-63ec-4c23-ad39-41f111d7591e",
                     "_component": "@easyblocks/rich-text-block-element",
+                    "type": "paragraph",
                     "elements": [
                       {
+                        "_id": "c52924ae-5480-4c8f-aa05-03c134484728",
                         "_component": "@easyblocks/rich-text-line-element",
                         "elements": [
                           {
-                            "_id": "504b3a1c-b4ef-4490-a9d3-6c3ab60208cc",
+                            "_id": "f6073e65-a8be-4922-846c-4c42de3b37be",
                             "_component": "@easyblocks/rich-text-part",
-                            "color": {
-                              "$res": true,
-                              "xl": {
-                                "tokenId": "grey_05",
-                                "value": "#252525",
-                                "widgetId": "@easyblocks/color"
-                              }
-                            },
+                            "value": "Make it stand out",
                             "font": {
                               "$res": true,
                               "xl": {
-                                "tokenId": "heading4",
                                 "value": {
                                   "fontFamily": "test-national-2",
                                   "fontSize": 16,
                                   "lineHeight": 1.4,
                                   "fontWeight": 600
-                                }
+                                },
+                                "tokenId": "heading4"
                               }
                             },
-                            "value": "Make it stand out",
+                            "color": {
+                              "$res": true,
+                              "xl": {
+                                "value": "#252525",
+                                "tokenId": "grey_05",
+                                "widgetId": "@easyblocks/color"
+                              }
+                            },
                             "TextWrapper": []
                           }
-                        ],
-                        "_id": "7904243f-133d-4673-92a9-7d1e293be1e1"
+                        ]
                       }
-                    ],
-                    "type": "paragraph",
-                    "_id": "78261d0a-4013-4397-99c7-bd92919dd2b6"
+                    ]
                   }
                 ]
               },
@@ -1121,7 +1121,7 @@
               }
             },
             {
-              "_id": "e70ccfb0-6442-42ee-9480-45aa12a4937b",
+              "_id": "9e27d78b-88da-4386-9cbd-c139fda152d8",
               "_component": "@easyblocks/rich-text",
               "_itemProps": {
                 "Stack": {
@@ -1148,42 +1148,42 @@
               "elements": {
                 "en-US": [
                   {
+                    "_id": "b07ba25b-217c-488b-8131-aec7796f6721",
                     "_component": "@easyblocks/rich-text-block-element",
+                    "type": "paragraph",
                     "elements": [
                       {
+                        "_id": "f9f10446-e2b2-44dd-bf72-0a69cb882ab8",
                         "_component": "@easyblocks/rich-text-line-element",
                         "elements": [
                           {
-                            "_id": "b5612362-b39e-4776-8fc3-3e6959dd5b8b",
+                            "_id": "a8bcd16e-a094-40d7-9905-2cc0274294da",
                             "_component": "@easyblocks/rich-text-part",
-                            "color": {
-                              "$res": true,
-                              "xl": {
-                                "tokenId": "black",
-                                "value": "#000000",
-                                "widgetId": "@easyblocks/color"
-                              }
-                            },
+                            "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                             "font": {
                               "$res": true,
                               "xl": {
-                                "tokenId": "body2",
                                 "value": {
                                   "fontSize": 13,
                                   "lineHeight": 1.8,
                                   "fontFamily": "test-soehne-mono"
-                                }
+                                },
+                                "tokenId": "body2"
                               }
                             },
-                            "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                            "color": {
+                              "$res": true,
+                              "xl": {
+                                "value": "#000000",
+                                "tokenId": "black",
+                                "widgetId": "@easyblocks/color"
+                              }
+                            },
                             "TextWrapper": []
                           }
-                        ],
-                        "_id": "77f8fb59-c6a6-4eb0-8d7f-12d837aff0fe"
+                        ]
                       }
-                    ],
-                    "type": "paragraph",
-                    "_id": "fd0af4e4-0e43-4dc0-9ac2-009691d462b3"
+                    ]
                   }
                 ]
               },
@@ -1299,13 +1299,121 @@
   },
   "LeftArrow": [
     {
-      "_id": "01621722-e523-4926-b23f-6244f72204f6",
-      "_component": "button"
+      "_id": "b32042d5-96db-4963-9888-0b39decdc872",
+      "_component": "Button",
+      "_itemProps": {
+        "Grid": {
+          "LeftArrow": {}
+        }
+      },
+      "Action": [],
+      "variant": "icon",
+      "label": {
+        "id": "local.eef1d01a-c1f7-4f42-bb3a-c55101585314",
+        "value": {
+          "en-US": "Click me"
+        },
+        "widgetId": "@easyblocks/local-text"
+      },
+      "icon": {
+        "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"red\" width=\"100px\" height=\"100px\"><path d=\"M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z\"/></svg>",
+        "tokenId": "arrowLeft",
+        "widgetId": "@easyblocks/icon"
+      },
+      "color": {
+        "$res": true,
+        "xl": {
+          "value": "#000000",
+          "tokenId": "black",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "minHeight": {
+        "$res": true,
+        "xl": "42"
+      },
+      "minWidth": {
+        "$res": true,
+        "xl": "100"
+      },
+      "horizontalPadding": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "gap": {
+        "$res": true,
+        "xl": {
+          "value": "6px",
+          "tokenId": "6",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "cornerMode": {
+        "$res": true,
+        "xl": "circled"
+      },
+      "cornerRadius": {
+        "$res": true,
+        "xl": "12"
+      },
+      "font": {
+        "$res": true,
+        "xl": {
+          "value": {
+            "fontSize": 13,
+            "lineHeight": 1.8,
+            "fontFamily": "test-soehne-mono"
+          },
+          "tokenId": "body2"
+        }
+      },
+      "underline": "on-custom",
+      "underlineOffset": {
+        "$res": true,
+        "xl": "3"
+      },
+      "iconSize": {
+        "$res": true,
+        "xl": "24"
+      },
+      "hasBackground": true,
+      "backgroundColor": {
+        "$res": true,
+        "xl": {
+          "value": "#D8D8D880",
+          "tokenId": "transparent-grey-light",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "hasBorder": false,
+      "borderWidth": {
+        "$res": true,
+        "xl": "1"
+      },
+      "borderColor": {
+        "$res": true,
+        "xl": {
+          "value": "#000000",
+          "tokenId": "black",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "boxShadow": {
+        "$res": true,
+        "xl": {
+          "value": "none",
+          "tokenId": "none"
+        }
+      }
     }
   ],
   "leftArrowPlacement": {
     "$res": true,
-    "xl": "inside"
+    "xl": "center"
   },
   "leftArrowOffset": {
     "$res": true,
@@ -1317,13 +1425,121 @@
   },
   "RightArrow": [
     {
-      "_id": "a1b17acd-52d2-4fcb-9ee0-12db297fc146",
-      "_component": "button"
+      "_id": "82c680a7-c0e2-414a-ae9d-ac3ed3625040",
+      "_component": "Button",
+      "_itemProps": {
+        "Grid": {
+          "RightArrow": {}
+        }
+      },
+      "Action": [],
+      "variant": "icon",
+      "label": {
+        "id": "local.782460a8-3dbd-4f04-baea-4ae086928a41",
+        "value": {
+          "en-US": "Click me"
+        },
+        "widgetId": "@easyblocks/local-text"
+      },
+      "icon": {
+        "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z\"/></svg>",
+        "tokenId": "arrowRight",
+        "widgetId": "@easyblocks/icon"
+      },
+      "color": {
+        "$res": true,
+        "xl": {
+          "value": "#000000",
+          "tokenId": "black",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "minHeight": {
+        "$res": true,
+        "xl": "42"
+      },
+      "minWidth": {
+        "$res": true,
+        "xl": "100"
+      },
+      "horizontalPadding": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "gap": {
+        "$res": true,
+        "xl": {
+          "value": "6px",
+          "tokenId": "6",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "cornerMode": {
+        "$res": true,
+        "xl": "circled"
+      },
+      "cornerRadius": {
+        "$res": true,
+        "xl": "12"
+      },
+      "font": {
+        "$res": true,
+        "xl": {
+          "value": {
+            "fontSize": 13,
+            "lineHeight": 1.8,
+            "fontFamily": "test-soehne-mono"
+          },
+          "tokenId": "body2"
+        }
+      },
+      "underline": "on-custom",
+      "underlineOffset": {
+        "$res": true,
+        "xl": "3"
+      },
+      "iconSize": {
+        "$res": true,
+        "xl": "24"
+      },
+      "hasBackground": true,
+      "backgroundColor": {
+        "$res": true,
+        "xl": {
+          "value": "#D8D8D880",
+          "tokenId": "transparent-grey-light",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "hasBorder": false,
+      "borderWidth": {
+        "$res": true,
+        "xl": "1"
+      },
+      "borderColor": {
+        "$res": true,
+        "xl": {
+          "value": "#000000",
+          "tokenId": "black",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "boxShadow": {
+        "$res": true,
+        "xl": {
+          "value": "none",
+          "tokenId": "none"
+        }
+      }
     }
   ],
   "rightArrowPlacement": {
     "$res": true,
-    "xl": "inside"
+    "xl": "center"
   },
   "rightArrowOffset": {
     "$res": true,
@@ -1369,14 +1585,14 @@
   },
   "HeaderStack": [
     {
-      "_id": "434b11d2-1dcd-4564-9b79-9826735949d0",
+      "_id": "e7fad997-635d-4c00-bbc8-f725dad20b18",
       "_component": "Stack",
       "Items": []
     }
   ],
   "HeaderSecondaryStack": [
     {
-      "_id": "67223908-a9a0-4fb5-b3fa-9560f1a5f3d4",
+      "_id": "b0270980-5763-41e8-a620-d303203dd495",
       "_component": "Stack",
       "Items": []
     }

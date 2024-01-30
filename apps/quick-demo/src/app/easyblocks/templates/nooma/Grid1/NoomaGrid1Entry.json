@@ -1,5 +1,5 @@
 {
-  "_id": "0474010f-1f7c-4056-82e3-9713290d97c4",
+  "_id": "22c562c5-aeff-44e0-8247-5a2c4ab20719",
   "_component": "Grid",
   "_itemProps": {
     "StandardPage": {
@@ -26,41 +26,25 @@
   "containerMargin": {
     "$res": true,
     "xl": {
-      "value": {
-        "$res": true,
-        "md": "5vw",
-        "lg": "8vw"
-      },
+      "value": { "$res": true, "md": "5vw", "lg": "8vw" },
       "tokenId": "containerMargin.standard",
       "widgetId": "@easyblocks/space"
     }
   },
   "containerMaxWidth": {
     "$res": true,
-    "xl": {
-      "value": -1,
-      "tokenId": "none"
-    }
+    "xl": { "value": -1, "tokenId": "none" }
   },
-  "escapeMargin": {
-    "$res": true,
-    "xl": true
-  },
+  "escapeMargin": { "$res": true, "xl": false },
   "Cards": [
     {
-      "_id": "96e5c68a-4aee-497a-89f3-d05deadaf419",
+      "_id": "b09e46de-cf21-4fef-906b-bb105f58d4cd",
       "_component": "ProductCard",
       "_itemProps": {
         "Grid": {
           "Cards": {
-            "itemSize": {
-              "$res": true,
-              "xl": "1x1"
-            },
-            "verticalAlign": {
-              "$res": true,
-              "xl": "auto"
-            }
+            "itemSize": { "$res": true, "xl": "1x1" },
+            "verticalAlign": { "$res": true, "xl": "auto" }
           }
         }
       },
@@ -73,19 +57,13 @@
       "withBackdrop": false
     },
     {
-      "_id": "99444343-ade0-4f15-9595-3647143e26cc",
+      "_id": "a3c804c6-86d9-4d7b-85c8-6947b4ee95ff",
       "_component": "ProductCard",
       "_itemProps": {
         "Grid": {
           "Cards": {
-            "itemSize": {
-              "$res": true,
-              "xl": "1x1"
-            },
-            "verticalAlign": {
-              "$res": true,
-              "xl": "auto"
-            }
+            "itemSize": { "$res": true, "xl": "1x1" },
+            "verticalAlign": { "$res": true, "xl": "auto" }
           }
         }
       },
@@ -98,19 +76,13 @@
       "withBackdrop": false
     },
     {
-      "_id": "a316450c-8926-4cba-9f84-b6d6cbfdc511",
+      "_id": "d8a76d2d-10d6-47d0-b05b-eb34fb423473",
       "_component": "ProductCard",
       "_itemProps": {
         "Grid": {
           "Cards": {
-            "itemSize": {
-              "$res": true,
-              "xl": "1x1"
-            },
-            "verticalAlign": {
-              "$res": true,
-              "xl": "auto"
-            }
+            "itemSize": { "$res": true, "xl": "1x1" },
+            "verticalAlign": { "$res": true, "xl": "auto" }
           }
         }
       },
@@ -123,19 +95,13 @@
       "withBackdrop": false
     },
     {
-      "_id": "9dbcbae0-fd67-4fb7-987e-6fadfa394e82",
+      "_id": "8b6ab0b2-0d13-4d4c-a64e-07a3015a6584",
       "_component": "ProductCard",
       "_itemProps": {
         "Grid": {
           "Cards": {
-            "itemSize": {
-              "$res": true,
-              "xl": "1x1"
-            },
-            "verticalAlign": {
-              "$res": true,
-              "xl": "auto"
-            }
+            "itemSize": { "$res": true, "xl": "1x1" },
+            "verticalAlign": { "$res": true, "xl": "auto" }
           }
         }
       },
@@ -148,170 +114,246 @@
       "withBackdrop": false
     }
   ],
-  "variant": {
-    "$res": true,
-    "xl": "grid"
-  },
-  "numberOfItems": {
-    "$res": true,
-    "xl": "4"
-  },
-  "fractionalItemWidth": {
-    "$res": true,
-    "xl": "1.25"
-  },
+  "variant": { "$res": true, "xl": "grid" },
+  "numberOfItems": { "$res": true, "xl": "4" },
+  "fractionalItemWidth": { "$res": true, "xl": "1.25" },
   "columnGap": {
     "$res": true,
-    "xl": {
-      "tokenId": "0",
-      "value": "0px",
-      "widgetId": "@easyblocks/space"
-    }
+    "xl": { "value": "0px", "tokenId": "0", "widgetId": "@easyblocks/space" }
   },
   "rowGap": {
     "$res": true,
-    "xl": {
-      "value": "16px",
-      "tokenId": "16",
-      "widgetId": "@easyblocks/space"
-    }
+    "xl": { "value": "16px", "tokenId": "16", "widgetId": "@easyblocks/space" }
   },
-  "verticalAlign": {
-    "$res": true,
-    "xl": "top"
-  },
-  "showSliderControls": {
-    "$res": true,
-    "xl": false
-  },
-  "shouldSliderItemsBeVisibleOnMargin": {
-    "$res": true,
-    "xl": true
-  },
+  "verticalAlign": { "$res": true, "xl": "top" },
+  "showSliderControls": { "$res": true, "xl": false },
+  "shouldSliderItemsBeVisibleOnMargin": { "$res": true, "xl": true },
   "gridMainObjectAspectRatio": {
     "$res": true,
-    "xl": {
-      "value": "1:1",
-      "widgetId": "@easyblocks/aspectRatio"
-    }
+    "xl": { "value": "1:1", "widgetId": "@easyblocks/aspectRatio" }
   },
   "paddingTop": {
     "$res": true,
-    "xl": {
-      "value": "0px",
-      "tokenId": "0",
-      "widgetId": "@easyblocks/space"
-    }
+    "xl": { "value": "0px", "tokenId": "0", "widgetId": "@easyblocks/space" }
   },
   "paddingBottom": {
     "$res": true,
-    "xl": {
-      "value": "0px",
-      "tokenId": "0",
-      "widgetId": "@easyblocks/space"
-    }
+    "xl": { "value": "0px", "tokenId": "0", "widgetId": "@easyblocks/space" }
   },
   "paddingLeft": {
     "$res": true,
-    "xl": {
-      "value": "0px",
-      "tokenId": "0",
-      "widgetId": "@easyblocks/space"
-    }
+    "xl": { "value": "0px", "tokenId": "0", "widgetId": "@easyblocks/space" }
   },
   "paddingRight": {
     "$res": true,
-    "xl": {
-      "value": "0px",
-      "tokenId": "0",
-      "widgetId": "@easyblocks/space"
-    }
+    "xl": { "value": "0px", "tokenId": "0", "widgetId": "@easyblocks/space" }
   },
   "LeftArrow": [
     {
-      "_id": "5c831ed5-72cf-48ad-b636-acb926acca31",
-      "_component": "button"
+      "_id": "e8261c54-9aaa-4c91-9fa0-7f85e747cdcd",
+      "_component": "Button",
+      "_itemProps": { "Grid": { "LeftArrow": {} } },
+      "Action": [],
+      "variant": "icon",
+      "label": {
+        "id": "local.69906a71-7fa3-4426-ae40-fc264f7e44ab",
+        "value": { "en-US": "Click me" },
+        "widgetId": "@easyblocks/local-text"
+      },
+      "icon": {
+        "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"red\" width=\"100px\" height=\"100px\"><path d=\"M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z\"/></svg>",
+        "tokenId": "arrowLeft",
+        "widgetId": "@easyblocks/icon"
+      },
+      "color": {
+        "$res": true,
+        "xl": {
+          "tokenId": "black",
+          "value": "#000000",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "minHeight": { "$res": true, "xl": "42" },
+      "minWidth": { "$res": true, "xl": "100" },
+      "horizontalPadding": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "gap": {
+        "$res": true,
+        "xl": {
+          "value": "6px",
+          "tokenId": "6",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "cornerMode": { "$res": true, "xl": "circled" },
+      "cornerRadius": { "$res": true, "xl": "12" },
+      "font": {
+        "$res": true,
+        "xl": {
+          "value": {
+            "fontSize": 13,
+            "lineHeight": 1.8,
+            "fontFamily": "test-soehne-mono"
+          },
+          "tokenId": "body2"
+        }
+      },
+      "underline": "on-custom",
+      "underlineOffset": { "$res": true, "xl": "3" },
+      "iconSize": { "$res": true, "xl": "24" },
+      "hasBackground": true,
+      "backgroundColor": {
+        "$res": true,
+        "xl": {
+          "tokenId": "transparent-grey-light",
+          "value": "#D8D8D880",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "hasBorder": false,
+      "borderWidth": { "$res": true, "xl": "1" },
+      "borderColor": {
+        "$res": true,
+        "xl": {
+          "value": "#000000",
+          "tokenId": "black",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "boxShadow": {
+        "$res": true,
+        "xl": { "value": "none", "tokenId": "none" }
+      }
     }
   ],
-  "leftArrowPlacement": {
-    "$res": true,
-    "xl": "inside"
-  },
+  "leftArrowPlacement": { "$res": true, "xl": "inside" },
   "leftArrowOffset": {
     "$res": true,
-    "xl": {
-      "value": "0px",
-      "tokenId": "0",
-      "widgetId": "@easyblocks/space"
-    }
+    "xl": { "value": "0px", "tokenId": "0", "widgetId": "@easyblocks/space" }
   },
   "RightArrow": [
     {
-      "_id": "9a62e084-82ce-4e8b-a7f0-9cbf1096532e",
-      "_component": "button"
+      "_id": "0effc661-0076-483d-9a4a-f843d027c1e9",
+      "_component": "Button",
+      "_itemProps": { "Grid": { "RightArrow": {} } },
+      "Action": [],
+      "variant": "icon",
+      "label": {
+        "id": "local.11e95d07-cf77-4e43-b676-ecf482ce8c6c",
+        "value": { "en-US": "Click me" },
+        "widgetId": "@easyblocks/local-text"
+      },
+      "icon": {
+        "tokenId": "arrowRight",
+        "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z\"/></svg>",
+        "widgetId": "@easyblocks/icon"
+      },
+      "color": {
+        "$res": true,
+        "xl": {
+          "tokenId": "black",
+          "value": "#000000",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "minHeight": { "$res": true, "xl": "42" },
+      "minWidth": { "$res": true, "xl": "100" },
+      "horizontalPadding": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "gap": {
+        "$res": true,
+        "xl": {
+          "value": "6px",
+          "tokenId": "6",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "cornerMode": { "$res": true, "xl": "circled" },
+      "cornerRadius": { "$res": true, "xl": "12" },
+      "font": {
+        "$res": true,
+        "xl": {
+          "value": {
+            "fontSize": 13,
+            "lineHeight": 1.8,
+            "fontFamily": "test-soehne-mono"
+          },
+          "tokenId": "body2"
+        }
+      },
+      "underline": "on-custom",
+      "underlineOffset": { "$res": true, "xl": "3" },
+      "iconSize": { "$res": true, "xl": "24" },
+      "hasBackground": true,
+      "backgroundColor": {
+        "$res": true,
+        "xl": {
+          "tokenId": "transparent-grey-light",
+          "value": "#D8D8D880",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "hasBorder": false,
+      "borderWidth": { "$res": true, "xl": "1" },
+      "borderColor": {
+        "$res": true,
+        "xl": {
+          "value": "#000000",
+          "tokenId": "black",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "boxShadow": {
+        "$res": true,
+        "xl": { "value": "none", "tokenId": "none" }
+      }
     }
   ],
-  "rightArrowPlacement": {
-    "$res": true,
-    "xl": "inside"
-  },
+  "rightArrowPlacement": { "$res": true, "xl": "inside" },
   "rightArrowOffset": {
     "$res": true,
-    "xl": {
-      "value": "0px",
-      "tokenId": "0",
-      "widgetId": "@easyblocks/space"
-    }
+    "xl": { "tokenId": "0", "value": "0px", "widgetId": "@easyblocks/space" }
   },
   "headerMode": "1-stack",
   "layout1Stack": "center",
-  "layout2Stacks": {
-    "$res": true,
-    "xl": "left-right"
-  },
-  "layout2StacksVerticalAlign": {
-    "$res": true,
-    "xl": "center"
-  },
+  "layout2Stacks": { "$res": true, "xl": "left-right" },
+  "layout2StacksVerticalAlign": { "$res": true, "xl": "center" },
   "headerStacksGap": {
     "$res": true,
-    "xl": {
-      "value": "12px",
-      "tokenId": "12",
-      "widgetId": "@easyblocks/space"
-    }
+    "xl": { "value": "12px", "tokenId": "12", "widgetId": "@easyblocks/space" }
   },
   "headerSectionGap": {
     "$res": true,
-    "xl": {
-      "tokenId": "24",
-      "value": "24px",
-      "widgetId": "@easyblocks/space"
-    }
+    "xl": { "value": "24px", "tokenId": "24", "widgetId": "@easyblocks/space" }
   },
   "footerSectionGap": {
     "$res": true,
-    "xl": {
-      "value": "12px",
-      "tokenId": "12",
-      "widgetId": "@easyblocks/space"
-    }
+    "xl": { "value": "12px", "tokenId": "12", "widgetId": "@easyblocks/space" }
   },
   "HeaderStack": [
     {
-      "_id": "f3626ce7-382f-4bd1-875a-740b388a8de3",
+      "_id": "98450741-811a-4b49-baae-38b577829ac8",
       "_component": "Stack",
       "Items": [
         {
-          "_id": "bd0ff67f-11fd-479d-9894-edb64e68af9c",
+          "_id": "2a92e462-6494-46e8-877a-68a6af5c4dbe",
           "_component": "@easyblocks/rich-text",
           "_itemProps": {
             "Stack": {
               "Items": {
-                "width": {
-                  "$res": true,
-                  "xl": "512px"
-                },
+                "width": { "$res": true, "xl": "512px" },
                 "marginBottom": {
                   "$res": true,
                   "xl": {
@@ -320,24 +362,37 @@
                     "widgetId": "@easyblocks/space"
                   }
                 },
-                "align": {
-                  "$res": true,
-                  "xl": "left"
-                }
+                "align": { "$res": true, "xl": "left" }
               }
             }
           },
           "elements": {
             "en-US": [
               {
+                "_id": "3195d494-95b3-42f5-884b-24d79f70307b",
                 "_component": "@easyblocks/rich-text-block-element",
+                "type": "paragraph",
                 "elements": [
                   {
+                    "_id": "4b940675-54d7-4b34-8f02-dc43c9acb9e8",
                     "_component": "@easyblocks/rich-text-line-element",
                     "elements": [
                       {
-                        "_id": "64a36dd1-26ce-4022-948b-3932a9a66fa5",
+                        "_id": "e99e70ba-7c72-46d0-bed5-91647c69a579",
                         "_component": "@easyblocks/rich-text-part",
+                        "value": "New arrivals",
+                        "font": {
+                          "$res": true,
+                          "xl": {
+                            "value": {
+                              "fontFamily": "test-national-2",
+                              "fontSize": 21,
+                              "lineHeight": 1.4,
+                              "fontWeight": 600
+                            },
+                            "tokenId": "heading3"
+                          }
+                        },
                         "color": {
                           "$res": true,
                           "xl": {
@@ -346,34 +401,15 @@
                             "widgetId": "@easyblocks/color"
                           }
                         },
-                        "font": {
-                          "$res": true,
-                          "xl": {
-                            "tokenId": "heading3",
-                            "value": {
-                              "fontFamily": "test-national-2",
-                              "fontSize": 21,
-                              "lineHeight": 1.4,
-                              "fontWeight": 600
-                            }
-                          }
-                        },
-                        "value": "New arrivals",
                         "TextWrapper": []
                       }
-                    ],
-                    "_id": "04586890-4c54-4903-a37b-9b4f9c7fcf78"
+                    ]
                   }
-                ],
-                "type": "paragraph",
-                "_id": "6df951cd-092a-4ec5-8442-f4e22089d193"
+                ]
               }
             ]
           },
-          "align": {
-            "$res": true,
-            "xl": "left"
-          },
+          "align": { "$res": true, "xl": "left" },
           "accessibilityRole": "div",
           "isListStyleAuto": true,
           "mainFont": {
@@ -401,7 +437,7 @@
   ],
   "HeaderSecondaryStack": [
     {
-      "_id": "19154809-b30b-4e19-a099-6478b5653eb1",
+      "_id": "29728dff-8791-488f-82cd-456cf4cc9238",
       "_component": "Stack",
       "Items": []
     }
@@ -409,10 +445,6 @@
   "Background__": [],
   "padding": {
     "$res": true,
-    "xl": {
-      "value": "24px",
-      "tokenId": "24",
-      "widgetId": "@easyblocks/space"
-    }
+    "xl": { "value": "24px", "tokenId": "24", "widgetId": "@easyblocks/space" }
   }
 }

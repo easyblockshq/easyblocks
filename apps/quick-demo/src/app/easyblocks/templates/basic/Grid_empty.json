@@ -1,4 +1,287 @@
 {
-  "_id": "0474010f-1f7c-4056-82e3-9713290d97c4",
-  "_component": "Grid"
+  "_id": "bbccc88e-3c48-4fe0-a13e-7e659db4257f",
+  "_component": "Grid",
+  "_itemProps": {
+    "StandardPage": {
+      "data": {
+        "topMargin": {
+          "$res": true,
+          "xl": {
+            "value": "0px",
+            "tokenId": "0",
+            "widgetId": "@easyblocks/space"
+          }
+        },
+        "bottomMargin": {
+          "$res": true,
+          "xl": {
+            "value": "32px",
+            "tokenId": "32",
+            "widgetId": "@easyblocks/space"
+          }
+        }
+      }
+    }
+  },
+  "containerMargin": {
+    "$res": true,
+    "xl": {
+      "value": { "$res": true, "md": "5vw", "lg": "8vw" },
+      "tokenId": "containerMargin.standard",
+      "widgetId": "@easyblocks/space"
+    }
+  },
+  "containerMaxWidth": {
+    "$res": true,
+    "xl": { "value": -1, "tokenId": "none" }
+  },
+  "escapeMargin": { "$res": true, "xl": false },
+  "Cards": [],
+  "variant": { "$res": true, "xl": "grid" },
+  "numberOfItems": { "$res": true, "xl": "4" },
+  "fractionalItemWidth": { "$res": true, "xl": "1.25" },
+  "columnGap": {
+    "$res": true,
+    "xl": { "value": "16px", "tokenId": "16", "widgetId": "@easyblocks/space" }
+  },
+  "rowGap": {
+    "$res": true,
+    "xl": { "value": "16px", "tokenId": "16", "widgetId": "@easyblocks/space" }
+  },
+  "verticalAlign": { "$res": true, "xl": "top" },
+  "showSliderControls": { "$res": true, "xl": false },
+  "shouldSliderItemsBeVisibleOnMargin": { "$res": true, "xl": true },
+  "gridMainObjectAspectRatio": {
+    "$res": true,
+    "xl": { "value": "1:1", "widgetId": "@easyblocks/aspectRatio" }
+  },
+  "paddingTop": {
+    "$res": true,
+    "xl": { "value": "0px", "tokenId": "0", "widgetId": "@easyblocks/space" }
+  },
+  "paddingBottom": {
+    "$res": true,
+    "xl": { "value": "0px", "tokenId": "0", "widgetId": "@easyblocks/space" }
+  },
+  "paddingLeft": {
+    "$res": true,
+    "xl": { "value": "0px", "tokenId": "0", "widgetId": "@easyblocks/space" }
+  },
+  "paddingRight": {
+    "$res": true,
+    "xl": { "value": "0px", "tokenId": "0", "widgetId": "@easyblocks/space" }
+  },
+  "LeftArrow": [
+    {
+      "_id": "3373f25f-e02d-4557-adcf-6e5d362ff960",
+      "_component": "Button",
+      "_itemProps": { "Grid": { "LeftArrow": {} } },
+      "Action": [],
+      "variant": "icon",
+      "label": {
+        "id": "local.34771ea7-5883-49ac-98dd-800d57532bad",
+        "value": { "en-US": "Click me" },
+        "widgetId": "@easyblocks/local-text"
+      },
+      "icon": {
+        "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"red\" width=\"100px\" height=\"100px\"><path d=\"M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z\"/></svg>",
+        "tokenId": "arrowLeft",
+        "widgetId": "@easyblocks/icon"
+      },
+      "color": {
+        "$res": true,
+        "xl": {
+          "value": "#252525",
+          "tokenId": "grey_05",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "minHeight": { "$res": true, "xl": "42" },
+      "minWidth": { "$res": true, "xl": "100" },
+      "horizontalPadding": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "gap": {
+        "$res": true,
+        "xl": {
+          "value": "6px",
+          "tokenId": "6",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "cornerMode": { "$res": true, "xl": "circled" },
+      "cornerRadius": { "$res": true, "xl": "12" },
+      "font": {
+        "$res": true,
+        "xl": {
+          "value": {
+            "fontSize": 13,
+            "lineHeight": 1.8,
+            "fontFamily": "test-soehne-mono"
+          },
+          "tokenId": "body2"
+        }
+      },
+      "underline": "on-custom",
+      "underlineOffset": { "$res": true, "xl": "3" },
+      "iconSize": { "$res": true, "xl": "24" },
+      "hasBackground": true,
+      "backgroundColor": {
+        "$res": true,
+        "xl": {
+          "value": "#D8D8D880",
+          "tokenId": "transparent-grey-light",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "hasBorder": false,
+      "borderWidth": { "$res": true, "xl": "1" },
+      "borderColor": {
+        "$res": true,
+        "xl": {
+          "value": "#000000",
+          "tokenId": "black",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "boxShadow": {
+        "$res": true,
+        "xl": { "value": "none", "tokenId": "none" }
+      }
+    }
+  ],
+  "leftArrowPlacement": { "$res": true, "xl": "center" },
+  "leftArrowOffset": {
+    "$res": true,
+    "xl": { "value": "0px", "widgetId": "@easyblocks/space" }
+  },
+  "RightArrow": [
+    {
+      "_id": "f082f68f-e52d-455e-a264-c315ce8ca3a4",
+      "_component": "Button",
+      "_itemProps": { "Grid": { "RightArrow": {} } },
+      "Action": [],
+      "variant": "icon",
+      "label": {
+        "id": "local.f876f3b3-e59a-4f9e-af59-a7156093aed5",
+        "value": { "en-US": "Click me" },
+        "widgetId": "@easyblocks/local-text"
+      },
+      "icon": {
+        "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z\"/></svg>",
+        "tokenId": "arrowRight",
+        "widgetId": "@easyblocks/icon"
+      },
+      "color": {
+        "$res": true,
+        "xl": {
+          "value": "#252525",
+          "tokenId": "grey_05",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "minHeight": { "$res": true, "xl": "42" },
+      "minWidth": { "$res": true, "xl": "100" },
+      "horizontalPadding": {
+        "$res": true,
+        "xl": {
+          "value": "16px",
+          "tokenId": "16",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "gap": {
+        "$res": true,
+        "xl": {
+          "value": "6px",
+          "tokenId": "6",
+          "widgetId": "@easyblocks/space"
+        }
+      },
+      "cornerMode": { "$res": true, "xl": "circled" },
+      "cornerRadius": { "$res": true, "xl": "12" },
+      "font": {
+        "$res": true,
+        "xl": {
+          "value": {
+            "fontSize": 13,
+            "lineHeight": 1.8,
+            "fontFamily": "test-soehne-mono"
+          },
+          "tokenId": "body2"
+        }
+      },
+      "underline": "on-custom",
+      "underlineOffset": { "$res": true, "xl": "3" },
+      "iconSize": { "$res": true, "xl": "24" },
+      "hasBackground": true,
+      "backgroundColor": {
+        "$res": true,
+        "xl": {
+          "value": "#D8D8D880",
+          "tokenId": "transparent-grey-light",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "hasBorder": false,
+      "borderWidth": { "$res": true, "xl": "1" },
+      "borderColor": {
+        "$res": true,
+        "xl": {
+          "value": "#000000",
+          "tokenId": "black",
+          "widgetId": "@easyblocks/color"
+        }
+      },
+      "boxShadow": {
+        "$res": true,
+        "xl": { "value": "none", "tokenId": "none" }
+      }
+    }
+  ],
+  "rightArrowPlacement": { "$res": true, "xl": "inside" },
+  "rightArrowOffset": {
+    "$res": true,
+    "xl": { "value": "0px", "widgetId": "@easyblocks/space" }
+  },
+  "headerMode": "none",
+  "layout1Stack": "left",
+  "layout2Stacks": { "$res": true, "xl": "left-right" },
+  "layout2StacksVerticalAlign": { "$res": true, "xl": "center" },
+  "headerStacksGap": {
+    "$res": true,
+    "xl": { "value": "12px", "tokenId": "12", "widgetId": "@easyblocks/space" }
+  },
+  "headerSectionGap": {
+    "$res": true,
+    "xl": { "value": "12px", "tokenId": "12", "widgetId": "@easyblocks/space" }
+  },
+  "footerSectionGap": {
+    "$res": true,
+    "xl": { "value": "12px", "tokenId": "12", "widgetId": "@easyblocks/space" }
+  },
+  "HeaderStack": [
+    {
+      "_id": "c7d02cda-48a9-498b-9022-d3260d9e85fc",
+      "_component": "Stack",
+      "Items": []
+    }
+  ],
+  "HeaderSecondaryStack": [
+    {
+      "_id": "108f69ed-a3f3-4426-b746-6d7f44e48712",
+      "_component": "Stack",
+      "Items": []
+    }
+  ],
+  "Background__": [],
+  "padding": {
+    "$res": true,
+    "xl": { "value": "24px", "tokenId": "24", "widgetId": "@easyblocks/space" }
+  }
 }
