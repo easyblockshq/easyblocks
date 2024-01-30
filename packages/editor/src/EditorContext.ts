@@ -50,7 +50,6 @@ export type EditorContextType = Omit<BaseEditorContextType, "types"> & {
   focussedField: Array<string>;
   setFocussedField: (field: Array<string> | string) => void;
   form: Form<any, InternalAnyField>;
-  isMaster?: boolean;
   isEditing?: boolean;
   actions: ActionsType;
   save: (document: Document) => Promise<void>;

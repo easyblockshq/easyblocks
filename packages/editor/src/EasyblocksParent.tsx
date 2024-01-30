@@ -74,6 +74,7 @@ export function EasyblocksParent(props: EasyblocksParentProps) {
             readOnly={editorSearchParams.readOnly ?? true}
             documentId={editorSearchParams.documentId}
             rootComponentId={editorSearchParams.rootComponentId ?? null}
+            rootTemplateId={editorSearchParams.rootTemplateId}
             externalData={props.externalData}
             onExternalDataChange={props.onExternalDataChange}
             widgets={{

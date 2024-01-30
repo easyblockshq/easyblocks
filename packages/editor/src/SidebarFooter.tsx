@@ -24,7 +24,7 @@ const IdWrapper = styled.div`
 
 export function SidebarFooter(props: { paths: string[] }) {
   const editorContext = useEditorContext();
-  const { form, isMaster, isAdminMode } = editorContext;
+  const { form, isAdminMode } = editorContext;
 
   if (props.paths.length === 0) {
     return null;
@@ -76,7 +76,7 @@ export function SidebarFooter(props: { paths: string[] }) {
           </ButtonSecondary>
         )}
 
-        {(isMaster || isAdminMode) && (
+        {isAdminMode && (
           <div style={{ paddingTop: 16 }}>
             <div>
               <ButtonPrimary

@@ -158,6 +158,7 @@ type EditorProps = {
   readOnly: boolean;
   documentId: string | null;
   rootComponentId: string | null;
+  rootTemplateId: string | null;
   save?: (document: Document) => Promise<void>;
   onClose?: () => void;
   externalData: FetchOutputResources;
@@ -229,34 +230,57 @@ function EditorBackendInitializer(props: EditorProps) {
 const EditorWrapper = memo(
   (props: EditorProps & { document: Document | null }) => {
     if (!props.document) {
-      if (props.rootComponentId === null) {
-        throw new Error(
-          "When you create a new document you must pass a 'rootContainer' parameter to the editor"
-        );
-      }
+      if (props.rootTemplateId) {
+        if (props.rootComponentId) {
+          throw new Error(
+            "You can't pass both 'rootContainer' and 'rootTemplate' parameters to the editor"
+          );
+        }
 
-      if (
-        !props.config.components?.find(
-          (component) => component.id === props.rootComponentId
-        )
-      ) {
-        throw new Error(
-          `The component given in rootContainer ("${props.rootComponentId}") doesn't exist in Config.components`
+        const template = props.config.templates?.find(
+          (template) => template.id === props.rootTemplateId
         );
+
+        if (!template) {
+          throw new Error(
+            `The template given in "rootTemplate" ("${props.rootTemplateId}") doesn't exist in Config.templates`
+          );
+        }
+      } else {
+        if (props.rootComponentId === null) {
+          throw new Error(
+            "When you create a new document you must pass a 'rootContainer' parameter to the editor"
+          );
+        }
+
+        if (
+          !props.config.components?.find(
+            (component) => component.id === props.rootComponentId
+          )
+        ) {
+          throw new Error(
+            `The component given in rootContainer ("${props.rootComponentId}") doesn't exist in Config.components`
+          );
+        }
       }
     }
 
     // Locales
     if (!props.config.locales) {
-      throw new Error("Required property config.locales is empty");
+      throw new Error("Required property Config.locales is empty");
     }
 
     checkLocalesCorrectness(props.config.locales); // very important to check locales correctness, circular references etc. Other functions
     const locale = props.locale ?? getDefaultLocale(props.config.locales).code;
 
+    const rootTemplateEntry = props.rootTemplateId
+      ? props.config.templates?.find((t) => t.id === props.rootTemplateId)
+          ?.entry
+      : null;
+
     const rootComponentId = props.document
       ? props.document.entry._component
-      : props.rootComponentId;
+      : rootTemplateEntry?._component ?? props.rootComponentId;
 
     const compilationContext = createCompilationContext(
       props.config,
@@ -269,7 +293,10 @@ const EditorWrapper = memo(
     const initialEntry = props.document
       ? adaptRemoteConfig(props.document.entry, compilationContext)
       : normalize(
-          { _id: uniqueId(), _component: props.rootComponentId! },
+          rootTemplateEntry ?? {
+            _id: uniqueId(),
+            _component: rootComponentId!,
+          },
           compilationContext
         );
 
@@ -512,8 +539,6 @@ const EditorContent = ({
     },
   });
 
-  const isMaster = !!props.config.__masterEnvironment;
-
   const [templates, setTemplates] = useState<Template[] | undefined>(undefined);
 
   const [openTemplateModalAction, setOpenTemplateModalAction] = useState<
@@ -670,7 +695,6 @@ const EditorContent = ({
     templates,
     syncTemplates,
     breakpointIndex,
-    isMaster,
     focussedField,
     form,
     setFocussedField: handleSetFocussedField,
