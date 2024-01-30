@@ -19,17 +19,17 @@ import {
   SchemaProp,
   Spacing,
   Template,
-  ThemeRefValue,
+  ThemeTokenValue,
   TokenTypeDefinition,
 } from "../types";
 import { InternalAnyTinaField } from "./schema";
 
 export type Theme = {
   space: {
-    [key: string]: ThemeRefValue<ResponsiveValue<Spacing>>;
+    [key: string]: ThemeTokenValue<ResponsiveValue<Spacing>>;
   };
   [key: string]: {
-    [key: string]: ThemeRefValue<any>;
+    [key: string]: ThemeTokenValue<any>;
   };
 };
 

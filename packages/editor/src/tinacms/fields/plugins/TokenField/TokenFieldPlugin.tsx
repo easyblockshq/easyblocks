@@ -3,7 +3,7 @@ import {
   Field,
   NonNullish,
   ThemeFont,
-  ThemeRefValue,
+  ThemeTokenValue,
   TokenTypeWidgetComponentProps,
   getDevicesWidths,
   isTrulyResponsiveValue,
@@ -35,7 +35,7 @@ import { isMixedFieldValue } from "../../components/isMixedFieldValue";
 import { wrapFieldsWithMeta } from "../wrapFieldWithMeta";
 
 interface TokenField<TokenValue extends NonNullish = NonNullish> extends Field {
-  tokens: { [key: string]: ThemeRefValue<TokenValue> };
+  tokens: { [key: string]: ThemeTokenValue<TokenValue> };
   normalizeCustomValue?: (value: string) => any;
   allowCustom?: boolean;
   extraValues?: Array<string | { value: string; label: string }>;
@@ -375,7 +375,7 @@ function TokenFieldComponent<TokenValue extends NonNullish>({
 
 function getFontTokenLabel(
   name: string,
-  token: ThemeRefValue<ThemeFont>,
+  token: ThemeTokenValue<ThemeFont>,
   editorContext: EditorContextType
 ) {
   const filledResponsiveFontValue = responsiveValueFill(

@@ -99,15 +99,14 @@ export const easyblocksConfig: Config = {
       defaultValue: { tokenId: "none" },
     },
   },
-  // disableCustomTemplates: true,
   hideCloseButton: true,
-  // templates,
   tokens: {
     colors: [
       {
         id: "grey_05",
         label: "Dark",
         value: "#252525",
+        isDefault: true,
       },
       {
         id: "grey_01",
@@ -236,6 +235,7 @@ export const easyblocksConfig: Config = {
           lineHeight: 1.8,
           fontFamily: "test-soehne-mono",
         },
+        isDefault: true,
       },
       {
         id: "body2",

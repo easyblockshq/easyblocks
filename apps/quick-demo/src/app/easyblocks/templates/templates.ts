@@ -20,7 +20,7 @@ import { NoomaTwoCards1 } from "@/app/easyblocks/templates/nooma/TwoCards1/Nooma
 import { NoomaTwoCards2 } from "@/app/easyblocks/templates/nooma/TwoCards2/NoomaTwoCards2";
 import { NoomaTwoCards3 } from "@/app/easyblocks/templates/nooma/TwoCards3/NoomaTwoCards3";
 import { NoomaTwoCards4 } from "@/app/easyblocks/templates/nooma/TwoCards4/NoomaTwoCards4";
-import { buildRichTextNoCodeEntry, Template } from "@easyblocks/core";
+import { Template } from "@easyblocks/core";
 import BannerSection2_empty from "./basic/BannerSection2_empty.json";
 import BasicCard_empty from "./basic/BasicCard_empty.json";
 import Button_icon_standard from "./basic/Button_icon_standard.json";
@@ -31,7 +31,6 @@ import Grid_empty from "./basic/Grid_empty.json";
 import Slider_empty from "./basic/Slider_empty.json";
 import TwoCards_empty from "./basic/TwoCards_empty.json";
 import Video from "./basic/video.json";
-import SimpleText_default from "./nooma/SimpleText_default.json";
 
 export const templates: Template[] = [
   {
@@ -106,20 +105,6 @@ export const templates: Template[] = [
     id: "Video_default",
     label: "Default",
     entry: Video,
-  },
-  {
-    id: "RichText_default",
-    label: "Default",
-    entry: buildRichTextNoCodeEntry({
-      text: "Lorem ipsum",
-      color: "grey_05",
-      font: "body",
-    }),
-  },
-  {
-    id: "SimpleText_default",
-    label: "Default",
-    entry: SimpleText_default,
   },
   {
     id: "Button_standard",

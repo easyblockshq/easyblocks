@@ -16,12 +16,16 @@ import { EditorContextType } from "../EditorContext";
 import { configMap } from "../utils/config/configMap";
 
 function getDefaultTemplateForDefinition(
-  def: InternalComponentDefinition
+  def: InternalComponentDefinition,
+  editorContext: EditorContextType
 ): InternalTemplate {
   // Text has different way of building a default config
   const config: NoCodeComponentEntry =
     def.id === "@easyblocks/rich-text"
-      ? buildRichTextNoCodeEntry()
+      ? buildRichTextNoCodeEntry({
+          color: getDefaultTokenId(editorContext.theme.colors),
+          font: getDefaultTokenId(editorContext.theme.fonts),
+        })
       : {
           _component: def.id,
           _id: uniqueId(),
@@ -33,6 +37,10 @@ function getDefaultTemplateForDefinition(
     entry: config,
     isUserDefined: false,
   };
+}
+
+function getDefaultTokenId(tokens: EditorContextType["theme"][string]) {
+  return Object.entries(tokens).find(([, value]) => value.isDefault)?.[0];
 }
 
 export async function getTemplates(
@@ -53,7 +61,8 @@ export async function getTemplates(
 
 function getNecessaryDefaultTemplates(
   components: InternalComponentDefinition[],
-  templates: Template[]
+  templates: Template[],
+  editorContext: EditorContextType
 ) {
   const result: InternalTemplate[] = [];
 
@@ -62,7 +71,7 @@ function getNecessaryDefaultTemplates(
       (template) => template.entry._component === component.id
     );
     if (componentTemplates.length === 0) {
-      result.push(getDefaultTemplateForDefinition(component));
+      result.push(getDefaultTemplateForDefinition(component, editorContext));
     }
   });
 
@@ -109,7 +118,8 @@ function getTemplatesInternal(
     ...configTemplates,
     ...getNecessaryDefaultTemplates(
       editorContext.definitions.components,
-      configTemplates
+      configTemplates,
+      editorContext
     ),
   ];
 

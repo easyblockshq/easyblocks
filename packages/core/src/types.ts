@@ -22,12 +22,10 @@ export type NoCodeComponentEntry = {
   [key: string]: any; // props
 };
 
-export type RefType = "dev" | "ds" | "map";
-
-export type ThemeRefValue<T> = TokenValue<T> & {
-  type: RefType;
+export type ThemeTokenValue<T> = {
+  value: T;
+  isDefault: boolean;
   label?: string;
-  mapTo?: string | string[];
 };
 
 export type Spacing = string; // 10px, 0px, 10vw, etc
@@ -327,11 +325,11 @@ export type InternalTemplate = {
 
 export type Template = InternalTemplate | UserDefinedTemplate;
 
-type RuntimeConfigThemeValue<T> = {
+export type ConfigTokenValue<T> = {
   id: string;
   label?: string;
   value: T;
-  mapTo?: string | string[];
+  isDefault?: boolean;
 };
 
 export type ExternalParams = Record<string, unknown>;
@@ -561,11 +559,9 @@ export type Config = {
   hideCloseButton?: boolean;
   templates?: Template[];
   tokens?: {
-    [key in keyof ConfigTokens]?: Array<
-      RuntimeConfigThemeValue<ConfigTokens[key]>
-    >;
+    [key in keyof ConfigTokens]?: Array<ConfigTokenValue<ConfigTokens[key]>>;
   } & {
-    [key: string & Record<never, never>]: Array<RuntimeConfigThemeValue<any>>;
+    [key: string & Record<never, never>]: Array<ConfigTokenValue<any>>;
   };
 };
 

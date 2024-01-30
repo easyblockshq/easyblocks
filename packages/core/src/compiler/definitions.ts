@@ -36,7 +36,7 @@ import {
   SerializedComponentDefinitions,
   StringSchemaProp,
   TextSchemaProp,
-  ThemeRefValue,
+  ThemeTokenValue,
   TokenSchemaProp,
   TokenValue,
   TrulyResponsiveValue,
@@ -713,8 +713,12 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
         if (customTypeDefinition.type === "token") {
           const themeValues =
             compilationContext.theme[customTypeDefinition.token];
-          const defaultValue =
-            schemaProp.defaultValue ?? customTypeDefinition.defaultValue;
+          const defaultThemeValueEntry = Object.entries(themeValues).find(
+            ([, v]) => v.isDefault
+          );
+          const defaultValue = defaultThemeValueEntry
+            ? { tokenId: defaultThemeValueEntry[0] }
+            : schemaProp.defaultValue ?? customTypeDefinition.defaultValue;
           const defaultWidgetId = customTypeDefinition.widget?.id;
 
           const createTokenNormalizer = (normalizeScalar?: (x: any) => any) => {
@@ -780,7 +784,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
             const iconDefaultValue =
               normalizeTokenValue<string>(
                 schemaProp.defaultValue,
-                themeValues as Record<string, ThemeRefValue<string>>,
+                themeValues as Record<string, ThemeTokenValue<string>>,
                 customTypeDefinition.defaultValue,
                 defaultWidgetId,
                 scalarValueNormalize
@@ -789,7 +793,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
             return (
               normalizeTokenValue<string>(
                 value,
-                themeValues as Record<string, ThemeRefValue<string>>,
+                themeValues as Record<string, ThemeTokenValue<string>>,
                 iconDefaultValue,
                 defaultWidgetId,
                 scalarValueNormalize
@@ -1057,7 +1061,7 @@ function getFirstOptionValue(
 
 function normalizeTokenValue<T>(
   x: any,
-  themeValues: { [key: string]: ThemeRefValue<T> },
+  themeValues: { [key: string]: ThemeTokenValue<T> },
   defaultValue: { tokenId: string } | { value: any },
   defaultWidgetId: string | undefined,
   scalarValueNormalize: (x: any) => T | undefined = (x) => undefined

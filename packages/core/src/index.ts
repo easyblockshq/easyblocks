@@ -12,8 +12,6 @@ export type {
   EasyblocksProps,
 } from "./components/Easyblocks";
 export { easyblocksGetCssText, easyblocksGetStyleTag } from "./components/ssr";
-export { createFetchingContext } from "./createFetchingContext";
-export type { FetchingContext } from "./createFetchingContext";
 export { isNoCodeComponentOfType } from "./isNoCodeComponentOfType";
 export * from "./locales";
 export * from "./resourcesUtils";

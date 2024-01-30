@@ -12,6 +12,7 @@ import {
   SchemaProp,
   TokenTypeDefinition,
   ExternalTypeDefinition,
+  ThemeTokenValue,
 } from "../types";
 import { richTextEditableComponent } from "./builtins/$richText/$richText";
 import { richTextBlockElementEditableComponent } from "./builtins/$richText/$richTextBlockElement/$richTextBlockElement";
@@ -100,12 +101,10 @@ export function createCompilationContext(
         val = { $res: true, [mainDevice.id]: val };
       }
 
-      const { id, ...rest } = space;
-
-      theme.space[id] = {
-        ...rest,
-        type: "dev",
+      theme.space[space.id] = {
         value: normalizeSpace(themeScalarValueToResponsiveValue(val, devices)),
+        isDefault: space.isDefault ?? false,
+        label: space.label,
       };
     });
   }
@@ -128,7 +127,7 @@ export function createCompilationContext(
       );
     }
 
-    theme[id] = Object.fromEntries(
+    theme[id] = Object.fromEntries<ThemeTokenValue<any>>(
       tokens.map((token) => {
         if (type.validate) {
           if (type.validate(token.value) !== true) {
@@ -141,9 +140,9 @@ export function createCompilationContext(
         return [
           token.id,
           {
-            type: "dev",
             label: token.label,
             value: token.value,
+            isDefault: token.isDefault ?? false,
           },
         ];
       })
