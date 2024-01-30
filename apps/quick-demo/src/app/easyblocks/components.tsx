@@ -16,6 +16,7 @@ import { Stack } from "./components/Stack/Stack";
 import { TextLink } from "./components/TextLink/TextLink";
 import { TwoCards } from "./components/TwoCards/TwoCards";
 import { Video } from "./components/Video/Video";
+import { SimpleBanner } from "./components/SimpleBanner/SimpleBanner";
 
 const components = {
   ProductCard,
@@ -36,6 +37,7 @@ const components = {
   BannerSection,
   VimeoPlayer,
   TextLink,
+  SimpleBanner,
 };
 
 export { components };
