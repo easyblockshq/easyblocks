@@ -5,7 +5,7 @@
     "dev": "lerna run --stream dev --scope '@easyblocks/core' --scope '@easyblocks/editor'",
     "nuke": "./scripts/nuke.sh",
     "clean": "./scripts/clean.sh",
-    "build": "nx run-many --target build --exclude app --exclude website --exclude '@easyblocks/media'",
+    "build": "nx run-many --target build --exclude website'",
     "test": "nx run-many --target test",
     "lint": "nx affected --target lint --base origin/main -- --quiet",
     "lint:packages": "nx run-many --target lint --projects '@easyblocks/*' -- --quiet",
