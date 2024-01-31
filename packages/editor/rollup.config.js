@@ -6,7 +6,6 @@ import nodeResolve from "@rollup/plugin-node-resolve";
 import replace from "@rollup/plugin-replace";
 import {
   getFullySpecifiedEnvs,
-  internalDependenciesValidator,
   isDevelopment,
   isProduction,
 } from "@easyblocks/build-tools";
@@ -14,8 +13,6 @@ import visualizer from "rollup-plugin-visualizer";
 import packageJson from "./package.json";
 
 const extensions = [".js", ".jsx", ".ts", ".tsx"];
-
-internalDependenciesValidator();
 
 function getPlugins(format) {
   /**

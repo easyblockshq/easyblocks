@@ -2,11 +2,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const dotenv = require("dotenv");
 const path = require("node:path");
-const webpack = require("webpack");
-const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
-const {
-  internalDependenciesValidator,
-} = require("./internalDependenciesValidator");
 
 const NODE_ENV =
   process.env.NODE_ENV === "development" ? "development" : "production";
@@ -40,5 +35,4 @@ module.exports = {
   isProduction,
   isDevelopment,
   getFullySpecifiedEnvs,
-  internalDependenciesValidator,
 };

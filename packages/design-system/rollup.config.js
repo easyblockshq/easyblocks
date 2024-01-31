@@ -6,7 +6,6 @@ import nodeResolve from "@rollup/plugin-node-resolve";
 import replace from "@rollup/plugin-replace";
 import {
   getFullySpecifiedEnvs,
-  internalDependenciesValidator,
   isDevelopment,
   isProduction,
 } from "@easyblocks/build-tools";
@@ -15,8 +14,6 @@ import preserveDirectives from "rollup-plugin-preserve-directives";
 import packageJson from "./package.json";
 
 const extensions = [".js", ".jsx", ".ts", ".tsx"];
-
-internalDependenciesValidator();
 
 function getPlugins(format) {
   const preserveDirectivesPlugin = preserveDirectives();
