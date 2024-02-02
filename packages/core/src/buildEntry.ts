@@ -152,7 +152,6 @@ function findChangedExternalData(
 
     changedExternalData[id] = {
       id: externalReference.id,
-      type: schemaProp.type,
       widgetId: externalReference.widgetId,
       fetchParams,
     };

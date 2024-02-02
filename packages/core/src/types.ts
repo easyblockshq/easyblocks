@@ -948,7 +948,6 @@ export type FetchOutputResources = Record<
 
 export type RequestedExternalDataValue = {
   id: ExternalReference["id"];
-  type: string;
   widgetId: string;
   fetchParams?: ExternalParams;
 };
