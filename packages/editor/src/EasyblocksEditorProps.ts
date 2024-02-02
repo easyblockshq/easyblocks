@@ -15,8 +15,8 @@ export type ExternalDataChangeHandler = (
 
 export type EasyblocksEditorProps = {
   config: Config;
-  externalData: ExternalData;
-  onExternalDataChange: ExternalDataChangeHandler;
+  externalData?: ExternalData;
+  onExternalDataChange?: ExternalDataChangeHandler;
   components?: Record<string, React.ComponentType<any>>;
   widgets?: Record<
     string,

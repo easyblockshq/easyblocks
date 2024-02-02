@@ -58,8 +58,8 @@ export function EasyblocksEditor(props: EasyblocksEditorProps) {
       {selectedWindow === "parent" && (
         <EasyblocksParent
           config={props.config}
-          externalData={props.externalData}
-          onExternalDataChange={props.onExternalDataChange}
+          externalData={props.externalData ?? {}}
+          onExternalDataChange={props.onExternalDataChange ?? (() => ({}))}
           widgets={props.widgets}
           components={props.components}
         />
