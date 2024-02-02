@@ -179,10 +179,7 @@ const easyblocksConfig: Config = {
   hideCloseButton: true,
 };
 
-export function DummyBanner(props: {
-  Root: ReactElement;
-  Title: ReactElement;
-}) {
+function DummyBanner(props: { Root: ReactElement; Title: ReactElement }) {
   const { Root, Title } = props;
 
   return (

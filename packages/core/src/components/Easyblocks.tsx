@@ -16,7 +16,7 @@ import { MissingComponent } from "./MissingComponent";
 
 export type EasyblocksProps = {
   renderableDocument: RenderableDocument;
-  externalData: ExternalData;
+  externalData?: ExternalData;
   components?: Record<string, React.ComponentType<any>>;
   componentOverrides?: ComponentOverrides;
 };
@@ -64,7 +64,7 @@ function Easyblocks({
 
   return (
     <EasyblocksMetadataProvider meta={renderableDocument.meta}>
-      <EasyblocksExternalDataProvider externalData={externalData}>
+      <EasyblocksExternalDataProvider externalData={externalData ?? {}}>
         <ComponentBuilder
           compiled={renderableContent}
           path={""}
