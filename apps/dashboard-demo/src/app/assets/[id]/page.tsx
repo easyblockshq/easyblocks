@@ -38,7 +38,6 @@ export default async function AssetsPage({
       ...renderableAssetsScreenDocument.externalData,
       "$.asset": {
         id: params.id,
-        type: "asset",
         widgetId: "asset",
       },
     });
