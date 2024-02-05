@@ -213,17 +213,7 @@ export type ExternalSchemaProp = ValueSchemaProp<
   ExternalReference,
   "optional"
 > & {
-  /**
-   * Parameters passed to the widget.
-   */
   params?: ExternalParams;
-  /**
-   * Parameters passed to the fetch function.
-   */
-  fetchParams?: ExternalParams;
-  /**
-   * If `true`, the resource becomes optional and the component using it can render without it.
-   */
   optional?: boolean;
 };
 
@@ -949,7 +939,7 @@ export type FetchOutputResources = Record<
 export type RequestedExternalDataValue = {
   id: ExternalReference["id"];
   widgetId: string;
-  fetchParams?: ExternalParams;
+  params?: ExternalParams;
 };
 
 export type RequestedExternalData = Record<string, RequestedExternalDataValue>;

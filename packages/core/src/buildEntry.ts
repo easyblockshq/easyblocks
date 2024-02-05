@@ -119,7 +119,7 @@ function findChangedExternalData(
   }
 
   resourcesWithSchemaProps.forEach(({ id, externalReference, schemaProp }) => {
-    const fetchParams = getExternalFetchParams(schemaProp);
+    const params = getExternalTypeParams(schemaProp);
 
     const externalData = {
       id,
@@ -153,19 +153,19 @@ function findChangedExternalData(
     changedExternalData[id] = {
       id: externalReference.id,
       widgetId: externalReference.widgetId,
-      fetchParams,
+      params,
     };
   });
 
   return changedExternalData;
 }
 
-function getExternalFetchParams(
+function getExternalTypeParams(
   schemaProp: ExternalSchemaProp
 ): ExternalParams | undefined {
   if (schemaProp.type === "text") {
     return;
   }
 
-  return schemaProp.fetchParams;
+  return schemaProp.params;
 }
