@@ -63,9 +63,6 @@ function configMapInternal(
   const result: NoCodeComponentEntry = { ...config };
 
   if (!componentDefinition) {
-    console.warn(
-      `[configMap] Unknown component definition for: ${config._component}`
-    );
     return result;
   }
 
