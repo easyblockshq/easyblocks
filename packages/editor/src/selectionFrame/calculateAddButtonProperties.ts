@@ -13,14 +13,18 @@ function calculateAddButtonsProperties(
   before: { top: number; left: number; display: "block" | "none" };
   after: { top: number; left: number; display: "block" | "none" };
 } {
-  const halfButtonSize = ADD_BUTTON_SIZE / 2;
+  const halfButtonSize = Math.floor(ADD_BUTTON_SIZE / 2);
 
   if (direction === "vertical") {
-    const beforeButtonTopOffset = targetElementRect.top - halfButtonSize;
-    const afterButtonTopOffset =
-      targetElementRect.top + targetElementRect.height - halfButtonSize;
-    const buttonsLeftOffset =
-      targetElementRect.left + targetElementRect.width / 2 - halfButtonSize;
+    const beforeButtonTopOffset = Math.floor(
+      targetElementRect.top - halfButtonSize
+    );
+    const afterButtonTopOffset = Math.floor(
+      targetElementRect.top + targetElementRect.height - halfButtonSize
+    );
+    const buttonsLeftOffset = Math.floor(
+      targetElementRect.left + targetElementRect.width / 2 - halfButtonSize
+    );
 
     const isBeforeButtonWithinViewport = isButtonWithinViewport(
       {
@@ -88,11 +92,15 @@ function calculateAddButtonsProperties(
       };
     }
   } else {
-    const buttonsTopOffset =
-      targetElementRect.top + targetElementRect.height / 2 - halfButtonSize;
-    const beforeButtonLeftOffset = targetElementRect.left - halfButtonSize;
-    const afterButtonLeftOffset =
-      targetElementRect.left + targetElementRect.width - halfButtonSize;
+    const buttonsTopOffset = Math.floor(
+      targetElementRect.top + targetElementRect.height / 2 - halfButtonSize
+    );
+    const beforeButtonLeftOffset = Math.floor(
+      targetElementRect.left - halfButtonSize
+    );
+    const afterButtonLeftOffset = Math.floor(
+      targetElementRect.left + targetElementRect.width - halfButtonSize
+    );
 
     const isBeforeButtonWithinViewport = isButtonWithinViewport(
       {

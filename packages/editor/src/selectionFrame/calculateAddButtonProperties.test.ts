@@ -29,13 +29,13 @@ describe("vertical", () => {
       )
     ).toEqual({
       before: {
-        top: 12.5,
-        left: 62.5,
+        top: 13,
+        left: 63,
         display: "block",
       },
       after: {
-        top: 212.5,
-        left: 62.5,
+        top: 213,
+        left: 63,
         display: "block",
       },
     });
@@ -55,13 +55,13 @@ describe("vertical", () => {
       )
     ).toEqual({
       before: {
-        top: -11.5,
-        left: 112.5,
+        top: -11,
+        left: 113,
         display: "block",
       },
       after: {
-        top: 756.5,
-        left: 112.5,
+        top: 757,
+        left: 113,
         display: "block",
       },
     });
@@ -81,13 +81,13 @@ describe("vertical", () => {
       )
     ).toEqual({
       before: {
-        top: -35.5,
-        left: 62.5,
+        top: -35,
+        left: 63,
         display: "none",
       },
       after: {
-        top: 164.5,
-        left: 62.5,
+        top: 165,
+        left: 63,
         display: "block",
       },
     });
@@ -107,13 +107,13 @@ describe("vertical", () => {
       )
     ).toEqual({
       before: {
-        top: 708.5,
-        left: 62.5,
+        top: 709,
+        left: 63,
         display: "block",
       },
       after: {
-        top: 908.5,
-        left: 62.5,
+        top: 909,
+        left: 63,
         display: "none",
       },
     });
@@ -133,13 +133,13 @@ describe("vertical", () => {
       )
     ).toEqual({
       before: {
-        top: -235.5,
-        left: 62.5,
+        top: -235,
+        left: 63,
         display: "none",
       },
       after: {
-        top: -35.5,
-        left: 62.5,
+        top: -35,
+        left: 63,
         display: "none",
       },
     });
@@ -162,13 +162,13 @@ describe("vertical within container", () => {
       )
     ).toEqual({
       before: {
-        top: 36.5,
-        left: 86.5,
+        top: 37,
+        left: 87,
         display: "block",
       },
       after: {
-        top: 236.5,
-        left: 86.5,
+        top: 237,
+        left: 87,
         display: "block",
       },
     });
@@ -189,13 +189,13 @@ describe("vertical within container", () => {
       )
     ).toEqual({
       before: {
-        top: 12.5,
-        left: 62.5,
+        top: 13,
+        left: 63,
         display: "block",
       },
       after: {
-        top: 312.5,
-        left: 62.5,
+        top: 313,
+        left: 63,
         display: "block",
       },
     });
@@ -216,13 +216,13 @@ describe("vertical within container", () => {
       )
     ).toEqual({
       before: {
-        top: -151.5,
-        left: 62.5,
+        top: -151,
+        left: 63,
         display: "none",
       },
       after: {
-        top: 48.5,
-        left: 62.5,
+        top: 49,
+        left: 63,
         display: "block",
       },
     });
@@ -243,13 +243,13 @@ describe("vertical within container", () => {
       )
     ).toEqual({
       before: {
-        top: 228.5,
-        left: 62.5,
+        top: 229,
+        left: 63,
         display: "block",
       },
       after: {
-        top: 428.5,
-        left: 62.5,
+        top: 429,
+        left: 63,
         display: "none",
       },
     });
@@ -270,13 +270,13 @@ describe("vertical within container", () => {
       )
     ).toEqual({
       before: {
-        top: 328.5,
-        left: 62.5,
+        top: 329,
+        left: 63,
         display: "none",
       },
       after: {
-        top: 528.5,
-        left: 62.5,
+        top: 529,
+        left: 63,
         display: "none",
       },
     });
@@ -298,13 +298,13 @@ describe("horizontal", () => {
       )
     ).toEqual({
       before: {
-        top: 112.5,
-        left: 12.5,
+        top: 113,
+        left: 13,
         display: "block",
       },
       after: {
-        top: 112.5,
-        left: 112.5,
+        top: 113,
+        left: 113,
         display: "block",
       },
     });
@@ -324,13 +324,13 @@ describe("horizontal", () => {
       )
     ).toEqual({
       before: {
-        top: 162.5,
-        left: -11.5,
+        top: 163,
+        left: -11,
         display: "block",
       },
       after: {
-        top: 162.5,
-        left: 1354.5,
+        top: 163,
+        left: 1355,
         display: "block",
       },
     });
@@ -350,13 +350,13 @@ describe("horizontal", () => {
       )
     ).toEqual({
       before: {
-        top: 112.5,
-        left: -35.5,
+        top: 113,
+        left: -35,
         display: "none",
       },
       after: {
-        top: 112.5,
-        left: 64.5,
+        top: 113,
+        left: 65,
         display: "block",
       },
     });
@@ -376,13 +376,13 @@ describe("horizontal", () => {
       )
     ).toEqual({
       before: {
-        top: 112.5,
-        left: 1288.5,
+        top: 113,
+        left: 1289,
         display: "block",
       },
       after: {
-        top: 112.5,
-        left: 1388.5,
+        top: 113,
+        left: 1389,
         display: "none",
       },
     });
@@ -402,13 +402,13 @@ describe("horizontal", () => {
       )
     ).toEqual({
       before: {
-        top: 112.5,
-        left: -135.5,
+        top: 113,
+        left: -135,
         display: "none",
       },
       after: {
-        top: 112.5,
-        left: -35.5,
+        top: 113,
+        left: -35,
         display: "none",
       },
     });
@@ -431,13 +431,13 @@ describe("horizontal within container", () => {
       )
     ).toEqual({
       before: {
-        top: 136.5,
-        left: 36.5,
+        top: 137,
+        left: 37,
         display: "block",
       },
       after: {
-        top: 136.5,
-        left: 136.5,
+        top: 137,
+        left: 137,
         display: "block",
       },
     });
@@ -458,13 +458,13 @@ describe("horizontal within container", () => {
       )
     ).toEqual({
       before: {
-        top: 136.5,
-        left: 12.5,
+        top: 137,
+        left: 13,
         display: "block",
       },
       after: {
-        top: 136.5,
-        left: 312.5,
+        top: 137,
+        left: 313,
         display: "block",
       },
     });
@@ -485,13 +485,13 @@ describe("horizontal within container", () => {
       )
     ).toEqual({
       before: {
-        top: 136.5,
-        left: 4.5,
+        top: 137,
+        left: 5,
         display: "none",
       },
       after: {
-        top: 136.5,
-        left: 104.5,
+        top: 137,
+        left: 105,
         display: "block",
       },
     });
@@ -512,13 +512,13 @@ describe("horizontal within container", () => {
       )
     ).toEqual({
       before: {
-        top: 136.5,
-        left: 228.5,
+        top: 137,
+        left: 229,
         display: "block",
       },
       after: {
-        top: 136.5,
-        left: 328.5,
+        top: 137,
+        left: 329,
         display: "none",
       },
     });
@@ -539,13 +539,13 @@ describe("horizontal within container", () => {
       )
     ).toEqual({
       before: {
-        top: 136.5,
-        left: 336.5,
+        top: 137,
+        left: 337,
         display: "none",
       },
       after: {
-        top: 136.5,
-        left: 436.5,
+        top: 137,
+        left: 437,
         display: "none",
       },
     });
