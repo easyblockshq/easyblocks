@@ -24,6 +24,7 @@ import {
   LocalSchemaProp,
   LocalTextReference,
   LocalValue,
+  NoCodeComponentDefinition,
   NoCodeComponentEntry,
   NumberSchemaProp,
   Option,
@@ -49,7 +50,6 @@ import {
   findComponentDefinitionById,
   findComponentDefinitionsByType,
 } from "./findComponentDefinition";
-import { isContextEditorContext } from "./isContextEditorContext";
 import { Component$$$SchemaProp } from "./schema";
 import {
   CompilationContextType,
@@ -363,36 +363,51 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
     // 2. if fixed => block field with "fixed" flag (no component picker).
     const normalize = (x: any) => {
       if (!Array.isArray(x) || x.length === 0) {
-        if (schemaProp.required) {
-          const accepts = schemaProp.accepts[0];
-          const componentDefinition = findComponentDefinitionById(
-            accepts,
+        let componentDefinition: NoCodeComponentDefinition | undefined;
+
+        for (const componentIdOrType of schemaProp.accepts) {
+          componentDefinition = findComponentDefinitionById(
+            componentIdOrType,
             compilationContext
           );
 
           if (!componentDefinition) {
             const componentDefinitionsByType = findComponentDefinitionsByType(
-              accepts,
+              componentIdOrType,
               compilationContext
             );
 
             if (componentDefinitionsByType.length > 0) {
-              return [
-                normalizeComponent(
-                  { _component: componentDefinitionsByType[0].id },
-                  compilationContext
-                ),
-              ];
+              componentDefinition = componentDefinitionsByType[0];
+              break;
             }
+          } else {
+            break;
+          }
+        }
+
+        if (schemaProp.required) {
+          if (!componentDefinition) {
+            throw new Error(
+              `Missing component definition for prop "${
+                schemaProp.prop
+              }" for specified accepted types: [${schemaProp.accepts.join(
+                ", "
+              )}]`
+            );
           }
 
           return [
-            normalizeComponent({ _component: accepts }, compilationContext),
+            normalizeComponent(
+              { _component: componentDefinition.id },
+              compilationContext
+            ),
           ];
         }
 
         return [];
       }
+
       return [normalizeComponent(x[0], compilationContext)];
     };
 
