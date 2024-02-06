@@ -2,8 +2,9 @@ const MOCK_ASSETS = [
   {
     id: "1JJzf4oPaNvaFJOFI0PN7C",
     title: "nooma 3Seater ToomModularSofa OatmilkBeige-10",
-    url: "/assets/nooma_3Seater_ToomModularSofa_OatmilkBeige-10.jpg",
-    thumbnail: "/assets/nooma_3Seater_ToomModularSofa_OatmilkBeige-10.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/1JJzf4oPaNvaFJOFI0PN7C/5d78c2b555b1456081c2c3743a3d8e4f/nooma_3Seater_ToomModularSofa_OatmilkBeige-10.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/1JJzf4oPaNvaFJOFI0PN7C/5d78c2b555b1456081c2c3743a3d8e4f/nooma_3Seater_ToomModularSofa_OatmilkBeige-10.jpg",
     width: 1581,
     height: 2370,
     mimeType: "image/jpeg",
@@ -12,8 +13,9 @@ const MOCK_ASSETS = [
   {
     id: "798RN6UUuf3q75BarMgtw7",
     title: "nooma 3Seater ToomModularSofa OatmilkBeige-7",
-    url: "/assets/nooma_3Seater_ToomModularSofa_OatmilkBeige-7.jpg",
-    thumbnail: "/assets/nooma_3Seater_ToomModularSofa_OatmilkBeige-7.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/798RN6UUuf3q75BarMgtw7/01fae0a4e20ec284264de947677020f0/nooma_3Seater_ToomModularSofa_OatmilkBeige-7.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/798RN6UUuf3q75BarMgtw7/01fae0a4e20ec284264de947677020f0/nooma_3Seater_ToomModularSofa_OatmilkBeige-7.jpg",
     width: 1580,
     height: 2370,
     mimeType: "image/jpeg",
@@ -22,8 +24,9 @@ const MOCK_ASSETS = [
   {
     id: "5EILfWfK4V94akJMnXM8WL",
     title: "nooma 6Seater ToomModularSofa PaleGrey-4",
-    url: "/assets/nooma_6Seater_ToomModularSofa_PaleGrey-4.jpg",
-    thumbnail: "/assets/nooma_6Seater_ToomModularSofa_PaleGrey-4.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/5EILfWfK4V94akJMnXM8WL/eb50a6a370ebdafb37cb5e8008ab698c/nooma_6Seater_ToomModularSofa_PaleGrey-4.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/5EILfWfK4V94akJMnXM8WL/eb50a6a370ebdafb37cb5e8008ab698c/nooma_6Seater_ToomModularSofa_PaleGrey-4.jpg",
     width: 1581,
     height: 2370,
     mimeType: "image/jpeg",
@@ -32,8 +35,9 @@ const MOCK_ASSETS = [
   {
     id: "URTA2QAgHTKtPfNh4j2dJ",
     title: "nooma 3Seater ToomModularSofa OatmilkBeige-4",
-    url: "/assets/nooma_3Seater_ToomModularSofa_OatmilkBeige-4.jpg",
-    thumbnail: "/assets/nooma_3Seater_ToomModularSofa_OatmilkBeige-4.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/URTA2QAgHTKtPfNh4j2dJ/a67a6bfca0149c48eb1cf4ee34baa40c/nooma_3Seater_ToomModularSofa_OatmilkBeige-4.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/URTA2QAgHTKtPfNh4j2dJ/a67a6bfca0149c48eb1cf4ee34baa40c/nooma_3Seater_ToomModularSofa_OatmilkBeige-4.jpg",
     width: 2370,
     height: 1580,
     mimeType: "image/jpeg",
@@ -42,8 +46,9 @@ const MOCK_ASSETS = [
   {
     id: "2CpiV2m8QjPxuMNrODmevs",
     title: "nooma 6Seater ToomModularSofa PaleGrey-2",
-    url: "/assets/nooma_6Seater_ToomModularSofa_PaleGrey-2.jpg",
-    thumbnail: "/assets/nooma_6Seater_ToomModularSofa_PaleGrey-2.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/2CpiV2m8QjPxuMNrODmevs/7b2619de67984374cb716464f652b981/nooma_6Seater_ToomModularSofa_PaleGrey-2.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/2CpiV2m8QjPxuMNrODmevs/7b2619de67984374cb716464f652b981/nooma_6Seater_ToomModularSofa_PaleGrey-2.jpg",
     width: 1777,
     height: 2370,
     mimeType: "image/jpeg",
@@ -52,8 +57,9 @@ const MOCK_ASSETS = [
   {
     id: "11LxSNilpYQ2naemuA0iEb",
     title: "nooma 6Seater ToomModularSofa PaleGrey-1-1",
-    url: "/assets/nooma_6Seater_ToomModularSofa_PaleGrey-1-1.jpg",
-    thumbnail: "/assets/nooma_6Seater_ToomModularSofa_PaleGrey-1-1.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/11LxSNilpYQ2naemuA0iEb/6ad967a0326b759439ae44c8b10573a8/nooma_6Seater_ToomModularSofa_PaleGrey-1-1.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/11LxSNilpYQ2naemuA0iEb/6ad967a0326b759439ae44c8b10573a8/nooma_6Seater_ToomModularSofa_PaleGrey-1-1.jpg",
     width: 2370,
     height: 1581,
     mimeType: "image/jpeg",
@@ -62,8 +68,9 @@ const MOCK_ASSETS = [
   {
     id: "vwbyVBPYqlNLBlJarGZgr",
     title: "nooma 3Seater ToomModularSofa OatmilkBeige-1",
-    url: "/assets/nooma_3Seater_ToomModularSofa_OatmilkBeige-1.jpg",
-    thumbnail: "/assets/nooma_3Seater_ToomModularSofa_OatmilkBeige-1.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/vwbyVBPYqlNLBlJarGZgr/8a11e8fb2965bacd02eaddc44647dc9a/nooma_3Seater_ToomModularSofa_OatmilkBeige-1.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/vwbyVBPYqlNLBlJarGZgr/8a11e8fb2965bacd02eaddc44647dc9a/nooma_3Seater_ToomModularSofa_OatmilkBeige-1.jpg",
     width: 1580,
     height: 2370,
     mimeType: "image/jpeg",
@@ -72,8 +79,9 @@ const MOCK_ASSETS = [
   {
     id: "6IHFPBtB28lQkHJtftaMAM",
     title: "nooma 3Seater ToomModularSofa OatmilkBeige-8",
-    url: "/assets/nooma_3Seater_ToomModularSofa_OatmilkBeige-8.jpg",
-    thumbnail: "/assets/nooma_3Seater_ToomModularSofa_OatmilkBeige-8.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/6IHFPBtB28lQkHJtftaMAM/d217f30639964bec1bf41ea3a4f426e8/nooma_3Seater_ToomModularSofa_OatmilkBeige-8.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/6IHFPBtB28lQkHJtftaMAM/d217f30639964bec1bf41ea3a4f426e8/nooma_3Seater_ToomModularSofa_OatmilkBeige-8.jpg",
     width: 1580,
     height: 2370,
     mimeType: "image/jpeg",
@@ -82,8 +90,9 @@ const MOCK_ASSETS = [
   {
     id: "7kexIQZtpH11TBsk1mQEY7",
     title: "nooma 3Seater ToomModularSofa OatmilkBeige-6",
-    url: "/assets/nooma_3Seater_ToomModularSofa_OatmilkBeige-6.jpg",
-    thumbnail: "/assets/nooma_3Seater_ToomModularSofa_OatmilkBeige-6.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/7kexIQZtpH11TBsk1mQEY7/b222249a9908c6580433120426a99386/nooma_3Seater_ToomModularSofa_OatmilkBeige-6.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/7kexIQZtpH11TBsk1mQEY7/b222249a9908c6580433120426a99386/nooma_3Seater_ToomModularSofa_OatmilkBeige-6.jpg",
     width: 1580,
     height: 2370,
     mimeType: "image/jpeg",
@@ -92,8 +101,9 @@ const MOCK_ASSETS = [
   {
     id: "5k8eIgLTcHkwc4JWnMqnOT",
     title: "nooma 3Seater ToomModularSofa OatmilkBeige-5",
-    url: "/assets/nooma_3Seater_ToomModularSofa_OatmilkBeige-5.jpg",
-    thumbnail: "/assets/nooma_3Seater_ToomModularSofa_OatmilkBeige-5.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/5k8eIgLTcHkwc4JWnMqnOT/6a0df52580f0fcbfaabbb265786f4d15/nooma_3Seater_ToomModularSofa_OatmilkBeige-5.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/5k8eIgLTcHkwc4JWnMqnOT/6a0df52580f0fcbfaabbb265786f4d15/nooma_3Seater_ToomModularSofa_OatmilkBeige-5.jpg",
     width: 1580,
     height: 2370,
     mimeType: "image/jpeg",
@@ -102,8 +112,9 @@ const MOCK_ASSETS = [
   {
     id: "7bcuTOTza2VVj43fqVCeOI",
     title: "nooma 3Seater ToomModularSofa OatmilkBeige-3",
-    url: "/assets/nooma_3Seater_ToomModularSofa_OatmilkBeige-3.jpg",
-    thumbnail: "/assets/nooma_3Seater_ToomModularSofa_OatmilkBeige-3.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/7bcuTOTza2VVj43fqVCeOI/57ed98925de6850bb09408837453410a/nooma_3Seater_ToomModularSofa_OatmilkBeige-3.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/7bcuTOTza2VVj43fqVCeOI/57ed98925de6850bb09408837453410a/nooma_3Seater_ToomModularSofa_OatmilkBeige-3.jpg",
     width: 2370,
     height: 1580,
     mimeType: "image/jpeg",
@@ -112,8 +123,9 @@ const MOCK_ASSETS = [
   {
     id: "4iLYBNvflCX3b0Rp0XF5nY",
     title: "nooma 2Seater ToomModularSofa PaleGrey-1-1",
-    url: "/assets/nooma_2Seater_ToomModularSofa_PaleGrey-1-1.jpg",
-    thumbnail: "/assets/nooma_2Seater_ToomModularSofa_PaleGrey-1-1.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/4iLYBNvflCX3b0Rp0XF5nY/9081bfa6c9c277b3363a8e9d3eccafcb/nooma_2Seater_ToomModularSofa_PaleGrey-1-1.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/4iLYBNvflCX3b0Rp0XF5nY/9081bfa6c9c277b3363a8e9d3eccafcb/nooma_2Seater_ToomModularSofa_PaleGrey-1-1.jpg",
     width: 2370,
     height: 1581,
     mimeType: "image/jpeg",
@@ -122,8 +134,9 @@ const MOCK_ASSETS = [
   {
     id: "1bY2YNFVREIl6ddHb8nSyF",
     title: "nooma 2Seater ToomModularSofa PaleGrey-3",
-    url: "/assets/nooma_2Seater_ToomModularSofa_PaleGrey-3.jpg",
-    thumbnail: "/assets/nooma_2Seater_ToomModularSofa_PaleGrey-3.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/1bY2YNFVREIl6ddHb8nSyF/529679cea2ab25907a83e62b159f04c5/nooma_2Seater_ToomModularSofa_PaleGrey-3.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/1bY2YNFVREIl6ddHb8nSyF/529679cea2ab25907a83e62b159f04c5/nooma_2Seater_ToomModularSofa_PaleGrey-3.jpg",
     width: 1581,
     height: 2370,
     mimeType: "image/jpeg",
@@ -132,8 +145,9 @@ const MOCK_ASSETS = [
   {
     id: "6oxZ7L87BLWEcSFdodEAe1",
     title: "nooma 2Seater ToomModularSofa PaleGrey-2",
-    url: "/assets/nooma_2Seater_ToomModularSofa_PaleGrey-2.jpg",
-    thumbnail: "/assets/nooma_2Seater_ToomModularSofa_PaleGrey-2.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/6oxZ7L87BLWEcSFdodEAe1/c2eee23e031c2d176cb0be67fde9fcf1/nooma_2Seater_ToomModularSofa_PaleGrey-2.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/6oxZ7L87BLWEcSFdodEAe1/c2eee23e031c2d176cb0be67fde9fcf1/nooma_2Seater_ToomModularSofa_PaleGrey-2.jpg",
     width: 1581,
     height: 2370,
     mimeType: "image/jpeg",
@@ -142,8 +156,9 @@ const MOCK_ASSETS = [
   {
     id: "1EfvgzIvaX4hK5viWhGBcE",
     title: "nooma 2Seater ToomModularSofa PaleGrey-4",
-    url: "/assets/nooma_2Seater_ToomModularSofa_PaleGrey-4.jpg",
-    thumbnail: "/assets/nooma_2Seater_ToomModularSofa_PaleGrey-4.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/1EfvgzIvaX4hK5viWhGBcE/3ea38621bf359b7a277658ac66d66cfb/nooma_2Seater_ToomModularSofa_PaleGrey-4.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/1EfvgzIvaX4hK5viWhGBcE/3ea38621bf359b7a277658ac66d66cfb/nooma_2Seater_ToomModularSofa_PaleGrey-4.jpg",
     width: 1581,
     height: 2370,
     mimeType: "image/jpeg",
@@ -152,8 +167,9 @@ const MOCK_ASSETS = [
   {
     id: "2XhEtWaMqKhmFFISA20NRW",
     title: "nooma FUR1432 TeidiShelving Oak-1",
-    url: "/assets/nooma_FUR1432_TeidiShelving_Oak-1.jpg",
-    thumbnail: "/assets/nooma_FUR1432_TeidiShelving_Oak-1.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/2XhEtWaMqKhmFFISA20NRW/6e7481a662c6f352f9b6903e10c19053/nooma_FUR1432_TeidiShelving_Oak-1.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/2XhEtWaMqKhmFFISA20NRW/6e7481a662c6f352f9b6903e10c19053/nooma_FUR1432_TeidiShelving_Oak-1.jpg",
     width: 2370,
     height: 1581,
     mimeType: "image/jpeg",
@@ -162,8 +178,9 @@ const MOCK_ASSETS = [
   {
     id: "7tgq3DeCl05j0PAI4KAZFZ",
     title: "nooma FUR1432 TeidiShelving Oak-5",
-    url: "/assets/nooma_FUR1432_TeidiShelving_Oak-5.jpg",
-    thumbnail: "/assets/nooma_FUR1432_TeidiShelving_Oak-5.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/7tgq3DeCl05j0PAI4KAZFZ/f2f283f6f19bb2b1be6aecf307e90151/nooma_FUR1432_TeidiShelving_Oak-5.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/7tgq3DeCl05j0PAI4KAZFZ/f2f283f6f19bb2b1be6aecf307e90151/nooma_FUR1432_TeidiShelving_Oak-5.jpg",
     width: 1581,
     height: 2370,
     mimeType: "image/jpeg",
@@ -172,8 +189,9 @@ const MOCK_ASSETS = [
   {
     id: "Jf9cQClfimL0I5jKanntb",
     title: "avatar-1",
-    url: "/assets/avatar-1.jpg",
-    thumbnail: "/assets/avatar-1.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/Jf9cQClfimL0I5jKanntb/cc79448ccc32de7321c1969c7970f4d8/avatar-1.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/Jf9cQClfimL0I5jKanntb/cc79448ccc32de7321c1969c7970f4d8/avatar-1.jpg",
     width: 200,
     height: 250,
     mimeType: "image/jpeg",
@@ -182,8 +200,9 @@ const MOCK_ASSETS = [
   {
     id: "PQN4THtuBfcS1F0PsLicH",
     title: "nooma FUR1732 AtikBedsideTable Oak-5 2-inverted",
-    url: "/assets/nooma_FUR1732_AtikBedsideTable_Oak-5_2-inverted.png",
-    thumbnail: "/assets/nooma_FUR1732_AtikBedsideTable_Oak-5_2-inverted.png",
+    url: "https://images.ctfassets.net/blh4anz05qu1/PQN4THtuBfcS1F0PsLicH/d19971b2ecae81ebb6eeef1acba3f72b/nooma_FUR1732_AtikBedsideTable_Oak-5_2-inverted.png",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/PQN4THtuBfcS1F0PsLicH/d19971b2ecae81ebb6eeef1acba3f72b/nooma_FUR1732_AtikBedsideTable_Oak-5_2-inverted.png",
     width: 1440,
     height: 745,
     mimeType: "image/png",
@@ -192,8 +211,9 @@ const MOCK_ASSETS = [
   {
     id: "3mfsxEihl1DCQbIfb0Heh2",
     title: "nooma ACC1092 OulServingPlatterBowls-4",
-    url: "/assets/nooma_ACC1092_OulServingPlatterBowls-4.jpg",
-    thumbnail: "/assets/nooma_ACC1092_OulServingPlatterBowls-4.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/3mfsxEihl1DCQbIfb0Heh2/f8ea7dfe87a198707e409e0fed24c55d/nooma_ACC1092_OulServingPlatterBowls-4.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/3mfsxEihl1DCQbIfb0Heh2/f8ea7dfe87a198707e409e0fed24c55d/nooma_ACC1092_OulServingPlatterBowls-4.jpg",
     width: 2370,
     height: 1581,
     mimeType: "image/jpeg",
@@ -202,8 +222,9 @@ const MOCK_ASSETS = [
   {
     id: "nPeArtLJhInZw8CYb4sjl",
     title: "nooma ACC1071 IksTrivet Oak-6",
-    url: "/assets/nooma_ACC1071_IksTrivet_Oak-6.jpg",
-    thumbnail: "/assets/nooma_ACC1071_IksTrivet_Oak-6.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/nPeArtLJhInZw8CYb4sjl/b422b6c735566f91c0ac8a0535a1c704/nooma_ACC1071_IksTrivet_Oak-6.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/nPeArtLJhInZw8CYb4sjl/b422b6c735566f91c0ac8a0535a1c704/nooma_ACC1071_IksTrivet_Oak-6.jpg",
     width: 2370,
     height: 1581,
     mimeType: "image/jpeg",
@@ -212,8 +233,9 @@ const MOCK_ASSETS = [
   {
     id: "b3h4SyrjadkmOzn1chdMo",
     title: "nooma ACC1092 OulServingPlatterBowls-5-1",
-    url: "/assets/nooma_ACC1092_OulServingPlatterBowls-5-1.jpg",
-    thumbnail: "/assets/nooma_ACC1092_OulServingPlatterBowls-5-1.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/b3h4SyrjadkmOzn1chdMo/fc392e5455a72a622c2776a7641e77e7/nooma_ACC1092_OulServingPlatterBowls-5-1.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/b3h4SyrjadkmOzn1chdMo/fc392e5455a72a622c2776a7641e77e7/nooma_ACC1092_OulServingPlatterBowls-5-1.jpg",
     width: 1581,
     height: 2370,
     mimeType: "image/jpeg",
@@ -222,8 +244,9 @@ const MOCK_ASSETS = [
   {
     id: "3VbjFZXsf44VTXLbSquoMI",
     title: "nooma ACC1092 OulServingPlatterBowls-3",
-    url: "/assets/nooma_ACC1092_OulServingPlatterBowls-3.jpg",
-    thumbnail: "/assets/nooma_ACC1092_OulServingPlatterBowls-3.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/3VbjFZXsf44VTXLbSquoMI/e01dd37fe97e20b9efe0165bc24e6ecb/nooma_ACC1092_OulServingPlatterBowls-3.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/3VbjFZXsf44VTXLbSquoMI/e01dd37fe97e20b9efe0165bc24e6ecb/nooma_ACC1092_OulServingPlatterBowls-3.jpg",
     width: 1581,
     height: 2370,
     mimeType: "image/jpeg",
@@ -232,8 +255,9 @@ const MOCK_ASSETS = [
   {
     id: "1nKoU715wNx8NebquprUZh",
     title: "nooma ACC1071 IksTrivet Oak-1",
-    url: "/assets/nooma_ACC1071_IksTrivet_Oak-1.jpg",
-    thumbnail: "/assets/nooma_ACC1071_IksTrivet_Oak-1.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/1nKoU715wNx8NebquprUZh/b2175cfec1b182d39b02ef2fb7df0811/nooma_ACC1071_IksTrivet_Oak-1.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/1nKoU715wNx8NebquprUZh/b2175cfec1b182d39b02ef2fb7df0811/nooma_ACC1071_IksTrivet_Oak-1.jpg",
     width: 1581,
     height: 2370,
     mimeType: "image/jpeg",
@@ -242,8 +266,9 @@ const MOCK_ASSETS = [
   {
     id: "3AIUapYWAq9kKZarDl2GW",
     title: "nooma ACC1071 IksTrivet Oak-3",
-    url: "/assets/nooma_ACC1071_IksTrivet_Oak-3.jpg",
-    thumbnail: "/assets/nooma_ACC1071_IksTrivet_Oak-3.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/3AIUapYWAq9kKZarDl2GW/44f1f18a62d6ba98af3d3d456227336a/nooma_ACC1071_IksTrivet_Oak-3.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/3AIUapYWAq9kKZarDl2GW/44f1f18a62d6ba98af3d3d456227336a/nooma_ACC1071_IksTrivet_Oak-3.jpg",
     width: 1581,
     height: 2370,
     mimeType: "image/jpeg",
@@ -252,8 +277,9 @@ const MOCK_ASSETS = [
   {
     id: "3Ty4OSVqTq7si3i27fovrc",
     title: "nooma ACC1062 FalaBookend MellowYellow-1",
-    url: "/assets/nooma_ACC1062_FalaBookend_MellowYellow-1.jpg",
-    thumbnail: "/assets/nooma_ACC1062_FalaBookend_MellowYellow-1.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/3Ty4OSVqTq7si3i27fovrc/09951326fd4f3f64f211635cdfeaf040/nooma_ACC1062_FalaBookend_MellowYellow-1.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/3Ty4OSVqTq7si3i27fovrc/09951326fd4f3f64f211635cdfeaf040/nooma_ACC1062_FalaBookend_MellowYellow-1.jpg",
     width: 1334,
     height: 2000,
     mimeType: "image/jpeg",
@@ -262,8 +288,9 @@ const MOCK_ASSETS = [
   {
     id: "2S7lwAKRDhY0dPN3PUNqev",
     title: "nooma ACC1071 IksTrivet Oak-4",
-    url: "/assets/nooma_ACC1071_IksTrivet_Oak-4.jpg",
-    thumbnail: "/assets/nooma_ACC1071_IksTrivet_Oak-4.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/2S7lwAKRDhY0dPN3PUNqev/4e28e4be4837fdaf244ad817b012b9a1/nooma_ACC1071_IksTrivet_Oak-4.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/2S7lwAKRDhY0dPN3PUNqev/4e28e4be4837fdaf244ad817b012b9a1/nooma_ACC1071_IksTrivet_Oak-4.jpg",
     width: 1581,
     height: 2370,
     mimeType: "image/jpeg",
@@ -272,8 +299,9 @@ const MOCK_ASSETS = [
   {
     id: "D187tdccMo9xQ3JYNcIDW",
     title: "nooma ACC1062 FalaBookend MellowYellow-2",
-    url: "/assets/nooma_ACC1062_FalaBookend_MellowYellow-2.jpg",
-    thumbnail: "/assets/nooma_ACC1062_FalaBookend_MellowYellow-2.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/D187tdccMo9xQ3JYNcIDW/a3e6f1114a41890572005fc0c9f435f2/nooma_ACC1062_FalaBookend_MellowYellow-2.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/D187tdccMo9xQ3JYNcIDW/a3e6f1114a41890572005fc0c9f435f2/nooma_ACC1062_FalaBookend_MellowYellow-2.jpg",
     width: 1334,
     height: 2000,
     mimeType: "image/jpeg",
@@ -282,8 +310,9 @@ const MOCK_ASSETS = [
   {
     id: "6s8ClABm9tBu6gOTomkgGi",
     title: "nooma ACC1071 IksTrivet Oak-5",
-    url: "/assets/nooma_ACC1071_IksTrivet_Oak-5.jpg",
-    thumbnail: "/assets/nooma_ACC1071_IksTrivet_Oak-5.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/6s8ClABm9tBu6gOTomkgGi/0129b70ab11a5f3262dbf4ae2d035dd0/nooma_ACC1071_IksTrivet_Oak-5.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/6s8ClABm9tBu6gOTomkgGi/0129b70ab11a5f3262dbf4ae2d035dd0/nooma_ACC1071_IksTrivet_Oak-5.jpg",
     width: 1581,
     height: 2370,
     mimeType: "image/jpeg",
@@ -292,8 +321,9 @@ const MOCK_ASSETS = [
   {
     id: "5MPqA8chK9SdwEiiYoGtvr",
     title: "nooma ACC1071 IksTrivet Oak-2-1",
-    url: "/assets/nooma_ACC1071_IksTrivet_Oak-2-1.jpg",
-    thumbnail: "/assets/nooma_ACC1071_IksTrivet_Oak-2-1.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/5MPqA8chK9SdwEiiYoGtvr/781ad73f6c984d9707b6946bc23d4f4d/nooma_ACC1071_IksTrivet_Oak-2-1.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/5MPqA8chK9SdwEiiYoGtvr/781ad73f6c984d9707b6946bc23d4f4d/nooma_ACC1071_IksTrivet_Oak-2-1.jpg",
     width: 2370,
     height: 1581,
     mimeType: "image/jpeg",
@@ -302,8 +332,9 @@ const MOCK_ASSETS = [
   {
     id: "6pQ5dJeucfcnmBtZfDV9MI",
     title: "nooma FlecCandleHolder-Set-4-1",
-    url: "/assets/nooma_FlecCandleHolder-Set-4-1.jpg",
-    thumbnail: "/assets/nooma_FlecCandleHolder-Set-4-1.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/6pQ5dJeucfcnmBtZfDV9MI/9f219223073e5cb7fba3dcde591625a0/nooma_FlecCandleHolder-Set-4-1.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/6pQ5dJeucfcnmBtZfDV9MI/9f219223073e5cb7fba3dcde591625a0/nooma_FlecCandleHolder-Set-4-1.jpg",
     width: 2370,
     height: 1581,
     mimeType: "image/jpeg",
@@ -312,8 +343,9 @@ const MOCK_ASSETS = [
   {
     id: "6ULhRvjt92DY1mw3i0m27L",
     title: "nooma FlecCandleHolder-Low-PiazzaBeige-2",
-    url: "/assets/nooma_FlecCandleHolder-Low-PiazzaBeige-2.jpg",
-    thumbnail: "/assets/nooma_FlecCandleHolder-Low-PiazzaBeige-2.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/6ULhRvjt92DY1mw3i0m27L/e3fe105a498162c7c12d2e38f1f2e6d0/nooma_FlecCandleHolder-Low-PiazzaBeige-2.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/6ULhRvjt92DY1mw3i0m27L/e3fe105a498162c7c12d2e38f1f2e6d0/nooma_FlecCandleHolder-Low-PiazzaBeige-2.jpg",
     width: 1581,
     height: 2370,
     mimeType: "image/jpeg",
@@ -322,8 +354,9 @@ const MOCK_ASSETS = [
   {
     id: "7fNcnljPkE85AYOqZDGtHf",
     title: "nooma 6Seater ToomModularSofa PaleGrey-5",
-    url: "/assets/nooma_6Seater_ToomModularSofa_PaleGrey-5.jpg",
-    thumbnail: "/assets/nooma_6Seater_ToomModularSofa_PaleGrey-5.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/7fNcnljPkE85AYOqZDGtHf/f3c2ad107652a4233792b152de15e378/nooma_6Seater_ToomModularSofa_PaleGrey-5.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/7fNcnljPkE85AYOqZDGtHf/f3c2ad107652a4233792b152de15e378/nooma_6Seater_ToomModularSofa_PaleGrey-5.jpg",
     width: 1581,
     height: 2370,
     mimeType: "image/jpeg",
@@ -332,8 +365,9 @@ const MOCK_ASSETS = [
   {
     id: "35Vsxmpc81XmOhkLrBHDRJ",
     title: "nooma FlecCandleHolder-Set-3",
-    url: "/assets/nooma_FlecCandleHolder-Set-3.jpg",
-    thumbnail: "/assets/nooma_FlecCandleHolder-Set-3.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/35Vsxmpc81XmOhkLrBHDRJ/3ffcf07d88f40b949565bb87735e7d3b/nooma_FlecCandleHolder-Set-3.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/35Vsxmpc81XmOhkLrBHDRJ/3ffcf07d88f40b949565bb87735e7d3b/nooma_FlecCandleHolder-Set-3.jpg",
     width: 1581,
     height: 2370,
     mimeType: "image/jpeg",
@@ -342,18 +376,20 @@ const MOCK_ASSETS = [
   {
     id: "4nzjxp5qpIzpTG5wn79iPu",
     title: "nooma 6Seater ToomModularSofa PaleGrey-2",
-    url: "/assets/nooma_6Seater_ToomModularSofa_PaleGrey-2.png",
-    thumbnail: "/assets/nooma_6Seater_ToomModularSofa_PaleGrey-2.png",
+    url: "https://images.ctfassets.net/blh4anz05qu1/2CpiV2m8QjPxuMNrODmevs/7b2619de67984374cb716464f652b981/nooma_6Seater_ToomModularSofa_PaleGrey-2.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/2CpiV2m8QjPxuMNrODmevs/7b2619de67984374cb716464f652b981/nooma_6Seater_ToomModularSofa_PaleGrey-2.jpg",
     width: 1581,
     height: 2370,
-    mimeType: "image/png",
+    mimeType: "image/jpeg",
     isVideo: false,
   },
   {
     id: "4v6uAaZYCH7GEo0JPxf7M9",
     title: "nooma 6Seater ToomModularSofa PaleGrey-3",
-    url: "/assets/nooma_6Seater_ToomModularSofa_PaleGrey-3.jpg",
-    thumbnail: "/assets/nooma_6Seater_ToomModularSofa_PaleGrey-3.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/4v6uAaZYCH7GEo0JPxf7M9/95016883d46e5926c58b4a8dc96ae978/nooma_6Seater_ToomModularSofa_PaleGrey-3.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/4v6uAaZYCH7GEo0JPxf7M9/95016883d46e5926c58b4a8dc96ae978/nooma_6Seater_ToomModularSofa_PaleGrey-3.jpg",
     width: 2370,
     height: 1581,
     mimeType: "image/jpeg",
@@ -362,8 +398,9 @@ const MOCK_ASSETS = [
   {
     id: "65uE0RAPnSy4zqJYQYXnWg",
     title: "nooma 3Seater ToomModularSofa OatmilkBeige-9",
-    url: "/assets/nooma_3Seater_ToomModularSofa_OatmilkBeige-9.jpg",
-    thumbnail: "/assets/nooma_3Seater_ToomModularSofa_OatmilkBeige-9.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/65uE0RAPnSy4zqJYQYXnWg/ebe402992992496b76e2d7fdd7678710/nooma_3Seater_ToomModularSofa_OatmilkBeige-9.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/65uE0RAPnSy4zqJYQYXnWg/ebe402992992496b76e2d7fdd7678710/nooma_3Seater_ToomModularSofa_OatmilkBeige-9.jpg",
     width: 1580,
     height: 2370,
     mimeType: "image/jpeg",
@@ -372,8 +409,9 @@ const MOCK_ASSETS = [
   {
     id: "6bkaao6oq2mG0cCdKNoxRs",
     title: "nooma FUR1732 AtikBedsideTable Oak-4-1",
-    url: "/assets/nooma_FUR1732_AtikBedsideTable_Oak-4-1.png",
-    thumbnail: "/assets/nooma_FUR1732_AtikBedsideTable_Oak-4-1.png",
+    url: "https://images.ctfassets.net/blh4anz05qu1/6bkaao6oq2mG0cCdKNoxRs/052068df4d97a2b6b54fbe35f75f20e2/nooma_FUR1732_AtikBedsideTable_Oak-4-1.png",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/6bkaao6oq2mG0cCdKNoxRs/052068df4d97a2b6b54fbe35f75f20e2/nooma_FUR1732_AtikBedsideTable_Oak-4-1.png",
     width: 2370,
     height: 1580,
     mimeType: "image/png",
@@ -382,8 +420,9 @@ const MOCK_ASSETS = [
   {
     id: "5qxmxvIN0HKnVxdufoK4C2",
     title: "nooma FUR1143 FolkPoufTall EveningBlue-1-1",
-    url: "/assets/nooma_FUR1143_FolkPoufTall_EveningBlue-1-1.png",
-    thumbnail: "/assets/nooma_FUR1143_FolkPoufTall_EveningBlue-1-1.png",
+    url: "https://images.ctfassets.net/blh4anz05qu1/5qxmxvIN0HKnVxdufoK4C2/fbff81da769115f97310482cd69e5301/nooma_FUR1143_FolkPoufTall_EveningBlue-1-1.png",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/5qxmxvIN0HKnVxdufoK4C2/fbff81da769115f97310482cd69e5301/nooma_FUR1143_FolkPoufTall_EveningBlue-1-1.png",
     width: 2370,
     height: 1566,
     mimeType: "image/png",
@@ -392,8 +431,9 @@ const MOCK_ASSETS = [
   {
     id: "1OKw4tQ7bmoytLExgwe2D0",
     title: "nooma FUR1422 TeidiShelving Oak-2-1",
-    url: "/assets/nooma_FUR1422_TeidiShelving_Oak-2-1.jpg",
-    thumbnail: "/assets/nooma_FUR1422_TeidiShelving_Oak-2-1.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/1OKw4tQ7bmoytLExgwe2D0/827052ecc4e478f31a78cb7baa1bb911/nooma_FUR1422_TeidiShelving_Oak-2-1.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/1OKw4tQ7bmoytLExgwe2D0/827052ecc4e478f31a78cb7baa1bb911/nooma_FUR1422_TeidiShelving_Oak-2-1.jpg",
     width: 1581,
     height: 2370,
     mimeType: "image/jpeg",
@@ -402,8 +442,9 @@ const MOCK_ASSETS = [
   {
     id: "gK51yzEca76X5SVdHzbnJ",
     title: "nooma FUR1422 TeidiShelving Oak-1-1",
-    url: "/assets/nooma_FUR1422_TeidiShelving_Oak-1-1.png",
-    thumbnail: "/assets/nooma_FUR1422_TeidiShelving_Oak-1-1.png",
+    url: "https://images.ctfassets.net/blh4anz05qu1/gK51yzEca76X5SVdHzbnJ/e8d32d4880f36ac58efc5651587e4c41/nooma_FUR1422_TeidiShelving_Oak-1-1.png",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/gK51yzEca76X5SVdHzbnJ/e8d32d4880f36ac58efc5651587e4c41/nooma_FUR1422_TeidiShelving_Oak-1-1.png",
     width: 3000,
     height: 2000,
     mimeType: "image/png",
@@ -412,8 +453,9 @@ const MOCK_ASSETS = [
   {
     id: "6VpdFdYvjBx42jRkzlzf8P",
     title: "nooma FUR16032 YamiTableLong Oak-1-1",
-    url: "/assets/nooma_FUR16032_YamiTableLong_Oak-1-1.png",
-    thumbnail: "/assets/nooma_FUR16032_YamiTableLong_Oak-1-1.png",
+    url: "https://images.ctfassets.net/blh4anz05qu1/6VpdFdYvjBx42jRkzlzf8P/ac54854e31da1093465c86f3218de16a/nooma_FUR16032_YamiTableLong_Oak-1-1.png",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/6VpdFdYvjBx42jRkzlzf8P/ac54854e31da1093465c86f3218de16a/nooma_FUR16032_YamiTableLong_Oak-1-1.png",
     width: 2370,
     height: 1580,
     mimeType: "image/png",
@@ -422,8 +464,9 @@ const MOCK_ASSETS = [
   {
     id: "6aiqE0IqeWfpFSN0iE4tPI",
     title: "nooma 5Seater ToomModularSofa GraphiteBlack-5-1",
-    url: "/assets/nooma_5Seater_ToomModularSofa_GraphiteBlack-5-1.png",
-    thumbnail: "/assets/nooma_5Seater_ToomModularSofa_GraphiteBlack-5-1.png",
+    url: "https://images.ctfassets.net/blh4anz05qu1/6aiqE0IqeWfpFSN0iE4tPI/6a06dc6951e32f3558c2bfd1980cc94a/nooma_5Seater_ToomModularSofa_GraphiteBlack-5-1.png",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/6aiqE0IqeWfpFSN0iE4tPI/6a06dc6951e32f3558c2bfd1980cc94a/nooma_5Seater_ToomModularSofa_GraphiteBlack-5-1.png",
     width: 2000,
     height: 1333,
     mimeType: "image/png",
@@ -432,8 +475,9 @@ const MOCK_ASSETS = [
   {
     id: "2FiKC2sagL7QOBstDWpfEj",
     title: "nooma FUR1732 AtikBedsideTable Oak-2",
-    url: "/assets/nooma_FUR1732_AtikBedsideTable_Oak-2.jpg",
-    thumbnail: "/assets/nooma_FUR1732_AtikBedsideTable_Oak-2.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/2FiKC2sagL7QOBstDWpfEj/b73c11e3885a6c80328c532a6e7f5c10/nooma_FUR1732_AtikBedsideTable_Oak-2.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/2FiKC2sagL7QOBstDWpfEj/b73c11e3885a6c80328c532a6e7f5c10/nooma_FUR1732_AtikBedsideTable_Oak-2.jpg",
     width: 2370,
     height: 1581,
     mimeType: "image/jpeg",
@@ -442,8 +486,9 @@ const MOCK_ASSETS = [
   {
     id: "ooHwxsscetlBKWUHvDrYv",
     title: "nooma FUR1732 AtikBedsideTable Oak-3",
-    url: "/assets/nooma_FUR1732_AtikBedsideTable_Oak-3.jpg",
-    thumbnail: "/assets/nooma_FUR1732_AtikBedsideTable_Oak-3.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/ooHwxsscetlBKWUHvDrYv/88635e80b79e11898c31c0d84b2c02a2/nooma_FUR1732_AtikBedsideTable_Oak-3.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/ooHwxsscetlBKWUHvDrYv/88635e80b79e11898c31c0d84b2c02a2/nooma_FUR1732_AtikBedsideTable_Oak-3.jpg",
     width: 1581,
     height: 2370,
     mimeType: "image/jpeg",
@@ -452,8 +497,9 @@ const MOCK_ASSETS = [
   {
     id: "3RBlJ4dwQtIajhMM3qeD7B",
     title: "nooma FUR1731 AtikBedsideTable VulcanoBlack-2",
-    url: "/assets/nooma_FUR1731_AtikBedsideTable_VulcanoBlack-2.jpg",
-    thumbnail: "/assets/nooma_FUR1731_AtikBedsideTable_VulcanoBlack-2.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/3RBlJ4dwQtIajhMM3qeD7B/838550f83b036fa24be4ce2b8baddcb9/nooma_FUR1731_AtikBedsideTable_VulcanoBlack-2.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/3RBlJ4dwQtIajhMM3qeD7B/838550f83b036fa24be4ce2b8baddcb9/nooma_FUR1731_AtikBedsideTable_VulcanoBlack-2.jpg",
     width: 1581,
     height: 2370,
     mimeType: "image/jpeg",
@@ -462,8 +508,9 @@ const MOCK_ASSETS = [
   {
     id: "1FsVeMZsCJNsy3JLiy8GGo",
     title: "nooma FUR1732 AtikBedsideTable Oak-1-1",
-    url: "/assets/nooma_FUR1732_AtikBedsideTable_Oak-1-1.jpg",
-    thumbnail: "/assets/nooma_FUR1732_AtikBedsideTable_Oak-1-1.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/1FsVeMZsCJNsy3JLiy8GGo/6cc9b2458580cc551f3ab2156470098f/nooma_FUR1732_AtikBedsideTable_Oak-1-1.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/1FsVeMZsCJNsy3JLiy8GGo/6cc9b2458580cc551f3ab2156470098f/nooma_FUR1732_AtikBedsideTable_Oak-1-1.jpg",
     width: 1581,
     height: 2370,
     mimeType: "image/jpeg",
@@ -472,8 +519,9 @@ const MOCK_ASSETS = [
   {
     id: "SHWatDsF6uCduYvnbzAho",
     title: "nooma FUR1732 AtikBedsideTable Oak-4",
-    url: "/assets/nooma_FUR1732_AtikBedsideTable_Oak-4.jpg",
-    thumbnail: "/assets/nooma_FUR1732_AtikBedsideTable_Oak-4.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/SHWatDsF6uCduYvnbzAho/8e944fb91086ac452605ff34ddf03977/nooma_FUR1732_AtikBedsideTable_Oak-4.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/SHWatDsF6uCduYvnbzAho/8e944fb91086ac452605ff34ddf03977/nooma_FUR1732_AtikBedsideTable_Oak-4.jpg",
     width: 1581,
     height: 2370,
     mimeType: "image/jpeg",
@@ -482,8 +530,9 @@ const MOCK_ASSETS = [
   {
     id: "6ZYzBuqdv0g1FriQGw8vE0",
     title: "nooma FUR1432 TeidiShelving Oak-3",
-    url: "/assets/nooma_FUR1432_TeidiShelving_Oak-3.jpg",
-    thumbnail: "/assets/nooma_FUR1432_TeidiShelving_Oak-3.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/6ZYzBuqdv0g1FriQGw8vE0/3c6eb9f549b83c27871d13fe6c3c8c99/nooma_FUR1432_TeidiShelving_Oak-3.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/6ZYzBuqdv0g1FriQGw8vE0/3c6eb9f549b83c27871d13fe6c3c8c99/nooma_FUR1432_TeidiShelving_Oak-3.jpg",
     width: 1581,
     height: 2370,
     mimeType: "image/jpeg",
@@ -492,8 +541,9 @@ const MOCK_ASSETS = [
   {
     id: "2iJaD2D0lmX8QF867omHCO",
     title: "nooma FUR1432 TeidiShelving Oak-4",
-    url: "/assets/nooma_FUR1432_TeidiShelving_Oak-4.jpg",
-    thumbnail: "/assets/nooma_FUR1432_TeidiShelving_Oak-4.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/2iJaD2D0lmX8QF867omHCO/af6bae5dcfb3f7ca3aab38b2dd49ae77/nooma_FUR1432_TeidiShelving_Oak-4.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/2iJaD2D0lmX8QF867omHCO/af6bae5dcfb3f7ca3aab38b2dd49ae77/nooma_FUR1432_TeidiShelving_Oak-4.jpg",
     width: 1581,
     height: 2370,
     mimeType: "image/jpeg",
@@ -502,8 +552,9 @@ const MOCK_ASSETS = [
   {
     id: "3WNzDcZ1CrrbRSJeY5xD1k",
     title: "nooma FUR1422 TeidiShelving Oak-1",
-    url: "/assets/nooma_FUR1422_TeidiShelving_Oak-1.jpg",
-    thumbnail: "/assets/nooma_FUR1422_TeidiShelving_Oak-1.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/3WNzDcZ1CrrbRSJeY5xD1k/c571d608a44da35d4d9d3f092632a022/nooma_FUR1422_TeidiShelving_Oak-1.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/3WNzDcZ1CrrbRSJeY5xD1k/c571d608a44da35d4d9d3f092632a022/nooma_FUR1422_TeidiShelving_Oak-1.jpg",
     width: 2370,
     height: 1581,
     mimeType: "image/jpeg",
@@ -512,8 +563,9 @@ const MOCK_ASSETS = [
   {
     id: "6oLimElQUkKoUQ0XdtKxPj",
     title: "nooma FUR1432 TeidiShelving Oak-2",
-    url: "/assets/nooma_FUR1432_TeidiShelving_Oak-2.jpg",
-    thumbnail: "/assets/nooma_FUR1432_TeidiShelving_Oak-2.jpg",
+    url: "https://images.ctfassets.net/blh4anz05qu1/6oLimElQUkKoUQ0XdtKxPj/f6f524bfd37cf8f074ec34bb3b63a467/nooma_FUR1432_TeidiShelving_Oak-2.jpg",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/6oLimElQUkKoUQ0XdtKxPj/f6f524bfd37cf8f074ec34bb3b63a467/nooma_FUR1432_TeidiShelving_Oak-2.jpg",
     width: 1581,
     height: 2370,
     mimeType: "image/jpeg",
@@ -523,8 +575,9 @@ const MOCK_ASSETS = [
   {
     id: "2NyETrP9X723XKHdpEzUsD",
     title: "Oly",
-    url: "/assets/OLY.mp4",
-    thumbnail: "/assets/Screenshot_2022-12-20_at_15.49.59.png",
+    url: "https://videos.ctfassets.net/blh4anz05qu1/1cj4eYFIAG86I4PKXnBQkZ/66c7154c28832e976fe7f765ad9191f4/OLY.mp4",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/4tqmWvSK4346n4DN1tkgBB/d0d9ce4d43cc99354c7ff05f433044ad/Screenshot_2022-12-20_at_15.49.59.png",
     width: 2160,
     height: 4096,
     mimeType: "video/mp4",
@@ -533,8 +586,9 @@ const MOCK_ASSETS = [
   {
     id: "6lY5WOjOnvAHuFXXOB6atD",
     title: "Mod Media Furniture",
-    url: "/assets/Mod_Media_Furniture.mp4",
-    thumbnail: "/assets/Screenshot_2022-12-20_at_15.49.12.png",
+    url: "https://videos.ctfassets.net/blh4anz05qu1/3zabcj1PKodJnD31OJwRDp/dd5d6ffa6e9f5c1c26846bba51723d3d/Mod_Media_Furniture.mp4",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/2oY6N1f7yAPRlCYZoqrAa2/6f6002b5c142666702a7d9c10cbc9e70/Screenshot_2022-12-20_at_15.49.12.png",
     width: 5120,
     height: 2700,
     mimeType: "video/mp4",
@@ -543,8 +597,9 @@ const MOCK_ASSETS = [
   {
     id: "4Cg4pWpGOmgmHP2PPtiONF",
     title: "Met",
-    url: "/assets/MET.mp4",
-    thumbnail: "/assets/Screenshot_2022-12-20_at_15.48.04.png",
+    url: "https://videos.ctfassets.net/blh4anz05qu1/2VfRnmPRb2oOJs39X5iyA9/bf4d56be52ff92b75aed0b9117cfaf33/MET.mp4",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/73F2iCdLlWqNS54RP2Zf7Z/6b356235c4812debec51445488e3e149/Screenshot_2022-12-20_at_15.48.04.png",
     width: 2160,
     height: 3840,
     mimeType: "video/mp4",
@@ -553,8 +608,9 @@ const MOCK_ASSETS = [
   {
     id: "NLwnsZTiR2B8dSYEaPkT5",
     title: "Ande",
-    url: "/assets/ANDE.mp4",
-    thumbnail: "/assets/Screenshot_2022-12-20_at_15.46.30.png",
+    url: "https://videos.ctfassets.net/blh4anz05qu1/1zbRPkH3QzkZeQPCrZSWvr/887ca7d9a806f5e82faa86ac8fbb074d/ANDE.mp4",
+    thumbnail:
+      "https://images.ctfassets.net/blh4anz05qu1/2hIhPmfpCeIZWm1w5P7QJj/935dfe2d45e9ad43a3db1700afa7235c/Screenshot_2022-12-20_at_15.46.30.png",
     width: 2160,
     height: 4096,
     mimeType: "video/mp4",

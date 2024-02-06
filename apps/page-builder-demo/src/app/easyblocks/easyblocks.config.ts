@@ -9,12 +9,14 @@ import { mockVideoWidget } from "@/app/easyblocks/externalData/mockMedia/mockVid
 import { Config, EasyblocksBackend } from "@easyblocks/core";
 import { buttonComponentDefinition } from "./components/Button/Button.definition";
 import { buttonGroupDefinition } from "./components/ButtonGroup/ButtonGroup.definition";
+import { codeDefinition } from "./components/Code/Code.definition";
 import { gridComponentDefinition } from "./components/Grid/Grid.definition";
 import { imageComponentDefinition } from "./components/Image/Image.definition";
 import {
   productPageDefinition,
   standardPageDefinition,
 } from "./components/RootSectionStack/RootSectionStack.definition";
+import { simpleBannerDefinition } from "./components/SimpleBanner/SimpleBanner.definition";
 import { solidColorComponentDefinition } from "./components/SolidColor/SolidColor.definition";
 import { stackComponentDefinition } from "./components/Stack/Stack.definition";
 import { textLinkDefinition } from "./components/TextLink/TextLink.definition";
@@ -24,7 +26,6 @@ import { mockImageWidget } from "./externalData/mockMedia/mockImageWidget";
 import { pexelsImageWidget } from "./externalData/pexels/pexelsImageWidget";
 import { productWidget } from "./externalData/product/productWidget";
 import { templates } from "./templates/templates";
-import { simpleBannerDefinition } from "./components/SimpleBanner/SimpleBanner.definition";
 
 if (!process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN) {
   throw new Error("Missing NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN");
@@ -64,6 +65,7 @@ export const easyblocksConfig: Config = {
     alertActionDefinition,
     textLinkDefinition,
     simpleBannerDefinition,
+    codeDefinition,
   ],
   types: {
     "@easyblocks/image": {
