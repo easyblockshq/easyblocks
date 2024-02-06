@@ -16,12 +16,6 @@ const appShellDefinition: NoCodeComponentDefinition = {
       noInline: true,
     },
     {
-      prop: "Footer",
-      type: "component",
-      required: true,
-      accepts: ["AppShellFooter"],
-    },
-    {
       prop: "Sidebar",
       type: "component",
       required: true,
@@ -31,11 +25,6 @@ const appShellDefinition: NoCodeComponentDefinition = {
       prop: "isSidebarHidden",
       type: "boolean",
       label: "Hide sidebar",
-    },
-    {
-      prop: "isFooterHidden",
-      type: "boolean",
-      label: "Hide footer",
     },
   ],
 };

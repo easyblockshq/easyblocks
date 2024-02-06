@@ -1,13 +1,11 @@
-import { NoCodeComponentProps } from "../types";
+import { NoCodeComponentProps } from "@easyblocks/core";
 
 function AppShell({
   Header,
-  Footer,
   Main,
   Sidebar,
   isSidebarHidden,
-  isFooterHidden,
-}: NoCodeComponentProps) {
+}: NoCodeComponentProps & Record<string, any>) {
   return (
     <div
       className="min-h-screen grid"
@@ -27,8 +25,6 @@ function AppShell({
           )}
         </div>
       </main>
-
-      {!isFooterHidden && <Footer.type {...Footer.props} />}
     </div>
   );
 }

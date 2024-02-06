@@ -30,7 +30,8 @@ import { OpenDialog } from "./components/OpenDialog/OpenDialog.client";
 import { Separator } from "./components/Separator/Separator.client";
 import { Stack } from "./components/Stack/Stack.client";
 import { TriggerEvent } from "./components/TriggerEvent/TriggerEvent.client";
-
+import { HeaderLink } from "./components/AppShell/AppShellHeader/HeaderLink/HeaderLink";
+import { Link } from "./components/Link/Link.client";
 /**
  * Here we provide all the instances of components required to render content built with Easyblocks No-Code Components
  */
@@ -63,6 +64,8 @@ const easyblocksComponents = {
   PropertiesFormBooleanField,
   UpdateAssetFormAction,
   SubmitButtonAction,
+  HeaderLink,
+  Link,
 };
 
 export { easyblocksComponents };

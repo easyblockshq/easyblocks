@@ -1,13 +1,21 @@
 // A universal wrapper for button components that takes into account the Action
-export function createButtonComponent(Component: any) {
-  // eslint-disable-next-line react/display-name
-  return ({ Action, ...props }: Record<string, any>) => {
+
+import React from "react";
+import { ActionTriggerType } from "./types";
+
+export function createButtonComponent<OwnProps>(
+  TriggerComponent: ActionTriggerType<OwnProps>
+) {
+  return ({ Action, ...props }: any) => {
     if (Action) {
       return (
-        <Action.type {...Action.props} trigger={<Component {...props} />} />
+        <Action.type
+          {...Action.props}
+          trigger={<TriggerComponent {...props} />}
+        />
       );
     }
 
-    return <Component {...props} />;
+    return <TriggerComponent {...props} />;
   };
 }

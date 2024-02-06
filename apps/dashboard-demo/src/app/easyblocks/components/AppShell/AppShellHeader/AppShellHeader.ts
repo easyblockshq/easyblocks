@@ -5,17 +5,32 @@ const appShellHeaderDefinition: NoCodeComponentDefinition = {
   schema: [
     {
       prop: "Items",
-      type: "component",
-      required: true,
-      accepts: ["Stack"],
+      type: "component-collection",
+      accepts: ["HeaderLink"],
+      placeholderAppearance: {
+        width: 100,
+        height: 28,
+        label: "Add link",
+      },
     },
   ],
-  editing() {
+  styles: ({ values }) => {
+    return {
+      styled: {
+        Root: {
+          display: "flex",
+          flexDirection: "row",
+          gap: "12px",
+        },
+      },
+    };
+  },
+  editing: ({ values }) => {
     return {
       components: {
-        Items: {
-          selectable: false,
-        },
+        Items: values.Items.map(() => ({
+          direction: "horizontal",
+        })),
       },
     };
   },

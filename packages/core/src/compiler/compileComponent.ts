@@ -130,11 +130,15 @@ export function compileComponent(
       )
     );
 
+    const error = `Easyblocks can’t find definition for component "${editableElement._component}" in your config. Please contact your developers to resolve this issue.`;
+
     editableElement = {
       _component: componentDefinition.id,
       _id: uniqueId(),
-      error: `Easyblocks can’t find definition for component "${name}" in your config. Please contact your developers to resolve this issue.`,
+      error,
     };
+
+    console.warn(error);
 
     parentComponentEditingInfo = undefined;
   }

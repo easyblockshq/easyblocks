@@ -31,6 +31,8 @@ import { stackDefinition } from "./components/Stack/Stack";
 import { triggerEventDefinition } from "./components/TriggerEvent/TriggerEvent";
 import { assetScreenContentDefinition } from "./components/AssetScreenContent/AssetsScreenContent.definition";
 import { welcomeScreenContentDefinition } from "./components/WelcomeScreenContent/WelcomeScreenContent.definition";
+import { headerLinkDefinition } from "./components/AppShell/AppShellHeader/HeaderLink/HeaderLink.definition";
+import { linkDefinition } from "./components/Link/Link";
 
 const MAIN_FONT_FAMILY = `"Inter", font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"`;
 
@@ -59,7 +61,7 @@ const easyblocksConfig: Config = {
       { id: "neutral-700", value: "#404040" },
       { id: "neutral-800", value: "#262626" },
       { id: "neutral-900", value: "#171717" },
-      { id: "neutral-950", value: "#0a0a0a" },
+      { id: "neutral-950", value: "#0a0a0a", isDefault: true },
       { id: "orange", value: "#f76a14" },
       { id: "red", value: "#e5484e" },
       { id: "blue", value: "#3f63dd" },
@@ -67,8 +69,80 @@ const easyblocksConfig: Config = {
     ],
     space: [
       {
-        id: "containerMargin.default",
+        id: "0",
+        label: "0",
         value: "0px",
+        isDefault: true,
+      },
+      {
+        id: "1",
+        label: "1",
+        value: "1px",
+      },
+      {
+        id: "2",
+        label: "2",
+        value: "2px",
+      },
+      {
+        id: "4",
+        label: "4",
+        value: "4px",
+      },
+      {
+        id: "6",
+        label: "6",
+        value: "6px",
+      },
+      {
+        id: "8",
+        label: "8",
+        value: "8px",
+      },
+      {
+        id: "12",
+        label: "12",
+        value: "12px",
+      },
+      {
+        id: "16",
+        label: "16",
+        value: "16px",
+      },
+      {
+        id: "24",
+        label: "24",
+        value: "24px",
+      },
+      {
+        id: "32",
+        label: "32",
+        value: "32px",
+      },
+      {
+        id: "48",
+        label: "48",
+        value: "48px",
+      },
+      {
+        id: "64",
+        label: "64",
+        value: "64px",
+      },
+      {
+        id: "96",
+        label: "96",
+        value: "96px",
+      },
+      {
+        id: "128",
+        label: "128",
+        value: "128px",
+      },
+      {
+        id: "160",
+        label: "160",
+        value: "160px",
       },
     ],
     fonts: [
@@ -79,6 +153,7 @@ const easyblocksConfig: Config = {
           fontSize: 16,
           lineHeight: 1.5,
         },
+        isDefault: true,
       },
       {
         id: "heading-1",
@@ -186,6 +261,7 @@ const easyblocksConfig: Config = {
     buttonDefinition,
     buttonsGroupDefinition,
     dialogContentDefinition,
+    linkDefinition,
     assetLinkDefinition,
     triggerEventDefinition,
     openDialogDefinition,
@@ -195,6 +271,7 @@ const easyblocksConfig: Config = {
     propertiesFormBooleanField,
     updateAssetFormAction,
     submitButton,
+    headerLinkDefinition,
     {
       id: "Collection",
       schema: [
@@ -291,122 +368,7 @@ const easyblocksConfig: Config = {
         ],
       },
     },
-    // Default RichText template. Please ignore this, this one will be gone in future versions.
-    {
-      id: "RichText_body-typography",
-      entry: {
-        _id: "20149cea-df28-4d5f-a085-3938c5ad3a08",
-        _component: "@easyblocks/rich-text",
-        elements: {
-          en: [
-            {
-              _id: "56386a14-b91f-48f4-a3aa-6d34a3d2e71c",
-              _component: "@easyblocks/rich-text-block-element",
-              traceId: "$richTextBlockElement-e908698d",
-              type: "paragraph",
-              elements: [
-                {
-                  _id: "cdaf3bb2-6648-4845-8c57-358a6ac8c3af",
-                  _component: "@easyblocks/rich-text-line-element",
-                  traceId: "$richTextLineElement-407fc206",
-                  elements: [
-                    {
-                      _id: "f8864077-9d1e-4186-a0a1-7b71e842aad6",
-                      _component: "@easyblocks/rich-text-part",
-                      traceId: "$richTextPart-50021cf2",
-                      value: "Lorem ipsum",
-                      font: {
-                        $res: true,
-                        xl: {
-                          ref: "body",
-                          value: {
-                            $res: true,
-                            "2xl": {
-                              fontFamily:
-                                '"Inter", font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
-                              fontSize: 16,
-                              lineHeight: 1.5,
-                            },
-                          },
-                        },
-                      },
-                      color: {
-                        $res: true,
-                        xl: {
-                          ref: "neutral-950",
-                          value: "#0a0a0a",
-                        },
-                      },
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        },
-        align: {
-          $res: true,
-          xl: "left",
-        },
-        accessibilityRole: "div",
-        isListStyleAuto: true,
-        mainFont: {
-          $res: true,
-          xl: {
-            value: {
-              fontFamily: "sans-serif",
-              fontSize: "16px",
-            },
-          },
-        },
-        mainColor: {
-          $res: true,
-          xl: {
-            value: "#000000",
-          },
-        },
-      },
-    },
-    // Default SimpleText template. Please ignore this, this one will be gone in future versions.
-    {
-      id: "DefaultSimpleText",
-      entry: {
-        _id: "49af13d4-baf8-441c-b8b0-4b0088d3a4df",
-        _component: "@easyblocks/text",
-        traceId: "$text-31f5d455",
-        _itemProps: {
-          Stack: {
-            Items: {
-              width: { $res: true, xl: "512px" },
-              marginBottom: { $res: true, xl: { value: "0px", ref: "0" } },
-              align: { $res: true, xl: "left" },
-            },
-          },
-        },
-        value: {
-          id: "local.8c49847f-d4a1-4401-b97c-ae6eef0830ed",
-          value: { en: "Lorem ipsum" },
-          widgetId: "@easyblocks/local-text",
-        },
-        color: { $res: true, xl: { ref: "neutral-950", value: "#0a0a0a" } },
-        font: {
-          $res: true,
-          xl: {
-            ref: "body",
-            value: {
-              $res: true,
-              "2xl": {
-                fontFamily:
-                  '"Inter", font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
-                fontSize: 16,
-                lineHeight: 1.5,
-              },
-            },
-          },
-        },
-        accessibilityRole: "p",
-      },
-    },
+
     {
       id: "DefaultPropertiesForm",
       entry: {

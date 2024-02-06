@@ -24,8 +24,13 @@ const mainAreaDefinition: NoCodeComponentDefinition<{
           params: {
             options: ["1x1", "2x1"],
           },
+          defaultValue: "1x1",
         },
       ],
+      placeholderAppearance: {
+        aspectRatio: 1,
+        label: "Add panel",
+      },
     },
     {
       prop: "columnsCount",
