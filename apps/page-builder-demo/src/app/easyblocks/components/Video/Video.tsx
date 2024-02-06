@@ -1,7 +1,7 @@
 import { NoCodeComponentProps } from "@easyblocks/core";
-import { useForceRerender } from "@easyblocks/utils";
 import { ReactElement, useEffect } from "react";
 import { VideoSrc } from "../../externalData/types";
+import { useForceRerender } from "../../utils/useForceRerender";
 import { VideoRenderer } from "./VideoRenderer";
 
 export type VideoProps = NoCodeComponentProps & {

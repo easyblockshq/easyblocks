@@ -1,7 +1,7 @@
 import { NoCodeComponentDefinition } from "@easyblocks/core";
-import { assertDefined } from "@easyblocks/utils";
-import { buttonStyles } from "./Button.styles";
+import { assertDefined } from "../../utils/assert";
 import { pxValueNormalize } from "../utils/pxValueNormalize";
+import { buttonStyles } from "./Button.styles";
 
 export const buttonComponentDefinition: NoCodeComponentDefinition = {
   id: "Button",

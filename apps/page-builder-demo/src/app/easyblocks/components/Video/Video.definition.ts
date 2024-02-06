@@ -1,6 +1,6 @@
 import { NoCodeComponentDefinition } from "@easyblocks/core";
-import { last } from "@easyblocks/utils";
 import { VideoSrc } from "../../externalData/types";
+import { last } from "../../utils/last";
 import videoStyles from "./Video.styles";
 
 const VIDEO_THUMBNAIL_URL =

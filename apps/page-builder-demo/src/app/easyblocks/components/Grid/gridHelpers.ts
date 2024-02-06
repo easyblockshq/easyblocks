@@ -1,4 +1,4 @@
-import { deepClone } from "@easyblocks/utils";
+import { deepClone } from "../../utils/deepClone";
 
 type Rows = Array<Array<number>>;
 

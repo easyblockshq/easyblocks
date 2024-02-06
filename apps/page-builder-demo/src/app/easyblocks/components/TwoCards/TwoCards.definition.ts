@@ -1,15 +1,15 @@
+import { twoCardsAuto } from "@/app/easyblocks/components/TwoCards/TwoCards.auto";
 import { NoCodeComponentDefinition } from "@easyblocks/core";
-import { twoCardsStyles } from "./TwoCards.styles";
-import { TwoCardsCompiledValues } from "./TwoCards.types";
+import { range } from "../../utils/range";
 import {
   SectionWrapperValues,
   sectionWrapperEditing,
   sectionWrapperSchemaProps,
 } from "../utils/sectionWrapper/sectionWrapperHelpers";
 import { twoCardsChange } from "./TwoCards.change";
+import { twoCardsStyles } from "./TwoCards.styles";
+import { TwoCardsCompiledValues } from "./TwoCards.types";
 import { TWO_CARDS_COL_NUM } from "./twoCardsConstants";
-import { range } from "@easyblocks/utils";
-import { twoCardsAuto } from "@/app/easyblocks/components/TwoCards/TwoCards.auto";
 
 const twoCardsComponentDefinition: NoCodeComponentDefinition<
   TwoCardsCompiledValues & SectionWrapperValues
