@@ -1,7 +1,0 @@
-.root {
-  aspect-ratio: 1920/1080;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 32px;
-  position: relative;
-  overflow: hidden;
-}
