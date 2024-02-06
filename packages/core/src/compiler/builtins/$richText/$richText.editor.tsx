@@ -408,9 +408,8 @@ function RichTextEditor(props: RichTextProps) {
       paddingRight: "0.001em",
     };
 
-    if (leaf.isHighlighted) {
-      style.backgroundColor =
-        leaf.highlightType === "text" ? "#B4D5FE" : "#ffff56";
+    if (leaf.isHighlighted && leaf.highlightType === "text") {
+      style.backgroundColor = "#B4D5FE";
     }
 
     const TextPartComponent = (
@@ -431,6 +430,10 @@ function RichTextEditor(props: RichTextProps) {
               compiled={TextPart.components.TextWrapper[0]}
               path={path}
               components={editorContext.components}
+              passedProps={{
+                __isSelected:
+                  leaf.isHighlighted && leaf.highlightType === "textWrapper",
+              }}
             />
           ) : undefined
         }

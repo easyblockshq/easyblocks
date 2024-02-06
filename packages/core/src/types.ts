@@ -648,6 +648,7 @@ export type NoCodeComponentProps = {
   __easyblocks: {
     id: string;
     isEditing: boolean;
+    isSelected?: boolean;
   };
 };
 

@@ -230,9 +230,6 @@ importers:
       '@easyblocks/editor':
         specifier: workspace:*
         version: link:../../packages/editor
-      '@easyblocks/utils':
-        specifier: workspace:*
-        version: link:../../packages/utils
       '@types/node':
         specifier: 20.4.2
         version: 20.4.2
@@ -324,30 +321,6 @@ importers:
       tailwindcss:
         specifier: 3.3.3
         version: 3.3.3(ts-node@10.9.2)
-      typescript:
-        specifier: 5.1.6
-        version: 5.1.6
-
-  apps/website:
-    dependencies:
-      '@types/node':
-        specifier: 20.4.5
-        version: 20.4.5
-      '@types/react':
-        specifier: ^18.2.20
-        version: 18.2.42
-      '@types/react-dom':
-        specifier: 18.2.7
-        version: 18.2.7
-      next:
-        specifier: 13.4.12
-        version: 13.4.12(@babel/core@7.21.3)(react-dom@18.2.0)(react@18.2.0)
-      react:
-        specifier: 18.2.0
-        version: 18.2.0
-      react-dom:
-        specifier: 18.2.0
-        version: 18.2.0(react@18.2.0)
       typescript:
         specifier: 5.1.6
         version: 5.1.6
@@ -7171,10 +7144,6 @@ packages:
 
   /@types/node@20.4.2:
     resolution: {integrity: sha512-Dd0BYtWgnWJKwO1jkmTrzofjK2QXXcai0dmtzvIBhcA+RsG5h8R3xlyta0kGOZRNfL9GuRtb1knmPEhQrePCEw==}
-    dev: false
-
-  /@types/node@20.4.5:
-    resolution: {integrity: sha512-rt40Nk13II9JwQBdeYqmbn2Q6IVTA5uPhvSO+JVqdXw/6/4glI6oR9ezty/A9Hg5u7JH4OmYmuQ+XvjKm0Datg==}
     dev: false
 
   /@types/node@20.8.7:

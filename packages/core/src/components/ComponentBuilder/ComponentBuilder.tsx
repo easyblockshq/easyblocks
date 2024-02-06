@@ -431,15 +431,12 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { ref, ...restPassedProps } = allPassedProps || {};
+  const { ref, __isSelected, ...restPassedProps } = allPassedProps || {};
 
   const runtime = {
     stitches: meta.stitches,
     resop: resop,
-    Box,
     devices: meta.vars.devices,
-    isEditing,
-    locale: meta.vars.locale,
   };
 
   const easyblocksProp: InternalNoCodeComponentProps["__easyblocks"] = {
@@ -447,6 +444,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
     isEditing,
     path,
     runtime,
+    isSelected: __isSelected,
   };
 
   const componentProps = {

@@ -1,4 +1,9 @@
-function Code({ children, Wrapper }: Record<string, any>) {
+import { NoCodeComponentProps } from "@easyblocks/core";
+
+function Code({
+  children,
+  Wrapper,
+}: NoCodeComponentProps & Record<string, any>) {
   return <Wrapper.type {...Wrapper.props}>{children}</Wrapper.type>;
 }
 
