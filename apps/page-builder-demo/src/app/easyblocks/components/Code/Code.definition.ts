@@ -8,12 +8,13 @@ const codeDefinition: NoCodeComponentDefinition = {
     return {
       styled: {
         Wrapper: {
-          display: "inline",
+          __as: "span",
           padding: "0.1em 0.3em",
           background: "rgba(135,131,120,0.15)",
           borderRadius: 3,
           color: "#EB5757",
           fontFamily: "monospace",
+          fontSize: "0.8em",
         },
       },
     };

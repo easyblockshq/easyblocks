@@ -57,15 +57,15 @@ export function useDataSaver(
 
     // New document
     if (remoteDocument.current === null) {
-      console.log("New document");
+      console.debug("New document");
 
       // There must be at least one change in order to create a new document, we're not storing empty temporary documents
       if (isConfigTheSame) {
-        console.log("no change -> bye");
+        console.debug("no change -> bye");
         return;
       }
 
-      console.log("change detected! -> create");
+      console.debug("change detected! -> create");
 
       const newDocument = await editorContext.backend.documents.create({
         entry: configToSaveWithLocalisedFlag,
@@ -83,7 +83,7 @@ export function useDataSaver(
     }
     // Document update
     else {
-      console.log("Existing document");
+      console.debug("Existing document");
 
       const latestDocument = await editorContext.backend.documents.get({
         id: remoteDocument.current.id,
@@ -96,7 +96,7 @@ export function useDataSaver(
 
       // Newer version of document is available
       if (isNewerDocumentVersionAvailable) {
-        console.log("new remote version detected, updating");
+        console.debug("new remote version detected, updating");
 
         if (!latestDocument) {
           throw new Error("unexpected error");
@@ -116,7 +116,7 @@ export function useDataSaver(
 
         // Notify when local config was modified
         if (!isConfigTheSame) {
-          console.log("there were local changes -> notify");
+          console.debug("there were local changes -> notify");
 
           editorContext.actions.notify(
             "Remote changes detected, local changes have been overwritten."
@@ -128,10 +128,10 @@ export function useDataSaver(
       // No remote change occurred
       else {
         if (isConfigTheSame) {
-          console.log("no local changes -> bye");
+          console.debug("no local changes -> bye");
           // Let's do nothing, no remote and local change
         } else {
-          console.log("updating the document", remoteDocument.current.id);
+          console.debug("updating the document", remoteDocument.current.id);
 
           const updatedDocument = await editorContext.backend.documents.update({
             id: remoteDocument.current.id,

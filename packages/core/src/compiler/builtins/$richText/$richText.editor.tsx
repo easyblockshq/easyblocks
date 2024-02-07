@@ -2,21 +2,21 @@
 import { deepClone, deepCompare, dotNotationGet } from "@easyblocks/utils";
 import throttle from "lodash/throttle";
 import React, {
-  CSSProperties,
-  cloneElement,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
 import { flushSync } from "react-dom";
 import {
+  BaseRange,
   Descendant,
   Editor,
   NodeEntry,
   Range,
-  Text as SlateText,
+  Text,
   Transforms,
   createEditor,
 } from "slate";
@@ -26,6 +26,7 @@ import type {
   RenderPlaceholderProps,
 } from "slate-react";
 import { Editable, ReactEditor, Slate, withReact } from "slate-react";
+import { Box } from "../../../components/Box/Box";
 import {
   ComponentBuilder,
   InternalNoCodeComponentProps,
@@ -44,6 +45,7 @@ import {
 import { Alignment, BlockElement } from "./$richText.types";
 import { RichTextBlockElementCompiledComponentConfig } from "./$richTextBlockElement/$richTextBlockElement";
 import { RichTextPartComponentConfig } from "./$richTextPart/$richTextPart";
+import { RichTextPartClient } from "./$richTextPart/$richTextPart.client";
 import { getAbsoluteRichTextPartPath } from "./getAbsoluteRichTextPartPath";
 import { updateSelection } from "./richTextEditorActions";
 import { convertEditorValueToRichTextElements } from "./utils/convertEditorValueToRichTextElements";
@@ -56,20 +58,6 @@ import { getFocusedFieldsFromSlateSelection } from "./utils/getFocusedFieldsFrom
 import { getFocusedRichTextPartsConfigPaths } from "./utils/getFocusedRichTextPartsConfigPaths";
 import { getRichTextComponentConfigFragment } from "./utils/getRichTextComponentConfigFragment";
 import { NORMALIZED_IDS_TO_IDS, withEasyblocks } from "./withEasyblocks";
-import { RichTextPartClient } from "./$richTextPart/$richTextPart.client";
-import { Box } from "../../../components/Box/Box";
-
-function mapAlignmentToFlexAlignment(align: Alignment) {
-  if (align === "center") {
-    return "center";
-  }
-
-  if (align === "right") {
-    return "flex-end";
-  }
-
-  return "flex-start";
-}
 
 interface RichTextProps extends InternalNoCodeComponentProps {
   elements: Array<
@@ -140,6 +128,7 @@ function RichTextEditor(props: RichTextProps) {
    * the selected text after the user has blurred the content editable element.
    */
   const [isDecorationActive, setIsDecorationActive] = useState(false);
+
   /**
    * Keeps track what caused last change to editor value.
    * This is used in two cases:
@@ -149,6 +138,10 @@ function RichTextEditor(props: RichTextProps) {
   const lastChangeReason = useRef<"external" | "text-input" | "paste">(
     "text-input"
   );
+
+  /**
+   * Whether the content editable is enabled or not. We enable it through double click.
+   */
   const [isEnabled, setIsEnabled] = useState(false);
   const previousRichTextComponentConfig = useRef<RichTextComponentConfig>();
 
@@ -165,14 +158,14 @@ function RichTextEditor(props: RichTextProps) {
     previousRichTextComponentConfig.current = richTextConfig;
     const nextEditorValue =
       convertRichTextElementsToEditorValue(richTextElements);
-    // React bails out the render if state setter function is invoked within render.
+    // React bails out the render if state setter function is invoked during the render phase.
     // Doing it makes Slate always up-to date with the latest config if it's changed from outside.
     // https://reactjs.org/docs/hooks-faq.html#how-do-i-implement-getderivedstatefromprops
     setEditorValue(nextEditorValue);
     editor.children = nextEditorValue;
 
     if (isEnabled) {
-      const editorSelection = getEditorSelectionFromFocusedFields(
+      const newEditorSelection = getEditorSelectionFromFocusedFields(
         focussedField,
         form
       );
@@ -180,15 +173,31 @@ function RichTextEditor(props: RichTextProps) {
       // Slate gives us two methods to update its selection:
       // - `setSelection` updates current selection, so `editor.selection` must be not null
       // - `select` sets the selection, so `editor.selection` must be null
-      if (editorSelection !== null && editor.selection !== null) {
-        Transforms.setSelection(editor, editorSelection);
-      } else if (editorSelection !== null && editor.selection === null) {
-        Transforms.select(editor, editorSelection);
+      if (newEditorSelection !== null && editor.selection !== null) {
+        Transforms.setSelection(editor, newEditorSelection);
+      } else if (newEditorSelection !== null && editor.selection === null) {
+        Transforms.select(editor, newEditorSelection);
       } else {
         Transforms.deselect(editor);
       }
     }
   }
+
+  const isRichTextActive = focussedField.some((focusedField: any) =>
+    focusedField.startsWith(path)
+  );
+
+  useLayoutEffect(() => {
+    // When rich text becomes inactive we want to restore all original [data-slate-string] nodes
+    // by removing all span wrappers that we added to show the mocked browser selection.
+    if (!isRichTextActive) {
+      const root = ReactEditor.findDocumentOrShadowRoot(editor);
+      const slateStringElements = root.querySelectorAll("[data-slate-string]");
+      slateStringElements.forEach((element) => {
+        element.replaceChildren(document.createTextNode(element.textContent!));
+      });
+    }
+  }, [editor, isRichTextActive]);
 
   useEffect(() => {
     // We set previous value of rich text only once, then we manually assign it when needed.
@@ -197,15 +206,13 @@ function RichTextEditor(props: RichTextProps) {
 
   useEffect(
     // Component is blurred when the user selects other component in editor. This is different from blurring content editable.
-    // Content editable can be blurred, but the component can remain active ex. we select some text within content editable
+    // Content editable can be blurred, but the component can remain active ex. when we select some text within content editable
     // and want to update its color from the sidebar.
     function handleRichTextBlur() {
-      const isRichTextActive = focussedField.some((focusedField: any) =>
-        focusedField.startsWith(path)
-      );
-
       if (!isRichTextActive && isEnabled) {
+        // editor.children = deepClone(editorValue);
         setIsEnabled(false);
+        currentSelectionRef.current = null;
       }
 
       if (!editor.selection) {
@@ -231,7 +238,7 @@ function RichTextEditor(props: RichTextProps) {
         }
       }
     },
-    [focussedField, isEnabled]
+    [focussedField, isEnabled, isRichTextActive]
   );
 
   useEffect(() => {
@@ -252,7 +259,7 @@ function RichTextEditor(props: RichTextProps) {
         const { editorContext } = (window.parent as any).editorWindowAPI;
 
         // Slate is an uncontrolled component and we don't have an easy access to control it.
-        // It keeps its state internally and on each change we convert this state to our Shopstory format.
+        // It keeps its state internally and on each change we convert this state to our format.
         // This works great because changing content of editable element is easy, we append or remove things.
         // When we change the color/font of selected text there are many questions:
         // - is the current selection partial or does it span everything?
@@ -261,7 +268,7 @@ function RichTextEditor(props: RichTextProps) {
         //
         // `Editor.addMark` method automatically will split (or not) text chunks, update selection etc.
         // It will just do all the painful things. After the Slate do its job, we take its current state after the update
-        // and convert it to Shopstory config and correct focused fields.
+        // and convert it to entry and correct focused fields.
         const temporaryEditor = createTemporaryEditor(editor);
 
         const updateSelectionResult = updateSelection(
@@ -308,7 +315,13 @@ function RichTextEditor(props: RichTextProps) {
     };
   }, [richTextConfig, path]);
 
-  const decorate = createTextSelectionDecorator(editor, { isDecorationActive });
+  // const isRichTextActive = focussedField.some((focusedField: any) =>
+  //   focusedField.startsWith(path)
+  // );
+
+  // const decorate = createTextSelectionDecorator(editor, {
+  //   isDecorationActive: isDecorationActive && isRichTextActive,
+  // });
   const Elements = extractElementsFromCompiledComponents(props);
 
   function renderElement({
@@ -361,21 +374,20 @@ function RichTextEditor(props: RichTextProps) {
       throw new Error("Unknown element type");
     }
 
-    const ElementComponent = (
-      <Box __compiled={compiledStyles} devices={devices} stitches={stitches} />
-    );
-
-    return cloneElement(
-      ElementComponent,
-      {
-        ...attributes,
+    return (
+      <Box
+        __compiled={compiledStyles}
+        devices={devices}
+        stitches={stitches}
+        {...attributes}
         // Element annotation for easier debugging
-        ...(process.env.NODE_ENV === "development" && {
+        {...(process.env.NODE_ENV === "development" && {
           "data-shopstory-element-type": element.type,
           "data-shopstory-id": element.id,
-        }),
-      },
-      element.type === "list-item" ? <div>{children}</div> : children
+        })}
+      >
+        {element.type === "list-item" ? <div>{children}</div> : children}
+      </Box>
     );
   }
 
@@ -401,17 +413,6 @@ function RichTextEditor(props: RichTextProps) {
       throw new Error("Missing part");
     }
 
-    const style: CSSProperties = {
-      // Fixes bug in Chrome and Edge (Chromium based) where user cannot place selection on text node
-      // if the inline element is at the end of line.
-      // https://github.com/ianstormtaylor/slate/issues/4704#issuecomment-1006696364
-      paddingRight: "0.001em",
-    };
-
-    if (leaf.isHighlighted && leaf.highlightType === "text") {
-      style.backgroundColor = "#B4D5FE";
-    }
-
     const TextPartComponent = (
       <RichTextPartClient
         value={children}
@@ -420,7 +421,6 @@ function RichTextEditor(props: RichTextProps) {
             __compiled={TextPart.styled.Text}
             devices={devices}
             stitches={stitches}
-            style={style}
             {...attributes}
           />
         }
@@ -616,11 +616,160 @@ function RichTextEditor(props: RichTextProps) {
         setFocussedField(nextFocusedFields);
       }
     }
+
+    if (isDecorationActive) {
+      const root = ReactEditor.findDocumentOrShadowRoot(editor);
+      const slateStringElements = root.querySelectorAll("[data-slate-string]");
+      slateStringElements.forEach((element) => {
+        element.replaceChildren(document.createTextNode(element.textContent!));
+      });
+    }
   }
+
+  const currentSelectionRef = useRef<BaseRange | null>(null);
+
+  useEffect(() => {
+    function saveLatestSelection() {
+      const root = ReactEditor.findDocumentOrShadowRoot(editor);
+      const selection = (root as Document).getSelection();
+
+      if (selection) {
+        currentSelectionRef.current = ReactEditor.toSlateRange(
+          editor,
+          selection,
+          { exactMatch: false, suppressThrow: true }
+        );
+      } else {
+        currentSelectionRef.current = null;
+      }
+    }
+
+    const throttledSaveLatestSelection = throttle(saveLatestSelection, 100);
+
+    if (isEnabled) {
+      window.document.addEventListener(
+        "selectionchange",
+        throttledSaveLatestSelection
+      );
+
+      return () => {
+        window.document.removeEventListener(
+          "selectionchange",
+          throttledSaveLatestSelection
+        );
+      };
+    }
+  }, [editor, isEnabled]);
 
   function handleEditableBlur(): void {
     lastChangeReason.current = "external";
     setIsDecorationActive(true);
+
+    if (
+      currentSelectionRef.current !== null &&
+      !Range.isCollapsed(currentSelectionRef.current)
+    ) {
+      const nodes = Editor.nodes(editor, {
+        at: currentSelectionRef.current,
+        match: Text.isText,
+      });
+
+      const domNodes = Array.from(nodes).map(([node]) => {
+        const domNode = ReactEditor.toDOMNode(editor, node);
+
+        return domNode;
+      });
+
+      console.log(domNodes);
+
+      if (domNodes.length === 1) {
+        const slateString = domNodes[0].querySelector("[data-slate-string]");
+        const textContent = slateString!.textContent!;
+        const newChild = document.createDocumentFragment();
+
+        // Selection made within whole text node
+        if (
+          textContent.length ===
+          currentSelectionRef.current.focus.offset -
+            currentSelectionRef.current.anchor.offset
+        ) {
+          const selectedTextNode = document.createElement("span");
+          selectedTextNode.textContent = textContent;
+          selectedTextNode.dataset.easyblocksRichTextSelection = "true";
+          newChild.appendChild(selectedTextNode);
+          slateString!.replaceChildren(newChild);
+        } else {
+          const selectedTextNode = document.createElement("span");
+          selectedTextNode.textContent = textContent.slice(
+            currentSelectionRef.current.anchor.offset,
+            currentSelectionRef.current.focus.offset
+          );
+          selectedTextNode.dataset.easyblocksRichTextSelection = "true";
+          newChild.appendChild(
+            document.createTextNode(
+              textContent.slice(0, currentSelectionRef.current.anchor.offset)
+            )
+          );
+          newChild.appendChild(selectedTextNode);
+          newChild.appendChild(
+            document.createTextNode(
+              textContent.slice(currentSelectionRef.current.focus.offset)
+            )
+          );
+          slateString!.replaceChildren(newChild);
+        }
+
+        return;
+      }
+
+      domNodes.forEach((node, index) => {
+        const slateString = node.querySelector("[data-slate-string]");
+
+        if (slateString) {
+          const textContent = slateString.textContent!;
+          const newChild = document.createDocumentFragment();
+
+          if (index === 0) {
+            newChild.appendChild(
+              document.createTextNode(
+                slateString.textContent!.slice(
+                  0,
+                  currentSelectionRef.current!.anchor.offset
+                )
+              )
+            );
+            const selectedTextNode = document.createElement("span");
+            selectedTextNode.textContent = textContent.slice(
+              currentSelectionRef.current!.anchor.offset
+            );
+            selectedTextNode.dataset.easyblocksRichTextSelection = "true";
+            newChild.appendChild(selectedTextNode);
+
+            slateString.replaceChildren(newChild);
+          } else if (index === domNodes.length - 1) {
+            const selectedTextNode = document.createElement("span");
+            selectedTextNode.textContent = textContent.slice(
+              0,
+              currentSelectionRef.current!.focus.offset
+            );
+            selectedTextNode.dataset.easyblocksRichTextSelection = "true";
+            newChild.appendChild(selectedTextNode);
+            newChild.appendChild(
+              document.createTextNode(
+                textContent.slice(currentSelectionRef.current!.focus.offset)
+              )
+            );
+            slateString.replaceChildren(newChild);
+          } else {
+            const selectedTextNode = document.createElement("span");
+            selectedTextNode.textContent = textContent;
+            selectedTextNode.dataset.easyblocksRichTextSelection = "true";
+            newChild.appendChild(selectedTextNode);
+            slateString.replaceChildren(newChild);
+          }
+        }
+      });
+    }
   }
 
   // When copying content from content editable, Slate will copy HTML content of selected nodes
@@ -712,6 +861,9 @@ function RichTextEditor(props: RichTextProps) {
         "& *::selection": {
           backgroundColor: "transparent",
         },
+        "& *[data-easyblocks-rich-text-selection]": {
+          backgroundColor: "#b4d5fe",
+        },
       }),
       ...(isFallbackValueShown && {
         opacity: 0.5,
@@ -723,7 +875,6 @@ function RichTextEditor(props: RichTextProps) {
     });
 
     return getStyles().className;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     align,
     isDecorationActive,
@@ -739,7 +890,6 @@ function RichTextEditor(props: RichTextProps) {
         <Editable
           className={contentEditableClassName}
           placeholder="Here goes text content"
-          decorate={decorate}
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           renderPlaceholder={renderPlaceholder}
@@ -799,7 +949,7 @@ function isEditorValueEmpty(editorValue: Array<BlockElement>) {
     editorValue.length === 1 &&
     editorValue[0].children.length === 1 &&
     editorValue[0].children[0].children.length === 1 &&
-    SlateText.isText(editorValue[0].children[0].children[0]) &&
+    Text.isText(editorValue[0].children[0].children[0]) &&
     editorValue[0].children[0].children[0].text === ""
   );
 }
@@ -812,6 +962,18 @@ function mapResponsiveAlignmentToStyles(
   align: ResponsiveValue<Alignment>,
   { devices, resop }: { devices: Devices; resop: any }
 ) {
+  function mapAlignmentToFlexAlignment(align: Alignment) {
+    if (align === "center") {
+      return "center";
+    }
+
+    if (align === "right") {
+      return "flex-end";
+    }
+
+    return "flex-start";
+  }
+
   const responsiveStyles = resop(
     {
       align: responsiveValueFill(align, devices, getDevicesWidths(devices)),
@@ -840,9 +1002,11 @@ function createTextSelectionDecorator(
     const decorations: Array<Range> = [];
 
     if (
-      SlateText.isText(node) &&
+      Text.isText(node) &&
+      // node.TextWrapper.length === 0 &&
       options.isDecorationActive &&
-      editor.selection !== null
+      editor.selection !== null &&
+      !Range.isCollapsed(editor.selection)
     ) {
       const intersection = Range.intersection(
         editor.selection,
