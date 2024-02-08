@@ -70,7 +70,7 @@ export const easyblocksConfig: Config = {
   types: {
     "@easyblocks/image": {
       type: "external",
-      widgets: [mockImageWidget, pexelsImageWidget],
+      widgets: [mockImageWidget, pexelsImageWidget, productWidget],
     },
     "@easyblocks/video": {
       type: "external",

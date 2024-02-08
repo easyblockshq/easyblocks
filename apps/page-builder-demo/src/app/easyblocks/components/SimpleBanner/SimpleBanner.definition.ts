@@ -35,7 +35,7 @@ export const simpleBannerDefinition: NoCodeComponentDefinition = {
       prop: "Title",
       type: "component",
       required: true,
-      accepts: ["@easyblocks/text"],
+      accepts: ["@easyblocks/rich-text"],
     },
     {
       prop: "Buttons",
@@ -53,7 +53,7 @@ export const simpleBannerDefinition: NoCodeComponentDefinition = {
       styled: {
         Root: {
           backgroundColor: values.backgroundColor,
-          border: values.hasBorder ? "2px solid black" : "none",
+          border: values.hasBorder ? `2px solid black` : "none",
           padding: values.padding,
         },
         Wrapper: {
