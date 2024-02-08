@@ -165,7 +165,7 @@ function RichTextEditor(props: RichTextProps) {
     setEditorValue(nextEditorValue);
     editor.children = nextEditorValue;
 
-    if (isEnabled) {
+    if (isEnabled && !isDecorationActive) {
       const newEditorSelection = getEditorSelectionFromFocusedFields(
         focussedField,
         form
@@ -190,118 +190,13 @@ function RichTextEditor(props: RichTextProps) {
       currentSelectionRef.current !== null &&
       !Range.isCollapsed(currentSelectionRef.current)
     ) {
-      const nodes = Editor.nodes(editor, {
-        at: currentSelectionRef.current,
-        match: Text.isText,
-      });
-
-      const domNodes = Array.from(nodes).map(([node]) => {
-        const domNode = ReactEditor.toDOMNode(editor, node);
-
-        return domNode;
-      });
-
-      if (domNodes.length === 1) {
-        const slateString = domNodes[0].querySelector("[data-slate-string]");
-        const textContent = slateString!.textContent!;
-        const newChild = document.createDocumentFragment();
-
-        // Selection made within whole text node
-        if (
-          textContent.length ===
-          currentSelectionRef.current.focus.offset -
-            currentSelectionRef.current.anchor.offset
-        ) {
-          const selectedTextNode = document.createElement("span");
-          selectedTextNode.textContent = textContent;
-          selectedTextNode.dataset.easyblocksRichTextSelection = "true";
-          newChild.appendChild(selectedTextNode);
-          slateString!.replaceChildren(newChild);
-        } else {
-          const selectedTextNode = document.createElement("span");
-          selectedTextNode.textContent = textContent.slice(
-            currentSelectionRef.current.anchor.offset,
-            currentSelectionRef.current.focus.offset
-          );
-          selectedTextNode.dataset.easyblocksRichTextSelection = "true";
-          newChild.appendChild(
-            document.createTextNode(
-              textContent.slice(0, currentSelectionRef.current.anchor.offset)
-            )
-          );
-          newChild.appendChild(selectedTextNode);
-          newChild.appendChild(
-            document.createTextNode(
-              textContent.slice(currentSelectionRef.current.focus.offset)
-            )
-          );
-          slateString!.replaceChildren(newChild);
-        }
-
-        return;
-      }
-
-      domNodes.forEach((node, index) => {
-        const slateString = node.querySelector("[data-slate-string]");
-
-        if (slateString) {
-          const textContent = slateString.textContent!;
-          const newChild = document.createDocumentFragment();
-
-          if (index === 0) {
-            newChild.appendChild(
-              document.createTextNode(
-                slateString.textContent!.slice(
-                  0,
-                  currentSelectionRef.current!.anchor.offset
-                )
-              )
-            );
-            const selectedTextNode = document.createElement("span");
-            selectedTextNode.textContent = textContent.slice(
-              currentSelectionRef.current!.anchor.offset
-            );
-            selectedTextNode.dataset.easyblocksRichTextSelection = "true";
-            newChild.appendChild(selectedTextNode);
-
-            slateString.replaceChildren(newChild);
-          } else if (index === domNodes.length - 1) {
-            const selectedTextNode = document.createElement("span");
-            selectedTextNode.textContent = textContent.slice(
-              0,
-              currentSelectionRef.current!.focus.offset
-            );
-            selectedTextNode.dataset.easyblocksRichTextSelection = "true";
-            newChild.appendChild(selectedTextNode);
-            newChild.appendChild(
-              document.createTextNode(
-                textContent.slice(currentSelectionRef.current!.focus.offset)
-              )
-            );
-            slateString.replaceChildren(newChild);
-          } else {
-            const selectedTextNode = document.createElement("span");
-            selectedTextNode.textContent = textContent;
-            selectedTextNode.dataset.easyblocksRichTextSelection = "true";
-            newChild.appendChild(selectedTextNode);
-            slateString.replaceChildren(newChild);
-          }
-        }
-      });
+      splitStringNodes(editor, currentSelectionRef.current);
 
       return () => {
-        const root = ReactEditor.findDocumentOrShadowRoot(editor);
-        const slateStringElements = root.querySelectorAll(
-          "[data-slate-string]"
-        );
-        slateStringElements.forEach((element) => {
-          element.replaceChildren(
-            document.createTextNode(element.textContent!)
-          );
-        });
+        unwrapStringNodesContent(editor);
       };
     }
-  }, [editor, isDecorationActive]);
+  }, [editor, isDecorationActive, richTextConfig]);
 
   const isRichTextActive = focussedField.some((focusedField: any) =>
     focusedField.startsWith(path)
@@ -311,11 +206,7 @@ function RichTextEditor(props: RichTextProps) {
     // When rich text becomes inactive we want to restore all original [data-slate-string] nodes
     // by removing all span wrappers that we added to show the mocked browser selection.
     if (!isRichTextActive) {
-      const root = ReactEditor.findDocumentOrShadowRoot(editor);
-      const slateStringElements = root.querySelectorAll("[data-slate-string]");
-      slateStringElements.forEach((element) => {
-        element.replaceChildren(document.createTextNode(element.textContent!));
-      });
+      unwrapStringNodesContent(editor);
     }
   }, [editor, isRichTextActive]);
 
@@ -745,7 +636,7 @@ function RichTextEditor(props: RichTextProps) {
       const root = ReactEditor.findDocumentOrShadowRoot(editor);
       const selection = (root as Document).getSelection();
 
-      if (selection) {
+      if (selection && selection.type === "Range") {
         currentSelectionRef.current = ReactEditor.toSlateRange(
           editor,
           selection,
@@ -829,7 +720,7 @@ function RichTextEditor(props: RichTextProps) {
 
       lastChangeReason.current = "paste";
     } else if (
-      // Slate only handles pasting only if the clipboardData contains text/plain type.
+      // Slate only handles pasting if the clipboardData contains text/plain type.
       // When copying text from the Contentful's rich text editor, the clipboardData contains
       // more than one type, so we have to handle this case manually.
       event.clipboardData.types.length > 1 &&
@@ -951,6 +842,9 @@ function RichTextEditor(props: RichTextProps) {
   );
 }
 
+export { RichTextEditor };
+export type { RichTextProps };
+
 function isEditorValueEmpty(editorValue: Array<BlockElement>) {
   return (
     editorValue.length === 1 &&
@@ -1027,5 +921,101 @@ function createTextSelectionDecorator(editor: Editor) {
   };
 }
 
-export { RichTextEditor };
-export type { RichTextProps };
+function splitStringNodes(editor: Editor, selection: BaseRange) {
+  const nodes = Editor.nodes(editor, {
+    at: selection,
+    match: Text.isText,
+  });
+
+  const domNodes = Array.from(nodes).map(([node]) => {
+    const domNode = ReactEditor.toDOMNode(editor, node);
+
+    return domNode;
+  });
+
+  if (domNodes.length === 1) {
+    const slateString = domNodes[0].querySelector("[data-slate-string]");
+    const textContent = slateString!.textContent!;
+    const newChild = document.createDocumentFragment();
+
+    // Selection made within whole text node
+    if (
+      textContent.length ===
+      selection.focus.offset - selection.anchor.offset
+    ) {
+      const selectedTextNode = document.createElement("span");
+      selectedTextNode.textContent = textContent;
+      selectedTextNode.dataset.easyblocksRichTextSelection = "true";
+      newChild.appendChild(selectedTextNode);
+      slateString!.replaceChildren(newChild);
+    } else {
+      const selectedTextNode = document.createElement("span");
+      selectedTextNode.textContent = textContent.slice(
+        selection.anchor.offset,
+        selection.focus.offset
+      );
+      selectedTextNode.dataset.easyblocksRichTextSelection = "true";
+      newChild.appendChild(
+        document.createTextNode(textContent.slice(0, selection.anchor.offset))
+      );
+      newChild.appendChild(selectedTextNode);
+      newChild.appendChild(
+        document.createTextNode(textContent.slice(selection.focus.offset))
+      );
+      slateString!.replaceChildren(newChild);
+    }
+
+    return;
+  }
+
+  domNodes.forEach((node, index) => {
+    const slateString = node.querySelector("[data-slate-string]");
+
+    if (slateString) {
+      const textContent = slateString.textContent!;
+      const newChild = document.createDocumentFragment();
+
+      if (index === 0) {
+        newChild.appendChild(
+          document.createTextNode(
+            slateString.textContent!.slice(0, selection.anchor.offset)
+          )
+        );
+        const selectedTextNode = document.createElement("span");
+        selectedTextNode.textContent = textContent.slice(
+          selection.anchor.offset
+        );
+        selectedTextNode.dataset.easyblocksRichTextSelection = "true";
+        newChild.appendChild(selectedTextNode);
+
+        slateString.replaceChildren(newChild);
+      } else if (index === domNodes.length - 1) {
+        const selectedTextNode = document.createElement("span");
+        selectedTextNode.textContent = textContent.slice(
+          0,
+          selection.focus.offset
+        );
+        selectedTextNode.dataset.easyblocksRichTextSelection = "true";
+        newChild.appendChild(selectedTextNode);
+        newChild.appendChild(
+          document.createTextNode(textContent.slice(selection.focus.offset))
+        );
+        slateString.replaceChildren(newChild);
+      } else {
+        const selectedTextNode = document.createElement("span");
+        selectedTextNode.textContent = textContent;
+        selectedTextNode.dataset.easyblocksRichTextSelection = "true";
+        newChild.appendChild(selectedTextNode);
+        slateString.replaceChildren(newChild);
+      }
+    }
+  });
+}
+
+function unwrapStringNodesContent(editor: Editor) {
+  const root = ReactEditor.findDocumentOrShadowRoot(editor);
+  const slateStringElements = root.querySelectorAll("[data-slate-string]");
+  slateStringElements.forEach((element) => {
+    element.replaceChildren(document.createTextNode(element.textContent!));
+  });
+}
