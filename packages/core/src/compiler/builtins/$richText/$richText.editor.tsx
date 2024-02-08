@@ -164,6 +164,7 @@ function RichTextEditor(props: RichTextProps) {
     // https://reactjs.org/docs/hooks-faq.html#how-do-i-implement-getderivedstatefromprops
     setEditorValue(nextEditorValue);
     editor.children = nextEditorValue;
+    currentSelectionRef.current = null;
 
     if (isEnabled && !isDecorationActive) {
       const newEditorSelection = getEditorSelectionFromFocusedFields(
@@ -291,6 +292,8 @@ function RichTextEditor(props: RichTextProps) {
         if (!updateSelectionResult) {
           return;
         }
+
+        currentSelectionRef.current = temporaryEditor.selection;
 
         actions.runChange(() => {
           const newRichTextElement: RichTextComponentConfig = {
