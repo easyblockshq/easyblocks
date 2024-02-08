@@ -144,6 +144,7 @@ function RichTextEditor(props: RichTextProps) {
    */
   const [isEnabled, setIsEnabled] = useState(false);
   const previousRichTextComponentConfig = useRef<RichTextComponentConfig>();
+  const currentSelectionRef = useRef<BaseRange | null>(null);
 
   const isConfigChanged = !isConfigEqual(
     previousRichTextComponentConfig.current,
@@ -182,6 +183,125 @@ function RichTextEditor(props: RichTextProps) {
       }
     }
   }
+
+  useLayoutEffect(() => {
+    if (
+      isDecorationActive &&
+      currentSelectionRef.current !== null &&
+      !Range.isCollapsed(currentSelectionRef.current)
+    ) {
+      const nodes = Editor.nodes(editor, {
+        at: currentSelectionRef.current,
+        match: Text.isText,
+      });
+
+      const domNodes = Array.from(nodes).map(([node]) => {
+        const domNode = ReactEditor.toDOMNode(editor, node);
+
+        return domNode;
+      });
+
+      if (domNodes.length === 1) {
+        const slateString = domNodes[0].querySelector("[data-slate-string]");
+        const textContent = slateString!.textContent!;
+        const newChild = document.createDocumentFragment();
+
+        // Selection made within whole text node
+        if (
+          textContent.length ===
+          currentSelectionRef.current.focus.offset -
+            currentSelectionRef.current.anchor.offset
+        ) {
+          const selectedTextNode = document.createElement("span");
+          selectedTextNode.textContent = textContent;
+          selectedTextNode.dataset.easyblocksRichTextSelection = "true";
+          newChild.appendChild(selectedTextNode);
+          slateString!.replaceChildren(newChild);
+        } else {
+          const selectedTextNode = document.createElement("span");
+          selectedTextNode.textContent = textContent.slice(
+            currentSelectionRef.current.anchor.offset,
+            currentSelectionRef.current.focus.offset
+          );
+          selectedTextNode.dataset.easyblocksRichTextSelection = "true";
+          newChild.appendChild(
+            document.createTextNode(
+              textContent.slice(0, currentSelectionRef.current.anchor.offset)
+            )
+          );
+          newChild.appendChild(selectedTextNode);
+          newChild.appendChild(
+            document.createTextNode(
+              textContent.slice(currentSelectionRef.current.focus.offset)
+            )
+          );
+          slateString!.replaceChildren(newChild);
+        }
+
+        return;
+      }
+
+      domNodes.forEach((node, index) => {
+        const slateString = node.querySelector("[data-slate-string]");
+
+        if (slateString) {
+          const textContent = slateString.textContent!;
+          const newChild = document.createDocumentFragment();
+
+          if (index === 0) {
+            newChild.appendChild(
+              document.createTextNode(
+                slateString.textContent!.slice(
+                  0,
+                  currentSelectionRef.current!.anchor.offset
+                )
+              )
+            );
+            const selectedTextNode = document.createElement("span");
+            selectedTextNode.textContent = textContent.slice(
+              currentSelectionRef.current!.anchor.offset
+            );
+            selectedTextNode.dataset.easyblocksRichTextSelection = "true";
+            newChild.appendChild(selectedTextNode);
+
+            slateString.replaceChildren(newChild);
+          } else if (index === domNodes.length - 1) {
+            const selectedTextNode = document.createElement("span");
+            selectedTextNode.textContent = textContent.slice(
+              0,
+              currentSelectionRef.current!.focus.offset
+            );
+            selectedTextNode.dataset.easyblocksRichTextSelection = "true";
+            newChild.appendChild(selectedTextNode);
+            newChild.appendChild(
+              document.createTextNode(
+                textContent.slice(currentSelectionRef.current!.focus.offset)
+              )
+            );
+            slateString.replaceChildren(newChild);
+          } else {
+            const selectedTextNode = document.createElement("span");
+            selectedTextNode.textContent = textContent;
+            selectedTextNode.dataset.easyblocksRichTextSelection = "true";
+            newChild.appendChild(selectedTextNode);
+            slateString.replaceChildren(newChild);
+          }
+        }
+      });
+
+      return () => {
+        const root = ReactEditor.findDocumentOrShadowRoot(editor);
+        const slateStringElements = root.querySelectorAll(
+          "[data-slate-string]"
+        );
+        slateStringElements.forEach((element) => {
+          element.replaceChildren(
+            document.createTextNode(element.textContent!)
+          );
+        });
+      };
+    }
+  }, [editor, isDecorationActive]);
 
   const isRichTextActive = focussedField.some((focusedField: any) =>
     focusedField.startsWith(path)
@@ -620,8 +740,6 @@ function RichTextEditor(props: RichTextProps) {
     }
   }
 
-  const currentSelectionRef = useRef<BaseRange | null>(null);
-
   useEffect(() => {
     function saveLatestSelection() {
       const root = ReactEditor.findDocumentOrShadowRoot(editor);
@@ -658,112 +776,6 @@ function RichTextEditor(props: RichTextProps) {
   function handleEditableBlur(): void {
     lastChangeReason.current = "external";
     setIsDecorationActive(true);
-
-    if (
-      currentSelectionRef.current !== null &&
-      !Range.isCollapsed(currentSelectionRef.current)
-    ) {
-      const nodes = Editor.nodes(editor, {
-        at: currentSelectionRef.current,
-        match: Text.isText,
-      });
-
-      const domNodes = Array.from(nodes).map(([node]) => {
-        const domNode = ReactEditor.toDOMNode(editor, node);
-
-        return domNode;
-      });
-
-      console.log(domNodes);
-
-      if (domNodes.length === 1) {
-        const slateString = domNodes[0].querySelector("[data-slate-string]");
-        const textContent = slateString!.textContent!;
-        const newChild = document.createDocumentFragment();
-
-        // Selection made within whole text node
-        if (
-          textContent.length ===
-          currentSelectionRef.current.focus.offset -
-            currentSelectionRef.current.anchor.offset
-        ) {
-          const selectedTextNode = document.createElement("span");
-          selectedTextNode.textContent = textContent;
-          selectedTextNode.dataset.easyblocksRichTextSelection = "true";
-          newChild.appendChild(selectedTextNode);
-          slateString!.replaceChildren(newChild);
-        } else {
-          const selectedTextNode = document.createElement("span");
-          selectedTextNode.textContent = textContent.slice(
-            currentSelectionRef.current.anchor.offset,
-            currentSelectionRef.current.focus.offset
-          );
-          selectedTextNode.dataset.easyblocksRichTextSelection = "true";
-          newChild.appendChild(
-            document.createTextNode(
-              textContent.slice(0, currentSelectionRef.current.anchor.offset)
-            )
-          );
-          newChild.appendChild(selectedTextNode);
-          newChild.appendChild(
-            document.createTextNode(
-              textContent.slice(currentSelectionRef.current.focus.offset)
-            )
-          );
-          slateString!.replaceChildren(newChild);
-        }
-
-        return;
-      }
-
-      domNodes.forEach((node, index) => {
-        const slateString = node.querySelector("[data-slate-string]");
-
-        if (slateString) {
-          const textContent = slateString.textContent!;
-          const newChild = document.createDocumentFragment();
-
-          if (index === 0) {
-            newChild.appendChild(
-              document.createTextNode(
-                slateString.textContent!.slice(
-                  0,
-                  currentSelectionRef.current!.anchor.offset
-                )
-              )
-            );
-            const selectedTextNode = document.createElement("span");
-            selectedTextNode.textContent = textContent.slice(
-              currentSelectionRef.current!.anchor.offset
-            );
-            selectedTextNode.dataset.easyblocksRichTextSelection = "true";
-            newChild.appendChild(selectedTextNode);
-
-            slateString.replaceChildren(newChild);
-          } else if (index === domNodes.length - 1) {
-            const selectedTextNode = document.createElement("span");
-            selectedTextNode.textContent = textContent.slice(
-              0,
-              currentSelectionRef.current!.focus.offset
-            );
-            selectedTextNode.dataset.easyblocksRichTextSelection = "true";
-            newChild.appendChild(selectedTextNode);
-            newChild.appendChild(
-              document.createTextNode(
-                textContent.slice(currentSelectionRef.current!.focus.offset)
-              )
-            );
-            slateString.replaceChildren(newChild);
-          } else {
-            const selectedTextNode = document.createElement("span");
-            selectedTextNode.textContent = textContent;
-            selectedTextNode.dataset.easyblocksRichTextSelection = "true";
-            newChild.appendChild(selectedTextNode);
-            slateString.replaceChildren(newChild);
-          }
-        }
-      });
-    }
   }
 
   // When copying content from content editable, Slate will copy HTML content of selected nodes
