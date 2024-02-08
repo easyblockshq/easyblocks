@@ -315,13 +315,7 @@ function RichTextEditor(props: RichTextProps) {
     };
   }, [richTextConfig, path]);
 
-  // const isRichTextActive = focussedField.some((focusedField: any) =>
-  //   focusedField.startsWith(path)
-  // );
-
-  // const decorate = createTextSelectionDecorator(editor, {
-  //   isDecorationActive: isDecorationActive && isRichTextActive,
-  // });
+  const decorate = createTextSelectionDecorator(editor);
   const Elements = extractElementsFromCompiledComponents(props);
 
   function renderElement({
@@ -893,6 +887,7 @@ function RichTextEditor(props: RichTextProps) {
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           renderPlaceholder={renderPlaceholder}
+          decorate={decorate}
           onFocus={handleEditableFocus}
           onBlur={handleEditableBlur}
           onCopy={handleEditableCopy}
@@ -992,40 +987,12 @@ function mapResponsiveAlignmentToStyles(
   return getBoxStyles(compiledStyles, devices);
 }
 
-function createTextSelectionDecorator(
-  editor: Editor,
-  options: {
-    isDecorationActive: boolean;
-  }
-) {
+function createTextSelectionDecorator(editor: Editor) {
   return ([node, path]: NodeEntry) => {
     const decorations: Array<Range> = [];
 
     if (
       Text.isText(node) &&
-      // node.TextWrapper.length === 0 &&
-      options.isDecorationActive &&
-      editor.selection !== null &&
-      !Range.isCollapsed(editor.selection)
-    ) {
-      const intersection = Range.intersection(
-        editor.selection,
-        Editor.range(editor, path)
-      );
-
-      if (intersection !== null) {
-        const range = {
-          isHighlighted: true,
-          highlightType: "text",
-          ...intersection,
-        };
-
-        decorations.push(range);
-      }
-    }
-
-    if (
-      SlateText.isText(node) &&
       editor.selection !== null &&
       node.TextWrapper.length > 0 &&
       Range.isCollapsed(editor.selection)
