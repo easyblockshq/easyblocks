@@ -94,7 +94,7 @@ function createFieldController({
 
             canvasIframe.contentWindow.postMessage(
               richTextChangedEvent({
-                prop: schemaPropNameToUpdate,
+                prop: schemaPropNameToUpdate as any,
                 schemaProp: field.schemaProp,
                 values: parsedValues,
               }),
@@ -109,7 +109,7 @@ function createFieldController({
 
             canvasIframe.contentWindow.postMessage(
               richTextChangedEvent({
-                prop: schemaPropNameToUpdate,
+                prop: schemaPropNameToUpdate as any,
                 schemaProp: field.schemaProp,
                 values: [parsedValue],
               }),

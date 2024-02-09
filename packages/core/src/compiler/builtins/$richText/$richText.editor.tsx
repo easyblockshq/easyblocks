@@ -31,6 +31,7 @@ import {
   ComponentBuilder,
   InternalNoCodeComponentProps,
 } from "../../../components/ComponentBuilder/ComponentBuilder";
+import { RichTextChangedEvent } from "../../../events";
 import { getFallbackForLocale } from "../../../locales";
 import { responsiveValueFill } from "../../../responsiveness";
 import { Devices, ResponsiveValue } from "../../../types";
@@ -165,21 +166,25 @@ function RichTextEditor(props: RichTextProps) {
     setEditorValue(nextEditorValue);
     editor.children = nextEditorValue;
 
-    if (isEnabled && !isDecorationActive) {
+    if (isEnabled) {
       const newEditorSelection = getEditorSelectionFromFocusedFields(
         focussedField,
         form
       );
 
-      // Slate gives us two methods to update its selection:
-      // - `setSelection` updates current selection, so `editor.selection` must be not null
-      // - `select` sets the selection, so `editor.selection` must be null
-      if (newEditorSelection !== null && editor.selection !== null) {
-        Transforms.setSelection(editor, newEditorSelection);
-      } else if (newEditorSelection !== null && editor.selection === null) {
-        Transforms.select(editor, newEditorSelection);
+      if (isDecorationActive) {
+        currentSelectionRef.current = newEditorSelection;
       } else {
-        Transforms.deselect(editor);
+        // Slate gives us two methods to update its selection:
+        // - `setSelection` updates current selection, so `editor.selection` must be not null
+        // - `select` sets the selection, so `editor.selection` must be null
+        if (newEditorSelection !== null && editor.selection !== null) {
+          Transforms.setSelection(editor, newEditorSelection);
+        } else if (newEditorSelection !== null && editor.selection === null) {
+          Transforms.select(editor, newEditorSelection);
+        } else {
+          Transforms.deselect(editor);
+        }
       }
     }
   }
@@ -260,7 +265,7 @@ function RichTextEditor(props: RichTextProps) {
   });
 
   useEffect(() => {
-    function handleRichTextChanged(event: any) {
+    function handleRichTextChanged(event: RichTextChangedEvent) {
       if (!editor.selection) {
         return;
       }
