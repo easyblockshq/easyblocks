@@ -947,8 +947,8 @@ function splitStringNodes(editor: Editor, selection: BaseRange) {
 
     // Selection made within whole text node
     if (
-      textContent.length ===
-      selection.focus.offset - selection.anchor.offset
+      textContent.length === selection.focus.offset - selection.anchor.offset ||
+      textContent.length === selection.anchor.offset - selection.focus.offset
     ) {
       const selectedTextNode = document.createElement("span");
       selectedTextNode.textContent = textContent;
