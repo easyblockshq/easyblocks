@@ -2,7 +2,6 @@ import { deepCompare, keys, uniqueId } from "@easyblocks/utils";
 import {
   Editor,
   NodeEntry,
-  Range,
   Element as SlateElement,
   Node as SlateNode,
   Text,
@@ -24,44 +23,44 @@ const USED_IDS = new Set<string>();
 export const NORMALIZED_IDS_TO_IDS = new Map<string, string>();
 
 function withEasyblocks(editor: Editor): Editor {
-  const { insertText, normalizeNode } = editor;
+  const { /*insertText,*/ normalizeNode } = editor;
 
-  editor.insertText = (text) => {
-    // Verify if the current selection is placed at the end of an inline element. If yes, set the selection to start of
-    // the next element before adding new text. This allows to break out from the inline element if it's placed at the end of line.
-    if (editor.selection && Range.isCollapsed(editor.selection)) {
-      const selectedNodeParent = Editor.parent(
-        editor,
-        editor.selection.focus.path
-      );
+  // editor.insertText = (text) => {
+  //   // Verify if the current selection is placed at the end of an inline element. If yes, set the selection to start of
+  //   // the next element before adding new text. This allows to break out from the inline element if it's placed at the end of line.
+  //   if (editor.selection && Range.isCollapsed(editor.selection)) {
+  //     const selectedNodeParent = Editor.parent(
+  //       editor,
+  //       editor.selection.focus.path
+  //     );
 
-      if (selectedNodeParent) {
-        const [parentNode, parentNodePath] = selectedNodeParent;
+  //     if (selectedNodeParent) {
+  //       const [parentNode, parentNodePath] = selectedNodeParent;
 
-        if (SlateElement.isElement(parentNode) && editor.isInline(parentNode)) {
-          const isCursorSetAtTheEnd = Editor.isEnd(
-            editor,
-            editor.selection.focus,
-            parentNodePath
-          );
+  //       if (SlateElement.isElement(parentNode) && editor.isInline(parentNode)) {
+  //         const isCursorSetAtTheEnd = Editor.isEnd(
+  //           editor,
+  //           editor.selection.focus,
+  //           parentNodePath
+  //         );
 
-          const nodePointAfterInlineElement = Editor.after(
-            editor,
-            parentNodePath
-          );
+  //         const nodePointAfterInlineElement = Editor.after(
+  //           editor,
+  //           parentNodePath
+  //         );
 
-          if (isCursorSetAtTheEnd && nodePointAfterInlineElement) {
-            Transforms.setSelection(editor, {
-              anchor: nodePointAfterInlineElement,
-              focus: nodePointAfterInlineElement,
-            });
-          }
-        }
-      }
-    }
+  //         if (isCursorSetAtTheEnd && nodePointAfterInlineElement) {
+  //           Transforms.setSelection(editor, {
+  //             anchor: nodePointAfterInlineElement,
+  //             focus: nodePointAfterInlineElement,
+  //           });
+  //         }
+  //       }
+  //     }
+  //   }
 
-    insertText(text);
-  };
+  //   insertText(text);
+  // };
 
   editor.normalizeNode = (entry) => {
     // When copying text content from content editable element, Slate wraps pasted content into top most element.
@@ -190,10 +189,19 @@ function mergeVisuallyTheSameOrEmptyTextNodes(
         const [nextChildNode, nextChildPath] = textLineChildren[childIndex + 1];
 
         if (Text.isText(currentChildNode) && Text.isText(nextChildNode)) {
+          if (compareText(currentChildNode, nextChildNode)) {
+            Transforms.mergeNodes(editor, {
+              at: nextChildPath,
+              match: (node) => Text.isText(node),
+            });
+
+            return true;
+          }
+
           if (
-            compareText(currentChildNode, nextChildNode) ||
-            (nextChildNode.text.trim() === "" &&
-              childIndex + 1 < textLineChildren.length - 1)
+            nextChildNode.text.trim() === "" &&
+            childIndex + 1 < textLineChildren.length - 1 &&
+            currentChildNode.TextWrapper.length === 0
           ) {
             Transforms.mergeNodes(editor, {
               at: nextChildPath,
@@ -205,7 +213,10 @@ function mergeVisuallyTheSameOrEmptyTextNodes(
 
           // `Transforms.mergeNodes` always merges node/nodes at given position into PREVIOUS node.
           // In this case, we want to merge node at current position into next one.
-          if (currentChildNode.text === "" && nextChildNode !== undefined) {
+          if (
+            currentChildNode.text.trim() === "" &&
+            nextChildNode !== undefined
+          ) {
             Transforms.setNodes(
               editor,
               {

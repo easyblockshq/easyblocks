@@ -19,6 +19,8 @@ const codeDefinition: NoCodeComponentDefinition = {
       },
     };
   },
+  thumbnail:
+    "https://shopstory.s3.eu-central-1.amazonaws.com/picker_icon_text.png",
 };
 
 export { codeDefinition };
