@@ -706,6 +706,14 @@ const EditorContent = ({
         type: "@easyblocks/content-saved",
         document: documentData,
       });
+
+      if (documentData.version === 1) {
+        window.history.pushState(
+          null,
+          "",
+          `${window.location.pathname}?document=${documentData.id}`
+        );
+      }
     },
     compilationCache: compilationCache.current,
     readOnly: props.readOnly,
