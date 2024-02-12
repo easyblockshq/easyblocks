@@ -40,9 +40,9 @@ type RichTextChangedEvent = MessageEvent<
   EasyblocksEditorEventData<
     "@easyblocks-editor/rich-text-changed",
     {
-      prop: string;
+      prop: "font" | "color" | "TextWrapper";
       schemaProp: SchemaProp | Component$$$SchemaProp;
-      values: Array<unknown>;
+      values: Array<Record<string, any> | [] | [NoCodeComponentEntry]>;
     }
   >
 >;
