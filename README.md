@@ -4,15 +4,8 @@ Easyblocks is an open-source React toolkit (white-label editor + framework) for 
 
 It can help you build intuitive visual editors like those in [Shopify](https://shopify.dev/docs/themes/tools/online-editor) (for e-commerce), [Mailchimp](https://mailchimp.com/features/landing-pages/) (landing pages), [Splash](https://splashthat.com/platform/design) (event pages) or [Carrd](https://carrd.co/) (one pagers). It can handle any visual building experience that outputs HTML/CSS or a React component tree - from landing pages to dashboards.
 
-### Live demo
-
-Visit [https://easyblocks-demo.vercel.app/](https://easyblocks-demo.vercel.app/) to try the editor demo.
-
-### Docs
-
-Please visit [https://docs.easyblocks.io/](https://docs.easyblocks.io/) to learn Easyblocks.
-
-### Video explainer
+**Live demo**: [https://easyblocks-demo.vercel.app/](https://easyblocks-demo.vercel.app/)  
+**Docs**: [https://docs.easyblocks.io/](https://docs.easyblocks.io/)
 
 Watch the video below to learn about Easyblocks in less than 10 minutes:
 
@@ -41,5 +34,12 @@ Please go to our [docs](https://docs.easyblocks.io) to learn more.
 ## Authors
 
 Easyblocks is built by the team behind [Shopstory](https://shopstory.app) - a visual builder for headless CMSes. Easyblocks is basically an internal Shopstory engine cleaned up and open-sourced ❤️
+
+## Contact
+
+You can leave the questions or issues here. Alternatively, contact us via:
+
+1. [Twitter/X](https://twitter.com/ardabrowski)
+2. [E-mail](mailto:andrzej@easyblocks.io)
 
 High five! ✋
