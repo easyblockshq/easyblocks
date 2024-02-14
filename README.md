@@ -1,22 +1,21 @@
 # Easyblocks
 
-Easyblocks is an open-source React toolkit (white-label editor + framework) for building completely customised visual page builders.
-
-It can help you build intuitive visual editors like those in [Shopify](https://shopify.dev/docs/themes/tools/online-editor) (for e-commerce), [Mailchimp](https://mailchimp.com/features/landing-pages/) (landing pages), [Splash](https://splashthat.com/platform/design) (event pages) or [Carrd](https://carrd.co/) (one pagers). It can handle any visual building experience that outputs HTML/CSS or a React component tree - from landing pages to dashboards.
+The React toolkit for building completely customised visual page builders.
 
 **Live demo**: [https://easyblocks-demo.vercel.app/](https://easyblocks-demo.vercel.app/)  
 **Docs**: [https://docs.easyblocks.io/](https://docs.easyblocks.io/)
 
-Watch the video below to learn about Easyblocks in less than 10 minutes:
+Easyblocks explained in under 10 mins:
 
 [![Screenshot-2024-02-12-at-15-08-51.png](https://i.postimg.cc/tTYqBNxN/Screenshot-2024-02-12-at-15-08-51.png)](https://www.youtube.com/watch?v=iNVVb_snEiI)
 
 ## Main features
 
+- **Embeddable**: Easyblocks editor is designed to be embeddedable into other products
 - **Out-of-the-box visual building logic**: drag&drop, nested selections, inline rich text, multi-selection, styling fields (responsive), design tokens, history management, localisation, templates, dynamic data
 - **Simple for end-users**. Not based on HTML/CSS but on [No-Code Components](https://docs.easyblocks.io/essentials/no-code-components).
-- **Bring your own components and templates**. You decide what components are available, their variants, styling options, simplicity levels, children components, constraints, etc.
-- **[Bring your own data](https://docs.easyblocks.io/essentials/external-data)**. Connect any data source, fully control data fetching and data picker widget. The data can be dynamic. For example, you can connect texts or images from data sources in the editor.
+- **Bring your own components and templates**. Easyblocks is built as a framework.You decide what components are available, their variants, styling options, simplicity levels, children components, constraints, etc.
+- **[Bring your own data](https://docs.easyblocks.io/essentials/external-data)**. Connect any data source, fully control data fetching and data picker widget. The data can be dynamic.
 - **Server-side rendering**. Fully compatible with modern frameworks like [next.js](https://nextjs.org/) or [Remix](https://remix.run/), but can also render to pure HTML/CSS. All the heavy lifting happens on the server - no browser rendering and layout shifts.
 
 ## Why?
