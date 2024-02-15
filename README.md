@@ -2,6 +2,8 @@
 
 The React toolkit for building completely customised visual page builders.
 
+It's focused on simplicity for end-users (no HTML/CSS) and flexibilty for developers (built as a framework).
+
 **Live demo**: [https://easyblocks-demo.vercel.app/](https://easyblocks-demo.vercel.app/)  
 **Docs**: [https://docs.easyblocks.io/](https://docs.easyblocks.io/)
 
