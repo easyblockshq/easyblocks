@@ -540,4 +540,5 @@ export const easyblocksConfig: Config = {
     ],
   },
   templates,
+  disableCustomTemplates: true,
 };
