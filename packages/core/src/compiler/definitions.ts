@@ -731,9 +731,17 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
           const defaultThemeValueEntry = Object.entries(themeValues).find(
             ([, v]) => v.isDefault
           );
-          const defaultValue = defaultThemeValueEntry
-            ? { tokenId: defaultThemeValueEntry[0] }
-            : schemaProp.defaultValue ?? customTypeDefinition.defaultValue;
+
+          let defaultValue = (() => {
+            if (schemaProp.defaultValue) {
+              return schemaProp.defaultValue;
+            } else if (defaultThemeValueEntry) {
+              return { tokenId: defaultThemeValueEntry[0] };
+            } else {
+              return customTypeDefinition.defaultValue;
+            }
+          })();
+
           const defaultWidgetId = customTypeDefinition.widget?.id;
 
           const createTokenNormalizer = (normalizeScalar?: (x: any) => any) => {
@@ -1257,6 +1265,12 @@ export function normalizeComponent(
     ) {
       const richTextConfig = buildRichTextNoCodeEntry({
         locale: compilationContext.contextParams.locale,
+        color: Object.entries(compilationContext.theme.colors ?? {}).find(
+          ([, value]) => value.isDefault
+        )?.[0],
+        font: Object.entries(compilationContext.theme.fonts ?? {}).find(
+          ([, value]) => value.isDefault
+        )?.[0],
       });
 
       ret.elements = richTextConfig.elements;
