@@ -223,8 +223,10 @@ export default function EeasyblocksEditorPage() {
 function createLiquidComponent(liquidTemplate: string) {
   return (props: any) => {
     const engine = React.useRef(new Liquid()).current;
+    // @ts-ignore
     const parser = React.useRef(new Parser()).current;
     const processNodeDefinitions = React.useRef(
+      // @ts-ignore
       new ProcessNodeDefinitions()
     ).current;
 

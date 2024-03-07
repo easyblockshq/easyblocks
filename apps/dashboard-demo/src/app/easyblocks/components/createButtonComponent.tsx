@@ -6,7 +6,7 @@ import { ActionTriggerType } from "./types";
 export function createButtonComponent<OwnProps>(
   TriggerComponent: ActionTriggerType<OwnProps>
 ) {
-  return ({ Action, ...props }: any) => {
+  const Component = ({ Action, ...props }: any) => {
     if (Action) {
       return (
         <Action.type
@@ -18,4 +18,7 @@ export function createButtonComponent<OwnProps>(
 
     return <TriggerComponent {...props} />;
   };
+
+  Component.displayName = "ButtonComponent";
+  return Component;
 }

@@ -1,4 +1,4 @@
-import { NoCodeComponentProps } from "@easyblocks/core";
+import { NoCodeComponentProps as NoCodeActionComponentProps$ } from "@easyblocks/core";
 
 export type NoCodeActionComponentProps = Record<string, any>;
 
@@ -18,3 +18,7 @@ export type ActionWrapperType<OwnProps> = React.FC<
   } & OwnProps &
     NoCodeComponentProps
 >;
+
+export type NoCodeComponentProps = NoCodeActionComponentProps & {
+  [key: string]: any;
+};
