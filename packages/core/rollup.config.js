@@ -125,6 +125,7 @@ function createRollupConfigs({
       banner,
       preserveModules: true,
       preserveModulesRoot: "src",
+      entryFileNames: "[name].cjs",
     },
     plugins: getPlugins(
       path.join(baseStatOutputDir, "cjs/index.html"),

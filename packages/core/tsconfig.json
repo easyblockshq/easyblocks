@@ -1,8 +1,8 @@
 {
   "extends": "../../base.tsconfig.json",
   "compilerOptions": {
-    "module": "Node16",
-    "moduleResolution": "node16",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "declaration": true,
     "emitDeclarationOnly": true,
     "declarationDir": "./dist/types",

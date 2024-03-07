@@ -1,6 +1,7 @@
 {
   "name": "@easyblocks/editor",
-  "main": "dist/cjs/index.js",
+  "type": "module",
+  "main": "dist/cjs/index.cjs",
   "module": "dist/es/index.js",
   "types": "dist/index.d.ts",
   "exports": {
@@ -8,7 +9,7 @@
       "default": {
         "types": "./dist/index.d.ts",
         "browser": "./dist/es/index.js",
-        "node": "./dist/cjs/index.js"
+        "node": "./dist/cjs/index.cjs"
       }
     }
   },
