@@ -207,6 +207,10 @@ function isAddingEnabledForSelectedFields(
   if (focusedFields.length === 0) {
     return false;
   } else if (focusedFields.length === 1) {
+    if (isConfigPathRichTextPart(focusedFields[0])) {
+      return false;
+    }
+
     const { parent } = parsePath(focusedFields[0], editorContext.form);
 
     if (!parent) return false;
