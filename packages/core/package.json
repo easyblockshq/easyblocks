@@ -1,6 +1,6 @@
 {
   "name": "@easyblocks/core",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "No-code ecommerce builder for headless CMS",
   "scripts": {
     "dev": "NODE_ENV=development concurrently -n bundle,emit-declarations 'rollup -c rollup.config.js --watch' 'tsc --watch --preserveWatchOutput'",
