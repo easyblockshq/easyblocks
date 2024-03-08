@@ -10,7 +10,7 @@ import {
   toArray,
   uniqueId,
 } from "@easyblocks/utils";
-import { SHA1 as sha1 } from "crypto-js";
+import CryptoJS from "crypto-js";
 import { isComponentConfig } from "../checkers";
 import {
   responsiveValueAt,
@@ -1367,7 +1367,7 @@ function addStylesHash(styles: Record<PropertyKey, any>) {
     delete styles["__hash"];
   }
 
-  const hash = sha1(JSON.stringify(styles));
+  const hash = CryptoJS.SHA1(JSON.stringify(styles));
   styles.__hash = hash.toString();
   return styles;
 }
