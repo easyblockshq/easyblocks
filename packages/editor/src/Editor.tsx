@@ -866,7 +866,7 @@ const EditorContent = ({
   const { saveNow } = useDataSaver(initialDocument, editorContext);
 
   const { height, scaleFactor, width, iframeContainerRef } = useIframeSize({
-    isScalingEnabled: !isFitScreen && isEditing,
+    isScalingEnabled: !isFitScreen,
     isFitScreen,
     breakpointIndex,
     devices: compilationContext.devices,
@@ -896,14 +896,6 @@ const EditorContent = ({
     [compilationContext.devices, iframeContainerRef]
   );
 
-  const [appNodeRef, setAppNodeRef] = useState<HTMLDivElement | null>(null);
-
-  const selectionFrameSize = {
-    width,
-    // When rendering in CMS environment, the dialog for Shopstory app could be smaller than current device height
-    height: Math.min(height, (appNodeRef?.clientHeight ?? 0) - TOP_BAR_HEIGHT),
-  };
-
   const appHeight = heightMode === "viewport" ? "100vh" : "100%";
 
   useEffect(() => {
@@ -917,12 +909,12 @@ const EditorContent = ({
     onBreakpointChange: setBreakpointIndex,
   });
 
+  const isCurrentDeviceHeightScreenHeight =
+    compilationContext.devices.find((d) => d.id === breakpointIndex)?.h ===
+    null;
+
   return (
-    <div
-      id={"shopstory-app"}
-      style={{ height: appHeight, overflow: "hidden" }}
-      ref={setAppNodeRef}
-    >
+    <div id={"shopstory-app"} style={{ height: appHeight, overflow: "hidden" }}>
       {isDataSaverOverlayOpen && (
         <DataSaverRoot>
           <DataSaverOverlay></DataSaverOverlay>
@@ -981,17 +973,29 @@ const EditorContent = ({
                 <EditorIframe
                   onEditorHistoryUndo={undo}
                   onEditorHistoryRedo={redo}
-                  isFitScreen={isFitScreen}
+                  width={width}
                   height={height}
                   scaleFactor={scaleFactor}
-                  width={width}
                   containerRef={iframeContainerRef}
                   margin={heightMode === "viewport" ? 0 : 100}
+                  size={
+                    isFitScreen
+                      ? "fit-screen"
+                      : isCurrentDeviceHeightScreenHeight
+                      ? "fit-h-screen"
+                      : "fixed"
+                  }
                 />
                 {isEditing && (
                   <SelectionFrame
-                    {...selectionFrameSize}
+                    width={width}
+                    height={height}
                     scaleFactor={scaleFactor}
+                    isScreenHeightSize={
+                      isFitScreen ||
+                      (isCurrentDeviceHeightScreenHeight &&
+                        scaleFactor !== null)
+                    }
                   />
                 )}
               </ContentContainer>
@@ -1130,11 +1134,18 @@ function useIframeSize({
     isScalingEnabled,
   ]);
 
+  const height =
+    currentDevice.h === null
+      ? iframeContainerRef.current?.clientHeight ?? 0
+      : currentDevice.h;
+
   return {
     width: displayedWidth,
-    height: isFitScreen
-      ? iframeContainerRef.current?.clientHeight ?? 0
-      : currentDevice.h,
+    height:
+      currentDevice.h === null && scaleFactor !== null
+        ? // If scale factor is set, we have to calculate the new height of iframe that after scaling would still fit the viewport
+          height * scaleFactor * (1 / scaleFactor) * (1 / scaleFactor)
+        : height,
     scaleFactor,
     iframeContainerRef,
   };

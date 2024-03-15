@@ -53,9 +53,10 @@ function prepareDevices(configDevices: Config["devices"]): Devices {
       const configDevice: ConfigDeviceRange | undefined = (
         configDevices as any
       )[device.id];
+
       if (configDevice) {
         device.w = configDevice.w ?? device.w;
-        device.h = configDevice.h ?? device.h;
+        device.h = configDevice.h !== undefined ? configDevice.h : device.h;
         device.hidden = configDevice.hidden ?? device.hidden;
 
         if (configDevice.startsFrom && index > 0) {

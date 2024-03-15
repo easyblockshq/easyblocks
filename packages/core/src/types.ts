@@ -278,7 +278,7 @@ type CustomComponentShared = {
 export type ConfigDeviceRange = {
   startsFrom?: number;
   w?: number;
-  h?: number;
+  h?: number | null;
   hidden?: boolean;
 };
 
@@ -600,7 +600,7 @@ export type SchemaPropParams<
 export type DeviceRange = {
   id: string;
   w: number;
-  h: number;
+  h: number | null;
   breakpoint: number | null;
   hidden?: boolean;
   label?: string;
