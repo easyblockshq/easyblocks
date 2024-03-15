@@ -569,6 +569,7 @@ export type SchemaPropShared<Type extends string> = {
       ) => boolean);
   description?: string;
   group?: string;
+  layout?: "row" | "column";
 };
 
 type ValueSchemaProp<
@@ -713,6 +714,7 @@ export interface Field<
   group?: string;
   schemaProp: SchemaPropValue;
   hidden?: boolean;
+  layout?: "row" | "column";
 }
 
 export type FieldPortal =
