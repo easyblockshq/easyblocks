@@ -105,12 +105,14 @@ export function FieldMetaWrapper<
     });
   }
 
+  const resolvedLayout = field.layout ?? layout;
+
   const content = (
     <div
       css={css`
         width: 100%;
         display: flex;
-        align-items: ${layout === "row" ? "flex-end" : "flex-start"};
+        align-items: ${resolvedLayout === "row" ? "flex-end" : "flex-start"};
         flex-direction: column;
       `}
     >
@@ -176,9 +178,9 @@ export function FieldMetaWrapper<
     );
 
   return (
-    <FieldWrapper margin={false} layout={layout}>
+    <FieldWrapper margin={false} layout={resolvedLayout}>
       {!isLabelHidden && (
-        <FieldLabelWrapper isFullWidth={layout === "column"}>
+        <FieldLabelWrapper isFullWidth={resolvedLayout === "column"}>
           {renderLabel?.({ label }) ?? (
             <FieldLabel
               htmlFor={toArray(field.name).join(",")}
@@ -213,7 +215,7 @@ export function FieldMetaWrapper<
             />
           )}
 
-          {layout === "column" &&
+          {resolvedLayout === "column" &&
             (isExternalSchemaProp(schemaProp, editorContext.types) ||
               schemaProp.type === "text") &&
             !isMixedValue && (
@@ -260,7 +262,7 @@ export function FieldMetaWrapper<
         </FieldLabelWrapper>
       )}
 
-      <FieldInputWrapper layout={layout}>{content}</FieldInputWrapper>
+      <FieldInputWrapper layout={resolvedLayout}>{content}</FieldInputWrapper>
 
       {!isMixedFieldValue &&
         isExternalField &&
@@ -406,6 +408,7 @@ const FieldLabelWrapper = styled.div<{ isFullWidth: boolean }>`
   align-items: center;
   ${({ isFullWidth }) => isFullWidth && { width: "100%" }}
   min-height: 28px;
+  overflow: hidden;
 `;
 
 type FieldLabelProps = {

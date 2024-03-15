@@ -24,7 +24,13 @@ function getCommonFieldProps(
   schemaProp: SchemaProp
 ): Pick<
   AnyTinaField,
-  "label" | "name" | "group" | "schemaProp" | "description" | "isLabelHidden"
+  | "label"
+  | "name"
+  | "group"
+  | "schemaProp"
+  | "description"
+  | "isLabelHidden"
+  | "layout"
 > {
   const label = schemaProp.label || schemaProp.prop;
   const group = schemaProp.group || "Properties";
@@ -36,6 +42,7 @@ function getCommonFieldProps(
     schemaProp,
     description: schemaProp.description,
     isLabelHidden: schemaProp.isLabelHidden,
+    layout: schemaProp.layout,
   };
 }
 
