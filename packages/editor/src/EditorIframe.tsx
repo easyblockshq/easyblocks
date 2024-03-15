@@ -1,82 +1,80 @@
 import { Colors } from "@easyblocks/design-system";
-import React, { forwardRef, useState } from "react";
+import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import { TOP_BAR_HEIGHT } from "./EditorTopBar";
-import { useWindowKeyDown, ExtraKeys } from "./useWindowKeyDown";
+import { ExtraKeys, useWindowKeyDown } from "./useWindowKeyDown";
 
 interface EditorIframeWrapperProps {
   onEditorHistoryRedo: () => void;
   onEditorHistoryUndo: () => void;
   width: number;
   height: number;
-  scaleFactor: number | null | undefined;
+  scaleFactor: number | null;
   containerRef: React.RefObject<HTMLDivElement>;
-  isFitScreen: boolean;
   margin: number;
+  size: "fixed" | "fit-screen" | "fit-h-screen";
 }
 
-const EditorIframe = forwardRef<HTMLIFrameElement, EditorIframeWrapperProps>(
-  (
-    {
-      onEditorHistoryRedo,
-      onEditorHistoryUndo,
-      width,
-      height,
-      scaleFactor,
-      isFitScreen,
-      containerRef,
-      margin,
-    },
-    ref
-  ) => {
-    const [isIframeReady, setIframeReady] = useState(false);
+function EditorIframe({
+  onEditorHistoryRedo,
+  onEditorHistoryUndo,
+  width,
+  height,
+  scaleFactor,
+  containerRef,
+  margin,
+  size,
+}: EditorIframeWrapperProps) {
+  const [isIframeReady, setIframeReady] = useState(false);
 
-    const handleIframeLoaded = () => {
-      setIframeReady(true);
-    };
+  const handleIframeLoaded = () => {
+    setIframeReady(true);
+  };
 
-    useWindowKeyDown("z", onEditorHistoryUndo, {
-      extraKeys: [ExtraKeys.META_KEY],
-      isDisabled: !isIframeReady,
-    });
+  useWindowKeyDown("z", onEditorHistoryUndo, {
+    extraKeys: [ExtraKeys.META_KEY],
+    isDisabled: !isIframeReady,
+  });
 
-    useWindowKeyDown("z", onEditorHistoryRedo, {
-      extraKeys: [ExtraKeys.META_KEY, ExtraKeys.SHIFT_KEY],
-      isDisabled: !isIframeReady,
-    });
+  useWindowKeyDown("z", onEditorHistoryRedo, {
+    extraKeys: [ExtraKeys.META_KEY, ExtraKeys.SHIFT_KEY],
+    isDisabled: !isIframeReady,
+  });
 
-    useWindowKeyDown("z", onEditorHistoryUndo, {
-      extraKeys: [ExtraKeys.CTRL_KEY],
-      isDisabled: !isIframeReady,
-    });
+  useWindowKeyDown("z", onEditorHistoryUndo, {
+    extraKeys: [ExtraKeys.CTRL_KEY],
+    isDisabled: !isIframeReady,
+  });
 
-    useWindowKeyDown("y", onEditorHistoryRedo, {
-      extraKeys: [ExtraKeys.CTRL_KEY],
-      isDisabled: !isIframeReady,
-    });
+  useWindowKeyDown("y", onEditorHistoryRedo, {
+    extraKeys: [ExtraKeys.CTRL_KEY],
+    isDisabled: !isIframeReady,
+  });
 
-    return (
-      <IframeContainer ref={containerRef}>
-        {scaleFactor !== undefined && (
-          <IframeInnerContainer isFitScreen={isFitScreen}>
-            <Iframe
-              id="shopstory-canvas"
-              ref={ref}
-              style={{
-                width: isFitScreen ? "100%" : width,
-                height: isFitScreen ? "100%" : height,
-              }}
-              onLoad={handleIframeLoaded}
-              scaleFactor={scaleFactor}
-              src={window.location.href}
-              margin={margin}
-            />
-          </IframeInnerContainer>
-        )}
-      </IframeContainer>
-    );
-  }
-);
+  const isFitScreenSize = size === "fit-screen";
+
+  return (
+    <IframeContainer ref={containerRef}>
+      <IframeInnerContainer isFitScreen={isFitScreenSize}>
+        <Iframe
+          id="shopstory-canvas"
+          src={window.location.href}
+          onLoad={handleIframeLoaded}
+          scaleFactor={scaleFactor}
+          isFitScreenHeightSize={size === "fit-h-screen"}
+          margin={margin}
+          style={{
+            // These properties will change a lot during resizing, so we don't pass it to styled component to prevent
+            // class name recalculations
+            width: isFitScreenSize ? "100%" : width,
+            height: isFitScreenSize ? "100%" : height,
+            transform: scaleFactor === null ? "none" : `scale(${scaleFactor})`,
+          }}
+        />
+      </IframeInnerContainer>
+    </IframeContainer>
+  );
+}
 
 export { EditorIframe };
 
@@ -108,6 +106,7 @@ const IframeInnerContainer = styled.div<IframeInnerContainerProps>`
 
 type IframeProps = {
   scaleFactor: number | null;
+  isFitScreenHeightSize: boolean;
   margin: number;
 };
 
@@ -115,8 +114,12 @@ const Iframe = styled.iframe<IframeProps>`
   background: white;
   border: none;
   max-height: ${(props) =>
-    `calc(100vh - ${TOP_BAR_HEIGHT}px - ${props.margin ?? 0}px)`};
+    props.isFitScreenHeightSize
+      ? "none"
+      : `calc(100vh - ${TOP_BAR_HEIGHT}px - ${props.margin ?? 0}px)`};
   overflow-y: scroll;
-  transform: ${(props) =>
-    props.scaleFactor === null ? "none" : `scale(${props.scaleFactor})`};
+  transform-origin: ${(props) =>
+    props.isFitScreenHeightSize && props.scaleFactor !== null
+      ? "top center"
+      : "center"};
 `;
