@@ -59,7 +59,6 @@ export type EditorContextType = Omit<BaseEditorContextType, "types"> & {
   isAdminMode: boolean;
   readOnly: boolean;
   disableCustomTemplates: boolean;
-  isFullScreen: boolean;
   types: Record<
     string,
     | EditorExternalTypeDefinition

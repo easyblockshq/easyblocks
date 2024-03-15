@@ -86,8 +86,7 @@ export const EditorTopBar: React.FC<{
   locales: Locale[];
   locale: string;
   onLocaleChange: (locale: string) => void;
-  isFullScreen: boolean;
-  setFullScreen: (x: boolean) => void;
+  isFitScreen: boolean;
   onAdminModeChange: (x: boolean) => void;
   hideCloseButton: boolean;
   readOnly: boolean;
@@ -100,8 +99,7 @@ export const EditorTopBar: React.FC<{
   isEditing,
   onUndo,
   onRedo,
-  isFullScreen,
-  setFullScreen,
+  isFitScreen,
   onAdminModeChange,
   hideCloseButton,
   readOnly,
@@ -158,17 +156,8 @@ export const EditorTopBar: React.FC<{
       <TopBarCenter>
         <DeviceSwitch
           devices={devices}
-          deviceId={isFullScreen && !isEditing ? "fit-screen" : breakpointIndex}
-          onDeviceChange={(deviceId) => {
-            if (deviceId === "fit-screen") {
-              setFullScreen(true);
-              return;
-            }
-
-            setFullScreen(false);
-            onBreakpointChange(deviceId);
-          }}
-          isFitScreenEnabled={!isEditing}
+          deviceId={isFitScreen ? "fit-screen" : breakpointIndex}
+          onDeviceChange={onBreakpointChange}
         />
       </TopBarCenter>
 
@@ -201,7 +190,10 @@ export const EditorTopBar: React.FC<{
   );
 };
 
-const DEVICE_ID_TO_ICON: Record<Devices[number]["id"], ReactNode> = {
+const DEVICE_ID_TO_ICON: Record<
+  Devices[number]["id"] | "fit-screen",
+  ReactNode
+> = {
   xs: (
     <svg
       width="16"
@@ -334,18 +326,40 @@ const DEVICE_ID_TO_ICON: Record<Devices[number]["id"], ReactNode> = {
       />
     </svg>
   ),
+  "fit-screen": (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M14.2872 7.97504L12.2872 5.79322M14.2872 7.97504C14.2872 7.97504 13.0683 9.30481 12.2872 10.1569M14.2872 7.97504L10.0372 7.97504"
+        stroke="black"
+      />
+      <path
+        d="M1.79272 7.97503L3.79272 10.1568M1.79272 7.97503C1.79272 7.97503 3.01168 6.64527 3.79272 5.79321M1.79272 7.97503L6.04272 7.97503"
+        stroke="black"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M3.96777 2.52881H12.0323V4.49858H13.0323V1.52881H2.96777V4.49858H3.96777V2.52881ZM3.96777 11.5014H2.96777V14.4712H13.0323V11.5014H12.0323V13.4712H3.96777V11.5014Z"
+        fill="black"
+      />
+    </svg>
+  ),
 };
 
 function DeviceSwitch({
   deviceId,
   devices,
   onDeviceChange,
-  isFitScreenEnabled,
 }: {
   devices: Devices;
   deviceId: string;
   onDeviceChange: (deviceId: string) => void;
-  isFitScreenEnabled: boolean;
 }) {
   return (
     <ToggleGroup
@@ -377,32 +391,18 @@ function DeviceSwitch({
           </Tooltip>
         );
       })}
-      {isFitScreenEnabled && (
-        <ToggleGroupItem value="fit-screen">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M14.2872 7.97504L12.2872 5.79322M14.2872 7.97504C14.2872 7.97504 13.0683 9.30481 12.2872 10.1569M14.2872 7.97504L10.0372 7.97504"
-              stroke="black"
-            />
-            <path
-              d="M1.79272 7.97503L3.79272 10.1568M1.79272 7.97503C1.79272 7.97503 3.01168 6.64527 3.79272 5.79321M1.79272 7.97503L6.04272 7.97503"
-              stroke="black"
-            />
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M3.96777 2.52881H12.0323V4.49858H13.0323V1.52881H2.96777V4.49858H3.96777V2.52881ZM3.96777 11.5014H2.96777V14.4712H13.0323V11.5014H12.0323V13.4712H3.96777V11.5014Z"
-              fill="black"
-            />
-          </svg>
-        </ToggleGroupItem>
-      )}
+
+      <Tooltip>
+        <TooltipTrigger>
+          <ToggleGroupItem value="fit-screen">
+            {DEVICE_ID_TO_ICON["fit-screen"]}
+          </ToggleGroupItem>
+        </TooltipTrigger>
+
+        <TooltipContent>
+          <Typography color="white">Fit screen</Typography>
+        </TooltipContent>
+      </Tooltip>
     </ToggleGroup>
   );
 }

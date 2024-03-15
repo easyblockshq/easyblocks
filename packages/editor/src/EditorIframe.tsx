@@ -11,8 +11,7 @@ interface EditorIframeWrapperProps {
   height: number;
   scaleFactor: number | null | undefined;
   containerRef: React.RefObject<HTMLDivElement>;
-  isFullScreen: boolean;
-  isEditing: boolean;
+  isFitScreen: boolean;
   margin: number;
 }
 
@@ -24,8 +23,7 @@ const EditorIframe = forwardRef<HTMLIFrameElement, EditorIframeWrapperProps>(
       width,
       height,
       scaleFactor,
-      isFullScreen,
-      isEditing,
+      isFitScreen,
       containerRef,
       margin,
     },
@@ -57,18 +55,18 @@ const EditorIframe = forwardRef<HTMLIFrameElement, EditorIframeWrapperProps>(
       isDisabled: !isIframeReady,
     });
 
-    const isFullScreenModeEnabled = !isEditing && isFullScreen;
-
     return (
       <IframeContainer ref={containerRef}>
         {scaleFactor !== undefined && (
-          <IframeInnerContainer isFullScreen={isFullScreenModeEnabled}>
+          <IframeInnerContainer isFitScreen={isFitScreen}>
             <Iframe
               id="shopstory-canvas"
               ref={ref}
+              style={{
+                width: isFitScreen ? "100%" : width,
+                height: isFitScreen ? "100%" : height,
+              }}
               onLoad={handleIframeLoaded}
-              width={isFullScreenModeEnabled ? "100%" : `${width}px`}
-              height={isFullScreenModeEnabled ? "100%" : `${height}px`}
               scaleFactor={scaleFactor}
               src={window.location.href}
               margin={margin}
@@ -89,7 +87,7 @@ const IframeContainer = styled.div`
 `;
 
 type IframeInnerContainerProps = {
-  isFullScreen: boolean;
+  isFitScreen: boolean;
 };
 const IframeInnerContainer = styled.div<IframeInnerContainerProps>`
   position: absolute; // absolute to prevent grid container having effect on parent div width (div can be oversized)
@@ -101,7 +99,7 @@ const IframeInnerContainer = styled.div<IframeInnerContainerProps>`
   display: grid;
 
   ${(props) =>
-    !props.isFullScreen &&
+    !props.isFitScreen &&
     css`
       justify-content: center;
       align-items: center;
@@ -109,8 +107,6 @@ const IframeInnerContainer = styled.div<IframeInnerContainerProps>`
 `;
 
 type IframeProps = {
-  width: string;
-  height: string;
   scaleFactor: number | null;
   margin: number;
 };
@@ -118,8 +114,6 @@ type IframeProps = {
 const Iframe = styled.iframe<IframeProps>`
   background: white;
   border: none;
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
   max-height: ${(props) =>
     `calc(100vh - ${TOP_BAR_HEIGHT}px - ${props.margin ?? 0}px)`};
   overflow-y: scroll;

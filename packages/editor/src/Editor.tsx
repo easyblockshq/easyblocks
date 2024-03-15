@@ -1,12 +1,13 @@
 import {
   CompilationCache,
   CompilationMetadata,
-  NoCodeComponentEntry,
   Config,
+  DeviceRange,
   Document,
   ExternalData,
   FetchOutputResources,
   InlineTypeWidgetComponentProps,
+  NoCodeComponentEntry,
   NonEmptyRenderableContent,
   Template,
   TokenTypeWidgetComponentProps,
@@ -15,6 +16,7 @@ import {
   compileInternal,
   createCompilationContext,
   findExternals,
+  getDefaultLocale,
   mergeCompilationMeta,
   normalize,
   normalizeInput,
@@ -33,8 +35,8 @@ import {
   traverseComponents,
 } from "@easyblocks/core/_internals";
 import { Colors, Fonts, useToaster } from "@easyblocks/design-system";
-import { dotNotationGet, uniqueId } from "@easyblocks/utils";
-
+import { assertDefined, dotNotationGet, uniqueId } from "@easyblocks/utils";
+import throttle from "lodash.throttle";
 import React, {
   ComponentType,
   memo,
@@ -46,6 +48,7 @@ import React, {
 import Modal from "react-modal";
 import styled from "styled-components";
 import { ConfigAfterAutoContext } from "./ConfigAfterAutoContext";
+import { ExternalDataChangeHandler } from "./EasyblocksEditorProps";
 import { EditorContext, EditorContextType } from "./EditorContext";
 import { EditorExternalDataProvider } from "./EditorExternalDataProvider";
 import { EditorIframe } from "./EditorIframe";
@@ -61,6 +64,7 @@ import {
   removeItems,
   replaceItems,
 } from "./editorActions";
+import { Form } from "./form";
 import { destinationResolver } from "./paste/destinationResolver";
 import { pasteManager } from "./paste/manager";
 import { SelectionFrame } from "./selectionFrame/SelectionFrame";
@@ -72,13 +76,10 @@ import {
   OpenTemplateModalAction,
 } from "./types";
 import { useDataSaver } from "./useDataSaver";
+import { useEditorGlobalKeyboardShortcuts } from "./useEditorGlobalKeyboardShortcuts";
 import { useEditorHistory } from "./useEditorHistory";
 import { checkLocalesCorrectness } from "./utils/locales/checkLocalesCorrectness";
 import { removeLocalizedFlag } from "./utils/locales/removeLocalizedFlag";
-import { getDefaultLocale } from "@easyblocks/core";
-import { useEditorGlobalKeyboardShortcuts } from "./useEditorGlobalKeyboardShortcuts";
-import { Form } from "./form";
-import { ExternalDataChangeHandler } from "./EasyblocksEditorProps";
 
 const ContentContainer = styled.div`
   position: relative;
@@ -506,10 +507,6 @@ const EditorContent = ({
     }
   ).current;
 
-  const handleSetBreakpoint = useCallback((breakpoint: string) => {
-    setBreakpointIndex(breakpoint);
-  }, []);
-
   const handleSetEditing = useCallback(() => {
     compilationCache.current.clear();
     setEditing(!isEditing);
@@ -641,7 +638,7 @@ const EditorContent = ({
   };
 
   const [isAdminMode, setAdminMode] = useState(false);
-  const [isFullScreen, setFullScreen] = useState(false);
+  const [isFitScreen, setFitScreen] = useState(false);
 
   const syncTemplates = () => {
     getTemplates(editorContext, (props.config.templates as any) ?? []).then(
@@ -710,7 +707,6 @@ const EditorContent = ({
     compilationCache: compilationCache.current,
     readOnly: props.readOnly,
     disableCustomTemplates: props.config.disableCustomTemplates ?? false,
-    isFullScreen,
     rootComponent: findComponentDefinitionById(
       initialEntry._component,
       compilationContext
@@ -760,7 +756,7 @@ const EditorContent = ({
     focussedField,
     isEditing,
     breakpointIndex,
-    isFullScreen,
+    isFitScreen,
     externalData,
   ]);
 
@@ -863,10 +859,6 @@ const EditorContent = ({
     return () => window.removeEventListener("message", handleEditorEvents);
   }, []);
 
-  useEffect(() => {
-    Modal.setAppElement("#shopstory-app");
-  }, []);
-
   const [isDataSaverOverlayOpen, setDataSaverOverlayOpen] = useState(false);
 
   useEditorGlobalKeyboardShortcuts(editorContext);
@@ -874,20 +866,56 @@ const EditorContent = ({
   const { saveNow } = useDataSaver(initialDocument, editorContext);
 
   const { height, scaleFactor, width, iframeContainerRef } = useIframeSize({
-    isScalingEnabled: !isFullScreen && isEditing,
-    editorContext,
+    isScalingEnabled: !isFitScreen && isEditing,
+    isFitScreen,
+    breakpointIndex,
+    devices: compilationContext.devices,
   });
+
+  const handleSetBreakpoint = useCallback(
+    (breakpoint: string) => {
+      if (breakpoint === "fit-screen") {
+        setFitScreen(true);
+
+        const matchingDevice = getMatchingDevice(
+          compilationContext.devices,
+          iframeContainerRef.current?.clientWidth ?? 0
+        );
+
+        if (matchingDevice) {
+          setBreakpointIndex(matchingDevice.id);
+          return;
+        }
+
+        throw new Error("No devices available for fit-screen breakpoint");
+      }
+
+      setFitScreen(false);
+      setBreakpointIndex(breakpoint);
+    },
+    [compilationContext.devices, iframeContainerRef]
+  );
 
   const [appNodeRef, setAppNodeRef] = useState<HTMLDivElement | null>(null);
 
   const selectionFrameSize = {
     width,
-    height:
-      // When rendering in CMS environment, the dialog for Shopstory app could be smaller than current device height
-      Math.min(height, (appNodeRef?.clientHeight ?? 0) - TOP_BAR_HEIGHT),
+    // When rendering in CMS environment, the dialog for Shopstory app could be smaller than current device height
+    height: Math.min(height, (appNodeRef?.clientHeight ?? 0) - TOP_BAR_HEIGHT),
   };
 
   const appHeight = heightMode === "viewport" ? "100vh" : "100%";
+
+  useEffect(() => {
+    Modal.setAppElement("#shopstory-app");
+  }, []);
+
+  useUpdateActiveBreakpointOnResize({
+    isDisabled: !isFitScreen,
+    iframeContainerNode: iframeContainerRef.current,
+    devices: compilationContext.devices,
+    onBreakpointChange: setBreakpointIndex,
+  });
 
   return (
     <div
@@ -937,8 +965,7 @@ const EditorContent = ({
               locale={compilationContext.contextParams.locale}
               locales={editorContext.locales}
               onLocaleChange={() => {}}
-              isFullScreen={isFullScreen}
-              setFullScreen={setFullScreen}
+              isFitScreen={isFitScreen}
               onAdminModeChange={(val) => {
                 setAdminMode(val);
               }}
@@ -954,8 +981,7 @@ const EditorContent = ({
                 <EditorIframe
                   onEditorHistoryUndo={undo}
                   onEditorHistoryRedo={redo}
-                  isFullScreen={isFullScreen}
-                  isEditing={isEditing}
+                  isFitScreen={isFitScreen}
                   height={height}
                   scaleFactor={scaleFactor}
                   width={width}
@@ -998,18 +1024,59 @@ const EditorContent = ({
   );
 };
 
+function useUpdateActiveBreakpointOnResize({
+  iframeContainerNode,
+  devices,
+  onBreakpointChange,
+  isDisabled,
+}: {
+  iframeContainerNode: HTMLDivElement | null;
+  devices: Array<DeviceRange>;
+  onBreakpointChange: (breakpointIndex: string) => void;
+  isDisabled: boolean;
+}) {
+  useEffect(() => {
+    function updateActiveBreakpoint() {
+      if (!iframeContainerNode) {
+        return;
+      }
+
+      const matchingDevice = getMatchingDevice(
+        devices,
+        iframeContainerNode.clientWidth
+      );
+
+      if (!matchingDevice) {
+        return;
+      }
+
+      onBreakpointChange(matchingDevice.id);
+    }
+
+    if (!isDisabled) {
+      window.addEventListener("resize", updateActiveBreakpoint);
+
+      return () => {
+        window.removeEventListener("resize", updateActiveBreakpoint);
+      };
+    }
+  }, [devices, iframeContainerNode, isDisabled, onBreakpointChange]);
+}
+
 function useIframeSize({
   isScalingEnabled,
-  editorContext,
+  isFitScreen,
+  breakpointIndex,
+  devices,
 }: {
   isScalingEnabled: boolean;
-  editorContext: EditorContextType;
+  isFitScreen: boolean;
+  breakpointIndex: string;
+  devices: Array<DeviceRange>;
 }) {
-  const { breakpointIndex, devices } = editorContext;
-
-  const currentDeviceIndex = devices.findIndex(
-    (device) => device.id === breakpointIndex
-  )!;
+  const currentDeviceIndex = assertDefined(
+    devices.findIndex((device) => device.id === breakpointIndex)
+  );
   const currentDevice = devices[currentDeviceIndex];
 
   const iframeContainerRef = useRef<HTMLDivElement>(null);
@@ -1018,8 +1085,13 @@ function useIframeSize({
   const [displayedWidth, setDisplayedWidth] = useState<number>(currentDevice.w);
 
   useEffect(() => {
-    const updateTransform = () => {
-      const availableW = iframeContainerRef.current?.clientWidth ?? 0;
+    const updateTransform = throttle(() => {
+      if (!iframeContainerRef.current) {
+        return;
+      }
+
+      const availableW = iframeContainerRef.current.clientWidth;
+
       // viewport smaller than main device resolution
       if (currentDevice.w > availableW && isScalingEnabled) {
         const smallestNonScaledWidth =
@@ -1039,9 +1111,9 @@ function useIframeSize({
       // viewport bigger than main device resolution
       else {
         setScaleFactor(null);
-        setDisplayedWidth(currentDevice.w);
+        setDisplayedWidth(isFitScreen ? availableW : currentDevice.w);
       }
-    };
+    }, 100);
 
     updateTransform();
 
@@ -1050,11 +1122,19 @@ function useIframeSize({
     return () => {
       window.removeEventListener("resize", updateTransform);
     };
-  }, [currentDevice.w, currentDeviceIndex, devices, isScalingEnabled]);
+  }, [
+    currentDevice.w,
+    currentDeviceIndex,
+    devices,
+    isFitScreen,
+    isScalingEnabled,
+  ]);
 
   return {
     width: displayedWidth,
-    height: currentDevice.h,
+    height: isFitScreen
+      ? iframeContainerRef.current?.clientHeight ?? 0
+      : currentDevice.h,
     scaleFactor,
     iframeContainerRef,
   };
@@ -1158,4 +1238,26 @@ function findConfigById(
   });
 
   return foundConfig;
+}
+
+function getMatchingDevice(devices: Array<DeviceRange>, width: number) {
+  const highestDevice = devices.find((d) => d.breakpoint === null);
+
+  const visibleDevices = devices.filter(
+    (d) => !d.hidden && d.breakpoint !== null
+  );
+
+  for (let i = 0; i < visibleDevices.length; i++) {
+    const currentDevice = visibleDevices[i];
+
+    if (currentDevice.breakpoint! > width) {
+      return currentDevice;
+    }
+  }
+
+  if (highestDevice) {
+    return highestDevice;
+  }
+
+  return null;
 }
