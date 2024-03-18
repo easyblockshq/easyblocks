@@ -168,5 +168,4 @@ export type EditorContextType = CompilationContextType & {
   setFocussedField: (focusedFields: string | Array<string>) => void;
   actions: EditorActions;
   templates?: Template[];
-  isFullScreen: boolean;
 };

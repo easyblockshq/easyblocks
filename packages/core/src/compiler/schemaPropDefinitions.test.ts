@@ -71,7 +71,6 @@ const openComponentPicker: EditorContextType["actions"]["openComponentPicker"] =
   };
 
 export const testEditorContext: EditorContextType = {
-  isFullScreen: false,
   definitions: {
     components: [],
   },

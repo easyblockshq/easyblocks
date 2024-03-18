@@ -43,7 +43,8 @@
     "react-popper": "^2.3.0",
     "styled-components": "^6.0.7",
     "type-fest": "^3.11.1",
-    "zod": "^3.21.4"
+    "zod": "^3.21.4",
+    "lodash.throttle": "^4.1.1"
   },
   "devDependencies": {
     "@easyblocks/build-tools": "workspace:*",
@@ -52,6 +53,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@types/jest": "^26.0.20",
+    "@types/lodash.throttle": "^4.1.9",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@types/react-modal": "^3.13.1"
