@@ -1,7 +1,6 @@
 import { Colors } from "@easyblocks/design-system";
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
-import { TOP_BAR_HEIGHT } from "./EditorTopBar";
 import { ExtraKeys, useWindowKeyDown } from "./useWindowKeyDown";
 
 interface EditorIframeWrapperProps {
@@ -9,10 +8,8 @@ interface EditorIframeWrapperProps {
   onEditorHistoryUndo: () => void;
   width: number;
   height: number;
-  scaleFactor: number | null;
+  transform: string;
   containerRef: React.RefObject<HTMLDivElement>;
-  margin: number;
-  size: "fixed" | "fit-screen" | "fit-h-screen";
 }
 
 function EditorIframe({
@@ -20,10 +17,8 @@ function EditorIframe({
   onEditorHistoryUndo,
   width,
   height,
-  scaleFactor,
+  transform,
   containerRef,
-  margin,
-  size,
 }: EditorIframeWrapperProps) {
   const [isIframeReady, setIframeReady] = useState(false);
 
@@ -51,24 +46,19 @@ function EditorIframe({
     isDisabled: !isIframeReady,
   });
 
-  const isFitScreenSize = size === "fit-screen";
-
   return (
     <IframeContainer ref={containerRef}>
-      <IframeInnerContainer isFitScreen={isFitScreenSize}>
+      <IframeInnerContainer>
         <Iframe
           id="shopstory-canvas"
           src={window.location.href}
           onLoad={handleIframeLoaded}
-          scaleFactor={scaleFactor}
-          isFitScreenHeightSize={size === "fit-h-screen"}
-          margin={margin}
           style={{
             // These properties will change a lot during resizing, so we don't pass it to styled component to prevent
             // class name recalculations
-            width: isFitScreenSize ? "100%" : width,
-            height: isFitScreenSize ? "100%" : height,
-            transform: scaleFactor === null ? "none" : `scale(${scaleFactor})`,
+            width,
+            height,
+            transform,
           }}
         />
       </IframeInnerContainer>
@@ -85,7 +75,7 @@ const IframeContainer = styled.div`
 `;
 
 type IframeInnerContainerProps = {
-  isFitScreen: boolean;
+  isFitScreen?: boolean;
 };
 const IframeInnerContainer = styled.div<IframeInnerContainerProps>`
   position: absolute; // absolute to prevent grid container having effect on parent div width (div can be oversized)
@@ -93,7 +83,6 @@ const IframeInnerContainer = styled.div<IframeInnerContainerProps>`
   left: 0;
   width: 100%;
   height: 100%;
-
   display: grid;
 
   ${(props) =>
@@ -104,22 +93,8 @@ const IframeInnerContainer = styled.div<IframeInnerContainerProps>`
     `}
 `;
 
-type IframeProps = {
-  scaleFactor: number | null;
-  isFitScreenHeightSize: boolean;
-  margin: number;
-};
-
-const Iframe = styled.iframe<IframeProps>`
+const Iframe = styled.iframe`
   background: white;
   border: none;
-  max-height: ${(props) =>
-    props.isFitScreenHeightSize
-      ? "none"
-      : `calc(100vh - ${TOP_BAR_HEIGHT}px - ${props.margin ?? 0}px)`};
-  overflow-y: scroll;
-  transform-origin: ${(props) =>
-    props.isFitScreenHeightSize && props.scaleFactor !== null
-      ? "top center"
-      : "center"};
+  transform-origin: center;
 `;

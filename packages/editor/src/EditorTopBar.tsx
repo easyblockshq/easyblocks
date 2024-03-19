@@ -77,29 +77,27 @@ export const EditorTopBar: React.FC<{
   saveLabel: string;
   onClose?: () => void;
   onIsEditingChange: () => void;
-  onBreakpointChange: (breakpoint: string) => void;
+  viewport: string;
+  onViewportChange: (viewport: string) => void;
   devices: Devices;
-  breakpointIndex: string;
   isEditing: boolean;
   onUndo: () => void;
   onRedo: () => void;
   locales: Locale[];
   locale: string;
   onLocaleChange: (locale: string) => void;
-  isFitScreen: boolean;
   onAdminModeChange: (x: boolean) => void;
   hideCloseButton: boolean;
   readOnly: boolean;
 }> = ({
   onClose,
-  onBreakpointChange,
+  onViewportChange,
   devices,
-  breakpointIndex,
+  viewport,
   onIsEditingChange,
   isEditing,
   onUndo,
   onRedo,
-  isFitScreen,
   onAdminModeChange,
   hideCloseButton,
   readOnly,
@@ -156,8 +154,8 @@ export const EditorTopBar: React.FC<{
       <TopBarCenter>
         <DeviceSwitch
           devices={devices}
-          deviceId={isFitScreen ? "fit-screen" : breakpointIndex}
-          onDeviceChange={onBreakpointChange}
+          deviceId={viewport}
+          onDeviceChange={onViewportChange}
         />
       </TopBarCenter>
 

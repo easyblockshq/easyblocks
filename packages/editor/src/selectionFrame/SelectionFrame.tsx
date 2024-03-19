@@ -31,20 +31,12 @@ import {
 type SelectionFrameProps = {
   width: number;
   height: number;
-  scaleFactor: number | null;
-  isScreenHeightSize: boolean;
+  transform: string;
 };
 
-function SelectionFrame({
-  width,
-  height,
-  scaleFactor,
-  isScreenHeightSize,
-}: SelectionFrameProps) {
+function SelectionFrame({ width, height, transform }: SelectionFrameProps) {
   const editorContext = useEditorContext();
   const { focussedField, form, actions } = editorContext;
-
-  const normalizedScaleFactor = scaleFactor ?? 1;
 
   const compiledFocusedField =
     focussedField.length === 1
@@ -152,13 +144,8 @@ function SelectionFrame({
   }
 
   return (
-    <Wrapper isFullHeight={isScreenHeightSize}>
-      <FrameWrapper
-        width={width}
-        height={height}
-        scaleFactor={normalizedScaleFactor}
-        isFullHeight={isScreenHeightSize}
-      >
+    <Wrapper>
+      <FrameWrapper width={width} height={height} transform={transform}>
         <AddButton
           position="before"
           onClick={() => handleAddButtonClick("before")}

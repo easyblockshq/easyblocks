@@ -1,34 +1,29 @@
 import styled from "styled-components";
 
-interface WrapperProps {
-  isFullHeight: boolean;
-}
-
-const Wrapper = styled.div<WrapperProps>`
+const Wrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
   display: grid;
-  place-items: ${(props) => (props.isFullHeight ? "flex-start" : "center")};
+  place-items: center;
   pointer-events: none;
 `;
 
 type FrameWrapperProps = {
   width: number;
   height: number;
-  scaleFactor: number;
-  isFullHeight: boolean;
+  transform: string;
 };
 
 const FrameWrapper = styled.div.attrs<FrameWrapperProps>(
-  ({ width, height, scaleFactor }) => {
+  ({ width, height, transform }) => {
     return {
       style: {
         width,
         height,
-        transform: `scale(${scaleFactor})`,
+        transform,
       },
     };
   }
@@ -39,7 +34,7 @@ const FrameWrapper = styled.div.attrs<FrameWrapperProps>(
   display: grid;
   place-items: center;
 
-  transform-origin: ${(props) => (props.isFullHeight ? "top left" : "left")};
+  transform-origin: left;
 `;
 
 export { Wrapper, FrameWrapper };

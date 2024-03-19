@@ -162,7 +162,6 @@ type EditorActions = {
 export type EditorContextType = CompilationContextType & {
   breakpointIndex: string;
   locales: Locale[];
-  setBreakpointIndex: (breakpoint: string) => void;
   form: any;
   focussedField: Array<string>;
   setFocussedField: (focusedFields: string | Array<string>) => void;
