@@ -74,23 +74,15 @@ const IframeContainer = styled.div`
   background: ${Colors.black100};
 `;
 
-type IframeInnerContainerProps = {
-  isFitScreen?: boolean;
-};
-const IframeInnerContainer = styled.div<IframeInnerContainerProps>`
+const IframeInnerContainer = styled.div`
   position: absolute; // absolute to prevent grid container having effect on parent div width (div can be oversized)
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   display: grid;
-
-  ${(props) =>
-    !props.isFitScreen &&
-    css`
-      justify-content: center;
-      align-items: center;
-    `}
+  justify-content: center;
+  align-items: center;
 `;
 
 const Iframe = styled.iframe`
