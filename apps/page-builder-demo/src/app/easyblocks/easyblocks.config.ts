@@ -45,6 +45,14 @@ export const easyblocksConfig: Config = {
       fallback: "en-US",
     },
   ],
+  devices: {
+    xs: {
+      h: null,
+    },
+    xl: {
+      h: null,
+    },
+  },
   components: [
     bannerSectionDefinition,
     bannerCardDefinition,

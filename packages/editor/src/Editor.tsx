@@ -35,7 +35,12 @@ import {
   traverseComponents,
 } from "@easyblocks/core/_internals";
 import { Colors, Fonts, useToaster } from "@easyblocks/design-system";
-import { assertDefined, dotNotationGet, uniqueId } from "@easyblocks/utils";
+import {
+  assertDefined,
+  dotNotationGet,
+  uniqueId,
+  useForceRerender,
+} from "@easyblocks/utils";
 import throttle from "lodash.throttle";
 import React, {
   ComponentType,
@@ -478,6 +483,107 @@ function useBuiltContent(
   };
 }
 
+function calculateViewportRelatedStuff(
+  viewport: string,
+  devices: DeviceRange[],
+  mainBreakpointIndex: string,
+  availableSize?: { width: number; height: number }
+) {
+  let activeDevice: DeviceRange;
+
+  // Calculate active device
+  if (viewport === "fit-screen") {
+    if (!availableSize) {
+      activeDevice = devices.find(
+        (device) => device.id === mainBreakpointIndex
+      )!;
+    } else {
+      const matchingDevice = getMatchingDevice(devices, availableSize.width);
+      if (!matchingDevice) {
+        throw new Error("can't find matching device");
+      }
+
+      activeDevice = matchingDevice;
+    }
+  } else {
+    activeDevice = devices.find((device) => device.id === viewport)!;
+  }
+
+  const activeDeviceindex = devices.findIndex(
+    (device) => device.id === activeDevice.id
+  );
+
+  // Calculate width, height and scale
+  let width, height: number;
+  let scaleFactor: number | null = null;
+  let offsetY: number = 0;
+
+  if (!availableSize) {
+    // lack of available size (first render) should wait until size is available to perform calculations
+    width = 0;
+    height = 0;
+  } else {
+    if (viewport === "fit-screen") {
+      width = availableSize.width;
+      height = availableSize.height;
+    } else {
+      const smallestNonScaledWidth =
+        activeDeviceindex === 0
+          ? 0
+          : devices[activeDeviceindex - 1].breakpoint!;
+
+      width = activeDevice.w;
+      height =
+        activeDevice.h === null
+          ? availableSize.height
+          : Math.min(activeDevice.h, availableSize.height);
+
+      if (activeDevice.w <= availableSize.width) {
+        // fits
+      } else if (smallestNonScaledWidth <= availableSize.width) {
+        // fits currently selected device range
+        width = availableSize.width;
+      } else {
+        // we must scale
+        scaleFactor = availableSize.width / activeDevice.w;
+
+        if (activeDevice.h === null) {
+          height = availableSize.height / scaleFactor;
+          offsetY = (availableSize.height - height) / 2;
+        }
+      }
+    }
+  }
+
+  return {
+    breakpointIndex: activeDevice.id,
+    iframeSize: {
+      width,
+      height,
+      transform:
+        scaleFactor === null
+          ? "none"
+          : `translateY(${offsetY}px) scale(${scaleFactor})`,
+    },
+  };
+}
+
+function useRerenderOnResize() {
+  const { forceRerender } = useForceRerender();
+
+  useEffect(() => {
+    const listener = throttle(() => {
+      forceRerender();
+    }, 100);
+
+    window.addEventListener("resize", listener);
+
+    return () => {
+      window.removeEventListener("resize", listener);
+    };
+  });
+}
+
 const EditorContent = ({
   compilationContext,
   heightMode = "viewport",
@@ -486,9 +592,27 @@ const EditorContent = ({
   externalData,
   ...props
 }: EditorContentProps) => {
-  const [breakpointIndex, setBreakpointIndex] = useState(
+  const [currentViewport, setCurrentViewport] = useState<string>(
     compilationContext.mainBreakpointIndex
+  ); // "{ breakpoint }" or "fit-screen"
+
+  const iframeContainerRef = useRef<HTMLDivElement>(null);
+  const availableSize = iframeContainerRef.current
+    ? {
+        width: iframeContainerRef.current.clientWidth,
+        height: iframeContainerRef.current.clientHeight,
+      }
+    : undefined;
+
+  const { breakpointIndex, iframeSize } = calculateViewportRelatedStuff(
+    currentViewport,
+    compilationContext.devices,
+    compilationContext.mainBreakpointIndex,
+    availableSize
   );
+
+  useRerenderOnResize(); // re-render on resize (recalculates viewport size, active breakpoint for fit-screen etc);
+
   const compilationCache = useRef(new CompilationCache());
   const [isEditing, setEditing] = useState(true);
   const [componentPickerData, setComponentPickerData] = useState<
@@ -638,7 +762,6 @@ const EditorContent = ({
   };
 
   const [isAdminMode, setAdminMode] = useState(false);
-  const [isFitScreen, setFitScreen] = useState(false);
 
   const syncTemplates = () => {
     getTemplates(editorContext, (props.config.templates as any) ?? []).then(
@@ -694,9 +817,6 @@ const EditorContent = ({
     form,
     setFocussedField: handleSetFocussedField,
     isEditing,
-    setBreakpointIndex: (newBreakpointIndex) => {
-      setBreakpointIndex(newBreakpointIndex);
-    },
     actions,
     save: async (documentData) => {
       window.postMessage({
@@ -755,8 +875,7 @@ const EditorContent = ({
     renderableContent,
     focussedField,
     isEditing,
-    breakpointIndex,
-    isFitScreen,
+    currentViewport,
     externalData,
   ]);
 
@@ -865,53 +984,11 @@ const EditorContent = ({
 
   const { saveNow } = useDataSaver(initialDocument, editorContext);
 
-  const { height, scaleFactor, width, iframeContainerRef } = useIframeSize({
-    isScalingEnabled: !isFitScreen,
-    isFitScreen,
-    breakpointIndex,
-    devices: compilationContext.devices,
-  });
-
-  const handleSetBreakpoint = useCallback(
-    (breakpoint: string) => {
-      if (breakpoint === "fit-screen") {
-        setFitScreen(true);
-
-        const matchingDevice = getMatchingDevice(
-          compilationContext.devices,
-          iframeContainerRef.current?.clientWidth ?? 0
-        );
-
-        if (matchingDevice) {
-          setBreakpointIndex(matchingDevice.id);
-          return;
-        }
-
-        throw new Error("No devices available for fit-screen breakpoint");
-      }
-
-      setFitScreen(false);
-      setBreakpointIndex(breakpoint);
-    },
-    [compilationContext.devices, iframeContainerRef]
-  );
-
   const appHeight = heightMode === "viewport" ? "100vh" : "100%";
 
   useEffect(() => {
     Modal.setAppElement("#shopstory-app");
   }, []);
-
-  useUpdateActiveBreakpointOnResize({
-    isDisabled: !isFitScreen,
-    iframeContainerNode: iframeContainerRef.current,
-    devices: compilationContext.devices,
-    onBreakpointChange: setBreakpointIndex,
-  });
-
-  const isCurrentDeviceHeightScreenHeight =
-    compilationContext.devices.find((d) => d.id === breakpointIndex)?.h ===
-    null;
 
   return (
     <div id={"shopstory-app"} style={{ height: appHeight, overflow: "hidden" }}>
@@ -949,15 +1026,14 @@ const EditorContent = ({
                 });
               }}
               devices={compilationContext.devices}
-              breakpointIndex={breakpointIndex}
-              onBreakpointChange={handleSetBreakpoint}
+              viewport={currentViewport}
+              onViewportChange={setCurrentViewport}
               onIsEditingChange={handleSetEditing}
               isEditing={isEditing}
               saveLabel={"Save"}
               locale={compilationContext.contextParams.locale}
               locales={editorContext.locales}
               onLocaleChange={() => {}}
-              isFitScreen={isFitScreen}
               onAdminModeChange={(val) => {
                 setAdminMode(val);
               }}
@@ -973,29 +1049,16 @@ const EditorContent = ({
                 <EditorIframe
                   onEditorHistoryUndo={undo}
                   onEditorHistoryRedo={redo}
-                  width={width}
-                  height={height}
-                  scaleFactor={scaleFactor}
+                  width={iframeSize.width}
+                  height={iframeSize.height}
+                  transform={iframeSize.transform}
                   containerRef={iframeContainerRef}
-                  margin={heightMode === "viewport" ? 0 : 100}
-                  size={
-                    isFitScreen
-                      ? "fit-screen"
-                      : isCurrentDeviceHeightScreenHeight
-                      ? "fit-h-screen"
-                      : "fixed"
-                  }
                 />
                 {isEditing && (
                   <SelectionFrame
-                    width={width}
-                    height={height}
-                    scaleFactor={scaleFactor}
-                    isScreenHeightSize={
-                      isFitScreen ||
-                      (isCurrentDeviceHeightScreenHeight &&
-                        scaleFactor !== null)
-                    }
+                    width={iframeSize.width}
+                    height={iframeSize.height}
+                    transform={iframeSize.transform}
                   />
                 )}
               </ContentContainer>
@@ -1027,129 +1090,6 @@ const EditorContent = ({
     </div>
   );
 };
-
-function useUpdateActiveBreakpointOnResize({
-  iframeContainerNode,
-  devices,
-  onBreakpointChange,
-  isDisabled,
-}: {
-  iframeContainerNode: HTMLDivElement | null;
-  devices: Array<DeviceRange>;
-  onBreakpointChange: (breakpointIndex: string) => void;
-  isDisabled: boolean;
-}) {
-  useEffect(() => {
-    function updateActiveBreakpoint() {
-      if (!iframeContainerNode) {
-        return;
-      }
-
-      const matchingDevice = getMatchingDevice(
-        devices,
-        iframeContainerNode.clientWidth
-      );
-
-      if (!matchingDevice) {
-        return;
-      }
-
-      onBreakpointChange(matchingDevice.id);
-    }
-
-    if (!isDisabled) {
-      window.addEventListener("resize", updateActiveBreakpoint);
-
-      return () => {
-        window.removeEventListener("resize", updateActiveBreakpoint);
-      };
-    }
-  }, [devices, iframeContainerNode, isDisabled, onBreakpointChange]);
-}
-
-function useIframeSize({
-  isScalingEnabled,
-  isFitScreen,
-  breakpointIndex,
-  devices,
-}: {
-  isScalingEnabled: boolean;
-  isFitScreen: boolean;
-  breakpointIndex: string;
-  devices: Array<DeviceRange>;
-}) {
-  const currentDeviceIndex = assertDefined(
-    devices.findIndex((device) => device.id === breakpointIndex)
-  );
-  const currentDevice = devices[currentDeviceIndex];
-
-  const iframeContainerRef = useRef<HTMLDivElement>(null);
-
-  const [scaleFactor, setScaleFactor] = useState<null | number>(null);
-  const [displayedWidth, setDisplayedWidth] = useState<number>(currentDevice.w);
-
-  useEffect(() => {
-    const updateTransform = throttle(() => {
-      if (!iframeContainerRef.current) {
-        return;
-      }
-
-      const availableW = iframeContainerRef.current.clientWidth;
-
-      // viewport smaller than main device resolution
-      if (currentDevice.w > availableW && isScalingEnabled) {
-        const smallestNonScaledWidth =
-          currentDeviceIndex === 0
-            ? 0
-            : devices[currentDeviceIndex - 1].breakpoint!;
-
-        // viewport still bigger than smallest device resolution
-        if (smallestNonScaledWidth <= availableW) {
-          setDisplayedWidth(availableW);
-          setScaleFactor(null);
-        } else {
-          setDisplayedWidth(smallestNonScaledWidth);
-          setScaleFactor(availableW / smallestNonScaledWidth);
-        }
-      }
-      // viewport bigger than main device resolution
-      else {
-        setScaleFactor(null);
-        setDisplayedWidth(isFitScreen ? availableW : currentDevice.w);
-      }
-    }, 100);
-
-    updateTransform();
-
-    window.addEventListener("resize", updateTransform);
-
-    return () => {
-      window.removeEventListener("resize", updateTransform);
-    };
-  }, [
-    currentDevice.w,
-    currentDeviceIndex,
-    devices,
-    isFitScreen,
-    isScalingEnabled,
-  ]);
-
-  const height =
-    currentDevice.h === null
-      ? iframeContainerRef.current?.clientHeight ?? 0
-      : currentDevice.h;
-
-  return {
-    width: displayedWidth,
-    height:
-      currentDevice.h === null && scaleFactor !== null
-        ? // If scale factor is set, we have to calculate the new height of iframe that after scaling would still fit the viewport
-          height * scaleFactor * (1 / scaleFactor) * (1 / scaleFactor)
-        : height,
-    scaleFactor,
-    iframeContainerRef,
-  };
-}
 
 function adaptRemoteConfig(
   config: NoCodeComponentEntry,
