@@ -38,13 +38,13 @@
     "@react-aria/tooltip": "^3.1.8",
     "final-form": "^4.20.4",
     "final-form-arrays": "^3.0.1",
+    "lodash.throttle": "^4.1.1",
     "react-final-form": "^6.5.7",
     "react-modal": "^3.12.1",
     "react-popper": "^2.3.0",
     "styled-components": "^6.0.7",
     "type-fest": "^3.11.1",
-    "zod": "^3.21.4",
-    "lodash.throttle": "^4.1.1"
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@easyblocks/build-tools": "workspace:*",
@@ -62,7 +62,7 @@
     "react": "^16.8.0 || ^17.0.0-rc.1 || ^18.0.0",
     "react-dom": "^16.8.0 || ^17.0.0-rc.1 || ^18.0.0"
   },
-  "version": "1.0.5-alpha.0",
+  "version": "1.0.5",
   "files": [
     "dist/",
     "package.json",
