@@ -546,6 +546,7 @@ export type Config = {
   types?: Record<string, CustomTypeDefinition>;
   disableCustomTemplates?: boolean;
   hideCloseButton?: boolean;
+  hideTopBar?: boolean;
   templates?: Template[];
   tokens?: {
     [key in keyof ConfigTokens]?: Array<ConfigTokenValue<ConfigTokens[key]>>;
