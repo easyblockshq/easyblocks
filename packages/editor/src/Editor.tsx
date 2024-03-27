@@ -24,10 +24,14 @@ import {
   validate,
 } from "@easyblocks/core";
 import {
+  ChangeResponsiveEvent,
   CompilationContextType,
   ComponentPickerOpenedEvent,
   ItemInsertedEvent,
   ItemMovedEvent,
+  RedoEvent,
+  SetFocussedFieldEvent,
+  UndoEvent,
   componentPickerClosed,
   duplicateConfig,
   findComponentDefinitionById,
@@ -881,8 +885,31 @@ const EditorContent = ({
 
   useEffect(() => {
     function handleEditorEvents(
-      event: ComponentPickerOpenedEvent | ItemInsertedEvent | ItemMovedEvent
+      event:
+        | ComponentPickerOpenedEvent
+        | ItemInsertedEvent
+        | ItemMovedEvent
+        | ChangeResponsiveEvent
+        | SetFocussedFieldEvent
+        | UndoEvent
+        | RedoEvent
     ) {
+      if (event.data.type === "@easyblocks-editor/focus-field") {
+        handleSetFocussedField(event.data.payload.target);
+      }
+
+      if (event.data.type === "@easyblocks-editor/change-responsive") {
+        setCurrentViewport(event.data.payload.device);
+      }
+
+      if (event.data.type === "@easyblocks-editor/undo") {
+        undo();
+      }
+
+      if (event.data.type === "@easyblocks-editor/redo") {
+        redo();
+      }
+
       if (event.data.type === "@easyblocks-editor/component-picker-opened") {
         actions
           .openComponentPicker({ path: event.data.payload.path })
