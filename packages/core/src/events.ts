@@ -1,5 +1,5 @@
 import { serialize } from "@easyblocks/utils";
-import { NoCodeComponentEntry, SchemaProp } from "./types";
+import { ConfigDevices, NoCodeComponentEntry, SchemaProp } from "./types";
 import { Component$$$SchemaProp } from "./compiler/schema";
 
 type EasyblocksEditorEventData<
@@ -119,6 +119,52 @@ type ItemMovedEvent = MessageEvent<
   >
 >;
 
+type ChangeResponsiveEvent = MessageEvent<
+  EasyblocksEditorEventData<
+    "@easyblocks-editor/change-responsive",
+    {
+      device: keyof ConfigDevices;
+    }
+  >
+>;
+
+type UndoEvent = MessageEvent<
+  EasyblocksEditorEventData<
+    "@easyblocks-editor/undo",
+    {
+      type: "@easyblocks-editor/undo";
+    }
+  >
+>;
+type RedoEvent = MessageEvent<
+  EasyblocksEditorEventData<
+    "@easyblocks-editor/redo",
+    {
+      type: "@easyblocks-editor/redo";
+    }
+  >
+>;
+
+type SetFocussedFieldEvent = MessageEvent<
+  EasyblocksEditorEventData<
+    "@easyblocks-editor/focus-field",
+    {
+      type: "@easyblocks-editor/focus-field";
+      target: string;
+    }
+  >
+>;
+
+type SelectComponentEvent = MessageEvent<
+  EasyblocksEditorEventData<
+    "@easyblocks-editor/select-component",
+    {
+      type: "@easyblocks-editor/select-component";
+      target: string;
+    }
+  >
+>;
+
 function itemMoved(
   payload: InferShopstoryEditorEventData<ItemMovedEvent>["payload"]
 ): InferShopstoryEditorEventData<ItemMovedEvent> {
@@ -145,4 +191,8 @@ export type {
   RichTextChangedEvent,
   SelectionFramePositionChangedEvent,
   EasyblocksEditorEventData,
+  ChangeResponsiveEvent,
+  UndoEvent,
+  RedoEvent,
+  SetFocussedFieldEvent,
 };

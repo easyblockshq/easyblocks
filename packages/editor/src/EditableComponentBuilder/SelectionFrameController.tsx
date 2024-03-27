@@ -122,6 +122,22 @@ function SelectionFrameController({
     };
   });
 
+  React.useEffect(() => {
+    const onWindowMessage = (event: MessageEvent) => {
+      if (event.data.type === "@easyblocks-editor/focus-field") {
+        if (event.data.payload.target === path) {
+          node?.scrollIntoView({
+            behavior: "smooth",
+          });
+        }
+      }
+    };
+    window.parent.addEventListener("message", onWindowMessage);
+    return () => {
+      window.parent.removeEventListener("message", onWindowMessage);
+    };
+  });
+
   return (
     <div
       data-active={isActive}
