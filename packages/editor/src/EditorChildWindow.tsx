@@ -72,12 +72,20 @@ export function EasyblocksCanvas({
           externalData: JSON.parse(event.data.externalData),
         };
 
-        window.editorWindowAPI.editorContext.setFocussedField = () => {
-          console.log("handler focus fields");
+        window.editorWindowAPI.editorContext.setFocussedField = (data) => {
+          window.parent.postMessage({
+            type: "@easyblocks-editor/focus-field",
+            payload: {
+              target: data,
+            },
+          });
         };
         window.editorWindowAPI.editorContext.actions = {
           runChange: () => {
             console.log("handler change");
+          },
+          removeItems: () => {
+            console.log("handler remove");
           },
         };
       }
@@ -90,7 +98,6 @@ export function EasyblocksCanvas({
 
   const [enabled, setEnabled] = useState(false);
   const activeDraggedEntryPath = useRef<string | null>(null);
-  const { forceRerender } = useForceRerender();
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {
       distance: 10,
@@ -129,7 +136,7 @@ export function EasyblocksCanvas({
             activeDraggedEntryPath.current = dragDataSchema.parse(
               event.active.data.current
             ).path;
-            // window.parent.editorWindowAPI.editorContext.setFocussedField([]);
+            window.editorWindowAPI.editorContext.setFocussedField([]);
           }}
           onDragEnd={(event) => {
             document.documentElement.style.cursor = "";
@@ -140,9 +147,9 @@ export function EasyblocksCanvas({
 
               if (event.over.id === event.active.id) {
                 // If the dragged item is dropped on itself, we want to refocus the dragged item.
-                // window.parent.editorWindowAPI.editorContext.setFocussedField(
-                //   activeData.path
-                // );
+                window.editorWindowAPI.editorContext.setFocussedField(
+                  activeData.path
+                );
               } else {
                 const itemMovedEvent = itemMoved({
                   fromPath: activeData.path,
@@ -153,22 +160,22 @@ export function EasyblocksCanvas({
                 });
 
                 requestAnimationFrame(() => {
-                  // window.parent.postMessage(itemMovedEvent);
+                  window.parent.postMessage(itemMovedEvent);
                 });
               }
             } else {
               // If there was no drop target, we want to refocus the dragged item.
-              // window.parent.editorWindowAPI.editorContext.setFocussedField(
-              //   activeData.path
-              // );
+              window.editorWindowAPI.editorContext.setFocussedField(
+                activeData.path
+              );
             }
           }}
           onDragCancel={(event) => {
             document.documentElement.style.cursor = "";
             // If the drag was canceled, we want to refocus dragged item.
-            // window.parent.editorWindowAPI.editorContext.setFocussedField(
-            //   dragDataSchema.parse(event.active.data.current).path
-            // );
+            window.editorWindowAPI.editorContext.setFocussedField(
+              dragDataSchema.parse(event.active.data.current).path
+            );
           }}
         >
           <SortableContext items={sortableItems}>

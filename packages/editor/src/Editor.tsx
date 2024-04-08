@@ -898,6 +898,7 @@ const EditorContent = ({
             actions,
             focussedField,
             devices: editorContext.devices,
+            isEditing,
           }),
           externalData: JSON.stringify(externalData),
         },
@@ -924,7 +925,7 @@ const EditorContent = ({
         | SetFocussedFieldEvent
     ) {
       if (event.data.type === "@easyblocks-editor/focus-field") {
-        setFocussedField([event.data.payload.target]);
+        handleSetFocussedField(event.data.payload.target);
       }
 
       if (event.data.type === "@easyblocks-editor/change-responsive") {
