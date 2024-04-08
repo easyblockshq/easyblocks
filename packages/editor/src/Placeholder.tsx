@@ -117,8 +117,7 @@ type TypePlaceholderComponentBuilderProps = {
 export default function TypePlaceholder(
   props: TypePlaceholderComponentBuilderProps
 ) {
-  const { form } = window.parent.editorWindowAPI
-    .editorContext as EditorContextType;
+  const { form } = window.editorWindowAPI.editorContext as EditorContextType;
   const meta = useEasyblocksMetadata();
   const dndContext = useDndContext();
 

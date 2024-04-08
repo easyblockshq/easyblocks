@@ -70,7 +70,7 @@ interface RichTextProps extends InternalNoCodeComponentProps {
 }
 
 function RichTextEditor(props: RichTextProps) {
-  const { editorContext } = (window.parent as any).editorWindowAPI;
+  const { editorContext } = (window as any).editorWindowAPI;
 
   const {
     actions,
@@ -272,7 +272,7 @@ function RichTextEditor(props: RichTextProps) {
 
       if (event.data.type === "@easyblocks-editor/rich-text-changed") {
         const { payload } = event.data;
-        const { editorContext } = (window.parent as any).editorWindowAPI;
+        const { editorContext } = (window as any).editorWindowAPI;
 
         // Slate is an uncontrolled component and we don't have an easy access to control it.
         // It keeps its state internally and on each change we convert this state to our format.

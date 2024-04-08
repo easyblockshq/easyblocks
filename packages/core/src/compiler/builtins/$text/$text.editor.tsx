@@ -16,7 +16,7 @@ function TextEditor(props: TextProps) {
     __easyblocks: { path, runtime },
   } = props;
 
-  const { form } = (window.parent as any).editorWindowAPI.editorContext;
+  const { form } = (window as any).editorWindowAPI.editorContext;
   const valuePath = `${path}.value`;
   const configValue = dotNotationGet(form.values, valuePath);
   const isLocalTextReference = configValue.id?.startsWith("local.");

@@ -115,9 +115,9 @@ function SelectionFrameController({
         isActive &&
         node &&
         !window.document.contains(node) &&
-        path === window.parent.editorWindowAPI.editorContext.focussedField[0]
+        path === window.editorWindowAPI.editorContext.focussedField[0]
       ) {
-        window.parent.editorWindowAPI.editorContext.setFocussedField([]);
+        window.editorWindowAPI.editorContext.setFocussedField([]);
       }
     };
   });
@@ -154,6 +154,7 @@ function useUpdateFramePosition({
   node: HTMLElement | null;
   isDisabled: boolean;
 }) {
+  // needs to change
   const dispatch = window.parent.postMessage;
 
   useEffect(() => {

@@ -871,6 +871,35 @@ const EditorContent = ({
     if (window.editorWindowAPI.onUpdate) {
       window.editorWindowAPI.onUpdate();
     }
+
+    const shopstoryCanvasIframe = window.document.getElementById(
+      "shopstory-canvas"
+    ) as HTMLIFrameElement | undefined;
+
+    if (meta && renderableContent && editorContext && externalData) {
+      shopstoryCanvasIframe?.contentWindow?.postMessage(
+        {
+          type: "@easyblocks/init",
+          meta: JSON.stringify(meta),
+          compiled: JSON.stringify(renderableContent),
+          editorContext: JSON.stringify({
+            definitions: editorContext.definitions,
+            form: {
+              values: editorContext.form.values,
+            },
+            contextParams: {
+              locale: editorContext.contextParams.locale,
+            },
+            locales: editorContext.locales,
+            actions,
+            focussedField,
+            devices: editorContext.devices,
+          }),
+          externalData: JSON.stringify(externalData),
+        },
+        "*"
+      );
+    }
   }, [
     renderableContent,
     focussedField,

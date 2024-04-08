@@ -41,7 +41,7 @@ export function BlocksControls({
   length,
 }: BlocksControlsProps) {
   const { focussedField, setFocussedField, form } =
-    window.parent.editorWindowAPI.editorContext;
+    window.editorWindowAPI.editorContext;
 
   const meta = useEasyblocksMetadata();
   const dndContext = useDndContext();

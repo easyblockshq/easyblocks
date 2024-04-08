@@ -22,7 +22,7 @@ export function InlineTextarea({
     form,
     contextParams: { locale },
     locales,
-  } = (window.parent as any).editorWindowAPI.editorContext;
+  } = (window as any).editorWindowAPI.editorContext;
   const valuePath = `${path}.value`;
   const value = dotNotationGet(form.values, valuePath);
 

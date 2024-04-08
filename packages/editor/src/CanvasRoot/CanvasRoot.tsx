@@ -6,8 +6,8 @@ type CanvasRootProps = {
 };
 
 function CanvasRoot(props: CanvasRootProps) {
-  const { editorContext } = window.parent.editorWindowAPI;
-
+  // changeditorWindowAPI
+  const { editorContext } = window.editorWindowAPI;
   useEditorGlobalKeyboardShortcuts(editorContext);
 
   return (

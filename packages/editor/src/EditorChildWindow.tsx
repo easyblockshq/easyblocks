@@ -48,8 +48,45 @@ export function EasyblocksCanvas({
 }: {
   components?: Record<string, React.ComponentType<any>>;
 }) {
-  const { meta, compiled, externalData, editorContext } =
-    window.parent.editorWindowAPI;
+  const [meta, setMeta] = useState<any | null>(null);
+  const [compiled, setCompiled] = useState<any | null>(null);
+  const [externalData, setExternalData] = useState<any | null>(null);
+  const [editorContext, setEditorContext] = useState<EditorContextType | null>(
+    null
+  );
+
+  useEffect(() => {
+    const handler = (event: any) => {
+      if (event.data.type === "@easyblocks/init") {
+        // This way we also dont have to force re-render as all is in sync :)
+
+        setMeta(JSON.parse(event.data.meta));
+        setCompiled(JSON.parse(event.data.compiled));
+        setExternalData(JSON.parse(event.data.externalData));
+        setEditorContext(JSON.parse(event.data.editorContext));
+
+        window.editorWindowAPI = {
+          editorContext: JSON.parse(event.data.editorContext),
+          meta: JSON.parse(event.data.meta),
+          compiled: JSON.parse(event.data.compiled),
+          externalData: JSON.parse(event.data.externalData),
+        };
+
+        window.editorWindowAPI.editorContext.setFocussedField = () => {
+          console.log("handler focus fields");
+        };
+        window.editorWindowAPI.editorContext.actions = {
+          runChange: () => {
+            console.log("handler change");
+          },
+        };
+      }
+    };
+    window.addEventListener("message", handler);
+    return () => {
+      window.removeEventListener("message", handler);
+    };
+  }, []);
 
   const [enabled, setEnabled] = useState(false);
   const activeDraggedEntryPath = useRef<string | null>(null);
@@ -68,14 +105,8 @@ export function EasyblocksCanvas({
     }
   }, []);
 
-  useEffect(() => {
-    window.parent.editorWindowAPI.onUpdate = () => {
-      // Force re-render when child gets info from parent that data changed
-      forceRerender();
-    };
-  });
-
-  const shouldNotRender = !enabled || !meta || !compiled || !externalData;
+  const shouldNotRender =
+    !enabled || !meta || !compiled || !externalData || !editorContext;
 
   if (shouldNotRender) {
     return <div>Loading...</div>;
@@ -98,7 +129,7 @@ export function EasyblocksCanvas({
             activeDraggedEntryPath.current = dragDataSchema.parse(
               event.active.data.current
             ).path;
-            window.parent.editorWindowAPI.editorContext.setFocussedField([]);
+            // window.parent.editorWindowAPI.editorContext.setFocussedField([]);
           }}
           onDragEnd={(event) => {
             document.documentElement.style.cursor = "";
@@ -109,9 +140,9 @@ export function EasyblocksCanvas({
 
               if (event.over.id === event.active.id) {
                 // If the dragged item is dropped on itself, we want to refocus the dragged item.
-                window.parent.editorWindowAPI.editorContext.setFocussedField(
-                  activeData.path
-                );
+                // window.parent.editorWindowAPI.editorContext.setFocussedField(
+                //   activeData.path
+                // );
               } else {
                 const itemMovedEvent = itemMoved({
                   fromPath: activeData.path,
@@ -122,22 +153,22 @@ export function EasyblocksCanvas({
                 });
 
                 requestAnimationFrame(() => {
-                  window.parent.postMessage(itemMovedEvent);
+                  // window.parent.postMessage(itemMovedEvent);
                 });
               }
             } else {
               // If there was no drop target, we want to refocus the dragged item.
-              window.parent.editorWindowAPI.editorContext.setFocussedField(
-                activeData.path
-              );
+              // window.parent.editorWindowAPI.editorContext.setFocussedField(
+              //   activeData.path
+              // );
             }
           }}
           onDragCancel={(event) => {
             document.documentElement.style.cursor = "";
             // If the drag was canceled, we want to refocus dragged item.
-            window.parent.editorWindowAPI.editorContext.setFocussedField(
-              dragDataSchema.parse(event.active.data.current).path
-            );
+            // window.parent.editorWindowAPI.editorContext.setFocussedField(
+            //   dragDataSchema.parse(event.active.data.current).path
+            // );
           }}
         >
           <SortableContext items={sortableItems}>
