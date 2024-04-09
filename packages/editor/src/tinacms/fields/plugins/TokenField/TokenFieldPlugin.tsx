@@ -251,6 +251,9 @@ function TokenFieldComponent<TokenValue extends NonNullish>({
               widgetId: tokenTypeDefinition.widget?.id,
             });
           }}
+          params={
+            "params" in field.schemaProp ? field.schemaProp.params : undefined
+          }
         />
       ) : (
         <Input

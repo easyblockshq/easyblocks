@@ -54,6 +54,9 @@ const LocalFieldPlugin = {
             widgetId: input.value.widgetId,
           });
         }}
+        params={
+          "params" in field.schemaProp ? field.schemaProp.params : undefined
+        }
       />
     );
   }),

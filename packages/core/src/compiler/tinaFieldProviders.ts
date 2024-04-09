@@ -31,6 +31,7 @@ function getCommonFieldProps(
   | "description"
   | "isLabelHidden"
   | "layout"
+  | "params"
 > {
   const label = schemaProp.label || schemaProp.prop;
   const group = schemaProp.group || "Properties";
@@ -43,6 +44,7 @@ function getCommonFieldProps(
     description: schemaProp.description,
     isLabelHidden: schemaProp.isLabelHidden,
     layout: schemaProp.layout,
+    params: "params" in schemaProp ? schemaProp.params : undefined,
   };
 }
 

@@ -332,6 +332,7 @@ export type ContextParams = {
 export type WidgetComponentProps<Identifier extends NonNullish = NonNullish> = {
   id: ExternalReference<Identifier>["id"];
   onChange: (newId: ExternalReference<Identifier>["id"]) => void;
+  params?: Record<string, any>;
 };
 
 export type InlineTypeWidgetComponentProps<
@@ -339,6 +340,7 @@ export type InlineTypeWidgetComponentProps<
 > = {
   value: Type;
   onChange: (newValue: Type) => void;
+  params?: Record<string, any>;
 };
 
 export type TokenTypeWidgetComponentProps<

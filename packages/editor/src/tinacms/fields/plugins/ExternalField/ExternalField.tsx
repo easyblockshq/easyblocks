@@ -129,6 +129,7 @@ const ExternalFieldComponent = (props: ExternalFieldProps) => {
                   input.onChange(newValue);
                 }}
                 path={fieldNames[0]}
+                params={field.schemaProp.params}
               />
             ) : (
               <MissingWidget type={field.schemaProp.type} />
