@@ -114,6 +114,9 @@ function SelectionFrameController({
 
   useEffect(() => {
     return () => {
+      if (!focussedField) {
+        return;
+      }
       // If the the node of active element is not in the DOM anymore we want to deselect it to prevent showing
       // add buttons on the not existing element.
       if (

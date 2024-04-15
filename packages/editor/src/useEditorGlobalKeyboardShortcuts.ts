@@ -18,7 +18,10 @@ const GLOBAL_SHORTCUTS_KEYS = [
 
 const DATA_TRANSFER_FORMAT = "text/x-shopstory";
 
-function useEditorGlobalKeyboardShortcuts(editorContext: EditorContextType) {
+function useEditorGlobalKeyboardShortcuts(
+  editorContext: EditorContextType,
+  canvas: HTMLIFrameElement | undefined
+) {
   useEffect(() => {
     const { focussedField: focusedFields, actions } = editorContext;
 
@@ -101,11 +104,27 @@ function useEditorGlobalKeyboardShortcuts(editorContext: EditorContextType) {
     window.document.addEventListener("cut", handleCut);
     window.document.addEventListener("paste", handlePaste);
 
+    canvas?.contentWindow?.document?.addEventListener("keydown", handleKeydown);
+    canvas?.contentWindow?.document?.addEventListener("copy", handleCopy);
+    canvas?.contentWindow?.document?.addEventListener("cut", handleCut);
+    canvas?.contentWindow?.document?.addEventListener("paste", handlePaste);
+
     return () => {
       window.document.removeEventListener("keydown", handleKeydown);
       window.document.removeEventListener("copy", handleCopy);
       window.document.removeEventListener("cut", handleCut);
       window.document.removeEventListener("paste", handlePaste);
+
+      canvas?.contentWindow?.document?.removeEventListener(
+        "keydown",
+        handleKeydown
+      );
+      canvas?.contentWindow?.document?.removeEventListener("copy", handleCopy);
+      canvas?.contentWindow?.document?.removeEventListener("cut", handleCut);
+      canvas?.contentWindow?.document?.removeEventListener(
+        "paste",
+        handlePaste
+      );
     };
   });
 }

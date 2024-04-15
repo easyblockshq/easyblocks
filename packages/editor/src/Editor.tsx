@@ -1006,11 +1006,11 @@ const EditorContent = ({
     return () => window.removeEventListener("message", handleEditorEvents);
   }, []);
 
-  const sendCanvasData = () => {
-    const shopstoryCanvasIframe = window.document.getElementById(
-      "shopstory-canvas"
-    ) as HTMLIFrameElement | undefined;
+  const shopstoryCanvasIframe = window.document.getElementById(
+    "shopstory-canvas"
+  ) as HTMLIFrameElement | undefined;
 
+  const sendCanvasData = () => {
     shopstoryCanvasIframe?.contentWindow?.postMessage(
       {
         type: "@easyblocks/canvas-data",
@@ -1033,7 +1033,7 @@ const EditorContent = ({
 
   const [isDataSaverOverlayOpen, setDataSaverOverlayOpen] = useState(false);
 
-  useEditorGlobalKeyboardShortcuts(editorContext);
+  useEditorGlobalKeyboardShortcuts(editorContext, shopstoryCanvasIframe);
 
   const { saveNow } = useDataSaver(initialDocument, editorContext);
 

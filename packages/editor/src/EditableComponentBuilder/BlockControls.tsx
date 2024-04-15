@@ -46,6 +46,10 @@ export function BlocksControls({
 }: BlocksControlsProps) {
   const { focussedField, formValues } = useEasyblocksCanvasContext();
 
+  if (!focussedField) {
+    return;
+  }
+
   const meta = useEasyblocksMetadata();
   const dndContext = useDndContext();
 
@@ -166,6 +170,10 @@ export function BlocksControls({
     const isMultipleSelection = event.shiftKey;
 
     function getNextFocusedField() {
+      if (!focussedField) {
+        return;
+      }
+
       if (isMultipleSelection) {
         if (focussedField.includes(path)) {
           const result = focussedField.filter(

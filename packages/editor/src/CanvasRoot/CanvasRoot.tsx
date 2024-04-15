@@ -1,5 +1,4 @@
 import React, { ReactNode } from "react";
-import { useEditorGlobalKeyboardShortcuts } from "../useEditorGlobalKeyboardShortcuts";
 import { useEasyblocksCanvasContext } from "@easyblocks/core/_internals";
 
 type CanvasRootProps = {
@@ -7,10 +6,7 @@ type CanvasRootProps = {
 };
 
 function CanvasRoot(props: CanvasRootProps) {
-  // const { editorContext } = window.parent.editorWindowAPI;
   const { isEditing } = useEasyblocksCanvasContext();
-
-  // useEditorGlobalKeyboardShortcuts({editorContext});
 
   return (
     <div
