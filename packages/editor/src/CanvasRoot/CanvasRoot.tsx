@@ -1,24 +1,31 @@
 import React, { ReactNode } from "react";
 import { useEditorGlobalKeyboardShortcuts } from "../useEditorGlobalKeyboardShortcuts";
+import { useEasyblocksCanvasContext } from "@easyblocks/core/_internals";
 
 type CanvasRootProps = {
   children: ReactNode;
 };
 
 function CanvasRoot(props: CanvasRootProps) {
-  const { editorContext } = window.parent.editorWindowAPI;
+  // const { editorContext } = window.parent.editorWindowAPI;
+  const { isEditing } = useEasyblocksCanvasContext();
 
-  useEditorGlobalKeyboardShortcuts(editorContext);
+  // useEditorGlobalKeyboardShortcuts({editorContext});
 
   return (
     <div
       onClick={() => {
-        if (editorContext.isEditing) {
-          editorContext.setFocussedField([]);
+        if (isEditing) {
+          window.parent.postMessage({
+            type: "@easyblocks-editor/focus-field",
+            payload: {
+              target: [],
+            },
+          });
         }
       }}
     >
-      {editorContext.isEditing && (
+      {isEditing && (
         <div style={{ minHeight: "100vh" }}>
           <style
             dangerouslySetInnerHTML={{
@@ -28,7 +35,7 @@ function CanvasRoot(props: CanvasRootProps) {
           {props.children}
         </div>
       )}
-      {!editorContext.isEditing && props.children}
+      {!isEditing && props.children}
     </div>
   );
 }

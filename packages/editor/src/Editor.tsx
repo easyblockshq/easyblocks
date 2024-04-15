@@ -872,6 +872,7 @@ const EditorContent = ({
   }, []);
 
   useEffect(() => {
+    sendCanvasData();
     if (window.editorWindowAPI.onUpdate) {
       window.editorWindowAPI.onUpdate();
     }
@@ -1004,6 +1005,31 @@ const EditorContent = ({
 
     return () => window.removeEventListener("message", handleEditorEvents);
   }, []);
+
+  const sendCanvasData = () => {
+    const shopstoryCanvasIframe = window.document.getElementById(
+      "shopstory-canvas"
+    ) as HTMLIFrameElement | undefined;
+
+    shopstoryCanvasIframe?.contentWindow?.postMessage(
+      {
+        type: "@easyblocks/canvas-data",
+        data: JSON.stringify({
+          compiled: renderableContent,
+          meta,
+          externalData,
+          formValues: form.values,
+          definitions: editorContext.definitions,
+          locale: editorContext.contextParams.locale,
+          locales: editorContext.locales,
+          isEditing,
+          devices: editorContext.devices,
+          focussedField,
+        }),
+      },
+      "*"
+    );
+  };
 
   const [isDataSaverOverlayOpen, setDataSaverOverlayOpen] = useState(false);
 

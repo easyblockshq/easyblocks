@@ -1,5 +1,8 @@
 import type { useSortable } from "@dnd-kit/sortable";
-import { selectionFramePositionChanged } from "@easyblocks/core/_internals";
+import {
+  selectionFramePositionChanged,
+  useEasyblocksCanvasContext,
+} from "@easyblocks/core/_internals";
 import { Colors } from "@easyblocks/design-system";
 import React, { MouseEvent, ReactNode, useEffect, useState } from "react";
 
@@ -107,6 +110,8 @@ function SelectionFrameController({
     },
   });
 
+  const { focussedField } = useEasyblocksCanvasContext();
+
   useEffect(() => {
     return () => {
       // If the the node of active element is not in the DOM anymore we want to deselect it to prevent showing
@@ -115,9 +120,14 @@ function SelectionFrameController({
         isActive &&
         node &&
         !window.document.contains(node) &&
-        path === window.parent.editorWindowAPI.editorContext.focussedField[0]
+        path === focussedField[0]
       ) {
-        window.parent.editorWindowAPI.editorContext.setFocussedField([]);
+        window.parent.postMessage({
+          type: "@easyblocks-editor/focus-field",
+          payload: {
+            target: [],
+          },
+        });
       }
     };
   });
@@ -125,7 +135,10 @@ function SelectionFrameController({
   React.useEffect(() => {
     const onWindowMessage = (event: MessageEvent) => {
       if (event.data.type === "@easyblocks-editor/focus-field") {
-        if (event.data.payload.target === path) {
+        if (
+          event.data.payload.target === path &&
+          event.data.payload.scrollIntoView
+        ) {
           node?.scrollIntoView({
             behavior: "smooth",
           });

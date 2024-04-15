@@ -134,7 +134,7 @@ export type InternalComponentDefinitions = {
   components: InternalRenderableComponentDefinition<string, any, any>[];
 };
 
-type EditorActions = {
+export type EditorActions = {
   notify: (message: string) => void;
   openComponentPicker: (config: {
     path: string;

@@ -1,7 +1,11 @@
 import { useDndContext } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
 import { PlaceholderAppearance } from "@easyblocks/core";
-import { parsePath, useEasyblocksMetadata } from "@easyblocks/core/_internals";
+import {
+  parsePath,
+  useEasyblocksCanvasContext,
+  useEasyblocksMetadata,
+} from "@easyblocks/core/_internals";
 import { Colors, Fonts } from "@easyblocks/design-system";
 import { toArray } from "@easyblocks/utils";
 import React from "react";
@@ -117,13 +121,12 @@ type TypePlaceholderComponentBuilderProps = {
 export default function TypePlaceholder(
   props: TypePlaceholderComponentBuilderProps
 ) {
-  const { form } = window.parent.editorWindowAPI
-    .editorContext as EditorContextType;
+  const { formValues } = useEasyblocksCanvasContext();
   const meta = useEasyblocksMetadata();
   const dndContext = useDndContext();
 
   const draggedEntryPathParseResult = dndContext.active
-    ? parsePath(dndContext.active.data.current!.path, form)
+    ? parsePath(dndContext.active.data.current!.path, { values: formValues })
     : null;
 
   const draggedComponentDefinition = draggedEntryPathParseResult

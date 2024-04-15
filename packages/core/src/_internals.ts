@@ -27,6 +27,7 @@ export type {
   EditorContextType,
   InternalComponentDefinition,
   InternalRenderableComponentDefinition,
+  EditorActions,
 } from "./compiler/types";
 export {
   EasyblocksMetadataProvider,
@@ -39,3 +40,7 @@ export {
 } from "./components/ComponentBuilder/ComponentBuilder";
 export { createTestCompilationContext, createFormMock } from "./testUtils";
 export * from "./compiler/builtins/$richText/builders";
+export {
+  EasyblocksCanvasProvider,
+  useEasyblocksCanvasContext,
+} from "./components/EasyblocksCanvasProvider";

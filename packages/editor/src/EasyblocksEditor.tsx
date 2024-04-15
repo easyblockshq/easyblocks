@@ -5,6 +5,7 @@ import { EasyblocksCanvas } from "./EditorChildWindow";
 import { PreviewRenderer } from "./PreviewRenderer";
 import { addDebugToEditorProps } from "./debug/addDebugToEditorProps";
 import { parseQueryParams } from "./parseQueryParams";
+import { EasyblocksCanvasProvider } from "@easyblocks/core/_internals";
 
 export function EasyblocksEditor(props: EasyblocksEditorProps) {
   const [selectedWindow, setSelectedWindow] = useState<
@@ -66,7 +67,9 @@ export function EasyblocksEditor(props: EasyblocksEditorProps) {
       )}
 
       {selectedWindow === "child" && (
-        <EasyblocksCanvas components={props.components} />
+        <EasyblocksCanvasProvider>
+          <EasyblocksCanvas components={props.components} />
+        </EasyblocksCanvasProvider>
       )}
 
       {selectedWindow === "preview" && <PreviewRenderer {...props} />}
