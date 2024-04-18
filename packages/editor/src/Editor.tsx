@@ -27,6 +27,7 @@ import {
   ChangeResponsiveEvent,
   CompilationContextType,
   ComponentPickerOpenedEvent,
+  FormChangeEvent,
   ItemInsertedEvent,
   ItemMovedEvent,
   RedoEvent,
@@ -894,7 +895,24 @@ const EditorContent = ({
         | SetFocussedFieldEvent
         | UndoEvent
         | RedoEvent
+        | FormChangeEvent
     ) {
+      if (event.data.type === "@easyblocks-editor/form-change") {
+        if (event.data.payload.focussedField) {
+          actions.runChange(() => {
+            if (
+              event.data.type === "@easyblocks-editor/form-change" &&
+              Array.isArray(event.data.payload.focussedField)
+            ) {
+              form.change(event.data.payload.key, event.data.payload.value);
+              return event.data.payload.focussedField;
+            }
+          });
+        } else {
+          form.change(event.data.payload.key, event.data.payload.value);
+        }
+      }
+
       if (event.data.type === "@easyblocks-editor/focus-field") {
         handleSetFocussedField(event.data.payload.target);
       }

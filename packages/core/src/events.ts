@@ -136,6 +136,18 @@ type UndoEvent = MessageEvent<
     }
   >
 >;
+
+type FormChangeEvent = MessageEvent<
+  EasyblocksEditorEventData<
+    "@easyblocks-editor/form-change",
+    {
+      key: string;
+      value: any;
+      focussedField?: Array<string> | string;
+    }
+  >
+>;
+
 type RedoEvent = MessageEvent<
   EasyblocksEditorEventData<
     "@easyblocks-editor/redo",
@@ -193,4 +205,5 @@ export type {
   UndoEvent,
   RedoEvent,
   SetFocussedFieldEvent,
+  FormChangeEvent,
 };

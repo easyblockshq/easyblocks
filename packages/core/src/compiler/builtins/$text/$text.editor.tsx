@@ -3,6 +3,7 @@ import { dotNotationGet } from "@easyblocks/utils";
 import React, { ReactElement } from "react";
 import { InternalNoCodeComponentProps } from "../../../components/ComponentBuilder/ComponentBuilder";
 import { InlineTextarea } from "./InlineTextarea";
+import { useEasyblocksCanvasContext } from "../../../_internals";
 
 type TextProps = {
   value: string | undefined;
@@ -16,9 +17,10 @@ function TextEditor(props: TextProps) {
     __easyblocks: { path, runtime },
   } = props;
 
-  const { form } = (window.parent as any).editorWindowAPI.editorContext;
+  const { formValues } = useEasyblocksCanvasContext();
+
   const valuePath = `${path}.value`;
-  const configValue = dotNotationGet(form.values, valuePath);
+  const configValue = dotNotationGet(formValues, valuePath);
   const isLocalTextReference = configValue.id?.startsWith("local.");
 
   return (

@@ -18,11 +18,11 @@ type EasyblocksCanvasState = {
   externalData: FetchOutputResources | null;
   formValues: EditorContextType["form"]["values"] | null;
   definitions: EditorContextType["definitions"] | null;
-  locale: EditorContextType["contextParams"]["locale"] | null;
-  locales: EditorContextType["locales"] | null;
+  locale: EditorContextType["contextParams"]["locale"];
+  locales: EditorContextType["locales"];
   isEditing: EditorContextType["isEditing"];
   devices: EditorContextType["devices"] | null;
-  focussedField: EditorContextType["focussedField"] | null;
+  focussedField: EditorContextType["focussedField"];
 };
 
 const initialState: EasyblocksCanvasState = {
@@ -31,11 +31,11 @@ const initialState: EasyblocksCanvasState = {
   externalData: null,
   formValues: null,
   definitions: null,
-  locale: null,
-  locales: null,
+  locale: "",
+  locales: [],
   isEditing: false,
   devices: null,
-  focussedField: null,
+  focussedField: [],
 };
 
 const EasyblocksCanvasContext = createContext<

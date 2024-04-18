@@ -38,12 +38,10 @@ export function EasyblocksEditor(props: EasyblocksEditorProps) {
         if (window.parent !== window.self && window.parent.isShopstoryEditor) {
           setSelectedWindowToChild();
         } else {
-          // setSelectedWindowToParent();
-          setSelectedWindowToChild();
+          setSelectedWindowToParent();
         }
       } catch (error) {
-        // setSelectedWindowToParent();
-        setSelectedWindowToChild();
+        setSelectedWindowToParent();
       }
     }
   }, []);
