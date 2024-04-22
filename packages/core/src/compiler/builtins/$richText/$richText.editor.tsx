@@ -71,7 +71,7 @@ interface RichTextProps extends InternalNoCodeComponentProps {
 }
 
 function RichTextEditor(props: RichTextProps) {
-  const { editorContext } = (window.parent as any).editorWindowAPI;
+  // const { editorContext } = (window.parent as any).editorWindowAPI;
   const { formValues, locales, locale, focussedField, definitions } =
     useEasyblocksCanvasContext();
 
@@ -754,7 +754,10 @@ function RichTextEditor(props: RichTextProps) {
   function handleEditableCopy(event: React.ClipboardEvent) {
     const selectedRichTextComponentConfig = getRichTextComponentConfigFragment(
       richTextConfig,
-      editorContext
+      focussedField,
+      locale,
+      formValues,
+      definitions
     );
 
     event.clipboardData.setData(
@@ -775,8 +778,9 @@ function RichTextEditor(props: RichTextProps) {
       event.preventDefault();
 
       const nextSlateValue = convertRichTextElementsToEditorValue(
-        duplicateConfig(selectedRichTextComponentConfig, editorContext)
-          .elements[locale]
+        duplicateConfig(selectedRichTextComponentConfig, definitions).elements[
+          locale
+        ]
       );
 
       const temporaryEditor = createTemporaryEditor(editor);

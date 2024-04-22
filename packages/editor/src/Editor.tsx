@@ -873,7 +873,6 @@ const EditorContent = ({
   }, []);
 
   useEffect(() => {
-    sendCanvasData();
     if (window.editorWindowAPI.onUpdate) {
       window.editorWindowAPI.onUpdate();
     }
@@ -1124,6 +1123,11 @@ const EditorContent = ({
                   height={iframeSize.height}
                   transform={iframeSize.transform}
                   containerRef={iframeContainerRef}
+                  onIframeLoaded={() => {
+                    setTimeout(() => {
+                      sendCanvasData();
+                    }, 10);
+                  }}
                 />
                 {isEditing && (
                   <SelectionFrame

@@ -10,6 +10,7 @@ interface EditorIframeWrapperProps {
   height: number;
   transform: string;
   containerRef: React.RefObject<HTMLDivElement>;
+  onIframeLoaded?: () => void;
 }
 
 function EditorIframe({
@@ -19,11 +20,15 @@ function EditorIframe({
   height,
   transform,
   containerRef,
+  onIframeLoaded,
 }: EditorIframeWrapperProps) {
   const [isIframeReady, setIframeReady] = useState(false);
 
   const handleIframeLoaded = () => {
     setIframeReady(true);
+    if (onIframeLoaded) {
+      onIframeLoaded();
+    }
   };
 
   useWindowKeyDown("z", onEditorHistoryUndo, {

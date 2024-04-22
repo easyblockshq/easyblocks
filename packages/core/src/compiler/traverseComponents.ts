@@ -1,7 +1,7 @@
 import { NoCodeComponentEntry } from "../types";
 import { findComponentDefinition } from "./findComponentDefinition";
 import { isSchemaPropComponent } from "./schema";
-import { CompilationContextType } from "./types";
+import { AnyContextWithDefinitions } from "./types";
 
 type TraverseComponentsCallback = (arg: {
   path: string;
@@ -12,7 +12,7 @@ type TraverseComponentsCallback = (arg: {
  */
 function traverseComponents(
   config: NoCodeComponentEntry,
-  context: CompilationContextType,
+  context: AnyContextWithDefinitions,
   callback: TraverseComponentsCallback
 ): void {
   traverseComponentsInternal(config, context, callback, "");
@@ -20,7 +20,7 @@ function traverseComponents(
 
 function traverseComponentsArray(
   array: NoCodeComponentEntry[],
-  context: CompilationContextType,
+  context: AnyContextWithDefinitions,
   callback: TraverseComponentsCallback,
   path: string
 ) {
@@ -31,7 +31,7 @@ function traverseComponentsArray(
 
 function traverseComponentsInternal(
   componentConfig: NoCodeComponentEntry,
-  context: CompilationContextType,
+  context: AnyContextWithDefinitions,
   callback: TraverseComponentsCallback,
   path: string
 ) {

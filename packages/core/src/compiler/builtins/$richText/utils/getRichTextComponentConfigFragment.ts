@@ -11,34 +11,35 @@ import { stripRichTextPartSelection } from "./stripRichTextTextPartSelection";
 
 function getRichTextComponentConfigFragment(
   sourceRichTextComponentConfig: RichTextComponentConfig,
-  editorContext: EditorContextType
+  focussedField: EditorContextType["focussedField"],
+  locale: EditorContextType["contextParams"]["locale"],
+  formValues: EditorContextType["form"]["values"],
+  definitions: EditorContextType["definitions"]
 ): RichTextComponentConfig & {
   _itemProps?: Record<string, unknown>;
 } {
-  const { focussedField, form, contextParams } = editorContext;
-
   const newRichTextComponentConfig: RichTextComponentConfig = {
     ...sourceRichTextComponentConfig,
     elements: {
-      [contextParams.locale]: [],
+      [locale]: [],
     },
   };
 
   focussedField.forEach((focusedField) => {
     const textPartConfig: RichTextPartComponentConfig = get(
-      form.values,
+      formValues,
       stripRichTextPartSelection(focusedField)
     );
 
     const { path, range } = parseFocusedRichTextPartConfigPath(focusedField);
 
-    const newTextPartConfig = duplicateConfig(textPartConfig, editorContext);
+    const newTextPartConfig = duplicateConfig(textPartConfig, definitions);
 
     if (range) {
       newTextPartConfig.value = textPartConfig.value.slice(...range);
     }
 
-    let lastParentConfigPath = `elements.${contextParams.locale}`;
+    let lastParentConfigPath = `elements.${locale}`;
 
     path.slice(0, -1).forEach((pathIndex, index) => {
       let currentConfigPath = lastParentConfigPath;
