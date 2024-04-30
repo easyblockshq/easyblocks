@@ -137,6 +137,55 @@ type UndoEvent = MessageEvent<
   >
 >;
 
+type CanvasLoadedEvent = MessageEvent<
+  EasyblocksEditorEventData<
+    "@easyblocks-editor/canvas-loaded",
+    {
+      type: "@easyblocks-editor/canvas-loaded";
+    }
+  >
+>;
+
+type RemoveItemsEvent = MessageEvent<
+  EasyblocksEditorEventData<
+    "@easyblocks-editor/remove-items",
+    {
+      type: "@easyblocks-editor/remove-items";
+      paths: Array<string>;
+    }
+  >
+>;
+
+type PasteItemsEvent = MessageEvent<
+  EasyblocksEditorEventData<
+    "@easyblocks-editor/paste-items",
+    {
+      type: "@easyblocks-editor/paste-items";
+      configs: any;
+    }
+  >
+>;
+
+type MoveItemsEvent = MessageEvent<
+  EasyblocksEditorEventData<
+    "@easyblocks-editor/move-items",
+    {
+      type: "@easyblocks-editor/move-items";
+      paths: Array<string>;
+      direction: "top" | "right" | "bottom" | "left";
+    }
+  >
+>;
+
+type LogSelectedEvent = MessageEvent<
+  EasyblocksEditorEventData<
+    "@easyblocks-editor/log-selected-items",
+    {
+      type: "@easyblocks-editor/log-selected-items";
+    }
+  >
+>;
+
 type FormChangeEvent = MessageEvent<
   EasyblocksEditorEventData<
     "@easyblocks-editor/form-change",
@@ -206,4 +255,9 @@ export type {
   RedoEvent,
   SetFocussedFieldEvent,
   FormChangeEvent,
+  CanvasLoadedEvent,
+  RemoveItemsEvent,
+  PasteItemsEvent,
+  MoveItemsEvent,
+  LogSelectedEvent,
 };

@@ -24,13 +24,18 @@ import {
   validate,
 } from "@easyblocks/core";
 import {
+  CanvasLoadedEvent,
   ChangeResponsiveEvent,
   CompilationContextType,
   ComponentPickerOpenedEvent,
   FormChangeEvent,
   ItemInsertedEvent,
   ItemMovedEvent,
+  LogSelectedEvent,
+  MoveItemsEvent,
+  PasteItemsEvent,
   RedoEvent,
+  RemoveItemsEvent,
   SetFocussedFieldEvent,
   UndoEvent,
   componentPickerClosed,
@@ -872,7 +877,10 @@ const EditorContent = ({
     });
   }, []);
 
+  const [canvasLoaded, setCanvasLoaded] = useState(false);
+
   useEffect(() => {
+    sendCanvasData();
     if (window.editorWindowAPI.onUpdate) {
       window.editorWindowAPI.onUpdate();
     }
@@ -882,6 +890,7 @@ const EditorContent = ({
     isEditing,
     currentViewport,
     externalData,
+    canvasLoaded,
   ]);
 
   useEffect(() => {
@@ -895,7 +904,35 @@ const EditorContent = ({
         | UndoEvent
         | RedoEvent
         | FormChangeEvent
+        | CanvasLoadedEvent
+        | RemoveItemsEvent
+        | PasteItemsEvent
+        | MoveItemsEvent
+        | LogSelectedEvent
     ) {
+      if (event.data.type === "@easyblocks-editor/remove-items") {
+        actions.removeItems(event.data.payload.paths);
+      }
+
+      if (event.data.type === "@easyblocks-editor/paste-items") {
+        actions.pasteItems(event.data.payload.configs);
+      }
+
+      if (event.data.type === "@easyblocks-editor/move-items") {
+        actions.moveItems(
+          event.data.payload.paths,
+          event.data.payload.direction
+        );
+      }
+
+      if (event.data.type === "@easyblocks-editor/log-selected-items") {
+        actions.logSelectedItems();
+      }
+
+      if (event.data.type === "@easyblocks-editor/canvas-loaded") {
+        setCanvasLoaded(true);
+      }
+
       if (event.data.type === "@easyblocks-editor/form-change") {
         if (event.data.payload.focussedField) {
           actions.runChange(() => {
@@ -937,7 +974,8 @@ const EditorContent = ({
             ) as HTMLIFrameElement | undefined;
 
             shopstoryCanvasIframe?.contentWindow?.postMessage(
-              componentPickerClosed(config)
+              componentPickerClosed(config),
+              "*"
             );
           });
       }
@@ -1023,18 +1061,23 @@ const EditorContent = ({
     return () => window.removeEventListener("message", handleEditorEvents);
   }, []);
 
-  const shopstoryCanvasIframe = window.document.getElementById(
-    "shopstory-canvas"
-  ) as HTMLIFrameElement | undefined;
+  const shopstoryCanvasIframe = useRef<HTMLIFrameElement | null>(null);
+
+  useEffect(() => {
+    const iframe = document.getElementById(
+      "shopstory-canvas"
+    ) as HTMLIFrameElement | null;
+    shopstoryCanvasIframe.current = iframe;
+  }, []);
 
   const sendCanvasData = () => {
-    shopstoryCanvasIframe?.contentWindow?.postMessage(
+    shopstoryCanvasIframe?.current?.contentWindow?.postMessage(
       {
         type: "@easyblocks/canvas-data",
         data: JSON.stringify({
           compiled: renderableContent,
           meta,
-          externalData,
+          externalData: externalData,
           formValues: form.values,
           definitions: editorContext.definitions,
           locale: editorContext.contextParams.locale,
@@ -1050,7 +1093,7 @@ const EditorContent = ({
 
   const [isDataSaverOverlayOpen, setDataSaverOverlayOpen] = useState(false);
 
-  useEditorGlobalKeyboardShortcuts(editorContext, shopstoryCanvasIframe);
+  useEditorGlobalKeyboardShortcuts(editorContext);
 
   const { saveNow } = useDataSaver(initialDocument, editorContext);
 
@@ -1123,11 +1166,6 @@ const EditorContent = ({
                   height={iframeSize.height}
                   transform={iframeSize.transform}
                   containerRef={iframeContainerRef}
-                  onIframeLoaded={() => {
-                    setTimeout(() => {
-                      sendCanvasData();
-                    }, 10);
-                  }}
                 />
                 {isEditing && (
                   <SelectionFrame

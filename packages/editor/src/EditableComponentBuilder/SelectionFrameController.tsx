@@ -125,32 +125,16 @@ function SelectionFrameController({
         !window.document.contains(node) &&
         path === focussedField[0]
       ) {
-        window.parent.postMessage({
-          type: "@easyblocks-editor/focus-field",
-          payload: {
-            target: [],
+        window.parent.postMessage(
+          {
+            type: "@easyblocks-editor/focus-field",
+            payload: {
+              target: [],
+            },
           },
-        });
+          "*"
+        );
       }
-    };
-  });
-
-  React.useEffect(() => {
-    const onWindowMessage = (event: MessageEvent) => {
-      if (event.data.type === "@easyblocks-editor/focus-field") {
-        if (
-          event.data.payload.target === path &&
-          event.data.payload.scrollIntoView
-        ) {
-          node?.scrollIntoView({
-            behavior: "smooth",
-          });
-        }
-      }
-    };
-    window.parent.addEventListener("message", onWindowMessage);
-    return () => {
-      window.parent.removeEventListener("message", onWindowMessage);
     };
   });
 
@@ -186,8 +170,6 @@ function useUpdateFramePosition({
   node: HTMLElement | null;
   isDisabled: boolean;
 }) {
-  const dispatch = window.parent.postMessage;
-
   useEffect(() => {
     if (isDisabled || !node) {
       return;
@@ -196,11 +178,12 @@ function useUpdateFramePosition({
     const updateSelectionFramePosition = createThrottledHandler(() => {
       const nodeRect = node.getBoundingClientRect();
 
-      dispatch(
+      window.parent.postMessage(
         selectionFramePositionChanged(
           nodeRect,
           window.document.documentElement.getBoundingClientRect()
-        )
+        ),
+        "*"
       );
     });
 
@@ -210,7 +193,7 @@ function useUpdateFramePosition({
 
     const handleResize = createThrottledHandler(() => {
       const nodeRect = node.getBoundingClientRect();
-      dispatch(selectionFramePositionChanged(nodeRect));
+      window.parent.postMessage(selectionFramePositionChanged(nodeRect), "*");
     });
 
     window.addEventListener("resize", handleResize, {
@@ -224,7 +207,10 @@ function useUpdateFramePosition({
           event.target as HTMLElement
         ).getBoundingClientRect();
 
-        dispatch(selectionFramePositionChanged(nodeRect, containerRect));
+        window.parent.postMessage(
+          selectionFramePositionChanged(nodeRect, containerRect),
+          "*"
+        );
       });
 
     const closestScrollableElement = node.closest(
@@ -239,11 +225,12 @@ function useUpdateFramePosition({
       }
     );
 
-    dispatch(
+    window.parent.postMessage(
       selectionFramePositionChanged(
         node.getBoundingClientRect(),
         closestScrollableElement?.getBoundingClientRect()
-      )
+      ),
+      "*"
     );
 
     return () => {

@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
 import { useEasyblocksCanvasContext } from "@easyblocks/core/_internals";
+import { useCanvasGlobalKeyboardShortcuts } from "../useCanvasGlobalKeyboardShortcuts";
 
 type CanvasRootProps = {
   children: ReactNode;
@@ -8,16 +9,21 @@ type CanvasRootProps = {
 function CanvasRoot(props: CanvasRootProps) {
   const { isEditing } = useEasyblocksCanvasContext();
 
+  useCanvasGlobalKeyboardShortcuts();
+
   return (
     <div
       onClick={() => {
         if (isEditing) {
-          window.parent.postMessage({
-            type: "@easyblocks-editor/focus-field",
-            payload: {
-              target: [],
+          window.parent.postMessage(
+            {
+              type: "@easyblocks-editor/focus-field",
+              payload: {
+                target: [],
+              },
             },
-          });
+            "*"
+          );
         }
       }}
     >

@@ -26,13 +26,16 @@ export function InlineTextarea({
   const inputProps = useTextValue(
     value,
     (val: string | null) => {
-      window.parent.postMessage({
-        type: "@easyblocks-editor/form-change",
-        payload: {
-          key: valuePath,
-          value: val,
+      window.parent.postMessage(
+        {
+          type: "@easyblocks-editor/form-change",
+          payload: {
+            key: valuePath,
+            value: val,
+          },
         },
-      });
+        "*"
+      );
     },
     locale,
     locales,

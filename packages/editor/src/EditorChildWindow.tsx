@@ -66,6 +66,15 @@ export function EasyblocksCanvas({
     }
   }, []);
 
+  useEffect(() => {
+    window.parent.postMessage(
+      {
+        type: "@easyblocks-editor/canvas-loaded",
+      },
+      "*"
+    );
+  }, []);
+
   const { meta, compiled, externalData, formValues, definitions } =
     useEasyblocksCanvasContext();
 
@@ -94,12 +103,15 @@ export function EasyblocksCanvas({
             activeDraggedEntryPath.current = dragDataSchema.parse(
               event.active.data.current
             ).path;
-            window.parent.postMessage({
-              type: "@easyblocks-editor/focus-field",
-              payload: {
-                target: [],
+            window.parent.postMessage(
+              {
+                type: "@easyblocks-editor/focus-field",
+                payload: {
+                  target: [],
+                },
               },
-            });
+              "*"
+            );
           }}
           onDragEnd={(event) => {
             document.documentElement.style.cursor = "";
@@ -110,12 +122,15 @@ export function EasyblocksCanvas({
 
               if (event.over.id === event.active.id) {
                 // If the dragged item is dropped on itself, we want to refocus the dragged item.
-                window.parent.postMessage({
-                  type: "@easyblocks-editor/focus-field",
-                  payload: {
-                    target: activeData.path,
+                window.parent.postMessage(
+                  {
+                    type: "@easyblocks-editor/focus-field",
+                    payload: {
+                      target: activeData.path,
+                    },
                   },
-                });
+                  "*"
+                );
               } else {
                 const itemMovedEvent = itemMoved({
                   fromPath: activeData.path,
@@ -126,28 +141,34 @@ export function EasyblocksCanvas({
                 });
 
                 requestAnimationFrame(() => {
-                  window.parent.postMessage(itemMovedEvent);
+                  window.parent.postMessage(itemMovedEvent, "*");
                 });
               }
             } else {
               // If there was no drop target, we want to refocus the dragged item.
-              window.parent.postMessage({
-                type: "@easyblocks-editor/focus-field",
-                payload: {
-                  target: activeData.path,
+              window.parent.postMessage(
+                {
+                  type: "@easyblocks-editor/focus-field",
+                  payload: {
+                    target: activeData.path,
+                  },
                 },
-              });
+                "*"
+              );
             }
           }}
           onDragCancel={(event) => {
             document.documentElement.style.cursor = "";
             // If the drag was canceled, we want to refocus dragged item.
-            window.parent.postMessage({
-              type: "@easyblocks-editor/focus-field",
-              payload: {
-                target: dragDataSchema.parse(event.active.data.current).path,
+            window.parent.postMessage(
+              {
+                type: "@easyblocks-editor/focus-field",
+                payload: {
+                  target: dragDataSchema.parse(event.active.data.current).path,
+                },
               },
-            });
+              "*"
+            );
           }}
         >
           <SortableContext items={sortableItems}>

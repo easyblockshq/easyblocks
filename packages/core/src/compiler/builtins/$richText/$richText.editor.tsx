@@ -85,12 +85,15 @@ function RichTextEditor(props: RichTextProps) {
   // } = editorContext;
 
   const setFocussedField = (field: Array<string> | string) => {
-    window.parent.postMessage({
-      type: "@easyblocks-editor/focus-field",
-      payload: {
-        target: field,
+    window.parent.postMessage(
+      {
+        type: "@easyblocks-editor/focus-field",
+        payload: {
+          target: field,
+        },
       },
-    });
+      "*"
+    );
   };
 
   const {
@@ -263,13 +266,16 @@ function RichTextEditor(props: RichTextProps) {
           );
           // form.change(path, nextRichTextElement);
 
-          window.parent.postMessage({
-            type: "@easyblocks-editor/form-change",
-            payload: {
-              key: path,
-              value: nextRichTextElement,
+          window.parent.postMessage(
+            {
+              type: "@easyblocks-editor/form-change",
+              payload: {
+                key: path,
+                value: nextRichTextElement,
+              },
             },
-          });
+            "*"
+          );
         }
       }
     },
@@ -349,14 +355,17 @@ function RichTextEditor(props: RichTextProps) {
             getAbsoluteRichTextPartPath(focusedRichTextPart, path, locale)
         );
 
-        window.parent.postMessage({
-          type: "@easyblocks-editor/form-change",
-          payload: {
-            key: path,
-            value: newRichTextElement,
-            focussedField: newFocusedFields,
+        window.parent.postMessage(
+          {
+            type: "@easyblocks-editor/form-change",
+            payload: {
+              key: path,
+              value: newRichTextElement,
+              focussedField: newFocusedFields,
+            },
           },
-        });
+          "*"
+        );
       }
     }
 
@@ -544,22 +553,25 @@ function RichTextEditor(props: RichTextProps) {
 
       previousRichTextComponentConfig.current = newRichTextElement;
 
-      window.parent.postMessage({
-        type: "@easyblocks-editor/form-change",
-        payload: {
-          key: path,
-          value: newRichTextElement,
-          ...(editor.selection
-            ? {
-                focussedField: getFocusedFieldsFromSlateSelection(
-                  editor,
-                  path,
-                  locale
-                ),
-              }
-            : {}),
+      window.parent.postMessage(
+        {
+          type: "@easyblocks-editor/form-change",
+          payload: {
+            key: path,
+            value: newRichTextElement,
+            ...(editor.selection
+              ? {
+                  focussedField: getFocusedFieldsFromSlateSelection(
+                    editor,
+                    path,
+                    locale
+                  ),
+                }
+              : {}),
+          },
         },
-      });
+        "*"
+      );
     }, RICH_TEXT_CONFIG_SYNC_THROTTLE_TIMEOUT),
     [isConfigChanged, locale]
   );
@@ -661,13 +673,16 @@ function RichTextEditor(props: RichTextProps) {
 
         // form.change(path, nextRichTextComponentConfig);
 
-        window.parent.postMessage({
-          type: "@easyblocks-editor/form-change",
-          payload: {
-            key: path,
-            value: nextRichTextComponentConfig,
+        window.parent.postMessage(
+          {
+            type: "@easyblocks-editor/form-change",
+            payload: {
+              key: path,
+              value: nextRichTextComponentConfig,
+            },
           },
-        });
+          "*"
+        );
       } else {
         // If current and fallback value is missing we have:
         // - empty Slate value
@@ -679,13 +694,16 @@ function RichTextEditor(props: RichTextProps) {
             editor.children as Array<BlockElement>
           );
         // form.change(path, nextRichTextComponentConfig);
-        window.parent.postMessage({
-          type: "@easyblocks-editor/form-change",
-          payload: {
-            key: path,
-            value: nextRichTextComponentConfig,
+        window.parent.postMessage(
+          {
+            type: "@easyblocks-editor/form-change",
+            payload: {
+              key: path,
+              value: nextRichTextComponentConfig,
+            },
           },
-        });
+          "*"
+        );
       }
 
       previousRichTextComponentConfig.current = nextRichTextComponentConfig;
@@ -801,18 +819,21 @@ function RichTextEditor(props: RichTextProps) {
       //   return nextFocusedFields;
       // });
 
-      window.parent.postMessage({
-        type: "@easyblocks-editor/form-change",
-        payload: {
-          key: richTextElementsConfigPath,
-          value: nextElements,
-          focussedField: getFocusedFieldsFromSlateSelection(
-            temporaryEditor,
-            path,
-            locale
-          ),
+      window.parent.postMessage(
+        {
+          type: "@easyblocks-editor/form-change",
+          payload: {
+            key: richTextElementsConfigPath,
+            value: nextElements,
+            focussedField: getFocusedFieldsFromSlateSelection(
+              temporaryEditor,
+              path,
+              locale
+            ),
+          },
         },
-      });
+        "*"
+      );
 
       lastChangeReason.current = "paste";
     } else if (

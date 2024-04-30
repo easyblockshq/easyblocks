@@ -195,12 +195,15 @@ export function BlocksControls({
 
     const nextFocusedField = getNextFocusedField();
 
-    window.parent.postMessage({
-      type: "@easyblocks-editor/focus-field",
-      payload: {
-        target: nextFocusedField,
+    window.parent.postMessage(
+      {
+        type: "@easyblocks-editor/focus-field",
+        payload: {
+          target: nextFocusedField,
+        },
       },
-    });
+      "*"
+    );
 
     if (isMultipleSelection) {
       document.getSelection()?.removeAllRanges();
