@@ -915,6 +915,8 @@ const EditorContent = ({
       }
 
       if (event.data.type === "@easyblocks-editor/paste-items") {
+        console.log(focussedField);
+
         actions.pasteItems(event.data.payload.configs);
       }
 
@@ -1059,7 +1061,7 @@ const EditorContent = ({
     window.addEventListener("message", handleEditorEvents);
 
     return () => window.removeEventListener("message", handleEditorEvents);
-  }, []);
+  }, [focussedField]);
 
   const shopstoryCanvasIframe = useRef<HTMLIFrameElement | null>(null);
 

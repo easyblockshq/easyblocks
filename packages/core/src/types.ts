@@ -1,7 +1,7 @@
 import { ComponentType, ReactElement } from "react";
 import { PartialDeep } from "type-fest";
 import { Locale } from "./locales";
-import { InternalComponentDefinitions } from "./_internals";
+import { InternalComponentDefinitions } from "./compiler/types";
 
 export type ScalarOrCollection<T> = T | Array<T>;
 
