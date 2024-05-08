@@ -215,15 +215,6 @@ type SetFocussedFieldEvent = MessageEvent<
   >
 >;
 
-type SelectComponentEvent = MessageEvent<
-  EasyblocksEditorEventData<
-    "@easyblocks-editor/select-component",
-    {
-      target: string;
-    }
-  >
->;
-
 function itemMoved(
   payload: InferShopstoryEditorEventData<ItemMovedEvent>["payload"]
 ): InferShopstoryEditorEventData<ItemMovedEvent> {
