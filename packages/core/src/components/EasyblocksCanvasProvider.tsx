@@ -13,34 +13,21 @@ import {
 } from "../types";
 
 type EasyblocksCanvasState = {
-  meta: CompilationMetadata | null;
-  compiled: CompiledShopstoryComponentConfig | null;
-  externalData: FetchOutputResources | null;
-  formValues: EditorContextType["form"]["values"] | null;
-  definitions: EditorContextType["definitions"] | null;
+  meta: CompilationMetadata;
+  compiled: CompiledShopstoryComponentConfig;
+  externalData: FetchOutputResources;
+  formValues: EditorContextType["form"]["values"];
+  definitions: EditorContextType["definitions"];
   locale: EditorContextType["contextParams"]["locale"];
   locales: EditorContextType["locales"];
   isEditing: EditorContextType["isEditing"];
-  devices: EditorContextType["devices"] | null;
+  devices: EditorContextType["devices"];
   focussedField: EditorContextType["focussedField"];
 };
 
-const initialState: EasyblocksCanvasState = {
-  meta: null,
-  compiled: null,
-  externalData: null,
-  formValues: null,
-  definitions: null,
-  locale: "",
-  locales: [],
-  isEditing: false,
-  devices: null,
-  focussedField: [],
-};
-
-const EasyblocksCanvasContext = createContext<
-  EasyblocksCanvasState | undefined
->(undefined);
+const EasyblocksCanvasContext = createContext<EasyblocksCanvasState | null>(
+  null
+);
 
 type EasyblocksCanvasProviderProps = {
   children: ReactNode;
@@ -49,7 +36,7 @@ type EasyblocksCanvasProviderProps = {
 const EasyblocksCanvasProvider: React.FC<EasyblocksCanvasProviderProps> = ({
   children,
 }) => {
-  const [state, setState] = useState<EasyblocksCanvasState>(initialState);
+  const [state, setState] = useState<EasyblocksCanvasState | null>(null);
 
   useEffect(() => {
     const handler = (event: any) => {
@@ -72,13 +59,7 @@ const EasyblocksCanvasProvider: React.FC<EasyblocksCanvasProviderProps> = ({
 };
 
 const useEasyblocksCanvasContext = () => {
-  const context = useContext(EasyblocksCanvasContext);
-  if (!context) {
-    throw new Error(
-      "useEasyblocksCanvasContext must be used within a EasyblocksCanvasProvider"
-    );
-  }
-  return context;
+  return useContext(EasyblocksCanvasContext);
 };
 
 export { EasyblocksCanvasProvider, useEasyblocksCanvasContext };

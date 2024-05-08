@@ -121,7 +121,13 @@ type TypePlaceholderComponentBuilderProps = {
 export default function TypePlaceholder(
   props: TypePlaceholderComponentBuilderProps
 ) {
-  const { formValues } = useEasyblocksCanvasContext();
+  const canvasContext = useEasyblocksCanvasContext();
+
+  if (!canvasContext) {
+    return null;
+  }
+
+  const { formValues } = canvasContext;
   const meta = useEasyblocksMetadata();
   const dndContext = useDndContext();
 

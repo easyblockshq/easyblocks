@@ -17,7 +17,12 @@ function TextEditor(props: TextProps) {
     __easyblocks: { path, runtime },
   } = props;
 
-  const { formValues } = useEasyblocksCanvasContext();
+  const canvasContext = useEasyblocksCanvasContext();
+
+  if (!canvasContext) {
+    return null;
+  }
+  const { formValues } = canvasContext;
 
   const valuePath = `${path}.value`;
   const configValue = dotNotationGet(formValues, valuePath);

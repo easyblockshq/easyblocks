@@ -75,20 +75,16 @@ export function EasyblocksCanvas({
     );
   }, []);
 
-  const { meta, compiled, externalData, formValues, definitions } =
-    useEasyblocksCanvasContext();
+  const canvasContext = useEasyblocksCanvasContext();
 
-  const shouldNotRender =
-    !enabled ||
-    !meta ||
-    !compiled ||
-    !externalData ||
-    !formValues ||
-    !definitions;
+  const shouldNotRender = !enabled || !canvasContext;
 
   if (shouldNotRender) {
     return <div>Loading...</div>;
   }
+
+  const { meta, compiled, externalData, formValues, definitions } =
+    canvasContext;
 
   const sortableItems = getSortableItems(formValues, definitions);
 

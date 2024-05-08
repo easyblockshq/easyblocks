@@ -18,7 +18,14 @@ export function InlineTextarea({
 }: InlineTextProps) {
   const [isEnabled, setIsEnabled] = useState(false);
   const textAreaRef = useRef<ElementRef<"textarea">>(null);
-  const { formValues, locale, locales } = useEasyblocksCanvasContext();
+
+  const canvasContext = useEasyblocksCanvasContext();
+
+  if (!canvasContext) {
+    return null;
+  }
+
+  const { formValues, locale, locales } = canvasContext;
 
   const valuePath = `${path}.value`;
   const value = dotNotationGet(formValues, valuePath);

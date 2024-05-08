@@ -72,8 +72,15 @@ interface RichTextProps extends InternalNoCodeComponentProps {
 
 function RichTextEditor(props: RichTextProps) {
   // const { editorContext } = (window.parent as any).editorWindowAPI;
+
+  const canvasContext = useEasyblocksCanvasContext();
+
+  if (!canvasContext) {
+    return null;
+  }
+
   const { formValues, locales, locale, focussedField, definitions } =
-    useEasyblocksCanvasContext();
+    canvasContext;
 
   // const {
   //   actions,

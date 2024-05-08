@@ -110,7 +110,13 @@ function SelectionFrameController({
     },
   });
 
-  const { focussedField } = useEasyblocksCanvasContext();
+  const canvasContext = useEasyblocksCanvasContext();
+
+  if (!canvasContext) {
+    return null;
+  }
+
+  const { focussedField } = canvasContext;
 
   useEffect(() => {
     return () => {

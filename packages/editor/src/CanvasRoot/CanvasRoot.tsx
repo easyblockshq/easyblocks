@@ -7,7 +7,13 @@ type CanvasRootProps = {
 };
 
 function CanvasRoot(props: CanvasRootProps) {
-  const { isEditing } = useEasyblocksCanvasContext();
+  const canvasContext = useEasyblocksCanvasContext();
+
+  if (!canvasContext) {
+    return null;
+  }
+
+  const { isEditing } = canvasContext;
 
   useCanvasGlobalKeyboardShortcuts();
 

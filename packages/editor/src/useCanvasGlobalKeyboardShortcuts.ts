@@ -67,8 +67,13 @@ const actions = {
 };
 
 function useCanvasGlobalKeyboardShortcuts() {
-  const { formValues, definitions, focussedField } =
-    useEasyblocksCanvasContext();
+  const canvasContext = useEasyblocksCanvasContext();
+
+  if (!canvasContext) {
+    return null;
+  }
+
+  const { formValues, definitions, focussedField } = canvasContext;
 
   useEffect(() => {
     function handleKeydown(event: KeyboardEvent): void {

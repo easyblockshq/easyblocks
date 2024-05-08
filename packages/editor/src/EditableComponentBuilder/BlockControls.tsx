@@ -44,7 +44,13 @@ export function BlocksControls({
   index,
   length,
 }: BlocksControlsProps) {
-  const { focussedField, formValues } = useEasyblocksCanvasContext();
+  const canvasContext = useEasyblocksCanvasContext();
+
+  if (!canvasContext) {
+    return null;
+  }
+
+  const { focussedField, formValues } = canvasContext;
 
   const meta = useEasyblocksMetadata();
   const dndContext = useDndContext();
