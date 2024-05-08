@@ -17,7 +17,7 @@ function CanvasRoot(props: CanvasRootProps) {
         if (isEditing) {
           window.parent.postMessage(
             {
-              type: "@easyblocks-editor/focus-field",
+              type: "@easyblocks-editor/focus",
               payload: {
                 target: [],
               },

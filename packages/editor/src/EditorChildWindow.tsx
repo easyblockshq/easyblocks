@@ -105,7 +105,7 @@ export function EasyblocksCanvas({
             ).path;
             window.parent.postMessage(
               {
-                type: "@easyblocks-editor/focus-field",
+                type: "@easyblocks-editor/focus",
                 payload: {
                   target: [],
                 },
@@ -124,7 +124,7 @@ export function EasyblocksCanvas({
                 // If the dragged item is dropped on itself, we want to refocus the dragged item.
                 window.parent.postMessage(
                   {
-                    type: "@easyblocks-editor/focus-field",
+                    type: "@easyblocks-editor/focus",
                     payload: {
                       target: activeData.path,
                     },
@@ -148,7 +148,7 @@ export function EasyblocksCanvas({
               // If there was no drop target, we want to refocus the dragged item.
               window.parent.postMessage(
                 {
-                  type: "@easyblocks-editor/focus-field",
+                  type: "@easyblocks-editor/focus",
                   payload: {
                     target: activeData.path,
                   },
@@ -162,7 +162,7 @@ export function EasyblocksCanvas({
             // If the drag was canceled, we want to refocus dragged item.
             window.parent.postMessage(
               {
-                type: "@easyblocks-editor/focus-field",
+                type: "@easyblocks-editor/focus",
                 payload: {
                   target: dragDataSchema.parse(event.active.data.current).path,
                 },

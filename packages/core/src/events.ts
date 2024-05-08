@@ -208,7 +208,7 @@ type RedoEvent = MessageEvent<
 
 type SetFocussedFieldEvent = MessageEvent<
   EasyblocksEditorEventData<
-    "@easyblocks-editor/focus-field",
+    "@easyblocks-editor/focus",
     {
       target: Array<string> | string;
     }

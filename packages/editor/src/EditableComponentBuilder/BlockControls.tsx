@@ -46,10 +46,6 @@ export function BlocksControls({
 }: BlocksControlsProps) {
   const { focussedField, formValues } = useEasyblocksCanvasContext();
 
-  if (!focussedField) {
-    return;
-  }
-
   const meta = useEasyblocksMetadata();
   const dndContext = useDndContext();
 
@@ -197,7 +193,7 @@ export function BlocksControls({
 
     window.parent.postMessage(
       {
-        type: "@easyblocks-editor/focus-field",
+        type: "@easyblocks-editor/focus",
         payload: {
           target: nextFocusedField,
         },

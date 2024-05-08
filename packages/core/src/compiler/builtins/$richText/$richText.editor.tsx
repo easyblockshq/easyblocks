@@ -87,7 +87,7 @@ function RichTextEditor(props: RichTextProps) {
   const setFocussedField = (field: Array<string> | string) => {
     window.parent.postMessage(
       {
-        type: "@easyblocks-editor/focus-field",
+        type: "@easyblocks-editor/focus",
         payload: {
           target: field,
         },

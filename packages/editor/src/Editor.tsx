@@ -949,7 +949,7 @@ const EditorContent = ({
         }
       }
 
-      if (event.data.type === "@easyblocks-editor/focus-field") {
+      if (event.data.type === "@easyblocks-editor/focus") {
         handleSetFocussedField(event.data.payload.target);
       }
 
