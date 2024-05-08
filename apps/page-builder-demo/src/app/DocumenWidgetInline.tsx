@@ -33,21 +33,7 @@ export const DocumentWidgetInline: React.FC<{
       }
     }
 
-    function handleMessageParentWindow(event: MessageEvent) {
-      if (event.data?.type?.includes("@easyblocks-editor")) {
-        editorIframeNode?.contentWindow?.postMessage(
-          {
-            type: event.data.type,
-            payload: event.data.payload,
-          },
-          "*"
-        );
-      }
-    }
-
     editorIframeNode?.contentWindow?.addEventListener("message", handleMessage);
-
-    window.addEventListener("message", handleMessageParentWindow);
 
     return () => {
       editorIframeNode?.contentWindow?.removeEventListener(
