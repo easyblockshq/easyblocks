@@ -2,7 +2,7 @@ import { deepClone, uniqueId } from "@easyblocks/utils";
 import { NoCodeComponentEntry } from "../types";
 import { configTraverse } from "./configTraverse";
 import { traverseComponents } from "./traverseComponents";
-import { AnyContextWithDefinitions } from "./types";
+import { AnyContextWithDefinitions } from "../types";
 
 export function duplicateConfig<
   ConfigType extends NoCodeComponentEntry = NoCodeComponentEntry

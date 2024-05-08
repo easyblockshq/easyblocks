@@ -1,7 +1,7 @@
 import { NoCodeComponentEntry } from "../types";
 import { findComponentDefinition } from "./findComponentDefinition";
 import { isSchemaPropComponent } from "./schema";
-import { AnyContextWithDefinitions } from "./types";
+import { AnyContextWithDefinitions } from "../types";
 
 type TraverseComponentsCallback = (arg: {
   path: string;

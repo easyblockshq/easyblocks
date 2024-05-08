@@ -1,6 +1,7 @@
 import { ComponentType, ReactElement } from "react";
 import { PartialDeep } from "type-fest";
 import { Locale } from "./locales";
+import { InternalComponentDefinitions } from "./_internals";
 
 export type ScalarOrCollection<T> = T | Array<T>;
 
@@ -996,4 +997,8 @@ export type TokenValue<T = any> = {
   value: T;
   tokenId?: string;
   widgetId?: string;
+};
+
+export type AnyContextWithDefinitions = {
+  definitions: InternalComponentDefinitions;
 };

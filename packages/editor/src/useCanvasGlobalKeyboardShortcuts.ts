@@ -5,7 +5,7 @@ import {
 } from "@easyblocks/core/_internals";
 import { dotNotationGet, preOrderPathComparator } from "@easyblocks/utils";
 import { useEffect } from "react";
-import { AnyContextWithDefinitions } from "../../core/dist/types/compiler/types";
+import { AnyContextWithDefinitions } from "@easyblocks/core/";
 
 const GLOBAL_SHORTCUTS_KEYS = [
   "Delete",

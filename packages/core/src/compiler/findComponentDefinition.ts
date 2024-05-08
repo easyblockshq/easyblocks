@@ -1,11 +1,6 @@
 import { toArray } from "@easyblocks/utils";
-import { NoCodeComponentEntry } from "../types";
-import {
-  InternalComponentDefinition,
-  InternalComponentDefinitions,
-} from "./types";
-
-type AnyContextWithDefinitions = { definitions: InternalComponentDefinitions };
+import { NoCodeComponentEntry, AnyContextWithDefinitions } from "../types";
+import { InternalComponentDefinition } from "./types";
 
 function allDefs(
   context?: AnyContextWithDefinitions

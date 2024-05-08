@@ -168,7 +168,3 @@ export type EditorContextType = CompilationContextType & {
   actions: EditorActions;
   templates?: Template[];
 };
-
-export type AnyContextWithDefinitions = {
-  definitions: InternalComponentDefinitions;
-};
