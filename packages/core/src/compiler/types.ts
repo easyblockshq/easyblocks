@@ -6,6 +6,7 @@ import {
   ContextParams,
   Devices,
   EditingInfoBase,
+  EditorActions,
   ExternalSchemaProp,
   ExternalTypeDefinition,
   FieldPortal,
@@ -132,31 +133,6 @@ export type InternalComponentDefinition = InternalRenderableComponentDefinition;
 
 export type InternalComponentDefinitions = {
   components: InternalRenderableComponentDefinition<string, any, any>[];
-};
-
-export type EditorActions = {
-  notify: (message: string) => void;
-  openComponentPicker: (config: {
-    path: string;
-    componentTypes?: string[];
-  }) => Promise<NoCodeComponentEntry | undefined>;
-  moveItems: (
-    fieldNames: Array<string>,
-    direction: "top" | "right" | "bottom" | "left"
-  ) => void;
-  replaceItems: (paths: Array<string>, newConfig: NoCodeComponentEntry) => void;
-  removeItems: (fieldNames: Array<string>) => void;
-  insertItem: (insertItemProps: {
-    name: string;
-    index: number;
-    block: NoCodeComponentEntry;
-  }) => void;
-  duplicateItems: (fieldNames: Array<string>) => void;
-  pasteItems: (items: Array<NoCodeComponentEntry>) => void;
-  runChange: <Callback extends () => Array<string> | void>(
-    configChangeCallback: Callback
-  ) => void;
-  logSelectedItems: () => void;
 };
 
 export type EditorContextType = CompilationContextType & {
