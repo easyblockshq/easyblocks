@@ -9,5 +9,10 @@
     "declarationDir": "./dist"
   },
   "include": ["src/", "typings/"],
-  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx", "src/utils/tests/**/*"]
+  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx", "src/utils/tests/**/*"],
+  "ts-node": {
+    "moduleTypes": {
+      "jest.config.ts": "cjs"
+    }
+  }
 }
