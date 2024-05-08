@@ -33,7 +33,7 @@ function getRichTextComponentConfigFragment(
 
     const { path, range } = parseFocusedRichTextPartConfigPath(focusedField);
 
-    const newTextPartConfig = duplicateConfig(textPartConfig, definitions);
+    const newTextPartConfig = duplicateConfig(textPartConfig, { definitions });
 
     if (range) {
       newTextPartConfig.value = textPartConfig.value.slice(...range);

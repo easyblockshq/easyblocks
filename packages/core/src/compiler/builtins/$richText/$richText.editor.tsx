@@ -803,9 +803,8 @@ function RichTextEditor(props: RichTextProps) {
       event.preventDefault();
 
       const nextSlateValue = convertRichTextElementsToEditorValue(
-        duplicateConfig(selectedRichTextComponentConfig, definitions).elements[
-          locale
-        ]
+        duplicateConfig(selectedRichTextComponentConfig, { definitions })
+          .elements[locale]
       );
 
       const temporaryEditor = createTemporaryEditor(editor);

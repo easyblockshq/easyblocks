@@ -100,7 +100,9 @@ function useCanvasGlobalKeyboardShortcuts() {
       if (!canHandleCopyPaste(focussedField, event)) {
         return;
       }
-      const configs = getConfigsToCopy(focussedField, formValues, definitions);
+      const configs = getConfigsToCopy(focussedField, formValues, {
+        definitions,
+      });
 
       event.preventDefault();
       event.clipboardData?.setData(
@@ -114,7 +116,9 @@ function useCanvasGlobalKeyboardShortcuts() {
         return;
       }
 
-      const configs = getConfigsToCopy(focussedField, formValues, definitions);
+      const configs = getConfigsToCopy(focussedField, formValues, {
+        definitions,
+      });
 
       event.preventDefault();
       event.clipboardData?.setData(
@@ -180,12 +184,12 @@ function isTargetHtmlElement(
 function getConfigsToCopy(
   paths: string[],
   formValues: any,
-  definitions: AnyContextWithDefinitions
+  context: AnyContextWithDefinitions
 ) {
   const sortedPaths = [...paths].sort(preOrderPathComparator("ascending"));
   return sortedPaths.map((path) => {
     const config = dotNotationGet(formValues, path);
-    return duplicateConfig(config, definitions);
+    return duplicateConfig(config, context);
   });
 }
 
