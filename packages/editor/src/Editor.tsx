@@ -35,12 +35,7 @@ import {
   traverseComponents,
 } from "@easyblocks/core/_internals";
 import { Colors, Fonts, useToaster } from "@easyblocks/design-system";
-import {
-  assertDefined,
-  dotNotationGet,
-  uniqueId,
-  useForceRerender,
-} from "@easyblocks/utils";
+import { dotNotationGet, uniqueId, useForceRerender } from "@easyblocks/utils";
 import throttle from "lodash.throttle";
 import React, {
   ComponentType,
@@ -516,7 +511,7 @@ function calculateViewportRelatedStuff(
   // Calculate width, height and scale
   let width, height: number;
   let scaleFactor: number | null = null;
-  let offsetY: number = 0;
+  let offsetY = 0;
 
   if (!availableSize) {
     // lack of available size (first render) should wait until size is available to perform calculations
@@ -859,6 +854,21 @@ const EditorContent = ({
   window.editorWindowAPI.meta = meta;
   window.editorWindowAPI.compiled = renderableContent;
   window.editorWindowAPI.externalData = externalData;
+  window.editorWindowAPI.onUpdateCallbacks =
+    window.editorWindowAPI.onUpdateCallbacks || [];
+
+  window.editorWindowAPI.subscribe = (callback) => {
+    window.editorWindowAPI.onUpdateCallbacks &&
+      window.editorWindowAPI.onUpdateCallbacks.push(callback);
+  };
+
+  window.editorWindowAPI.unsubscribe = (callback) => {
+    if (!window.editorWindowAPI.onUpdateCallbacks) return;
+    const index = window.editorWindowAPI.onUpdateCallbacks.indexOf(callback);
+    if (index !== -1) {
+      window.editorWindowAPI.onUpdateCallbacks.splice(index, 1);
+    }
+  };
 
   useEffect(() => {
     push({
@@ -878,6 +888,49 @@ const EditorContent = ({
     currentViewport,
     externalData,
   ]);
+
+  // Watch each dependency individually so that we can incrementally update the useEasyblocksEditor hook
+  useEffect(() => {
+    window.editorWindowAPI.onUpdateCallbacks &&
+      window.editorWindowAPI.onUpdateCallbacks.forEach((callback) =>
+        callback("renderableContent")
+      );
+  }, [renderableContent]);
+
+  useEffect(() => {
+    window.editorWindowAPI.onUpdateCallbacks &&
+      window.editorWindowAPI.onUpdateCallbacks.forEach((callback) =>
+        callback("focussedField")
+      );
+  }, [focussedField]);
+
+  useEffect(() => {
+    window.editorWindowAPI.onUpdateCallbacks &&
+      window.editorWindowAPI.onUpdateCallbacks.forEach((callback) =>
+        callback("isEditing")
+      );
+  }, [isEditing]);
+
+  useEffect(() => {
+    window.editorWindowAPI.onUpdateCallbacks &&
+      window.editorWindowAPI.onUpdateCallbacks.forEach((callback) =>
+        callback("externalData")
+      );
+  }, [externalData]);
+
+  useEffect(() => {
+    window.editorWindowAPI.onUpdateCallbacks &&
+      window.editorWindowAPI.onUpdateCallbacks.forEach((callback) =>
+        callback("currentViewport")
+      );
+  }, [currentViewport]);
+
+  useEffect(() => {
+    window.editorWindowAPI.onUpdateCallbacks &&
+      window.editorWindowAPI.onUpdateCallbacks.forEach((callback) =>
+        callback("meta")
+      );
+  }, [meta]);
 
   useEffect(() => {
     function handleEditorEvents(

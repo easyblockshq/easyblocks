@@ -350,8 +350,29 @@ export function resop2(
   const scalarOutputs: Record<string, NoCodeComponentStylesFunctionResult> = {};
 
   // run callback for scalar configs
+
   devices.forEach((device) => {
     scalarOutputs[device.id] = callback(scalarInputs[device.id], device.id);
+
+    // add styles for twProps - this is so we can optionally
+    // leave the styles object empty in the schema
+    if (scalarOutputs[device.id].props?.tw) {
+      if (!scalarOutputs[device.id].hasOwnProperty("styled")) {
+        scalarOutputs[device.id].styled = {};
+      }
+      Object.entries(scalarOutputs[device.id].props?.tw).forEach(
+        ([name, value]) => {
+          // don't overwrite the style if it exists already
+          if (!scalarOutputs[device.id].styled?.hasOwnProperty(name)) {
+            if (typeof value === "string" && value !== null) {
+              scalarOutputs[device.id].styled![name] = {};
+            } else if (Array.isArray(value)) {
+              scalarOutputs[device.id].styled![name] = value.map((v) => ({}));
+            }
+          }
+        }
+      );
+    }
   });
 
   /**

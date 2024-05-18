@@ -447,6 +447,30 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
     isSelected: __isSelected,
   };
 
+  // move the __className property into the className prop for tw styled components
+  // this is used by tailwind components
+  Object.keys(styled).forEach((key) => {
+    if (Array.isArray(styled[key])) {
+      const newArray = styled[key].map((element: any) => {
+        if (element?.props?.__compiled?.__className) {
+          const className = element.props.__compiled.__className;
+          return React.cloneElement(element, {
+            className: className,
+          });
+        }
+        return element;
+      });
+      styled[key] = newArray;
+    } else {
+      if (styled[key]?.props?.__compiled?.__className) {
+        const className = styled[key].props.__compiled.__className;
+        styled[key] = React.cloneElement(styled[key], {
+          className: className,
+        });
+      }
+    }
+  });
+
   const componentProps = {
     ...restPassedProps,
     ...mapExternalProps(
