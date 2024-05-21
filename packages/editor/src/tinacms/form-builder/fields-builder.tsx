@@ -291,7 +291,7 @@ const FieldsSubgroupLabel = styled.div`
   display: flex;
   align-items: center;
 
-  padding: 10px 16px 5px 16px;
+  padding: 10px 16px 8px 16px;
 
   ${Fonts.label2};
   color: #222222;
