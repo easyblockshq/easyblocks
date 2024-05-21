@@ -21,7 +21,6 @@
     "@radix-ui/react-toggle-group": "^1.0.4",
     "@radix-ui/react-tooltip": "^1.0.7",
     "lodash": "^4.17.21",
-    "react": "^18.2.0",
     "react-hot-toast": "^2.4.0",
     "react-modal": "^3.16.1",
     "react-select": "^5.7.0",
