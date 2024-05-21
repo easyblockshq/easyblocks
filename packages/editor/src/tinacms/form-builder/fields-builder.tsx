@@ -281,7 +281,7 @@ const FieldsGroupLabel = styled.div`
   display: flex;
   align-items: center;
 
-  padding: 20px 16px 5px 16px;
+  padding: 20px 16px 10px 16px;
 
   ${Fonts.label};
   color: #000;
