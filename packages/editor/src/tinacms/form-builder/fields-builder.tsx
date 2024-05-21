@@ -227,7 +227,7 @@ export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
                   );
             return fieldsInSubGroup.map((field, index, fields) => (
               <>
-                {subGroupName != "" && (
+                {subGroupName != "" && index === 0 && (
                   <FieldsSubgroupLabel>{subGroupName}</FieldsSubgroupLabel>
                 )}
                 <div
