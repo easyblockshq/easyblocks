@@ -568,6 +568,18 @@ function calculateViewportRelatedStuff(
   };
 }
 
+function useRerenderOnEditingStateChange({
+  isEditing,
+}: {
+  isEditing: boolean;
+}) {
+  const { forceRerender } = useForceRerender();
+
+  useEffect(() => {
+    forceRerender();
+  }, [forceRerender, isEditing]);
+}
+
 function useRerenderOnResize() {
   const { forceRerender } = useForceRerender();
 
@@ -611,7 +623,10 @@ const EditorContent = ({
     availableSize
   );
 
+  const [isEditing, setEditing] = useState(true);
+
   useRerenderOnResize(); // re-render on resize (recalculates viewport size, active breakpoint for fit-screen etc);
+  useRerenderOnEditingStateChange({ isEditing }); // re-render on editing state change - this is so that the viewport of the iframe is reacalculated so it doesn't overlap or hide behind
 
   const compilationCache = useRef(new CompilationCache());
   const [isEditing, setEditing] = useState(true);
