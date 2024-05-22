@@ -22,7 +22,7 @@ Easyblocks explained in less than 10 minutes:
 
 ### Main Features
 
-- **Out-of-the-box visual building logic**: drag\&drop, nested selections, inline rich text, multi-selection, styling fields (responsive), design tokens, history management, localisation, templates, dynamic data
+- **Out-of-the-box visual building logic**: drag\&drop, nested selections, inline rich text, multi-selection, styling fields (responsive), design tokens, history management, localisation, templates, dynamic data.
 - **Simple for end-users.** Not based on HTML/CSS but on [No-Code Components](./#no-code-components).
 - **Bring your own components and templates**. You decide what [components](./#no-code-components) are available, their variants, styling options, simplicity levels, children components, constraints, etc.
 - [**Bring your own data**](./#external-and-dynamic-data)**.** Connect any data source, fully control data fetching and data picker widget. The data can be dynamic. For example, you can connect texts or images from data sources in the editor.
