@@ -633,6 +633,7 @@ const EditorContent = ({
   useRerenderOnResize(); // re-render on resize (recalculates viewport size, active breakpoint for fit-screen etc);
 
   const compilationCache = useRef(new CompilationCache());
+  const [isEditing, setEditing] = useState(true);
   const [componentPickerData, setComponentPickerData] = useState<
     | {
         promiseResolve: (config: NoCodeComponentEntry | undefined) => void;
