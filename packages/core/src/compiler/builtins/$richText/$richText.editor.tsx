@@ -74,8 +74,14 @@ function RichTextEditor(props: RichTextProps) {
 
   const canvasContext = useEasyblocksCanvasContext()!;
 
-  const { formValues, locales, locale, focussedField, definitions } =
-    canvasContext;
+  const {
+    formValues,
+    locales,
+    locale,
+    focussedField,
+    definitions,
+    components,
+  } = canvasContext;
 
   // const {
   //   actions,
@@ -472,7 +478,7 @@ function RichTextEditor(props: RichTextProps) {
             <ComponentBuilder
               compiled={TextPart.components.TextWrapper[0]}
               path={path}
-              components={definitions.components}
+              components={components}
               passedProps={{
                 __isSelected:
                   leaf.isHighlighted && leaf.highlightType === "textWrapper",
