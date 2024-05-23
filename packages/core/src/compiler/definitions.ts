@@ -732,7 +732,7 @@ export const schemaPropDefinitions: SchemaPropDefinitionProviders = {
             ([, v]) => v.isDefault
           );
 
-          let defaultValue = (() => {
+          const defaultValue = (() => {
             if (schemaProp.defaultValue) {
               return schemaProp.defaultValue;
             } else if (defaultThemeValueEntry) {

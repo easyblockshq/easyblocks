@@ -5,7 +5,8 @@
   "main": "src/index.ts",
   "sideEffects": false,
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "check": "tsc && eslint --quiet src/"
   },
   "dependencies": {
     "react": "^18.2.0"
