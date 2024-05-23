@@ -163,7 +163,6 @@ function RichTextEditor(props: RichTextProps) {
    */
   const [isEnabled, setIsEnabled] = useState(false);
   const previousRichTextComponentConfig = useRef<RichTextComponentConfig>();
-  const currentSelectionRef = useRef<BaseRange | null>(null);
   const previousCompiledRichText = useRef<RichTextProps>();
 
   const stringifiedRichTextConfig = JSON.stringify(richTextConfig);
@@ -225,9 +224,8 @@ function RichTextEditor(props: RichTextProps) {
     // and want to update its color from the sidebar.
     function handleRichTextBlur() {
       if (!isRichTextActive && isEnabled) {
-        // editor.children = deepClone(editorValue);
         setIsEnabled(false);
-        currentSelectionRef.current = null;
+        lastChangeReason.current = "external";
       }
 
       if (!editor.selection) {
@@ -303,8 +301,6 @@ function RichTextEditor(props: RichTextProps) {
         if (!updateSelectionResult) {
           return;
         }
-
-        currentSelectionRef.current = temporaryEditor.selection;
 
         const newRichTextElement: RichTextComponentConfig = {
           ...richTextConfig,
@@ -554,17 +550,6 @@ function RichTextEditor(props: RichTextProps) {
 
   function handleEditableChange(value: Array<Descendant>): void {
     if (!isEnabled) {
-      return;
-    }
-
-    // Editor's value can be changed from outside ex. sidebar or history undo/redo. If the last reason for change
-    // was "external", we skip this change. In case we would like to start typing immediately after undo/redo we
-    // set last change reason to `text-input`.
-    if (
-      lastChangeReason.current === "external" ||
-      lastChangeReason.current === "paste"
-    ) {
-      lastChangeReason.current = "text-input";
       return;
     }
 
