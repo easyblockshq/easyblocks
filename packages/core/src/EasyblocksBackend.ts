@@ -1,4 +1,3 @@
-import { getAppUrlRoot } from "./getAppRootUrl";
 import {
   Backend,
   NoCodeComponentEntry,
@@ -84,9 +83,11 @@ export class EasyblocksBackend implements Backend {
   };
 
   private accessToken: string;
+  private rootUrl: string;
 
-  constructor(args: { accessToken: string }) {
+  constructor(args: { accessToken: string; rootUrl?: string }) {
     this.accessToken = args.accessToken;
+    this.rootUrl = args.rootUrl ?? "https://app.easyblocks.io";
   }
 
   private async init() {
@@ -114,7 +115,7 @@ export class EasyblocksBackend implements Backend {
   }
 
   private async request(path: string, options: ApiRequestOptions) {
-    const apiRequestUrl = new URL(`${getAppUrlRoot()}/api${path}`);
+    const apiRequestUrl = new URL(`${this.rootUrl}/api${path}`);
 
     if (options.searchParams && Object.keys(options.searchParams).length > 0) {
       for (const [key, value] of Object.entries(options.searchParams)) {

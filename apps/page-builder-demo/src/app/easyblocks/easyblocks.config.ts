@@ -34,6 +34,7 @@ if (!process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN) {
 export const easyblocksConfig: Config = {
   backend: new EasyblocksBackend({
     accessToken: process.env.NEXT_PUBLIC_EASYBLOCKS_ACCESS_TOKEN,
+    rootUrl: process.env.NEXT_PUBLIC_EASYBLOCKS_BACKEND_ROOT_URL, // this line of code is here only for debugging purposes, you almost surely don't need to set NEXT_PUBLIC_EASYBLOCKS_BACKEND_ROOT_URL env variable and should keep rootUrl as undefined
   }),
   locales: [
     {
