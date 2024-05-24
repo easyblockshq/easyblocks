@@ -460,7 +460,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
     __easyblocks: easyblocksProp,
   };
 
-  return <Component {...componentProps} />;
+  return <Component key={compiled._id} {...componentProps} />;
 }
 
 function getComponent(
