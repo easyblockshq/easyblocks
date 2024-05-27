@@ -80,6 +80,7 @@ import { useEditorGlobalKeyboardShortcuts } from "./useEditorGlobalKeyboardShort
 import { useEditorHistory } from "./useEditorHistory";
 import { checkLocalesCorrectness } from "./utils/locales/checkLocalesCorrectness";
 import { removeLocalizedFlag } from "./utils/locales/removeLocalizedFlag";
+import { ZodNullDef } from "zod";
 
 const ContentContainer = styled.div`
   position: relative;
@@ -563,20 +564,28 @@ function calculateViewportRelatedStuff(
   };
 }
 
-function useRerenderOnResize() {
+function useRerenderOnIframeResize(iframe?: HTMLIFrameElement | null) {
   const { forceRerender } = useForceRerender();
 
-  useEffect(() => {
-    const listener = throttle(() => {
-      forceRerender();
-    }, 100);
+  const resizeObserver = useRef(
+    new ResizeObserver(
+      throttle(() => {
+        forceRerender();
+      }, 100)
+    )
+  );
 
-    window.addEventListener("resize", listener);
+  useEffect(() => {
+    if (!iframe) {
+      return;
+    }
+
+    resizeObserver.current.observe(iframe);
 
     return () => {
-      window.removeEventListener("resize", listener);
+      resizeObserver.current.unobserve(iframe);
     };
-  });
+  }, [iframe]);
 }
 
 const EditorContent = ({
@@ -591,7 +600,7 @@ const EditorContent = ({
     compilationContext.mainBreakpointIndex
   ); // "{ breakpoint }" or "fit-screen"
 
-  const iframeContainerRef = useRef<HTMLDivElement>(null);
+  const iframeContainerRef = useRef<HTMLIFrameElement>(null);
   const availableSize = iframeContainerRef.current
     ? {
         width: iframeContainerRef.current.clientWidth,
@@ -606,7 +615,7 @@ const EditorContent = ({
     availableSize
   );
 
-  useRerenderOnResize(); // re-render on resize (recalculates viewport size, active breakpoint for fit-screen etc);
+  useRerenderOnIframeResize(iframeContainerRef.current); // re-render on resize (recalculates viewport size, active breakpoint for fit-screen etc);
 
   const compilationCache = useRef(new CompilationCache());
   const [isEditing, setEditing] = useState(true);
