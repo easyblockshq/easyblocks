@@ -1,11 +1,8 @@
 import { Colors } from "@easyblocks/design-system";
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
-import { ExtraKeys, useWindowKeyDown } from "./useWindowKeyDown";
 
 interface EditorIframeWrapperProps {
-  onEditorHistoryRedo: () => void;
-  onEditorHistoryUndo: () => void;
   width: number;
   height: number;
   transform: string;
@@ -13,8 +10,6 @@ interface EditorIframeWrapperProps {
 }
 
 function EditorIframe({
-  onEditorHistoryRedo,
-  onEditorHistoryUndo,
   width,
   height,
   transform,
@@ -25,26 +20,6 @@ function EditorIframe({
   const handleIframeLoaded = () => {
     setIframeReady(true);
   };
-
-  useWindowKeyDown("z", onEditorHistoryUndo, {
-    extraKeys: [ExtraKeys.META_KEY],
-    isDisabled: !isIframeReady,
-  });
-
-  useWindowKeyDown("z", onEditorHistoryRedo, {
-    extraKeys: [ExtraKeys.META_KEY, ExtraKeys.SHIFT_KEY],
-    isDisabled: !isIframeReady,
-  });
-
-  useWindowKeyDown("z", onEditorHistoryUndo, {
-    extraKeys: [ExtraKeys.CTRL_KEY],
-    isDisabled: !isIframeReady,
-  });
-
-  useWindowKeyDown("y", onEditorHistoryRedo, {
-    extraKeys: [ExtraKeys.CTRL_KEY],
-    isDisabled: !isIframeReady,
-  });
 
   return (
     <IframeContainer ref={containerRef}>

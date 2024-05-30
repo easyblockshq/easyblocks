@@ -43,12 +43,7 @@ export const useWindowKeyDown = (
 
   useEffect(() => {
     if (!isDisabled) {
-      document
-        .getElementsByTagName("iframe")![0]
-        .contentWindow!.window.document.body.addEventListener(
-          "keydown",
-          downHandler
-        );
+      document.body.addEventListener("keydown", downHandler);
 
       window.addEventListener("keydown", downHandler);
       return () => {

@@ -6,6 +6,7 @@ import {
 import { dotNotationGet, preOrderPathComparator } from "@easyblocks/utils";
 import { useEffect } from "react";
 import { AnyContextWithDefinitions } from "@easyblocks/core/";
+import { ExtraKeys, useWindowKeyDown } from "./useWindowKeyDown";
 
 const GLOBAL_SHORTCUTS_KEYS = [
   "Delete",
@@ -21,6 +22,24 @@ const GLOBAL_SHORTCUTS_KEYS = [
 const DATA_TRANSFER_FORMAT = "text/x-shopstory";
 
 const actions = {
+  undo: () => {
+    window.parent.postMessage(
+      {
+        type: "@easyblocks-editor/undo",
+        payload: {},
+      },
+      "*"
+    );
+  },
+  redo: () => {
+    window.parent.postMessage(
+      {
+        type: "@easyblocks-editor/redo",
+        payload: {},
+      },
+      "*"
+    );
+  },
   removeItems: (paths: string[]) => {
     window.parent.postMessage(
       {
@@ -74,6 +93,26 @@ function useCanvasGlobalKeyboardShortcuts() {
   }
 
   const { formValues, definitions, focussedField } = canvasContext;
+
+  useWindowKeyDown("z", actions.undo, {
+    extraKeys: [ExtraKeys.META_KEY],
+    isDisabled: false,
+  });
+
+  useWindowKeyDown("z", actions.redo, {
+    extraKeys: [ExtraKeys.META_KEY, ExtraKeys.SHIFT_KEY],
+    isDisabled: false,
+  });
+
+  useWindowKeyDown("z", actions.undo, {
+    extraKeys: [ExtraKeys.CTRL_KEY],
+    isDisabled: false,
+  });
+
+  useWindowKeyDown("y", actions.redo, {
+    extraKeys: [ExtraKeys.CTRL_KEY],
+    isDisabled: false,
+  });
 
   useEffect(() => {
     function handleKeydown(event: KeyboardEvent): void {
