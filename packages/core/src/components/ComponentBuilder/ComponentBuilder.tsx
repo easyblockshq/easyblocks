@@ -190,7 +190,7 @@ function getCompiledSubcomponents(
   path: string,
   meta: CompilationMetadata,
   isEditing: boolean,
-  components: ComponentBuilderProps["components"]
+  components: Record<string, ComponentType<any>>
 ) {
   const originalPath = path;
 
@@ -301,16 +301,7 @@ export type ComponentBuilderProps = {
     [key: string]: any; // any extra props passed in components
   };
   compiled: CompiledComponentConfig;
-  components: {
-    "@easyblocks/missing-component": ComponentType<any>;
-    "@easyblocks/rich-text.client": ComponentType<any>;
-    "@easyblocks/rich-text-block-element": ComponentType<any>;
-    "@easyblocks/rich-text-line-element": ComponentType<any>;
-    "@easyblocks/rich-text-part": ComponentType<any>;
-    "@easyblocks/text.client": ComponentType<any>;
-    "EditableComponentBuilder.client": ComponentType<any>;
-    [key: string]: ComponentType<any>;
-  };
+  components: Record<string, ComponentType<any>>;
 };
 
 export type InternalNoCodeComponentProps = NoCodeComponentProps & {
