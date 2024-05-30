@@ -4,6 +4,7 @@ import React, {
   useContext,
   useState,
   useEffect,
+  ComponentType,
 } from "react";
 import { EditorContextType } from "../_internals";
 import {
@@ -23,6 +24,7 @@ type EasyblocksCanvasState = {
   isEditing: EditorContextType["isEditing"];
   devices: EditorContextType["devices"];
   focussedField: EditorContextType["focussedField"];
+  components: Record<string, ComponentType<any>>;
 };
 
 const EasyblocksCanvasContext = createContext<EasyblocksCanvasState | null>(
@@ -31,10 +33,12 @@ const EasyblocksCanvasContext = createContext<EasyblocksCanvasState | null>(
 
 type EasyblocksCanvasProviderProps = {
   children: ReactNode;
+  components: Record<string, ComponentType<any>>;
 };
 
 const EasyblocksCanvasProvider: React.FC<EasyblocksCanvasProviderProps> = ({
   children,
+  components,
 }) => {
   const [state, setState] = useState<EasyblocksCanvasState | null>(null);
 
@@ -42,7 +46,7 @@ const EasyblocksCanvasProvider: React.FC<EasyblocksCanvasProviderProps> = ({
     const handler = (event: any) => {
       if (event.data.type === "@easyblocks/canvas-data") {
         const data = JSON.parse(event.data.data);
-        setState((prevState) => ({ ...prevState, ...data }));
+        setState((prevState) => ({ ...prevState, ...data, components }));
       }
     };
     window.addEventListener("message", handler);

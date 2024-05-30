@@ -10,9 +10,6 @@ import { SortableContext } from "@dnd-kit/sortable";
 import { NoCodeComponentEntry, Easyblocks } from "@easyblocks/core";
 import {
   EasyblocksMetadataProvider,
-  EditorContextType,
-  RichTextEditor,
-  TextEditor,
   configTraverse,
   itemMoved,
   useEasyblocksCanvasContext,
@@ -21,8 +18,6 @@ import { useForceRerender } from "@easyblocks/utils";
 import React, { useEffect, useRef, useState } from "react";
 import { set, z } from "zod";
 import { CanvasRoot } from "./CanvasRoot/CanvasRoot";
-import EditableComponentBuilder from "./EditableComponentBuilder/EditableComponentBuilder.editor";
-import TypePlaceholder from "./Placeholder";
 
 const dragDataSchema = z.object({
   path: z.string(),
@@ -44,11 +39,7 @@ function customCollisionDetection(args: Parameters<CollisionDetection>[0]) {
   return rectIntersection(args);
 }
 
-export function EasyblocksCanvas({
-  components,
-}: {
-  components?: Record<string, React.ComponentType<any>>;
-}) {
+export function EasyblocksCanvas() {
   const [enabled, setEnabled] = useState(false);
   const activeDraggedEntryPath = useRef<string | null>(null);
   const { forceRerender } = useForceRerender();
@@ -83,7 +74,7 @@ export function EasyblocksCanvas({
     return <div>Loading...</div>;
   }
 
-  const { meta, compiled, externalData, formValues, definitions } =
+  const { meta, compiled, externalData, formValues, definitions, components } =
     canvasContext;
 
   const sortableItems = getSortableItems(formValues, definitions);
@@ -174,13 +165,7 @@ export function EasyblocksCanvas({
                 meta,
               }}
               externalData={externalData}
-              components={{
-                ...components,
-                "@easyblocks/rich-text.editor": RichTextEditor,
-                "@easyblocks/text.editor": TextEditor,
-                "EditableComponentBuilder.editor": EditableComponentBuilder,
-                Placeholder: TypePlaceholder,
-              }}
+              components={components}
             />
           </SortableContext>
         </DndContext>

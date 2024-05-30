@@ -31,8 +31,6 @@ function getEditorSelectionFromFocusedFields(
       },
     };
   } catch (error) {
-    console.log(error);
-
     return null;
   }
 }
