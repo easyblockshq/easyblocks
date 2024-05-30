@@ -10,7 +10,11 @@ import {
   ComponentCollectionSchemaProp,
   SerializedRenderableComponentDefinition,
 } from "@easyblocks/core";
-import { parsePath, useEasyblocksMetadata } from "@easyblocks/core/_internals";
+import {
+  parsePath,
+  useEasyblocksCanvasContext,
+  useEasyblocksMetadata,
+} from "@easyblocks/core/_internals";
 import { Colors } from "@easyblocks/design-system";
 import { toArray } from "@easyblocks/utils";
 import React, { Fragment } from "react";
@@ -40,8 +44,13 @@ export function BlocksControls({
   index,
   length,
 }: BlocksControlsProps) {
-  const { focussedField, setFocussedField, form } =
-    window.parent.editorWindowAPI.editorContext;
+  const canvasContext = useEasyblocksCanvasContext();
+
+  if (!canvasContext) {
+    return null;
+  }
+
+  const { focussedField, formValues } = canvasContext;
 
   const meta = useEasyblocksMetadata();
   const dndContext = useDndContext();
@@ -61,7 +70,7 @@ export function BlocksControls({
     focusedField.startsWith(path)
   );
 
-  const entryPathParseResult = parsePath(path, form);
+  const entryPathParseResult = parsePath(path, { values: formValues });
   const entryComponentDefinition = meta.vars.definitions.components.find(
     (c) => c.id === entryPathParseResult.parent!.templateId
   );
@@ -87,7 +96,7 @@ export function BlocksControls({
   });
 
   const draggedEntryPathParseResult = dndContext.active
-    ? parsePath(dndContext.active.data.current!.path, form)
+    ? parsePath(dndContext.active.data.current!.path, { values: formValues })
     : null;
 
   const draggedComponentDefinition = draggedEntryPathParseResult
@@ -163,6 +172,10 @@ export function BlocksControls({
     const isMultipleSelection = event.shiftKey;
 
     function getNextFocusedField() {
+      if (!focussedField) {
+        return;
+      }
+
       if (isMultipleSelection) {
         if (focussedField.includes(path)) {
           const result = focussedField.filter(
@@ -184,7 +197,15 @@ export function BlocksControls({
 
     const nextFocusedField = getNextFocusedField();
 
-    setFocussedField(nextFocusedField);
+    window.parent.postMessage(
+      {
+        type: "@easyblocks-editor/focus",
+        payload: {
+          target: nextFocusedField,
+        },
+      },
+      "*"
+    );
 
     if (isMultipleSelection) {
       document.getSelection()?.removeAllRanges();

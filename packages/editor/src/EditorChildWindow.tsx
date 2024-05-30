@@ -10,18 +10,14 @@ import { SortableContext } from "@dnd-kit/sortable";
 import { NoCodeComponentEntry, Easyblocks } from "@easyblocks/core";
 import {
   EasyblocksMetadataProvider,
-  EditorContextType,
-  RichTextEditor,
-  TextEditor,
   configTraverse,
   itemMoved,
+  useEasyblocksCanvasContext,
 } from "@easyblocks/core/_internals";
 import { useForceRerender } from "@easyblocks/utils";
 import React, { useEffect, useRef, useState } from "react";
-import { z } from "zod";
+import { set, z } from "zod";
 import { CanvasRoot } from "./CanvasRoot/CanvasRoot";
-import EditableComponentBuilder from "./EditableComponentBuilder/EditableComponentBuilder.editor";
-import TypePlaceholder from "./Placeholder";
 
 const dragDataSchema = z.object({
   path: z.string(),
@@ -43,14 +39,7 @@ function customCollisionDetection(args: Parameters<CollisionDetection>[0]) {
   return rectIntersection(args);
 }
 
-export function EasyblocksCanvas({
-  components,
-}: {
-  components?: Record<string, React.ComponentType<any>>;
-}) {
-  const { meta, compiled, externalData, editorContext } =
-    window.parent.editorWindowAPI;
-
+export function EasyblocksCanvas() {
   const [enabled, setEnabled] = useState(false);
   const activeDraggedEntryPath = useRef<string | null>(null);
   const { forceRerender } = useForceRerender();
@@ -69,25 +58,28 @@ export function EasyblocksCanvas({
   }, []);
 
   useEffect(() => {
-    window.parent.editorWindowAPI.onUpdate = () => {
-      // Force re-render when child gets info from parent that data changed
-      forceRerender();
-    };
-  });
+    window.parent.postMessage(
+      {
+        type: "@easyblocks-editor/canvas-loaded",
+      },
+      "*"
+    );
+  }, []);
 
-  const shouldNotRender = !enabled || !meta || !compiled || !externalData;
+  const canvasContext = useEasyblocksCanvasContext();
+
+  const shouldNotRender = !enabled || !canvasContext;
 
   if (shouldNotRender) {
     return <div>Loading...</div>;
   }
 
-  const sortableItems = getSortableItems(
-    editorContext.form.values,
-    editorContext
-  );
+  const { meta, compiled, externalData, formValues, definitions, components } =
+    canvasContext;
+
+  const sortableItems = getSortableItems(formValues, definitions);
 
   return (
-    /* EasyblocksMetadataProvider must be defined in case of nested <Easyblocks /> components are used! */
     <EasyblocksMetadataProvider meta={meta}>
       <CanvasRoot>
         <DndContext
@@ -98,7 +90,15 @@ export function EasyblocksCanvas({
             activeDraggedEntryPath.current = dragDataSchema.parse(
               event.active.data.current
             ).path;
-            window.parent.editorWindowAPI.editorContext.setFocussedField([]);
+            window.parent.postMessage(
+              {
+                type: "@easyblocks-editor/focus",
+                payload: {
+                  target: [],
+                },
+              },
+              "*"
+            );
           }}
           onDragEnd={(event) => {
             document.documentElement.style.cursor = "";
@@ -109,8 +109,14 @@ export function EasyblocksCanvas({
 
               if (event.over.id === event.active.id) {
                 // If the dragged item is dropped on itself, we want to refocus the dragged item.
-                window.parent.editorWindowAPI.editorContext.setFocussedField(
-                  activeData.path
+                window.parent.postMessage(
+                  {
+                    type: "@easyblocks-editor/focus",
+                    payload: {
+                      target: activeData.path,
+                    },
+                  },
+                  "*"
                 );
               } else {
                 const itemMovedEvent = itemMoved({
@@ -122,21 +128,33 @@ export function EasyblocksCanvas({
                 });
 
                 requestAnimationFrame(() => {
-                  window.parent.postMessage(itemMovedEvent);
+                  window.parent.postMessage(itemMovedEvent, "*");
                 });
               }
             } else {
               // If there was no drop target, we want to refocus the dragged item.
-              window.parent.editorWindowAPI.editorContext.setFocussedField(
-                activeData.path
+              window.parent.postMessage(
+                {
+                  type: "@easyblocks-editor/focus",
+                  payload: {
+                    target: activeData.path,
+                  },
+                },
+                "*"
               );
             }
           }}
           onDragCancel={(event) => {
             document.documentElement.style.cursor = "";
             // If the drag was canceled, we want to refocus dragged item.
-            window.parent.editorWindowAPI.editorContext.setFocussedField(
-              dragDataSchema.parse(event.active.data.current).path
+            window.parent.postMessage(
+              {
+                type: "@easyblocks-editor/focus",
+                payload: {
+                  target: dragDataSchema.parse(event.active.data.current).path,
+                },
+              },
+              "*"
             );
           }}
         >
@@ -147,13 +165,7 @@ export function EasyblocksCanvas({
                 meta,
               }}
               externalData={externalData}
-              components={{
-                ...components,
-                "@easyblocks/rich-text.editor": RichTextEditor,
-                "@easyblocks/text.editor": TextEditor,
-                "EditableComponentBuilder.editor": EditableComponentBuilder,
-                Placeholder: TypePlaceholder,
-              }}
+              components={components}
             />
           </SortableContext>
         </DndContext>
@@ -162,15 +174,12 @@ export function EasyblocksCanvas({
   );
 }
 
-function getSortableItems(
-  rootNoCodeEntry: NoCodeComponentEntry,
-  editorContext: EditorContextType
-) {
+function getSortableItems(formValues: NoCodeComponentEntry, definitions: any) {
   const sortableItems: Array<string> = [];
 
   configTraverse(
-    rootNoCodeEntry,
-    editorContext,
+    formValues,
+    { definitions },
     ({ value, schemaProp, config }) => {
       if (schemaProp.type === "component-collection") {
         if (value.length === 0) {

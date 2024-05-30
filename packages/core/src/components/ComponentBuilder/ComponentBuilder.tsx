@@ -273,7 +273,8 @@ function getCompiledSubcomponents(
                     name: path,
                     index: 0,
                     block: event.data.payload.config,
-                  })
+                  }),
+                  "*"
                 );
               }
             }
@@ -281,7 +282,7 @@ function getCompiledSubcomponents(
 
           window.addEventListener("message", handleComponentPickerCloseMessage);
 
-          window.parent.postMessage(componentPickerOpened(originalPath));
+          window.parent.postMessage(componentPickerOpened(originalPath), "*");
         }}
         meta={meta}
       />,
@@ -459,7 +460,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
     __easyblocks: easyblocksProp,
   };
 
-  return <Component {...componentProps} />;
+  return <Component key={compiled._id} {...componentProps} />;
 }
 
 function getComponent(

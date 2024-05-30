@@ -5,6 +5,13 @@ import { EasyblocksCanvas } from "./EditorChildWindow";
 import { PreviewRenderer } from "./PreviewRenderer";
 import { addDebugToEditorProps } from "./debug/addDebugToEditorProps";
 import { parseQueryParams } from "./parseQueryParams";
+import {
+  EasyblocksCanvasProvider,
+  RichTextEditor,
+  TextEditor,
+} from "@easyblocks/core/_internals";
+import EditableComponentBuilder from "./EditableComponentBuilder/EditableComponentBuilder.editor";
+import TypePlaceholder from "./Placeholder";
 
 export function EasyblocksEditor(props: EasyblocksEditorProps) {
   const [selectedWindow, setSelectedWindow] = useState<
@@ -66,7 +73,17 @@ export function EasyblocksEditor(props: EasyblocksEditorProps) {
       )}
 
       {selectedWindow === "child" && (
-        <EasyblocksCanvas components={props.components} />
+        <EasyblocksCanvasProvider
+          components={{
+            ...props.components,
+            "@easyblocks/rich-text.editor": RichTextEditor,
+            "@easyblocks/text.editor": TextEditor,
+            "EditableComponentBuilder.editor": EditableComponentBuilder,
+            Placeholder: TypePlaceholder,
+          }}
+        >
+          <EasyblocksCanvas />
+        </EasyblocksCanvasProvider>
       )}
 
       {selectedWindow === "preview" && <PreviewRenderer {...props} />}

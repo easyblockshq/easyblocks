@@ -3,6 +3,7 @@ import React, { ElementRef, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import TextareaAutosize from "react-textarea-autosize";
 import { useTextValue } from "../useTextValue";
+import { useEasyblocksCanvasContext } from "../../../_internals";
 
 interface InlineTextProps {
   path: string;
@@ -18,18 +19,30 @@ export function InlineTextarea({
   const [isEnabled, setIsEnabled] = useState(false);
   const textAreaRef = useRef<ElementRef<"textarea">>(null);
 
-  const {
-    form,
-    contextParams: { locale },
-    locales,
-  } = (window.parent as any).editorWindowAPI.editorContext;
+  const canvasContext = useEasyblocksCanvasContext();
+
+  if (!canvasContext) {
+    return null;
+  }
+
+  const { formValues, locale, locales } = canvasContext;
+
   const valuePath = `${path}.value`;
-  const value = dotNotationGet(form.values, valuePath);
+  const value = dotNotationGet(formValues, valuePath);
 
   const inputProps = useTextValue(
     value,
     (val: string | null) => {
-      form.change(valuePath, val);
+      window.parent.postMessage(
+        {
+          type: "@easyblocks-editor/form-change",
+          payload: {
+            key: valuePath,
+            value: val,
+          },
+        },
+        "*"
+      );
     },
     locale,
     locales,

@@ -1,5 +1,8 @@
 import type { useSortable } from "@dnd-kit/sortable";
-import { selectionFramePositionChanged } from "@easyblocks/core/_internals";
+import {
+  selectionFramePositionChanged,
+  useEasyblocksCanvasContext,
+} from "@easyblocks/core/_internals";
 import { Colors } from "@easyblocks/design-system";
 import React, { MouseEvent, ReactNode, useEffect, useState } from "react";
 
@@ -107,17 +110,36 @@ function SelectionFrameController({
     },
   });
 
+  const canvasContext = useEasyblocksCanvasContext();
+
+  if (!canvasContext) {
+    return null;
+  }
+
+  const { focussedField } = canvasContext;
+
   useEffect(() => {
     return () => {
+      if (!focussedField) {
+        return;
+      }
       // If the the node of active element is not in the DOM anymore we want to deselect it to prevent showing
       // add buttons on the not existing element.
       if (
         isActive &&
         node &&
         !window.document.contains(node) &&
-        path === window.parent.editorWindowAPI.editorContext.focussedField[0]
+        path === focussedField[0]
       ) {
-        window.parent.editorWindowAPI.editorContext.setFocussedField([]);
+        window.parent.postMessage(
+          {
+            type: "@easyblocks-editor/focus",
+            payload: {
+              target: [],
+            },
+          },
+          "*"
+        );
       }
     };
   });
@@ -154,8 +176,6 @@ function useUpdateFramePosition({
   node: HTMLElement | null;
   isDisabled: boolean;
 }) {
-  const dispatch = window.parent.postMessage;
-
   useEffect(() => {
     if (isDisabled || !node) {
       return;
@@ -164,11 +184,12 @@ function useUpdateFramePosition({
     const updateSelectionFramePosition = createThrottledHandler(() => {
       const nodeRect = node.getBoundingClientRect();
 
-      dispatch(
+      window.parent.postMessage(
         selectionFramePositionChanged(
           nodeRect,
           window.document.documentElement.getBoundingClientRect()
-        )
+        ),
+        "*"
       );
     });
 
@@ -178,7 +199,7 @@ function useUpdateFramePosition({
 
     const handleResize = createThrottledHandler(() => {
       const nodeRect = node.getBoundingClientRect();
-      dispatch(selectionFramePositionChanged(nodeRect));
+      window.parent.postMessage(selectionFramePositionChanged(nodeRect), "*");
     });
 
     window.addEventListener("resize", handleResize, {
@@ -192,7 +213,10 @@ function useUpdateFramePosition({
           event.target as HTMLElement
         ).getBoundingClientRect();
 
-        dispatch(selectionFramePositionChanged(nodeRect, containerRect));
+        window.parent.postMessage(
+          selectionFramePositionChanged(nodeRect, containerRect),
+          "*"
+        );
       });
 
     const closestScrollableElement = node.closest(
@@ -207,11 +231,12 @@ function useUpdateFramePosition({
       }
     );
 
-    dispatch(
+    window.parent.postMessage(
       selectionFramePositionChanged(
         node.getBoundingClientRect(),
         closestScrollableElement?.getBoundingClientRect()
-      )
+      ),
+      "*"
     );
 
     return () => {

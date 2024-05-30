@@ -1,6 +1,7 @@
 import { ComponentType, ReactElement } from "react";
 import { PartialDeep } from "type-fest";
 import { Locale } from "./locales";
+import { InternalComponentDefinitions } from "./compiler/types";
 
 export type ScalarOrCollection<T> = T | Array<T>;
 
@@ -996,4 +997,33 @@ export type TokenValue<T = any> = {
   value: T;
   tokenId?: string;
   widgetId?: string;
+};
+
+export type AnyContextWithDefinitions = {
+  definitions: InternalComponentDefinitions;
+};
+
+export type EditorActions = {
+  notify: (message: string) => void;
+  openComponentPicker: (config: {
+    path: string;
+    componentTypes?: string[];
+  }) => Promise<NoCodeComponentEntry | undefined>;
+  moveItems: (
+    fieldNames: Array<string>,
+    direction: "top" | "right" | "bottom" | "left"
+  ) => void;
+  replaceItems: (paths: Array<string>, newConfig: NoCodeComponentEntry) => void;
+  removeItems: (fieldNames: Array<string>) => void;
+  insertItem: (insertItemProps: {
+    name: string;
+    index: number;
+    block: NoCodeComponentEntry;
+  }) => void;
+  duplicateItems: (fieldNames: Array<string>) => void;
+  pasteItems: (items: Array<NoCodeComponentEntry>) => void;
+  runChange: <Callback extends () => Array<string> | void>(
+    configChangeCallback: Callback
+  ) => void;
+  logSelectedItems: () => void;
 };

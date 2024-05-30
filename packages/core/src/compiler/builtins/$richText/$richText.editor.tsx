@@ -2,7 +2,6 @@
 import { deepClone, deepCompare, dotNotationGet } from "@easyblocks/utils";
 import throttle from "lodash/throttle";
 import React, {
-  useCallback,
   useEffect,
   useLayoutEffect,
   useMemo,
@@ -26,6 +25,7 @@ import type {
   RenderPlaceholderProps,
 } from "slate-react";
 import { Editable, ReactEditor, Slate, withReact } from "slate-react";
+import { useEasyblocksCanvasContext } from "../../../_internals";
 import { Box } from "../../../components/Box/Box";
 import {
   ComponentBuilder,
@@ -70,16 +70,39 @@ interface RichTextProps extends InternalNoCodeComponentProps {
 }
 
 function RichTextEditor(props: RichTextProps) {
-  const { editorContext } = (window.parent as any).editorWindowAPI;
+  // const { editorContext } = (window.parent as any).editorWindowAPI;
+
+  const canvasContext = useEasyblocksCanvasContext()!;
 
   const {
-    actions,
-    contextParams,
-    form,
-    focussedField,
+    formValues,
     locales,
-    setFocussedField,
-  } = editorContext;
+    locale,
+    focussedField,
+    definitions,
+    components,
+  } = canvasContext;
+
+  // const {
+  //   actions,
+  //   contextParams,
+  //   form,
+  //   focussedField,
+  //   locales,
+  //   setFocussedField,
+  // } = editorContext;
+
+  const setFocussedField = (field: Array<string> | string) => {
+    window.parent.postMessage(
+      {
+        type: "@easyblocks-editor/focus",
+        payload: {
+          target: field,
+        },
+      },
+      "*"
+    );
+  };
 
   const {
     __easyblocks: {
@@ -90,25 +113,24 @@ function RichTextEditor(props: RichTextProps) {
   } = props;
 
   let richTextConfig: RichTextComponentConfig = dotNotationGet(
-    form.values,
+    formValues,
     path
   );
 
   const [editor] = useState(() => withEasyblocks(withReact(createEditor())));
 
-  const localizedRichTextElements =
-    richTextConfig.elements[contextParams.locale];
+  const localizedRichTextElements = richTextConfig.elements[locale];
 
   const fallbackRichTextElements = getFallbackForLocale(
     richTextConfig.elements,
-    contextParams.locale,
+    locale,
     locales
   );
 
   const richTextElements =
     localizedRichTextElements ?? fallbackRichTextElements;
 
-  const richTextElementsConfigPath = `${path}.elements.${contextParams.locale}`;
+  const richTextElementsConfigPath = `${path}.elements.${locale}`;
 
   const [editorValue, setEditorValue] = useState(() =>
     convertRichTextElementsToEditorValue(richTextElements)
@@ -120,8 +142,9 @@ function RichTextEditor(props: RichTextProps) {
     // We only want to show rich text for default config within this component, we don't want to update raw content
     // To prevent implicit update of raw content we make a deep copy.
     richTextConfig = deepClone(richTextConfig);
-    richTextConfig.elements[contextParams.locale] =
-      convertEditorValueToRichTextElements(editorValue);
+    richTextConfig.elements[locale] = convertEditorValueToRichTextElements(
+      editor.children as Array<BlockElement>
+    );
   }
 
   /**
@@ -141,71 +164,57 @@ function RichTextEditor(props: RichTextProps) {
   );
 
   /**
-   * Whether the content editable is enabled or not. We enable it through double click.
+   * Whether the content editable is enabled or not. We enable it through double click and disable when
+   * the focused field changes to different component than rich text or any of its ancestors.
    */
   const [isEnabled, setIsEnabled] = useState(false);
   const previousRichTextComponentConfig = useRef<RichTextComponentConfig>();
-  const currentSelectionRef = useRef<BaseRange | null>(null);
+  const previousCompiledRichText = useRef<RichTextProps>();
 
-  const isConfigChanged = !isConfigEqual(
-    previousRichTextComponentConfig.current,
-    richTextConfig
-  );
+  const stringifiedRichTextConfig = JSON.stringify(richTextConfig);
+  const isRichTextActive = focussedField.some((f) => f.startsWith(path));
 
-  if (previousRichTextComponentConfig.current && isConfigChanged) {
-    if (lastChangeReason.current !== "paste") {
-      lastChangeReason.current = "external";
-    }
-
+  if (
+    !previousRichTextComponentConfig.current ||
+    (!deepCompare(richTextConfig, previousRichTextComponentConfig.current) &&
+      (lastChangeReason.current === "external" ||
+        lastChangeReason.current === "paste"))
+  ) {
     previousRichTextComponentConfig.current = richTextConfig;
     const nextEditorValue =
       convertRichTextElementsToEditorValue(richTextElements);
-    // React bails out the render if state setter function is invoked during the render phase.
-    // Doing it makes Slate always up-to date with the latest config if it's changed from outside.
-    // https://reactjs.org/docs/hooks-faq.html#how-do-i-implement-getderivedstatefromprops
-    setEditorValue(nextEditorValue);
     editor.children = nextEditorValue;
 
     if (isEnabled) {
       const newEditorSelection = getEditorSelectionFromFocusedFields(
         focussedField,
-        form
+        formValues
       );
 
-      if (isDecorationActive) {
-        currentSelectionRef.current = newEditorSelection;
+      if (newEditorSelection !== null) {
+        Transforms.select(editor, newEditorSelection);
       } else {
-        // Slate gives us two methods to update its selection:
-        // - `setSelection` updates current selection, so `editor.selection` must be not null
-        // - `select` sets the selection, so `editor.selection` must be null
-        if (newEditorSelection !== null && editor.selection !== null) {
-          Transforms.setSelection(editor, newEditorSelection);
-        } else if (newEditorSelection !== null && editor.selection === null) {
-          Transforms.select(editor, newEditorSelection);
-        } else {
-          Transforms.deselect(editor);
-        }
+        Transforms.deselect(editor);
       }
     }
+
+    // We set it only to trigger re-render of Slate after we've updated `editor.children`
+    setEditorValue(nextEditorValue);
   }
 
   useLayoutEffect(() => {
     if (
       isDecorationActive &&
-      currentSelectionRef.current !== null &&
-      !Range.isCollapsed(currentSelectionRef.current)
+      editor.selection &&
+      !Range.isCollapsed(editor.selection)
     ) {
-      splitStringNodes(editor, currentSelectionRef.current);
+      splitStringNodes(editor, editor.selection);
 
       return () => {
         unwrapStringNodesContent(editor);
       };
     }
-  }, [editor, isDecorationActive, richTextConfig]);
-
-  const isRichTextActive = focussedField.some((focusedField: any) =>
-    focusedField.startsWith(path)
-  );
+  }, [editor, isDecorationActive, stringifiedRichTextConfig]);
 
   useLayoutEffect(() => {
     // When rich text becomes inactive we want to restore all original [data-slate-string] nodes
@@ -215,20 +224,14 @@ function RichTextEditor(props: RichTextProps) {
     }
   }, [editor, isRichTextActive]);
 
-  useEffect(() => {
-    // We set previous value of rich text only once, then we manually assign it when needed.
-    previousRichTextComponentConfig.current = richTextConfig;
-  }, []);
-
   useEffect(
     // Component is blurred when the user selects other component in editor. This is different from blurring content editable.
     // Content editable can be blurred, but the component can remain active ex. when we select some text within content editable
     // and want to update its color from the sidebar.
     function handleRichTextBlur() {
       if (!isRichTextActive && isEnabled) {
-        // editor.children = deepClone(editorValue);
         setIsEnabled(false);
-        currentSelectionRef.current = null;
+        lastChangeReason.current = "external";
       }
 
       if (!editor.selection) {
@@ -246,11 +249,21 @@ function RichTextEditor(props: RichTextProps) {
         // if the fallback value is present.
         if (isSlateValueEmpty && fallbackRichTextElements !== undefined) {
           const nextRichTextElement = deepClone(richTextConfig);
-          delete nextRichTextElement.elements[contextParams.locale];
+          delete nextRichTextElement.elements[locale];
           editor.children = convertRichTextElementsToEditorValue(
             fallbackRichTextElements
           );
-          form.change(path, nextRichTextElement);
+
+          window.parent.postMessage(
+            {
+              type: "@easyblocks-editor/form-change",
+              payload: {
+                key: path,
+                value: nextRichTextElement,
+              },
+            },
+            "*"
+          );
         }
       }
     },
@@ -266,14 +279,12 @@ function RichTextEditor(props: RichTextProps) {
 
   useEffect(() => {
     function handleRichTextChanged(event: RichTextChangedEvent) {
-      if (!editor.selection) {
-        return;
-      }
-
       if (event.data.type === "@easyblocks-editor/rich-text-changed") {
-        const { payload } = event.data;
-        const { editorContext } = (window.parent as any).editorWindowAPI;
+        if (!editor.selection) {
+          return;
+        }
 
+        const { payload } = event.data;
         // Slate is an uncontrolled component and we don't have an easy access to control it.
         // It keeps its state internally and on each change we convert this state to our format.
         // This works great because changing content of editable element is easy, we append or remove things.
@@ -297,32 +308,30 @@ function RichTextEditor(props: RichTextProps) {
           return;
         }
 
-        currentSelectionRef.current = temporaryEditor.selection;
+        const newRichTextElement: RichTextComponentConfig = {
+          ...richTextConfig,
+          elements: {
+            ...richTextConfig.elements,
+            [locale]: updateSelectionResult.elements,
+          },
+        };
 
-        actions.runChange(() => {
-          const newRichTextElement: RichTextComponentConfig = {
-            ...richTextConfig,
-            elements: {
-              ...richTextConfig.elements,
-              [editorContext.contextParams.locale]:
-                updateSelectionResult.elements,
+        const newFocusedFields = updateSelectionResult.focusedRichTextParts.map(
+          (focusedRichTextPart) =>
+            getAbsoluteRichTextPartPath(focusedRichTextPart, path, locale)
+        );
+
+        window.parent.postMessage(
+          {
+            type: "@easyblocks-editor/form-change",
+            payload: {
+              key: path,
+              value: newRichTextElement,
+              focussedField: newFocusedFields,
             },
-          };
-
-          form.change(path, newRichTextElement);
-
-          const newFocusedFields =
-            updateSelectionResult.focusedRichTextParts.map(
-              (focusedRichTextPart) =>
-                getAbsoluteRichTextPartPath(
-                  focusedRichTextPart,
-                  path,
-                  editorContext.contextParams.locale
-                )
-            );
-
-          return newFocusedFields;
-        });
+          },
+          "*"
+        );
       }
     }
 
@@ -331,7 +340,7 @@ function RichTextEditor(props: RichTextProps) {
     return () => {
       window.removeEventListener("message", handleRichTextChanged);
     };
-  }, [richTextConfig, path]);
+  }, [path, editor, richTextConfig, locale]);
 
   const decorate = createTextSelectionDecorator(editor);
   const Elements = extractElementsFromCompiledComponents(props);
@@ -341,7 +350,7 @@ function RichTextEditor(props: RichTextProps) {
     children,
     element,
   }: RenderElementProps) {
-    const Element = Elements.find(
+    let Element = Elements.find(
       (Element) =>
         Element._id === element.id ||
         NORMALIZED_IDS_TO_IDS.get(element.id) === Element._id
@@ -361,7 +370,21 @@ function RichTextEditor(props: RichTextProps) {
         return <div {...attributes}>{children}</div>;
       }
 
-      throw new Error("Missing element");
+      if (previousCompiledRichText.current) {
+        const PreviousElements = extractElementsFromCompiledComponents(
+          previousCompiledRichText.current
+        );
+
+        Element = PreviousElements.find(
+          (Element) =>
+            Element._id === element.id ||
+            NORMALIZED_IDS_TO_IDS.get(element.id) === Element._id
+        );
+      }
+
+      if (!Element) {
+        throw new Error("Missing element");
+      }
     }
 
     const compiledStyles = (() => {
@@ -422,7 +445,21 @@ function RichTextEditor(props: RichTextProps) {
         return <span {...attributes}>{children}</span>;
       }
 
-      throw new Error("Missing part");
+      if (previousCompiledRichText.current) {
+        const PreviousTextParts = extractTextPartsFromCompiledComponents(
+          previousCompiledRichText.current
+        );
+
+        TextPart = PreviousTextParts.find(
+          (TextPart) =>
+            TextPart._id === leaf.id ||
+            NORMALIZED_IDS_TO_IDS.get(leaf.id) === TextPart._id
+        );
+      }
+
+      if (!TextPart) {
+        throw new Error("Missing part");
+      }
     }
 
     const TextPartComponent = (
@@ -441,7 +478,7 @@ function RichTextEditor(props: RichTextProps) {
             <ComponentBuilder
               compiled={TextPart.components.TextWrapper[0]}
               path={path}
-              components={editorContext.components}
+              components={components}
               passedProps={{
                 __isSelected:
                   leaf.isHighlighted && leaf.highlightType === "textWrapper",
@@ -472,60 +509,53 @@ function RichTextEditor(props: RichTextProps) {
     );
   }
 
-  const scheduleConfigSync = useCallback(
-    throttle((nextValue: Array<BlockElement>) => {
-      setEditorValue(nextValue);
+  const scheduleConfigSync = throttle(
+    (nextValue: Array<BlockElement>, editor: Editor) => {
       const nextElements = convertEditorValueToRichTextElements(nextValue);
 
-      actions.runChange(() => {
-        const newRichTextElement: RichTextComponentConfig = {
-          ...richTextConfig,
-          elements: {
-            ...richTextConfig.elements,
-            [editorContext.contextParams.locale]: nextElements,
+      const newRichTextElement: RichTextComponentConfig = {
+        ...richTextConfig,
+        elements: {
+          ...richTextConfig.elements,
+          [locale]: nextElements,
+        },
+      };
+
+      window.parent.postMessage(
+        {
+          type: "@easyblocks-editor/form-change",
+          payload: {
+            key: path,
+            value: newRichTextElement,
+            ...(editor.selection
+              ? {
+                  focussedField: getFocusedFieldsFromSlateSelection(
+                    editor,
+                    path,
+                    locale
+                  ),
+                }
+              : {}),
           },
-        };
-
-        form.change(path, newRichTextElement);
-        previousRichTextComponentConfig.current = newRichTextElement;
-
-        if (editor.selection) {
-          const nextFocusedFields = getFocusedFieldsFromSlateSelection(
-            editor,
-            path,
-            contextParams.locale
-          );
-
-          return nextFocusedFields;
-        }
-      });
-    }, RICH_TEXT_CONFIG_SYNC_THROTTLE_TIMEOUT),
-    [isConfigChanged, editorContext.contextParams.locale]
+        },
+        "*"
+      );
+    },
+    RICH_TEXT_CONFIG_SYNC_THROTTLE_TIMEOUT
   );
 
-  const scheduleFocusedFieldsChange = useCallback(
-    // Slate internally throttles the invocation of DOMSelectionChange for performance reasons.
-    // We also throttle update of our focused fields state for the same reason.
-    // This gives us a good balance between perf and showing updated fields within the sidebar.
-    throttle((focusedFields: Parameters<typeof setFocussedField>[0]) => {
+  // Slate internally throttles the invocation of DOMSelectionChange for performance reasons.
+  // We also throttle update of our focused fields state for the same reason.
+  // This gives us a good balance between perf and showing updated fields within the sidebar.
+  const scheduleFocusedFieldsChange = throttle(
+    (focusedFields: Parameters<typeof setFocussedField>[0]) => {
       setFocussedField(focusedFields);
-    }, RICH_TEXT_FOCUSED_FIELDS_SYNC_THROTTLE_TIMEOUT),
-    [setFocussedField]
+    },
+    RICH_TEXT_FOCUSED_FIELDS_SYNC_THROTTLE_TIMEOUT
   );
 
   function handleEditableChange(value: Array<Descendant>): void {
     if (!isEnabled) {
-      return;
-    }
-
-    // Editor's value can be changed from outside ex. sidebar or history undo/redo. If the last reason for change
-    // was "external", we skip this change. In case we would like to start typing immediately after undo/redo we
-    // set last change reason to `text-input`.
-    if (
-      lastChangeReason.current === "external" ||
-      lastChangeReason.current === "paste"
-    ) {
-      lastChangeReason.current = "text-input";
       return;
     }
 
@@ -537,7 +567,7 @@ function RichTextEditor(props: RichTextProps) {
       const nextFocusedFields = getFocusedFieldsFromSlateSelection(
         editor,
         path,
-        contextParams.locale
+        locale
       );
 
       if (nextFocusedFields) {
@@ -548,7 +578,9 @@ function RichTextEditor(props: RichTextProps) {
     }
 
     lastChangeReason.current = "text-input";
-    scheduleConfigSync(value as Array<BlockElement>);
+
+    scheduleConfigSync.cancel();
+    scheduleConfigSync(value as Array<BlockElement>, editor);
   }
 
   function handleEditableFocus(): void {
@@ -570,7 +602,7 @@ function RichTextEditor(props: RichTextProps) {
           fallbackRichTextElements[0].elements[0].elements[0];
 
         // Keep only one line element with single empty rich text
-        nextRichTextComponentConfig.elements[contextParams.locale] = [
+        nextRichTextComponentConfig.elements[locale] = [
           {
             ...fallbackRichTextElements[0],
             elements: [
@@ -588,7 +620,7 @@ function RichTextEditor(props: RichTextProps) {
         ];
 
         nextSlateValue = convertRichTextElementsToEditorValue(
-          nextRichTextComponentConfig.elements[contextParams.locale]
+          nextRichTextComponentConfig.elements[locale]
         );
 
         editor.children = nextSlateValue;
@@ -598,18 +630,39 @@ function RichTextEditor(props: RichTextProps) {
           focus: Editor.start(editor, []),
         });
 
-        form.change(path, nextRichTextComponentConfig);
+        // form.change(path, nextRichTextComponentConfig);
+
+        window.parent.postMessage(
+          {
+            type: "@easyblocks-editor/form-change",
+            payload: {
+              key: path,
+              value: nextRichTextComponentConfig,
+            },
+          },
+          "*"
+        );
       } else {
         // If current and fallback value is missing we have:
         // - empty Slate value
         // - empty config within component-collection-localised
         // We will build next $richText component config based on current Slate value
         nextRichTextComponentConfig = richTextConfig;
-        nextRichTextComponentConfig.elements[contextParams.locale] =
+        nextRichTextComponentConfig.elements[locale] =
           convertEditorValueToRichTextElements(
             editor.children as Array<BlockElement>
           );
-        form.change(path, nextRichTextComponentConfig);
+        // form.change(path, nextRichTextComponentConfig);
+        window.parent.postMessage(
+          {
+            type: "@easyblocks-editor/form-change",
+            payload: {
+              key: path,
+              value: nextRichTextComponentConfig,
+            },
+          },
+          "*"
+        );
       }
 
       previousRichTextComponentConfig.current = nextRichTextComponentConfig;
@@ -618,11 +671,7 @@ function RichTextEditor(props: RichTextProps) {
         const nextFocusedFields = getFocusedRichTextPartsConfigPaths(
           editor
         ).map((richTextPartPath) =>
-          getAbsoluteRichTextPartPath(
-            richTextPartPath,
-            path,
-            contextParams.locale
-          )
+          getAbsoluteRichTextPartPath(richTextPartPath, path, locale)
         );
 
         setFocussedField(nextFocusedFields);
@@ -639,39 +688,10 @@ function RichTextEditor(props: RichTextProps) {
   }
 
   useEffect(() => {
-    function saveLatestSelection() {
-      const root = ReactEditor.findDocumentOrShadowRoot(editor);
-      const selection = (root as Document).getSelection();
+    previousCompiledRichText.current = props;
+  });
 
-      if (selection && selection.type === "Range") {
-        currentSelectionRef.current = ReactEditor.toSlateRange(
-          editor,
-          selection,
-          { exactMatch: false, suppressThrow: true }
-        );
-      } else {
-        currentSelectionRef.current = null;
-      }
-    }
-
-    const throttledSaveLatestSelection = throttle(saveLatestSelection, 100);
-
-    if (isEnabled) {
-      window.document.addEventListener(
-        "selectionchange",
-        throttledSaveLatestSelection
-      );
-
-      return () => {
-        window.document.removeEventListener(
-          "selectionchange",
-          throttledSaveLatestSelection
-        );
-      };
-    }
-  }, [editor, isEnabled]);
-
-  function handleEditableBlur(): void {
+  function handleEditableBlur() {
     lastChangeReason.current = "external";
     setIsDecorationActive(true);
   }
@@ -682,7 +702,10 @@ function RichTextEditor(props: RichTextProps) {
   function handleEditableCopy(event: React.ClipboardEvent) {
     const selectedRichTextComponentConfig = getRichTextComponentConfigFragment(
       richTextConfig,
-      editorContext
+      focussedField,
+      locale,
+      formValues,
+      definitions
     );
 
     event.clipboardData.setData(
@@ -692,19 +715,21 @@ function RichTextEditor(props: RichTextProps) {
   }
 
   function handleEditablePaste(event: React.ClipboardEvent) {
-    const selectedRichTextComponentConfigClipboardData =
+    const richTextComponentConfigClipboardData =
       event.clipboardData.getData("text/x-shopstory");
 
-    if (selectedRichTextComponentConfigClipboardData) {
+    if (richTextComponentConfigClipboardData) {
+      lastChangeReason.current = "paste";
+
       const selectedRichTextComponentConfig: RichTextComponentConfig =
-        JSON.parse(selectedRichTextComponentConfigClipboardData);
+        JSON.parse(richTextComponentConfigClipboardData);
 
       // Preventing the default action will also prevent Slate from handling this event on his own.
       event.preventDefault();
 
       const nextSlateValue = convertRichTextElementsToEditorValue(
-        duplicateConfig(selectedRichTextComponentConfig, editorContext)
-          .elements[contextParams.locale]
+        duplicateConfig(selectedRichTextComponentConfig, { definitions })
+          .elements[locale]
       );
 
       const temporaryEditor = createTemporaryEditor(editor);
@@ -713,18 +738,25 @@ function RichTextEditor(props: RichTextProps) {
         temporaryEditor.children as Array<BlockElement>
       );
 
-      actions.runChange(() => {
-        form.change(richTextElementsConfigPath, nextElements);
+      const newFocusedFields = getFocusedFieldsFromSlateSelection(
+        temporaryEditor,
+        path,
+        locale
+      );
 
-        const nextFocusedFields = getFocusedFieldsFromSlateSelection(
-          temporaryEditor,
-          path,
-          contextParams.locale
-        );
+      window.parent.postMessage(
+        {
+          type: "@easyblocks-editor/form-change",
+          payload: {
+            key: richTextElementsConfigPath,
+            value: nextElements,
+            focussedField: newFocusedFields,
+          },
+        },
+        "*"
+      );
 
-        return nextFocusedFields;
-      });
-
+      previousCompiledRichText.current = props;
       lastChangeReason.current = "paste";
     } else if (
       // Slate only handles pasting if the clipboardData contains text/plain type.
@@ -740,7 +772,7 @@ function RichTextEditor(props: RichTextProps) {
 
   const contentEditableClassName = useMemo(() => {
     const responsiveAlignmentStyles = mapResponsiveAlignmentToStyles(align, {
-      devices: editorContext.devices,
+      devices,
       resop,
     });
 
@@ -842,6 +874,16 @@ function RichTextEditor(props: RichTextProps) {
                 );
             }
           }}
+          onKeyDown={(event) => {
+            if (
+              (event.metaKey && event.key === "z") ||
+              (event.metaKey && event.shiftKey && event.key === "z") ||
+              (event.ctrlKey && event.key === "z") ||
+              (event.ctrlKey && event.key === "y")
+            ) {
+              lastChangeReason.current = "external";
+            }
+          }}
           readOnly={!isEnabled}
         />
       </div>
@@ -860,10 +902,6 @@ function isEditorValueEmpty(editorValue: Array<BlockElement>) {
     Text.isText(editorValue[0].children[0].children[0]) &&
     editorValue[0].children[0].children[0].text === ""
   );
-}
-
-function isConfigEqual(newConfig: any, oldConfig: any) {
-  return deepCompare(newConfig, oldConfig);
 }
 
 function mapResponsiveAlignmentToStyles(
