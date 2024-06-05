@@ -367,17 +367,17 @@ function RichTextEditor(props: RichTextProps) {
     const compiledStyles = (() => {
       if (Element._component === "@easyblocks/rich-text-block-element") {
         if (Element.props.type === "bulleted-list") {
-          return Element.styled.BulletedList;
+          return Element.props.__styled.BulletedList;
         } else if (Element.props.type === "numbered-list") {
-          return Element.styled.NumberedList;
+          return Element.props.__styled.NumberedList;
         } else if (Element.props.type === "paragraph") {
-          return Element.styled.Paragraph;
+          return Element.props.__styled.Paragraph;
         }
       } else if (Element._component === "@easyblocks/rich-text-line-element") {
         if (element.type === "text-line") {
-          return Element.styled.TextLine;
+          return Element.props.__styled.TextLine;
         } else if (element.type === "list-item") {
-          return Element.styled.ListItem;
+          return Element.props.__styled.ListItem;
         }
       }
     })();
@@ -430,7 +430,7 @@ function RichTextEditor(props: RichTextProps) {
         value={children}
         Text={
           <Box
-            __compiled={TextPart.styled.Text}
+            __compiled={TextPart.props.__styled.Text}
             devices={devices}
             stitches={stitches}
             {...attributes}

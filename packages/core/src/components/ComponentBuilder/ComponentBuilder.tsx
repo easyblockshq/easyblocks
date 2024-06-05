@@ -402,7 +402,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
 
   // Shopstory component
   const styled: { [key: string]: any } = buildBoxes(
-    shopstoryCompiledConfig.styled,
+    shopstoryCompiledConfig.props.__styled,
     "",
     {},
     meta
