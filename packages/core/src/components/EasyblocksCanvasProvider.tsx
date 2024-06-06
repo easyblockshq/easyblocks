@@ -13,7 +13,7 @@ import {
   FetchOutputResources,
 } from "../types";
 
-type EasyblocksCanvasState = {
+export type EasyblocksCanvasState = {
   meta: CompilationMetadata;
   compiled: CompiledShopstoryComponentConfig;
   externalData: FetchOutputResources;

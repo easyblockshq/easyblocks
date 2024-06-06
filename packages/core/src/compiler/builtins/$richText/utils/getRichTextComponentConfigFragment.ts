@@ -5,16 +5,16 @@ import {
 import { RichTextComponentConfig } from "../$richText";
 import { RichTextPartComponentConfig } from "../$richTextPart/$richTextPart";
 import { duplicateConfig } from "../../../duplicateConfig";
-import { EditorContextType } from "../../../types";
 import { parseFocusedRichTextPartConfigPath } from "./parseRichTextPartConfigPath";
 import { stripRichTextPartSelection } from "./stripRichTextTextPartSelection";
+import { EasyblocksCanvasState } from "../../../../components/EasyblocksCanvasProvider";
 
 function getRichTextComponentConfigFragment(
   sourceRichTextComponentConfig: RichTextComponentConfig,
-  focussedField: EditorContextType["focussedField"],
-  locale: EditorContextType["contextParams"]["locale"],
-  formValues: EditorContextType["form"]["values"],
-  definitions: EditorContextType["definitions"]
+  focussedField: EasyblocksCanvasState["focussedField"],
+  locale: EasyblocksCanvasState["locale"],
+  formValues: EasyblocksCanvasState["formValues"],
+  definitions: EasyblocksCanvasState["definitions"]
 ): RichTextComponentConfig & {
   _itemProps?: Record<string, unknown>;
 } {
