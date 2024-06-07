@@ -29,18 +29,18 @@ export function richTextLineElementStyles({
       },
       ListItem: {
         __as: "li",
-        display: "flex",
-        justifyContent: mapAlignmentToFlexAlignment(values.align),
+        // display: "flex",
+        // justifyContent: mapAlignmentToFlexAlignment(values.align),
         alignItems: "baseline",
-        paddingLeft: 0,
-        lineHeight: "initial",
+        // paddingLeft: 0,
+        lineHeight: "inherit",
         wordBreak: "break-word",
-        listStyle: "none",
+        listStyle: "inherit",
         counterIncrement: "list-item",
         // Allows flex items to break when text is overflowing
-        "& > *": {
-          minWidth: 0,
-        },
+        // "& > *": {
+        //   minWidth: 0,
+        // },
       },
     },
 

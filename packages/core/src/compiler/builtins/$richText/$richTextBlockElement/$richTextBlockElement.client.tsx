@@ -45,5 +45,5 @@ export function RichTextBlockElementClient(props: RichTextBlockElementProps) {
     console.warn(`Unknown @easyblocks/rich-text-block-element type "${type}"`);
   }
 
-  return <div>{elements}</div>;
+  return <span>{elements}</span>;
 }

@@ -21,7 +21,7 @@ export function RichTextLineElementClient(props: RichTextLineElementProps) {
   if (blockType === "bulleted-list" || blockType === "numbered-list") {
     return (
       <ListItem.type {...ListItem.props}>
-        <div>{elements}</div>
+        <span>{elements}</span>
       </ListItem.type>
     );
   }

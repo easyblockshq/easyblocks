@@ -13,9 +13,11 @@ export function richTextStyles({
   return {
     styled: {
       Root: {
-        display: "flex",
-        justifyContent: mapAlignmentToFlexAlignment(align),
-        textAlign: align,
+        // display: "flex",
+        // justifyContent: mapAlignmentToFlexAlignment(align),
+        // textAlign: align,
+        // color: values.mainColor,
+        // ...values.mainFont
       },
     },
     components: {

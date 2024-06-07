@@ -7,6 +7,7 @@ import type {
 const DEFAULT_FONT_VALUES = {
   fontWeight: "initial",
   fontStyle: "initial",
+  lineHeight: "initial",
 };
 
 export interface RichTextPartValues {
