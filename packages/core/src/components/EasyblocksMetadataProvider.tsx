@@ -4,19 +4,38 @@ import { createStitches } from "@stitches/core";
 import React, { createContext, ReactNode, useContext } from "react";
 import { easyblocksStitchesInstances } from "./ssr";
 import { CompilationMetadata } from "../types";
+import { buildBoxes } from "./Box/Box";
 
 const EasyblocksMetadataContext = createContext<
-  (CompilationMetadata & { stitches: any }) | undefined
+  (CompilationMetadata & { transformProps: any }) | undefined
 >(undefined);
 
 type EasyblocksMetadataProviderProps = {
   children: ReactNode;
   meta: CompilationMetadata;
+  transformProps?: any;
 };
+
+function defaultTransportProps(props: any, meta: any) {
+  const { __styled, ...originalProps } = props;
+
+  const newProps: { [key: string]: any } = buildBoxes(
+    props.__styled,
+    "",
+    {},
+    meta
+  );
+
+  return {
+    ...originalProps,
+    ...newProps,
+  };
+}
 
 const EasyblocksMetadataProvider: React.FC<EasyblocksMetadataProviderProps> = ({
   meta,
   children,
+  transformProps,
 }) => {
   // Let's load stitches instance
   if (easyblocksStitchesInstances.length === 0) {
@@ -27,6 +46,7 @@ const EasyblocksMetadataProvider: React.FC<EasyblocksMetadataProviderProps> = ({
     <EasyblocksMetadataContext.Provider
       value={{
         ...meta,
+        transformProps: transformProps ?? defaultTransportProps,
         stitches: easyblocksStitchesInstances[0],
       }}
     >

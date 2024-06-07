@@ -42,41 +42,10 @@ import {
   NoCodeComponentProps,
   ResponsiveValue,
 } from "../../types";
-import { Box } from "../Box/Box";
+// import { Box } from "../Box/Box";
 import { useEasyblocksExternalData } from "../EasyblocksExternalDataProvider";
 import { useEasyblocksMetadata } from "../EasyblocksMetadataProvider";
-
-function buildBoxes(
-  compiled: any,
-  name: string,
-  actionWrappers: { [key: string]: any },
-  meta: any
-): any {
-  if (Array.isArray(compiled)) {
-    return compiled.map((x: any, index: number) =>
-      buildBoxes(x, `${name}.${index}`, actionWrappers, meta)
-    );
-  } else if (typeof compiled === "object" && compiled !== null) {
-    if (compiled.__isBox) {
-      const boxProps = {
-        __compiled: compiled,
-        __name: name,
-        devices: meta.vars.devices,
-        stitches: meta.stitches,
-      };
-
-      return <Box {...boxProps} />;
-    }
-
-    const ret: Record<string, any> = {};
-
-    for (const key in compiled) {
-      ret[key] = buildBoxes(compiled[key], key, actionWrappers, meta);
-    }
-    return ret;
-  }
-  return compiled;
-}
+// import { buildBoxes } from "../Box/Box";
 
 function getComponentDefinition(
   compiled: CompiledComponentConfig,
@@ -400,13 +369,26 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
 
   const shopstoryCompiledConfig = compiled as CompiledShopstoryComponentConfig;
 
-  // Shopstory component
-  const styled: { [key: string]: any } = buildBoxes(
-    shopstoryCompiledConfig.props.__styled,
-    "",
-    {},
+  const transformedProps = meta.transformProps(
+    shopstoryCompiledConfig.props,
     meta
   );
+
+  // console.log('--');
+  // console.log('original props', shopstoryCompiledConfig.props);
+  // console.log('transformed props', transformedProps);
+
+  // Shopstory component
+  // const styled: { [key: string]: any } = buildBoxes(
+  //   shopstoryCompiledConfig.props.__styled,
+  //   "",
+  //   {},
+  //   meta
+  // );
+
+  // console.log('styled', styled);
+
+  const childrenComponents: { [key: string]: any } = {};
 
   // Styled
   componentDefinition.schema.forEach((schemaProp) => {
@@ -417,7 +399,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
       const compiledChildren =
         shopstoryCompiledConfig.components[schemaProp.prop];
 
-      styled[schemaProp.prop] = getCompiledSubcomponents(
+      childrenComponents[schemaProp.prop] = getCompiledSubcomponents(
         compiled._id,
         compiledChildren,
         contextProps,
@@ -448,6 +430,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
   };
 
   const componentProps = {
+    ...transformedProps,
     ...restPassedProps,
     ...mapExternalProps(
       shopstoryCompiledConfig.props,
@@ -455,7 +438,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
       componentDefinition,
       externalData
     ),
-    ...styled,
+    ...childrenComponents,
     __easyblocks: easyblocksProp,
   };
 

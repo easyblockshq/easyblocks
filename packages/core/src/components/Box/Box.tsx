@@ -19,7 +19,7 @@ type BoxProps = {
   [key: string]: any;
 };
 
-const Box = React.forwardRef<HTMLElement, BoxProps>((props, ref) => {
+export const Box = React.forwardRef<HTMLElement, BoxProps>((props, ref) => {
   /**
    * passedProps - the props given in component code like <MyBox data-id="abc" /> (data-id is in passedProps)
    * restProps - the props given by Shopstory (like from actionWrapper)
@@ -72,4 +72,34 @@ const Box = React.forwardRef<HTMLElement, BoxProps>((props, ref) => {
   );
 });
 
-export { Box };
+export function buildBoxes(
+  compiled: any,
+  name: string,
+  actionWrappers: { [key: string]: any },
+  meta: any
+): any {
+  if (Array.isArray(compiled)) {
+    return compiled.map((x: any, index: number) =>
+      buildBoxes(x, `${name}.${index}`, actionWrappers, meta)
+    );
+  } else if (typeof compiled === "object" && compiled !== null) {
+    if (compiled.__isBox) {
+      const boxProps = {
+        __compiled: compiled,
+        __name: name,
+        devices: meta.vars.devices,
+        stitches: meta.stitches,
+      };
+
+      return <Box {...boxProps} />;
+    }
+
+    const ret: Record<string, any> = {};
+
+    for (const key in compiled) {
+      ret[key] = buildBoxes(compiled[key], key, actionWrappers, meta);
+    }
+    return ret;
+  }
+  return compiled;
+}
