@@ -57,6 +57,7 @@ const LocalFieldPlugin = {
         params={
           "params" in field.schemaProp ? field.schemaProp.params : undefined
         }
+        field={field}
       />
     );
   }),
