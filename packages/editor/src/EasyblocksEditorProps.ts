@@ -23,6 +23,7 @@ export type EasyblocksEditorProps = {
     | ComponentType<WidgetComponentProps<any>>
     | ComponentType<InlineTypeWidgetComponentProps<any>>
   >;
-
+  canvasURL?: string;
+  isCanvas?: boolean;
   __debug?: boolean;
 };

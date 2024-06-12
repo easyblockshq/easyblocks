@@ -31,6 +31,7 @@ type EasyblocksParentProps = {
     | ComponentType<InlineTypeWidgetComponentProps<any>>
   >;
   components?: Record<string, ComponentType<any>>;
+  canvasURL?: string;
 };
 
 const shouldForwardProp: ShouldForwardProp<"web"> = (propName, target) => {
@@ -82,6 +83,7 @@ export function EasyblocksParent(props: EasyblocksParentProps) {
               ...props.widgets,
             }}
             components={props.components}
+            canvasURL={props.canvasURL}
           />
         </TooltipProvider>
         <Toaster containerStyle={{ zIndex: 100100 }} />

@@ -7,6 +7,7 @@ interface EditorIframeWrapperProps {
   height: number;
   transform: string;
   containerRef: React.RefObject<HTMLDivElement>;
+  canvasURL?: string;
 }
 
 function EditorIframe({
@@ -14,6 +15,7 @@ function EditorIframe({
   height,
   transform,
   containerRef,
+  canvasURL,
 }: EditorIframeWrapperProps) {
   const [isIframeReady, setIframeReady] = useState(false);
 
@@ -26,7 +28,7 @@ function EditorIframe({
       <IframeInnerContainer>
         <Iframe
           id="shopstory-canvas"
-          src={window.location.href}
+          src={canvasURL || window.location.href}
           onLoad={handleIframeLoaded}
           style={{
             // These properties will change a lot during resizing, so we don't pass it to styled component to prevent

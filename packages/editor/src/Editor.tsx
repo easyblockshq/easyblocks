@@ -186,6 +186,7 @@ type EditorProps = {
     | ComponentType<TokenTypeWidgetComponentProps<any>>
   >;
   components?: Record<string, ComponentType<any>>;
+  canvasURL?: string;
 };
 
 export const Editor = EditorBackendInitializer;
@@ -1166,6 +1167,7 @@ const EditorContent = ({
                   height={iframeSize.height}
                   transform={iframeSize.transform}
                   containerRef={iframeContainerRef}
+                  canvasURL={props.canvasURL}
                 />
                 {isEditing && (
                   <SelectionFrame

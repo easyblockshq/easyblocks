@@ -16,7 +16,7 @@ import TypePlaceholder from "./Placeholder";
 export function EasyblocksEditor(props: EasyblocksEditorProps) {
   const [selectedWindow, setSelectedWindow] = useState<
     "parent" | "child" | "preview" | null
-  >(null);
+  >(props.isCanvas ? "child" : null);
 
   const setSelectedWindowToParent = () => {
     window.isShopstoryEditor = true;
@@ -26,6 +26,10 @@ export function EasyblocksEditor(props: EasyblocksEditorProps) {
   useEffect(() => {
     if (parseQueryParams().preview) {
       setSelectedWindow("preview");
+      return;
+    }
+
+    if (props.isCanvas) {
       return;
     }
 
@@ -69,6 +73,7 @@ export function EasyblocksEditor(props: EasyblocksEditorProps) {
           onExternalDataChange={props.onExternalDataChange ?? (() => ({}))}
           widgets={props.widgets}
           components={props.components}
+          canvasURL={props.canvasURL}
         />
       )}
 
