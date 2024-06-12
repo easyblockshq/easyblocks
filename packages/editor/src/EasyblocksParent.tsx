@@ -19,7 +19,10 @@ import { GlobalStyles } from "./tinacms/styles";
 import { SpaceTokenWidget } from "./sidebar/SpaceTokenWidget";
 import { parseQueryParams } from "./parseQueryParams";
 import { DocumentDataWidgetComponent } from "./sidebar/DocumentDataWidget";
-import { ExternalDataChangeHandler } from "./EasyblocksEditorProps";
+import {
+  EasyblocksEditorPlugins,
+  ExternalDataChangeHandler,
+} from "./EasyblocksEditorProps";
 
 type EasyblocksParentProps = {
   config: Config;
@@ -31,6 +34,7 @@ type EasyblocksParentProps = {
     | ComponentType<InlineTypeWidgetComponentProps<any>>
   >;
   components?: Record<string, ComponentType<any>>;
+  plugins?: EasyblocksEditorPlugins;
 };
 
 const shouldForwardProp: ShouldForwardProp<"web"> = (propName, target) => {
@@ -82,6 +86,7 @@ export function EasyblocksParent(props: EasyblocksParentProps) {
               ...props.widgets,
             }}
             components={props.components}
+            plugins={props.plugins}
           />
         </TooltipProvider>
         <Toaster containerStyle={{ zIndex: 100100 }} />
