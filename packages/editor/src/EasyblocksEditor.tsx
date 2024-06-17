@@ -62,6 +62,11 @@ export function EasyblocksEditor(props: EasyblocksEditorProps) {
           onExternalDataChange={props.onExternalDataChange ?? (() => ({}))}
           widgets={props.widgets}
           components={props.components}
+          readOnly={props.readOnly}
+          locale={props.locale}
+          documentId={props.documentId}
+          rootTemplate={props.rootTemplate}
+          rootComponent={props.rootComponent}
         />
       )}
 
