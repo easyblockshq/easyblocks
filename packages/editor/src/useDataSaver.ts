@@ -17,6 +17,7 @@ export function useDataSaver(
   editorContext: EditorContextType
 ) {
   const remoteDocument = useRef<Document | null>(initialDocument);
+  remoteDocument.current = initialDocument;
 
   /**
    * This state variable is going to be used ONLY for comparison with local config in case of missing document.
@@ -168,9 +169,10 @@ export function useDataSaver(
     }, 5000);
 
     return () => {
+      console.log("clearing");
       clearInterval(interval);
     };
-  }, []);
+  }, [initialDocument]);
 
   return {
     saveNow: async () => {

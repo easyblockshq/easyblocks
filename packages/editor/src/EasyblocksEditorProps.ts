@@ -25,4 +25,9 @@ export type EasyblocksEditorProps = {
   >;
 
   __debug?: boolean;
+  rootTemplate?: string;
+  rootComponent?: string;
+  locale?: string;
+  documentId?: string;
+  readOnly?: boolean;
 };

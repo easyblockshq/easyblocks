@@ -196,6 +196,8 @@ function EditorBackendInitializer(props: EditorProps) {
           }
 
           setDocument(document);
+        } else {
+          setDocument(null);
         }
       } catch (error) {
         console.error(error);
@@ -209,7 +211,7 @@ function EditorBackendInitializer(props: EditorProps) {
     }
 
     run();
-  }, []);
+  }, [props.documentId]);
 
   if (!enabled) {
     return <AuthenticationScreen>Loading...</AuthenticationScreen>;
@@ -648,7 +650,7 @@ const EditorContent = ({
   const sidebarNodeRef = useRef<HTMLDivElement | null>(null);
 
   const [editableData, form] = useForm({
-    id: "easyblocks-editor",
+    id: `easyblocks-editor-${initialEntry._id}`,
     label: "Edit entry",
     fields: [],
     initialValues: initialEntry,
