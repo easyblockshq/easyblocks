@@ -765,6 +765,12 @@ const EditorContent = ({
         });
 
         setFocussedField(fieldsToFocus);
+
+        /* Send content change event to canvas to notify it about the change */
+        shopstoryCanvasIframe?.current?.contentWindow?.postMessage(
+          "@easyblocks/content-changed",
+          "*"
+        );
       });
     },
     logSelectedItems: () => {
