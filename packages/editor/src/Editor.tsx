@@ -648,7 +648,7 @@ const EditorContent = ({
   const sidebarNodeRef = useRef<HTMLDivElement | null>(null);
 
   const [editableData, form] = useForm({
-    id: "easyblocks-editor",
+    id: `easyblocks-editor-${initialEntry._id}`,
     label: "Edit entry",
     fields: [],
     initialValues: initialEntry,
