@@ -89,6 +89,7 @@ export const EditorTopBar: React.FC<{
   onAdminModeChange: (x: boolean) => void;
   hideCloseButton: boolean;
   readOnly: boolean;
+  hideTopBar?: boolean;
 }> = ({
   onClose,
   onViewportChange,
@@ -101,12 +102,18 @@ export const EditorTopBar: React.FC<{
   onAdminModeChange,
   hideCloseButton,
   readOnly,
+  hideTopBar,
 }) => {
   const headingRef = useRef<HTMLDivElement>(null);
 
   useOnClickNTimes(headingRef, 5, () => {
     onAdminModeChange(true);
   });
+
+  /* Dont render the top bar if hideTopBar is true */
+  if (hideTopBar) {
+    return null;
+  }
 
   return (
     <TopBar ref={headingRef}>

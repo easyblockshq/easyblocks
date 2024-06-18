@@ -1043,6 +1043,7 @@ const EditorContent = ({
               }}
               hideCloseButton={props.config.hideCloseButton ?? false}
               readOnly={editorContext.readOnly}
+              hideTopBar={props.config.hideTopBar}
             />
             <SidebarAndContentContainer height={appHeight}>
               <ContentContainer
