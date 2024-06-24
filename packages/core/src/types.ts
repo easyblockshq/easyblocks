@@ -1,6 +1,7 @@
 import { ComponentType, ReactElement } from "react";
 import { PartialDeep } from "type-fest";
 import { Locale } from "./locales";
+import { InternalComponentDefinition } from "./_internals";
 
 export type ScalarOrCollection<T> = T | Array<T>;
 
@@ -438,6 +439,13 @@ export type RootParameter = {
   widgets: Array<Widget>;
 };
 
+export type GroupDefinition = {
+  key: string;
+  label: string;
+  collapsable?: boolean;
+  collapsed?: boolean;
+};
+
 export type NoCodeComponentDefinition<
   Values extends Record<string, any> = Record<string, any>,
   Params extends Record<string, any> = Record<string, any>
@@ -458,6 +466,7 @@ export type NoCodeComponentDefinition<
   }) => SidebarPreviewVariant | undefined;
   allowSave?: boolean;
   rootParams?: RootParameter[];
+  groups?: GroupDefinition[];
 };
 
 /**
