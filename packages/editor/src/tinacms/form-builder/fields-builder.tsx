@@ -1,5 +1,5 @@
 import { InternalField } from "@easyblocks/core/_internals";
-import { Colors, Fonts, Typography } from "@easyblocks/design-system";
+import { Colors, Fonts, Icons, Typography } from "@easyblocks/design-system";
 import { toArray } from "@easyblocks/utils";
 import React, { useContext } from "react";
 import styled, { css } from "styled-components";
@@ -25,6 +25,7 @@ import { LocalFieldPlugin } from "../fields/plugins/LocalFIeld";
 import { PositionFieldPlugin } from "../fields/plugins/PositionFieldPlugin";
 import { FieldPlugin } from "./field-plugin";
 import { createFieldController } from "./utils/createFieldController";
+import { GroupDefinition } from "@easyblocks/core";
 
 export interface FieldBuilderProps {
   form: Form;
@@ -154,6 +155,9 @@ export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
   const panelContext = useContext(PanelContext);
   const grouped: Record<string, Array<InternalField>> = {};
   const ungrouped: Array<InternalField> = [];
+  const groupsDefinitions: {
+    [key: string]: GroupDefinition;
+  } = {};
 
   fields.forEach((field) => {
     if (!shouldFieldBeDisplayed(field)) {
@@ -163,6 +167,14 @@ export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
     if (field.group) {
       grouped[field.group] = grouped[field.group] || [];
       grouped[field.group].push(field);
+
+      const groupDefinition = field.schemaProp.definition.groups?.find(
+        (group) => group.key === field.group
+      );
+
+      if (groupDefinition && !groupsDefinitions[field.group]) {
+        groupsDefinitions[field.group] = groupDefinition;
+      }
     } else {
       if (field.component === "identity") {
         return;
@@ -198,26 +210,37 @@ export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
           {horizontalLine}
         </React.Fragment>
       )}
-      {Object.keys(grouped).map((groupName) => (
-        <div key={groupName}>
-          <FieldsGroupLabel>{groupName}</FieldsGroupLabel>
-          {grouped[groupName].map((field, index, fields) => (
-            <div
-              key={generateFieldKey(field, breakpointIndex)}
-              css={css`
-                margin-bottom: ${index === fields.length - 1 ? "8px" : 0};
-              `}
-            >
-              <FieldBuilder
-                field={field}
-                form={form}
-                isLabelHidden={field.schemaProp.isLabelHidden}
-              />
-            </div>
-          ))}
-          {horizontalLine}
-        </div>
-      ))}
+      {Object.keys(grouped).map((groupName) => {
+        const groupProps = groupsDefinitions[groupName];
+        const DetailTag = groupProps?.collapsable ? "details" : "div";
+        return (
+          <div>
+            <DetailTag key={groupName} open={!groupProps?.collapsed}>
+              <summary>
+                <FieldsGroupLabel>
+                  {groupProps?.label || groupName}
+                  {groupProps?.collapsable && <Icons.ChevronDown size={16} />}
+                </FieldsGroupLabel>
+              </summary>
+              {grouped[groupName].map((field, index, fields) => (
+                <div
+                  key={generateFieldKey(field, breakpointIndex)}
+                  css={css`
+                    margin-bottom: ${index === fields.length - 1 ? "8px" : 0};
+                  `}
+                >
+                  <FieldBuilder
+                    field={field}
+                    form={form}
+                    isLabelHidden={field.schemaProp.isLabelHidden}
+                  />
+                </div>
+              ))}
+            </DetailTag>
+            {horizontalLine}
+          </div>
+        );
+      })}
       {ungrouped.map((field, index, fields) => (
         <div
           key={generateFieldKey(field, breakpointIndex)}
@@ -250,6 +273,8 @@ function generateFieldKey(
 const FieldsGroupLabel = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
 
   padding: 20px 16px 10px 16px;
 
@@ -265,4 +290,22 @@ const FieldsGroup = styled.div`
   white-space: nowrap;
   overflow-x: hidden;
   overflow-y: auto !important;
+
+  summary {
+    position: relative;
+    &::marker {
+      display: none;
+      content: "";
+    }
+  }
+
+  details summary {
+    cursor: pointer;
+  }
+
+  details[open] summary {
+    svg {
+      transform: rotate(180deg);
+    }
+  }
 `;
