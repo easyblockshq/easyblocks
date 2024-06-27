@@ -59,6 +59,7 @@ import { getFocusedFieldsFromSlateSelection } from "./utils/getFocusedFieldsFrom
 import { getFocusedRichTextPartsConfigPaths } from "./utils/getFocusedRichTextPartsConfigPaths";
 import { getRichTextComponentConfigFragment } from "./utils/getRichTextComponentConfigFragment";
 import { NORMALIZED_IDS_TO_IDS, withEasyblocks } from "./withEasyblocks";
+import { liStyles, olStyles, paragraphStyles, ulStyles } from "./styles";
 
 interface RichTextProps extends InternalNoCodeComponentProps {
   elements: Array<
@@ -364,43 +365,90 @@ function RichTextEditor(props: RichTextProps) {
       throw new Error("Missing element");
     }
 
-    const compiledStyles = (() => {
-      if (Element._component === "@easyblocks/rich-text-block-element") {
-        if (Element.props.type === "bulleted-list") {
-          return Element.props.__styled.BulletedList;
-        } else if (Element.props.type === "numbered-list") {
-          return Element.props.__styled.NumberedList;
-        } else if (Element.props.type === "paragraph") {
-          return Element.props.__styled.Paragraph;
-        }
-      } else if (Element._component === "@easyblocks/rich-text-line-element") {
-        if (element.type === "text-line") {
-          return Element.props.__styled.TextLine;
-        } else if (element.type === "list-item") {
-          return Element.props.__styled.ListItem;
-        }
-      }
-    })();
+    console.log("@@@@", Element._component, Element);
 
-    if (compiledStyles === undefined) {
-      throw new Error("Unknown element type");
+    if (Element._component === "@easyblocks/rich-text-block-element") {
+      if (Element.props.type === "bulleted-list") {
+        return (
+          <ul style={ulStyles} {...attributes}>
+            {children}
+          </ul>
+        );
+
+        // return Element.props.__styled.BulletedList;
+      } else if (Element.props.type === "numbered-list") {
+        return (
+          <ol style={olStyles} {...attributes}>
+            {children}
+          </ol>
+        );
+
+        // return Element.props.__styled.NumberedList;
+      } else if (Element.props.type === "paragraph") {
+        return React.createElement(
+          Element.props.accessibilityRole,
+          attributes,
+          children
+        );
+
+        // return Element.props.__styled.Paragraph;
+      }
+    } else if (Element._component === "@easyblocks/rich-text-line-element") {
+      if (element.type === "text-line") {
+        return (
+          <div style={paragraphStyles} {...attributes}>
+            {children}
+          </div>
+        );
+      } else if (element.type === "list-item") {
+        return (
+          <li style={liStyles} {...attributes}>
+            <span>{children}</span>
+          </li>
+        );
+        // return Element.props.__styled.ListItem;
+      }
     }
 
-    return (
-      <Box
-        __compiled={compiledStyles}
-        devices={devices}
-        stitches={stitches}
-        {...attributes}
-        // Element annotation for easier debugging
-        {...(process.env.NODE_ENV === "development" && {
-          "data-shopstory-element-type": element.type,
-          "data-shopstory-id": element.id,
-        })}
-      >
-        {element.type === "list-item" ? <div>{children}</div> : children}
-      </Box>
-    );
+    throw new Error("Unknown element type");
+
+    // const compiledStyles = (() => {
+    //   if (Element._component === "@easyblocks/rich-text-block-element") {
+    //     if (Element.props.type === "bulleted-list") {
+    //       return Element.props.__styled.BulletedList;
+    //     } else if (Element.props.type === "numbered-list") {
+    //       return Element.props.__styled.NumberedList;
+    //     } else if (Element.props.type === "paragraph") {
+    //       return Element.props.__styled.Paragraph;
+    //     }
+    //   } else if (Element._component === "@easyblocks/rich-text-line-element") {
+    //     if (element.type === "text-line") {
+    //       return Element.props.__styled.TextLine;
+    //     } else if (element.type === "list-item") {
+    //       return Element.props.__styled.ListItem;
+    //     }
+    //   }
+    // })();
+
+    // if (compiledStyles === undefined) {
+    //   throw new Error("Unknown element type");
+    // }
+
+    // return (
+    //   <Box
+    //     __compiled={compiledStyles}
+    //     devices={devices}
+    //     stitches={stitches}
+    //     {...attributes}
+    //     // Element annotation for easier debugging
+    //     {...(process.env.NODE_ENV === "development" && {
+    //       "data-shopstory-element-type": element.type,
+    //       "data-shopstory-id": element.id,
+    //     })}
+    //   >
+    //     {element.type === "list-item" ? <div>{children}</div> : children}
+    //   </Box>
+    // );
   }
 
   const TextParts = extractTextPartsFromCompiledComponents(props);
@@ -789,7 +837,7 @@ function RichTextEditor(props: RichTextProps) {
 
   return (
     <Slate editor={editor} value={editorValue} onChange={handleEditableChange}>
-      <div>
+      <div className={props.__fontAndColorClassNames}>
         {/* this wrapper div prevents from Chrome bug where "pointer-events: none" on contenteditable is ignored*/}
         <Editable
           className={contentEditableClassName}

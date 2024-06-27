@@ -450,13 +450,49 @@ export function compileComponent(
       editingContextProps = editingInfo.components;
     }
 
-    const { props, components } = build({
+    const buildParams = {
       values: compiledValues,
       params: { ...ownPropsAfterAuto.params, $width, $widthAuto },
       isEditing: !!compilationContext.isEditing,
       devices: compilationContext.devices,
       definition: renderableComponentDefinition,
-    });
+    };
+
+    const { props, components } = build(buildParams);
+
+    // font and color
+    if (
+      componentDefinition.id === "@easyblocks/rich-text" ||
+      componentDefinition.id === "@easyblocks/rich-text-part"
+    ) {
+      const isPart = componentDefinition.id === "@easyblocks/rich-text-part";
+
+      const fontAndColorPseudoDefinition = {
+        id: "__fontAndColor__",
+        schema: [
+          {
+            prop: "font",
+            type: "font",
+          },
+          {
+            prop: "color",
+            type: "color",
+          },
+        ],
+      };
+
+      props.__fontAndColorArtifacts = buildFontAndColor({
+        values: isPart
+          ? { font: compiledValues.font, color: compiledValues.color }
+          : { font: compiledValues.mainFont, color: compiledValues.mainColor },
+        params: {},
+        isEditing: !!compilationContext.isEditing,
+        devices: compilationContext.devices,
+        definition: fontAndColorPseudoDefinition,
+      });
+
+      // console.log(`result for ${componentDefinition.id}`, fontAndColor);
+    }
 
     validateStylesProps(props, componentDefinition);
 
@@ -643,6 +679,40 @@ function validateStylesProps(
       );
     }
   }
+}
+
+const DEFAULT_FONT_VALUES = {
+  fontWeight: "initial",
+  fontStyle: "initial",
+  lineHeight: "initial",
+};
+
+function buildFontAndColor(input: {
+  values: { font: any; color: string };
+  params: any;
+  isEditing: boolean;
+  devices: Devices;
+  definition: InternalRenderableComponentDefinition;
+}) {
+  const result = build({
+    ...input,
+    definition: {
+      ...input.definition,
+      styles: ({ values }) => {
+        return {
+          styled: {
+            Result: {
+              ...DEFAULT_FONT_VALUES,
+              ...values.font,
+              color: values.color,
+            },
+          },
+        };
+      },
+    },
+  });
+
+  return result.props.__styled.Result;
 }
 
 function build(input: {

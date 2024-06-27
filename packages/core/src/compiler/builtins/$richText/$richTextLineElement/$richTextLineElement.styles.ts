@@ -22,29 +22,29 @@ export function richTextLineElementStyles({
   RichTextLineParams
 >): NoCodeComponentStylesFunctionResult {
   return {
-    styled: {
-      TextLine: {
-        lineHeight: "initial",
-        wordBreak: "break-word",
-      },
-      ListItem: {
-        __as: "li",
-        // display: "flex",
-        // justifyContent: mapAlignmentToFlexAlignment(values.align),
-        alignItems: "baseline",
-        // paddingLeft: 0,
-        lineHeight: "inherit",
-        wordBreak: "break-word",
-        listStyle: "inherit",
-        counterIncrement: "list-item",
+    // styled: {
+    //   TextLine: {
+    //     lineHeight: "initial",
+    //     wordBreak: "break-word",
+    //   },
+    //   ListItem: {
+    //     __as: "li",
+    //     // display: "flex",
+    //     // justifyContent: mapAlignmentToFlexAlignment(values.align),
+    //     // paddingLeft: 0,
+    //     alignItems: "baseline",
+    //     lineHeight: "inherit",
+    //     wordBreak: "break-word",
+    //     listStyle: "inherit",
+    //     counterIncrement: "list-item",
 
-        // ...params.mainColor
-        // Allows flex items to break when text is overflowing
-        // "& > *": {
-        //   minWidth: 0,
-        // },
-      },
-    },
+    //     // ...params.mainColor
+    //     // Allows flex items to break when text is overflowing
+    //     // "& > *": {
+    //     //   minWidth: 0,
+    //     // },
+    //   },
+    // },
 
     props: {
       blockType: params.blockType,

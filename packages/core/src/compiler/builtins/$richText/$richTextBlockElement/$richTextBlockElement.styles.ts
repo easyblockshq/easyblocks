@@ -96,23 +96,23 @@ export function richTextBlockElementStyles({
   // };
 
   return {
-    styled: {
-      Paragraph: { __as: accessibilityRole },
-      BulletedList: {
-        __as: "ul",
-        listStyle: "initial",
-        listStylePosition: "inside",
-        // ...mainFont,
-        // paddingInlineStart: "0.9em",
-      }, // ...listStyles },
-      NumberedList: {
-        __as: "ol",
-        listStyle: "decimal",
-        listStylePosition: "inside",
-        // ...mainFont,
-        // paddingInlineStart: "4ch",
-      }, // ...listStyles },
-    },
+    // styled: {
+    //   Paragraph: { /*__as: accessibilityRole */ },
+    //   BulletedList: {
+    //     // __as: "ul",
+    //     // listStyle: "initial",
+    //     // listStylePosition: "inside",
+    //     // ...mainFont,
+    //     // paddingInlineStart: "0.9em",
+    //   }, // ...listStyles },
+    //   NumberedList: {
+    //     // __as: "ol",
+    //     // listStyle: "decimal",
+    //     // listStylePosition: "inside",
+    //     // ...mainFont,
+    //     // paddingInlineStart: "4ch",
+    //   }, // ...listStyles },
+    // },
     components: {
       elements: {
         itemProps: elements.map(() => ({

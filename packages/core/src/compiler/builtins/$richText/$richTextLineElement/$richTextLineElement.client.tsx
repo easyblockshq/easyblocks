@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import type { RichTextBlockElementType } from "../$richTextBlockElement/$richTextBlockElement";
-
+import { liStyles, paragraphStyles } from "../styles";
 type RichTextLineElementProps = {
   blockType: RichTextBlockElementType;
   elements: Array<React.ReactElement>;
@@ -15,15 +15,22 @@ export function RichTextLineElementClient(props: RichTextLineElementProps) {
   ));
 
   if (blockType === "paragraph") {
-    return <TextLine.type {...TextLine.props}>{elements}</TextLine.type>;
+    return <div style={paragraphStyles}>{elements}</div>;
+    // return <TextLine.type {...TextLine.props}>{elements}</TextLine.type>;
   }
 
   if (blockType === "bulleted-list" || blockType === "numbered-list") {
     return (
-      <ListItem.type {...ListItem.props}>
+      <li style={liStyles}>
         <span>{elements}</span>
-      </ListItem.type>
+      </li>
     );
+
+    // return (
+    //   <ListItem.type {...ListItem.props}>
+    //     <span>{elements}</span>
+    //   </ListItem.type>
+    // );
   }
 
   if (process.env.NODE_ENV === "development") {

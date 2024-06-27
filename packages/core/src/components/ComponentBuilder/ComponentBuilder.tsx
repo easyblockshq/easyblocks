@@ -374,6 +374,18 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
     meta
   );
 
+  const isRichText = componentDefinition.id === "@easyblocks/rich-text";
+  const isRichTextPart =
+    componentDefinition.id === "@easyblocks/rich-text-part";
+
+  if (isRichText || isRichTextPart) {
+    const classNames = meta.generateFontAndColorClassNames(
+      shopstoryCompiledConfig.props.__fontAndColorArtifacts,
+      meta
+    );
+    transformedProps.__fontAndColorClassNames = classNames;
+  }
+
   // console.log('--');
   // console.log('original props', shopstoryCompiledConfig.props);
   // console.log('transformed props', transformedProps);

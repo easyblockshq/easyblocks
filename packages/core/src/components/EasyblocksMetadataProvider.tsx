@@ -4,7 +4,7 @@ import { createStitches } from "@stitches/core";
 import React, { createContext, ReactNode, useContext } from "react";
 import { easyblocksStitchesInstances } from "./ssr";
 import { CompilationMetadata } from "../types";
-import { buildBoxes } from "./Box/Box";
+import { buildBoxes, Box, generateClassNames } from "./Box/Box";
 
 const EasyblocksMetadataContext = createContext<
   (CompilationMetadata & { transformProps: any }) | undefined
@@ -16,7 +16,7 @@ type EasyblocksMetadataProviderProps = {
   transformProps?: any;
 };
 
-function defaultTransportProps(props: any, meta: any) {
+function defaultTransformProps(props: any, meta: any) {
   const { __styled, ...originalProps } = props;
 
   const newProps: { [key: string]: any } = buildBoxes(
@@ -30,6 +30,10 @@ function defaultTransportProps(props: any, meta: any) {
     ...originalProps,
     ...newProps,
   };
+}
+
+function defaultGenerateFontAndColorClassNames(input: any, meta: any) {
+  return generateClassNames(input, meta.vars.devices, meta.stitches).join(" ");
 }
 
 const EasyblocksMetadataProvider: React.FC<EasyblocksMetadataProviderProps> = ({
@@ -46,7 +50,8 @@ const EasyblocksMetadataProvider: React.FC<EasyblocksMetadataProviderProps> = ({
     <EasyblocksMetadataContext.Provider
       value={{
         ...meta,
-        transformProps: transformProps ?? defaultTransportProps,
+        transformProps: transformProps ?? defaultTransformProps,
+        generateFontAndColorClassNames: defaultGenerateFontAndColorClassNames,
         stitches: easyblocksStitchesInstances[0],
       }}
     >

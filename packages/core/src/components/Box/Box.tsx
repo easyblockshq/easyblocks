@@ -19,6 +19,28 @@ type BoxProps = {
   [key: string]: any;
 };
 
+export function generateClassNames(
+  styles: any,
+  devices: Devices,
+  stitches: any
+) {
+  /**
+   * Why parse+stringify?
+   *
+   * Because if we remove them some nested objects in styles (like media queries etc) don't work (although they exist in the object).
+   * Why? My bet is this: Stitches uses CSSOM to inject styles. Maybe (for some weird reason, maybe even browser bug) if some part of the object is not in iframe scope but in parent window scope then it's somehow ignored? Absolutely no idea right now, happy this works.
+   */
+  const correctedStyles = getBoxStyles(
+    JSON.parse(JSON.stringify(styles)),
+    devices
+  );
+
+  const generateBoxClass = stitches.css(boxStyles);
+  const generateClassName = stitches.css(correctedStyles);
+
+  return [generateBoxClass(), generateClassName()];
+}
+
 export const Box = React.forwardRef<HTMLElement, BoxProps>((props, ref) => {
   /**
    * passedProps - the props given in component code like <MyBox data-id="abc" /> (data-id is in passedProps)
@@ -37,7 +59,8 @@ export const Box = React.forwardRef<HTMLElement, BoxProps>((props, ref) => {
 
   const { as, itemWrappers, className, ...restPassedProps } = realProps;
 
-  const { boxClassName, componentClassName } = useMemo(() => {
+  const classes = useMemo(() => {
+    // return generateClassNames(styles, devices, stitches);
     /**
      * Why parse+stringify?
      *
@@ -52,10 +75,12 @@ export const Box = React.forwardRef<HTMLElement, BoxProps>((props, ref) => {
     const generateBoxClass = stitches.css(boxStyles);
     const generateClassName = stitches.css(correctedStyles);
 
-    return {
-      boxClassName: generateBoxClass(),
-      componentClassName: generateClassName(),
-    };
+    return [generateBoxClass(), generateClassName()];
+
+    // return {
+    //   boxClassName: generateBoxClass(),
+    //   componentClassName: generateClassName(),
+    // };
   }, [styles.__hash]);
 
   return React.createElement(
@@ -63,9 +88,7 @@ export const Box = React.forwardRef<HTMLElement, BoxProps>((props, ref) => {
     {
       ref,
       ...restPassedProps,
-      className: [boxClassName, componentClassName, className]
-        .filter(Boolean)
-        .join(" "),
+      className: [...classes, className].filter(Boolean).join(" "),
       "data-testid": __name,
     },
     props.children

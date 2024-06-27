@@ -11,15 +11,15 @@ export function richTextStyles({
   const align = params.passedAlign ?? values.align;
 
   return {
-    styled: {
-      Root: {
-        // display: "flex",
-        // justifyContent: mapAlignmentToFlexAlignment(align),
-        // textAlign: align,
-        // color: values.mainColor,
-        ...values.mainFont,
-      },
-    },
+    // styled: {
+    //   Root: {
+    //     // display: "flex",
+    //     // justifyContent: mapAlignmentToFlexAlignment(align),
+    //     // textAlign: align,
+    //     // color: values.mainColor,
+    //     // ...values.mainFont,
+    //   },
+    // },
     components: {
       elements: {
         // We store values within $richText to allow for changing them from sidebar, but we use them inside of $richTextBlockElement.

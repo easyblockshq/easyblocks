@@ -1,6 +1,7 @@
 import React, { ReactElement } from "react";
 import type { CompiledNoCodeComponentProps } from "../../../types";
 import type { RichTextBlockElementComponentConfig } from "./$richTextBlockElement";
+import { olStyles, ulStyles } from "../styles";
 
 type RichTextBlockElementProps = CompiledNoCodeComponentProps<
   RichTextBlockElementComponentConfig["_component"],
@@ -32,19 +33,11 @@ export function RichTextBlockElementClient(props: RichTextBlockElementProps) {
   }
 
   if (type === "bulleted-list") {
-    return (
-      <ul style={{ listStyle: "initial", listStylePosition: "inside" }}>
-        {elements}
-      </ul>
-    );
+    return <ul style={ulStyles}>{elements}</ul>;
   }
 
   if (type === "numbered-list") {
-    return (
-      <ol style={{ listStyle: "initial", listStylePosition: "inside" }}>
-        {elements}
-      </ol>
-    );
+    return <ol style={olStyles}>{elements}</ol>;
   }
 
   if (process.env.NODE_ENV === "development") {
