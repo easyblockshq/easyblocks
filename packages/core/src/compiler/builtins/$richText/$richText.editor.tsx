@@ -365,8 +365,6 @@ function RichTextEditor(props: RichTextProps) {
       throw new Error("Missing element");
     }
 
-    console.log("@@@@", Element._component, Element);
-
     if (Element._component === "@easyblocks/rich-text-block-element") {
       if (Element.props.type === "bulleted-list") {
         return (
