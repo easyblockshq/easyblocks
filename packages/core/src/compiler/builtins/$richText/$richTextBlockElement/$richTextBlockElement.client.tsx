@@ -19,6 +19,7 @@ export function RichTextBlockElementClient(props: RichTextBlockElementProps) {
     elements: Elements,
     NumberedList,
     Paragraph,
+    accessibilityRole,
   } = props;
 
   const elements = Elements.map((Element, index) => (
@@ -26,18 +27,23 @@ export function RichTextBlockElementClient(props: RichTextBlockElementProps) {
   ));
 
   if (type === "paragraph") {
-    return <Paragraph.type {...Paragraph.props}>{elements}</Paragraph.type>;
+    return React.createElement(accessibilityRole, {}, elements);
+    // return <Paragraph.type {...Paragraph.props}>{elements}</Paragraph.type>;
   }
 
   if (type === "bulleted-list") {
     return (
-      <BulletedList.type {...BulletedList.props}>{elements}</BulletedList.type>
+      <ul style={{ listStyle: "initial", listStylePosition: "inside" }}>
+        {elements}
+      </ul>
     );
   }
 
   if (type === "numbered-list") {
     return (
-      <NumberedList.type {...NumberedList.props}>{elements}</NumberedList.type>
+      <ol style={{ listStyle: "initial", listStylePosition: "inside" }}>
+        {elements}
+      </ol>
     );
   }
 

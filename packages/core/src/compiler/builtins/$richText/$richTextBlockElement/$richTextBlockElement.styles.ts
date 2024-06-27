@@ -101,14 +101,16 @@ export function richTextBlockElementStyles({
       BulletedList: {
         __as: "ul",
         listStyle: "initial",
-        ...mainFont,
-        paddingInlineStart: "0.9em",
+        listStylePosition: "inside",
+        // ...mainFont,
+        // paddingInlineStart: "0.9em",
       }, // ...listStyles },
       NumberedList: {
         __as: "ol",
         listStyle: "decimal",
-        ...mainFont,
-        paddingInlineStart: "4ch",
+        listStylePosition: "inside",
+        // ...mainFont,
+        // paddingInlineStart: "4ch",
       }, // ...listStyles },
     },
     components: {
@@ -116,8 +118,13 @@ export function richTextBlockElementStyles({
         itemProps: elements.map(() => ({
           blockType: type,
           align,
+          mainColor,
+          mainFont,
         })),
       },
+    },
+    props: {
+      accessibilityRole,
     },
   };
 }

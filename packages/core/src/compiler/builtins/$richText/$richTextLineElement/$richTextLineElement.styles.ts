@@ -1,4 +1,4 @@
-import { mapAlignmentToFlexAlignment } from "../$richText.styles";
+// import { mapAlignmentToFlexAlignment } from "../$richText.styles";
 import { Alignment } from "../$richText.types";
 import type { RichTextBlockElementType } from "../$richTextBlockElement/$richTextBlockElement";
 import {
@@ -37,6 +37,8 @@ export function richTextLineElementStyles({
         wordBreak: "break-word",
         listStyle: "inherit",
         counterIncrement: "list-item",
+
+        // ...params.mainColor
         // Allows flex items to break when text is overflowing
         // "& > *": {
         //   minWidth: 0,

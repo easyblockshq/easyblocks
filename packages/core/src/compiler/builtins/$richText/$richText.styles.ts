@@ -2,7 +2,7 @@ import type {
   NoCodeComponentStylesFunctionInput,
   NoCodeComponentStylesFunctionResult,
 } from "../../../types";
-import { Alignment } from "./$richText.types";
+// import { Alignment } from "./$richText.types";
 
 export function richTextStyles({
   values,
@@ -17,7 +17,7 @@ export function richTextStyles({
         // justifyContent: mapAlignmentToFlexAlignment(align),
         // textAlign: align,
         // color: values.mainColor,
-        // ...values.mainFont
+        ...values.mainFont,
       },
     },
     components: {
@@ -38,14 +38,14 @@ export function richTextStyles({
   };
 }
 
-export function mapAlignmentToFlexAlignment(align: Alignment) {
-  if (align === "center") {
-    return "center";
-  }
+// export function mapAlignmentToFlexAlignment(align: Alignment) {
+//   if (align === "center") {
+//     return "center";
+//   }
 
-  if (align === "right") {
-    return "flex-end";
-  }
+//   if (align === "right") {
+//     return "flex-end";
+//   }
 
-  return "flex-start";
-}
+//   return "flex-start";
+// }
