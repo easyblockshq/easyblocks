@@ -60,6 +60,7 @@ import { getFocusedRichTextPartsConfigPaths } from "./utils/getFocusedRichTextPa
 import { getRichTextComponentConfigFragment } from "./utils/getRichTextComponentConfigFragment";
 import { NORMALIZED_IDS_TO_IDS, withEasyblocks } from "./withEasyblocks";
 import { liStyles, olStyles, paragraphStyles, ulStyles } from "./styles";
+import { useEasyblocksMetadata } from "../../../_internals";
 
 interface RichTextProps extends InternalNoCodeComponentProps {
   elements: Array<
@@ -81,6 +82,8 @@ function RichTextEditor(props: RichTextProps) {
     locales,
     setFocussedField,
   } = editorContext;
+
+  const meta = useEasyblocksMetadata();
 
   const {
     __easyblocks: {
@@ -471,17 +474,15 @@ function RichTextEditor(props: RichTextProps) {
       throw new Error("Missing part");
     }
 
+    const classNames = meta.generateFontAndColorClassNames(
+      TextPart.props.__fontAndColorArtifacts,
+      meta
+    );
+
     const TextPartComponent = (
       <RichTextPartClient
         value={children}
-        Text={
-          <Box
-            __compiled={TextPart.props.__styled.Text}
-            devices={devices}
-            stitches={stitches}
-            {...attributes}
-          />
-        }
+        textAttributes={attributes}
         TextWrapper={
           TextPart.components.TextWrapper[0] ? (
             <ComponentBuilder
@@ -495,6 +496,7 @@ function RichTextEditor(props: RichTextProps) {
             />
           ) : undefined
         }
+        __fontAndColorClassNames={classNames}
       />
     );
 

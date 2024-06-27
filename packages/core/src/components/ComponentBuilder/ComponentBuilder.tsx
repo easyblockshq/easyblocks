@@ -383,6 +383,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
       shopstoryCompiledConfig.props.__fontAndColorArtifacts,
       meta
     );
+
     transformedProps.__fontAndColorClassNames = classNames;
   }
 

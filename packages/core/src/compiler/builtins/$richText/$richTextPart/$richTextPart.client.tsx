@@ -9,16 +9,29 @@ type RichTextPartProps = {
 };
 
 export function RichTextPartClient(props: RichTextPartProps) {
-  const { value, Text, TextWrapper } = props;
+  const {
+    value,
+    Text,
+    TextWrapper,
+    textAttributes = {},
+    __fontAndColorClassNames,
+  } = props;
   const textValue = value || "\uFEFF";
+
+  console.log("FONT AND COLOR", __fontAndColorClassNames);
 
   if (TextWrapper) {
     return (
-      <Text.type {...Text.props}>
+      <span className={__fontAndColorClassNames} {...textAttributes}>
         <TextWrapper.type {...TextWrapper.props}>{textValue}</TextWrapper.type>
-      </Text.type>
+      </span>
     );
   }
 
-  return <Text.type {...Text.props}>{textValue}</Text.type>;
+  return (
+    <span className={__fontAndColorClassNames} {...textAttributes}>
+      {textValue}
+    </span>
+  );
+  // return <Text.type {...Text.props}>{textValue}</Text.type>;
 }

@@ -50,8 +50,8 @@ export function richTextPartStyles({
   }
 
   return {
-    styled: {
-      Text: textStyles,
-    },
+    // styled: {
+    //   // Text: textStyles,
+    // },
   };
 }
