@@ -7,7 +7,11 @@ import { CompilationMetadata } from "../types";
 import { buildBoxes, Box, generateClassNames } from "./Box/Box";
 
 const EasyblocksMetadataContext = createContext<
-  (CompilationMetadata & { transformProps: any }) | undefined
+  | (CompilationMetadata & {
+      transformProps: any;
+      generateClassNames: (input: any, meta: any) => string;
+    })
+  | undefined
 >(undefined);
 
 type EasyblocksMetadataProviderProps = {
@@ -32,7 +36,7 @@ function defaultTransformProps(props: any, meta: any) {
   };
 }
 
-function defaultGenerateFontAndColorClassNames(input: any, meta: any) {
+function defaultGenerateClassName(input: any, meta: any) {
   return generateClassNames(input, meta.vars.devices, meta.stitches).join(" ");
 }
 
@@ -51,7 +55,7 @@ const EasyblocksMetadataProvider: React.FC<EasyblocksMetadataProviderProps> = ({
       value={{
         ...meta,
         transformProps: transformProps ?? defaultTransformProps,
-        generateFontAndColorClassNames: defaultGenerateFontAndColorClassNames,
+        generateClassNames: defaultGenerateClassName,
         stitches: easyblocksStitchesInstances[0],
       }}
     >

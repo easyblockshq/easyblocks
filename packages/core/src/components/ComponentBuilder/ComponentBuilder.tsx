@@ -378,14 +378,28 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
   const isRichTextPart =
     componentDefinition.id === "@easyblocks/rich-text-part";
 
-  if (isRichText || isRichTextPart) {
-    const classNames = meta.generateFontAndColorClassNames(
-      shopstoryCompiledConfig.props.__fontAndColorArtifacts,
+  if (isRichText) {
+    transformedProps.__textRootClasses = meta.generateClassNames(
+      shopstoryCompiledConfig.props.__textRoot,
       meta
     );
-
-    transformedProps.__fontAndColorClassNames = classNames;
   }
+
+  if (isRichTextPart) {
+    transformedProps.__textPartClasses = meta.generateClassNames(
+      shopstoryCompiledConfig.props.__textPart,
+      meta
+    );
+  }
+
+  // if (isRichText || isRichTextPart) {
+  //   const classNames = meta.generateClassNames(
+  //     shopstoryCompiledConfig.props.__fontAndColorArtifacts,
+  //     meta
+  //   );
+
+  //   transformedProps.__fontAndColorClassNames = classNames;
+  // }
 
   // console.log('--');
   // console.log('original props', shopstoryCompiledConfig.props);

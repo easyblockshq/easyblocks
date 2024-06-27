@@ -474,8 +474,8 @@ function RichTextEditor(props: RichTextProps) {
       throw new Error("Missing part");
     }
 
-    const classNames = meta.generateFontAndColorClassNames(
-      TextPart.props.__fontAndColorArtifacts,
+    const classNames: string = meta.generateClassNames(
+      TextPart.props.__textPart,
       meta
     );
 
@@ -496,7 +496,7 @@ function RichTextEditor(props: RichTextProps) {
             />
           ) : undefined
         }
-        __fontAndColorClassNames={classNames}
+        __textPartClasses={classNames}
       />
     );
 
@@ -837,7 +837,7 @@ function RichTextEditor(props: RichTextProps) {
 
   return (
     <Slate editor={editor} value={editorValue} onChange={handleEditableChange}>
-      <div className={props.__fontAndColorClassNames}>
+      <div className={props.__textRoot}>
         {/* this wrapper div prevents from Chrome bug where "pointer-events: none" on contenteditable is ignored*/}
         <Editable
           className={contentEditableClassName}

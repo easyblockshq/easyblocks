@@ -461,7 +461,7 @@ export function compileComponent(
     const { props, components } = build(buildParams);
 
     if (componentDefinition.id === "@easyblocks/rich-text") {
-      props.__fontAndColorArtifacts = buildTextRoot({
+      props.__textRoot = buildTextRoot({
         values: {
           font: compiledValues.mainFont,
           color: compiledValues.mainColor,
@@ -475,7 +475,7 @@ export function compileComponent(
     }
 
     if (componentDefinition.id === "@easyblocks/rich-text-part") {
-      props.__fontAndColorArtifacts = buildTextPart({
+      props.__textPart = buildTextPart({
         values: { font: compiledValues.font, color: compiledValues.color },
         params: {},
         isEditing: !!compilationContext.isEditing,

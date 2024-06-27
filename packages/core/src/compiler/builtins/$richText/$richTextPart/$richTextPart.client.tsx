@@ -5,29 +5,31 @@ type RichTextPartProps = {
   TextWrapper: React.ReactElement<{ trigger: React.ReactElement }> | undefined;
   // ReactElement when editing, string when not
   value: string | ReactElement;
-  Text: React.ReactElement<{ children: ReactNode; style: Record<string, any> }>;
+  // Text: React.ReactElement<{ children: ReactNode; style: Record<string, any> }>;
+  __textPartClasses: string;
+  textAttributes: Record<string, any>;
 };
 
 export function RichTextPartClient(props: RichTextPartProps) {
   const {
     value,
-    Text,
+    // Text,
     TextWrapper,
     textAttributes = {},
-    __fontAndColorClassNames,
+    __textPartClasses,
   } = props;
   const textValue = value || "\uFEFF";
 
   if (TextWrapper) {
     return (
-      <span className={__fontAndColorClassNames} {...textAttributes}>
+      <span className={__textPartClasses} {...textAttributes}>
         <TextWrapper.type {...TextWrapper.props}>{textValue}</TextWrapper.type>
       </span>
     );
   }
 
   return (
-    <span className={__fontAndColorClassNames} {...textAttributes}>
+    <span className={__textPartClasses} {...textAttributes}>
       {textValue}
     </span>
   );
