@@ -460,39 +460,63 @@ export function compileComponent(
 
     const { props, components } = build(buildParams);
 
-    // font and color
-    if (
-      componentDefinition.id === "@easyblocks/rich-text" ||
-      componentDefinition.id === "@easyblocks/rich-text-part"
-    ) {
-      const isPart = componentDefinition.id === "@easyblocks/rich-text-part";
-
-      const fontAndColorPseudoDefinition = {
-        id: "__fontAndColor__",
-        schema: [
-          {
-            prop: "font",
-            type: "font",
-          },
-          {
-            prop: "color",
-            type: "color",
-          },
-        ],
-      };
-
-      props.__fontAndColorArtifacts = buildFontAndColor({
-        values: isPart
-          ? { font: compiledValues.font, color: compiledValues.color }
-          : { font: compiledValues.mainFont, color: compiledValues.mainColor },
+    if (componentDefinition.id === "@easyblocks/rich-text") {
+      props.__fontAndColorArtifacts = buildTextRoot({
+        values: {
+          font: compiledValues.mainFont,
+          color: compiledValues.mainColor,
+          align: ownPropsAfterAuto.params.passedAlign ?? ownProps.values.align,
+        },
         params: {},
         isEditing: !!compilationContext.isEditing,
         devices: compilationContext.devices,
-        definition: fontAndColorPseudoDefinition,
+        definition: renderableComponentDefinition,
       });
-
-      // console.log(`result for ${componentDefinition.id}`, fontAndColor);
     }
+
+    if (componentDefinition.id === "@easyblocks/rich-text-part") {
+      props.__fontAndColorArtifacts = buildTextPart({
+        values: { font: compiledValues.font, color: compiledValues.color },
+        params: {},
+        isEditing: !!compilationContext.isEditing,
+        devices: compilationContext.devices,
+        definition: renderableComponentDefinition,
+      });
+    }
+
+    // font and color
+    // if (
+    //   componentDefinition.id === "@easyblocks/rich-text" ||
+    //   componentDefinition.id === "@easyblocks/rich-text-part"
+    // ) {
+    //   const isPart = componentDefinition.id === "@easyblocks/rich-text-part";
+
+    //   const fontAndColorPseudoDefinition = {
+    //     id: "__fontAndColor__",
+    //     schema: [
+    //       {
+    //         prop: "font",
+    //         type: "font",
+    //       },
+    //       {
+    //         prop: "color",
+    //         type: "color",
+    //       },
+    //     ],
+    //   };
+
+    //   props.__fontAndColorArtifacts = buildFontAndColor({
+    //     values: isPart
+    //       ? { font: compiledValues.font, color: compiledValues.color }
+    //       : { font: compiledValues.mainFont, color: compiledValues.mainColor },
+    //     params: {},
+    //     isEditing: !!compilationContext.isEditing,
+    //     devices: compilationContext.devices,
+    //     definition: fontAndColorPseudoDefinition,
+    //   });
+
+    //   // console.log(`result for ${componentDefinition.id}`, fontAndColor);
+    // }
 
     validateStylesProps(props, componentDefinition);
 
@@ -686,6 +710,75 @@ const DEFAULT_FONT_VALUES = {
   fontStyle: "initial",
   lineHeight: "initial",
 };
+
+function mapAlignmentToFlexAlignment(align: "center" | "right" | "left") {
+  if (align === "center") {
+    return "center";
+  }
+
+  if (align === "right") {
+    return "flex-end";
+  }
+
+  return "flex-start";
+}
+
+function buildTextRoot(input: {
+  values: { font: any; color: any; align: any };
+  params: any;
+  isEditing: boolean;
+  devices: Devices;
+  definition: InternalRenderableComponentDefinition;
+}) {
+  const result = build({
+    ...input,
+    definition: {
+      ...input.definition,
+      styles: ({ values }) => {
+        return {
+          styled: {
+            Result: {
+              ...DEFAULT_FONT_VALUES,
+              ...values.font,
+              color: values.color,
+              textAlign: values.align,
+            },
+          },
+        };
+      },
+    },
+  });
+
+  return result.props.__styled.Result;
+}
+
+function buildTextPart(input: {
+  values: { font: any; color: any };
+  params: any;
+  isEditing: boolean;
+  devices: Devices;
+  definition: InternalRenderableComponentDefinition;
+}) {
+  const result = build({
+    ...input,
+    definition: {
+      ...input.definition,
+      styles: ({ values }) => {
+        return {
+          styled: {
+            Result: {
+              ...DEFAULT_FONT_VALUES,
+              ...values.font,
+              color: values.color,
+            },
+          },
+        };
+      },
+    },
+  });
+
+  return result.props.__styled.Result;
+}
 
 function buildFontAndColor(input: {
   values: { font: any; color: string };

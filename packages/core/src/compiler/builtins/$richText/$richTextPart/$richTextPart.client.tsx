@@ -18,8 +18,6 @@ export function RichTextPartClient(props: RichTextPartProps) {
   } = props;
   const textValue = value || "\uFEFF";
 
-  console.log("FONT AND COLOR", __fontAndColorClassNames);
-
   if (TextWrapper) {
     return (
       <span className={__fontAndColorClassNames} {...textAttributes}>
