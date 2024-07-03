@@ -13,16 +13,17 @@ import React, { FC } from "react";
 import { useEditorContext } from "./EditorContext";
 import { SearchableSmallPickerModal } from "./SearchableSmallPickerModal";
 import { SectionPickerModal } from "./SectionPicker";
-import { TemplatesDictionary } from "./TemplatePicker";
+import { TemplatePicker, TemplatesDictionary } from "./TemplatePicker";
 import { OpenComponentPickerConfig } from "./types";
 import { unrollAcceptsFieldIntoComponents } from "./unrollAcceptsFieldIntoComponents";
 
 type ModalProps = {
   config: OpenComponentPickerConfig;
   onClose: (config?: NoCodeComponentEntry) => void;
+  pickers?: Record<string, TemplatePicker>;
 };
 
-export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
+export const ModalPicker: FC<ModalProps> = ({ config, onClose, pickers }) => {
   const editorContext = useEditorContext();
   const { form } = editorContext;
 
@@ -108,24 +109,14 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose }) => {
     }
   };
 
-  if (picker === "large" || picker === "large-3") {
-    return (
-      <SectionPickerModal
-        isOpen={true}
-        onClose={onModalClose}
-        templates={templatesDictionary}
-        mode={picker}
-      />
-    );
-  } else if (picker === "compact") {
-    return (
-      <SearchableSmallPickerModal
-        isOpen={true}
-        onClose={onModalClose}
-        templates={templatesDictionary}
-      />
-    );
-  } else {
-    throw new Error(`unknown template picker: "${picker}"`);
-  }
+  return pickers?.[picker] ? (
+    pickers[picker]({
+      isOpen: true,
+      onClose: onModalClose,
+      templates: templatesDictionary,
+      mode: picker,
+    })
+  ) : (
+    <div>Unknown picker: {picker}</div>
+  );
 };

@@ -20,6 +20,9 @@ import { SpaceTokenWidget } from "./sidebar/SpaceTokenWidget";
 import { parseQueryParams } from "./parseQueryParams";
 import { DocumentDataWidgetComponent } from "./sidebar/DocumentDataWidget";
 import { ExternalDataChangeHandler } from "./EasyblocksEditorProps";
+import { TemplatePicker } from "./TemplatePicker";
+import { SectionPickerModal } from "./SectionPicker";
+import { SearchableSmallPickerModal } from "./SearchableSmallPickerModal";
 
 type EasyblocksParentProps = {
   config: Config;
@@ -31,6 +34,7 @@ type EasyblocksParentProps = {
     | ComponentType<InlineTypeWidgetComponentProps<any>>
   >;
   components?: Record<string, ComponentType<any>>;
+  pickers?: Record<string, TemplatePicker>;
 };
 
 const shouldForwardProp: ShouldForwardProp<"web"> = (propName, target) => {
@@ -46,6 +50,12 @@ const builtinWidgets: EasyblocksParentProps["widgets"] = {
   color: ColorTokenWidget,
   space: SpaceTokenWidget,
   "@easyblocks/document-data": DocumentDataWidgetComponent as any,
+};
+
+const builinPickers: EasyblocksParentProps["pickers"] = {
+  large: SectionPickerModal,
+  compact: SearchableSmallPickerModal,
+  "large-3": SectionPickerModal,
 };
 
 export function EasyblocksParent(props: EasyblocksParentProps) {
@@ -82,6 +92,10 @@ export function EasyblocksParent(props: EasyblocksParentProps) {
               ...props.widgets,
             }}
             components={props.components}
+            pickers={{
+              ...builinPickers,
+              ...props.pickers,
+            }}
           />
         </TooltipProvider>
         <Toaster containerStyle={{ zIndex: 100100 }} />

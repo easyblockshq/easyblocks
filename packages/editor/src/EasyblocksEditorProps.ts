@@ -7,6 +7,7 @@ import {
   WidgetComponentProps,
 } from "@easyblocks/core";
 import React, { ComponentType } from "react";
+import { TemplatePicker } from "./TemplatePicker";
 
 export type ExternalDataChangeHandler = (
   externalData: RequestedExternalData,
@@ -23,6 +24,6 @@ export type EasyblocksEditorProps = {
     | ComponentType<WidgetComponentProps<any>>
     | ComponentType<InlineTypeWidgetComponentProps<any>>
   >;
-
+  pickers?: Record<string, TemplatePicker>;
   __debug?: boolean;
 };
