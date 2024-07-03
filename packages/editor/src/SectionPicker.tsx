@@ -268,7 +268,7 @@ const GridRoot = styled.div`
   overflow-y: auto;
 `;
 
-export const SectionPickerModal: TemplatePicker<{ mode?: Mode }> = ({
+export const SectionPickerModal: TemplatePicker = ({
   isOpen,
   onClose,
   templates,
