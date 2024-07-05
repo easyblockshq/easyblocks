@@ -574,7 +574,7 @@ export type SchemaPropShared<Type extends string> = {
   layout?: "row" | "column";
 };
 
-type ValueSchemaProp<
+export type ValueSchemaProp<
   Type extends string,
   ValueType,
   Responsiveness extends "optional" | "forced" | "never"
