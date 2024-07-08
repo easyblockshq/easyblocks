@@ -48,7 +48,10 @@ import React, {
 import Modal from "react-modal";
 import styled from "styled-components";
 import { ConfigAfterAutoContext } from "./ConfigAfterAutoContext";
-import { ExternalDataChangeHandler } from "./EasyblocksEditorProps";
+import {
+  EasyblocksEditorPlugins,
+  ExternalDataChangeHandler,
+} from "./EasyblocksEditorProps";
 import { EditorContext, EditorContextType } from "./EditorContext";
 import { EditorExternalDataProvider } from "./EditorExternalDataProvider";
 import { EditorIframe } from "./EditorIframe";
@@ -102,6 +105,19 @@ const SidebarContainer = styled.div`
   flex: 0 0 240px;
   background: ${Colors.white};
   border-left: 1px solid ${Colors.black100};
+  box-sizing: border-box;
+
+  > * {
+    box-sizing: border-box;
+  }
+
+  overflow-y: auto;
+`;
+
+const SidebarContainerLeft = styled.div`
+  flex: 0 0 240px;
+  background: ${Colors.white};
+  border-right: 1px solid ${Colors.black100};
   box-sizing: border-box;
 
   > * {
@@ -172,6 +188,7 @@ type EditorProps = {
     | ComponentType<TokenTypeWidgetComponentProps<any>>
   >;
   components?: Record<string, ComponentType<any>>;
+  plugins?: EasyblocksEditorPlugins;
 };
 
 export const Editor = EditorBackendInitializer;
@@ -306,6 +323,7 @@ const EditorWrapper = memo(
         compilationContext={compilationContext}
         initialDocument={props.document}
         initialEntry={initialEntry}
+        plugins={props.plugins}
       />
     );
   }
@@ -316,6 +334,7 @@ type EditorContentProps = EditorProps & {
   initialDocument: Document | null;
   initialEntry: NoCodeComponentEntry;
   heightMode?: "viewport" | "full";
+  plugins?: EasyblocksEditorPlugins;
 };
 
 function parseExternalDataId(externalDataId: string): {
@@ -646,6 +665,7 @@ const EditorContent = ({
   };
 
   const sidebarNodeRef = useRef<HTMLDivElement | null>(null);
+  const sidebarLeftNodeRef = useRef<HTMLDivElement | null>(null);
 
   const [editableData, form] = useForm({
     id: "easyblocks-editor",
@@ -994,6 +1014,8 @@ const EditorContent = ({
     Modal.setAppElement("#shopstory-app");
   }, []);
 
+  const EditorSidebarLeft = props.plugins?.components?.sidebarLeft;
+
   return (
     <div id={"shopstory-app"} style={{ height: appHeight, overflow: "hidden" }}>
       {isDataSaverOverlayOpen && (
@@ -1045,6 +1067,14 @@ const EditorContent = ({
               readOnly={editorContext.readOnly}
             />
             <SidebarAndContentContainer height={appHeight}>
+              {isEditing && EditorSidebarLeft && (
+                <SidebarContainerLeft ref={sidebarLeftNodeRef}>
+                  <EditorSidebarLeft
+                    focussedField={focussedField}
+                    form={form}
+                  />
+                </SidebarContainerLeft>
+              )}
               <ContentContainer
                 onClick={() => {
                   setFocussedField([]);
