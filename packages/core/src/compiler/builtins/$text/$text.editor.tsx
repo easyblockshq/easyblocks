@@ -13,7 +13,7 @@ function TextEditor(props: TextProps) {
   const {
     Text,
     value,
-    __easyblocks: { path, runtime },
+    __easyblocks: { path },
   } = props;
 
   const { form } = (window.parent as any).editorWindowAPI.editorContext;
@@ -24,11 +24,7 @@ function TextEditor(props: TextProps) {
   return (
     <Text.type {...Text.props} as={"div"}>
       {isLocalTextReference ? (
-        <InlineTextarea
-          path={path}
-          placeholder={"Here goes text content"}
-          stitches={runtime.stitches}
-        />
+        <InlineTextarea path={path} placeholder={"Here goes text content"} />
       ) : (
         value ?? <span>&nbsp;</span>
       )}
