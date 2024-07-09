@@ -96,7 +96,74 @@ const easyblocksStyles = `
   .EasyblocksInlineTextarea_Textarea--enabled {
     pointer-events: auto;
   }
+
+  .EasyblocksRichTextEditor_Root {
+    cursor: inherit;
+  }
+
+  .EasyblocksRichTextEditor_Root--enabled {
+    cursor: text;
+  }
+
+  .EasyblocksRichTextEditor_Root--fallbackValue {
+    opacity: 0.5;
+  }
+
+  .EasyblocksRichTextEditor_Root [data-slate-node] {
+    text-decoration: none;
+  }
+
+  .EasyblocksRichTextEditor_Root * {
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .EasyblocksRichTextEditor_Root--enabled * {
+    pointer-events: auto;
+    user-select: auto;
+  }
+
+  .EasyblocksRichTextEditor_Root * {
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .EasyblocksRichTextEditor_Root *::selection {
+    background-color: #b4d5fe;
+  }
+
+  .EasyblocksRichTextEditor_Root--decorationActive *::selection {
+    background-color: transparent;
+  }
+
+  .EasyblocksRichTextEditor_Root--decorationActive *[data-easyblocks-rich-text-selection] {
+    background-color: #b4d5fe;
+  }
 `;
+
+// cursor: !isEnabled ? "inherit" : "text",
+// "& *": {
+//   pointerEvents: isEnabled ? "auto" : "none",
+//   userSelect: isEnabled ? "auto" : "none",
+// },
+// "& *::selection": {
+//   backgroundColor: "#b4d5fe",
+// },
+// ...(isDecorationActive && {
+//   "& *::selection": {
+//     backgroundColor: "transparent",
+//   },
+//   "& *[data-easyblocks-rich-text-selection]": {
+//     backgroundColor: "#b4d5fe",
+//   },
+// }),
+// ...(isFallbackValueShown && {
+//   opacity: 0.5,
+// }),
+// // Remove any text decoration from slate nodes that are elements. We only need text decoration on text elements.
+// "[data-slate-node]": {
+//   textDecoration: "none",
+// },
 
 function Easyblocks({
   renderableDocument,

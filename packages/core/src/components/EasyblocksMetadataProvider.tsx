@@ -4,7 +4,7 @@ import { createStitches } from "@stitches/core";
 import React, { createContext, ReactNode, useContext } from "react";
 import { easyblocksStitchesInstances } from "./ssr";
 import { CompilationMetadata } from "../types";
-import { buildBoxes, Box, generateClassNames } from "./Box/Box";
+import { buildBoxes, generateClassNames } from "./Box/Box";
 
 const EasyblocksMetadataContext = createContext<
   | (CompilationMetadata & {
