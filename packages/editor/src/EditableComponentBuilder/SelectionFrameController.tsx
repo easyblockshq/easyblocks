@@ -8,7 +8,6 @@ type SelectionFrameControllerProps = {
   isChildrenSelectionDisabled: boolean;
   onSelect: (event: MouseEvent<HTMLElement>) => void;
   children: ReactNode;
-  stitches: any;
   sortable: ReturnType<typeof useSortable>;
   id: string;
   direction: "horizontal" | "vertical";
@@ -20,7 +19,6 @@ function SelectionFrameController({
   isChildrenSelectionDisabled,
   children,
   onSelect,
-  stitches,
   sortable,
   id,
   direction,
@@ -34,78 +32,6 @@ function SelectionFrameController({
   });
 
   const isInsertingBefore = sortable.activeIndex > sortable.index;
-
-  const wrapperClassName = stitches.css({
-    position: "relative",
-    display: "grid",
-
-    "&[data-children-selection-disabled=true] *": {
-      pointerEvents: "none !important",
-      userSelect: "none !important",
-    },
-
-    "&[data-draggable-active=false]::after": {
-      content: `''`,
-      boxSizing: "border-box",
-      display: "block",
-      position: "absolute",
-      left: 0,
-      top: 0,
-      width: "100%",
-      height: "100%",
-      border: "1px solid var(--tina-color-primary)",
-      opacity: 0,
-      pointerEvents: "none",
-      userSelect: "none",
-      transition: "all 100ms",
-      boxShadow: "var(--tina-shadow-big)",
-      zIndex: "var(--tina-z-index-2)",
-    },
-
-    "&[data-active=true]::after": {
-      opacity: 1,
-    },
-
-    "&:hover::after": {
-      opacity: 0.5,
-    },
-
-    "&[data-active=true]:hover::after": {
-      opacity: 1,
-    },
-
-    "&[data-draggable-over=true]::before": {
-      position: "absolute",
-      ...(direction === "horizontal"
-        ? {
-            top: 0,
-            bottom: 0,
-            [isInsertingBefore ? "left" : "right"]: "0px",
-            height: "100%",
-            width: "4px",
-          }
-        : {
-            left: 0,
-            right: 0,
-            [isInsertingBefore ? "top" : "bottom"]: "0px",
-            width: "100%",
-            height: "4px",
-          }),
-
-      display: "block",
-      content: "''",
-      backgroundColor: Colors.blue50,
-      zIndex: 9999999,
-    },
-
-    "&[data-draggable-active=true]": {
-      opacity: 0.5,
-    },
-
-    "&[data-draggable-dragging=true]": {
-      cursor: "grabbing",
-    },
-  });
 
   useEffect(() => {
     return () => {
@@ -122,6 +48,10 @@ function SelectionFrameController({
     };
   });
 
+  const insertingClass = `${
+    isInsertingBefore ? "insertingBefore" : "insertingAfter"
+  }${direction === "horizontal" ? "Horizontal" : "Vertical"}`;
+
   return (
     <div
       data-active={isActive}
@@ -131,7 +61,7 @@ function SelectionFrameController({
       data-draggable-active={
         sortable.active !== null && sortable.active?.id === id
       }
-      className={wrapperClassName().className}
+      className={`EasyblocksSelectionFrameController_Root EasyblocksSelectionFrameController_Root--${insertingClass}`}
       ref={(node) => {
         setNode(node);
         sortable.setNodeRef(node);

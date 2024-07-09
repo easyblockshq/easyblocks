@@ -24,7 +24,6 @@ import {
   responsiveValueReduce,
   responsiveValueValues,
 } from "../../responsiveness";
-import { resop } from "../../responsiveness/resop";
 import {
   CompilationMetadata,
   CompiledComponentConfig,
@@ -443,8 +442,6 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
   const { ref, __isSelected, ...restPassedProps } = allPassedProps || {};
 
   const runtime = {
-    stitches: meta.stitches,
-    resop: resop,
     devices: meta.vars.devices,
   };
 

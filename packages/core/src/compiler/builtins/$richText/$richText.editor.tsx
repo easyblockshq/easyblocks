@@ -758,8 +758,6 @@ function RichTextEditor(props: RichTextProps) {
     isDecorationActive ? "EasyblocksRichTextEditor_Root--decorationActive" : ""
   }`;
 
-  console.log("__textRootClasse editor", __textRootClasses, props);
-
   return (
     <Slate editor={editor} value={editorValue} onChange={handleEditableChange}>
       <div>

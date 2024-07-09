@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { getBoxStyles } from "../../compiler/box";
 import { Devices } from "../../types";
+import { getStitchesInstance } from "../../stitches/stitches_runtime";
 
 const boxStyles = {
   boxSizing: "border-box",
@@ -15,15 +16,10 @@ type BoxProps = {
   __compiled: any;
   __name?: string;
   devices: Devices;
-  stitches: any;
   [key: string]: any;
 };
 
-export function generateClassNames(
-  styles: any,
-  devices: Devices,
-  stitches: any
-) {
+export function generateClassNames(styles: any, devices: Devices) {
   /**
    * Why parse+stringify?
    *
@@ -34,6 +30,8 @@ export function generateClassNames(
     JSON.parse(JSON.stringify(styles)),
     devices
   );
+
+  const stitches = getStitchesInstance();
 
   const generateBoxClass = stitches.css(boxStyles);
   const generateClassName = stitches.css(correctedStyles);
@@ -51,8 +49,9 @@ export const Box = React.forwardRef<HTMLElement, BoxProps>((props, ref) => {
    * I know those names sucks, this needs to be cleaned up.
    */
 
-  const { __compiled, __name, passedProps, devices, stitches, ...restProps } =
-    props;
+  const stitches = getStitchesInstance();
+
+  const { __compiled, __name, passedProps, devices, ...restProps } = props;
 
   const { __as, ...styles } = __compiled;
   const realProps = { ...restProps, ...passedProps };
@@ -111,7 +110,6 @@ export function buildBoxes(
         __compiled: compiled,
         __name: name,
         devices: meta.vars.devices,
-        stitches: meta.stitches,
       };
 
       return <Box {...boxProps} />;

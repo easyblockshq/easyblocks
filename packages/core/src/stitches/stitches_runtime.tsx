@@ -1,6 +1,7 @@
 import React from "react";
+import { createStitches } from "@stitches/core";
 
-export const easyblocksStitchesInstances: any[] = [];
+const easyblocksStitchesInstances: any[] = [];
 
 export function easyblocksGetCssText() {
   return easyblocksStitchesInstances
@@ -15,4 +16,12 @@ export function easyblocksGetStyleTag() {
       dangerouslySetInnerHTML={{ __html: easyblocksGetCssText() }}
     />
   );
+}
+
+export function getStitchesInstance() {
+  if (easyblocksStitchesInstances.length === 0) {
+    easyblocksStitchesInstances.push(createStitches({}));
+  }
+
+  return easyblocksStitchesInstances[0];
 }

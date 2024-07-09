@@ -1,10 +1,11 @@
 "use client";
 
-import { createStitches } from "@stitches/core";
+// import { createStitches } from "@stitches/core";
 import React, { createContext, ReactNode, useContext } from "react";
-import { easyblocksStitchesInstances } from "./ssr";
+// import { easyblocksStitchesInstances } from "../stitches/stitches_runtime";
 import { CompilationMetadata } from "../types";
 import { buildBoxes, generateClassNames } from "./Box/Box";
+import { getStitchesInstance } from "../stitches/stitches_runtime";
 
 const EasyblocksMetadataContext = createContext<
   | (CompilationMetadata & {
@@ -37,7 +38,7 @@ function defaultTransformProps(props: any, meta: any) {
 }
 
 function defaultGenerateClassName(input: any, meta: any) {
-  return generateClassNames(input, meta.vars.devices, meta.stitches).join(" ");
+  return generateClassNames(input, meta.vars.devices).join(" ");
 }
 
 const EasyblocksMetadataProvider: React.FC<EasyblocksMetadataProviderProps> = ({
@@ -46,9 +47,9 @@ const EasyblocksMetadataProvider: React.FC<EasyblocksMetadataProviderProps> = ({
   transformProps,
 }) => {
   // Let's load stitches instance
-  if (easyblocksStitchesInstances.length === 0) {
-    easyblocksStitchesInstances.push(createStitches({}));
-  }
+  // if (easyblocksStitchesInstances.length === 0) {
+  //   easyblocksStitchesInstances.push(createStitches({}));
+  // }
 
   return (
     <EasyblocksMetadataContext.Provider
@@ -56,7 +57,7 @@ const EasyblocksMetadataProvider: React.FC<EasyblocksMetadataProviderProps> = ({
         ...meta,
         transformProps: transformProps ?? defaultTransformProps,
         generateClassNames: defaultGenerateClassName,
-        stitches: easyblocksStitchesInstances[0],
+        // stitches: getStitchesInstance() // TODO: remove
       }}
     >
       {children}
