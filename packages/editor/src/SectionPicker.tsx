@@ -10,10 +10,8 @@ import styled from "styled-components";
 import { EditorContextType, useEditorContext } from "./EditorContext";
 import { TemplatePicker } from "./TemplatePicker";
 
-type Mode = "large" | "large-3";
-
 type VisualProps = {
-  mode: Mode;
+  mode: string;
 };
 
 /**
@@ -106,7 +104,7 @@ const Message = styled.div`
 type SectionCardProps = {
   template: Template;
   onSelect: () => void;
-  mode: Mode;
+  mode: string;
 };
 
 function getTemplatePreviewImage(
