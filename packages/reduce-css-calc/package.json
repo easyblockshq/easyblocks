@@ -1,6 +1,6 @@
 {
   "name": "@easyblocks/reduce-css-calc",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "private": true,
   "description": "Reduce CSS calc() function to the maximum",
   "keywords": [
