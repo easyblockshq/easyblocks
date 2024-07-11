@@ -280,6 +280,7 @@ export class EasyblocksBackend implements Backend {
           isUserDefined: true,
           width: item.width,
           widthAuto: item.widthAuto,
+          thumbnail: item.thumbnail,
         }));
 
         return templates;
