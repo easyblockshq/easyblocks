@@ -7,7 +7,7 @@ import {
   useSensor,
 } from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
-import { NoCodeComponentEntry, Easyblocks } from "@easyblocks/core";
+import { NoCodeComponentEntry, Easyblocks, Renderer } from "@easyblocks/core";
 import {
   EasyblocksMetadataProvider,
   EditorContextType,
@@ -422,8 +422,10 @@ const easyblocksStyles = `
 
 export function EasyblocksCanvas({
   components,
+  renderer,
 }: {
   components?: Record<string, React.ComponentType<any>>;
+  renderer?: Renderer;
 }) {
   const { meta, compiled, externalData, editorContext } =
     window.parent.editorWindowAPI;
@@ -465,7 +467,7 @@ export function EasyblocksCanvas({
 
   return (
     /* EasyblocksMetadataProvider must be defined in case of nested <Easyblocks /> components are used! */
-    <EasyblocksMetadataProvider meta={meta}>
+    <EasyblocksMetadataProvider meta={meta} renderer={renderer}>
       <style dangerouslySetInnerHTML={{ __html: easyblocksStyles }} />
       <CanvasRoot>
         <DndContext
