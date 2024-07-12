@@ -10,10 +10,8 @@ import {
   toArray,
   uniqueId,
 } from "@easyblocks/utils";
-import CryptoJS from "crypto-js";
 import { isComponentConfig } from "../checkers";
 import {
-  responsiveValueAt,
   responsiveValueFill,
   responsiveValueNormalize,
 } from "../responsiveness";
@@ -31,22 +29,18 @@ import {
   EditingInfo,
   FieldPortal,
   NoCodeComponentEditingFunctionResult,
-  NoCodeComponentStylesFunctionInput,
-  ScalarOrCollection,
   SchemaProp,
   SerializedComponentDefinitions,
   SerializedRenderableComponentDefinition,
   SpaceSchemaProp,
   TrulyResponsiveValue,
   CompiledComponentConfig,
-  Devices,
 } from "../types";
 import type {
   CompilationCache,
   CompilationCacheItemValue,
 } from "./CompilationCache";
 import { applyAutoUsingResponsiveTokens } from "./applyAutoUsingResponsiveTokens";
-import { compileBox } from "./box";
 import { RichTextComponentConfig } from "./builtins/$richText/$richText";
 import { compileComponentValues } from "./compileComponentValues";
 import { compileFromSchema } from "./compileFromSchema";
@@ -84,6 +78,12 @@ import {
   InternalRenderableComponentDefinition,
 } from "./types";
 import { getFallbackLocaleForLocale } from "../locales";
+
+import {
+  build,
+  buildTextPart,
+  buildTextRoot,
+} from "../stitches/stitches_build";
 
 type ComponentCompilationArtifacts = {
   compiledComponentConfig: CompiledComponentConfig;
@@ -703,163 +703,6 @@ function validateStylesProps(
       );
     }
   }
-}
-
-const DEFAULT_FONT_VALUES = {
-  fontWeight: "initial",
-  fontStyle: "initial",
-  lineHeight: "initial",
-};
-
-function mapAlignmentToFlexAlignment(align: "center" | "right" | "left") {
-  if (align === "center") {
-    return "center";
-  }
-
-  if (align === "right") {
-    return "flex-end";
-  }
-
-  return "flex-start";
-}
-
-function buildTextRoot(input: {
-  values: { font: any; color: any; align: any };
-  params: any;
-  isEditing: boolean;
-  devices: Devices;
-  definition: InternalRenderableComponentDefinition;
-}) {
-  const result = build({
-    ...input,
-    definition: {
-      ...input.definition,
-      styles: ({ values }) => {
-        return {
-          styled: {
-            Result: {
-              ...DEFAULT_FONT_VALUES,
-              ...values.font,
-              color: values.color,
-              textAlign: values.align,
-            },
-          },
-        };
-      },
-    },
-  });
-
-  return result.props.__styled.Result;
-}
-
-function buildTextPart(input: {
-  values: { font: any; color: any };
-  params: any;
-  isEditing: boolean;
-  devices: Devices;
-  definition: InternalRenderableComponentDefinition;
-}) {
-  const result = build({
-    ...input,
-    definition: {
-      ...input.definition,
-      styles: ({ values }) => {
-        return {
-          styled: {
-            Result: {
-              ...DEFAULT_FONT_VALUES,
-              ...values.font,
-              color: values.color,
-            },
-          },
-        };
-      },
-    },
-  });
-
-  return result.props.__styled.Result;
-}
-
-function buildFontAndColor(input: {
-  values: { font: any; color: string };
-  params: any;
-  isEditing: boolean;
-  devices: Devices;
-  definition: InternalRenderableComponentDefinition;
-}) {
-  const result = build({
-    ...input,
-    definition: {
-      ...input.definition,
-      styles: ({ values }) => {
-        return {
-          styled: {
-            Result: {
-              ...DEFAULT_FONT_VALUES,
-              ...values.font,
-              color: values.color,
-            },
-          },
-        };
-      },
-    },
-  });
-
-  return result.props.__styled.Result;
-}
-
-function build(input: {
-  values: any;
-  params: any;
-  isEditing: boolean;
-  devices: Devices;
-  definition: InternalRenderableComponentDefinition;
-}) {
-  const { values, params, devices, isEditing, definition } = input;
-
-  const { props, components, styled } = resop2(
-    { values, params },
-    ({ values, params }, breakpointIndex) => {
-      if (!definition.styles) {
-        return {};
-      }
-
-      const device = assertDefined(
-        devices.find((device) => device.id === breakpointIndex),
-        `Missing device "${breakpointIndex}"`
-      );
-
-      const stylesInput: NoCodeComponentStylesFunctionInput = {
-        values,
-        params,
-        isEditing,
-        device,
-      };
-
-      return definition.styles(stylesInput);
-    },
-    devices,
-    definition
-  );
-
-  const styledCompiled: Record<string, any> = {};
-
-  for (const key in styled) {
-    let styles: ScalarOrCollection<Record<string, any>> = styled[key];
-
-    if (Array.isArray(styles)) {
-      styles = styles.map((v) => {
-        return { ...v, __isBox: true };
-      });
-    } else {
-      styles = { ...styles, __isBox: true };
-    }
-
-    // If box
-    styledCompiled[key] = compileBoxes(styles, devices);
-  }
-
-  return { props: { ...props, __styled: styledCompiled }, components };
 }
 
 function logCompilationDebugOutput({
@@ -1526,33 +1369,6 @@ function mapResponsiveFontToResponsiveFontSize(
       return [breakpoint, fontValue.fontSize];
     })
   );
-}
-
-function addStylesHash(styles: Record<PropertyKey, any>) {
-  if ("__hash" in styles) {
-    delete styles["__hash"];
-  }
-
-  const hash = CryptoJS.SHA1(JSON.stringify(styles));
-  styles.__hash = hash.toString();
-  return styles;
-}
-
-function compileBoxes(value: any, devices: Devices): any {
-  if (Array.isArray(value)) {
-    return value.map((x: any) => compileBoxes(x, devices));
-  } else if (typeof value === "object" && value !== null) {
-    if (value.__isBox) {
-      return addStylesHash(compileBox(value, devices));
-    }
-
-    const ret: Record<string, any> = {};
-    for (const key in value) {
-      ret[key] = compileBoxes(value[key], devices);
-    }
-    return ret;
-  }
-  return value;
 }
 
 function getDefaultFieldDefinition(

@@ -7,14 +7,9 @@ import { useTextValue } from "../useTextValue";
 interface InlineTextProps {
   path: string;
   placeholder?: string;
-  stitches: any;
 }
 
-export function InlineTextarea({
-  path,
-  placeholder,
-  stitches,
-}: InlineTextProps) {
+export function InlineTextarea({ path, placeholder }: InlineTextProps) {
   const [isEnabled, setIsEnabled] = useState(false);
   const textAreaRef = useRef<ElementRef<"textarea">>(null);
 

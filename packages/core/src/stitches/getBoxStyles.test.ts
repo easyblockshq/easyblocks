@@ -1,5 +1,5 @@
 import { testDevices } from "../testUtils";
-import { getBoxStyles } from "./box";
+import { getBoxStyles } from "./getBoxStyles";
 
 test("corrects order of non responsive and breakpoint properties (from highest breakpoint, to lowest)", () => {
   const styles = getBoxStyles(
