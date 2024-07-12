@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { createStitches } from "@stitches/core";
-import { Devices } from "../types";
+import { CompilationMetadata, Devices } from "../types";
 import { getBoxStyles } from "./getBoxStyles";
 
 const boxStyles = {
@@ -101,18 +101,18 @@ export function buildBoxes(
   compiled: any,
   name: string,
   actionWrappers: { [key: string]: any },
-  meta: any
+  devices: Devices
 ): any {
   if (Array.isArray(compiled)) {
     return compiled.map((x: any, index: number) =>
-      buildBoxes(x, `${name}.${index}`, actionWrappers, meta)
+      buildBoxes(x, `${name}.${index}`, actionWrappers, devices)
     );
   } else if (typeof compiled === "object" && compiled !== null) {
     if (compiled.__isBox) {
       const boxProps = {
         __compiled: compiled,
         __name: name,
-        devices: meta.vars.devices,
+        devices,
       };
 
       return <Box {...boxProps} />;
@@ -121,21 +121,24 @@ export function buildBoxes(
     const ret: Record<string, any> = {};
 
     for (const key in compiled) {
-      ret[key] = buildBoxes(compiled[key], key, actionWrappers, meta);
+      ret[key] = buildBoxes(compiled[key], key, actionWrappers, devices);
     }
     return ret;
   }
   return compiled;
 }
 
-export function defaultTransformProps(props: any, meta: any) {
+export function stitchesTransformProps(
+  props: Record<string, any>,
+  meta: CompilationMetadata
+) {
   const { __styled, ...originalProps } = props;
 
   const newProps: { [key: string]: any } = buildBoxes(
     props.__styled,
     "",
     {},
-    meta
+    meta.vars.devices
   );
 
   return {

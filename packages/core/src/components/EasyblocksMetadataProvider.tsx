@@ -3,11 +3,14 @@
 import React, { createContext, ReactNode, useContext } from "react";
 import { CompilationMetadata } from "../types";
 import { generateClassNames } from "../stitches/stitches_runtime";
-import { defaultTransformProps } from "../stitches/stitches_runtime";
+import { stitchesTransformProps } from "../stitches/stitches_runtime";
 
 const EasyblocksMetadataContext = createContext<
   | (CompilationMetadata & {
-      transformProps: any;
+      transformProps: (
+        props: Record<string, any>,
+        meta: CompilationMetadata
+      ) => Record<string, any>;
       generateClassNames: (input: any, meta: any) => string;
     })
   | undefined
@@ -32,7 +35,7 @@ const EasyblocksMetadataProvider: React.FC<EasyblocksMetadataProviderProps> = ({
     <EasyblocksMetadataContext.Provider
       value={{
         ...meta,
-        transformProps: transformProps ?? defaultTransformProps,
+        transformProps: transformProps ?? stitchesTransformProps,
         generateClassNames: defaultGenerateClassName,
       }}
     >
