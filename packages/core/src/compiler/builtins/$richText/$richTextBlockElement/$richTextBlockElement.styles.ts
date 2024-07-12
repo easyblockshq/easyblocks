@@ -46,68 +46,85 @@ export function richTextBlockElementStyles({
   RichTextBlockElementValues,
   RichTextBlockElementParams
 >): NoCodeComponentStylesFunctionResult {
-  const maxDigitsCount = elements.length.toString().length;
+  // const maxDigitsCount = elements.length.toString().length;
 
-  const paddingInline = `clamp(${px(
-    BULLETED_LIST_MIN_INLINE_SPACING
-  )}, calc(${px(mainFontSize)} * 0.5), ${px(mainFontSize)})`;
+  // const paddingInline = `clamp(${px(
+  //   BULLETED_LIST_MIN_INLINE_SPACING
+  // )}, calc(${px(mainFontSize)} * 0.5), ${px(mainFontSize)})`;
 
-  const bulletedListMarkerStyles = {
-    paddingLeft: paddingInline,
-    paddingRight: paddingInline,
-    content: BULLET_CHARACTER,
-  };
+  // const bulletedListMarkerStyles = {
+  //   paddingLeft: paddingInline,
+  //   paddingRight: paddingInline,
+  //   content: BULLET_CHARACTER,
+  // };
 
-  const numberedListMarkerStyles = {
-    minWidth: `calc(${maxDigitsCount} * 1ch + ${NUMBERED_LIST_DOT_CHARACTER_SAFE_WIDTH})`,
-    paddingRight: `clamp(${px(
-      NUMBERED_LIST_MIN_COUNTER_SPACING
-    )}, 0.5ch, ${NUMBERED_LIST_MAX_COUNTER_SPACING})`,
-    fontVariantNumeric: "tabular-nums",
-    textAlign: "right",
-    content: `counter(list-item)"."`,
-  };
+  // const numberedListMarkerStyles = {
+  //   minWidth: `calc(${maxDigitsCount} * 1ch + ${NUMBERED_LIST_DOT_CHARACTER_SAFE_WIDTH})`,
+  //   paddingRight: `clamp(${px(
+  //     NUMBERED_LIST_MIN_COUNTER_SPACING
+  //   )}, 0.5ch, ${NUMBERED_LIST_MAX_COUNTER_SPACING})`,
+  //   fontVariantNumeric: "tabular-nums",
+  //   textAlign: "right",
+  //   content: `counter(list-item)"."`,
+  // };
 
-  const markerStyles = {
-    boxSizing: "content-box",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    flexGrow: 0,
-    flexShrink: 0,
-    fontSize: mainFontSize,
-    ...(type === "bulleted-list"
-      ? bulletedListMarkerStyles
-      : numberedListMarkerStyles),
-  };
+  // const markerStyles = {
+  //   boxSizing: "content-box",
+  //   display: "flex",
+  //   alignItems: "center",
+  //   justifyContent: "flex-end",
+  //   flexGrow: 0,
+  //   flexShrink: 0,
+  //   fontSize: mainFontSize,
+  //   ...(type === "bulleted-list"
+  //     ? bulletedListMarkerStyles
+  //     : numberedListMarkerStyles),
+  // };
 
-  const listStyles = {
-    counterSet: "list-item",
-    paddingLeft: 0,
-    listStyle: "none",
-    color: mainColor,
-    ...mainFont,
-    "& > li": {
-      color: mainColor,
-      ...mainFont,
-      // Instead of using ::marker pseudo-element, we use ::before because it gives us more control over its appearance.
-      "&::before": markerStyles,
-    },
-  };
+  // const listStyles = {
+  //   counterSet: "list-item",
+  //   paddingLeft: 0,
+  //   listStyle: "none",
+  //   color: mainColor,
+  //   ...mainFont,
+  //   "& > li": {
+  //     color: mainColor,
+  //     ...mainFont,
+  //     // Instead of using ::marker pseudo-element, we use ::before because it gives us more control over its appearance.
+  //     "&::before": markerStyles,
+  //   },
+  // };
 
   return {
-    styled: {
-      Paragraph: { __as: accessibilityRole },
-      BulletedList: { __as: "ul", ...listStyles },
-      NumberedList: { __as: "ol", ...listStyles },
-    },
+    // styled: {
+    //   Paragraph: { /*__as: accessibilityRole */ },
+    //   BulletedList: {
+    //     // __as: "ul",
+    //     // listStyle: "initial",
+    //     // listStylePosition: "inside",
+    //     // ...mainFont,
+    //     // paddingInlineStart: "0.9em",
+    //   }, // ...listStyles },
+    //   NumberedList: {
+    //     // __as: "ol",
+    //     // listStyle: "decimal",
+    //     // listStylePosition: "inside",
+    //     // ...mainFont,
+    //     // paddingInlineStart: "4ch",
+    //   }, // ...listStyles },
+    // },
     components: {
       elements: {
         itemProps: elements.map(() => ({
           blockType: type,
           align,
+          mainColor,
+          mainFont,
         })),
       },
+    },
+    props: {
+      accessibilityRole,
     },
   };
 }

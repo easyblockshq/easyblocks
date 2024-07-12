@@ -7,14 +7,9 @@ import { useTextValue } from "../useTextValue";
 interface InlineTextProps {
   path: string;
   placeholder?: string;
-  stitches: any;
 }
 
-export function InlineTextarea({
-  path,
-  placeholder,
-  stitches,
-}: InlineTextProps) {
+export function InlineTextarea({ path, placeholder }: InlineTextProps) {
   const [isEnabled, setIsEnabled] = useState(false);
   const textAreaRef = useRef<ElementRef<"textarea">>(null);
 
@@ -36,35 +31,6 @@ export function InlineTextarea({
     placeholder
   );
 
-  const css = stitches.css({
-    width: "100%",
-    wordWrap: "break-word",
-    display: "block",
-    fontSize: "inherit",
-    fontFamily: "inherit",
-    fontWeight: "inherit",
-    boxSizing: "border-box",
-    color: "inherit",
-    letterSpacing: "inherit",
-    lineHeight: "inherit",
-    margin: "0 auto",
-    maxWidth: "inherit",
-    textTransform: "inherit",
-    backgroundColor: "inherit",
-    textAlign: "inherit",
-    outline: "none",
-    resize: "none",
-    border: "none",
-    overflow: "visible",
-    position: "relative",
-    padding: 0,
-    "-ms-overflow-style": "none",
-    "&::-webkit-scrollbar": {
-      display: "none",
-    },
-    pointerEvents: isEnabled ? "auto" : "none",
-  })();
-
   return (
     <div
       onMouseDown={(event) => {
@@ -80,7 +46,9 @@ export function InlineTextarea({
       }}
     >
       <TextareaAutosize
-        className={css}
+        className={`EasyblocksInlineTextarea_Textarea ${
+          isEnabled ? "EasyblocksInlineTextarea_Textarea--enabled" : ""
+        }`}
         rows={1}
         {...inputProps}
         ref={textAreaRef}

@@ -1,6 +1,5 @@
 export { CompilationCache } from "./compiler/CompilationCache";
 export type { CompilationCacheItemValue } from "./compiler/CompilationCache";
-export { compileBox, getBoxStyles } from "./compiler/box";
 export { RichTextEditor } from "./compiler/builtins/$richText/$richText.editor";
 export { TextEditor } from "./compiler/builtins/$text/$text.editor";
 export { buildText } from "./compiler/builtins/$text/buildText";
@@ -16,7 +15,7 @@ export {
 export { normalize } from "./compiler/normalize";
 export * from "./compiler/parsePath";
 export type { PathInfo } from "./compiler/parsePath";
-export { scalarizeConfig } from "./compiler/resop";
+export { scalarizeConfig } from "./scalarizeConfig";
 export * from "./compiler/schema";
 export * from "./compiler/schema/buttonSchemaProps";
 export { traverseComponents } from "./compiler/traverseComponents";
@@ -28,6 +27,7 @@ export type {
   InternalComponentDefinition,
   InternalRenderableComponentDefinition,
 } from "./compiler/types";
+
 export {
   EasyblocksMetadataProvider,
   useEasyblocksMetadata,

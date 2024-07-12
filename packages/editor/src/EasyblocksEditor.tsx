@@ -66,7 +66,10 @@ export function EasyblocksEditor(props: EasyblocksEditorProps) {
       )}
 
       {selectedWindow === "child" && (
-        <EasyblocksCanvas components={props.components} />
+        <EasyblocksCanvas
+          components={props.components}
+          renderer={props.renderer}
+        />
       )}
 
       {selectedWindow === "preview" && <PreviewRenderer {...props} />}

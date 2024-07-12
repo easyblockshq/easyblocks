@@ -1,33 +1,32 @@
 "use client";
 
-import { createStitches } from "@stitches/core";
 import React, { createContext, ReactNode, useContext } from "react";
-import { easyblocksStitchesInstances } from "./ssr";
-import { CompilationMetadata } from "../types";
+import { CompilationMetadata, Renderer } from "../types";
+import { stitchesRenderer } from "../stitches/stitches_runtime";
 
 const EasyblocksMetadataContext = createContext<
-  (CompilationMetadata & { stitches: any }) | undefined
+  | (CompilationMetadata & {
+      renderer: Renderer;
+    })
+  | undefined
 >(undefined);
 
 type EasyblocksMetadataProviderProps = {
   children: ReactNode;
   meta: CompilationMetadata;
+  renderer?: Renderer;
 };
 
 const EasyblocksMetadataProvider: React.FC<EasyblocksMetadataProviderProps> = ({
   meta,
   children,
+  renderer,
 }) => {
-  // Let's load stitches instance
-  if (easyblocksStitchesInstances.length === 0) {
-    easyblocksStitchesInstances.push(createStitches({}));
-  }
-
   return (
     <EasyblocksMetadataContext.Provider
       value={{
         ...meta,
-        stitches: easyblocksStitchesInstances[0],
+        renderer: renderer ?? stitchesRenderer,
       }}
     >
       {children}

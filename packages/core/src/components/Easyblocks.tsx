@@ -5,7 +5,7 @@ import { RichTextBlockElementClient } from "../compiler/builtins/$richText/$rich
 import { RichTextLineElementClient } from "../compiler/builtins/$richText/$richTextLineElement/$richTextLineElement.client";
 import { RichTextPartClient } from "../compiler/builtins/$richText/$richTextPart/$richTextPart.client";
 import { TextClient } from "../compiler/builtins/$text/$text.client";
-import { ExternalData, RenderableDocument } from "../types";
+import { ExternalData, RenderableDocument, Renderer } from "../types";
 import {
   ComponentBuilder,
   ComponentBuilderProps,
@@ -19,6 +19,7 @@ export type EasyblocksProps = {
   externalData?: ExternalData;
   components?: Record<string, React.ComponentType<any>>;
   componentOverrides?: ComponentOverrides;
+  renderer?: Renderer;
 };
 
 export type ComponentOverrides = Record<string, ReactElement>;
@@ -32,6 +33,30 @@ const builtinComponents: ComponentBuilderProps["components"] = {
   "@easyblocks/text.client": TextClient,
   "EditableComponentBuilder.client": ComponentBuilder,
 };
+
+// cursor: !isEnabled ? "inherit" : "text",
+// "& *": {
+//   pointerEvents: isEnabled ? "auto" : "none",
+//   userSelect: isEnabled ? "auto" : "none",
+// },
+// "& *::selection": {
+//   backgroundColor: "#b4d5fe",
+// },
+// ...(isDecorationActive && {
+//   "& *::selection": {
+//     backgroundColor: "transparent",
+//   },
+//   "& *[data-easyblocks-rich-text-selection]": {
+//     backgroundColor: "#b4d5fe",
+//   },
+// }),
+// ...(isFallbackValueShown && {
+//   opacity: 0.5,
+// }),
+// // Remove any text decoration from slate nodes that are elements. We only need text decoration on text elements.
+// "[data-slate-node]": {
+//   textDecoration: "none",
+// },
 
 function Easyblocks({
   renderableDocument,

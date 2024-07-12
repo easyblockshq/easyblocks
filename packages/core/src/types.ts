@@ -1,6 +1,7 @@
 import { ComponentType, ReactElement } from "react";
 import { PartialDeep } from "type-fest";
 import { Locale } from "./locales";
+import { InternalRenderableComponentDefinition } from "./_internals";
 
 export type ScalarOrCollection<T> = T | Array<T>;
 
@@ -536,6 +537,42 @@ export type Backend = {
   };
 };
 
+export type Renderer = {
+  generateClassNames: (input: any, meta: CompilationMetadata) => string;
+  transformProps?: (
+    input: Record<string, any>,
+    meta: CompilationMetadata
+  ) => Record<string, any>;
+};
+
+export type Builder = {
+  build: (input: {
+    values: Record<string, any>;
+    params: Record<string, any> & {
+      $width: TrulyResponsiveValue<number>;
+      $widthAuto: TrulyResponsiveValue<boolean>;
+    };
+    isEditing: boolean;
+    devices: Devices;
+    definition: InternalRenderableComponentDefinition;
+  }) => {
+    props: Record<string, any>;
+    components: Record<string, any>;
+  };
+  buildTextRoot: (input: {
+    values: { font: Record<string, any>; color: string; align: string };
+    isEditing: boolean;
+    devices: Devices;
+    definition: InternalRenderableComponentDefinition;
+  }) => any;
+  buildTextPart: (input: {
+    values: { font: Record<string, any>; color: string };
+    isEditing: boolean;
+    devices: Devices;
+    definition: InternalRenderableComponentDefinition;
+  }) => any;
+};
+
 /**
  * Config
  */
@@ -554,6 +591,7 @@ export type Config = {
   } & {
     [key: string & Record<never, never>]: Array<ConfigTokenValue<any>>;
   };
+  builder?: Builder;
 };
 
 export type SchemaPropShared<Type extends string> = {

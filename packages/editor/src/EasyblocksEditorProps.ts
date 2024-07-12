@@ -5,6 +5,7 @@ import {
   ExternalData,
   InlineTypeWidgetComponentProps,
   WidgetComponentProps,
+  Renderer,
 } from "@easyblocks/core";
 import React, { ComponentType } from "react";
 
@@ -23,6 +24,6 @@ export type EasyblocksEditorProps = {
     | ComponentType<WidgetComponentProps<any>>
     | ComponentType<InlineTypeWidgetComponentProps<any>>
   >;
-
+  renderer?: Renderer;
   __debug?: boolean;
 };

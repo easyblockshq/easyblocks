@@ -213,7 +213,6 @@ export function BlocksControls({
         isActive={isActive}
         isChildrenSelectionDisabled={!isActive && !isChildComponentActive}
         onSelect={focusOnBlock}
-        stitches={meta.stitches}
         sortable={sortable}
         id={id}
         direction={direction}
@@ -286,48 +285,17 @@ function DroppablePlaceholder({
 
   const isInsertingBefore = sortable.activeIndex > sortable.index;
 
-  const wrapperStyles = meta.stitches.css({
-    position: "absolute",
-    [position === "before" ? "top" : "bottom"]:
-      direction === "vertical" ? "-100%" : 0,
-    [position === "before" ? "left" : "right"]:
-      direction === "horizontal" ? "-100%" : 0,
-    height: "100%",
-    background: "transparent",
-    width: "100%",
-
-    "&::before": {
-      display: "block",
-      content: "''",
-      backgroundColor: Colors.blue50,
-      zIndex: 9999999,
-      position: "absolute",
-      opacity: 0,
-    },
-    "&[data-draggable-over=true]::before": {
-      opacity: 1,
-      ...(direction === "horizontal"
-        ? {
-            top: 0,
-            bottom: 0,
-            [isInsertingBefore ? "left" : "right"]: "0px",
-            height: "100%",
-            width: "4px",
-          }
-        : {
-            left: 0,
-            right: 0,
-            [isInsertingBefore ? "top" : "bottom"]: "0px",
-            width: "100%",
-            height: "4px",
-          }),
-    },
-  });
+  const positionClass = `${
+    position === "before" ? "positionBefore" : "positionAfter"
+  }${direction === "horizontal" ? "Horizontal" : "Vertical"}`;
+  const insertingClass = `${
+    isInsertingBefore ? "insertingBefore" : "insertingAfter"
+  }${direction === "horizontal" ? "Horizontal" : "Vertical"}`;
 
   return (
     <div
       data-draggable-over={sortable.isOver}
-      className={wrapperStyles().className}
+      className={`EasyblocksDroppablePlaceholder_Root EasyblocksDroppablePlaceholder_Root--${positionClass} EasyblocksDroppablePlaceholder_Root--${insertingClass}`}
       ref={sortable.setNodeRef}
       {...sortable.attributes}
       {...sortable.listeners}

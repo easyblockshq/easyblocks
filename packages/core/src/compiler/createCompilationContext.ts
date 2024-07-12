@@ -1,5 +1,6 @@
 import { responsiveValueMap } from "../responsiveness";
 import { parseSpacing } from "../spacingToPx";
+import { stitchesBuilder } from "../stitches/stitches_build";
 import {
   Config,
   ConfigDeviceRange,
@@ -275,6 +276,7 @@ export function createCompilationContext(
     contextParams,
     locales: config.locales,
     rootComponent,
+    builder: config.builder ?? stitchesBuilder,
   };
 
   return compilationContext;

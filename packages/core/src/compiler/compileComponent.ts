@@ -10,10 +10,8 @@ import {
   toArray,
   uniqueId,
 } from "@easyblocks/utils";
-import CryptoJS from "crypto-js";
 import { isComponentConfig } from "../checkers";
 import {
-  responsiveValueAt,
   responsiveValueFill,
   responsiveValueNormalize,
 } from "../responsiveness";
@@ -31,8 +29,6 @@ import {
   EditingInfo,
   FieldPortal,
   NoCodeComponentEditingFunctionResult,
-  NoCodeComponentStylesFunctionInput,
-  ScalarOrCollection,
   SchemaProp,
   SerializedComponentDefinitions,
   SerializedRenderableComponentDefinition,
@@ -45,7 +41,6 @@ import type {
   CompilationCacheItemValue,
 } from "./CompilationCache";
 import { applyAutoUsingResponsiveTokens } from "./applyAutoUsingResponsiveTokens";
-import { compileBox } from "./box";
 import { RichTextComponentConfig } from "./builtins/$richText/$richText";
 import { compileComponentValues } from "./compileComponentValues";
 import { compileFromSchema } from "./compileFromSchema";
@@ -58,7 +53,7 @@ import {
 import { getMostCommonValueFromRichTextParts } from "./getMostCommonValueFromRichTextParts";
 import { linearizeSpace } from "./linearizeSpace";
 import { parsePath } from "./parsePath";
-import { resop2, scalarizeConfig } from "./resop";
+import { scalarizeConfig } from "../scalarizeConfig";
 import {
   Component$$$SchemaProp,
   isExternalSchemaProp,
@@ -83,6 +78,12 @@ import {
   InternalRenderableComponentDefinition,
 } from "./types";
 import { getFallbackLocaleForLocale } from "../locales";
+
+import {
+  build,
+  buildTextPart,
+  buildTextRoot,
+} from "../stitches/stitches_build";
 
 type ComponentCompilationArtifacts = {
   compiledComponentConfig: CompiledComponentConfig;
@@ -449,69 +450,75 @@ export function compileComponent(
       editingContextProps = editingInfo.components;
     }
 
-    const { props, components, styled } = resop2(
-      { values: compiledValues, params: ownPropsAfterAuto.params },
-      ({ values, params }, breakpointIndex) => {
-        if (!renderableComponentDefinition.styles) {
-          return {};
-        }
+    const buildParams = {
+      values: compiledValues,
+      params: { ...ownPropsAfterAuto.params, $width, $widthAuto },
+      isEditing: !!compilationContext.isEditing,
+      devices: compilationContext.devices,
+      definition: renderableComponentDefinition,
+    };
 
-        const device = assertDefined(
-          compilationContext.devices.find(
-            (device) => device.id === breakpointIndex
-          ),
-          `Missing device "${breakpointIndex}"`
-        );
+    const { props, components } = compilationContext.builder.build(buildParams);
 
-        const stylesInput: NoCodeComponentStylesFunctionInput = {
-          values,
-          params: {
-            ...params,
-            $width: assertDefined(responsiveValueAt($width, breakpointIndex)),
-            $widthAuto: assertDefined(
-              responsiveValueAt($widthAuto, breakpointIndex)
-            ),
-          },
-          isEditing: !!compilationContext.isEditing,
-          device,
-          ...(componentDefinition!.id === "@easyblocks/rich-text-part"
-            ? { __COMPILATION_CONTEXT__: compilationContext }
-            : {}),
-        };
+    if (componentDefinition.id === "@easyblocks/rich-text") {
+      props.__textRoot = compilationContext.builder.buildTextRoot({
+        values: {
+          font: compiledValues.mainFont,
+          color: compiledValues.mainColor,
+          align: ownPropsAfterAuto.params.passedAlign ?? ownProps.values.align,
+        },
+        isEditing: !!compilationContext.isEditing,
+        devices: compilationContext.devices,
+        definition: renderableComponentDefinition,
+      });
+    }
 
-        return renderableComponentDefinition.styles(stylesInput);
-      },
-      compilationContext.devices,
-      renderableComponentDefinition
-    );
+    if (componentDefinition.id === "@easyblocks/rich-text-part") {
+      props.__textPart = compilationContext.builder.buildTextPart({
+        values: { font: compiledValues.font, color: compiledValues.color },
+        isEditing: !!compilationContext.isEditing,
+        devices: compilationContext.devices,
+        definition: renderableComponentDefinition,
+      });
+    }
+
+    // font and color
+    // if (
+    //   componentDefinition.id === "@easyblocks/rich-text" ||
+    //   componentDefinition.id === "@easyblocks/rich-text-part"
+    // ) {
+    //   const isPart = componentDefinition.id === "@easyblocks/rich-text-part";
+
+    //   const fontAndColorPseudoDefinition = {
+    //     id: "__fontAndColor__",
+    //     schema: [
+    //       {
+    //         prop: "font",
+    //         type: "font",
+    //       },
+    //       {
+    //         prop: "color",
+    //         type: "color",
+    //       },
+    //     ],
+    //   };
+
+    //   props.__fontAndColorArtifacts = buildFontAndColor({
+    //     values: isPart
+    //       ? { font: compiledValues.font, color: compiledValues.color }
+    //       : { font: compiledValues.mainFont, color: compiledValues.mainColor },
+    //     params: {},
+    //     isEditing: !!compilationContext.isEditing,
+    //     devices: compilationContext.devices,
+    //     definition: fontAndColorPseudoDefinition,
+    //   });
+
+    //   // console.log(`result for ${componentDefinition.id}`, fontAndColor);
+    // }
 
     validateStylesProps(props, componentDefinition);
 
     subcomponentsContextProps = components;
-
-    // Move all the boxes to _compiled
-    for (const key in styled) {
-      let styles: ScalarOrCollection<Record<string, any>> = styled[key];
-
-      if (Array.isArray(styles)) {
-        styles = styles.map((v) => {
-          return { ...v, __isBox: true };
-        });
-      } else {
-        styles = { ...styles, __isBox: true };
-      }
-
-      const schemaProp = componentDefinition.schema.find((x) => x.prop === key);
-
-      // Context props processed below
-      if (schemaProp) {
-        continue;
-      }
-
-      // If box
-
-      compiled.styled[key] = compileBoxes(styles, compilationContext);
-    }
 
     componentDefinition.schema.forEach((schemaProp: SchemaProp) => {
       if ("buildOnly" in schemaProp && schemaProp.buildOnly) {
@@ -1360,36 +1367,6 @@ function mapResponsiveFontToResponsiveFontSize(
       return [breakpoint, fontValue.fontSize];
     })
   );
-}
-
-function addStylesHash(styles: Record<PropertyKey, any>) {
-  if ("__hash" in styles) {
-    delete styles["__hash"];
-  }
-
-  const hash = CryptoJS.SHA1(JSON.stringify(styles));
-  styles.__hash = hash.toString();
-  return styles;
-}
-
-function compileBoxes(
-  value: any,
-  compilationContext: CompilationContextType
-): any {
-  if (Array.isArray(value)) {
-    return value.map((x: any) => compileBoxes(x, compilationContext));
-  } else if (typeof value === "object" && value !== null) {
-    if (value.__isBox) {
-      return addStylesHash(compileBox(value, compilationContext.devices));
-    }
-
-    const ret: Record<string, any> = {};
-    for (const key in value) {
-      ret[key] = compileBoxes(value[key], compilationContext);
-    }
-    return ret;
-  }
-  return value;
 }
 
 function getDefaultFieldDefinition(

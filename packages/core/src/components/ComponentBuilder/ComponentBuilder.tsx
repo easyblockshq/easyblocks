@@ -24,7 +24,6 @@ import {
   responsiveValueReduce,
   responsiveValueValues,
 } from "../../responsiveness";
-import { resop } from "../../responsiveness/resop";
 import {
   CompilationMetadata,
   CompiledComponentConfig,
@@ -42,41 +41,10 @@ import {
   NoCodeComponentProps,
   ResponsiveValue,
 } from "../../types";
-import { Box } from "../Box/Box";
+// import { Box } from "../Box/Box";
 import { useEasyblocksExternalData } from "../EasyblocksExternalDataProvider";
 import { useEasyblocksMetadata } from "../EasyblocksMetadataProvider";
-
-function buildBoxes(
-  compiled: any,
-  name: string,
-  actionWrappers: { [key: string]: any },
-  meta: any
-): any {
-  if (Array.isArray(compiled)) {
-    return compiled.map((x: any, index: number) =>
-      buildBoxes(x, `${name}.${index}`, actionWrappers, meta)
-    );
-  } else if (typeof compiled === "object" && compiled !== null) {
-    if (compiled.__isBox) {
-      const boxProps = {
-        __compiled: compiled,
-        __name: name,
-        devices: meta.vars.devices,
-        stitches: meta.stitches,
-      };
-
-      return <Box {...boxProps} />;
-    }
-
-    const ret: Record<string, any> = {};
-
-    for (const key in compiled) {
-      ret[key] = buildBoxes(compiled[key], key, actionWrappers, meta);
-    }
-    return ret;
-  }
-  return compiled;
-}
+// import { buildBoxes } from "../Box/Box";
 
 function getComponentDefinition(
   compiled: CompiledComponentConfig,
@@ -400,13 +368,52 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
 
   const shopstoryCompiledConfig = compiled as CompiledShopstoryComponentConfig;
 
+  const transformedProps = meta.renderer.transformProps
+    ? meta.renderer.transformProps(shopstoryCompiledConfig.props, meta)
+    : shopstoryCompiledConfig.props;
+
+  const isRichText = componentDefinition.id === "@easyblocks/rich-text";
+  const isRichTextPart =
+    componentDefinition.id === "@easyblocks/rich-text-part";
+
+  if (isRichText) {
+    transformedProps.__textRootClasses = meta.renderer.generateClassNames(
+      shopstoryCompiledConfig.props.__textRoot,
+      meta
+    );
+  }
+
+  if (isRichTextPart) {
+    transformedProps.__textPartClasses = meta.renderer.generateClassNames(
+      shopstoryCompiledConfig.props.__textPart,
+      meta
+    );
+  }
+
+  // if (isRichText || isRichTextPart) {
+  //   const classNames = meta.generateClassNames(
+  //     shopstoryCompiledConfig.props.__fontAndColorArtifacts,
+  //     meta
+  //   );
+
+  //   transformedProps.__fontAndColorClassNames = classNames;
+  // }
+
+  // console.log('--');
+  // console.log('original props', shopstoryCompiledConfig.props);
+  // console.log('transformed props', transformedProps);
+
   // Shopstory component
-  const styled: { [key: string]: any } = buildBoxes(
-    shopstoryCompiledConfig.styled,
-    "",
-    {},
-    meta
-  );
+  // const styled: { [key: string]: any } = buildBoxes(
+  //   shopstoryCompiledConfig.props.__styled,
+  //   "",
+  //   {},
+  //   meta
+  // );
+
+  // console.log('styled', styled);
+
+  const childrenComponents: { [key: string]: any } = {};
 
   // Styled
   componentDefinition.schema.forEach((schemaProp) => {
@@ -417,7 +424,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
       const compiledChildren =
         shopstoryCompiledConfig.components[schemaProp.prop];
 
-      styled[schemaProp.prop] = getCompiledSubcomponents(
+      childrenComponents[schemaProp.prop] = getCompiledSubcomponents(
         compiled._id,
         compiledChildren,
         contextProps,
@@ -434,8 +441,6 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
   const { ref, __isSelected, ...restPassedProps } = allPassedProps || {};
 
   const runtime = {
-    stitches: meta.stitches,
-    resop: resop,
     devices: meta.vars.devices,
   };
 
@@ -448,6 +453,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
   };
 
   const componentProps = {
+    ...transformedProps,
     ...restPassedProps,
     ...mapExternalProps(
       shopstoryCompiledConfig.props,
@@ -455,7 +461,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
       componentDefinition,
       externalData
     ),
-    ...styled,
+    ...childrenComponents,
     __easyblocks: easyblocksProp,
   };
 

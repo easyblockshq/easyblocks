@@ -26,17 +26,13 @@ import type {
   RenderPlaceholderProps,
 } from "slate-react";
 import { Editable, ReactEditor, Slate, withReact } from "slate-react";
-import { Box } from "../../../components/Box/Box";
 import {
   ComponentBuilder,
   InternalNoCodeComponentProps,
 } from "../../../components/ComponentBuilder/ComponentBuilder";
 import { RichTextChangedEvent } from "../../../events";
 import { getFallbackForLocale } from "../../../locales";
-import { responsiveValueFill } from "../../../responsiveness";
-import { Devices, ResponsiveValue } from "../../../types";
-import { compileBox, getBoxStyles } from "../../box";
-import { getDevicesWidths } from "../../devices";
+import { ResponsiveValue } from "../../../types";
 import { duplicateConfig } from "../../duplicateConfig";
 import type { RichTextComponentConfig } from "./$richText";
 import {
@@ -59,6 +55,8 @@ import { getFocusedFieldsFromSlateSelection } from "./utils/getFocusedFieldsFrom
 import { getFocusedRichTextPartsConfigPaths } from "./utils/getFocusedRichTextPartsConfigPaths";
 import { getRichTextComponentConfigFragment } from "./utils/getRichTextComponentConfigFragment";
 import { NORMALIZED_IDS_TO_IDS, withEasyblocks } from "./withEasyblocks";
+import { liStyles, olStyles, paragraphStyles, ulStyles } from "./styles";
+import { useEasyblocksMetadata } from "../../../_internals";
 
 interface RichTextProps extends InternalNoCodeComponentProps {
   elements: Array<
@@ -81,11 +79,10 @@ function RichTextEditor(props: RichTextProps) {
     setFocussedField,
   } = editorContext;
 
+  const meta = useEasyblocksMetadata();
+
   const {
-    __easyblocks: {
-      path,
-      runtime: { resop, stitches, devices },
-    },
+    __easyblocks: { path },
     align,
   } = props;
 
@@ -364,43 +361,51 @@ function RichTextEditor(props: RichTextProps) {
       throw new Error("Missing element");
     }
 
-    const compiledStyles = (() => {
-      if (Element._component === "@easyblocks/rich-text-block-element") {
-        if (Element.props.type === "bulleted-list") {
-          return Element.styled.BulletedList;
-        } else if (Element.props.type === "numbered-list") {
-          return Element.styled.NumberedList;
-        } else if (Element.props.type === "paragraph") {
-          return Element.styled.Paragraph;
-        }
-      } else if (Element._component === "@easyblocks/rich-text-line-element") {
-        if (element.type === "text-line") {
-          return Element.styled.TextLine;
-        } else if (element.type === "list-item") {
-          return Element.styled.ListItem;
-        }
-      }
-    })();
+    if (Element._component === "@easyblocks/rich-text-block-element") {
+      if (Element.props.type === "bulleted-list") {
+        return (
+          <ul style={ulStyles} {...attributes}>
+            {children}
+          </ul>
+        );
 
-    if (compiledStyles === undefined) {
-      throw new Error("Unknown element type");
+        // return Element.props.__styled.BulletedList;
+      } else if (Element.props.type === "numbered-list") {
+        return (
+          <ol style={olStyles} {...attributes}>
+            {children}
+          </ol>
+        );
+
+        // return Element.props.__styled.NumberedList;
+      } else if (Element.props.type === "paragraph") {
+        return React.createElement(
+          // @ts-ignore
+          Element.props.accessibilityRole,
+          attributes,
+          children
+        );
+
+        // return Element.props.__styled.Paragraph;
+      }
+    } else if (Element._component === "@easyblocks/rich-text-line-element") {
+      if (element.type === "text-line") {
+        return (
+          <div style={paragraphStyles} {...attributes}>
+            {children}
+          </div>
+        );
+      } else if (element.type === "list-item") {
+        return (
+          <li style={liStyles} {...attributes}>
+            <span>{children}</span>
+          </li>
+        );
+        // return Element.props.__styled.ListItem;
+      }
     }
 
-    return (
-      <Box
-        __compiled={compiledStyles}
-        devices={devices}
-        stitches={stitches}
-        {...attributes}
-        // Element annotation for easier debugging
-        {...(process.env.NODE_ENV === "development" && {
-          "data-shopstory-element-type": element.type,
-          "data-shopstory-id": element.id,
-        })}
-      >
-        {element.type === "list-item" ? <div>{children}</div> : children}
-      </Box>
-    );
+    throw new Error("Unknown element type");
   }
 
   const TextParts = extractTextPartsFromCompiledComponents(props);
@@ -425,17 +430,16 @@ function RichTextEditor(props: RichTextProps) {
       throw new Error("Missing part");
     }
 
+    const __textPartClasses: string = meta.renderer.generateClassNames(
+      // @ts-ignore
+      TextPart.props.__textPart,
+      meta
+    );
+
     const TextPartComponent = (
       <RichTextPartClient
         value={children}
-        Text={
-          <Box
-            __compiled={TextPart.styled.Text}
-            devices={devices}
-            stitches={stitches}
-            {...attributes}
-          />
-        }
+        textAttributes={attributes}
         TextWrapper={
           TextPart.components.TextWrapper[0] ? (
             <ComponentBuilder
@@ -449,6 +453,7 @@ function RichTextEditor(props: RichTextProps) {
             />
           ) : undefined
         }
+        __textPartClasses={__textPartClasses}
       />
     );
 
@@ -738,61 +743,30 @@ function RichTextEditor(props: RichTextProps) {
     }
   }
 
-  const contentEditableClassName = useMemo(() => {
-    const responsiveAlignmentStyles = mapResponsiveAlignmentToStyles(align, {
-      devices: editorContext.devices,
-      resop,
-    });
+  const isFallbackValueShown =
+    localizedRichTextElements === undefined &&
+    fallbackRichTextElements !== undefined;
 
-    const isFallbackValueShown =
-      localizedRichTextElements === undefined &&
-      fallbackRichTextElements !== undefined;
+  const __textRootClasses: string = meta.renderer.generateClassNames(
+    // @ts-ignore
+    props.__textRoot,
+    meta
+  );
 
-    // When we make a selection of text within editable container and then blur
-    // sometimes the browser selection changes and shows incorrectly selected chunks.
-    const getStyles = stitches.css({
-      display: "flex",
-      ...responsiveAlignmentStyles,
-      cursor: !isEnabled ? "inherit" : "text",
-      "& *": {
-        pointerEvents: isEnabled ? "auto" : "none",
-        userSelect: isEnabled ? "auto" : "none",
-      },
-      "& *::selection": {
-        backgroundColor: "#b4d5fe",
-      },
-      ...(isDecorationActive && {
-        "& *::selection": {
-          backgroundColor: "transparent",
-        },
-        "& *[data-easyblocks-rich-text-selection]": {
-          backgroundColor: "#b4d5fe",
-        },
-      }),
-      ...(isFallbackValueShown && {
-        opacity: 0.5,
-      }),
-      // Remove any text decoration from slate nodes that are elements. We only need text decoration on text elements.
-      "[data-slate-node]": {
-        textDecoration: "none",
-      },
-    });
-
-    return getStyles().className;
-  }, [
-    align,
-    isDecorationActive,
-    localizedRichTextElements,
-    fallbackRichTextElements,
-    isEnabled,
-  ]);
+  const classes = `EasyblocksRichTextEditor_Root ${
+    isEnabled ? "EasyblocksRichTextEditor_Root--enabled" : ""
+  } ${
+    isFallbackValueShown ? "EasyblocksRichTextEditor_Root--fallbackValue" : ""
+  } ${
+    isDecorationActive ? "EasyblocksRichTextEditor_Root--decorationActive" : ""
+  }`;
 
   return (
     <Slate editor={editor} value={editorValue} onChange={handleEditableChange}>
       <div>
         {/* this wrapper div prevents from Chrome bug where "pointer-events: none" on contenteditable is ignored*/}
         <Editable
-          className={contentEditableClassName}
+          className={`${classes} ${__textRootClasses}`}
           placeholder="Here goes text content"
           renderElement={renderElement}
           renderLeaf={renderLeaf}
@@ -864,40 +838,6 @@ function isEditorValueEmpty(editorValue: Array<BlockElement>) {
 
 function isConfigEqual(newConfig: any, oldConfig: any) {
   return deepCompare(newConfig, oldConfig);
-}
-
-function mapResponsiveAlignmentToStyles(
-  align: ResponsiveValue<Alignment>,
-  { devices, resop }: { devices: Devices; resop: any }
-) {
-  function mapAlignmentToFlexAlignment(align: Alignment) {
-    if (align === "center") {
-      return "center";
-    }
-
-    if (align === "right") {
-      return "flex-end";
-    }
-
-    return "flex-start";
-  }
-
-  const responsiveStyles = resop(
-    {
-      align: responsiveValueFill(align, devices, getDevicesWidths(devices)),
-    },
-    (values: any) => {
-      return {
-        justifyContent: mapAlignmentToFlexAlignment(values.align),
-        textAlign: values.align,
-      };
-    },
-    devices
-  );
-
-  const compiledStyles = compileBox(responsiveStyles, devices);
-
-  return getBoxStyles(compiledStyles, devices);
 }
 
 function createTextSelectionDecorator(editor: Editor) {

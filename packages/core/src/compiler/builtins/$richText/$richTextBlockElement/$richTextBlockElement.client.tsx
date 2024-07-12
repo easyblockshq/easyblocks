@@ -1,6 +1,7 @@
 import React, { ReactElement } from "react";
 import type { CompiledNoCodeComponentProps } from "../../../types";
 import type { RichTextBlockElementComponentConfig } from "./$richTextBlockElement";
+import { olStyles, ulStyles } from "../styles";
 
 type RichTextBlockElementProps = CompiledNoCodeComponentProps<
   RichTextBlockElementComponentConfig["_component"],
@@ -19,6 +20,7 @@ export function RichTextBlockElementClient(props: RichTextBlockElementProps) {
     elements: Elements,
     NumberedList,
     Paragraph,
+    accessibilityRole,
   } = props;
 
   const elements = Elements.map((Element, index) => (
@@ -26,24 +28,21 @@ export function RichTextBlockElementClient(props: RichTextBlockElementProps) {
   ));
 
   if (type === "paragraph") {
-    return <Paragraph.type {...Paragraph.props}>{elements}</Paragraph.type>;
+    return React.createElement(accessibilityRole, {}, elements);
+    // return <Paragraph.type {...Paragraph.props}>{elements}</Paragraph.type>;
   }
 
   if (type === "bulleted-list") {
-    return (
-      <BulletedList.type {...BulletedList.props}>{elements}</BulletedList.type>
-    );
+    return <ul style={ulStyles}>{elements}</ul>;
   }
 
   if (type === "numbered-list") {
-    return (
-      <NumberedList.type {...NumberedList.props}>{elements}</NumberedList.type>
-    );
+    return <ol style={olStyles}>{elements}</ol>;
   }
 
   if (process.env.NODE_ENV === "development") {
     console.warn(`Unknown @easyblocks/rich-text-block-element type "${type}"`);
   }
 
-  return <div>{elements}</div>;
+  return <span>{elements}</span>;
 }

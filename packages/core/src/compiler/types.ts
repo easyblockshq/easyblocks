@@ -1,6 +1,7 @@
 import { PartialDeep, SetRequired } from "type-fest";
 import { Locale } from "../locales";
 import {
+  Builder,
   ComponentConfigBase,
   ComponentDefinitionShared,
   ContextParams,
@@ -58,6 +59,7 @@ export type CompilationContextType = {
   strict?: boolean;
   locales: Array<Locale>;
   rootComponent: NoCodeComponentDefinition;
+  builder: Builder;
 };
 
 export type EditableComponentToComponentConfig<

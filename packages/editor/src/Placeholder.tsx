@@ -15,7 +15,6 @@ type PlaceholderProps = {
 };
 
 function Placeholder(props: PlaceholderProps) {
-  const { stitches } = useEasyblocksMetadata();
   const styles: Record<string, any> = {};
 
   const { aspectRatio, width, height, label } = props.appearance;
@@ -26,40 +25,10 @@ function Placeholder(props: PlaceholderProps) {
     styles.paddingBottom = `${(1 / aspectRatio) * 100}%`;
   }
 
-  const rootClassName = stitches.css({
-    border: `1px dashed ${Colors.blue50}`,
-    position: "relative",
-    width: `${width ? `${width}px` : "auto"}`,
-    height: "auto",
-    transition: "all 0.1s",
-  });
-
-  const contentClassName = stitches.css({
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    color: Colors.blue50,
-    justifyContent: "center",
-    alignItems: "center",
-    cursor: "pointer",
-    ...Fonts.body,
-    "&:hover": {
-      backgroundColor: Colors.blue10,
-    },
-    "&[data-draggable-over=true]": {
-      backgroundColor: Colors.blue10,
-    },
-    "&[data-draggable-dragging=true]": {
-      cursor: "grabbing",
-    },
-  });
-
   const content = (
     <div
-      className={contentClassName()}
+      style={{ width: `${width ? `${width}px` : undefined}` }}
+      className={"EasyblocksPlaceholder_Content"}
       onClick={(event) => {
         event.stopPropagation();
         props.onClick();
@@ -88,7 +57,7 @@ function Placeholder(props: PlaceholderProps) {
 
   return (
     <div
-      className={rootClassName()}
+      className={"EasyblocksPlaceholder_Root"}
       ref={props.sortable.setDroppableNodeRef}
       {...props.sortable.attributes}
       {...props.sortable.listeners}

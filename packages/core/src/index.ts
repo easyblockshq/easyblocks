@@ -11,7 +11,10 @@ export type {
   ComponentOverrides,
   EasyblocksProps,
 } from "./components/Easyblocks";
-export { easyblocksGetCssText, easyblocksGetStyleTag } from "./components/ssr";
+export {
+  easyblocksGetCssText,
+  easyblocksGetStyleTag,
+} from "./stitches/stitches_runtime";
 export { isNoCodeComponentOfType } from "./isNoCodeComponentOfType";
 export * from "./locales";
 export * from "./resourcesUtils";

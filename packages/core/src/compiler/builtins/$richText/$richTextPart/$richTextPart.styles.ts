@@ -4,10 +4,11 @@ import type {
   NoCodeComponentStylesFunctionResult,
 } from "../../../../types";
 
-const DEFAULT_FONT_VALUES = {
-  fontWeight: "initial",
-  fontStyle: "initial",
-};
+// const DEFAULT_FONT_VALUES = {
+//   fontWeight: "initial",
+//   fontStyle: "initial",
+//   lineHeight: "initial",
+// };
 
 export interface RichTextPartValues {
   color: string;
@@ -20,17 +21,17 @@ export function richTextPartStyles({
   values: { color, font, TextWrapper },
   isEditing,
 }: NoCodeComponentStylesFunctionInput<RichTextPartValues>): NoCodeComponentStylesFunctionResult {
-  const fontWithDefaults = {
-    ...DEFAULT_FONT_VALUES,
-    ...font,
-  };
+  // const fontWithDefaults = {
+  //   ...DEFAULT_FONT_VALUES,
+  //   ...font,
+  // };
 
   const hasTextWrapper = TextWrapper.length > 0;
 
   const textStyles: Record<string, any> = {
     __as: "span",
-    color,
-    ...fontWithDefaults,
+    // color,
+    // ...fontWithDefaults,
   };
 
   if (hasTextWrapper && !isEditing) {
@@ -49,8 +50,8 @@ export function richTextPartStyles({
   }
 
   return {
-    styled: {
-      Text: textStyles,
-    },
+    // styled: {
+    //   // Text: textStyles,
+    // },
   };
 }
