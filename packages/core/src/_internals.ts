@@ -15,7 +15,7 @@ export {
 export { normalize } from "./compiler/normalize";
 export * from "./compiler/parsePath";
 export type { PathInfo } from "./compiler/parsePath";
-export { scalarizeConfig } from "./compiler/resop";
+export { scalarizeConfig } from "./scalarizeConfig";
 export * from "./compiler/schema";
 export * from "./compiler/schema/buttonSchemaProps";
 export { traverseComponents } from "./compiler/traverseComponents";

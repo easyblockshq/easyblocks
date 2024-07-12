@@ -53,7 +53,7 @@ import {
 import { getMostCommonValueFromRichTextParts } from "./getMostCommonValueFromRichTextParts";
 import { linearizeSpace } from "./linearizeSpace";
 import { parsePath } from "./parsePath";
-import { resop2, scalarizeConfig } from "./resop";
+import { scalarizeConfig } from "../scalarizeConfig";
 import {
   Component$$$SchemaProp,
   isExternalSchemaProp,

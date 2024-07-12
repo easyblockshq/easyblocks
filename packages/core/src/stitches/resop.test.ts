@@ -1,6 +1,6 @@
 import { Devices } from "@easyblocks/core";
 import { resop2 } from "./resop";
-import { InternalRenderableComponentDefinition } from "./types";
+import { InternalRenderableComponentDefinition } from "../compiler/types";
 import { ScalarOrCollection } from "../types";
 
 const devices: Devices = [

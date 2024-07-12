@@ -1,6 +1,6 @@
 import { assertDefined } from "@easyblocks/utils";
 import { InternalRenderableComponentDefinition } from "../_internals";
-import { resop2 } from "../compiler/resop";
+import { resop2 } from "./resop";
 import {
   Devices,
   NoCodeComponentStylesFunctionInput,
