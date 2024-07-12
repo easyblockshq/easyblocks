@@ -5,7 +5,7 @@ import { RichTextBlockElementClient } from "../compiler/builtins/$richText/$rich
 import { RichTextLineElementClient } from "../compiler/builtins/$richText/$richTextLineElement/$richTextLineElement.client";
 import { RichTextPartClient } from "../compiler/builtins/$richText/$richTextPart/$richTextPart.client";
 import { TextClient } from "../compiler/builtins/$text/$text.client";
-import { ExternalData, RenderableDocument } from "../types";
+import { ExternalData, RenderableDocument, Renderer } from "../types";
 import {
   ComponentBuilder,
   ComponentBuilderProps,
@@ -19,6 +19,7 @@ export type EasyblocksProps = {
   externalData?: ExternalData;
   components?: Record<string, React.ComponentType<any>>;
   componentOverrides?: ComponentOverrides;
+  renderer?: Renderer;
 };
 
 export type ComponentOverrides = Record<string, ReactElement>;

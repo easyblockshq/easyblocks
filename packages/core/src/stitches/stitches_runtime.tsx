@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { createStitches } from "@stitches/core";
-import { CompilationMetadata, Devices } from "../types";
+import { CompilationMetadata, Devices, Renderer } from "../types";
 import { getBoxStyles } from "./getBoxStyles";
 
 const boxStyles = {
@@ -37,7 +37,7 @@ export function getStitchesInstance() {
   return easyblocksStitchesInstances[0];
 }
 
-export function generateClassNames(styles: any, devices: Devices) {
+export function generateClassNamesArray(styles: any, devices: Devices) {
   /**
    * Why parse+stringify?
    *
@@ -82,7 +82,7 @@ const Box = React.forwardRef<HTMLElement, BoxProps>((props, ref) => {
   const { as, itemWrappers, className, ...restPassedProps } = realProps;
 
   const classes = useMemo(() => {
-    return generateClassNames(styles, devices);
+    return generateClassNamesArray(styles, devices);
   }, [styles.__hash]);
 
   return React.createElement(
@@ -128,7 +128,7 @@ export function buildBoxes(
   return compiled;
 }
 
-export function stitchesTransformProps(
+export function transformProps(
   props: Record<string, any>,
   meta: CompilationMetadata
 ) {
@@ -146,3 +146,10 @@ export function stitchesTransformProps(
     ...newProps,
   };
 }
+
+export const stitchesRenderer: Renderer = {
+  transformProps,
+  generateClassNames: (styles: any, meta: CompilationMetadata) => {
+    return generateClassNamesArray(styles, meta.vars.devices).join(" ");
+  },
+};

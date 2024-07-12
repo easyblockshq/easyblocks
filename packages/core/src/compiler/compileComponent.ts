@@ -458,16 +458,15 @@ export function compileComponent(
       definition: renderableComponentDefinition,
     };
 
-    const { props, components } = build(buildParams);
+    const { props, components } = compilationContext.builder.build(buildParams);
 
     if (componentDefinition.id === "@easyblocks/rich-text") {
-      props.__textRoot = buildTextRoot({
+      props.__textRoot = compilationContext.builder.buildTextRoot({
         values: {
           font: compiledValues.mainFont,
           color: compiledValues.mainColor,
           align: ownPropsAfterAuto.params.passedAlign ?? ownProps.values.align,
         },
-        params: {},
         isEditing: !!compilationContext.isEditing,
         devices: compilationContext.devices,
         definition: renderableComponentDefinition,
@@ -475,9 +474,8 @@ export function compileComponent(
     }
 
     if (componentDefinition.id === "@easyblocks/rich-text-part") {
-      props.__textPart = buildTextPart({
+      props.__textPart = compilationContext.builder.buildTextPart({
         values: { font: compiledValues.font, color: compiledValues.color },
-        params: {},
         isEditing: !!compilationContext.isEditing,
         devices: compilationContext.devices,
         definition: renderableComponentDefinition,

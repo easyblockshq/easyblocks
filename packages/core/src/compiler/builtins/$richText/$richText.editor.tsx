@@ -429,7 +429,7 @@ function RichTextEditor(props: RichTextProps) {
       throw new Error("Missing part");
     }
 
-    const __textPartClasses: string = meta.generateClassNames(
+    const __textPartClasses: string = meta.renderer.generateClassNames(
       TextPart.props.__textPart,
       meta
     );
@@ -745,7 +745,7 @@ function RichTextEditor(props: RichTextProps) {
     localizedRichTextElements === undefined &&
     fallbackRichTextElements !== undefined;
 
-  const __textRootClasses: string = meta.generateClassNames(
+  const __textRootClasses: string = meta.renderer.generateClassNames(
     props.__textRoot,
     meta
   );

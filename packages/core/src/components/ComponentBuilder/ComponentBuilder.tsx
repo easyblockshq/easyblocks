@@ -368,24 +368,23 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
 
   const shopstoryCompiledConfig = compiled as CompiledShopstoryComponentConfig;
 
-  const transformedProps = meta.transformProps(
-    shopstoryCompiledConfig.props,
-    meta
-  );
+  const transformedProps = meta.renderer.transformProps
+    ? meta.renderer.transformProps(shopstoryCompiledConfig.props, meta)
+    : shopstoryCompiledConfig.props;
 
   const isRichText = componentDefinition.id === "@easyblocks/rich-text";
   const isRichTextPart =
     componentDefinition.id === "@easyblocks/rich-text-part";
 
   if (isRichText) {
-    transformedProps.__textRootClasses = meta.generateClassNames(
+    transformedProps.__textRootClasses = meta.renderer.generateClassNames(
       shopstoryCompiledConfig.props.__textRoot,
       meta
     );
   }
 
   if (isRichTextPart) {
-    transformedProps.__textPartClasses = meta.generateClassNames(
+    transformedProps.__textPartClasses = meta.renderer.generateClassNames(
       shopstoryCompiledConfig.props.__textPart,
       meta
     );

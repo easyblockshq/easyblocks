@@ -5,6 +5,7 @@ import {
   Devices,
   NoCodeComponentStylesFunctionInput,
   ScalarOrCollection,
+  Builder,
 } from "../types";
 import { buildBox } from "./buildBox";
 import CryptoJS from "crypto-js";
@@ -16,14 +17,14 @@ const DEFAULT_FONT_VALUES = {
 };
 
 export function buildTextRoot(input: {
-  values: { font: any; color: any; align: any };
-  params: any;
+  values: { font: Record<string, any>; color: string; align: string };
   isEditing: boolean;
   devices: Devices;
   definition: InternalRenderableComponentDefinition;
 }) {
   const result = build({
     ...input,
+    params: {},
     definition: {
       ...input.definition,
       styles: ({ values }) => {
@@ -45,14 +46,14 @@ export function buildTextRoot(input: {
 }
 
 export function buildTextPart(input: {
-  values: { font: any; color: any };
-  params: any;
+  values: { font: Record<string, any>; color: string };
   isEditing: boolean;
   devices: Devices;
   definition: InternalRenderableComponentDefinition;
 }) {
   const result = build({
     ...input,
+    params: {},
     definition: {
       ...input.definition,
       styles: ({ values }) => {
@@ -152,3 +153,9 @@ function buildBoxes(value: any, devices: Devices): any {
   }
   return value;
 }
+
+export const stitchesBuilder: Builder = {
+  build,
+  buildTextRoot,
+  buildTextPart,
+};
