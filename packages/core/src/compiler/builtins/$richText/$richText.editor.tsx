@@ -380,6 +380,7 @@ function RichTextEditor(props: RichTextProps) {
         // return Element.props.__styled.NumberedList;
       } else if (Element.props.type === "paragraph") {
         return React.createElement(
+          // @ts-ignore
           Element.props.accessibilityRole,
           attributes,
           children
@@ -430,6 +431,7 @@ function RichTextEditor(props: RichTextProps) {
     }
 
     const __textPartClasses: string = meta.renderer.generateClassNames(
+      // @ts-ignore
       TextPart.props.__textPart,
       meta
     );
@@ -746,6 +748,7 @@ function RichTextEditor(props: RichTextProps) {
     fallbackRichTextElements !== undefined;
 
   const __textRootClasses: string = meta.renderer.generateClassNames(
+    // @ts-ignore
     props.__textRoot,
     meta
   );

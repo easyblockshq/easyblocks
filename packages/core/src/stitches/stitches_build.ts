@@ -96,6 +96,7 @@ export function build(input: {
 
       const stylesInput: NoCodeComponentStylesFunctionInput = {
         values,
+        // @ts-ignore
         params,
         isEditing,
         device,
