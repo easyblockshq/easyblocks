@@ -71,7 +71,6 @@ const baseConfig = {
   external: [
     ...Object.keys(packageJson.peerDependencies),
     ...Object.keys(packageJson.dependencies),
-    /crypto-js/,
     /@babel\/runtime/,
     /lodash/,
   ],

@@ -17,14 +17,14 @@
   "dependencies": {
     "@babel/runtime": "^7.21.0",
     "@stitches/core": "^1.2.8",
-    "crypto-js": "^4.1.1",
     "lodash": "^4.17.21",
     "postcss-value-parser": "^3.3.0",
     "react-textarea-autosize": ">=7.1",
     "slate": "0.77.2",
     "slate-react": "0.77.2",
     "type-fest": "^3.0.0",
-    "zod": "^3.21.4"
+    "zod": "^3.21.4",
+    "js-xxhash": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
@@ -34,7 +34,6 @@
     "@easyblocks/test-utils": "workspace:*",
     "@easyblocks/utils": "workspace:*",
     "@jest/types": "^26.6.2",
-    "@types/crypto-js": "^4.1.1",
     "@types/jest": "^26.0.20",
     "@types/lodash": "^4.14.191",
     "@types/react": "^18.2.20",
