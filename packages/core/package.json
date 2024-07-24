@@ -1,7 +1,7 @@
 {
   "name": "@easyblocks/core",
   "type": "module",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "No-code ecommerce builder for headless CMS",
   "scripts": {
     "dev": "NODE_ENV=development concurrently -n bundle,emit-declarations 'rollup -c rollup.config.js --watch' 'tsc --watch --preserveWatchOutput'",
@@ -17,14 +17,14 @@
   "dependencies": {
     "@babel/runtime": "^7.21.0",
     "@stitches/core": "^1.2.8",
+    "js-xxhash": "^4.0.0",
     "lodash": "^4.17.21",
     "postcss-value-parser": "^3.3.0",
     "react-textarea-autosize": ">=7.1",
     "slate": "0.77.2",
     "slate-react": "0.77.2",
     "type-fest": "^3.0.0",
-    "zod": "^3.21.4",
-    "js-xxhash": "^4.0.0"
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
