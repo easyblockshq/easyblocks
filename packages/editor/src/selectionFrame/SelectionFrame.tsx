@@ -96,7 +96,10 @@ function SelectionFrame({ width, height, transform }: SelectionFrameProps) {
     };
   }, [direction, height, isAddingEnabled, width]);
 
-  async function handleAddButtonClick(which: "before" | "after") {
+  async function handleAddButtonClick(
+    domRect: DOMRect,
+    which: "before" | "after"
+  ) {
     let path = focussedField.length === 1 ? focussedField[0] : undefined;
 
     if (!path) {
@@ -129,7 +132,10 @@ function SelectionFrame({ width, height, transform }: SelectionFrameProps) {
     const parentPath =
       parent.path + (parent.path === "" ? "" : ".") + parent.fieldName;
 
-    const config = await actions.openComponentPicker({ path: parentPath });
+    const config = await actions.openComponentPicker({
+      path: parentPath,
+      domRect,
+    });
 
     if (config) {
       actions.insertItem({
@@ -148,11 +154,11 @@ function SelectionFrame({ width, height, transform }: SelectionFrameProps) {
       <FrameWrapper width={width} height={height} transform={transform}>
         <AddButton
           position="before"
-          onClick={() => handleAddButtonClick("before")}
+          onClick={(domRect) => handleAddButtonClick(domRect, "before")}
         />
         <AddButton
           position="after"
-          onClick={() => handleAddButtonClick("after")}
+          onClick={(domRect) => handleAddButtonClick(domRect, "after")}
         />
       </FrameWrapper>
     </Wrapper>

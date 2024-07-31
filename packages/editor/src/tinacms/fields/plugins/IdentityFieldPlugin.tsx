@@ -9,7 +9,7 @@ import {
 } from "@easyblocks/core/_internals";
 import { ButtonGhost, Icons, Typography } from "@easyblocks/design-system";
 import { toArray } from "@easyblocks/utils";
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import type { FieldRenderProps } from "react-final-form";
 import { css } from "styled-components";
 import { useEditorContext } from "../../../EditorContext";
@@ -24,6 +24,8 @@ interface IdentityFieldProps
 function IdentityField({ input, field }: IdentityFieldProps) {
   const editorContext = useEditorContext();
   const panelContext = useContext(PanelContext);
+
+  const changeComponentButton = useRef<HTMLButtonElement>(null);
 
   const isMixed = isMixedFieldValue(input.value);
   const config = isMixed ? null : input.value;
@@ -71,8 +73,10 @@ function IdentityField({ input, field }: IdentityFieldProps) {
 
     const componentPickerPath = parent.path + "." + parent.fieldName;
 
+    const domRect = changeComponentButton?.current?.getBoundingClientRect();
+
     editorContext.actions
-      .openComponentPicker({ path: componentPickerPath })
+      .openComponentPicker({ path: componentPickerPath, domRect })
       .then((selectedConfig) => {
         if (!selectedConfig) {
           return;
@@ -142,7 +146,10 @@ function IdentityField({ input, field }: IdentityFieldProps) {
           <div style={{ padding: "7px 6px" }}>{titleContent}</div>
         )}
         {!isNonChangable && (
-          <ButtonGhost onClick={handleChangeComponentType}>
+          <ButtonGhost
+            ref={changeComponentButton}
+            onClick={handleChangeComponentType}
+          >
             {titleContent}
           </ButtonGhost>
         )}
