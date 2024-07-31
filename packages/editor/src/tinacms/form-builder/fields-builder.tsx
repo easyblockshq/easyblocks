@@ -152,7 +152,8 @@ export interface FieldsBuilderProps {
 export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
   const editorContext = useEditorContext();
   const panelContext = useContext(PanelContext);
-  const grouped: Record<string, Array<InternalField>> = {};
+  // const grouped: Record<string, Array<InternalField>> = {};
+  const groupedWithSubgroups: { groupName: string; subGroups: string[] }[] = [];
   const ungrouped: Array<InternalField> = [];
 
   fields.forEach((field) => {
@@ -161,8 +162,24 @@ export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
     }
 
     if (field.group) {
-      grouped[field.group] = grouped[field.group] || [];
-      grouped[field.group].push(field);
+      let groupName: string;
+      let subGroupName: string;
+      if (field.group.includes("::")) {
+        [groupName, subGroupName] = field.group.split("::");
+      } else {
+        groupName = field.group;
+        subGroupName = "";
+      }
+      const existingGroup = groupedWithSubgroups.find(
+        (group) => group.groupName === groupName
+      );
+      if (existingGroup) {
+        if (!existingGroup.subGroups.includes(subGroupName)) {
+          existingGroup.subGroups.push(subGroupName);
+        }
+      } else {
+        groupedWithSubgroups.push({ groupName, subGroups: [subGroupName] });
+      }
     } else {
       if (field.component === "identity") {
         return;
@@ -198,23 +215,36 @@ export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
           {horizontalLine}
         </React.Fragment>
       )}
-      {Object.keys(grouped).map((groupName) => (
+      {groupedWithSubgroups.map(({ groupName, subGroups }) => (
         <div key={groupName}>
           <FieldsGroupLabel>{groupName}</FieldsGroupLabel>
-          {grouped[groupName].map((field, index, fields) => (
-            <div
-              key={generateFieldKey(field, breakpointIndex)}
-              css={css`
-                margin-bottom: ${index === fields.length - 1 ? "8px" : 0};
-              `}
-            >
-              <FieldBuilder
-                field={field}
-                form={form}
-                isLabelHidden={field.schemaProp.isLabelHidden}
-              />
-            </div>
-          ))}
+          {subGroups.map((subGroupName) => {
+            const fieldsInSubGroup =
+              subGroupName === ""
+                ? fields.filter((field) => field.group === groupName)
+                : fields.filter(
+                    (field) => field.group === `${groupName}::${subGroupName}`
+                  );
+            return fieldsInSubGroup.map((field, index, fields) => (
+              <>
+                {subGroupName != "" && index === 0 && (
+                  <FieldsSubgroupLabel>{subGroupName}</FieldsSubgroupLabel>
+                )}
+                <div
+                  key={generateFieldKey(field, breakpointIndex)}
+                  css={css`
+                    margin-bottom: ${index === fields.length - 1 ? "8px" : 0};
+                  `}
+                >
+                  <FieldBuilder
+                    field={field}
+                    form={form}
+                    isLabelHidden={field.schemaProp.isLabelHidden}
+                  />
+                </div>
+              </>
+            ));
+          })}
           {horizontalLine}
         </div>
       ))}
@@ -255,6 +285,16 @@ const FieldsGroupLabel = styled.div`
 
   ${Fonts.label};
   color: #000;
+`;
+
+const FieldsSubgroupLabel = styled.div`
+  display: flex;
+  align-items: center;
+
+  padding: 10px 16px 8px 16px;
+
+  ${Fonts.label2};
+  color: #222222;
 `;
 
 const FieldsGroup = styled.div`
