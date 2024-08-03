@@ -12,6 +12,7 @@ type TemplatePickerProps = {
   templates?: TemplatesDictionary;
   onClose: (template?: Template) => void;
   mode?: string;
+  domRect?: DOMRect;
 };
 
 export type TemplatePicker<T = Record<never, never>> = React.FC<

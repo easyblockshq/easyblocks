@@ -11,6 +11,7 @@ import { EditorContextType } from "./EditorContext";
 export type OpenComponentPickerConfig = {
   path: string;
   componentTypes?: string[];
+  domRect?: DOMRect;
 };
 
 export type MoveItemActionType = {

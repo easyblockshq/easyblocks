@@ -115,6 +115,7 @@ export const ModalPicker: FC<ModalProps> = ({ config, onClose, pickers }) => {
       onClose: onModalClose,
       templates: templatesDictionary,
       mode: picker,
+      domRect: config.domRect,
     })
   ) : (
     <div>Unknown picker: {picker}</div>

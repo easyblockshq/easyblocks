@@ -14,7 +14,7 @@ interface AddButtonProps {
   position: "before" | "after";
   index?: number;
   offset?: number | { x: number; y: number };
-  onClick?: () => void;
+  onClick?: ($event?: any) => void;
 }
 
 function AddButton({ position, index, offset, onClick }: AddButtonProps) {
@@ -25,9 +25,11 @@ function AddButton({ position, index, offset, onClick }: AddButtonProps) {
     event.stopPropagation();
     event.preventDefault();
 
+    const domRect = addBlockButtonRef.current?.getBoundingClientRect();
+
     // Custom add action
     if (onClick) {
-      onClick();
+      onClick(domRect);
       return;
     }
   };
