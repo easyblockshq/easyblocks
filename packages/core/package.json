@@ -24,7 +24,8 @@
     "slate": "0.77.2",
     "slate-react": "0.77.2",
     "type-fest": "^3.0.0",
-    "zod": "^3.21.4"
+    "zod": "^3.21.4",
+    "tailwind-merge": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

@@ -83,6 +83,7 @@ import {
   InternalRenderableComponentDefinition,
 } from "./types";
 import { getFallbackLocaleForLocale } from "../locales";
+import { twMerge } from "tailwind-merge";
 
 type ComponentCompilationArtifacts = {
   compiledComponentConfig: CompiledComponentConfig;
@@ -651,6 +652,230 @@ export function compileComponent(
     configAfterAuto,
     cache
   );
+
+  if (compiled.props.tw) {
+    if (compiled.props.tw.$res) {
+      // handle when the component is res
+      // remove the $res property from the object and conver it to an array
+      const nonRes = Object.entries(compiled.props.tw).filter(
+        ([key]) => key != "$res"
+      );
+
+      // flatten the components
+      interface Flatten {
+        [key: string]: {
+          [key: string]: any;
+        };
+      }
+
+      let flattened: Flatten = {};
+
+      // First we need to flatten the object so that arrays of components become single components that we will
+      // later convert back to arrays
+      nonRes.forEach(([key, value]) => {
+        const size = key;
+        Object.entries(value as any).forEach(([componentName, classes]) => {
+          if (Array.isArray(classes)) {
+            // when the property is an array it means we're dealing with an array of components
+            // we flatten these to individual components with an IDX key to simplify the logic
+            // we will convert this back to an array at the end
+            classes.forEach((c, idx) => {
+              flattened = {
+                ...flattened,
+                [size]: {
+                  ...flattened[size],
+                  [`${componentName}-IDX${idx}`]: c,
+                },
+              };
+            });
+          } else {
+            // Normal component (not Array)
+            flattened = {
+              ...flattened,
+              [size]: {
+                ...flattened[size],
+                [componentName]: classes as string,
+              },
+            };
+          }
+        });
+      });
+
+      interface Reversed {
+        [key: string]: {
+          [key: string]: any;
+        };
+      }
+
+      const reversed: Reversed = {};
+
+      // switch to be by component an size instead of by size and component
+      Object.entries(flattened).forEach(([size, component]) => {
+        Object.entries(component).forEach(([name, classes]) => {
+          if (!reversed[name]) {
+            reversed[name] = {};
+          }
+          reversed[name] = {
+            ...reversed[name],
+            [size]: classes,
+          };
+        });
+      });
+
+      interface Component {
+        name: string;
+        sizes: {
+          id: string;
+          classList: string[];
+        }[];
+        className: string;
+      }
+
+      const finalComponents: { name: string; className: string }[] = [];
+
+      const sortedDevices = meta.vars.devices.sort(
+        (a: any, b: any) => a.width - b.width
+      ) as { id: string }[];
+
+      Object.entries(reversed).forEach(([componentName, sizes]) => {
+        let component: Component = {
+          name: componentName,
+          sizes: [],
+          className: "",
+        };
+
+        for (const d of sortedDevices) {
+          if (!sizes[d.id]) {
+            continue;
+          }
+          const classes = sizes[d.id];
+          const mergedClasses = twMerge(classes);
+          const classList = mergedClasses.split(" ");
+          if (component.sizes.length === 0) {
+            component = {
+              name: componentName,
+              sizes: [{ id: d.id, classList }],
+              className: mergedClasses,
+            };
+          } else {
+            const newClassList: string[] = [];
+            classList.forEach((c) => {
+              // if (component === undefined) return;
+              let abort = false;
+              for (
+                let i = component.sizes.length - 1;
+                i >= 0 && abort === false;
+                i--
+              ) {
+                const thisSize = component.sizes[i];
+                const thisSizeClasslist = thisSize.classList;
+                // classList.forEach((c) => {
+                if (thisSizeClasslist.indexOf(c) != -1) {
+                  // the exact class is already in the previous size so we can skip it for this size
+                  abort = true;
+                  return;
+                }
+
+                // first merge the size we're looking at with this class then remove this class
+                // this will be used to tell if a class was dropped from the initial list
+                // if it's dropped it means that twMerge would have superceded it so we can include
+                // it in our class list for this size
+                const twMergeResult = twMerge([...thisSizeClasslist, c])
+                  .split(" ")
+                  .filter((f) => f != c);
+                const missingClasses = thisSizeClasslist.filter(
+                  (f) => !twMergeResult.includes(f)
+                );
+                if (missingClasses.length > 0) {
+                  abort = true;
+                  newClassList.push(c);
+                }
+                // });
+              }
+            });
+            if (newClassList.length > 0) {
+              component.sizes.push({ id: d.id, classList: newClassList });
+              component.className = `${component.className} ${newClassList
+                .map((c) => `${d.id}:${c}`)
+                .join(" ")}`;
+            }
+          }
+        }
+
+        if (component) {
+          finalComponents.push({
+            name: component.name,
+            className: twMerge(component.className),
+          });
+        }
+      });
+
+      // convert array components back to arrays
+
+      const finalComponentsContainingIDX = finalComponents.filter((c) =>
+        c.name.includes("IDX")
+      );
+      const finalComponentsWithoutIDX = finalComponents.filter(
+        (c) => !c.name.includes("IDX")
+      );
+
+      interface finalComponentsWithArrays {
+        name: string;
+        className: string | string[];
+      }
+
+      const finalComponentsWithArrays: finalComponentsWithArrays[] = [
+        ...finalComponentsWithoutIDX,
+      ];
+
+      const uniqueFinalComponentsWithIDXNames = finalComponentsContainingIDX
+        .map((c) => c.name.split("-IDX")[0])
+        .filter((v, i, a) => a.indexOf(v) === i);
+
+      for (const name of uniqueFinalComponentsWithIDXNames) {
+        const components = finalComponentsContainingIDX.filter((c) =>
+          c.name.startsWith(name)
+        );
+
+        const newComponent = {
+          name,
+          className: components.map((c) => c.className),
+        };
+
+        finalComponentsWithArrays.push(newComponent);
+      }
+
+      for (const component of finalComponentsWithArrays) {
+        if (Array.isArray(component.className)) {
+          component.className.forEach((val, idx) => {
+            compiled.styled[component.name][idx].__className = val;
+          });
+        } else {
+          compiled.styled[component.name].__className = component.className;
+        }
+      }
+    } else {
+      Object.keys(compiled.props.tw).forEach((key) => {
+        if (Array.isArray(compiled.styled[key])) {
+          compiled.styled[key].forEach((styledComponent: any, idx: number) => {
+            if (!styledComponent) {
+              throw new Error(
+                `Tailwind component ${key} is not defined in the styled object for the component ${compiled._component}`
+              );
+            }
+            styledComponent.__className = compiled.props.tw[key][idx];
+          });
+        } else {
+          if (!compiled.styled[key]) {
+            throw new Error(
+              `Tailwind component ${key} is not defined in the styled object for the component ${compiled._component}`
+            );
+          }
+          compiled.styled[key].__className = compiled.props.tw[key];
+        }
+      });
+    }
+  }
 
   cache.set(ownProps.values._id, {
     values: ownProps,

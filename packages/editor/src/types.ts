@@ -97,12 +97,29 @@ export type Template = TemplateBase & {
 
 export type FieldMixedValue = { __mixed__: true };
 
+export type EditorWindowAPICallbackEventType =
+  | "renderableContent"
+  | "focussedField"
+  | "isEditing"
+  | "externalData"
+  | "currentViewport"
+  | "meta";
+
 export type EditorWindowAPI = {
   editorContext: EditorContextType;
   onUpdate?: () => void; // this function will be called by parent window when data is changed, child should "subscribe" to this function
   meta: CompilationMetadata;
   compiled: CompiledShopstoryComponentConfig;
   externalData: ExternalData;
+  onUpdateCallbacks?: Array<
+    (eventType: EditorWindowAPICallbackEventType) => void
+  >;
+  subscribe: (
+    callback: (eventType: EditorWindowAPICallbackEventType) => void
+  ) => void;
+  unsubscribe: (
+    callback: (eventType: EditorWindowAPICallbackEventType) => void
+  ) => void;
 };
 
 export type InternalWidgetComponentProps = Omit<
