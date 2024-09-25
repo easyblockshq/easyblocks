@@ -169,32 +169,34 @@ function createFieldController({
               const fallbackLocale = getFallbackLocaleForLocale(
                 contextParams.locale,
                 locales
-              )!;
-
-              const fieldNameSegments = path.split(".");
-              const localeTokenIndex = fieldNameSegments.indexOf("[locale]");
-              const localisedConfigPath = [
-                ...fieldNameSegments.slice(0, localeTokenIndex + 1),
-                "0",
-              ].join(".");
-
-              const fallbackLocaleFieldName = replaceLocaleToken(
-                localisedConfigPath,
-                fallbackLocale
               );
 
-              const localeConfigPath = replaceLocaleToken(
-                localisedConfigPath,
-                contextParams.locale
-              );
+              if (fallbackLocale) {
+                const fieldNameSegments = path.split(".");
+                const localeTokenIndex = fieldNameSegments.indexOf("[locale]");
+                const localisedConfigPath = [
+                  ...fieldNameSegments.slice(0, localeTokenIndex + 1),
+                  "0",
+                ].join(".");
 
-              form.change(
-                localeConfigPath,
-                duplicateConfig(
-                  dotNotationGet(form.values, fallbackLocaleFieldName),
-                  editorContext
-                )
-              );
+                const fallbackLocaleFieldName = replaceLocaleToken(
+                  localisedConfigPath,
+                  fallbackLocale
+                );
+
+                const localeConfigPath = replaceLocaleToken(
+                  localisedConfigPath,
+                  contextParams.locale
+                );
+
+                form.change(
+                  localeConfigPath,
+                  duplicateConfig(
+                    dotNotationGet(form.values, fallbackLocaleFieldName),
+                    editorContext
+                  )
+                );
+              }
             }
 
             path = currentLocaleFieldName;
@@ -218,13 +220,13 @@ function createFieldController({
           const parentDefinition = findComponentDefinitionById(
             templateId,
             editorContext
-          )!;
+          );
           const config = dotNotationGet(
             editorContext.form.values,
             componentPath
           );
 
-          if (parentDefinition && parentDefinition.change) {
+          if (parentDefinition?.change) {
             const values: Record<string, any> = {};
             const closestDefinedValues: Record<string, any> = {};
 
@@ -270,7 +272,7 @@ function createFieldController({
               }
 
               let pathPrefix = `${componentPath}.${schemaProp.prop}`;
-              if (pathPrefix[0] === ".") {
+              if (pathPrefix.startsWith(".")) {
                 pathPrefix = pathPrefix.substring(1);
               }
 
@@ -312,7 +314,11 @@ function createFieldController({
           const fallbackLocale = getFallbackLocaleForLocale(
             editorContext.contextParams.locale,
             editorContext.locales
-          )!;
+          );
+
+          if (!fallbackLocale) {
+            return undefined;
+          }
 
           const resolvedFieldFallbackName = replaceLocaleToken(
             fieldName,
@@ -429,7 +435,7 @@ const richTextCacheInvalidator: CacheInvalidator = (
         componentConfig &&
         componentConfig._component.startsWith("@easyblocks/rich-text")
       ) {
-        cacheKeysToRemove.push(componentConfig._id!);
+        cacheKeysToRemove.push(componentConfig._id);
       }
     });
   }

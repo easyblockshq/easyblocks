@@ -1,12 +1,12 @@
 "use client";
-import { useRef, useState } from "react";
+import { useCallback, useState } from "react";
 
 function useForceRerender() {
   const [, setDummyState] = useState({});
 
-  const forceRerender = useRef(() => {
+  const forceRerender = useCallback(() => {
     setDummyState({});
-  }).current;
+  }, []);
 
   return { forceRerender };
 }

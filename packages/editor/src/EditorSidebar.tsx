@@ -1,18 +1,20 @@
-import { CompiledComponentConfig } from "@easyblocks/core";
+import React, { useMemo, memo } from "react";
 import { Fonts } from "@easyblocks/design-system";
 import { dotNotationGet } from "@easyblocks/utils";
-import React from "react";
 import styled from "styled-components";
+
+import type { CompiledComponentConfig } from "@easyblocks/core";
+
 import { buildTinaFields } from "./buildTinaFields";
 import { useEditorContext } from "./EditorContext";
 import { InlineSettings } from "./inline-settings";
 import { mergeCommonFields } from "./tinacms/form-builder/utils/mergeCommonFields";
 import { Form } from "./form";
 
-type EditorSidebarProps = {
-  focussedField: Array<string>;
+interface EditorSidebarProps {
+  focussedField: string[];
   form: Form;
-};
+}
 
 const Error = styled.div`
   ${Fonts.body}
@@ -25,11 +27,11 @@ const Error = styled.div`
   margin: 16px;
 `;
 
-export const EditorSidebar: React.FC<EditorSidebarProps> = (props) => {
+export const EditorSidebar = memo((props: EditorSidebarProps) => {
   const { focussedField, form } = props;
   const editorContext = useEditorContext();
 
-  const error = (() => {
+  const error = useMemo(() => {
     if (focussedField.length === 1) {
       const path = focussedField[0];
       const compiledComponent: CompiledComponentConfig = dotNotationGet(
@@ -42,20 +44,22 @@ export const EditorSidebar: React.FC<EditorSidebarProps> = (props) => {
       }
     }
 
-    return null;
-  })();
+    return "";
+  }, [editorContext.compiledComponentConfig, focussedField, form.values]);
 
-  const areMultipleFieldsSelected = focussedField.length > 1;
-  const focusedFields = focussedField.length === 0 ? [""] : focussedField;
-  const fieldsPerFocusedField = focusedFields.map((focusedField) => {
-    return buildTinaFields(focusedField, editorContext);
-  });
+  const mergedFields = useMemo(() => {
+    const areMultipleFieldsSelected = focussedField.length > 1;
+    const focusedFields = focussedField.length === 0 ? [""] : focussedField;
+    const fieldsPerFocusedField = focusedFields.map((focusedField) => {
+      return buildTinaFields(focusedField, editorContext);
+    });
 
-  const mergedFields = areMultipleFieldsSelected
-    ? mergeCommonFields({
-        fields: fieldsPerFocusedField,
-      })
-    : fieldsPerFocusedField.flat();
+    return areMultipleFieldsSelected
+      ? mergeCommonFields({
+          fields: fieldsPerFocusedField,
+        })
+      : fieldsPerFocusedField.flat();
+  }, [editorContext, focussedField]);
 
   return (
     <>
@@ -63,4 +67,4 @@ export const EditorSidebar: React.FC<EditorSidebarProps> = (props) => {
       <InlineSettings fields={mergedFields} />
     </>
   );
-};
+});

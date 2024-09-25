@@ -1,4 +1,4 @@
-type EditorSearchParams = {
+interface EditorSearchParams {
   readOnly: boolean | null;
   documentId: string | null;
   templateId: string | null;
@@ -7,10 +7,10 @@ type EditorSearchParams = {
   locale: string | null;
   preview: boolean;
   debug: boolean;
-};
+}
 
-export function parseQueryParams() {
-  const searchParams = new URLSearchParams(window.location.search);
+export function parseQueryParams(strSearch = window.location.search) {
+  const searchParams = new URLSearchParams(strSearch);
 
   const readOnly =
     searchParams.get("readOnly") === "true"

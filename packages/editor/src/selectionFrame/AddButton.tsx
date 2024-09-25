@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { IconButton, ICON_BUTTON_SIZE } from "../tinacms/styles";
+import { IconButton } from "../tinacms/styles";
 import {
   AFTER_ADD_BUTTON_DISPLAY,
   AFTER_ADD_BUTTON_LEFT,
@@ -10,6 +10,8 @@ import {
   BEFORE_ADD_BUTTON_TOP,
 } from "./cssVariables";
 
+export { ICON_BUTTON_SIZE as ADD_BUTTON_SIZE } from "../tinacms/styles";
+
 interface AddButtonProps {
   position: "before" | "after";
   index?: number;
@@ -17,57 +19,66 @@ interface AddButtonProps {
   onClick?: () => void;
 }
 
-function AddButton({ position, index, offset, onClick }: AddButtonProps) {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const addBlockButtonRef = React.useRef<HTMLButtonElement>(null);
+export const AddButton = React.memo(
+  ({ position, index, offset, onClick }: AddButtonProps): JSX.Element => {
+    const [isOpen, setIsOpen] = React.useState(false);
+    const addBlockButtonRef = React.useRef<HTMLButtonElement>(null);
 
-  const handleOpenBlockMenu = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    event.preventDefault();
+    const handleOpenBlockMenu = React.useCallback<React.MouseEventHandler>(
+      (event) => {
+        event.stopPropagation();
+        event.preventDefault();
 
-    // Custom add action
-    if (onClick) {
-      onClick();
-      return;
-    }
-  };
+        // Custom add action
+        if (onClick) {
+          onClick();
+          return;
+        }
+      },
+      [onClick]
+    );
 
-  React.useEffect(() => {
-    const inactivateBlockMenu = () => setIsOpen(false);
-    document.addEventListener("mouseup", inactivateBlockMenu, false);
-    return () => document.removeEventListener("mouseup", inactivateBlockMenu);
-  }, []);
+    React.useEffect(() => {
+      function inactivateBlockMenu() {
+        setIsOpen(false);
+      }
 
-  return (
-    <AddButtonWrapper
-      index={index}
-      offset={offset}
-      position={position}
-      isOpen={isOpen}
-    >
-      <AddIconButton
-        ref={addBlockButtonRef}
-        onClick={handleOpenBlockMenu}
+      document.addEventListener("mouseup", inactivateBlockMenu, false);
+
+      return () => {
+        document.removeEventListener("mouseup", inactivateBlockMenu);
+      };
+    }, []);
+
+    return (
+      <AddButtonWrapper
+        index={index}
+        offset={offset}
+        position={position}
         isOpen={isOpen}
-        primary
-        small
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="23"
-          height="23"
-          viewBox="0 0 23 23"
-          fill="none"
+        <AddIconButton
+          ref={addBlockButtonRef}
+          onClick={handleOpenBlockMenu}
+          isOpen={isOpen}
+          primary
+          small
         >
-          <line x1="11.5" y1="4" x2="11.5" y2="19" stroke="currentColor" />
-          <line x1="4" y1="11.5" x2="19" y2="11.5" stroke="currentColor" />
-        </svg>
-      </AddIconButton>
-    </AddButtonWrapper>
-  );
-}
-
-export { AddButton, ICON_BUTTON_SIZE as ADD_BUTTON_SIZE };
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="23"
+            height="23"
+            viewBox="0 0 23 23"
+            fill="none"
+          >
+            <line x1="11.5" y1="4" x2="11.5" y2="19" stroke="currentColor" />
+            <line x1="4" y1="11.5" x2="19" y2="11.5" stroke="currentColor" />
+          </svg>
+        </AddIconButton>
+      </AddButtonWrapper>
+    );
+  }
+);
 
 interface AddMenuProps {
   isOpen?: boolean;

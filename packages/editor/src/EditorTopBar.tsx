@@ -12,7 +12,7 @@ import {
   TooltipTrigger,
   Typography,
 } from "@easyblocks/design-system";
-import React, { ReactNode, useRef } from "react";
+import React, { ReactNode, useRef, useCallback, memo } from "react";
 import styled from "styled-components";
 import { useOnClickNTimes } from "./useOnClickNTimes";
 
@@ -73,7 +73,7 @@ const TopBarCenter = styled.div`
   transform: translate(-50%, -50%);
 `;
 
-export const EditorTopBar: React.FC<{
+interface EditorTopBarProps {
   saveLabel: string;
   onClose?: () => void;
   onIsEditingChange: () => void;
@@ -89,104 +89,113 @@ export const EditorTopBar: React.FC<{
   onAdminModeChange: (x: boolean) => void;
   hideCloseButton: boolean;
   readOnly: boolean;
-}> = ({
-  onClose,
-  onViewportChange,
-  devices,
-  viewport,
-  onIsEditingChange,
-  isEditing,
-  onUndo,
-  onRedo,
-  onAdminModeChange,
-  hideCloseButton,
-  readOnly,
-}) => {
-  const headingRef = useRef<HTMLDivElement>(null);
+}
 
-  useOnClickNTimes(headingRef, 5, () => {
-    onAdminModeChange(true);
-  });
+export const EditorTopBar = memo(
+  ({
+    onClose,
+    onViewportChange,
+    devices,
+    viewport,
+    onIsEditingChange,
+    isEditing,
+    onUndo,
+    onRedo,
+    onAdminModeChange,
+    hideCloseButton,
+    readOnly,
+  }: EditorTopBarProps): JSX.Element => {
+    const headingRef = useRef<HTMLDivElement>(null);
 
-  return (
-    <TopBar ref={headingRef}>
-      <TopBarLeft>
-        {!hideCloseButton && (
-          <>
-            <ButtonGhost
-              icon={Icons.Close}
-              hideLabel
-              onClick={() => {
-                if (onClose) {
-                  onClose();
-                }
-              }}
-            >
-              Close
-            </ButtonGhost>
+    const onAdminModeChangeCallback = useCallback(() => {
+      onAdminModeChange(true);
+    }, [onAdminModeChange]);
 
-            <div
-              style={{ height: "100%", background: Colors.black10, width: 1 }}
-            />
-          </>
-        )}
-        <ButtonGhost
-          icon={Icons.Undo}
-          hideLabel
-          onClick={() => {
-            onUndo();
-          }}
-        >
-          Undo
-        </ButtonGhost>
-        <ButtonGhost
-          icon={Icons.Redo}
-          hideLabel
-          onClick={() => {
-            onRedo();
-          }}
-        >
-          Redo
-        </ButtonGhost>
-        {readOnly && <Label>Read-Only</Label>}
-      </TopBarLeft>
+    useOnClickNTimes(headingRef, 5, onAdminModeChangeCallback);
 
-      <TopBarCenter>
-        <DeviceSwitch
-          devices={devices}
-          deviceId={viewport}
-          onDeviceChange={onViewportChange}
-        />
-      </TopBarCenter>
+    return (
+      <TopBar ref={headingRef}>
+        <TopBarLeft>
+          {!hideCloseButton && (
+            <>
+              <ButtonGhost
+                icon={Icons.Close}
+                hideLabel
+                onClick={() => {
+                  if (onClose) {
+                    onClose();
+                  }
+                }}
+              >
+                Close
+              </ButtonGhost>
 
-      <TopBarRight>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: "6px",
-            alignItems: "center",
-          }}
-        >
-          <Typography
-            variant={"body"}
-            component="label"
-            htmlFor="easyblocks-edit-mode-button"
-          >
-            Edit mode
-          </Typography>{" "}
-          <Toggle
-            name="easyblocks-edit-mode-button"
-            checked={isEditing}
-            onChange={() => {
-              onIsEditingChange();
+              <div
+                style={{ height: "100%", background: Colors.black10, width: 1 }}
+              />
+            </>
+          )}
+
+          <ButtonGhost
+            icon={Icons.Undo}
+            hideLabel
+            onClick={() => {
+              onUndo();
             }}
+          >
+            Undo
+          </ButtonGhost>
+
+          <ButtonGhost
+            icon={Icons.Redo}
+            hideLabel
+            onClick={() => {
+              onRedo();
+            }}
+          >
+            Redo
+          </ButtonGhost>
+
+          {readOnly && <Label>Read-Only</Label>}
+        </TopBarLeft>
+
+        <TopBarCenter>
+          <DeviceSwitch
+            devices={devices}
+            deviceId={viewport}
+            onDeviceChange={onViewportChange}
           />
-        </div>
-      </TopBarRight>
-    </TopBar>
-  );
-};
+        </TopBarCenter>
+
+        <TopBarRight>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              gap: "6px",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              variant={"body"}
+              component="label"
+              htmlFor="easyblocks-edit-mode-button"
+            >
+              Edit mode
+            </Typography>{" "}
+            <Toggle
+              name="easyblocks-edit-mode-button"
+              checked={isEditing}
+              onChange={() => {
+                onIsEditingChange();
+              }}
+            />
+          </div>
+        </TopBarRight>
+      </TopBar>
+    );
+  }
+);
 
 const DEVICE_ID_TO_ICON: Record<
   Devices[number]["id"] | "fit-screen",
@@ -350,57 +359,59 @@ const DEVICE_ID_TO_ICON: Record<
   ),
 };
 
-function DeviceSwitch({
-  deviceId,
-  devices,
-  onDeviceChange,
-}: {
+interface DeviceSwitchProps {
   devices: Devices;
   deviceId: string;
   onDeviceChange: (deviceId: string) => void;
-}) {
-  return (
-    <ToggleGroup
-      value={deviceId}
-      onChange={(deviceId) => {
+}
+
+const DeviceSwitch = memo<DeviceSwitchProps>(
+  ({ deviceId, devices, onDeviceChange }) => {
+    const onChange = useCallback(
+      (deviceId: string): void => {
         if (deviceId === "") {
           return;
         }
 
         onDeviceChange(deviceId);
-      }}
-    >
-      {devices.map((d) => {
-        if (d.hidden) {
-          return null;
-        }
+      },
+      [onDeviceChange]
+    );
 
-        return (
-          <Tooltip key={d.id}>
-            <TooltipTrigger>
-              <ToggleGroupItem value={d.id}>
-                {DEVICE_ID_TO_ICON[d.id]}
-              </ToggleGroupItem>
-            </TooltipTrigger>
+    return (
+      <ToggleGroup value={deviceId} onChange={onChange}>
+        {devices.map((d) => {
+          if (d.hidden) {
+            return null;
+          }
 
-            <TooltipContent>
-              <Typography color="white">{d.label ?? d.id}</Typography>
-            </TooltipContent>
-          </Tooltip>
-        );
-      })}
+          return (
+            <Tooltip key={d.id}>
+              <TooltipTrigger>
+                <ToggleGroupItem value={d.id}>
+                  {DEVICE_ID_TO_ICON[d.id]}
+                </ToggleGroupItem>
+              </TooltipTrigger>
 
-      <Tooltip>
-        <TooltipTrigger>
-          <ToggleGroupItem value="fit-screen">
-            {DEVICE_ID_TO_ICON["fit-screen"]}
-          </ToggleGroupItem>
-        </TooltipTrigger>
+              <TooltipContent>
+                <Typography color="white">{d.label ?? d.id}</Typography>
+              </TooltipContent>
+            </Tooltip>
+          );
+        })}
 
-        <TooltipContent>
-          <Typography color="white">Fit screen</Typography>
-        </TooltipContent>
-      </Tooltip>
-    </ToggleGroup>
-  );
-}
+        <Tooltip>
+          <TooltipTrigger>
+            <ToggleGroupItem value="fit-screen">
+              {DEVICE_ID_TO_ICON["fit-screen"]}
+            </ToggleGroupItem>
+          </TooltipTrigger>
+
+          <TooltipContent>
+            <Typography color="white">Fit screen</Typography>
+          </TooltipContent>
+        </Tooltip>
+      </ToggleGroup>
+    );
+  }
+);

@@ -1,7 +1,7 @@
 import { InternalField } from "@easyblocks/core/_internals";
 import { Colors, Fonts, Typography } from "@easyblocks/design-system";
 import { toArray } from "@easyblocks/utils";
-import React, { useContext } from "react";
+import React, { useContext, useMemo, memo } from "react";
 import styled, { css } from "styled-components";
 import { useEditorContext } from "../../EditorContext";
 import { Form } from "../../form";
@@ -47,7 +47,7 @@ function shouldFieldBeDisplayed(field: InternalField): boolean {
   return true;
 }
 
-const FIELD_COMPONENTS: Array<FieldPlugin> = [
+const FIELD_COMPONENTS: Map<string, FieldPlugin> = [
   TextFieldPlugin,
   NumberFieldPlugin,
   ToggleFieldPlugin,
@@ -62,7 +62,9 @@ const FIELD_COMPONENTS: Array<FieldPlugin> = [
   TokenFieldPlugin,
   IdentityFieldPlugin,
   LocalFieldPlugin,
-];
+].reduce((map, plugin) => {
+  return map.set(plugin.name, plugin);
+}, new Map<string, FieldPlugin>());
 
 export function FieldBuilder({
   form,
@@ -76,9 +78,7 @@ export function FieldBuilder({
     return null;
   }
 
-  const fieldComponent = FIELD_COMPONENTS.find(
-    (component) => component.name === (field.component as string)
-  );
+  const fieldComponent = FIELD_COMPONENTS.get(field.component as string);
 
   const { onChange, getValue } = createFieldController({
     field,
@@ -149,28 +149,39 @@ export interface FieldsBuilderProps {
   fields: InternalField[];
 }
 
-export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
+export const FieldsBuilder = memo(({ form, fields }: FieldsBuilderProps) => {
   const editorContext = useEditorContext();
   const panelContext = useContext(PanelContext);
-  const grouped: Record<string, Array<InternalField>> = {};
-  const ungrouped: Array<InternalField> = [];
 
-  fields.forEach((field) => {
-    if (!shouldFieldBeDisplayed(field)) {
-      return;
-    }
+  const { grouped, ungrouped } = useMemo(() => {
+    const grouped = new Map<string, InternalField[]>();
+    const ungrouped: InternalField[] = [];
 
-    if (field.group) {
-      grouped[field.group] = grouped[field.group] || [];
-      grouped[field.group].push(field);
-    } else {
-      if (field.component === "identity") {
+    fields.forEach((field) => {
+      if (!shouldFieldBeDisplayed(field)) {
         return;
       }
 
-      ungrouped.push(field);
-    }
-  });
+      if (field.group) {
+        let list = grouped.get(field.group);
+
+        if (list === undefined) {
+          list = [];
+          grouped.set(field.group, list);
+        }
+
+        list.push(field);
+      } else {
+        if (field.component === "identity") {
+          return;
+        }
+
+        ungrouped.push(field);
+      }
+    });
+
+    return { grouped, ungrouped };
+  }, [fields]);
 
   const horizontalLine = (
     <div
@@ -195,13 +206,16 @@ export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
       {identityField !== undefined && (
         <React.Fragment>
           <FieldBuilder field={identityField} form={form} />
+
           {horizontalLine}
         </React.Fragment>
       )}
-      {Object.keys(grouped).map((groupName) => (
+
+      {Array.from(grouped.entries()).map(([groupName, groupFields]) => (
         <div key={groupName}>
           <FieldsGroupLabel>{groupName}</FieldsGroupLabel>
-          {grouped[groupName].map((field, index, fields) => (
+
+          {groupFields.map((field, index, fields) => (
             <div
               key={generateFieldKey(field, breakpointIndex)}
               css={css`
@@ -215,9 +229,11 @@ export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
               />
             </div>
           ))}
+
           {horizontalLine}
         </div>
       ))}
+
       {ungrouped.map((field, index, fields) => (
         <div
           key={generateFieldKey(field, breakpointIndex)}
@@ -232,10 +248,11 @@ export function FieldsBuilder({ form, fields }: FieldsBuilderProps) {
           />
         </div>
       ))}
+
       {horizontalLine}
     </FieldsGroup>
   );
-}
+});
 
 function generateFieldKey(
   field: InternalField,

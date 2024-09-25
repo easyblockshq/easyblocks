@@ -43,7 +43,10 @@ type EditorTokenTypeDefinition = Omit<TokenTypeDefinition, "widgets"> & {
   };
 };
 
-export type EditorContextType = Omit<BaseEditorContextType, "types"> & {
+export type EditorContextType = Omit<
+  BaseEditorContextType,
+  "types" | "form"
+> & {
   backend: Backend;
   templates?: Template[];
   syncTemplates: () => void;

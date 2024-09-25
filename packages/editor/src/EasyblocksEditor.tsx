@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, memo } from "react";
+
 import { EasyblocksEditorProps } from "./EasyblocksEditorProps";
 import { EasyblocksParent } from "./EasyblocksParent";
 import { EasyblocksCanvas } from "./EditorChildWindow";
@@ -6,7 +7,7 @@ import { PreviewRenderer } from "./PreviewRenderer";
 import { addDebugToEditorProps } from "./debug/addDebugToEditorProps";
 import { parseQueryParams } from "./parseQueryParams";
 
-export function EasyblocksEditor(props: EasyblocksEditorProps) {
+export const EasyblocksEditor = memo((props: EasyblocksEditorProps) => {
   const [selectedWindow, setSelectedWindow] = useState<
     "parent" | "child" | "preview" | null
   >(null);
@@ -45,11 +46,16 @@ export function EasyblocksEditor(props: EasyblocksEditorProps) {
     }
   }, []);
 
+  const queryParams = useMemo(
+    () => parseQueryParams(window.location.search),
+    [window.location.search]
+  );
+
   if (!selectedWindow) {
     return null;
   }
 
-  if (parseQueryParams().debug) {
+  if (queryParams.debug) {
     props = addDebugToEditorProps(props);
   }
 
@@ -73,4 +79,4 @@ export function EasyblocksEditor(props: EasyblocksEditorProps) {
       {selectedWindow === "preview" && <PreviewRenderer {...props} />}
     </>
   );
-}
+});

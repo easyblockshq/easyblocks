@@ -225,6 +225,7 @@ function getCompiledSubcomponents(
   let elements = compiledArray.map((compiledChild, index) =>
     "_component" in compiledChild ? (
       <EditableComponentBuilder
+        key={index}
         compiled={compiledChild}
         index={index}
         length={compiledArray.length}

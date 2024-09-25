@@ -10,7 +10,7 @@ import {
   Fonts,
 } from "@easyblocks/design-system";
 import { dotNotationGet } from "@easyblocks/utils";
-import * as React from "react";
+import React, { memo } from "react";
 import styled from "styled-components";
 import { useEditorContext } from "./EditorContext";
 import { pathToCompiledPath } from "./pathToCompiledPath";
@@ -22,7 +22,11 @@ const IdWrapper = styled.div`
   color: ${Colors.black40};
 `;
 
-export function SidebarFooter(props: { paths: string[] }) {
+interface SidebarFooterProps {
+  paths: string[];
+}
+
+export const SidebarFooter = memo((props: SidebarFooterProps) => {
   const editorContext = useEditorContext();
   const { form, isAdminMode } = editorContext;
 
@@ -102,4 +106,4 @@ export function SidebarFooter(props: { paths: string[] }) {
       </IdWrapper>
     </div>
   );
-}
+});

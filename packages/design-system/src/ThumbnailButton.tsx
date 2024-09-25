@@ -5,30 +5,30 @@ import { ButtonGhost } from "./buttons";
 import { Icons } from "./icons";
 import { Typography } from "./Typography";
 
-export type ColorThumbnail = {
+export interface ColorThumbnail {
   type: "color";
   color: string;
-};
+}
 
-export type ImageThumbnail = {
+export interface ImageThumbnail {
   type: "image";
   src: string;
-};
+}
 
-export type IconThumbnail = {
+export interface IconThumbnail {
   type: "icon";
   icon: "link" | "grid_3x3";
-};
+}
 
 export type ThumbnailType = ColorThumbnail | ImageThumbnail | IconThumbnail;
 
-export type ThumbnailButtonProps = {
+export interface ThumbnailButtonProps {
   onClick?: () => void;
   label: string;
   description?: string;
   thumbnail?: ThumbnailType;
   disabled?: boolean;
-};
+}
 
 const Preview = styled.div`
   display: flex;
@@ -77,6 +77,8 @@ const Labels = styled.div`
   display: grid;
 `;
 
+const containerStyle = { display: "grid", width: "100%" };
+
 export function ThumbnailButton({
   onClick,
   label,
@@ -84,27 +86,9 @@ export function ThumbnailButton({
   thumbnail,
   disabled,
 }: ThumbnailButtonProps) {
-  let preview: JSX.Element;
-
-  if (thumbnail?.type === "image") {
-    preview = <PreviewImage src={thumbnail.src} aria-hidden="true" />;
-  } else if (thumbnail?.type === "color") {
-    preview = <SolidColorPreview color={thumbnail.color} />;
-  } else if (thumbnail?.type === "icon") {
-    const ComponentIcon =
-      thumbnail.icon === "link"
-        ? Icons.Link
-        : thumbnail.icon === "grid_3x3"
-        ? Icons.Grid3x3
-        : Icons.Link;
-    preview = <ComponentIcon size={16} />;
-  } else {
-    preview = <SolidColorPreview color={"transparent"} />;
-  }
-
   const content = (
     <ContentRoot>
-      <Preview>{preview}</Preview>
+      <Preview>{renderPreviewElementByThumbnail(thumbnail)}</Preview>
       <Labels>
         <Typography variant="label" isTruncated>
           {label}
@@ -123,10 +107,36 @@ export function ThumbnailButton({
   }
 
   return (
-    <div style={{ display: "grid", width: "100%" }}>
-      <ButtonGhost onClick={onClick} height={"32px"} noPadding={true}>
+    <div style={containerStyle}>
+      <ButtonGhost onClick={onClick} height="32px" noPadding={true}>
         {content}
       </ButtonGhost>
     </div>
   );
+}
+
+function renderPreviewElementByThumbnail(
+  thumbnail?: ThumbnailType
+): JSX.Element {
+  switch (thumbnail?.type) {
+    case "image":
+      return <PreviewImage src={thumbnail.src} aria-hidden="true" />;
+
+    case "color":
+      return <SolidColorPreview color={thumbnail.color} />;
+
+    case "icon": {
+      const ComponentIcon =
+        thumbnail.icon === "link"
+          ? Icons.Link
+          : thumbnail.icon === "grid_3x3"
+          ? Icons.Grid3x3
+          : Icons.Link;
+
+      return <ComponentIcon size={16} />;
+    }
+
+    default:
+      return <SolidColorPreview color="transparent" />;
+  }
 }

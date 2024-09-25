@@ -1,11 +1,11 @@
 import React, { ReactNode } from "react";
 import { useEditorGlobalKeyboardShortcuts } from "../useEditorGlobalKeyboardShortcuts";
 
-type CanvasRootProps = {
+interface CanvasRootProps {
   children: ReactNode;
-};
+}
 
-function CanvasRoot(props: CanvasRootProps) {
+export function CanvasRoot(props: CanvasRootProps) {
   const { editorContext } = window.parent.editorWindowAPI;
 
   useEditorGlobalKeyboardShortcuts(editorContext);
@@ -159,5 +159,3 @@ const globalEditorRendererStyles = `
       transform: translateX(-100%);
   }
 `;
-
-export { CanvasRoot };

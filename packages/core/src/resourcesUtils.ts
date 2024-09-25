@@ -6,6 +6,7 @@ import type {
   ExternalReferenceNonEmpty,
   ExternalSchemaProp,
   FetchOutputCompoundResources,
+  FetchResourceResolvedResult,
   NonNullish,
   ResponsiveValue,
 } from "./types";
@@ -50,7 +51,7 @@ export function getResolvedExternalDataValue(
   configId: string,
   fieldName: string,
   value: ExternalReferenceNonEmpty
-) {
+): FetchResourceResolvedResult<NonNullish> | undefined {
   const externalReferenceLocationKey =
     typeof value.id === "string" && value.id.startsWith("$.")
       ? value.id
