@@ -2,7 +2,7 @@ import {
   ComponentBuilder,
   ComponentBuilderProps,
 } from "@easyblocks/core/_internals";
-import React from "react";
+import React, { Ref, forwardRef } from "react";
 import { BlocksControls } from "./BlockControls";
 
 type EditableComponentBuilderProps = ComponentBuilderProps & {
@@ -10,7 +10,10 @@ type EditableComponentBuilderProps = ComponentBuilderProps & {
   length: number;
 };
 
-function EditableComponentBuilder(props: EditableComponentBuilderProps) {
+const EditableComponentBuilder = forwardRef(function EditableComponentBuilder(
+  props: EditableComponentBuilderProps,
+  ref: Ref<unknown>
+) {
   const { path, compiled, index, length, components, ...restPassedProps } =
     props;
 
@@ -30,11 +33,12 @@ function EditableComponentBuilder(props: EditableComponentBuilderProps) {
         path={path}
         passedProps={restPassedProps}
         components={components}
+        ref={ref}
       />
     </BlocksControls>
   );
 
   return content;
-}
+});
 
 export default EditableComponentBuilder;

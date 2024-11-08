@@ -1,4 +1,10 @@
-import React, { ComponentType, Fragment, ReactElement } from "react";
+import React, {
+  ComponentType,
+  Fragment,
+  ReactElement,
+  Ref,
+  forwardRef,
+} from "react";
 import { findComponentDefinitionById } from "../../compiler/findComponentDefinition";
 import {
   isSchemaPropComponent,
@@ -319,7 +325,10 @@ export type InternalNoCodeComponentProps = NoCodeComponentProps & {
   };
 };
 
-function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
+const ComponentBuilder = forwardRef(function ComponentBuilder(
+  props: ComponentBuilderProps,
+  ref: Ref<unknown>
+): ReactElement | null {
   const { compiled, passedProps, path, components, ...restProps } = props;
 
   const allPassedProps: Record<string, any> = {
@@ -431,7 +440,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { ref, __isSelected, ...restPassedProps } = allPassedProps || {};
+  const { __isSelected, ...restPassedProps } = allPassedProps || {};
 
   const runtime = {
     stitches: meta.stitches,
@@ -459,8 +468,8 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
     __easyblocks: easyblocksProp,
   };
 
-  return <Component {...componentProps} />;
-}
+  return <Component {...componentProps} ref={ref} />;
+});
 
 function getComponent(
   componentDefinition: InternalComponentDefinition,
