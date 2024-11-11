@@ -99,11 +99,11 @@ List of available locales.
 };
 </code></pre>
 
-**One of the locales must be alwyas set as default.** This locale is going to be used as a fallback in cases where locale is missing or a translation for selected locale (different than default) is missing.
+**One of the locales must be always set as default.** This locale is going to be used as a fallback in cases where locale is missing or a translation for selected locale (different than default) is missing.
 
 #### `Config.types`
 
-Beside using built-in types provided by Eeasyblocks you can also define your own custom types for referencing external data. Learn more about custom types [here](external-data.md).
+Beside using built-in types provided by Easyblocks you can also define your own custom types for referencing external data. Learn more about custom types [here](external-data.md).
 
 ```typescript
 import type { Config } from '@easyblocks/core';
