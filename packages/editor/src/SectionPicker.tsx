@@ -233,7 +233,7 @@ const ModalGridRoot = styled.div<VisualProps>`
 `;
 
 const Sidebar = styled.div`
-  overflow-y: hidden;
+  overflow-y: auto;
   overflow-x: hidden;
   border-right: 1px solid ${Colors.black5};
   height: 100%;
